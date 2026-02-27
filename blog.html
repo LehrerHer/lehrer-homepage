@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Schüler*innenblog der Klassen von Jan Herrmann – Oberschule Spelle. Hier veröffentlichen Schülerinnen und Schüler eigene Texte, Bilder und Projekte.">
+    <title>Schüler*innenblog – Jan Herrmann | Oberschule Spelle</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ========================================================
+         NAVIGATION (identisch zur Startseite)
+         ======================================================== -->
+    <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+        <div class="container navbar-inner">
+            <a href="index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
+
+            <button
+                class="hamburger"
+                id="hamburger"
+                aria-label="Menü öffnen"
+                aria-expanded="false"
+                aria-controls="navbar-links"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="navbar-links" id="navbar-links">
+                <li><a href="index.html#startseite">Startseite</a></li>
+                <li><a href="index.html#faecher">Fächer</a></li>
+                <li><a href="index.html#materialien">Materialien</a></li>
+                <li><a href="blog.html" class="aktiv">Blog</a></li>
+                <li><a href="index.html#kontakt">Kontakt</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <!-- ========================================================
+         BLOG-HERO
+         ======================================================== -->
+    <header class="blog-hero">
+        <div class="container blog-hero-inhalt">
+            <div class="blog-hero-icon">✍️</div>
+            <h1>Schüler*innenblog</h1>
+            <p class="blog-hero-untertitel">
+                Hier veröffentlichen Schülerinnen und Schüler eigene Texte, Projekte und Ideen –
+                aus dem Unterricht und darüber hinaus.
+            </p>
+            <a href="blog-einreichen.html" class="btn-blog-einreichen">
+                + Beitrag einreichen
+            </a>
+        </div>
+    </header>
+
+
+    <!-- ========================================================
+         FILTER-LEISTE
+         ======================================================== -->
+    <div class="blog-filter-leiste" id="blog-filter-leiste" role="search" aria-label="Blog filtern">
+        <div class="container blog-filter-inner">
+
+            <div class="filter-gruppe">
+                <label for="filter-fach" class="filter-label">Fach:</label>
+                <select id="filter-fach" class="filter-select" aria-label="Nach Fach filtern">
+                    <option value="">Alle Fächer</option>
+                    <option value="Deutsch">Deutsch</option>
+                    <option value="Geschichte">Geschichte</option>
+                    <option value="WiPo">WiPo</option>
+                    <option value="Informatik">Informatik</option>
+                </select>
+            </div>
+
+            <div class="filter-gruppe">
+                <label for="filter-klasse" class="filter-label">Klasse:</label>
+                <select id="filter-klasse" class="filter-select" aria-label="Nach Klasse filtern">
+                    <option value="">Alle Klassen</option>
+                    <option value="5a">5a</option>
+                    <option value="5b">5b</option>
+                    <option value="6a">6a</option>
+                    <option value="6b">6b</option>
+                    <option value="7a">7a</option>
+                    <option value="7b">7b</option>
+                    <option value="8a">8a</option>
+                    <option value="8b">8b</option>
+                    <option value="9a">9a</option>
+                    <option value="9b">9b</option>
+                    <option value="10a">10a</option>
+                    <option value="10b">10b</option>
+                </select>
+            </div>
+
+            <div class="filter-gruppe">
+                <label for="filter-typ" class="filter-label">Art:</label>
+                <select id="filter-typ" class="filter-select" aria-label="Nach Dateityp filtern">
+                    <option value="">Alle Arten</option>
+                    <option value="text">Text / Gedicht</option>
+                    <option value="pdf">PDF / Dokument</option>
+                    <option value="bild">Bild / Foto</option>
+                </select>
+            </div>
+
+            <button class="filter-zurueck" id="filter-zurueck" aria-label="Filter zurücksetzen">
+                ✕ Filter zurücksetzen
+            </button>
+
+        </div>
+    </div>
+
+
+    <!-- ========================================================
+         BLOG-BEITRÄGE
+         ======================================================== -->
+    <main class="blog-bereich">
+        <div class="container">
+
+            <!-- Anzahl der angezeigten Beiträge -->
+            <p class="blog-anzahl" id="blog-anzahl" aria-live="polite"></p>
+
+            <!-- Hier werden die Karten per JavaScript eingefügt -->
+            <div class="blog-grid" id="blog-grid" role="list">
+            </div>
+
+            <!-- Wird angezeigt, wenn keine Beiträge gefunden werden -->
+            <div class="blog-leer" id="blog-leer" hidden>
+                <div class="blog-leer-icon">🔍</div>
+                <p>Keine Beiträge gefunden.<br>Versuche andere Filtereinstellungen.</p>
+            </div>
+
+        </div>
+    </main>
+
+
+    <!-- ========================================================
+         LIGHTBOX / VORSCHAU-DIALOG (für Bilder und Texte)
+         ======================================================== -->
+    <div class="lightbox" id="lightbox" hidden role="dialog" aria-modal="true" aria-label="Beitragsvorschau">
+        <button class="lightbox-schliessen" id="lightbox-schliessen" aria-label="Schließen">✕</button>
+        <div class="lightbox-inhalt" id="lightbox-inhalt">
+            <!-- Wird per JS befüllt -->
+        </div>
+    </div>
+
+
+    <!-- ========================================================
+         FOOTER
+         ======================================================== -->
+    <footer>
+        <div class="container footer-inner">
+            <p>© <span id="footer-jahr">2025</span> Jan Herrmann &nbsp;·&nbsp; Oberschule Spelle</p>
+            <nav class="footer-links" aria-label="Rechtliche Links">
+                <a href="index.html#impressum">Impressum</a>
+                <a href="index.html#datenschutz">Datenschutz</a>
+            </nav>
+        </div>
+    </footer>
+
+
+    <!-- Supabase-Zugangsdaten (hier eintragen) -->
+    <script src="js/supabase-config.js"></script>
+    <!-- Beispieldaten (Fallback wenn Supabase nicht konfiguriert) -->
+    <script src="js/blog-daten.js"></script>
+    <!-- Hauptskript (Hamburger, Footer-Jahr usw.) -->
+    <script src="js/main.js"></script>
+    <!-- Blog-Rendering -->
+    <script src="js/blog.js"></script>
+
+</body>
+</html>
