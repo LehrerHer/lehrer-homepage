@@ -1,0 +1,735 @@
+/* ============================================================
+   LEHRER-HOMEPAGE – Jan Herrmann, Oberschule Spelle
+   Stylesheet: Alle Stile für index.html und abgabe.html
+   ============================================================ */
+
+
+/* ---- CSS-Variablen: Farben, Abstände, Effekte ---- */
+:root {
+    --farbe-primaer:        #1e3a5f;   /* Dunkelblau – Hauptfarbe */
+    --farbe-primaer-hell:   #2d6a9f;   /* Mittleres Blau */
+    --farbe-akzent:         #4a9eda;   /* Hellblau für Badges & Hover */
+    --farbe-hintergrund:    #f4f6f9;   /* Seitenhintergrund (Hellgrau) */
+    --farbe-weiss:          #ffffff;
+    --farbe-text:           #2c3e50;   /* Dunkler Fließtext */
+    --farbe-text-hell:      #6c757d;   /* Grauer Hilfstext */
+    --farbe-rahmen:         #dee2e6;   /* Rahmen & Trennlinien */
+    --farbe-erfolg:         #27ae60;   /* Grün für Erfolgsmeldungen */
+
+    --schatten:     0 2px 12px rgba(30, 58, 95, 0.10);
+    --radius:       8px;
+    --transition:   0.3s ease;
+}
+
+
+/* ================================================================
+   RESET & GRUNDSTILE
+   ================================================================ */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth; /* Sanftes Scrollen bei Anker-Links */
+}
+
+body {
+    font-family: 'Inter', 'Open Sans', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--farbe-text);
+    background-color: var(--farbe-hintergrund);
+}
+
+a {
+    color: var(--farbe-primaer-hell);
+    text-decoration: none;
+    transition: color var(--transition);
+}
+
+a:hover {
+    color: var(--farbe-akzent);
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+ul {
+    list-style: none;
+}
+
+
+/* ================================================================
+   HILFSKLASSEN
+   ================================================================ */
+
+/* Zentrierter Inhalts-Container mit maximalem Seitenabstand */
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Abschnittsüberschriften */
+.section-titel {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--farbe-primaer);
+    margin-bottom: 10px;
+}
+
+.section-untertitel {
+    font-size: 1.05rem;
+    color: var(--farbe-text-hell);
+    margin-bottom: 40px;
+    max-width: 600px;
+}
+
+
+/* ================================================================
+   NAVIGATION
+   ================================================================ */
+.navbar {
+    background-color: var(--farbe-primaer);
+    position: sticky; /* Bleibt beim Scrollen oben */
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.navbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+/* Logo / Name links */
+.navbar-logo {
+    color: var(--farbe-weiss);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+}
+
+.navbar-logo span {
+    color: var(--farbe-akzent); /* Nachname farbig hervorheben */
+}
+
+/* Navigationslinks rechts */
+.navbar-links {
+    display: flex;
+    gap: 4px;
+}
+
+.navbar-links a {
+    color: rgba(255, 255, 255, 0.82);
+    padding: 8px 14px;
+    border-radius: var(--radius);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: background-color var(--transition), color var(--transition);
+}
+
+.navbar-links a:hover,
+.navbar-links a.aktiv {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: var(--farbe-weiss);
+}
+
+/* Hamburger-Button – nur auf mobilen Geräten sichtbar */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+}
+
+.hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: var(--farbe-weiss);
+    border-radius: 2px;
+    transition: transform var(--transition), opacity var(--transition);
+}
+
+
+/* ================================================================
+   HERO-BEREICH (Startseite – großer Willkommensbereich)
+   ================================================================ */
+.hero {
+    background: linear-gradient(145deg, var(--farbe-primaer) 0%, var(--farbe-primaer-hell) 100%);
+    color: var(--farbe-weiss);
+    padding: 80px 0;
+    text-align: center;
+}
+
+.hero-inhalt {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+/* Platzhalter für Profilbild */
+.hero-avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.12);
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+
+.hero h1 {
+    font-size: 2.6rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.hero-schule {
+    font-size: 1.05rem;
+    color: var(--farbe-akzent);
+    font-weight: 600;
+    margin-bottom: 20px;
+    letter-spacing: 0.3px;
+}
+
+.hero-text {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, 0.88);
+    margin-bottom: 32px;
+}
+
+/* Fach-Badges im Hero */
+.hero-faecher {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.fach-badge {
+    background-color: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--farbe-weiss);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+
+/* ================================================================
+   SECTION-GRUNDLAYOUT
+   ================================================================ */
+section {
+    padding: 72px 0;
+}
+
+/* Abwechselnder Hintergrund für optische Trennung */
+section:nth-child(even) {
+    background-color: var(--farbe-weiss);
+}
+
+
+/* ================================================================
+   FÄCHER-BEREICH
+   ================================================================ */
+.faecher-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 24px;
+}
+
+.fach-karte {
+    background-color: var(--farbe-weiss);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    box-shadow: var(--schatten);
+    border-top: 4px solid var(--farbe-primaer-hell);
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.fach-karte:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 28px rgba(30, 58, 95, 0.15);
+}
+
+.fach-icon {
+    font-size: 2.2rem;
+    margin-bottom: 14px;
+}
+
+.fach-karte h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--farbe-primaer);
+    margin-bottom: 10px;
+}
+
+.fach-karte p {
+    font-size: 0.93rem;
+    color: var(--farbe-text-hell);
+    line-height: 1.65;
+}
+
+
+/* ================================================================
+   MATERIALIEN-BEREICH
+   ================================================================ */
+#materialien {
+    background-color: var(--farbe-hintergrund);
+}
+
+/* Farbige Hinweis-Box */
+.hinweis-box {
+    background-color: #e8f0fe;
+    border-left: 4px solid var(--farbe-primaer-hell);
+    border-radius: var(--radius);
+    padding: 14px 18px;
+    margin-bottom: 28px;
+    font-size: 0.93rem;
+    color: var(--farbe-primaer);
+}
+
+.materialien-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+}
+
+.material-karte {
+    background-color: var(--farbe-weiss);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    box-shadow: var(--schatten);
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    transition: box-shadow var(--transition);
+}
+
+.material-karte:hover {
+    box-shadow: 0 5px 18px rgba(30, 58, 95, 0.13);
+}
+
+.material-icon {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.material-info h4 {
+    font-size: 0.97rem;
+    font-weight: 600;
+    color: var(--farbe-primaer);
+    margin-bottom: 4px;
+}
+
+.material-info p {
+    font-size: 0.87rem;
+    color: var(--farbe-text-hell);
+}
+
+.material-link {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 0.87rem;
+    font-weight: 600;
+    color: var(--farbe-primaer-hell);
+}
+
+.material-link:hover {
+    color: var(--farbe-akzent);
+}
+
+
+/* ================================================================
+   KONTAKT-BEREICH
+   ================================================================ */
+#kontakt {
+    background-color: var(--farbe-weiss);
+}
+
+.kontakt-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+}
+
+.kontakt-karte {
+    background-color: var(--farbe-hintergrund);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    text-align: center;
+    box-shadow: var(--schatten);
+    transition: transform var(--transition);
+}
+
+.kontakt-karte:hover {
+    transform: translateY(-3px);
+}
+
+.kontakt-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+}
+
+.kontakt-karte h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--farbe-primaer);
+    margin-bottom: 8px;
+}
+
+.kontakt-karte p {
+    font-size: 0.9rem;
+    color: var(--farbe-text-hell);
+    line-height: 1.6;
+}
+
+
+/* ================================================================
+   FOOTER
+   ================================================================ */
+footer {
+    background-color: var(--farbe-primaer);
+    color: rgba(255, 255, 255, 0.65);
+    padding: 28px 0;
+    font-size: 0.88rem;
+}
+
+.footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.footer-links {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.65);
+    transition: color var(--transition);
+}
+
+.footer-links a:hover {
+    color: var(--farbe-weiss);
+}
+
+
+/* ================================================================
+   ABGABE-SEITE (abgabe.html)
+   ================================================================ */
+
+/* Einfacher Header ohne vollständige Navigation */
+.abgabe-header {
+    background: linear-gradient(145deg, var(--farbe-primaer) 0%, var(--farbe-primaer-hell) 100%);
+    color: var(--farbe-weiss);
+    padding: 40px 0;
+    text-align: center;
+}
+
+.abgabe-header h1 {
+    font-size: 1.9rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.abgabe-header p {
+    color: rgba(255, 255, 255, 0.82);
+    font-size: 0.98rem;
+}
+
+.abgabe-bereich {
+    padding: 52px 0 80px;
+    min-height: 60vh;
+}
+
+/* Formular-Rahmenbox */
+.formular-box {
+    background-color: var(--farbe-weiss);
+    border-radius: var(--radius);
+    padding: 40px 44px;
+    box-shadow: var(--schatten);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.formular-titel {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--farbe-primaer);
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--farbe-rahmen);
+}
+
+
+/* ================================================================
+   FORMULAR-ELEMENTE
+   ================================================================ */
+.formular-gruppe {
+    margin-bottom: 22px;
+}
+
+.formular-gruppe label {
+    display: block;
+    font-size: 0.91rem;
+    font-weight: 600;
+    color: var(--farbe-text);
+    margin-bottom: 6px;
+}
+
+/* Rotes Sternchen für Pflichtfelder */
+.pflichtfeld {
+    color: #e74c3c;
+    margin-left: 2px;
+}
+
+/* Gemeinsame Stile für alle Eingabefelder */
+.formular-gruppe input[type="text"],
+.formular-gruppe select,
+.formular-gruppe textarea,
+.formular-gruppe input[type="file"] {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--farbe-rahmen);
+    border-radius: var(--radius);
+    font-size: 0.97rem;
+    font-family: inherit;
+    color: var(--farbe-text);
+    background-color: var(--farbe-weiss);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+/* Fokus-Highlight */
+.formular-gruppe input:focus,
+.formular-gruppe select:focus,
+.formular-gruppe textarea:focus {
+    outline: none;
+    border-color: var(--farbe-primaer-hell);
+    box-shadow: 0 0 0 3px rgba(45, 106, 159, 0.15);
+}
+
+/* Eigener Pfeil für Select-Felder */
+.formular-gruppe select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 36px;
+    cursor: pointer;
+}
+
+.formular-gruppe textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.formular-gruppe input[type="file"] {
+    padding: 8px 10px;
+    cursor: pointer;
+    background-color: var(--farbe-hintergrund);
+}
+
+/* Kleiner Hinweistext unter dem Datei-Upload */
+.datei-hinweis {
+    font-size: 0.81rem;
+    color: var(--farbe-text-hell);
+    margin-top: 5px;
+}
+
+/* Zwei Felder nebeneinander (Klasse + Fach) */
+.formular-zeile {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+/* Hinweis zu Pflichtfeldern */
+.pflichtfeld-hinweis {
+    font-size: 0.81rem;
+    color: var(--farbe-text-hell);
+    margin-bottom: 18px;
+}
+
+
+/* ================================================================
+   BUTTON
+   ================================================================ */
+.btn-primaer {
+    display: block;
+    width: 100%;
+    background-color: var(--farbe-primaer);
+    color: var(--farbe-weiss);
+    padding: 13px 32px;
+    border-radius: var(--radius);
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+    transition: background-color var(--transition), transform var(--transition);
+    margin-top: 4px;
+}
+
+.btn-primaer:hover {
+    background-color: var(--farbe-primaer-hell);
+    transform: translateY(-1px);
+}
+
+.btn-primaer:active {
+    transform: translateY(0);
+}
+
+.btn-primaer:disabled {
+    background-color: var(--farbe-text-hell);
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Ladeanzeige unter dem Button */
+.laden-anzeige {
+    display: none;
+    text-align: center;
+    margin-top: 14px;
+    color: var(--farbe-text-hell);
+    font-size: 0.93rem;
+}
+
+
+/* ================================================================
+   ERFOLGS-MELDUNG (nach Abgabe)
+   ================================================================ */
+.erfolg-meldung {
+    display: none;           /* Standardmäßig versteckt */
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.erfolg-meldung.sichtbar {
+    display: block;          /* Per JavaScript eingeblendet */
+}
+
+.erfolg-icon {
+    font-size: 3.5rem;
+    margin-bottom: 16px;
+}
+
+.erfolg-meldung h2 {
+    color: var(--farbe-erfolg);
+    font-size: 1.55rem;
+    margin-bottom: 12px;
+}
+
+.erfolg-meldung p {
+    color: var(--farbe-text-hell);
+    font-size: 0.97rem;
+    margin-top: 8px;
+}
+
+
+/* ================================================================
+   RESPONSIVES DESIGN (Smartphones & Tablets)
+   ================================================================ */
+@media (max-width: 768px) {
+
+    /* --- Navigation: Hamburger-Menü aktivieren --- */
+    .hamburger {
+        display: flex;
+    }
+
+    .navbar-links {
+        /* Dropdown-Menü unter der Navbar */
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background-color: var(--farbe-primaer);
+        padding: 12px 16px;
+        gap: 2px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Klasse wird per JS umgeschaltet */
+    .navbar-links.offen {
+        display: flex;
+    }
+
+    .navbar-links a {
+        padding: 12px 14px;
+        display: block;
+        font-size: 1rem;
+    }
+
+    /* --- Hero --- */
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero {
+        padding: 52px 0;
+    }
+
+    /* --- Sections --- */
+    section {
+        padding: 48px 0;
+    }
+
+    .section-titel {
+        font-size: 1.6rem;
+    }
+
+    /* --- Formular: einspaltig auf Mobilgeräten --- */
+    .formular-zeile {
+        grid-template-columns: 1fr;
+    }
+
+    .formular-box {
+        padding: 28px 20px;
+    }
+
+    /* --- Footer --- */
+    .footer-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 1.7rem;
+    }
+
+    .hero-avatar {
+        width: 90px;
+        height: 90px;
+        font-size: 2.4rem;
+    }
+
+    .formular-box {
+        padding: 22px 16px;
+    }
+}

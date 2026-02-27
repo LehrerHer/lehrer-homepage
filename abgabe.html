@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Wichtig: Diese Seite soll nicht von Suchmaschinen gefunden werden -->
+    <meta name="robots" content="noindex, nofollow">
+    <title>Aufgaben-Abgabe – Jan Herrmann</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Eigenes Stylesheet (dasselbe wie die Startseite) -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ========================================================
+         HEADER (kein Navigationsmenü – diese Seite ist "versteckt")
+         ======================================================== -->
+    <header class="abgabe-header">
+        <div class="container">
+            <h1>📤 Aufgaben-Abgabe</h1>
+            <p>Jan Herrmann &nbsp;·&nbsp; Oberschule Spelle</p>
+        </div>
+    </header>
+
+
+    <!-- ========================================================
+         ABGABE-FORMULAR
+         ======================================================== -->
+    <main class="abgabe-bereich">
+        <div class="container">
+            <div class="formular-box">
+
+                <!-- --------------------------------------------------
+                     ERFOLGS-MELDUNG
+                     Wird standardmäßig versteckt und per JavaScript
+                     nach erfolgreichem Absenden eingeblendet.
+                     -------------------------------------------------- -->
+                <div class="erfolg-meldung" id="erfolg-meldung" role="alert" aria-live="polite">
+                    <div class="erfolg-icon">✅</div>
+                    <h2>Abgabe erfolgreich!</h2>
+                    <p>Deine Aufgabe wurde eingereicht. Ich werde sie so bald wie möglich ansehen.</p>
+                    <p>Du kannst dieses Fenster jetzt schließen.</p>
+                </div>
+
+                <!-- --------------------------------------------------
+                     DAS EIGENTLICHE FORMULAR
+
+                     *** WICHTIG: FORMSPREE EINRICHTEN ***
+                     Ersetze "YOUR_FORM_ID" in der action-URL durch
+                     deine persönliche Formspree Form-ID.
+
+                     Beispiel:
+                       action="https://formspree.io/f/mwkjabcd"
+
+                     Wie du die ID bekommst:
+                     1. Gehe zu https://formspree.io
+                     2. Kostenlos registrieren
+                     3. "New Form" anlegen
+                     4. Die angezeigte Form-ID kopieren und hier einfügen
+                     -------------------------------------------------- -->
+                <form
+                    id="abgabe-formular"
+                    action="https://formspree.io/f/YOUR_FORM_ID"
+                    method="POST"
+                    enctype="multipart/form-data"
+                    novalidate
+                >
+                    <!-- Formspree: Betreff der Benachrichtigungs-E-Mail -->
+                    <input type="hidden" name="_subject" value="Neue Aufgaben-Abgabe über die Homepage">
+
+                    <!-- Formspree: Nach dem Absenden NICHT zu einer anderen Seite weiterleiten -->
+                    <input type="hidden" name="_next" value="false">
+
+                    <h2 class="formular-titel">Aufgabe einreichen</h2>
+
+
+                    <!-- 1. NAME DES SCHÜLERS -->
+                    <div class="formular-gruppe">
+                        <label for="schueler-name">
+                            Dein Name <span class="pflichtfeld" aria-label="Pflichtfeld">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="schueler-name"
+                            name="name"
+                            placeholder="Vor- und Nachname"
+                            required
+                            autocomplete="name"
+                        >
+                    </div>
+
+
+                    <!-- 2. KLASSE und 3. FACH (nebeneinander auf Desktop) -->
+                    <div class="formular-zeile">
+
+                        <!-- Klasse -->
+                        <div class="formular-gruppe">
+                            <label for="klasse">
+                                Klasse <span class="pflichtfeld" aria-label="Pflichtfeld">*</span>
+                            </label>
+                            <select id="klasse" name="klasse" required>
+                                <option value="" disabled selected>Bitte wählen …</option>
+                                <option value="5a">5a</option>
+                                <option value="5b">5b</option>
+                                <option value="6a">6a</option>
+                                <option value="6b">6b</option>
+                                <option value="7a">7a</option>
+                                <option value="7b">7b</option>
+                                <option value="8a">8a</option>
+                                <option value="8b">8b</option>
+                                <option value="9a">9a</option>
+                                <option value="9b">9b</option>
+                                <option value="10a">10a</option>
+                                <option value="10b">10b</option>
+                            </select>
+                        </div>
+
+                        <!-- Fach -->
+                        <div class="formular-gruppe">
+                            <label for="fach">
+                                Fach <span class="pflichtfeld" aria-label="Pflichtfeld">*</span>
+                            </label>
+                            <select id="fach" name="fach" required>
+                                <option value="" disabled selected>Bitte wählen …</option>
+                                <option value="Deutsch">Deutsch</option>
+                                <option value="Geschichte">Geschichte</option>
+                                <option value="WiPo">WiPo (Wirtschaft/Politik)</option>
+                                <option value="Informatik">Informatik</option>
+                            </select>
+                        </div>
+
+                    </div><!-- Ende .formular-zeile -->
+
+
+                    <!-- 4. AUFGABENTITEL -->
+                    <div class="formular-gruppe">
+                        <label for="aufgabe">
+                            Aufgabe / Titel der Abgabe <span class="pflichtfeld" aria-label="Pflichtfeld">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="aufgabe"
+                            name="aufgabe"
+                            placeholder="z. B. Hausaufgabe Kapitel 3 · Referat über die Römer …"
+                            required
+                        >
+                    </div>
+
+
+                    <!-- 5. DATEI-UPLOAD
+                         Hinweis zu Formspree:
+                         - Kostenloser Plan: Formular-Daten werden übermittelt,
+                           aber Datei-Anhänge erfordern den "Gold"-Plan ($16/Mo).
+                         - Günstige Alternative: Schüler laden die Datei in Google Drive
+                           hoch und tragen den Freigabe-Link unten im Kommentarfeld ein.
+                         Für die Schule ist das oft der praktischste Weg. -->
+                    <div class="formular-gruppe">
+                        <label for="datei">
+                            Datei hochladen <span class="pflichtfeld" aria-label="Pflichtfeld">*</span>
+                        </label>
+                        <input
+                            type="file"
+                            id="datei"
+                            name="datei"
+                            accept=".pdf,.jpg,.jpeg,.png,.docx,.zip"
+                            required
+                        >
+                        <p class="datei-hinweis">
+                            Erlaubte Dateitypen: PDF, JPG, PNG, DOCX, ZIP &nbsp;·&nbsp; Maximale Dateigröße: 10 MB<br>
+                            <strong>Alternative:</strong> Datei in Google Drive hochladen und den Link im Kommentarfeld einfügen.
+                        </p>
+                    </div>
+
+
+                    <!-- 6. KOMMENTAR (optional) -->
+                    <div class="formular-gruppe">
+                        <label for="kommentar">
+                            Kommentar
+                            <em style="font-weight: 400; color: var(--farbe-text-hell);">(optional)</em>
+                        </label>
+                        <textarea
+                            id="kommentar"
+                            name="kommentar"
+                            placeholder="Möchtest du noch etwas mitteilen? z. B. Hinweis zur Aufgabe, fehlende Seiten, Google-Drive-Link …"
+                            rows="4"
+                        ></textarea>
+                    </div>
+
+
+                    <!-- Pflichtfeld-Legende -->
+                    <p class="pflichtfeld-hinweis">
+                        <span style="color: #e74c3c;">*</span> Pflichtfelder
+                    </p>
+
+
+                    <!-- ABSENDEN-BUTTON -->
+                    <button type="submit" class="btn-primaer" id="absenden-btn">
+                        Abgabe einreichen
+                    </button>
+
+                    <!-- Ladeanzeige während des Uploads -->
+                    <p class="laden-anzeige" id="laden-anzeige" aria-live="polite">
+                        ⏳ Wird gesendet, bitte warten …
+                    </p>
+
+                </form>
+
+            </div><!-- Ende .formular-box -->
+        </div>
+    </main>
+
+
+    <!-- ========================================================
+         FOOTER
+         ======================================================== -->
+    <footer>
+        <div class="container footer-inner">
+            <p>© <span id="footer-jahr">2025</span> Jan Herrmann &nbsp;·&nbsp; Oberschule Spelle</p>
+            <nav class="footer-links" aria-label="Rechtliche Links">
+                <a href="index.html#impressum">Impressum</a>
+                <a href="index.html#datenschutz">Datenschutz</a>
+            </nav>
+        </div>
+    </footer>
+
+
+    <!-- JavaScript (Formular-Validierung & Formspree-Submit) -->
+    <script src="js/main.js"></script>
+
+</body>
+</html>

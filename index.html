@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Beschreibung für Suchmaschinen -->
+    <meta name="description" content="Willkommen auf der Homepage von Jan Herrmann, Lehrer an der Oberschule Spelle. Fächer: Deutsch, Geschichte, Wirtschaft/Politik, Informatik.">
+    <title>Jan Herrmann – Lehrer | Oberschule Spelle</title>
+
+    <!-- Google Fonts: Inter (moderne, gut lesbare Schrift) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Eigenes Stylesheet -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ========================================================
+         NAVIGATION
+         Bleibt beim Scrollen oben (sticky). Auf dem Handy wird
+         ein Hamburger-Button eingeblendet.
+         ======================================================== -->
+    <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+        <div class="container navbar-inner">
+
+            <!-- Logo / Name (Link zur Startseite) -->
+            <a href="index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
+
+            <!-- Hamburger-Button – nur auf kleinen Bildschirmen sichtbar -->
+            <button
+                class="hamburger"
+                id="hamburger"
+                aria-label="Menü öffnen"
+                aria-expanded="false"
+                aria-controls="navbar-links"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <!-- Navigationslinks – Anker-Links zu den Sektionen der Seite -->
+            <ul class="navbar-links" id="navbar-links">
+                <li><a href="#startseite" class="aktiv">Startseite</a></li>
+                <li><a href="#faecher">Fächer</a></li>
+                <li><a href="#materialien">Materialien</a></li>
+                <li><a href="#kontakt">Kontakt</a></li>
+            </ul>
+
+        </div>
+    </nav>
+
+
+    <!-- ========================================================
+         HERO-BEREICH (Willkommen)
+         ======================================================== -->
+    <section id="startseite" class="hero">
+        <div class="hero-inhalt">
+
+            <!-- Profilbild-Platzhalter
+                 Um ein echtes Foto einzufügen:
+                 <img src="img/foto.jpg" alt="Jan Herrmann" class="hero-avatar">
+                 und die CSS-Klasse .hero-avatar entsprechend anpassen. -->
+            <div class="hero-avatar" aria-hidden="true">👨‍🏫</div>
+
+            <h1>Jan Herrmann</h1>
+            <p class="hero-schule">Oberschule Spelle &nbsp;·&nbsp; Niedersachsen</p>
+
+            <p class="hero-text">
+                Herzlich willkommen auf meiner Lehrerhomepage!<br>
+                Hier finden Schülerinnen, Schüler und Eltern wichtige Informationen
+                zu meinen Unterrichtsfächern, Lernmaterialien und Kontaktmöglichkeiten.
+            </p>
+
+            <!-- Fächer-Badges (kleine Kennzeichnungen) -->
+            <div class="hero-faecher" role="list" aria-label="Unterrichtsfächer">
+                <span class="fach-badge" role="listitem">📖 Deutsch</span>
+                <span class="fach-badge" role="listitem">🏛️ Geschichte</span>
+                <span class="fach-badge" role="listitem">🌍 Wirtschaft/Politik</span>
+                <span class="fach-badge" role="listitem">💻 Informatik</span>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========================================================
+         FÄCHER
+         ======================================================== -->
+    <section id="faecher">
+        <div class="container">
+
+            <h2 class="section-titel">Meine Fächer</h2>
+            <p class="section-untertitel">Ich unterrichte folgende Fächer an der Oberschule Spelle:</p>
+
+            <div class="faecher-grid">
+
+                <!-- Fach: Deutsch -->
+                <div class="fach-karte">
+                    <div class="fach-icon">📖</div>
+                    <h3>Deutsch</h3>
+                    <p>
+                        Lesen, Schreiben, Sprache verstehen und anwenden –
+                        Deutsch ist das Fundament aller Fächer und eine Schlüsselkompetenz
+                        für das gesamte Leben.
+                    </p>
+                </div>
+
+                <!-- Fach: Geschichte -->
+                <div class="fach-karte">
+                    <div class="fach-icon">🏛️</div>
+                    <h3>Geschichte</h3>
+                    <p>
+                        Wer die Vergangenheit versteht, begreift die Gegenwart.
+                        Wir erkunden gemeinsam wichtige Epochen, Ereignisse und
+                        ihre Auswirkungen bis heute.
+                    </p>
+                </div>
+
+                <!-- Fach: Wirtschaft/Politik -->
+                <div class="fach-karte">
+                    <div class="fach-icon">🌍</div>
+                    <h3>Wirtschaft/Politik</h3>
+                    <p>
+                        Demokratie, wirtschaftliche Zusammenhänge und politische
+                        Entscheidungen – wir analysieren aktuelle Themen und
+                        lernen, die Gesellschaft zu verstehen.
+                    </p>
+                </div>
+
+                <!-- Fach: Informatik -->
+                <div class="fach-karte">
+                    <div class="fach-icon">💻</div>
+                    <h3>Informatik</h3>
+                    <p>
+                        Von Algorithmen bis zur eigenen Anwendung: Wir lernen,
+                        wie Computer funktionieren und wie man sie kreativ und
+                        sinnvoll nutzt.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========================================================
+         MATERIALIEN
+         Hier können Links zu Lernmaterialien eingetragen werden.
+         Einfach die href="#" durch echte URLs ersetzen.
+         ======================================================== -->
+    <section id="materialien">
+        <div class="container">
+
+            <h2 class="section-titel">Materialien</h2>
+            <p class="section-untertitel">Hier findet ihr Unterrichtsmaterialien, Lernhilfen und nützliche Links.</p>
+
+            <!-- Hinweis-Box – Text kann beliebig angepasst werden -->
+            <div class="hinweis-box">
+                💡 <strong>Hinweis:</strong> Die Materialien werden regelmäßig aktualisiert. Schaut gerne öfter vorbei!
+            </div>
+
+            <div class="materialien-grid">
+
+                <!-- ---- Jede Karte kann angepasst werden ----
+                     icon:  beliebiges Emoji
+                     h4:    Titel des Materials
+                     p:     kurze Beschreibung
+                     href:  Link zur Datei oder Webseite        -->
+
+                <div class="material-karte">
+                    <span class="material-icon">📄</span>
+                    <div class="material-info">
+                        <h4>Deutsch – Erörterung (Klasse 9)</h4>
+                        <p>Übungsblätter und Beispieltexte zum Aufbau einer Erörterung</p>
+                        <a href="#" class="material-link">→ Material öffnen</a>
+                    </div>
+                </div>
+
+                <div class="material-karte">
+                    <span class="material-icon">📜</span>
+                    <div class="material-info">
+                        <h4>Geschichte – Weimarer Republik</h4>
+                        <p>Zeitstrahl, Arbeitsblätter und Quellen zur Epoche</p>
+                        <a href="#" class="material-link">→ Material öffnen</a>
+                    </div>
+                </div>
+
+                <div class="material-karte">
+                    <span class="material-icon">🗳️</span>
+                    <div class="material-info">
+                        <h4>WiPo – Bundestagswahl</h4>
+                        <p>Infomaterial und Aufgaben zur Wahlanalyse</p>
+                        <a href="#" class="material-link">→ Material öffnen</a>
+                    </div>
+                </div>
+
+                <div class="material-karte">
+                    <span class="material-icon">🖥️</span>
+                    <div class="material-info">
+                        <h4>Informatik – Scratch-Projekte</h4>
+                        <p>Beispielprojekte und Aufgabenstellungen für Einsteiger</p>
+                        <a href="#" class="material-link">→ Material öffnen</a>
+                    </div>
+                </div>
+
+                <div class="material-karte">
+                    <span class="material-icon">📚</span>
+                    <div class="material-info">
+                        <h4>Lektüreliste Deutsch</h4>
+                        <p>Empfohlene Bücher und Pflichtlektüren für alle Jahrgänge</p>
+                        <a href="#" class="material-link">→ Liste ansehen</a>
+                    </div>
+                </div>
+
+                <div class="material-karte">
+                    <span class="material-icon">🔗</span>
+                    <div class="material-info">
+                        <h4>Nützliche Links</h4>
+                        <p>Lernplattformen, Nachschlagewerke und Online-Tools</p>
+                        <a href="#" class="material-link">→ Links öffnen</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========================================================
+         KONTAKT
+         ======================================================== -->
+    <section id="kontakt">
+        <div class="container">
+
+            <h2 class="section-titel">Kontakt</h2>
+            <p class="section-untertitel">Ihr habt Fragen oder möchtet einen Termin vereinbaren? So erreicht ihr mich:</p>
+
+            <div class="kontakt-grid">
+
+                <div class="kontakt-karte">
+                    <div class="kontakt-icon">🏫</div>
+                    <h3>Schule</h3>
+                    <p>Oberschule Spelle<br>Niedersachsen</p>
+                </div>
+
+                <div class="kontakt-karte">
+                    <div class="kontakt-icon">✉️</div>
+                    <h3>E-Mail</h3>
+                    <!-- Hier eure Schul-E-Mail-Adresse eintragen:
+                         <a href="mailto:j.herrmann@schule.de">j.herrmann@schule.de</a> -->
+                    <p>Über das Sekretariat oder die offizielle Schul-E-Mail-Adresse erreichbar.</p>
+                </div>
+
+                <div class="kontakt-karte">
+                    <div class="kontakt-icon">⏰</div>
+                    <h3>Sprechzeiten</h3>
+                    <p>Nach Absprache oder direkt nach dem Unterricht – einfach ansprechen!</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ========================================================
+         FOOTER
+         ======================================================== -->
+    <footer>
+        <div class="container footer-inner">
+            <p>© <span id="footer-jahr">2025</span> Jan Herrmann &nbsp;·&nbsp; Oberschule Spelle</p>
+            <nav class="footer-links" aria-label="Rechtliche Links">
+                <!-- Impressum und Datenschutz: hier eigene Seiten verlinken oder
+                     die Angaben direkt als Text in den Footer schreiben. -->
+                <a href="#impressum">Impressum</a>
+                <a href="#datenschutz">Datenschutz</a>
+            </nav>
+        </div>
+    </footer>
+
+
+    <!-- JavaScript (Menü, Scroll-Effekte) -->
+    <script src="js/main.js"></script>
+
+</body>
+</html>
