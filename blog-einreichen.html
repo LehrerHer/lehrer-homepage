@@ -83,13 +83,8 @@
                      -------------------------------------------------- -->
                 <form
                     id="blog-formular"
-                    action="https://formspree.io/f/YOUR_FORM_ID"
-                    method="POST"
-                    enctype="multipart/form-data"
                     novalidate
                 >
-                    <input type="hidden" name="_subject" value="Neuer Blog-Beitrag eingereicht">
-                    <input type="hidden" name="_next" value="false">
 
                     <h2 class="formular-titel">Beitrag einreichen</h2>
 
@@ -225,9 +220,16 @@
                         Beitrag einreichen
                     </button>
 
-                    <p class="laden-anzeige" id="laden-anzeige" aria-live="polite">
-                        ⏳ Wird gesendet, bitte warten …
+                    <p class="laden-anzeige" id="laden-anzeige" aria-live="polite" style="display:none;">
+                        ⏳ Wird hochgeladen …
                     </p>
+
+                    <!-- Fortschrittsbalken -->
+                    <div id="upload-fortschritt" style="display:none; margin-top:12px;">
+                        <div style="background:var(--farbe-rahmen);border-radius:4px;height:6px;overflow:hidden;">
+                            <div class="fortschritt-balken" style="height:100%;width:0%;background:var(--farbe-primaer-hell);transition:width 0.4s ease;border-radius:4px;"></div>
+                        </div>
+                    </div>
 
                 </form>
 
@@ -256,6 +258,7 @@
     </footer>
 
 
+    <script src="js/supabase-config.js"></script>
     <script src="js/main.js"></script>
     <script src="js/blog-einreichen.js"></script>
 

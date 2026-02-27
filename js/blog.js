@@ -2,8 +2,8 @@
    BLOG – Rendering und Interaktion
    Jan Herrmann · Oberschule Spelle
 
-   Dieses Skript liest das Array BLOG_BEITRAEGE aus blog-daten.js
-   und rendert die Beitragskarten ins DOM.
+   Lädt Beiträge aus Supabase (wenn konfiguriert) oder zeigt
+   die Beispieldaten aus blog-daten.js (Fallback).
    ============================================================ */
 
 (function () {
@@ -11,7 +11,6 @@
 
     /* ---- Hilfsfunktionen ---- */
 
-    /** Fach-CSS-Klasse ermitteln */
     function fachKlasse(fach) {
         const map = {
             'Deutsch':    'fach-deutsch',
@@ -22,7 +21,6 @@
         return map[fach] || 'fach-sonstige';
     }
 
-    /** Dateityp-Icon und -Label ermitteln */
     function dateiTypInfo(typ) {
         const map = {
             'pdf':      { icon: '📄', label: 'PDF-Dokument' },
@@ -33,22 +31,16 @@
         return map[typ] || map['sonstige'];
     }
 
-    /** Datum in deutsches Format umwandeln */
     function datumFormatieren(isoString) {
         if (!isoString) return '';
         try {
-            const d = new Date(isoString + 'T00:00:00');
+            const d = new Date(isoString);
             return d.toLocaleDateString('de-DE', {
-                day:   '2-digit',
-                month: 'long',
-                year:  'numeric'
+                day: '2-digit', month: 'long', year: 'numeric'
             });
-        } catch (_) {
-            return isoString;
-        }
+        } catch (_) { return isoString; }
     }
 
-    /** HTML-Sonderzeichen escapen (XSS-Schutz) */
     function escape(str) {
         if (!str) return '';
         return String(str)
@@ -59,44 +51,81 @@
             .replace(/'/g, '&#39;');
     }
 
+    /* ---- Beiträge von Supabase laden ---- */
+
+    async function beitraegeLaden() {
+        /* Wenn Supabase konfiguriert → live Daten laden */
+        if (typeof SUPABASE_KONFIGURIERT !== 'undefined' && SUPABASE_KONFIGURIERT) {
+            const antwort = await fetch(
+                `${SUPABASE_URL}/rest/v1/blog_beitraege?select=*&order=datum.desc`,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${SUPABASE_KEY}`,
+                        'apikey':        SUPABASE_KEY
+                    }
+                }
+            );
+
+            if (!antwort.ok) {
+                throw new Error(`Supabase: ${antwort.status}`);
+            }
+
+            const daten = await antwort.json();
+
+            /* Supabase-Spalten → internes Format */
+            return daten.map(function (b) {
+                const istBild = b.datei_typ === 'bild';
+                return {
+                    id:           b.id,
+                    titel:        b.titel,
+                    autor:        b.autor,
+                    klasse:       b.klasse,
+                    fach:         b.fach,
+                    datum:        b.datum ? b.datum.slice(0, 10) : '',
+                    beschreibung: b.beschreibung || '',
+                    datei:        b.datei_url || '',
+                    dateiTyp:     b.datei_typ || 'sonstige',
+                    vorschaubild: istBild ? b.datei_url : null,
+                    textinhalt:   null
+                };
+            });
+        }
+
+        /* Fallback: statische Beispieldaten aus blog-daten.js */
+        if (typeof BLOG_BEITRAEGE !== 'undefined') {
+            return BLOG_BEITRAEGE.slice().sort(function (a, b) {
+                return new Date(b.datum) - new Date(a.datum);
+            });
+        }
+
+        return [];
+    }
+
     /* ---- Karte erstellen ---- */
 
     function karteErstellen(beitrag) {
-        const artikel = document.createElement('article');
+        const artikel  = document.createElement('article');
         artikel.className = 'blog-karte';
         artikel.setAttribute('role', 'listitem');
-        artikel.dataset.fach   = beitrag.fach || '';
-        artikel.dataset.klasse = beitrag.klasse || '';
+        artikel.dataset.fach   = beitrag.fach   || '';
+        artikel.dataset.klasse = beitrag.klasse  || '';
         artikel.dataset.typ    = beitrag.dateiTyp || '';
 
         const typInfo = dateiTypInfo(beitrag.dateiTyp);
 
-        /* Vorschaubereich */
-        let vorschauHTML = '';
-        if (beitrag.dateiTyp === 'bild' && beitrag.vorschaubild) {
-            vorschauHTML = `
-                <img
-                    class="blog-karte-vorschau"
+        const vorschauHTML = (beitrag.dateiTyp === 'bild' && beitrag.vorschaubild)
+            ? `<img class="blog-karte-vorschau"
                     src="${escape(beitrag.vorschaubild)}"
                     alt="Vorschau: ${escape(beitrag.titel)}"
-                    loading="lazy"
-                >`;
-        } else {
-            vorschauHTML = `
-                <div class="blog-karte-vorschau-placeholder" aria-hidden="true">
+                    loading="lazy">`
+            : `<div class="blog-karte-vorschau-placeholder" aria-hidden="true">
                     ${typInfo.icon}
-                </div>`;
-        }
+               </div>`;
 
-        /* Aktion-Button-Text */
-        let btnLabel = 'Beitrag ansehen';
-        if (beitrag.dateiTyp === 'pdf' && beitrag.datei) {
-            btnLabel = 'PDF öffnen →';
-        } else if (beitrag.dateiTyp === 'bild') {
-            btnLabel = 'Bild ansehen →';
-        } else if (beitrag.dateiTyp === 'text') {
-            btnLabel = 'Text lesen →';
-        }
+        let btnLabel = 'Beitrag ansehen →';
+        if (beitrag.dateiTyp === 'pdf'  && beitrag.datei) btnLabel = 'PDF öffnen →';
+        if (beitrag.dateiTyp === 'bild')                  btnLabel = 'Bild ansehen →';
+        if (beitrag.dateiTyp === 'text')                  btnLabel = 'Text lesen →';
 
         artikel.innerHTML = `
             ${vorschauHTML}
@@ -110,28 +139,21 @@
                 </div>
                 <p class="blog-karte-beschreibung">${escape(beitrag.beschreibung)}</p>
                 <div class="blog-karte-footer">
-                    <span class="blog-karte-typ">
-                        ${typInfo.icon} ${typInfo.label}
-                    </span>
-                    <button
-                        class="blog-karte-btn"
-                        aria-label="${btnLabel}: ${escape(beitrag.titel)}"
-                        data-id="${beitrag.id}"
-                    >${btnLabel}</button>
+                    <span class="blog-karte-typ">${typInfo.icon} ${typInfo.label}</span>
+                    <button class="blog-karte-btn" data-id="${beitrag.id}"
+                            aria-label="${escape(btnLabel)}: ${escape(beitrag.titel)}">
+                        ${btnLabel}
+                    </button>
                 </div>
-            </div>
-        `;
+            </div>`;
 
-        /* Klick auf Karte oder Button öffnet die Detailansicht */
-        const btn = artikel.querySelector('.blog-karte-btn');
-        btn.addEventListener('click', function () {
-            detailOeffnen(beitrag);
-        });
+        artikel.querySelector('.blog-karte-btn')
+               .addEventListener('click', function () { detailOeffnen(beitrag); });
 
         return artikel;
     }
 
-    /* ---- Lightbox / Detailansicht ---- */
+    /* ---- Lightbox ---- */
 
     const lightbox         = document.getElementById('lightbox');
     const lightboxInhalt   = document.getElementById('lightbox-inhalt');
@@ -141,69 +163,54 @@
         if (!lightbox || !lightboxInhalt) return;
 
         const metaText = `${escape(beitrag.autor)} · Klasse ${escape(beitrag.klasse)} · ${datumFormatieren(beitrag.datum)}`;
+        const badge    = `<span class="blog-fach-badge ${fachKlasse(beitrag.fach)}">${escape(beitrag.fach)}</span>`;
 
         if (beitrag.dateiTyp === 'text' && beitrag.textinhalt) {
-            /* Textbeitrag direkt anzeigen */
             lightboxInhalt.innerHTML = `
                 <div class="lightbox-text-header">
-                    <span class="blog-fach-badge ${fachKlasse(beitrag.fach)}">${escape(beitrag.fach)}</span>
+                    ${badge}
                     <h2>${escape(beitrag.titel)}</h2>
                     <p class="lightbox-meta">${metaText}</p>
                 </div>
-                <div class="lightbox-textinhalt">${escape(beitrag.textinhalt)}</div>
-            `;
+                <div class="lightbox-textinhalt">${escape(beitrag.textinhalt)}</div>`;
+
         } else if (beitrag.dateiTyp === 'bild' && beitrag.datei) {
-            /* Bild groß anzeigen */
             lightboxInhalt.innerHTML = `
                 <div class="lightbox-bild-header">
-                    <span class="blog-fach-badge ${fachKlasse(beitrag.fach)}">${escape(beitrag.fach)}</span>
+                    ${badge}
                     <h2>${escape(beitrag.titel)}</h2>
                     <p class="lightbox-meta">${metaText}</p>
-                    ${beitrag.beschreibung ? `<p style="margin-top:8px;font-size:0.93rem;color:var(--farbe-text-hell);">${escape(beitrag.beschreibung)}</p>` : ''}
+                    ${beitrag.beschreibung ? `<p style="margin-top:8px;font-size:.93rem;color:var(--farbe-text-hell)">${escape(beitrag.beschreibung)}</p>` : ''}
                 </div>
-                <img
-                    class="lightbox-bild"
-                    src="${escape(beitrag.datei)}"
-                    alt="${escape(beitrag.titel)}"
-                >
+                <img class="lightbox-bild" src="${escape(beitrag.datei)}" alt="${escape(beitrag.titel)}">
                 <br>
-                <a href="${escape(beitrag.datei)}" download class="lightbox-download">
-                    ⬇ Bild herunterladen
-                </a>
-            `;
+                <a href="${escape(beitrag.datei)}" download class="lightbox-download">⬇ Bild herunterladen</a>`;
+
         } else if (beitrag.datei) {
-            /* PDF oder sonstige Datei – Link zum Öffnen/Herunterladen */
             lightboxInhalt.innerHTML = `
                 <div class="lightbox-text-header">
-                    <span class="blog-fach-badge ${fachKlasse(beitrag.fach)}">${escape(beitrag.fach)}</span>
+                    ${badge}
                     <h2>${escape(beitrag.titel)}</h2>
                     <p class="lightbox-meta">${metaText}</p>
-                    ${beitrag.beschreibung ? `<p style="margin-top:12px;font-size:0.95rem;line-height:1.7;">${escape(beitrag.beschreibung)}</p>` : ''}
+                    ${beitrag.beschreibung ? `<p style="margin-top:12px;font-size:.95rem;line-height:1.7">${escape(beitrag.beschreibung)}</p>` : ''}
                 </div>
-                <a
-                    href="${escape(beitrag.datei)}"
-                    target="_blank"
-                    rel="noopener"
-                    class="lightbox-download"
-                >
+                <a href="${escape(beitrag.datei)}" target="_blank" rel="noopener" class="lightbox-download">
                     📄 Datei öffnen / herunterladen
-                </a>
-            `;
+                </a>`;
+
         } else {
-            /* Kein Anhang – nur Text */
             lightboxInhalt.innerHTML = `
                 <div class="lightbox-text-header">
-                    <span class="blog-fach-badge ${fachKlasse(beitrag.fach)}">${escape(beitrag.fach)}</span>
+                    ${badge}
                     <h2>${escape(beitrag.titel)}</h2>
                     <p class="lightbox-meta">${metaText}</p>
                 </div>
-                <p style="font-size:0.97rem;line-height:1.7;">${escape(beitrag.beschreibung)}</p>
-            `;
+                <p style="font-size:.97rem;line-height:1.7">${escape(beitrag.beschreibung)}</p>`;
         }
 
         lightbox.hidden = false;
         document.body.style.overflow = 'hidden';
-        lightboxSchliess.focus();
+        lightboxSchliess && lightboxSchliess.focus();
     }
 
     function detailSchliessen() {
@@ -212,115 +219,91 @@
         document.body.style.overflow = '';
     }
 
-    if (lightboxSchliess) {
-        lightboxSchliess.addEventListener('click', detailSchliessen);
-    }
-
-    if (lightbox) {
-        lightbox.addEventListener('click', function (e) {
-            if (e.target === lightbox) {
-                detailSchliessen();
-            }
-        });
-
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && !lightbox.hidden) {
-                detailSchliessen();
-            }
-        });
-    }
+    lightboxSchliess && lightboxSchliess.addEventListener('click', detailSchliessen);
+    lightbox && lightbox.addEventListener('click', function (e) {
+        if (e.target === lightbox) detailSchliessen();
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && lightbox && !lightbox.hidden) detailSchliessen();
+    });
 
     /* ---- Filter-Logik ---- */
 
-    const filterFach   = document.getElementById('filter-fach');
-    const filterKlasse = document.getElementById('filter-klasse');
-    const filterTyp    = document.getElementById('filter-typ');
+    const filterFach    = document.getElementById('filter-fach');
+    const filterKlasse  = document.getElementById('filter-klasse');
+    const filterTyp     = document.getElementById('filter-typ');
     const filterZurueck = document.getElementById('filter-zurueck');
 
     function filterAnwenden() {
-        if (!filterFach || !filterKlasse || !filterTyp) return;
+        const gewFach   = filterFach   ? filterFach.value   : '';
+        const gewKlasse = filterKlasse ? filterKlasse.value : '';
+        const gewTyp    = filterTyp    ? filterTyp.value    : '';
 
-        const gewFach   = filterFach.value;
-        const gewKlasse = filterKlasse.value;
-        const gewTyp    = filterTyp.value;
-
-        /* Zurücksetzen-Button einblenden wenn Filter aktiv */
-        const filterAktiv = gewFach || gewKlasse || gewTyp;
-        if (filterZurueck) {
-            filterZurueck.classList.toggle('sichtbar', !!filterAktiv);
-        }
+        filterZurueck && filterZurueck.classList.toggle('sichtbar', !!(gewFach || gewKlasse || gewTyp));
 
         let sichtbar = 0;
-        const karten = document.querySelectorAll('.blog-karte');
-
-        karten.forEach(function (karte) {
+        document.querySelectorAll('.blog-karte').forEach(function (k) {
             const passt =
-                (!gewFach   || karte.dataset.fach   === gewFach)   &&
-                (!gewKlasse || karte.dataset.klasse === gewKlasse) &&
-                (!gewTyp    || karte.dataset.typ    === gewTyp);
-
-            karte.style.display = passt ? '' : 'none';
+                (!gewFach   || k.dataset.fach   === gewFach)   &&
+                (!gewKlasse || k.dataset.klasse === gewKlasse) &&
+                (!gewTyp    || k.dataset.typ    === gewTyp);
+            k.style.display = passt ? '' : 'none';
             if (passt) sichtbar++;
         });
 
-        /* Leer-Zustand */
-        const leerMsg = document.getElementById('blog-leer');
-        if (leerMsg) {
-            leerMsg.hidden = sichtbar > 0;
-        }
-
-        /* Anzahl aktualisieren */
+        const leerMsg  = document.getElementById('blog-leer');
         const anzahlEl = document.getElementById('blog-anzahl');
-        if (anzahlEl) {
-            if (sichtbar === 0) {
-                anzahlEl.textContent = '';
-            } else {
-                anzahlEl.textContent = sichtbar === 1
-                    ? '1 Beitrag gefunden'
-                    : sichtbar + ' Beiträge gefunden';
-            }
-        }
+        if (leerMsg)  leerMsg.hidden = sichtbar > 0;
+        if (anzahlEl) anzahlEl.textContent = sichtbar === 0 ? ''
+            : sichtbar === 1 ? '1 Beitrag' : sichtbar + ' Beiträge';
     }
 
-    if (filterFach)    filterFach.addEventListener('change', filterAnwenden);
-    if (filterKlasse)  filterKlasse.addEventListener('change', filterAnwenden);
-    if (filterTyp)     filterTyp.addEventListener('change', filterAnwenden);
+    filterFach    && filterFach.addEventListener('change', filterAnwenden);
+    filterKlasse  && filterKlasse.addEventListener('change', filterAnwenden);
+    filterTyp     && filterTyp.addEventListener('change', filterAnwenden);
+    filterZurueck && filterZurueck.addEventListener('click', function () {
+        if (filterFach)   filterFach.value   = '';
+        if (filterKlasse) filterKlasse.value = '';
+        if (filterTyp)    filterTyp.value    = '';
+        filterAnwenden();
+    });
 
-    if (filterZurueck) {
-        filterZurueck.addEventListener('click', function () {
-            if (filterFach)   filterFach.value   = '';
-            if (filterKlasse) filterKlasse.value = '';
-            if (filterTyp)    filterTyp.value    = '';
-            filterAnwenden();
-        });
-    }
+    /* ---- Hauptfunktion: Beiträge laden und rendern ---- */
 
-    /* ---- Beiträge rendern ---- */
-
-    function blogRendern() {
-        const grid = document.getElementById('blog-grid');
+    async function blogRendern() {
+        const grid     = document.getElementById('blog-grid');
+        const leerMsg  = document.getElementById('blog-leer');
+        const anzahlEl = document.getElementById('blog-anzahl');
         if (!grid) return;
 
-        /* Datenquelle prüfen */
-        if (typeof BLOG_BEITRAEGE === 'undefined' || BLOG_BEITRAEGE.length === 0) {
-            const leerMsg = document.getElementById('blog-leer');
-            if (leerMsg) leerMsg.hidden = false;
-            const anzahlEl = document.getElementById('blog-anzahl');
-            if (anzahlEl) anzahlEl.textContent = 'Noch keine Beiträge vorhanden.';
+        /* Ladezustand anzeigen */
+        if (anzahlEl) anzahlEl.textContent = 'Beiträge werden geladen …';
+
+        let beitraege = [];
+        try {
+            beitraege = await beitraegeLaden();
+        } catch (fehler) {
+            console.error('Blog-Ladefehler:', fehler);
+            if (anzahlEl) anzahlEl.textContent = 'Beiträge konnten nicht geladen werden.';
             return;
         }
 
-        /* Neueste zuerst */
-        const sortiert = BLOG_BEITRAEGE.slice().sort(function (a, b) {
-            return new Date(b.datum) - new Date(a.datum);
-        });
+        if (beitraege.length === 0) {
+            if (leerMsg)  leerMsg.hidden  = false;
+            if (anzahlEl) anzahlEl.textContent = '';
+            return;
+        }
 
-        sortiert.forEach(function (beitrag) {
-            grid.appendChild(karteErstellen(beitrag));
-        });
-
-        /* Anfangszustand anzeigen */
+        beitraege.forEach(function (b) { grid.appendChild(karteErstellen(b)); });
         filterAnwenden();
+
+        /* Hinweis wenn Beispieldaten angezeigt werden */
+        if (typeof SUPABASE_KONFIGURIERT !== 'undefined' && !SUPABASE_KONFIGURIERT) {
+            const hinweis = document.createElement('p');
+            hinweis.style.cssText = 'text-align:center;font-size:.82rem;color:var(--farbe-text-hell);margin-top:32px;';
+            hinweis.textContent = '⚙️ Beispieldaten – Supabase noch nicht eingerichtet (js/supabase-config.js).';
+            grid.insertAdjacentElement('afterend', hinweis);
+        }
     }
 
     blogRendern();
