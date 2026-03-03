@@ -110,45 +110,57 @@
                     </div>
 
 
-                    <!-- 2. KLASSE & FACH -->
+                    <!-- 2. JAHRGANG & KLASSE -->
                     <div class="formular-zeile">
                         <div class="formular-gruppe">
-                            <label for="klasse">
-                                Klasse <span class="pflichtfeld" aria-label="Pflichtfeld">*</span>
+                            <label for="jahrgang">
+                                Jahrgang <span class="pflichtfeld" aria-label="Pflichtfeld">*</span>
                             </label>
-                            <select id="klasse" name="klasse" required>
+                            <select id="jahrgang" name="jahrgang" required>
                                 <option value="" disabled selected>Bitte wählen …</option>
-                                <option value="5a">5a</option>
-                                <option value="5b">5b</option>
-                                <option value="6a">6a</option>
-                                <option value="6b">6b</option>
-                                <option value="7a">7a</option>
-                                <option value="7b">7b</option>
-                                <option value="8a">8a</option>
-                                <option value="8b">8b</option>
-                                <option value="9a">9a</option>
-                                <option value="9b">9b</option>
-                                <option value="10a">10a</option>
-                                <option value="10b">10b</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
                             </select>
                         </div>
 
                         <div class="formular-gruppe">
-                            <label for="fach">
-                                Fach <span class="pflichtfeld" aria-label="Pflichtfeld">*</span>
+                            <label for="klasse-buchstabe">
+                                Klasse <span class="pflichtfeld" aria-label="Pflichtfeld">*</span>
                             </label>
-                            <select id="fach" name="fach" required>
+                            <select id="klasse-buchstabe" name="klasse-buchstabe" required>
                                 <option value="" disabled selected>Bitte wählen …</option>
-                                <option value="Deutsch">Deutsch</option>
-                                <option value="Geschichte">Geschichte</option>
-                                <option value="WiPo">WiPo (Wirtschaft/Politik)</option>
-                                <option value="Informatik">Informatik</option>
+                                <option value="a">a</option>
+                                <option value="b">b</option>
+                                <option value="c">c</option>
+                                <option value="d">d</option>
+                                <option value="e">e</option>
+                                <option value="f">f</option>
                             </select>
                         </div>
                     </div>
 
+                    <!-- 3. FACH -->
+                    <div class="formular-gruppe">
+                        <label for="fach">
+                            Fach <span class="pflichtfeld" aria-label="Pflichtfeld">*</span>
+                        </label>
+                        <select id="fach" name="fach" required>
+                            <option value="" disabled selected>Bitte wählen …</option>
+                            <option value="Deutsch">Deutsch</option>
+                            <option value="Geschichte">Geschichte</option>
+                            <option value="WiPo">WiPo (Wirtschaft/Politik)</option>
+                            <option value="Informatik">Informatik</option>
+                            <option value="Werte &amp; Normen">Werte &amp; Normen</option>
+                            <option value="AG/Projekte">AG / Projekte</option>
+                        </select>
+                    </div>
 
-                    <!-- 3. TITEL -->
+
+                    <!-- 4. TITEL -->
                     <div class="formular-gruppe">
                         <label for="beitrag-titel">
                             Titel des Beitrags <span class="pflichtfeld" aria-label="Pflichtfeld">*</span>

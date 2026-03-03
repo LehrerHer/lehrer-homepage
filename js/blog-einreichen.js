@@ -53,14 +53,16 @@
         }
 
         /* Felder auslesen */
-        const vorname      = document.getElementById('autor-name').value.trim();
-        const klasse       = document.getElementById('klasse').value;
-        const fach         = document.getElementById('fach').value;
-        const titel        = document.getElementById('beitrag-titel').value.trim();
-        const beschreibung = document.getElementById('beschreibung').value.trim();
+        const vorname          = document.getElementById('autor-name').value.trim();
+        const jahrgang         = document.getElementById('jahrgang').value;
+        const klasseBuchstabe  = document.getElementById('klasse-buchstabe').value;
+        const klasse           = jahrgang + klasseBuchstabe; // z. B. "7c"
+        const fach             = document.getElementById('fach').value;
+        const titel            = document.getElementById('beitrag-titel').value.trim();
+        const beschreibung     = document.getElementById('beschreibung').value.trim();
 
         /* Validierung */
-        if (!vorname || !klasse || !fach || !titel) {
+        if (!vorname || !jahrgang || !klasseBuchstabe || !fach || !titel) {
             alert('Bitte fülle alle Pflichtfelder aus (markiert mit *).');
             return;
         }
