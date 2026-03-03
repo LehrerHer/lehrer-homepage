@@ -285,6 +285,26 @@ section:nth-child(even) {
     font-size: 0.93rem;
     color: var(--farbe-text-hell);
     line-height: 1.65;
+    margin-bottom: 16px;
+}
+
+.fach-karte-link {
+    display: inline-block;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--farbe-primaer-hell);
+    margin-top: auto;
+    transition: color var(--transition);
+}
+
+.fach-karte-link:hover {
+    color: var(--farbe-akzent);
+}
+
+/* Fach-Karte als Flex-Column damit Link unten bleibt */
+.fach-karte {
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -937,11 +957,13 @@ footer {
     letter-spacing: 0.4px;
 }
 
-.fach-deutsch    { background-color: #fde8e8; color: #c0392b; }
-.fach-geschichte { background-color: #fef3e2; color: #d35400; }
-.fach-wipo       { background-color: #e8f5e9; color: #27ae60; }
-.fach-informatik { background-color: #e8f0fe; color: #2d6a9f; }
-.fach-sonstige   { background-color: #f0f0f0; color: #555; }
+.fach-deutsch       { background-color: #fde8e8; color: #c0392b; }
+.fach-geschichte    { background-color: #fef3e2; color: #d35400; }
+.fach-wipo          { background-color: #e8f5e9; color: #27ae60; }
+.fach-informatik    { background-color: #e8f0fe; color: #2d6a9f; }
+.fach-werte-normen  { background-color: #f3e8ff; color: #7c3aed; }
+.fach-ag-projekte   { background-color: #e0f7fa; color: #00838f; }
+.fach-sonstige      { background-color: #f0f0f0; color: #555; }
 
 .blog-karte h3 {
     font-size: 1.05rem;

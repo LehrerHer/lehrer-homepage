@@ -13,10 +13,12 @@
 
     function fachKlasse(fach) {
         const map = {
-            'Deutsch':    'fach-deutsch',
-            'Geschichte': 'fach-geschichte',
-            'WiPo':       'fach-wipo',
-            'Informatik': 'fach-informatik'
+            'Deutsch':        'fach-deutsch',
+            'Geschichte':     'fach-geschichte',
+            'WiPo':           'fach-wipo',
+            'Informatik':     'fach-informatik',
+            'Werte & Normen': 'fach-werte-normen',
+            'AG/Projekte':    'fach-ag-projekte'
         };
         return map[fach] || 'fach-sonstige';
     }
@@ -229,24 +231,31 @@
 
     /* ---- Filter-Logik ---- */
 
-    const filterFach    = document.getElementById('filter-fach');
-    const filterKlasse  = document.getElementById('filter-klasse');
-    const filterTyp     = document.getElementById('filter-typ');
-    const filterZurueck = document.getElementById('filter-zurueck');
+    const filterFach      = document.getElementById('filter-fach');
+    const filterJahrgang  = document.getElementById('filter-jahrgang');
+    const filterKlasse    = document.getElementById('filter-klasse');
+    const filterTyp       = document.getElementById('filter-typ');
+    const filterZurueck   = document.getElementById('filter-zurueck');
 
     function filterAnwenden() {
-        const gewFach   = filterFach   ? filterFach.value   : '';
-        const gewKlasse = filterKlasse ? filterKlasse.value : '';
-        const gewTyp    = filterTyp    ? filterTyp.value    : '';
+        const gewFach     = filterFach     ? filterFach.value     : '';
+        const gewJahrgang = filterJahrgang ? filterJahrgang.value : '';
+        const gewKlasse   = filterKlasse   ? filterKlasse.value   : '';
+        const gewTyp      = filterTyp      ? filterTyp.value      : '';
 
-        filterZurueck && filterZurueck.classList.toggle('sichtbar', !!(gewFach || gewKlasse || gewTyp));
+        const aktiv = !!(gewFach || gewJahrgang || gewKlasse || gewTyp);
+        filterZurueck && filterZurueck.classList.toggle('sichtbar', aktiv);
 
         let sichtbar = 0;
         document.querySelectorAll('.blog-karte').forEach(function (k) {
+            /* k.dataset.klasse enthält kombinierten Wert, z. B. "7c" */
+            const kJahrgang = k.dataset.klasse ? k.dataset.klasse.slice(0, -1) : '';
+            const kBuchstabe = k.dataset.klasse ? k.dataset.klasse.slice(-1)   : '';
             const passt =
-                (!gewFach   || k.dataset.fach   === gewFach)   &&
-                (!gewKlasse || k.dataset.klasse === gewKlasse) &&
-                (!gewTyp    || k.dataset.typ    === gewTyp);
+                (!gewFach     || k.dataset.fach === gewFach)   &&
+                (!gewJahrgang || kJahrgang       === gewJahrgang) &&
+                (!gewKlasse   || kBuchstabe       === gewKlasse) &&
+                (!gewTyp      || k.dataset.typ    === gewTyp);
             k.style.display = passt ? '' : 'none';
             if (passt) sichtbar++;
         });
@@ -258,13 +267,15 @@
             : sichtbar === 1 ? '1 Beitrag' : sichtbar + ' Beiträge';
     }
 
-    filterFach    && filterFach.addEventListener('change', filterAnwenden);
-    filterKlasse  && filterKlasse.addEventListener('change', filterAnwenden);
-    filterTyp     && filterTyp.addEventListener('change', filterAnwenden);
-    filterZurueck && filterZurueck.addEventListener('click', function () {
-        if (filterFach)   filterFach.value   = '';
-        if (filterKlasse) filterKlasse.value = '';
-        if (filterTyp)    filterTyp.value    = '';
+    filterFach     && filterFach.addEventListener('change', filterAnwenden);
+    filterJahrgang && filterJahrgang.addEventListener('change', filterAnwenden);
+    filterKlasse   && filterKlasse.addEventListener('change', filterAnwenden);
+    filterTyp      && filterTyp.addEventListener('change', filterAnwenden);
+    filterZurueck  && filterZurueck.addEventListener('click', function () {
+        if (filterFach)     filterFach.value     = '';
+        if (filterJahrgang) filterJahrgang.value = '';
+        if (filterKlasse)   filterKlasse.value   = '';
+        if (filterTyp)      filterTyp.value      = '';
         filterAnwenden();
     });
 
