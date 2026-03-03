@@ -67,7 +67,7 @@
 /* ↓↓↓ HIER DEINE ZUGANGSDATEN EINTRAGEN ↓↓↓ */
 
 const SUPABASE_URL = 'https://cwcvqjcdxveuzkzlkvgl.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_i6SQitiNd8AVeBYXoi6UiA_ppmkIKM5';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3Y3ZxamNkeHZldXpremxrdmdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0ODM2MDMsImV4cCI6MjA4ODA1OTYwM30.jeokNmCCLJcmkPUuAGtsRN7YWbnbkwNQ-JmdpusVuPA';
 
 /* ↑↑↑ HIER DEINE ZUGANGSDATEN EINTRAGEN ↑↑↑ */
 
