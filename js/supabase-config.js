@@ -67,8 +67,8 @@
 
 /* ↓↓↓ HIER DEINE ZUGANGSDATEN EINTRAGEN ↓↓↓ */
 
-const SUPABASE_URL = 'https://DEIN-PROJEKT.supabase.co';
-const SUPABASE_KEY = 'DEIN-ANON-KEY';
+const SUPABASE_URL = 'https://cwcvqjcdxveuzkzlkvgl.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_i6SQitiNd8AVeBYXoi6UiA_ppmkIKM5';
 
 /* ↑↑↑ HIER DEINE ZUGANGSDATEN EINTRAGEN ↑↑↑ */
 
