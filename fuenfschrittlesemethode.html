@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Texte verstehen & zusammenfassen</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1a2e;
+    --paper: #faf8f3;
+    --accent: #e8a020;
+    --accent-light: #fef3d0;
+    --muted: #6b6455;
+    --rule: #ddd8cc;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    min-height: 100vh;
+    padding: 48px 24px;
+  }
+
+  .page {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    border-top: 4px solid var(--ink);
+    padding-top: 24px;
+    margin-bottom: 40px;
+  }
+
+  .header h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 2.6rem;
+    font-weight: 900;
+    line-height: 1.15;
+    color: var(--ink);
+  }
+
+  .header p {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 1rem;
+  }
+
+  /* Tipp-Box */
+  .tipp {
+    background: var(--accent-light);
+    border-left: 4px solid var(--accent);
+    padding: 18px 22px;
+    margin-bottom: 40px;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .tipp-label {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+  }
+
+  .tipp p {
+    font-size: 0.97rem;
+    color: var(--ink);
+  }
+
+  .tipp strong {
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  /* Steps */
+  .step {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 0 20px;
+    margin-bottom: 36px;
+    padding-bottom: 36px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .step:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+
+  .step-number {
+    font-family: 'Fraunces', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--rule);
+    line-height: 1;
+    padding-top: 4px;
+    text-align: right;
+  }
+
+  .step-body {}
+
+  .step-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--rule);
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+  }
+
+  .step h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+
+  .step p {
+    font-size: 0.96rem;
+    color: #3a3530;
+    margin-bottom: 8px;
+  }
+
+  .step ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .step ul li {
+    font-size: 0.96rem;
+    color: #3a3530;
+    padding: 4px 0 4px 20px;
+    position: relative;
+  }
+
+  .step ul li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 48px;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <h1>Texte lesen &amp;<br>zusammenfassen</h1>
+    <p>Schritt für Schritt erklärt – einfach und klar</p>
+  </div>
+
+  <div class="tipp">
+    <div class="tipp-label">💡 Tipp</div>
+    <p>
+      <strong>Schlüsselwörter</strong> markieren und den Text in <strong>Sinnabschnitte</strong> einteilen hängt zusammen:
+      Die Schlüsselwörter zeigen dir meistens, wo ein neuer Gedanke anfängt.
+    </p>
+  </div>
+
+  <div class="step">
+    <div class="step-number">1</div>
+    <div class="step-body">
+      <span class="step-tag">Überschriften</span>
+      <h2>Überschriften finden</h2>
+      <p>
+        Gib jedem Abschnitt eine passende Überschrift. Manchmal kannst du dafür Wörter oder Sätze benutzen, die schon im Text stehen.
+      </p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-number">2</div>
+    <div class="step-body">
+      <span class="step-tag">Abschnitte</span>
+      <h2>Abschnitte zusammenfassen</h2>
+      <p>Fasse jeden Abschnitt kurz zusammen. Dafür gibt es zwei Möglichkeiten:</p>
+      <ul>
+        <li>Schreibe für jeden Abschnitt <strong>einen einzigen Satz</strong>.</li>
+        <li>Notiere nur die <strong>wichtigsten Stichwörter</strong> am Rand des Textes. Die unterstrichenen Schlüsselwörter helfen dir dabei.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-number">3</div>
+    <div class="step-body">
+      <span class="step-tag">Exzerpieren</span>
+      <h2>Den Inhalt wiedergeben</h2>
+      <p>
+        Jetzt kannst du den ganzen Text zusammenfassen. Schreibe einen eigenen, kurzen Text und nimm dabei wichtige Zitate mit auf.
+      </p>
+      <p>
+        Dieses Herausschreiben von Gedanken und Ideen nennt man <strong>Exzerpieren</strong>.
+      </p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-number">4</div>
+    <div class="step-body">
+      <span class="step-tag">Tabelle</span>
+      <h2>Eine Tabelle nutzen</h2>
+      <p>
+        Wenn ein Text viele Informationen zu einem Thema enthält, kannst du alles in eine <strong>Tabelle</strong> eintragen.
+        Ordne die wichtigsten Aussagen in Spalten und Zeilen an – das macht es übersichtlicher.
+      </p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Texte verstehen &amp; zusammenfassen</span>
+    <span>Schritt-für-Schritt-Handout</span>
+  </div>
+
+</div>
+</body>
+</html>
