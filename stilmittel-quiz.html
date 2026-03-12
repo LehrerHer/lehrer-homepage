@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Stilmittel-Quiz</title>
+<style>
+:root {
+  --bg: #0f1923;
+  --surface: #16222f;
+  --card: #1c2e3f;
+  --border: #2a3f54;
+  --accent: #e8c468;
+  --accent-light: rgba(232,196,104,0.12);
+  --text: #e8e0d4;
+  --muted: #7a8fa0;
+  --correct: #4caf7d;
+  --wrong: #e05c5c;
+  --correct-bg: rgba(76,175,125,0.15);
+  --wrong-bg: rgba(224,92,92,0.15);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; }
+body { font-family: Georgia, 'Times New Roman', serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+.wrap { max-width: 640px; margin: 0 auto; padding: 0 16px; }
+/* HOME */
+#home { text-align: center; padding: 40px 0 40px; }
+#home .book-icon { font-size: 52px; margin-bottom: 14px; }
+#home h1 { font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 700; color: var(--accent); letter-spacing: -0.02em; line-height: 1.15; font-style: italic; }
+#home .sub { color: var(--muted); font-style: italic; margin-top: 8px; font-size: 0.92rem; }
+.divider { width: 60px; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); margin: 16px auto; }
+/* FILTER */
+.filter-section { margin-bottom: 20px; text-align: left; }
+.filter-title { color: var(--accent); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px; }
+.filter-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.filter-btn { background: var(--surface); border: 1.5px solid var(--border); border-radius: 20px; padding: 6px 14px; font-family: Georgia, serif; font-size: 0.78rem; color: var(--muted); cursor: pointer; transition: all 0.15s; }
+.filter-btn.active { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+/* MODE GRID */
+.mode-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 20px; margin-bottom: 20px; }
+.mode-card { background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; padding: 18px 12px; cursor: pointer; transition: border-color 0.18s, background 0.18s, transform 0.18s; text-align: center; -webkit-user-select: none; user-select: none; }
+.mode-card:hover, .mode-card:active { border-color: var(--accent); background: var(--accent-light); transform: translateY(-2px); }
+.mode-card .icon { font-size: 1.7rem; margin-bottom: 7px; }
+.mode-card h3 { color: var(--accent); font-size: 0.88rem; margin-bottom: 3px; }
+.mode-card p { color: var(--muted); font-size: 0.72rem; font-style: italic; }
+.mode-card.full-width { grid-column: 1 / -1; }
+.hint-box { background: var(--surface); border-radius: 12px; padding: 14px 18px; border: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; font-style: italic; line-height: 1.6; }
+/* QUIZ */
+#quiz { padding-top: 28px; padding-bottom: 40px; }
+.progress-meta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.progress-label { font-size: 0.8rem; color: var(--muted); font-style: italic; }
+.score-row { display: flex; align-items: center; gap: 10px; }
+.score-label { font-size: 1rem; color: var(--accent); }
+/* SOUND TOGGLE */
+.sound-btn { background: var(--surface); border: 1.5px solid var(--border); border-radius: 50%; width: 34px; height: 34px; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; transition: border-color 0.15s, opacity 0.15s; flex-shrink: 0; line-height: 1; padding: 0; }
+.sound-btn:hover { border-color: var(--accent); }
+.sound-btn.muted { opacity: 0.38; }
+.progress-bar { height: 5px; background: var(--surface); border-radius: 3px; overflow: hidden; margin-bottom: 20px; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), #f4a261); border-radius: 3px; transition: width 0.4s ease; }
+.q-card { background: var(--card); border-radius: 16px; padding: 22px 18px 18px; border: 1px solid var(--border); position: relative; overflow: hidden; margin-bottom: 16px; }
+.q-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), #f4a261); }
+.q-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+.q-badge { display: inline-block; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); border: 1px solid var(--accent); border-radius: 4px; padding: 2px 8px; }
+.q-kategorie { display: inline-block; font-size: 0.66rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; padding: 2px 8px; }
+/* BILD */
+.q-bild { font-size: 2.6rem; display: block; text-align: center; margin: 4px 0 14px; line-height: 1; }
+.q-text { font-size: clamp(1.05rem, 3.5vw, 1.32rem); font-weight: 700; line-height: 1.4; color: var(--text); }
+.q-hint { margin-top: 11px; padding: 9px 13px; background: rgba(232,196,104,0.08); border-left: 3px solid var(--accent); border-radius: 0 6px 6px 0; font-size: 0.83rem; color: var(--muted); font-style: italic; }
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.opt-btn { background: var(--surface); border: 2px solid var(--border); border-radius: 12px; padding: 14px 11px; cursor: pointer; font-family: Georgia, serif; font-size: 0.9rem; color: var(--text); text-align: center; line-height: 1.35; min-height: 58px; transition: border-color 0.15s, background 0.15s, color 0.15s; -webkit-user-select: none; user-select: none; }
+.opt-btn:not(.locked):hover, .opt-btn:not(.locked):active { border-color: var(--accent); background: var(--accent-light); }
+.opt-btn.correct { background: var(--correct-bg); border-color: var(--correct); color: var(--correct); }
+.opt-btn.wrong { background: var(--wrong-bg); border-color: var(--wrong); color: var(--wrong); }
+.opt-btn.locked { cursor: default; }
+.feedback-box { margin-top: 16px; padding: 11px 16px; border-radius: 10px; font-style: italic; font-size: 0.92rem; display: none; }
+.feedback-box.correct { background: var(--correct-bg); border: 1px solid var(--correct); color: var(--correct); text-align: left; }
+.feedback-box.wrong { background: var(--wrong-bg); border: 1px solid var(--wrong); color: var(--wrong); text-align: left; }
+.feedback-box .fb-title { font-weight: 700; margin-bottom: 6px; font-size: 0.95rem; }
+.feedback-box .fb-erkl { font-style: normal; font-size: 0.84rem; line-height: 1.5; opacity: 0.9; }
+.next-btn { display: none; margin: 14px auto 0; background: var(--accent); color: #0f1923; border: none; border-radius: 12px; padding: 13px 38px; font-family: Georgia, serif; font-weight: 700; font-size: 1rem; cursor: pointer; }
+.next-btn.show { display: block; }
+/* RESULT */
+#result { text-align: center; padding: 44px 0 40px; }
+#result .trophy { font-size: 60px; margin-bottom: 14px; }
+#result h2 { font-size: 1.9rem; color: var(--accent); font-style: italic; margin-bottom: 8px; }
+#result .score-info { color: var(--muted); font-size: 0.92rem; font-style: italic; margin-bottom: 22px; }
+/* COACHING CARD */
+.coaching-card { background: linear-gradient(135deg, rgba(232,196,104,0.1), rgba(244,162,97,0.07)); border: 1.5px solid var(--accent); border-radius: 14px; padding: 18px 20px; margin-bottom: 20px; text-align: left; }
+.coaching-card .coach-icon { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+.coaching-card p { font-size: 0.9rem; line-height: 1.7; color: var(--text); font-style: italic; }
+.btn-accent { background: transparent; color: var(--accent); border: 1.5px solid var(--accent); border-radius: 10px; padding: 9px 20px; font-family: Georgia, serif; font-weight: 700; font-size: 0.85rem; cursor: pointer; margin-top: 12px; display: none; transition: background 0.15s; }
+.btn-accent:hover { background: var(--accent-light); }
+/* WRONG LIST */
+.wrong-list { background: var(--card); border-radius: 14px; padding: 18px; border: 1px solid var(--border); text-align: left; margin-bottom: 26px; }
+.wrong-list h3 { color: var(--accent); font-size: 0.95rem; margin-bottom: 14px; }
+.wrong-item { padding-bottom: 13px; margin-bottom: 13px; border-bottom: 1px solid var(--border); }
+.wrong-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.wrong-item .sm-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.wrong-item .sm-bild { font-size: 1.4rem; }
+.wrong-item .sm-name { font-weight: 700; color: var(--text); font-size: 0.93rem; }
+.wrong-item .sm-kat { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 2px; }
+.wrong-item .sm-bsp { color: var(--muted); font-style: italic; font-size: 0.83rem; margin-top: 3px; }
+.wrong-item .sm-erkl { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
+.wrong-item .sm-wkng { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
+.wrong-item .sm-chosen { color: var(--wrong); font-size: 0.78rem; margin-top: 4px; }
+.result-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn-primary { background: var(--accent); color: #0f1923; border: none; border-radius: 12px; padding: 13px 30px; font-family: Georgia, serif; font-weight: 700; font-size: 0.97rem; cursor: pointer; }
+.btn-secondary { background: transparent; color: var(--accent); border: 2px solid var(--accent); border-radius: 12px; padding: 13px 30px; font-family: Georgia, serif; font-weight: 700; font-size: 0.97rem; cursor: pointer; }
+.hidden { display: none !important; }
+/* ABORT */
+.abort-btn { background: transparent; border: 1px solid var(--border); border-radius: 8px; color: var(--muted); font-family: Georgia, serif; font-size: 0.72rem; padding: 4px 10px; cursor: pointer; transition: all 0.15s; flex-shrink: 0; }
+.abort-btn:hover { border-color: var(--wrong); color: var(--wrong); }
+.abort-bar { background: var(--card); border: 1.5px solid var(--wrong); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.abort-bar span { color: var(--text); font-size: 0.87rem; font-style: italic; }
+.abort-bar-btns { display: flex; gap: 8px; }
+.abort-bar-btns button { font-family: Georgia, serif; font-size: 0.78rem; padding: 6px 12px; border-radius: 8px; cursor: pointer; }
+.continue-btn { background: transparent; border: 1.5px solid var(--border); color: var(--muted); }
+.quit-btn { background: rgba(224,92,92,0.12); border: 1.5px solid var(--wrong); color: var(--wrong); }
+/* HIGHSCORES HOME BTN */
+.hs-home-btn { background: transparent; border: 1.5px solid var(--border); border-radius: 20px; padding: 7px 18px; font-family: Georgia, serif; font-size: 0.82rem; color: var(--muted); cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 6px; }
+.hs-home-btn:hover { border-color: var(--accent); color: var(--accent); }
+/* HIGHSCORES SCREEN */
+#highscores { padding: 24px 0 40px; }
+.arcade-wrap { background: #050e04; border: 2px solid #2a5020; border-radius: 14px; padding: 22px 18px; position: relative; overflow: hidden; box-shadow: 0 0 24px rgba(0,180,60,0.1), inset 0 0 40px rgba(0,0,0,0.4); }
+.arcade-wrap::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px); pointer-events: none; z-index: 0; }
+.arcade-content { position: relative; z-index: 1; }
+.arcade-title { font-family: 'Courier New', monospace; font-size: clamp(1.1rem, 4.5vw, 1.65rem); color: #f5d040; text-align: center; letter-spacing: 0.18em; text-shadow: 0 0 12px rgba(245,208,64,0.55); margin-bottom: 4px; font-weight: 700; }
+.arcade-sub { font-family: 'Courier New', monospace; color: #4a8a3f; text-align: center; font-size: 0.72rem; letter-spacing: 0.1em; margin-bottom: 18px; }
+.hs-tabs { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-bottom: 16px; }
+.hs-tab { font-family: 'Courier New', monospace; font-size: 0.68rem; padding: 5px 9px; border: 1px solid #2a5020; background: transparent; color: #4a8a3f; cursor: pointer; border-radius: 3px; letter-spacing: 0.04em; transition: all 0.15s; }
+.hs-tab.active { border-color: #f5d040; color: #f5d040; background: rgba(245,208,64,0.07); text-shadow: 0 0 8px rgba(245,208,64,0.45); }
+.hs-table { font-family: 'Courier New', monospace; width: 100%; }
+.hs-row { display: flex; align-items: center; padding: 8px 4px; border-bottom: 1px solid #142010; gap: 6px; }
+.hs-row.header { color: #2a6020; font-size: 0.65rem; letter-spacing: 0.08em; border-bottom: 1px solid #2a5020; padding-bottom: 8px; }
+.hs-rank { width: 26px; text-align: center; flex-shrink: 0; font-size: 0.9rem; }
+.hs-name { flex: 1; font-size: 0.82rem; color: #aae090; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.hs-score { width: 72px; text-align: right; font-size: 0.82rem; color: #f5d040; flex-shrink: 0; }
+.hs-date { width: 66px; text-align: right; font-size: 0.68rem; color: #4a8a3f; flex-shrink: 0; }
+.hs-row.header .hs-rank, .hs-row.header .hs-name, .hs-row.header .hs-score, .hs-row.header .hs-date { color: #2a6020; font-size: 0.65rem; }
+.hs-empty { text-align: center; color: #2a5020; font-size: 0.78rem; padding: 28px 0; letter-spacing: 0.08em; font-family: 'Courier New', monospace; line-height: 1.8; }
+.hs-back-btn { display: block; margin: 20px auto 0; background: transparent; border: 1.5px solid #2a5020; color: #4a8a3f; font-family: 'Courier New', monospace; font-size: 0.82rem; padding: 9px 22px; border-radius: 4px; cursor: pointer; letter-spacing: 0.1em; transition: all 0.15s; }
+.hs-back-btn:hover { border-color: #f5d040; color: #f5d040; }
+/* HS MODAL */
+.hs-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.88); display: flex; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
+.hs-modal-inner { background: #050e04; border: 2px solid #f5d040; border-radius: 14px; padding: 28px 24px; text-align: center; max-width: 310px; width: 100%; box-shadow: 0 0 40px rgba(245,208,64,0.25); position: relative; overflow: hidden; }
+.hs-modal-inner::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.07) 2px, rgba(0,0,0,0.07) 4px); pointer-events: none; }
+.hs-modal-body { position: relative; z-index: 1; }
+@keyframes hsblink { 0%,100%{opacity:1} 50%{opacity:0.15} }
+.hs-modal-stars { font-family: 'Courier New', monospace; font-size: 1.3rem; color: #f5d040; text-shadow: 0 0 12px rgba(245,208,64,0.7); animation: hsblink 1s step-end infinite; margin-bottom: 8px; }
+.hs-modal-title { font-family: 'Courier New', monospace; font-size: 1.05rem; color: #f5d040; letter-spacing: 0.14em; text-shadow: 0 0 10px rgba(245,208,64,0.45); margin-bottom: 4px; font-weight: 700; }
+.hs-modal-sub { font-family: 'Courier New', monospace; color: #4a8a3f; font-size: 0.72rem; letter-spacing: 0.04em; margin-bottom: 18px; }
+.hs-name-label { font-family: 'Courier New', monospace; color: #aae090; font-size: 0.75rem; letter-spacing: 0.1em; margin-bottom: 7px; }
+.hs-name-input { font-family: 'Courier New', monospace; font-size: 1.05rem; background: #090f08; border: 2px solid #2a5020; color: #aae090; padding: 8px 10px; border-radius: 4px; text-align: center; width: 100%; letter-spacing: 0.14em; outline: none; }
+.hs-name-input:focus { border-color: #f5d040; }
+.hs-save-btn { display: block; width: 100%; margin-top: 12px; background: rgba(245,208,64,0.1); border: 2px solid #f5d040; color: #f5d040; font-family: 'Courier New', monospace; font-size: 0.88rem; padding: 10px; border-radius: 4px; cursor: pointer; letter-spacing: 0.14em; font-weight: 700; text-shadow: 0 0 8px rgba(245,208,64,0.4); transition: background 0.15s; }
+.hs-save-btn:hover { background: rgba(245,208,64,0.2); }
+.hs-skip-btn { background: transparent; border: none; color: #2a5020; font-family: 'Courier New', monospace; font-size: 0.7rem; cursor: pointer; margin-top: 9px; letter-spacing: 0.05em; }
+.hs-skip-btn:hover { color: #4a8a3f; }
+</style>
+</head>
+<body>
+<!-- HOME -->
+<div id="home" class="wrap">
+  <div class="book-icon">&#128218;</div>
+  <h1>Stilmittel-Quiz</h1>
+  <p class="sub">W&auml;hle Umfang, Kategorien und Spielmodus</p>
+  <div class="divider"></div>
+  <div style="text-align:center;margin-bottom:18px;">
+    <button class="hs-home-btn" onclick="showHighscores('home')">&#127942; Bestenliste</button>
+  </div>
+  <div class="filter-section">
+    <div class="filter-title">Umfang</div>
+    <div class="filter-grid">
+      <button class="filter-btn active" data-scope="alle" onclick="toggleScope(this)">Alle Stilmittel</button>
+      <button class="filter-btn" data-scope="mittelstufe" onclick="toggleScope(this)">Mittelstufe (Kl.&nbsp;5&ndash;10)</button>
+    </div>
+  </div>
+  <div class="filter-section">
+    <div class="filter-title">Anzahl</div>
+    <div class="filter-grid">
+      <button class="filter-btn active" data-count="all" onclick="toggleCount(this)">Alle Stilmittel</button>
+      <button class="filter-btn" data-count="10" onclick="toggleCount(this)">10 zuf&auml;llige</button>
+    </div>
+  </div>
+  <div class="filter-section">
+    <div class="filter-title">Kategorien</div>
+    <div class="filter-grid">
+      <button class="filter-btn active" data-kat="alle" onclick="toggleFilter(this)">Alle</button>
+      <button class="filter-btn" data-kat="Bildlichkeit" onclick="toggleFilter(this)">Bildlichkeit</button>
+      <button class="filter-btn" data-kat="Wortfigur" onclick="toggleFilter(this)">Wortfiguren</button>
+      <button class="filter-btn" data-kat="Satzfigur" onclick="toggleFilter(this)">Satzfiguren</button>
+      <button class="filter-btn" data-kat="Gedankenfigur" onclick="toggleFilter(this)">Gedankenfiguren</button>
+      <button class="filter-btn" data-kat="Klangfigur" onclick="toggleFilter(this)">Klangfiguren</button>
+    </div>
+  </div>
+  <div class="mode-grid">
+    <div class="mode-card" onclick="startQuiz('name_from_beispiel')">
+      <div class="icon">&#9997;&#65039;</div>
+      <h3>Beispiel &rarr; Name</h3>
+      <p>Erkenne das Stilmittel am Beispiel</p>
+    </div>
+    <div class="mode-card" onclick="startQuiz('name_from_erklaerung')">
+      <div class="icon">&#128214;</div>
+      <h3>Erkl&auml;rung &rarr; Name</h3>
+      <p>Ordne die Definition dem Stilmittel zu</p>
+    </div>
+    <div class="mode-card" onclick="startQuiz('wirkung_from_name')">
+      <div class="icon">&#128161;</div>
+      <h3>Name &rarr; Wirkung</h3>
+      <p>Nenne die Wirkung des Stilmittels</p>
+    </div>
+    <div class="mode-card" onclick="startQuiz('name_from_wirkung')">
+      <div class="icon">&#128269;</div>
+      <h3>Wirkung &rarr; Name</h3>
+      <p>Finde das passende Stilmittel</p>
+    </div>
+    <div class="mode-card full-width" onclick="startQuiz('mixed')">
+      <div class="icon">&#127922;</div>
+      <h3>Gemischt</h3>
+      <p>Alle Fragetypen durcheinander</p>
+    </div>
+  </div>
+  <div class="hint-box" id="hint-box">37 Stilmittel werden abgefragt. Tippe auf die richtige Antwort unter 4 Optionen.</div>
+</div>
+<!-- QUIZ -->
+<div id="quiz" class="wrap hidden">
+  <div class="progress-meta">
+    <button class="abort-btn" id="abort-btn" onclick="askAbort()">&#10005; Abbruch</button>
+    <span class="progress-label" id="prog-label">Frage 1 von 10</span>
+    <div class="score-row">
+      <span class="score-label">&#9733; <span id="score-val">0</span></span>
+      <button class="sound-btn" id="sound-btn" onclick="toggleSound()" title="Ton an/aus">&#128266;</button>
+    </div>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+  <div class="abort-bar hidden" id="abort-bar">
+    <span>Quiz wirklich beenden?</span>
+    <div class="abort-bar-btns">
+      <button class="continue-btn" onclick="cancelAbort()">Weiterspielen</button>
+      <button class="quit-btn" onclick="doAbort()">Auswertung zeigen</button>
+    </div>
+  </div>
+  <div class="q-card">
+    <div class="q-meta">
+      <div class="q-badge" id="q-badge"></div>
+      <div class="q-kategorie" id="q-kategorie"></div>
+    </div>
+    <span class="q-bild hidden" id="q-bild"></span>
+    <div class="q-text" id="q-text"></div>
+    <div class="q-hint hidden" id="q-hint"></div>
+  </div>
+  <div class="options-grid" id="options-grid"></div>
+  <div class="feedback-box" id="feedback"></div>
+  <button class="next-btn" id="next-btn" onclick="nextQuestion()">Weiter &rarr;</button>
+</div>
+<!-- RESULT -->
+<div id="result" class="wrap hidden">
+  <div class="trophy" id="trophy">&#127942;</div>
+  <h2 id="result-msg">Super!</h2>
+  <p class="score-info" id="result-info"></p>
+  <div class="coaching-card hidden" id="coaching-card">
+    <span class="coach-icon">&#128161;</span>
+    <p id="coaching-text"></p>
+    <button class="btn-accent" id="replay-wrong-btn" onclick="replayWrong()">Schwachstellen &uuml;ben &rarr;</button>
+  </div>
+  <div class="wrong-list hidden" id="wrong-list">
+    <h3>Zum Wiederholen:</h3>
+    <div id="wrong-items"></div>
+  </div>
+  <div class="result-btns">
+    <button class="btn-primary" onclick="replay()">Nochmal spielen</button>
+    <button class="btn-secondary" onclick="goHome()">Modus w&auml;hlen</button>
+    <button class="btn-secondary" onclick="showHighscores('result')">&#127942; Bestenliste</button>
+  </div>
+</div>
+<!-- HIGHSCORES -->
+<div id="highscores" class="wrap hidden">
+  <div class="arcade-wrap">
+    <div class="arcade-content">
+      <div class="arcade-title">&#9733; BESTENLISTE &#9733;</div>
+      <div class="arcade-sub">TOP&nbsp;5 &middot; STILMITTEL&nbsp;QUIZ</div>
+      <div class="hs-tabs" id="hs-tabs"></div>
+      <div id="hs-table-container"></div>
+      <button class="hs-back-btn" onclick="closeHighscores()">&#9664; ZUR&Uuml;CK</button>
+    </div>
+  </div>
+</div>
+<!-- HS MODAL -->
+<div id="hs-modal" style="display:none" class="hs-modal">
+  <div class="hs-modal-inner">
+    <div class="hs-modal-body">
+      <div class="hs-modal-stars">&#9733; &#9733; &#9733;</div>
+      <div class="hs-modal-title">NEUER EINTRAG!</div>
+      <div class="hs-modal-sub">Du schaffst es in die Top&nbsp;5!</div>
+      <div class="hs-name-label">DEIN NAME:</div>
+      <input type="text" id="hs-name-input" class="hs-name-input" maxlength="12" placeholder="_ _ _ _ _ _ _" autocomplete="off">
+      <button class="hs-save-btn" onclick="saveHSEntry()">EINTRAGEN &#9654;</button><br>
+      <button class="hs-skip-btn" onclick="skipHSEntry()">&#10005; &Uuml;berspringen</button>
+    </div>
+  </div>
+</div>
+<script>
+// ── DATENBASIS ────────────────────────────────────────────────────────────────
+var ALLE = [
+  // ── BILDLICHKEIT ──
+  {
+    name: "Metapher", kat: "Bildlichkeit", mittelstufe: true,
+    bild: "\uD83D\uDD25",
+    erklaerung: "Bildlicher Ausdruck ohne Vergleichswort \u2013 ein Wort wird aus seinem eigentlichen Bedeutungsbereich in einen anderen \u00fcbertragen.",
+    beispiel: "\u201eJemandem das Herz brechen\u201c  \u2016  \u201eDas Feuer der Leidenschaft\u201c",
+    wirkung: "veranschaulicht, verdichtet"
+  },
+  {
+    name: "Vergleich", kat: "Bildlichkeit", mittelstufe: true,
+    bild: "\u2696\uFE0F",
+    erklaerung: "Verkn\u00fcpfung zweier Bedeutungsbereiche durch \u201ewie\u201c oder \u201eals\u201c.",
+    beispiel: "\u201eEr k\u00e4mpft wie ein L\u00f6we\u201c  \u2016  \u201eSt\u00e4rker als der Tod\u201c",
+    wirkung: "veranschaulicht, verbindet"
+  },
+  {
+    name: "Personifikation", kat: "Bildlichkeit", mittelstufe: true,
+    bild: "\u2600\uFE0F",
+    erklaerung: "Menschliche Eigenschaften werden auf Nichtmenschliches \u00fcbertragen.",
+    beispiel: "\u201eDie Sonne lacht\u201c  \u2016  \u201eDer Wind fl\u00fcstert\u201c",
+    wirkung: "verlebendigt, vermenschlicht"
+  },
+  {
+    name: "Symbol", kat: "Bildlichkeit", mittelstufe: true,
+    bild: "\uD83D\uDD4A\uFE0F",
+    erklaerung: "Ein konkreter Gegenstand steht f\u00fcr eine abstrakte Idee, oft kulturell festgelegt.",
+    beispiel: "Rose = Liebe  \u2016  Taube = Frieden",
+    wirkung: "verdichtend, kulturell"
+  },
+  {
+    name: "Allegorie", kat: "Bildlichkeit", mittelstufe: false,
+    bild: "\uD83C\uDFAD",
+    erklaerung: "Fortgesetzte Metapher \u2013 ein abstraktes Konzept wird als konkretes Bild dargestellt.",
+    beispiel: "\u201eSensenmann\u201c als Bild f\u00fcr den Tod  \u2016  \u201eJustitia\u201c mit Waage und Augenbinde",
+    wirkung: "versinnbildlicht Abstraktes"
+  },
+  {
+    name: "Metonymie", kat: "Bildlichkeit", mittelstufe: false,
+    bild: "\uD83C\uDFDB\uFE0F",
+    erklaerung: "Ersetzung eines Begriffs durch einen sachlich verwandten (r\u00e4umlich, zeitlich, urs\u00e4chlich).",
+    beispiel: "\u201eBrecht lesen\u201c (statt: ein Werk von Brecht)  \u2016  \u201eDas Wei\u00dfe Haus erkl\u00e4rte \u2026\u201c",
+    wirkung: "verdichtet, ersetzt Begriff durch verwandten"
+  },
+  {
+    name: "Chiffre", kat: "Bildlichkeit", mittelstufe: true,
+    bild: "\uD83D\uDD10",
+    erklaerung: "Verschl\u00fcsseltes Zeichen, das ohne zus\u00e4tzliches Wissen nicht eindeutig zu entschl\u00fcsseln ist.",
+    beispiel: "\u201eJHWH\u201c in der hebr\u00e4ischen Bibel  \u2016  \u201eSchwarzschimmel nacht\u201c (Celan)",
+    wirkung: "verr\u00e4tselt, l\u00e4dt mit Bedeutung auf"
+  },
+  // ── WORTFIGUREN ──
+  {
+    name: "Hyperbel", kat: "Wortfigur", mittelstufe: true,
+    bild: "\uD83D\uDCE2",
+    erklaerung: "Starke \u00dcbertreibung eines Sachverhalts.",
+    beispiel: "\u201etodernst\u201c  \u2016  \u201efuchsteufelswild\u201c  \u2016  \u201eein Meer von Tr\u00e4nen\u201c",
+    wirkung: "\u00fcbertreibt, intensiviert"
+  },
+  {
+    name: "Litotes", kat: "Wortfigur", mittelstufe: false,
+    bild: "\uD83E\uDD0F",
+    erklaerung: "Hervorhebung durch doppelte Verneinung oder bewusste Untertreibung.",
+    beispiel: "\u201enicht selten\u201c  \u2016  \u201enicht unbekannt\u201c  \u2016  \u201edas ist nicht schlecht\u201c",
+    wirkung: "hervorhebend durch Untertreibung"
+  },
+  {
+    name: "Periphrase", kat: "Wortfigur", mittelstufe: false,
+    bild: "\uD83D\uDCAC",
+    erklaerung: "Umschreibung eines Begriffs durch kennzeichnende Eigenschaften.",
+    beispiel: "\u201eHalbg\u00f6tter in Wei\u00df\u201c (statt: \u00c4rzte)  \u2016  \u201eder Allm\u00e4chtige\u201c (statt: Gott)",
+    wirkung: "umschreibend, charakterisierend"
+  },
+  {
+    name: "Onomatopoesie", kat: "Wortfigur", mittelstufe: false,
+    bild: "\uD83D\uDD0A",
+    erklaerung: "Sprachliche Nachahmung von Ger\u00e4uschen oder Kl\u00e4ngen.",
+    beispiel: "\u201eKnall\u201c  \u2016  \u201eMiau\u201c  \u2016  \u201erumpeln\u201c  \u2016  \u201ezischen\u201c",
+    wirkung: "lautmalerisch, klangnachahmend"
+  },
+  {
+    name: "Emphase", kat: "Wortfigur", mittelstufe: false,
+    bild: "\u2757",
+    erklaerung: "Nachdr\u00fcckliche Hervorhebung eines Wortes oder Ausdrucks.",
+    beispiel: "\u201eMenschen! Menschen!\u201c (Schiller)  \u2016  \u201eDAS ist Kunst!\u201c",
+    wirkung: "betont, emotional aufgeladen"
+  },
+  {
+    name: "Euphemismus", kat: "Wortfigur", mittelstufe: true,
+    bild: "\uD83C\uDF38",
+    erklaerung: "Besch\u00f6nigende Umschreibung eines unangenehmen oder anst\u00f6\u00dfigen Sachverhalts.",
+    beispiel: "\u201eentschlafen\u201c (statt: sterben)  \u2016  \u201efreisetzen\u201c (statt: entlassen)",
+    wirkung: "abmildernd, verh\u00fcllend"
+  },
+  // ── SATZFIGUREN ──
+  {
+    name: "Ellipse", kat: "Satzfigur", mittelstufe: true,
+    bild: "\uD83D\uDCAD",
+    erklaerung: "Auslassung eines Satzteils, der gedanklich erg\u00e4nzt werden kann.",
+    beispiel: "\u201eJe sp\u00e4ter der Abend, desto sch\u00f6ner die G\u00e4ste\u201c  \u2016  \u201eEnde gut, alles gut.\u201c",
+    wirkung: "knapp, dramatisch, temporeich"
+  },
+  {
+    name: "Inversion", kat: "Satzfigur", mittelstufe: false,
+    bild: "\uD83D\uDD04",
+    erklaerung: "Umstellung der \u00fcblichen Satzgliedfolge zur Hervorhebung.",
+    beispiel: "\u201eIn der ungeheuren Weite / Reget keine Welle sich\u201c (Goethe)  \u2016  \u201eDunkel war\u2019s, der Mond schien helle\u201c",
+    wirkung: "hervorhebend durch Umstellung"
+  },
+  {
+    name: "Parallelismus", kat: "Satzfigur", mittelstufe: true,
+    bild: "\uD83D\uDCCF",
+    erklaerung: "Wiederholung der gleichen syntaktischen Struktur in aufeinanderfolgenden S\u00e4tzen oder Satzteilen.",
+    beispiel: "\u201eHei\u00df die Liebe, kalt der Tod\u201c  \u2016  \u201eIch kam, ich sah, ich siegte\u201c (Caesar)",
+    wirkung: "ordnend, rhythmisch"
+  },
+  {
+    name: "Klimax", kat: "Satzfigur", mittelstufe: true,
+    bild: "\uD83D\uDCC8",
+    erklaerung: "Stufenweise Steigerung von Ausdruck zu Ausdruck.",
+    beispiel: "\u201eEr sei mein Freund, mein Engel, mein Gott\u201c (Schiller)  \u2016  \u201eVeni, vidi, vici\u201c (Caesar)",
+    wirkung: "steigernd, eindringlich"
+  },
+  {
+    name: "Akkumulation", kat: "Satzfigur", mittelstufe: true,
+    bild: "\uD83D\uDCE6",
+    erklaerung: "Reihung von Begriffen, die einem gemeinsamen Oberbegriff zugeordnet werden k\u00f6nnen.",
+    beispiel: "\u201eSonne, Mond und Sterne!\u201c  \u2016  \u201eNun ruhen alle W\u00e4lder, Vieh, Menschen, St\u00e4dt und Felder\u201c (Gerhardt)",
+    wirkung: "veranschaulicht, eindringlich"
+  },
+  {
+    name: "Asyndeton", kat: "Satzfigur", mittelstufe: false,
+    bild: "\u26A1",
+    erklaerung: "Reihung von W\u00f6rtern oder Satzteilen ohne verbindende Konjunktionen.",
+    beispiel: "\u201eEin Rot, ein Gr\u00fcn, ein Grau vorbeigesendet\u201c (Rilke)  \u2016  \u201eAlles rennet, rettet, fl\u00fcchtet\u201c (Schiller)",
+    wirkung: "temporeich, aufz\u00e4hlend, dr\u00e4ngend"
+  },
+  {
+    name: "Chiasmus", kat: "Satzfigur", mittelstufe: true,
+    bild: "\u2716\uFE0F",
+    erklaerung: "\u00dcberkreuzstellung von syntaktisch oder inhaltlich einander entsprechenden Satzgliedern.",
+    beispiel: "\u201eDie Kunst ist lang \u2013 und kurz ist unser Leben\u201c (Goethe)",
+    wirkung: "kreuzend, symmetrisch, pr\u00e4gnant"
+  },
+  {
+    name: "Polysyndeton", kat: "Satzfigur", mittelstufe: false,
+    bild: "\uD83D\uDD17",
+    erklaerung: "Reihung, bei der zwischen allen Gliedern die gleiche Konjunktion wiederholt wird.",
+    beispiel: "\u201eEinigkeit und Recht und Freiheit\u201c  \u2016  \u201eUnd es wallet und siedet und brauset und zischt\u201c (Schiller)",
+    wirkung: "verlangsamend, aufz\u00e4hlend, feierlich"
+  },
+  {
+    name: "Parataxe", kat: "Satzfigur", mittelstufe: true,
+    bild: "\u25B6\uFE0F",
+    erklaerung: "Aneinanderreihung von Haupts\u00e4tzen (Satzreihe) ohne Unterordnung.",
+    beispiel: "\u201eAm Anfang schuf Gott Himmel und Erde. Und die Erde war w\u00fcst.\u201c (1.\u00a0Mose)",
+    wirkung: "klar, direkt, schlicht"
+  },
+  {
+    name: "Hypotaxe", kat: "Satzfigur", mittelstufe: true,
+    bild: "\uD83C\uDF33",
+    erklaerung: "Verschachtelung von Haupt- und Nebens\u00e4tzen (Satzgef\u00fcge) mit Unterordnung.",
+    beispiel: "\u201eAn einem der letzten Maitage, das Wetter war sommerlich, bog ein Landauer ein \u2026\u201c (Fontane)",
+    wirkung: "komplex, ausschweifend, detailreich"
+  },
+  {
+    name: "Enjambement", kat: "Satzfigur", mittelstufe: true,
+    bild: "\u21A9\uFE0F",
+    erklaerung: "Zeilensprung \u2013 ein Satz wird \u00fcber das Versende hinaus in der n\u00e4chsten Zeile fortgesetzt.",
+    beispiel: "\u201e\u00dcber allen Gipfeln / Ist Ruh\u201c (Goethe)  \u2016  \u201eIch bin so wild nach deinem / Erdbeermund\u201c (Villon/Klammer)",
+    wirkung: "flie\u00dfend, dr\u00e4ngend, spannungserzeugend"
+  },
+  // ── GEDANKENFIGUREN ──
+  {
+    name: "Antithese", kat: "Gedankenfigur", mittelstufe: true,
+    bild: "\u2194\uFE0F",
+    erklaerung: "Gegen\u00fcberstellung gegens\u00e4tzlicher Begriffe oder Gedanken.",
+    beispiel: "\u201eKlein ist der Strauch, gro\u00df ist der Baum\u201c  \u2016  \u201eKrieg und Frieden\u201c (Tolstoi)",
+    wirkung: "kontrastierend, gegen\u00fcberstellend"
+  },
+  {
+    name: "Ironie", kat: "Gedankenfigur", mittelstufe: true,
+    bild: "\uD83D\uDE0F",
+    erklaerung: "Das Gegenteil des Gemeinten wird gesagt \u2013 erkennbar durch Kontext oder Tonfall.",
+    beispiel: "\u201eWir haben\u2019s ja\u201c (wenn Geld knapp ist)  \u2016  \u201eDas hast du ja toll hinbekommen!\u201c",
+    wirkung: "verschl\u00fcsselt, doppelb\u00f6dig"
+  },
+  {
+    name: "Oxymoron", kat: "Gedankenfigur", mittelstufe: false,
+    bild: "\u262F\uFE0F",
+    erklaerung: "Verbindung zweier sich logisch widersprechender Begriffe in einer Wortgruppe.",
+    beispiel: "\u201eHassliebe\u201c  \u2016  \u201eberedtes Schweigen\u201c  \u2016  \u201ealter Knabe\u201c",
+    wirkung: "widerspr\u00fcchlich, spannungserzeugend"
+  },
+  {
+    name: "Paradoxon", kat: "Gedankenfigur", mittelstufe: false,
+    bild: "\uD83C\uDF00",
+    erklaerung: "Scheinbar widerspr\u00fcchliche Aussage, die bei n\u00e4herem Hinsehen einen tieferen Sinn enth\u00e4lt.",
+    beispiel: "\u201eIch wei\u00df, dass ich nichts wei\u00df\u201c (Sokrates)  \u2016  \u201eWeniger ist mehr\u201c (Mies van der Rohe)",
+    wirkung: "scheinbar widerspr\u00fcchlich, zum Nachdenken"
+  },
+  {
+    name: "Rhetorische Frage", kat: "Gedankenfigur", mittelstufe: true,
+    bild: "\u2753",
+    erklaerung: "Eine Frage, auf die keine Antwort erwartet wird \u2013 die Antwort ist bereits klar.",
+    beispiel: "\u201eWie viele Menschen m\u00fcssen noch sterben?\u201c  \u2016  \u201eBin ich denn der Einzige, der das sieht?\u201c",
+    wirkung: "appellierend, keine Antwort erwartet"
+  },
+  {
+    name: "Sarkasmus", kat: "Gedankenfigur", mittelstufe: true,
+    bild: "\uD83D\uDE12",
+    erklaerung: "Bei\u00dfender, verletzender Spott \u2013 sch\u00e4rfer und gemeiner als Ironie.",
+    beispiel: "\u201eGibt\u2019s dein T-Shirt auch in deiner Gr\u00f6\u00dfe?\u201c  \u2016  \u201eGlanzleistung \u2013 wie immer!\u201c",
+    wirkung: "bei\u00dfend sp\u00f6ttisch, verletzend"
+  },
+  {
+    name: "Katachrese", kat: "Gedankenfigur", mittelstufe: false,
+    bild: "\uD83E\uDDE9",
+    erklaerung: "Verblasste Metapher, die nicht mehr als Bild wahrgenommen wird, oder widerspr\u00fcchliche Bildmischung.",
+    beispiel: "\u201eTischbein\u201c  \u2016  \u201eArm des Flusses\u201c  \u2016  \u201eDas schl\u00e4gt dem Fass die Krone ins Gesicht\u201c",
+    wirkung: "bildlich ersetzend oder bildbr\u00fcchig"
+  },
+  // ── KLANGFIGUREN ──
+  {
+    name: "Alliteration", kat: "Klangfigur", mittelstufe: true,
+    bild: "\uD83D\uDD24",
+    erklaerung: "Wiederholung des gleichen Anfangslauts bei benachbarten W\u00f6rtern.",
+    beispiel: "\u201eMilch macht m\u00fcde M\u00e4nner munter\u201c  \u2016  \u201eVeni, vidi, vici\u201c (Caesar)",
+    wirkung: "betont, einpr\u00e4gsam, klingend"
+  },
+  {
+    name: "Anapher", kat: "Klangfigur", mittelstufe: true,
+    bild: "\uD83D\uDD01",
+    erklaerung: "Wiederholung eines Wortes oder einer Wortgruppe am Anfang aufeinanderfolgender S\u00e4tze oder Verse.",
+    beispiel: "\u201eKein Licht. Kein Ton.\u201c  \u2016  \u201eWer nie sein Brot mit Tr\u00e4nen a\u00df, / Wer nie \u2026\u201c (Goethe)",
+    wirkung: "verst\u00e4rkend, rhythmisch"
+  },
+  {
+    name: "Repetitio", kat: "Klangfigur", mittelstufe: false,
+    bild: "\uD83D\uDD02",
+    erklaerung: "Wiederholung eines Wortes oder Ausdrucks innerhalb eines Satzes oder Verses.",
+    beispiel: "\u201eO Mutter! Was ist Seligkeit? O Mutter!\u201c (B\u00fcrger)  \u2016  \u201eMein Vater, mein Vater\u201c (Goethe)",
+    wirkung: "eindringlich, wiederholend"
+  },
+  {
+    name: "Epipher", kat: "Klangfigur", mittelstufe: false,
+    bild: "\uD83D\uDD1A",
+    erklaerung: "Wiederholung eines Wortes oder einer Wortgruppe am Ende aufeinanderfolgender S\u00e4tze oder Verse.",
+    beispiel: "\u201eIch fordere Moral, du lebst Moral\u201c  \u2016  \u201eDoch alle Lust will Ewigkeit, / will tiefe, tiefe Ewigkeit\u201c (Nietzsche)",
+    wirkung: "verst\u00e4rkend am Satzende"
+  },
+  {
+    name: "Tautologie", kat: "Klangfigur", mittelstufe: false,
+    bild: "\uD83E\uDEDE",
+    erklaerung: "Wiederholung desselben Sachverhalts mit anderen Worten oder bedeutungsgleichen Ausdr\u00fccken.",
+    beispiel: "\u201evoll und ganz\u201c  \u2016  \u201enie und nimmer\u201c  \u2016  \u201eimmer und ewig\u201c",
+    wirkung: "bekr\u00e4ftigend, redundant"
+  },
+  {
+    name: "Elision", kat: "Klangfigur", mittelstufe: false,
+    bild: "\u2702\uFE0F",
+    erklaerung: "Auslassung eines Lautes oder einer Silbe, meist um das Versma\u00df einzuhalten.",
+    beispiel: "\u201ein ew\u2019gen Tau\u201c (statt: ewigen)  \u2016  \u201eHab\u2019 ich\u201c (statt: Habe ich)",
+    wirkung: "Metrum erhaltend, klanglich weich"
+  }
+];
+
+var MODES = ["name_from_beispiel", "wirkung_from_name", "name_from_wirkung", "name_from_erklaerung"];
+var questions = [], qIndex = 0, score = 0, answered = false, currentMode = null;
+var wrongAnswers = [], missedItems = [];
+var isAborted = false;
+var activeKat = "alle", activeScope = "alle", activeCount = "all";
+
+// ── SOUND ─────────────────────────────────────────────────────────────────────
+var audioCtx = null;
+var soundEnabled = true;
+
+function getAudioCtx() {
+  if (!audioCtx) {
+    try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+  }
+  return audioCtx;
+}
+
+function playSound(isCorrect) {
+  if (!soundEnabled) return;
+  var ctx = getAudioCtx();
+  if (!ctx) return;
+  try {
+    if (isCorrect) {
+      // Aufsteigendes Dreiklang-Arpeggio: C5 – E5 – G5
+      [[523.25, 0], [659.25, 0.13], [783.99, 0.26]].forEach(function(pair) {
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = "sine";
+        osc.frequency.value = pair[0];
+        var t = ctx.currentTime + pair[1];
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(0.22, t + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+        osc.start(t);
+        osc.stop(t + 0.5);
+      });
+    } else {
+      // Weich fallender Ton
+      var osc = ctx.createOscillator();
+      var gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(280, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(160, ctx.currentTime + 0.35);
+      gain.gain.setValueAtTime(0.18, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.45);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.45);
+    }
+  } catch(e) {}
+}
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  var btn = document.getElementById("sound-btn");
+  btn.innerHTML = soundEnabled ? "&#128266;" : "&#128263;";
+  btn.classList.toggle("muted", !soundEnabled);
+}
+
+// ── FILTER ────────────────────────────────────────────────────────────────────
+function toggleScope(btn) {
+  document.querySelectorAll("[data-scope]").forEach(function(b) { b.classList.remove("active"); });
+  btn.classList.add("active");
+  activeScope = btn.getAttribute("data-scope");
+  updateHintBox();
+}
+function toggleCount(btn) {
+  document.querySelectorAll("[data-count]").forEach(function(b) { b.classList.remove("active"); });
+  btn.classList.add("active");
+  activeCount = btn.getAttribute("data-count");
+  updateHintBox();
+}
+function toggleFilter(btn) {
+  document.querySelectorAll("[data-kat]").forEach(function(b) { b.classList.remove("active"); });
+  btn.classList.add("active");
+  activeKat = btn.getAttribute("data-kat");
+  updateHintBox();
+}
+function getPool() {
+  var pool = ALLE;
+  if (activeScope === "mittelstufe") pool = pool.filter(function(s) { return s.mittelstufe; });
+  if (activeKat !== "alle") pool = pool.filter(function(s) { return s.kat === activeKat; });
+  return pool;
+}
+function updateHintBox() {
+  var filtered = getPool();
+  var hb = document.getElementById("hint-box");
+  var scopeLabel = activeScope === "mittelstufe" ? " (Mittelstufe)" : "";
+  var countInfo = activeCount === "10" ? "10 zuf\u00e4llige von " + filtered.length : filtered.length;
+  hb.textContent = countInfo + " Stilmittel" + scopeLabel + " werden abgefragt. Tippe auf die richtige Antwort unter 4 Optionen.";
+}
+
+// ── QUIZ LOGIC ────────────────────────────────────────────────────────────────
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+function getWrongOptions(correct, field, pool) {
+  var others = pool.filter(function(s) { return s[field] !== correct[field]; });
+  return shuffle(others).slice(0, 3).map(function(s) { return s[field]; });
+}
+function buildQ(item, mode, pool) {
+  if (mode === "name_from_beispiel") {
+    return { prompt: "Welches Stilmittel liegt vor?", quote: item.beispiel, hint: null, answer: item.name, options: shuffle([item.name].concat(getWrongOptions(item, "name", pool))), item: item };
+  }
+  if (mode === "wirkung_from_name") {
+    return { prompt: "Was ist die Wirkung?", quote: item.name, hint: item.beispiel, answer: item.wirkung, options: shuffle([item.wirkung].concat(getWrongOptions(item, "wirkung", pool))), item: item };
+  }
+  if (mode === "name_from_wirkung") {
+    return { prompt: "Welches Stilmittel hat diese Wirkung?", quote: item.wirkung, hint: null, answer: item.name, options: shuffle([item.name].concat(getWrongOptions(item, "name", pool))), item: item };
+  }
+  if (mode === "name_from_erklaerung") {
+    return { prompt: "Welches Stilmittel wird hier erkl\u00e4rt?", quote: item.erklaerung, hint: null, answer: item.name, options: shuffle([item.name].concat(getWrongOptions(item, "name", pool))), item: item };
+  }
+}
+function startQuiz(mode) {
+  var pool = getPool();
+  if (pool.length < 4) { alert("Bitte w\u00e4hle eine Kombination mit mindestens 4 Stilmitteln."); return; }
+  currentMode = mode;
+  var shuffled = shuffle(pool);
+  var quizItems = (activeCount === "10" && shuffled.length > 10) ? shuffled.slice(0, 10) : shuffled;
+  questions = quizItems.map(function(item) {
+    var m = mode === "mixed" ? MODES[Math.floor(Math.random() * MODES.length)] : mode;
+    return buildQ(item, m, pool);
+  });
+  qIndex = 0; score = 0; answered = false; wrongAnswers = []; missedItems = []; isAborted = false;
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+  renderQuestion();
+}
+function renderQuestion() {
+  var q = questions[qIndex];
+  var total = questions.length;
+  document.getElementById("prog-label").textContent = "Frage " + (qIndex + 1) + " von " + total;
+  document.getElementById("score-val").textContent = score;
+  document.getElementById("prog-fill").style.width = (qIndex / total * 100) + "%";
+  document.getElementById("q-badge").textContent = q.prompt;
+  document.getElementById("q-kategorie").textContent = q.item.kat;
+  document.getElementById("q-text").textContent = q.quote;
+  // Bild anzeigen
+  var bildEl = document.getElementById("q-bild");
+  if (q.item.bild) {
+    bildEl.textContent = q.item.bild;
+    bildEl.classList.remove("hidden");
+  } else {
+    bildEl.classList.add("hidden");
+  }
+  var hint = document.getElementById("q-hint");
+  if (q.hint) { hint.textContent = "Beispiel: " + q.hint; hint.classList.remove("hidden"); }
+  else { hint.classList.add("hidden"); }
+  var grid = document.getElementById("options-grid");
+  grid.innerHTML = "";
+  q.options.forEach(function(opt) {
+    var btn = document.createElement("button");
+    btn.className = "opt-btn";
+    btn.textContent = opt;
+    btn.addEventListener("click", function() { selectAnswer(opt, btn); });
+    grid.appendChild(btn);
+  });
+  document.getElementById("feedback").style.display = "none";
+  document.getElementById("feedback").className = "feedback-box";
+  document.getElementById("next-btn").classList.remove("show");
+  answered = false;
+}
+function selectAnswer(chosen, btn) {
+  if (answered) return;
+  answered = true;
+  var q = questions[qIndex];
+  var correct = chosen === q.answer;
+  document.querySelectorAll(".opt-btn").forEach(function(b) {
+    b.classList.add("locked");
+    if (b.textContent === q.answer) b.classList.add("correct");
+    else if (b === btn && !correct) b.classList.add("wrong");
+  });
+  if (correct) {
+    score++;
+    document.getElementById("score-val").textContent = score;
+  } else {
+    wrongAnswers.push({ item: q.item, chosen: chosen, answer: q.answer, prompt: q.prompt });
+    if (!missedItems.some(function(x) { return x.name === q.item.name; })) {
+      missedItems.push(q.item);
+    }
+  }
+  // Ton abspielen
+  playSound(correct);
+  var fb = document.getElementById("feedback");
+  fb.style.display = "block";
+  var praise = ["\u2713 Richtig!", "\u2713 Genau!", "\u2713 Sehr gut!", "\u2713 Korrekt!", "\u2713 Perfekt!", "\u2713 Super!"];
+  var praiseText = praise[Math.floor(Math.random() * praise.length)];
+  if (correct) {
+    fb.className = "feedback-box correct";
+    var cErklText = "";
+    if (q.prompt === "Welches Stilmittel wird hier erkl\u00e4rt?") {
+      cErklText = "Beispiel: " + q.item.beispiel + " \u2014 Wirkung: " + q.item.wirkung;
+    } else if (q.prompt === "Was ist die Wirkung?") {
+      cErklText = q.item.erklaerung;
+    } else if (q.prompt === "Welches Stilmittel hat diese Wirkung?") {
+      cErklText = q.item.erklaerung + " \u2014 Beispiel: " + q.item.beispiel;
+    } else {
+      cErklText = q.item.erklaerung + " \u2014 Wirkung: " + q.item.wirkung;
+    }
+    fb.innerHTML = '<div class="fb-title">' + praiseText + '</div>'
+      + '<div class="fb-erkl">' + cErklText + '</div>';
+  } else {
+    fb.className = "feedback-box wrong";
+    var erklText = "";
+    if (q.prompt === "Welches Stilmittel wird hier erkl\u00e4rt?") {
+      erklText = "Beispiel: " + q.item.beispiel;
+    } else if (q.prompt === "Was ist die Wirkung?") {
+      erklText = q.item.erklaerung + " \u2192 Wirkung: " + q.item.wirkung;
+    } else {
+      erklText = q.item.name + ": " + q.item.erklaerung;
+    }
+    fb.innerHTML = '<div class="fb-title">\u2717 Richtig w\u00e4re: \u201e' + q.answer + '\u201c</div>'
+      + '<div class="fb-erkl">' + erklText + '</div>';
+  }
+  document.getElementById("prog-fill").style.width = ((qIndex + 1) / questions.length * 100) + "%";
+  var nb = document.getElementById("next-btn");
+  nb.textContent = (qIndex + 1 >= questions.length) ? "Auswertung \u2192" : "Weiter \u2192";
+  nb.classList.add("show");
+}
+function nextQuestion() {
+  qIndex++;
+  if (qIndex >= questions.length) { showResult(); } else { renderQuestion(); }
+}
+
+// ── COACHING TEXT ─────────────────────────────────────────────────────────────
+function generateFeedbackText(wrongList, totalQuestions, correctCount) {
+  if (wrongList.length === 0) {
+    return "Fantastisch! Du hast alle " + totalQuestions + " Fragen richtig beantwortet. Du kennst die Stilmittel wirklich gut \u2013 weiter so!";
+  }
+  // Deduplizieren: ein Eintrag pro Stilmittel+Fragetyp
+  var seen = {};
+  var wirkungFehler = [], nameFehler = [], defFehler = [];
+  wrongList.forEach(function(w) {
+    var key = w.item.name + "|" + w.prompt;
+    if (seen[key]) return;
+    seen[key] = true;
+    if (w.prompt === "Was ist die Wirkung?") {
+      wirkungFehler.push(w.item.name);
+    } else if (w.prompt === "Welches Stilmittel wird hier erkl\u00e4rt?") {
+      defFehler.push(w.item.name);
+    } else {
+      nameFehler.push(w.item.name);
+    }
+  });
+  var parts = [];
+  wirkungFehler.forEach(function(n) { parts.push(n + " und seine Wirkung"); });
+  defFehler.forEach(function(n) { parts.push("die Definition von " + n); });
+  nameFehler.forEach(function(n) { parts.push("die Bezeichnung " + n); });
+  // Max. 4 Punkte nennen, Rest zusammenfassen
+  var shown = parts.slice(0, 4);
+  var extra = parts.length - shown.length;
+  var text = "Du solltest dir noch einmal ";
+  if (shown.length === 1) {
+    text += shown[0];
+  } else if (shown.length === 2) {
+    text += shown[0] + " und " + shown[1];
+  } else {
+    text += shown.slice(0, -1).join(", ") + " und " + shown[shown.length - 1];
+  }
+  if (extra > 0) {
+    text += " sowie " + extra + " weitere Punkt" + (extra === 1 ? "" : "e");
+  }
+  text += " anschauen. Schau dir das im Reader noch einmal an.";
+  var pct = totalQuestions > 0 ? Math.round(correctCount / totalQuestions * 100) : 0;
+  if (pct >= 80) {
+    text += " Toll, dass du schon so viele andere Dinge gewusst hast!";
+  } else if (pct >= 50) {
+    text += " Du hast schon mehr als die H\u00e4lfte im Griff \u2013 das ist ein guter Start!";
+  } else if (correctCount > 0) {
+    text += " Jede \u00dcbungsrunde bringt dich einen Schritt weiter \u2013 du schaffst das!";
+  } else {
+    text += " Schau dir die Stilmittel noch einmal in Ruhe an und probiere es dann nochmal!";
+  }
+  return text;
+}
+
+// ── RESULT ────────────────────────────────────────────────────────────────────
+function showResult() {
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("abort-bar").classList.add("hidden");
+  document.getElementById("abort-btn").classList.remove("hidden");
+  document.getElementById("result").classList.remove("hidden");
+  var total = questions.length;
+  var pct = total > 0 ? Math.round(score / total * 100) : 0;
+  if (isAborted) {
+    document.getElementById("trophy").textContent = "\u23F8\uFE0F";
+    document.getElementById("result-msg").textContent = "Quiz abgebrochen";
+    document.getElementById("result-info").textContent = score + " von " + total + " beantworteten Fragen richtig (" + pct + "\u00a0%)";
+  } else {
+    var emojis = ["\uD83D\uDCAA", "\uD83D\uDCAA", "\uD83D\uDCDA", "\uD83D\uDC4D", "\uD83C\uDFC6"];
+    var msgs = ["Nicht aufgeben!", "Nicht aufgeben!", "Noch \u00fcben!", "Gut gemacht!", "Perfekt!"];
+    var idx = pct === 100 ? 4 : pct >= 70 ? 3 : pct >= 40 ? 2 : 1;
+    document.getElementById("trophy").textContent = emojis[idx];
+    document.getElementById("result-msg").textContent = msgs[idx];
+    document.getElementById("result-info").textContent = score + " von " + total + " Fragen richtig (" + pct + "\u00a0%)";
+  }
+  // Coaching-Karte
+  var coachCard = document.getElementById("coaching-card");
+  var coachText = document.getElementById("coaching-text");
+  var replayBtn = document.getElementById("replay-wrong-btn");
+  coachText.textContent = generateFeedbackText(wrongAnswers, questions.length, score);
+  coachCard.classList.remove("hidden");
+  replayBtn.style.display = missedItems.length > 0 ? "inline-block" : "none";
+  // Falsch-Liste
+  var wl = document.getElementById("wrong-list");
+  if (wrongAnswers.length > 0) {
+    wl.classList.remove("hidden");
+    document.getElementById("wrong-items").innerHTML = wrongAnswers.map(function(w) {
+      return '<div class="wrong-item">'
+        + '<div class="sm-header"><span class="sm-bild">' + (w.item.bild || "") + '</span><span class="sm-name">' + w.item.name + '</span></div>'
+        + '<div class="sm-kat">' + w.item.kat + '</div>'
+        + '<div class="sm-bsp">' + w.item.beispiel + '</div>'
+        + '<div class="sm-erkl">Erkl\u00e4rung: ' + w.item.erklaerung + '</div>'
+        + '<div class="sm-wkng">Wirkung: ' + w.item.wirkung + '</div>'
+        + '<div class="sm-chosen">Deine Antwort: ' + w.chosen + '</div>'
+        + '</div>';
+    }).join("");
+  } else {
+    wl.classList.add("hidden");
+  }
+  // Highscore nur für abgeschlossene Runden
+  if (!isAborted) {
+    checkAndMaybePromptHS(currentMode, pct, score, total);
+  }
+}
+
+function replayWrong() {
+  if (missedItems.length === 0) return;
+  var pool = getPool();
+  if (pool.length < 4) pool = ALLE;
+  var shuffled = shuffle(missedItems);
+  questions = shuffled.map(function(item) {
+    var m = currentMode === "mixed" ? MODES[Math.floor(Math.random() * MODES.length)] : currentMode;
+    return buildQ(item, m, pool);
+  });
+  qIndex = 0; score = 0; answered = false; wrongAnswers = []; missedItems = []; isAborted = false;
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+  renderQuestion();
+}
+function replay() { startQuiz(currentMode); }
+
+// ── ABORT ─────────────────────────────────────────────────────────────────────
+function askAbort() {
+  document.getElementById("abort-bar").classList.remove("hidden");
+  document.getElementById("abort-btn").classList.add("hidden");
+}
+function cancelAbort() {
+  document.getElementById("abort-bar").classList.add("hidden");
+  document.getElementById("abort-btn").classList.remove("hidden");
+}
+function doAbort() {
+  var answeredSoFar = answered ? qIndex + 1 : qIndex;
+  if (answeredSoFar === 0) { isAborted = false; goHome(); return; }
+  isAborted = true;
+  questions = questions.slice(0, answeredSoFar);
+  qIndex = answeredSoFar;
+  showResult();
+}
+
+// ── HIGHSCORES ────────────────────────────────────────────────────────────────
+var HS_KEY = "stilmittel_hs_v2";
+var HS_MODES = ["name_from_beispiel", "name_from_erklaerung", "wirkung_from_name", "name_from_wirkung", "mixed"];
+var HS_LABELS = {
+  name_from_beispiel: "\u270f\ufe0f Bsp\u2192Name",
+  name_from_erklaerung: "\ud83d\udcd6 Erkl\u2192Name",
+  wirkung_from_name: "\ud83d\udca1 Name\u2192Wkg",
+  name_from_wirkung: "\ud83d\udd0d Wkg\u2192Name",
+  mixed: "\ud83c\udfb2 Gemischt"
+};
+var currentHSTab = "name_from_beispiel";
+var hsReturnTo = "home";
+var pendingHS = null;
+
+function loadHS() {
+  try { return JSON.parse(localStorage.getItem(HS_KEY) || "{}"); } catch(e) { return {}; }
+}
+function saveHSData(data) {
+  try { localStorage.setItem(HS_KEY, JSON.stringify(data)); } catch(e) {}
+}
+function qualifiesForHS(mode, pct, total) {
+  var list = (loadHS()[mode] || []);
+  if (list.length < 5) return true;
+  var worst = list[list.length - 1];
+  return pct > worst.pct || (pct === worst.pct && total > worst.total);
+}
+function addToHS(mode, name, pct, score, total) {
+  var data = loadHS();
+  var list = (data[mode] || []);
+  var d = new Date();
+  var ds = d.getDate() + "." + (d.getMonth() + 1) + "." + d.getFullYear();
+  list.push({ name: name.trim() || "???", pct: pct, score: score, total: total, date: ds });
+  list.sort(function(a, b) { return b.pct - a.pct || b.total - a.total; });
+  data[mode] = list.slice(0, 5);
+  saveHSData(data);
+}
+function checkAndMaybePromptHS(mode, pct, score, total) {
+  if (!qualifiesForHS(mode, pct, total)) return;
+  pendingHS = { mode: mode, pct: pct, score: score, total: total };
+  document.getElementById("hs-name-input").value = "";
+  document.getElementById("hs-modal").style.display = "flex";
+  setTimeout(function() { document.getElementById("hs-name-input").focus(); }, 120);
+}
+function saveHSEntry() {
+  if (!pendingHS) return;
+  addToHS(pendingHS.mode, document.getElementById("hs-name-input").value, pendingHS.pct, pendingHS.score, pendingHS.total);
+  pendingHS = null;
+  document.getElementById("hs-modal").style.display = "none";
+}
+function skipHSEntry() {
+  pendingHS = null;
+  document.getElementById("hs-modal").style.display = "none";
+}
+function showHighscores(returnTo) {
+  hsReturnTo = returnTo || "home";
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("highscores").classList.remove("hidden");
+  currentHSTab = HS_MODES[0];
+  renderHSTabs();
+  renderHSTable(currentHSTab);
+}
+function switchHSTab(mode) {
+  currentHSTab = mode;
+  renderHSTabs();
+  renderHSTable(mode);
+}
+function renderHSTabs() {
+  document.getElementById("hs-tabs").innerHTML = HS_MODES.map(function(m) {
+    var cls = "hs-tab" + (m === currentHSTab ? " active" : "");
+    return '<button class="' + cls + '" onclick="switchHSTab(\'' + m + '\')">' + HS_LABELS[m] + '</button>';
+  }).join("");
+}
+function renderHSTable(mode) {
+  var list = (loadHS()[mode] || []);
+  var el = document.getElementById("hs-table-container");
+  if (list.length === 0) {
+    el.innerHTML = '<div class="hs-empty">-- NOCH KEINE EINTR\u00c4GE --<br><span style="font-size:0.65rem;color:#2a5020;font-family:\'Courier New\',monospace">Spiele eine Runde &amp; trage dich ein!</span></div>';
+    return;
+  }
+  var medals = ["\uD83E\uDD47","\uD83E\uDD48","\uD83E\uDD49"];
+  var rows = '<div class="hs-row header"><span class="hs-rank">#</span><span class="hs-name">NAME</span><span class="hs-score">SCORE</span><span class="hs-date">DATUM</span></div>';
+  list.forEach(function(e, i) {
+    var rank = i < 3 ? medals[i] : (i + 1) + ".";
+    rows += '<div class="hs-row">'
+      + '<span class="hs-rank">' + rank + '</span>'
+      + '<span class="hs-name">' + escHS(e.name) + '</span>'
+      + '<span class="hs-score">' + e.pct + '%<span style="color:#2a6020;font-size:0.68em"> (' + e.score + '/' + e.total + ')</span></span>'
+      + '<span class="hs-date">' + escHS(e.date) + '</span>'
+      + '</div>';
+  });
+  el.innerHTML = '<div class="hs-table">' + rows + '</div>';
+}
+function escHS(s) {
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function closeHighscores() {
+  document.getElementById("highscores").classList.add("hidden");
+  if (hsReturnTo === "result") {
+    document.getElementById("result").classList.remove("hidden");
+  } else {
+    document.getElementById("home").classList.remove("hidden");
+  }
+}
+
+// Enter-Taste im Namensfeld bestätigt
+document.getElementById("hs-name-input").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") saveHSEntry();
+});
+
+function goHome() {
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("result").classList.add("hidden");
+  document.getElementById("highscores").classList.add("hidden");
+  document.getElementById("home").classList.remove("hidden");
+  isAborted = false;
+}
+</script>
+</body>
+</html>
