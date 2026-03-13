@@ -1,3 +1,13 @@
 {
-  "materialien": []
+  "materialien": [
+    {
+      "id": "1773397473161",
+      "titel": "Aufbau Interpretationsaufsatz Literatur",
+      "beschreibung": "Neue Version mit Klarstellungen zur Lyrikanalyse",
+      "icon": "📝",
+      "url": "pdfs/W_Aufbau_Interpretationsaufsatz_Literatur_V2.pdf",
+      "seite": "deutsch",
+      "datum": "2026-03-13"
+    }
+  ]
 }
