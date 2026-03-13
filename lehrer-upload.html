@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Inhalte hochladen – Jan Herrmann</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* === UPLOAD-ADMIN-SEITE === */
+        .upload-bereich {
+            max-width: 680px;
+            margin: 60px auto;
+            padding: 0 20px 80px;
+        }
+
+        .upload-bereich h1 {
+            font-size: 1.6rem;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+        }
+
+        .upload-bereich .untertitel {
+            color: #666;
+            margin-bottom: 36px;
+            font-size: 0.95rem;
+        }
+
+        .form-gruppe {
+            margin-bottom: 20px;
+        }
+
+        .form-gruppe label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            margin-bottom: 6px;
+        }
+
+        .form-gruppe input[type="text"],
+        .form-gruppe input[type="password"],
+        .form-gruppe textarea,
+        .form-gruppe select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1.5px solid #d0d7de;
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 0.95rem;
+            color: #1a1a2e;
+            background: #fff;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        .form-gruppe input:focus,
+        .form-gruppe textarea:focus,
+        .form-gruppe select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .form-gruppe textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .datei-zone {
+            border: 2px dashed #c0cdd8;
+            border-radius: var(--border-radius);
+            padding: 28px;
+            text-align: center;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+            position: relative;
+        }
+
+        .datei-zone:hover,
+        .datei-zone.drag-over {
+            border-color: var(--accent-color);
+            background: #eef6fd;
+        }
+
+        .datei-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .datei-zone .datei-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .datei-zone .datei-hinweis {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        #datei-name {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-top: 8px;
+            min-height: 1.2em;
+        }
+
+        .icon-auswahl {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .icon-btn {
+            background: #f0f4f8;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 6px 10px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: border-color 0.15s, background 0.15s;
+            line-height: 1;
+        }
+
+        .icon-btn:hover {
+            background: #ddeef8;
+        }
+
+        .icon-btn.gewaehlt {
+            border-color: var(--accent-color);
+            background: #ddeef8;
+        }
+
+        .trennlinie {
+            border: none;
+            border-top: 1px solid #e2e8f0;
+            margin: 30px 0;
+        }
+
+        .token-bereich {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .token-bereich summary {
+            font-weight: 600;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 0.95rem;
+            user-select: none;
+        }
+
+        .token-bereich[open] summary {
+            margin-bottom: 14px;
+        }
+
+        .token-hilfe {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .token-hilfe a {
+            color: var(--accent-color);
+        }
+
+        .status-box {
+            padding: 14px 18px;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .status-box.info    { background: #e8f4fd; color: #1a6fa0; display: block; }
+        .status-box.erfolg  { background: #e6f4ea; color: #2d6a4f; display: block; }
+        .status-box.fehler  { background: #fde8e8; color: #9b2335; display: block; }
+
+        .fortschritt {
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .fortschritt-balken {
+            height: 100%;
+            background: var(--accent-color);
+            border-radius: 3px;
+            transition: width 0.3s;
+        }
+
+        .btn-hochladen {
+            width: 100%;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: var(--border-radius);
+            background: var(--primary-color);
+            color: #fff;
+            cursor: pointer;
+            transition: background 0.2s, opacity 0.2s;
+            margin-top: 24px;
+        }
+
+        .btn-hochladen:hover:not(:disabled) {
+            background: var(--accent-color);
+        }
+
+        .btn-hochladen:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 480px) {
+            .upload-bereich {
+                margin: 30px auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+        <div class="container navbar-inner">
+            <a href="index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
+            <button class="hamburger" id="hamburger" aria-label="Menü öffnen"
+                    aria-expanded="false" aria-controls="navbar-links">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="navbar-links" id="navbar-links">
+                <li><a href="index.html">← Zurück zur Homepage</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <main class="upload-bereich" aria-label="Material hochladen">
+
+        <h1>📤 Neues Material hochladen</h1>
+        <p class="untertitel">
+            Datei hochladen und automatisch auf der gewünschten Unterseite verlinken.
+        </p>
+
+
+        <!-- GitHub-Token -->
+        <details class="token-bereich" id="token-details">
+            <summary>🔑 GitHub-Zugangsdaten</summary>
+            <p class="token-hilfe">
+                Einmalig einrichten: Du benötigst ein GitHub Personal Access Token mit
+                <strong>repo</strong>-Berechtigung.<br>
+                Token erstellen:
+                <a href="https://github.com/settings/tokens/new?scopes=repo&description=Lehrer-Homepage-Upload"
+                   target="_blank" rel="noopener">github.com → Settings → Developer settings → Tokens</a>
+            </p>
+            <div class="form-gruppe">
+                <label for="github-token">GitHub Token</label>
+                <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxxxx"
+                       autocomplete="off" spellcheck="false">
+            </div>
+            <div class="form-gruppe">
+                <label for="github-repo">Repository (Owner/Repo)</label>
+                <input type="text" id="github-repo" value="LehrerHer/lehrer-homepage">
+            </div>
+            <div class="form-gruppe">
+                <label for="github-branch">Branch</label>
+                <input type="text" id="github-branch" value="master">
+            </div>
+        </details>
+
+        <hr class="trennlinie">
+
+        <!-- Formular -->
+        <form id="upload-formular" novalidate>
+
+            <!-- Datei-Upload -->
+            <div class="form-gruppe">
+                <label>Datei <span style="color:#c00">*</span></label>
+                <div class="datei-zone" id="datei-zone">
+                    <input type="file" id="datei-input"
+                           accept=".pdf,.jpg,.jpeg,.png,.docx,.zip,.pptx,.xlsx"
+                           aria-label="Datei auswählen">
+                    <div class="datei-icon">📎</div>
+                    <div>Datei hier ablegen oder klicken zum Auswählen</div>
+                    <div class="datei-hinweis">PDF, JPG, PNG, DOCX, ZIP, PPTX, XLSX – max. 25 MB</div>
+                </div>
+                <div id="datei-name"></div>
+            </div>
+
+            <!-- Titel -->
+            <div class="form-gruppe">
+                <label for="material-titel">Titel <span style="color:#c00">*</span></label>
+                <input type="text" id="material-titel"
+                       placeholder="z. B. Arbeitsblatt Weimarer Republik" required>
+            </div>
+
+            <!-- Beschreibung -->
+            <div class="form-gruppe">
+                <label for="material-beschreibung">Beschreibung</label>
+                <textarea id="material-beschreibung"
+                          placeholder="Kurze Beschreibung des Materials (optional)"></textarea>
+            </div>
+
+            <!-- Icon -->
+            <div class="form-gruppe">
+                <label>Icon</label>
+                <div class="icon-auswahl" role="group" aria-label="Icon auswählen">
+                    <button type="button" class="icon-btn gewaehlt" data-icon="📄" aria-pressed="true">📄</button>
+                    <button type="button" class="icon-btn" data-icon="📚" aria-pressed="false">📚</button>
+                    <button type="button" class="icon-btn" data-icon="📝" aria-pressed="false">📝</button>
+                    <button type="button" class="icon-btn" data-icon="🖼️" aria-pressed="false">🖼️</button>
+                    <button type="button" class="icon-btn" data-icon="📊" aria-pressed="false">📊</button>
+                    <button type="button" class="icon-btn" data-icon="🎯" aria-pressed="false">🎯</button>
+                    <button type="button" class="icon-btn" data-icon="✏️" aria-pressed="false">✏️</button>
+                    <button type="button" class="icon-btn" data-icon="🗺️" aria-pressed="false">🗺️</button>
+                </div>
+            </div>
+
+            <!-- Zielseite -->
+            <div class="form-gruppe">
+                <label for="material-seite">Unterseite <span style="color:#c00">*</span></label>
+                <select id="material-seite" required>
+                    <option value="">– Bitte auswählen –</option>
+                    <option value="materialien">Startseite → Materialien</option>
+                    <option value="deutsch">Fach: Deutsch</option>
+                    <option value="geschichte">Fach: Geschichte</option>
+                    <option value="wipo">Fach: Wirtschaft/Politik</option>
+                    <option value="informatik">Fach: Informatik</option>
+                    <option value="werte-normen">Fach: Werte &amp; Normen</option>
+                    <option value="ag-projekte">AGs &amp; Projekte</option>
+                </select>
+            </div>
+
+            <!-- Hochladen -->
+            <button type="submit" class="btn-hochladen" id="btn-hochladen">
+                📤 Hochladen &amp; verlinken
+            </button>
+
+        </form>
+
+        <!-- Status-Anzeige -->
+        <div class="fortschritt" id="fortschritt" aria-hidden="true">
+            <div class="fortschritt-balken" id="fortschritt-balken" style="width:0%"></div>
+        </div>
+        <div class="status-box" id="status-box" role="status" aria-live="polite"></div>
+
+    </main>
+
+
+    <footer>
+        <div class="container footer-inner">
+            <p>© <span id="footer-jahr">2025</span> Jan Herrmann &nbsp;·&nbsp; Oberschule Spelle</p>
+        </div>
+    </footer>
+
+
+    <script src="js/main.js"></script>
+    <script>
+    /* === LEHRER-UPLOAD: GitHub-API-Integration === */
+    (function () {
+
+        /* ---- Hilfsfunktionen ---- */
+        function speichereEinstellungen() {
+            var token = document.getElementById('github-token').value.trim();
+            var repo  = document.getElementById('github-repo').value.trim();
+            var branch = document.getElementById('github-branch').value.trim();
+            if (token)  localStorage.setItem('gh_token',  token);
+            if (repo)   localStorage.setItem('gh_repo',   repo);
+            if (branch) localStorage.setItem('gh_branch', branch);
+        }
+
+        function ladeEinstellungen() {
+            var token  = localStorage.getItem('gh_token')  || '';
+            var repo   = localStorage.getItem('gh_repo')   || 'LehrerHer/lehrer-homepage';
+            var branch = localStorage.getItem('gh_branch') || 'master';
+            document.getElementById('github-token').value  = token;
+            document.getElementById('github-repo').value   = repo;
+            document.getElementById('github-branch').value = branch;
+            if (token) {
+                document.getElementById('token-details').removeAttribute('open');
+            } else {
+                document.getElementById('token-details').setAttribute('open', '');
+            }
+        }
+
+        function zeigeStatus(typ, nachricht) {
+            var box = document.getElementById('status-box');
+            box.className = 'status-box ' + typ;
+            box.textContent = nachricht;
+        }
+
+        function zeigeFortschritt(prozent) {
+            var wrap = document.getElementById('fortschritt');
+            var balken = document.getElementById('fortschritt-balken');
+            wrap.style.display = prozent < 100 ? 'block' : 'none';
+            balken.style.width = prozent + '%';
+        }
+
+        function dateiZuBase64(datei) {
+            return new Promise(function (resolve, reject) {
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var base64 = reader.result.split(',')[1];
+                    resolve(base64);
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(datei);
+            });
+        }
+
+        async function githubApi(methode, pfad, daten) {
+            var token  = document.getElementById('github-token').value.trim();
+            var repo   = document.getElementById('github-repo').value.trim();
+            var branch = document.getElementById('github-branch').value.trim();
+            var url = 'https://api.github.com/repos/' + repo + '/contents/' + pfad;
+            var antwort = await fetch(url, {
+                method: methode,
+                headers: {
+                    'Authorization': 'token ' + token,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/vnd.github.v3+json'
+                },
+                body: daten ? JSON.stringify(daten) : undefined
+            });
+            var json = await antwort.json();
+            if (!antwort.ok) {
+                throw new Error(json.message || 'GitHub API Fehler (Status ' + antwort.status + ')');
+            }
+            return json;
+        }
+
+        async function ladeDateiHoch(dateiName, base64Inhalt) {
+            var pfad = 'pdfs/' + dateiName;
+            /* Prüfen ob Datei schon existiert (SHA nötig für Update) */
+            var sha = null;
+            try {
+                var bestehend = await githubApi('GET', pfad);
+                sha = bestehend.sha;
+            } catch (e) { /* Datei neu, kein SHA nötig */ }
+
+            var nutzlast = {
+                message: 'Material hochgeladen: ' + dateiName,
+                content: base64Inhalt,
+                branch: document.getElementById('github-branch').value.trim()
+            };
+            if (sha) nutzlast.sha = sha;
+
+            await githubApi('PUT', pfad, nutzlast);
+            return pfad;
+        }
+
+        async function aktualisiereInhalteJson(neuerEintrag) {
+            var branch = document.getElementById('github-branch').value.trim();
+            /* Aktuelle inhalte.json laden */
+            var aktuell = await githubApi('GET', 'inhalte.json');
+            var inhalt = JSON.parse(atob(aktuell.content.replace(/\n/g, '')));
+            inhalt.materialien.push(neuerEintrag);
+
+            await githubApi('PUT', 'inhalte.json', {
+                message: 'Neues Material verlinkt: ' + neuerEintrag.titel,
+                content: btoa(unescape(encodeURIComponent(JSON.stringify(inhalt, null, 2) + '\n'))),
+                sha: aktuell.sha,
+                branch: branch
+            });
+        }
+
+        /* ---- Icon-Auswahl ---- */
+        var gewaehltesIcon = '📄';
+        document.querySelectorAll('.icon-btn').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.icon-btn').forEach(function (b) {
+                    b.classList.remove('gewaehlt');
+                    b.setAttribute('aria-pressed', 'false');
+                });
+                btn.classList.add('gewaehlt');
+                btn.setAttribute('aria-pressed', 'true');
+                gewaehltesIcon = btn.dataset.icon;
+            });
+        });
+
+        /* ---- Drag & Drop ---- */
+        var dateiZone = document.getElementById('datei-zone');
+        dateiZone.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            dateiZone.classList.add('drag-over');
+        });
+        dateiZone.addEventListener('dragleave', function () {
+            dateiZone.classList.remove('drag-over');
+        });
+        dateiZone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            dateiZone.classList.remove('drag-over');
+            var datei = e.dataTransfer.files[0];
+            if (datei) {
+                document.getElementById('datei-input').files = e.dataTransfer.files;
+                document.getElementById('datei-name').textContent = '✓ ' + datei.name;
+            }
+        });
+
+        document.getElementById('datei-input').addEventListener('change', function () {
+            var datei = this.files[0];
+            document.getElementById('datei-name').textContent = datei ? '✓ ' + datei.name : '';
+        });
+
+        /* ---- Einstellungen laden ---- */
+        ladeEinstellungen();
+
+        /* ---- Formular absenden ---- */
+        document.getElementById('upload-formular').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            var token  = document.getElementById('github-token').value.trim();
+            var titel  = document.getElementById('material-titel').value.trim();
+            var beschreibung = document.getElementById('material-beschreibung').value.trim();
+            var seite  = document.getElementById('material-seite').value;
+            var dateiInput = document.getElementById('datei-input');
+            var datei  = dateiInput.files[0];
+
+            /* Pflichtfelder prüfen */
+            if (!token) {
+                zeigeStatus('fehler', '⚠️ Bitte zuerst das GitHub-Token eintragen (oben aufklappen).');
+                document.getElementById('token-details').setAttribute('open', '');
+                return;
+            }
+            if (!datei) {
+                zeigeStatus('fehler', '⚠️ Bitte eine Datei auswählen.');
+                return;
+            }
+            if (!titel) {
+                zeigeStatus('fehler', '⚠️ Bitte einen Titel eingeben.');
+                document.getElementById('material-titel').focus();
+                return;
+            }
+            if (!seite) {
+                zeigeStatus('fehler', '⚠️ Bitte eine Unterseite auswählen.');
+                document.getElementById('material-seite').focus();
+                return;
+            }
+            if (datei.size > 25 * 1024 * 1024) {
+                zeigeStatus('fehler', '⚠️ Die Datei ist zu groß (max. 25 MB).');
+                return;
+            }
+
+            speichereEinstellungen();
+
+            var btn = document.getElementById('btn-hochladen');
+            btn.disabled = true;
+            zeigeFortschritt(10);
+            zeigeStatus('info', '⏳ Datei wird hochgeladen …');
+
+            try {
+                /* Datei Base64-kodieren */
+                var base64 = await dateiZuBase64(datei);
+                zeigeFortschritt(40);
+
+                /* Datei in GitHub-Repo hochladen */
+                var dateiName = datei.name.replace(/[^a-zA-Z0-9.\-_äöüÄÖÜß]/g, '_');
+                await ladeDateiHoch(dateiName, base64);
+                zeigeFortschritt(70);
+
+                zeigeStatus('info', '⏳ Verlinkung wird eingetragen …');
+
+                /* inhalte.json aktualisieren */
+                var neuerEintrag = {
+                    id: Date.now().toString(),
+                    titel: titel,
+                    beschreibung: beschreibung,
+                    icon: gewaehltesIcon,
+                    url: 'pdfs/' + dateiName,
+                    seite: seite,
+                    datum: new Date().toISOString().slice(0, 10)
+                };
+                await aktualisiereInhalteJson(neuerEintrag);
+                zeigeFortschritt(100);
+
+                zeigeStatus('erfolg',
+                    '✅ Fertig! „' + titel + '" wurde hochgeladen und auf der Seite verlinkt. '
+                    + 'Der Link erscheint nach dem nächsten Seiten-Reload.');
+
+                /* Formular zurücksetzen */
+                document.getElementById('upload-formular').reset();
+                document.getElementById('datei-name').textContent = '';
+                document.querySelectorAll('.icon-btn').forEach(function (b) {
+                    b.classList.remove('gewaehlt');
+                    b.setAttribute('aria-pressed', 'false');
+                });
+                document.querySelector('.icon-btn[data-icon="📄"]').classList.add('gewaehlt');
+                document.querySelector('.icon-btn[data-icon="📄"]').setAttribute('aria-pressed', 'true');
+                gewaehltesIcon = '📄';
+
+            } catch (fehler) {
+                zeigeStatus('fehler', '❌ Fehler: ' + fehler.message);
+                zeigeFortschritt(0);
+            } finally {
+                btn.disabled = false;
+            }
+        });
+
+    })();
+    </script>
+
+</body>
+</html>
