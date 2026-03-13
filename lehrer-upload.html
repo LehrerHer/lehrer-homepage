@@ -433,6 +433,8 @@
             var repo   = document.getElementById('github-repo').value.trim();
             var branch = document.getElementById('github-branch').value.trim();
             var url = 'https://api.github.com/repos/' + repo + '/contents/' + pfad;
+            /* Bei GET den Branch als ref-Parameter mitgeben */
+            if (methode === 'GET') url += '?ref=' + encodeURIComponent(branch);
             var antwort = await fetch(url, {
                 method: methode,
                 headers: {
@@ -471,17 +473,26 @@
 
         async function aktualisiereInhalteJson(neuerEintrag) {
             var branch = document.getElementById('github-branch').value.trim();
-            /* Aktuelle inhalte.json laden */
-            var aktuell = await githubApi('GET', 'inhalte.json');
-            var inhalt = JSON.parse(atob(aktuell.content.replace(/\n/g, '')));
+            /* Aktuelle inhalte.json laden (ggf. neu anlegen wenn noch nicht vorhanden) */
+            var sha = null;
+            var inhalt = { materialien: [] };
+            try {
+                var aktuell = await githubApi('GET', 'inhalte.json');
+                sha = aktuell.sha;
+                inhalt = JSON.parse(atob(aktuell.content.replace(/\n/g, '')));
+            } catch (e) {
+                /* inhalte.json existiert noch nicht auf diesem Branch – wird neu angelegt */
+            }
             inhalt.materialien.push(neuerEintrag);
 
-            await githubApi('PUT', 'inhalte.json', {
+            var nutzlast = {
                 message: 'Neues Material verlinkt: ' + neuerEintrag.titel,
                 content: btoa(unescape(encodeURIComponent(JSON.stringify(inhalt, null, 2) + '\n'))),
-                sha: aktuell.sha,
                 branch: branch
-            });
+            };
+            if (sha) nutzlast.sha = sha;
+
+            await githubApi('PUT', 'inhalte.json', nutzlast);
         }
 
         /* ---- Icon-Auswahl ---- */
