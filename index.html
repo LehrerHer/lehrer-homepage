@@ -46,7 +46,7 @@
                 <li><a href="#startseite" class="aktiv">Startseite</a></li>
                 <li><a href="#faecher">Fächer</a></li>
                 <li><a href="#materialien">Materialien</a></li>
-                <li><a href="#quizze">Quizze</a></li>
+                <li><a href="#quizze">Quiz</a></li>
                 <li><a href="blog.html">Blog</a></li>
                 <li><a href="#kontakt">Kontakt</a></li>
             </ul>
@@ -185,7 +185,7 @@
     <section id="quizze">
         <div class="container">
 
-            <h2 class="section-titel">Interaktive Quizze</h2>
+            <h2 class="section-titel">Interaktive Quiz</h2>
             <p class="section-untertitel">Lernmittel zum selbstständigen Üben – direkt im Browser, ohne Anmeldung.</p>
 
             <div class="quiz-feature-card">
@@ -286,6 +286,10 @@
                 </div>
 
             </div>
+
+            <!-- Dynamisch hochgeladene Materialien (aus inhalte.json) -->
+            <div class="dynamic-inhalte" data-seite="materialien"></div>
+
         </div>
     </section>
 
@@ -370,6 +374,8 @@
 
     <!-- JavaScript (Menü, Scroll-Effekte) -->
     <script src="js/main.js"></script>
+    <!-- Dynamische Inhalte aus inhalte.json -->
+    <script src="js/dynamic-content.js"></script>
 
 </body>
 </html>
