@@ -255,6 +255,17 @@ section:nth-child(even) {
     gap: 24px;
 }
 
+/* Hauptfächer-Reihe: immer genau 2 gleichbreite Spalten */
+.faecher-haupt {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 768px) {
+    .faecher-haupt {
+        grid-template-columns: 1fr;
+    }
+}
+
 .fach-karte {
     background-color: var(--farbe-weiss);
     border-radius: var(--radius);
