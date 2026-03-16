@@ -4,10 +4,19 @@
       "id": "1773397473161",
       "titel": "Aufbau Interpretationsaufsatz Literatur",
       "beschreibung": "Neue Version mit Klarstellungen zur Lyrikanalyse",
-      "icon": "📝",
+      "icon": "ð",
       "url": "pdfs/W_Aufbau_Interpretationsaufsatz_Literatur_V2.pdf",
       "seite": "deutsch",
       "datum": "2026-03-13"
+    },
+    {
+      "id": "1773655668817",
+      "titel": "40.000 km für eine Hose",
+      "beschreibung": "",
+      "icon": "📄",
+      "url": "pdfs/AB4_Seite1_Die_Reise_einer_Jeans.pdf",
+      "seite": "wipo",
+      "datum": "2026-03-16"
     }
   ]
 }
