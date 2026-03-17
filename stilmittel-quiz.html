@@ -256,7 +256,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
       <p>Alle Fragetypen durcheinander</p>
     </div>
   </div>
-  <div class="hint-box" id="hint-box">37 Stilmittel werden abgefragt. Tippe auf die richtige Antwort unter 4 Optionen.</div>
+  <div class="hint-box" id="hint-box">39 Stilmittel werden abgefragt. Tippe auf die richtige Antwort unter 4 Optionen.</div>
 </div>
 <!-- QUIZ -->
 <div id="quiz" class="wrap hidden">
@@ -382,6 +382,13 @@ var ALLE = [
     wirkung: "verdichtet, ersetzt Begriff durch verwandten"
   },
   {
+    name: "Synekdoche", kat: "Bildlichkeit", mittelstufe: false,
+    bild: "\uD83E\uDDE9",
+    erklaerung: "Ein Teil steht f\u00fcr das Ganze (pars pro toto) oder das Ganze f\u00fcr einen Teil (totum pro parte) \u2014 Ersetzung innerhalb desselben Begriffsfelds",
+    beispiel: "\u201ePro Nase zwei W\u00fcrste\u201c (Nase\u00a0=\u00a0Person)  \u2016  \u201eDeutschland hat gewonnen\u201c (\u00a0=\u00a0die Mannschaft)  \u2016  \u201eSolange du deine F\u00fc\u00dfe unter meinen Tisch stellst \u2026\u201c (Tisch\u00a0=\u00a0Haushalt)",
+    wirkung: "verknappend, verallgemeinernd, eindringlich"
+  },
+  {
     name: "Chiffre", kat: "Bildlichkeit", mittelstufe: true,
     bild: "\uD83D\uDD10",
     erklaerung: "Verschl\u00fcsseltes Zeichen, das ohne zus\u00e4tzliches Wissen nicht eindeutig zu entschl\u00fcsseln ist.",
@@ -399,9 +406,16 @@ var ALLE = [
   {
     name: "Litotes", kat: "Wortfigur", mittelstufe: false,
     bild: "\uD83E\uDD0F",
-    erklaerung: "Hervorhebung durch doppelte Verneinung oder bewusste Untertreibung.",
-    beispiel: "\u201enicht selten\u201c  \u2016  \u201enicht unbekannt\u201c  \u2016  \u201edas ist nicht schlecht\u201c",
-    wirkung: "hervorhebend durch Untertreibung"
+    erklaerung: "Hervorhebung eines Begriffs durch doppelte Verneinung oder Verneinung des Gegenteils",
+    beispiel: "\u201enicht selten\u201c  \u2016  \u201enicht un\u00fcblich\u201c  \u2016  \u201eEr hat damit nicht Unrecht.\u201c",
+    wirkung: "bekr\u00e4ftigend durch Umweg, erzeugt einen leicht ironischen Ton"
+  },
+  {
+    name: "Understatement", kat: "Gedankenfigur", mittelstufe: false,
+    bild: "\uD83E\uDD2B",
+    erklaerung: "Bewusste Untertreibung eines Sachverhalts \u2014 etwas wird als kleiner, harmloser oder weniger bedeutsam dargestellt, als es tats\u00e4chlich ist",
+    beispiel: "\u201eDas war nicht ganz optimal.\u201c (nach einer Katastrophe)  \u2016  \u201eIch bin nicht ganz ungl\u00fccklich dar\u00fcber.\u201c (bei gro\u00dfer Freude)  \u2016  \u201eDas k\u00f6nnte schwierig werden.\u201c (wenn etwas fast aussichtslos ist)",
+    wirkung: "abschw\u00e4chend, oft ironisch oder humorvoll \u2014 kann Distanz, Coolness oder Bescheidenheit ausdr\u00fccken"
   },
   {
     name: "Periphrase", kat: "Wortfigur", mittelstufe: false,
@@ -428,8 +442,8 @@ var ALLE = [
     name: "Euphemismus", kat: "Wortfigur", mittelstufe: true,
     bild: "\uD83C\uDF38",
     erklaerung: "Besch\u00f6nigende Umschreibung eines unangenehmen oder anst\u00f6\u00dfigen Sachverhalts.",
-    beispiel: "\u201eentschlafen\u201c (statt: sterben)  \u2016  \u201efreisetzen\u201c (statt: entlassen)",
-    wirkung: "abmildernd, verh\u00fcllend"
+    beispiel: "\u201eentschlafen\u201c (statt: sterben)  \u2016  \u201efreisetzen\u201c (statt: entlassen)  \u2016  \u201ekollateraler Schaden\u201c (statt: get\u00f6tete Zivilisten)",
+    wirkung: "abmildernd, verh\u00fcllend \u2014 kann sch\u00fctzen oder Mitgef\u00fchl erzeugen, aber auch gezielt verschleiern und manipulieren (besonders in Politik und Medien)"
   },
   // ── SATZFIGUREN ──
   {
@@ -477,9 +491,9 @@ var ALLE = [
   {
     name: "Chiasmus", kat: "Satzfigur", mittelstufe: true,
     bild: "\u2716\uFE0F",
-    erklaerung: "\u00dcberkreuzstellung von syntaktisch oder inhaltlich einander entsprechenden Satzgliedern.",
+    erklaerung: "\u00dcberkreuzstellung von syntaktisch oder inhaltlich einander entsprechenden Satzgliedern \u2014 die Reihenfolge wird in der zweiten H\u00e4lfte umgekehrt (Schema: A\u2013B\u00a0/\u00a0B\u2013A)",
     beispiel: "\u201eDie Kunst ist lang \u2013 und kurz ist unser Leben\u201c (Goethe)",
-    wirkung: "kreuzend, symmetrisch, pr\u00e4gnant"
+    wirkung: "pointiert, einpr\u00e4gsam, symmetrisch \u2014 erzeugt den Eindruck von Ausgewogenheit oder Gegens\u00e4tzlichkeit"
   },
   {
     name: "Polysyndeton", kat: "Satzfigur", mittelstufe: false,
@@ -505,9 +519,9 @@ var ALLE = [
   {
     name: "Enjambement", kat: "Satzfigur", mittelstufe: true,
     bild: "\u21A9\uFE0F",
-    erklaerung: "Zeilensprung \u2013 ein Satz wird \u00fcber das Versende hinaus in der n\u00e4chsten Zeile fortgesetzt.",
+    erklaerung: "Zeilensprung \u2013 ein Satz wird \u00fcber das Versende hinaus in der n\u00e4chsten Zeile fortgesetzt. \u2014 Nur in Lyrik, nicht in Prosa",
     beispiel: "\u201e\u00dcber allen Gipfeln / Ist Ruh\u201c (Goethe)  \u2016  \u201eIch bin so wild nach deinem / Erdbeermund\u201c (Villon/Klammer)",
-    wirkung: "flie\u00dfend, dr\u00e4ngend, spannungserzeugend"
+    wirkung: "flie\u00dfend, dr\u00e4ngend, spannungserzeugend \u2014 nur in Gedichten; in Prosatexten nicht anwendbar"
   },
   // ── GEDANKENFIGUREN ──
   {
@@ -520,9 +534,9 @@ var ALLE = [
   {
     name: "Ironie", kat: "Gedankenfigur", mittelstufe: true,
     bild: "\uD83D\uDE0F",
-    erklaerung: "Das Gegenteil des Gemeinten wird gesagt \u2013 erkennbar durch Kontext oder Tonfall.",
+    erklaerung: "Das Gegenteil des Gemeinten wird gesagt \u2014 die eigentliche Bedeutung ergibt sich erst aus dem Kontext, dem Tonfall oder dem Vorwissen des Lesers",
     beispiel: "\u201eWir haben\u2019s ja\u201c (wenn Geld knapp ist)  \u2016  \u201eDas hast du ja toll hinbekommen!\u201c",
-    wirkung: "verschl\u00fcsselt, doppelb\u00f6dig"
+    wirkung: "doppelb\u00f6dig, verschl\u00fcsselt; in geschriebenen Texten nur durch Kontextanalyse erkennbar \u2014 kann belustigen, distanzieren oder verletzen"
   },
   {
     name: "Oxymoron", kat: "Gedankenfigur", mittelstufe: false,
@@ -543,7 +557,7 @@ var ALLE = [
     bild: "\u2753",
     erklaerung: "Eine Frage, auf die keine Antwort erwartet wird \u2013 die Antwort ist bereits klar.",
     beispiel: "\u201eWie viele Menschen m\u00fcssen noch sterben?\u201c  \u2016  \u201eBin ich denn der Einzige, der das sieht?\u201c",
-    wirkung: "appellierend, keine Antwort erwartet"
+    wirkung: "bindet Leser/H\u00f6rer ein \u2014 wer die Frage beantwortet, stimmt dem Sprecher bereits zu; erzeugt Zustimmungsdruck, Dringlichkeit oder Nachdenklichkeit"
   },
   {
     name: "Sarkasmus", kat: "Gedankenfigur", mittelstufe: true,
@@ -555,16 +569,16 @@ var ALLE = [
   {
     name: "Katachrese", kat: "Gedankenfigur", mittelstufe: false,
     bild: "\uD83E\uDDE9",
-    erklaerung: "Verblasste Metapher, die nicht mehr als Bild wahrgenommen wird, oder widerspr\u00fcchliche Bildmischung.",
-    beispiel: "\u201eTischbein\u201c  \u2016  \u201eArm des Flusses\u201c  \u2016  \u201eDas schl\u00e4gt dem Fass die Krone ins Gesicht\u201c",
-    wirkung: "bildlich ersetzend oder bildbr\u00fcchig"
+    erklaerung: "Zwei Formen: (a) Tote Metapher \u2014 ein Bild, das durch Alltagsgebrauch nicht mehr als Bild wahrgenommen wird; (b) Bildbruch \u2014 zwei Metaphern werden widerspr\u00fcchlich kombiniert",
+    beispiel: "Tote Metapher: \u201eTischbein\u201c  \u2016  \u201eFlaschenhals\u201c  \u2016  \u201eArm des Flusses\u201c  ||  Bildbruch: \u201eDas schl\u00e4gt dem Fass die Krone ins Gesicht\u201c",
+    wirkung: "Tote Metapher: unauff\u00e4llig, verblasst; Bildbruch: unfreiwillig komisch oder stilistisch ungeschickt \u2014 oft ein Fehler"
   },
   // ── KLANGFIGUREN ──
   {
     name: "Alliteration", kat: "Klangfigur", mittelstufe: true,
     bild: "\uD83D\uDD24",
     erklaerung: "Wiederholung des gleichen Anfangslauts bei benachbarten W\u00f6rtern.",
-    beispiel: "\u201eMilch macht m\u00fcde M\u00e4nner munter\u201c  \u2016  \u201eVeni, vidi, vici\u201c (Caesar)",
+    beispiel: "\u201eMilch macht m\u00fcde M\u00e4nner munter\u201c  \u2016  \u201eMit Mann und Maus\u201c  \u2016  \u201eWer wirbt, wirbt W\u00e4hler\u201c",
     wirkung: "betont, einpr\u00e4gsam, klingend"
   },
   {
@@ -598,9 +612,9 @@ var ALLE = [
   {
     name: "Elision", kat: "Klangfigur", mittelstufe: false,
     bild: "\u2702\uFE0F",
-    erklaerung: "Auslassung eines Lautes oder einer Silbe, meist um das Versma\u00df einzuhalten.",
+    erklaerung: "Auslassung eines Lautes oder einer Silbe, meist um das Versma\u00df einzuhalten. \u2014 Vor allem in Lyrik, erkennbar am Apostroph (\u2019)",
     beispiel: "\u201ein ew\u2019gen Tau\u201c (statt: ewigen)  \u2016  \u201eHab\u2019 ich\u201c (statt: Habe ich)",
-    wirkung: "Metrum erhaltend, klanglich weich"
+    wirkung: "Metrum erhaltend, klanglich weich \u2014 vor allem in \u00e4lteren Gedichten; in moderner Prosa kaum vorhanden"
   }
 ];
 
