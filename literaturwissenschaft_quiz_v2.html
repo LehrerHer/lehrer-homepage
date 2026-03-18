@@ -365,17 +365,22 @@ body::before {
 .sort-list { display: flex; flex-direction: column; gap: 8px; }
 .sort-item {
   display: flex; align-items: center; gap: 10px;
-  padding: 12px 14px;
+  padding: 10px 14px;
   border: 1px solid var(--border); border-radius: 10px;
   background: rgba(255,255,255,.03);
-  cursor: grab; font-size: 14px;
-  transition: all .2s; user-select: none;
+  font-size: 14px; transition: all .2s;
 }
-.sort-item:active { cursor: grabbing; }
-.sort-item .drag-handle { color: var(--muted); font-size: 16px; }
-.sort-item.drag-over { border-color: var(--gold); background: rgba(255,209,102,.08); }
 .sort-item.ok { border-color: var(--teal); }
 .sort-item.no { border-color: var(--accent); }
+.sort-arrows { display: flex; flex-direction: column; gap: 2px; flex-shrink: 0; }
+.sort-arrow {
+  background: rgba(255,255,255,.07); border: 1px solid var(--border);
+  border-radius: 5px; color: var(--text);
+  font-size: 10px; line-height: 1; padding: 3px 6px;
+  cursor: pointer; transition: background .15s;
+}
+.sort-arrow:hover:not(:disabled) { background: rgba(255,255,255,.16); }
+.sort-arrow:disabled { opacity: .25; cursor: default; }
 .sort-submit {
   margin-top: 12px;
   padding: 10px 26px;
@@ -1219,64 +1224,46 @@ function selRight(id, r) {
 
 // ── SORT ──
 function buildSort(q) {
-  const items = shuffle(q.items.map((it,i)=>({text:it,origIdx:i})));
-  quiz.matchState[q.id] = { order: items.map(x=>x.origIdx) };
-  const listItems = items.map((it,i)=>`<div class="sort-item" draggable="true" id="si-${q.id}-${i}" data-idx="${i}"
-    ondragstart="dragStart(event,'${q.id}',${i})"
-    ondragover="dragOver(event,'${q.id}',${i})"
-    ondrop="drop(event,'${q.id}',${i})"
-    ondragleave="dragLeave(event,'${q.id}',${i})">
-    <span class="drag-handle">⠿</span><span>${it.text}</span>
-  </div>`).join('');
+  const shuffled = shuffle(q.items.map((it,i)=>({text:it,origIdx:i})));
+  quiz.matchState[q.id] = { order: shuffled.map(x=>x.origIdx), texts: q.items.slice() };
+  const n = shuffled.length;
+  const listItems = shuffled.map((it,pos)=>sortItemHTML(q.id,pos,it.text,n)).join('');
   return `<div class="sort-list" id="sl-${q.id}">${listItems}</div>
   <button class="sort-submit" id="ssub-${q.id}" onclick="answerSort('${q.id}',${JSON.stringify(q.correctOrder)})">Reihenfolge prüfen</button>`;
 }
-let dragSrc = null;
-function dragStart(e,id,i) { dragSrc={id,i}; e.dataTransfer.effectAllowed='move'; }
-function dragOver(e,id,i) { e.preventDefault(); document.getElementById(`si-${id}-${i}`).classList.add('drag-over'); }
-function dragLeave(e,id,i) { document.getElementById(`si-${id}-${i}`).classList.remove('drag-over'); }
-function drop(e,id,i) {
-  e.preventDefault();
-  document.getElementById(`si-${id}-${i}`).classList.remove('drag-over');
-  if (!dragSrc || dragSrc.id!==id || dragSrc.i===i) return;
+function sortItemHTML(id, pos, text, total) {
+  const upDis  = pos === 0         ? 'disabled' : '';
+  const downDis = pos === total - 1 ? 'disabled' : '';
+  return `<div class="sort-item" id="si-${id}-${pos}">
+    <div class="sort-arrows">
+      <button class="sort-arrow" onclick="moveSort('${id}',${pos},-1)" ${upDis} aria-label="Nach oben">▲</button>
+      <button class="sort-arrow" onclick="moveSort('${id}',${pos},1)" ${downDis} aria-label="Nach unten">▼</button>
+    </div>
+    <span>${text}</span>
+  </div>`;
+}
+function moveSort(id, pos, dir) {
+  if (quiz.answers[id]) return;
   const ms = quiz.matchState[id];
-  const tmp = ms.order[dragSrc.i]; ms.order[dragSrc.i]=ms.order[i]; ms.order[i]=tmp;
-  // Swap DOM
+  const n = ms.order.length;
+  const newPos = pos + dir;
+  if (newPos < 0 || newPos >= n) return;
+  const tmp = ms.order[pos]; ms.order[pos] = ms.order[newPos]; ms.order[newPos] = tmp;
   const sl = document.getElementById(`sl-${id}`);
-  const items = [...sl.children];
-  const a = items[dragSrc.i], b = items[i];
-  const aNext = a.nextSibling;
-  if (aNext===b) { sl.insertBefore(b,a); } else { sl.insertBefore(a,b); if(aNext) sl.insertBefore(b,aNext); else sl.appendChild(b); }
-  dragSrc=null;
+  sl.innerHTML = ms.order.map((origIdx,p) => sortItemHTML(id, p, ms.texts[origIdx], n)).join('');
 }
 function answerSort(id, correctOrder) {
   if (quiz.answers[id]) return;
   const q = quiz.qs.find(x=>x.id===id);
   const ms = quiz.matchState[id];
-  document.getElementById(`ssub-${id}`).disabled=true;
+  document.getElementById(`ssub-${id}`).disabled = true;
   const sl = document.getElementById(`sl-${id}`);
-  const items = [...sl.children];
-  let correct=0;
-  items.forEach((el,pos)=>{
-    const origIdx = parseInt(el.dataset.idx);
-    // Map current positions to original indices
-  });
-  // Simpler check: read current order from DOM
-  const currentOrder = items.map(el=>parseInt(el.dataset.idx));
-  // Map slot positions to original items
-  const orderedOrigIdx = currentOrder.map(slotIdx=> {
-    // find what orig item is in this slot
-    return ms.order[slotIdx] !== undefined ? ms.order[slotIdx] : slotIdx;
-  });
-  // Re-check: just compare ms.order (which we kept updated) to correctOrder
-  let matches=0;
-  ms.order.forEach((v,i)=>{ if(v===correctOrder[i]) matches++; });
-  const allOk = matches===correctOrder.length;
-  items.forEach((el,i)=>{
-    const ok = ms.order[i]===correctOrder[i];
-    el.classList.add(ok?'ok':'no');
-  });
-  const pts = allOk ? ptsByDiff(q.sw) : matches>0?Math.round(ptsByDiff(q.sw)*matches/correctOrder.length):0;
+  sl.querySelectorAll('.sort-arrow').forEach(b => b.disabled = true);
+  let matches = 0;
+  ms.order.forEach((v,i) => { if (v === correctOrder[i]) matches++; });
+  const allOk = matches === correctOrder.length;
+  [...sl.children].forEach((el,i) => el.classList.add(ms.order[i]===correctOrder[i]?'ok':'no'));
+  const pts = allOk ? ptsByDiff(q.sw) : matches>0 ? Math.round(ptsByDiff(q.sw)*matches/correctOrder.length) : 0;
   record(id, allOk, pts);
   showEx(id, allOk);
   toast(allOk?`✅ +${pts} Punkte`:matches>0?`⚠️ Teilweise richtig +${pts}`:'❌ Reihenfolge falsch', allOk?'ok':matches>0?'warn':'no');
