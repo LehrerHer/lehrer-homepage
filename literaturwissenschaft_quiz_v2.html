@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Literaturwissenschaft – Interaktives Quiz</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,700;0,900;1,300;1,700&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg: #0c0c14;
+  --card: #13131f;
+  --card2: #1a1a28;
+  --border: rgba(255,255,255,0.07);
+  --text: #e8e8f2;
+  --muted: #6b6b85;
+  --accent: #ff6b6b;
+  --gold: #ffd166;
+  --teal: #06d6a0;
+  --blue: #4cc9f0;
+  --purple: #b388ff;
+  --c1: #b388ff; --c2: #4cc9f0; --c3: #ff9f43; --c4: #06d6a0; --c5: #ff6b6b; --c6: #a29bfe;
+  --r: 14px;
+  --sh: 0 20px 60px rgba(0,0,0,0.6);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Ambient background */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(179,136,255,0.07) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 80% 80%, rgba(76,201,240,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 60% at 60% 40%, rgba(255,107,107,0.04) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.wrap { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 0 20px 80px; }
+
+/* ─── SCREENS ─── */
+.screen { display: none; animation: rise .4s ease both; }
+.screen.active { display: block; }
+@keyframes rise { from { opacity:0; transform: translateY(24px); } to { opacity:1; transform:none; } }
+
+/* ═══════════════ START SCREEN ═══════════════ */
+.hero { text-align: center; padding: 60px 0 48px; }
+.hero-label {
+  display: inline-block;
+  font-size: 11px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--muted); border: 1px solid var(--border);
+  padding: 5px 14px; border-radius: 99px; margin-bottom: 24px;
+}
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(36px, 7vw, 64px); font-weight: 900; line-height: 1.05;
+  margin-bottom: 12px;
+  background: linear-gradient(135deg, #fff 30%, #b388ff 70%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero p { color: var(--muted); font-size: 16px; font-weight: 300; max-width: 480px; margin: 0 auto; }
+
+/* Config card */
+.config-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 32px;
+  margin-bottom: 20px;
+  box-shadow: var(--sh);
+}
+.config-title {
+  font-size: 11px; font-weight: 600; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 18px;
+}
+
+/* Chapter chips */
+.chapter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px; margin-bottom: 6px;
+}
+.ch-chip {
+  padding: 14px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--card2);
+  cursor: pointer;
+  transition: all .2s;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.ch-chip::before {
+  content: '';
+  position: absolute; inset: 0;
+  opacity: 0; transition: opacity .2s;
+  border-radius: 12px;
+}
+.ch-chip.sel::before { opacity: .12; }
+.ch-chip:hover { transform: translateY(-2px); }
+.ch-chip.sel { border-color: currentColor; }
+.ch-chip .ci { font-size: 26px; display: block; margin-bottom: 6px; }
+.ch-chip .cn { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; opacity: .85; }
+.ch-chip .cc { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.ch-chip .ck { display: none; position: absolute; top: 8px; right: 8px; font-size: 14px; }
+.ch-chip.sel .ck { display: block; }
+
+/* All-toggle */
+.all-toggle {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card2);
+  cursor: pointer;
+  font-size: 14px; font-weight: 500;
+  transition: all .2s;
+  margin-top: 10px;
+}
+.all-toggle:hover { border-color: rgba(255,255,255,0.15); }
+.all-toggle.sel { border-color: var(--gold); color: var(--gold); }
+.all-toggle .at-icon { font-size: 18px; }
+
+/* Scope pills */
+.scope-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.scope-pill {
+  flex: 1; min-width: 120px;
+  padding: 14px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--card2);
+  cursor: pointer;
+  text-align: center;
+  transition: all .2s;
+}
+.scope-pill:hover { border-color: rgba(255,255,255,0.18); }
+.scope-pill.sel { border-color: var(--teal); background: rgba(6,214,160,.08); }
+.scope-pill .sp-count { font-family: 'Fraunces', serif; font-size: 28px; font-weight: 700; color: var(--teal); }
+.scope-pill.sel .sp-count { color: var(--teal); }
+.scope-pill .sp-label { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.scope-pill .sp-desc { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+/* Difficulty toggle */
+.diff-row { display: flex; gap: 8px; }
+.diff-pill {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--card2);
+  cursor: pointer;
+  text-align: center;
+  font-size: 13px; font-weight: 500;
+  transition: all .2s;
+}
+.diff-pill:hover { border-color: rgba(255,255,255,0.15); }
+.diff-pill.sel-leicht { border-color: var(--teal); background: rgba(6,214,160,.08); color: var(--teal); }
+.diff-pill.sel-mittel { border-color: var(--gold); background: rgba(255,209,102,.08); color: var(--gold); }
+.diff-pill.sel-schwer { border-color: var(--accent); background: rgba(255,107,107,.08); color: var(--accent); }
+.diff-pill.sel-alle { border-color: var(--purple); background: rgba(179,136,255,.08); color: var(--purple); }
+
+/* Type toggles */
+.type-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.type-pill {
+  padding: 8px 14px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+  background: var(--card2);
+  cursor: pointer;
+  font-size: 12px; font-weight: 500;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.type-pill:hover { border-color: rgba(255,255,255,.15); }
+.type-pill.sel { border-color: var(--blue); background: rgba(76,201,240,.1); color: var(--blue); }
+
+/* Start btn */
+.start-btn {
+  width: 100%;
+  padding: 18px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #b388ff, #4cc9f0);
+  color: #0c0c14;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 17px; font-weight: 700;
+  cursor: pointer;
+  transition: all .25s;
+  box-shadow: 0 8px 32px rgba(179,136,255,.35);
+  letter-spacing: .02em;
+  margin-top: 8px;
+}
+.start-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(179,136,255,.5); }
+.start-btn:disabled { opacity: .4; cursor: default; transform: none; }
+.start-summary { text-align: center; font-size: 13px; color: var(--muted); margin-top: 10px; }
+
+/* ═══════════════ QUIZ SCREEN ═══════════════ */
+.quiz-header {
+  padding: 28px 0 20px;
+  display: flex; align-items: center; gap: 16px;
+}
+.back-btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  background: transparent;
+  color: var(--muted);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px; cursor: pointer;
+  transition: all .2s;
+}
+.back-btn:hover { color: var(--text); border-color: rgba(255,255,255,.2); }
+
+.prog-wrap { flex: 1; }
+.prog-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+.prog-track { background: rgba(255,255,255,.06); border-radius: 99px; height: 6px; overflow: hidden; }
+.prog-fill { height: 100%; background: linear-gradient(90deg, #b388ff, #4cc9f0); border-radius: 99px; transition: width .5s ease; }
+
+.score-strip {
+  display: flex; gap: 12px; margin-bottom: 24px;
+}
+.ss-item {
+  flex: 1;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.ss-icon { font-size: 20px; }
+.ss-val { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700; }
+.ss-lab { font-size: 11px; color: var(--muted); }
+
+/* Chapter separator */
+.ch-sep {
+  display: flex; align-items: center; gap: 12px;
+  margin: 32px 0 16px;
+  font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .12em;
+}
+.ch-sep::before, .ch-sep::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* Question card */
+.q-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px; padding: 28px;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.35);
+  animation: rise .35s ease both;
+}
+.q-meta {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;
+}
+.q-tag {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+  padding: 3px 9px; border-radius: 99px;
+}
+.q-num { margin-left: auto; font-size: 12px; color: var(--muted); }
+.q-text { font-size: 17px; font-weight: 500; line-height: 1.6; margin-bottom: 20px; }
+.q-text em { font-style: italic; color: var(--gold); }
+.q-text code { font-family: monospace; background: rgba(255,255,255,.06); padding: 1px 6px; border-radius: 4px; font-size: 15px; }
+
+/* ── Multiple Choice ── */
+.mc-opts { display: flex; flex-direction: column; gap: 9px; }
+.mc-btn {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 13px 16px;
+  background: rgba(255,255,255,.03);
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  cursor: pointer; text-align: left; width: 100%;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif; font-size: 14.5px; line-height: 1.5;
+  transition: all .18s;
+}
+.mc-btn:hover:not(:disabled) { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.15); transform: translateX(3px); }
+.mc-btn .ltr {
+  min-width: 28px; height: 28px; border-radius: 7px;
+  background: rgba(255,255,255,.07); font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.mc-btn.ok { border-color: var(--teal); background: rgba(6,214,160,.1); }
+.mc-btn.ok .ltr { background: var(--teal); color: #0c0c14; }
+.mc-btn.no { border-color: rgba(255,107,107,.4); background: rgba(255,107,107,.06); opacity: .7; }
+.mc-btn.no .ltr { background: var(--accent); }
+
+/* ── True/False ── */
+.tf-row { display: flex; gap: 12px; }
+.tf-btn {
+  flex: 1; padding: 20px;
+  border: 1px solid var(--border); border-radius: 12px;
+  background: rgba(255,255,255,.03);
+  color: var(--text); font-family: 'DM Sans', sans-serif;
+  font-size: 16px; font-weight: 600; cursor: pointer;
+  transition: all .2s; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.tf-btn .tf-icon { font-size: 28px; }
+.tf-btn.t-btn:hover:not(:disabled) { border-color: var(--teal); background: rgba(6,214,160,.08); }
+.tf-btn.f-btn:hover:not(:disabled) { border-color: var(--accent); background: rgba(255,107,107,.08); }
+.tf-btn.ok { border-color: var(--teal); background: rgba(6,214,160,.12); color: var(--teal); }
+.tf-btn.no { border-color: rgba(255,107,107,.4); background: rgba(255,107,107,.06); opacity: .6; }
+.tf-btn:disabled { cursor: default; }
+
+/* ── Gap fill ── */
+.gap-list { display: flex; flex-direction: column; gap: 14px; }
+.gap-item { }
+.gap-prompt { font-size: 14px; color: var(--muted); margin-bottom: 7px; line-height: 1.5; }
+.gap-inp {
+  width: 100%; padding: 11px 14px;
+  background: rgba(255,255,255,.04);
+  border: 1px solid var(--border); border-radius: 10px;
+  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 15px;
+  outline: none; transition: border-color .2s;
+}
+.gap-inp:focus { border-color: rgba(255,255,255,.25); }
+.gap-inp.ok { border-color: var(--teal); background: rgba(6,214,160,.07); }
+.gap-inp.no { border-color: rgba(255,107,107,.5); background: rgba(255,107,107,.06); }
+.gap-hint { font-size: 12px; margin-top: 5px; color: var(--accent); }
+.gap-submit {
+  margin-top: 16px;
+  padding: 11px 28px;
+  background: rgba(255,255,255,.06); border: 1px solid var(--border);
+  border-radius: 99px; color: var(--text);
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all .2s;
+}
+.gap-submit:hover:not(:disabled) { background: rgba(255,255,255,.1); }
+.gap-submit:disabled { opacity: .4; cursor: default; }
+
+/* ── Matching ── */
+.match-area { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 540px) { .match-area { grid-template-columns: 1fr; } }
+.match-col-label { font-size: 10px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-bottom: 8px; }
+.match-left-items, .match-right-items { display: flex; flex-direction: column; gap: 8px; }
+.m-item {
+  padding: 11px 13px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 13.5px; line-height: 1.4;
+  transition: all .18s;
+  min-height: 48px; display: flex; align-items: center;
+  background: rgba(255,255,255,.03);
+}
+.m-left { cursor: pointer; }
+.m-left:hover:not(.done) { border-color: rgba(255,255,255,.2); background: rgba(255,255,255,.06); }
+.m-left.active { border-color: var(--gold); background: rgba(255,209,102,.1); }
+.m-left.done { opacity: .45; cursor: default; }
+.m-right { cursor: pointer; }
+.m-right:hover:not(.done) { border-color: rgba(255,255,255,.18); }
+.m-right.hit { border-color: var(--teal); background: rgba(6,214,160,.1); animation: pop .3s ease; }
+.m-right.miss { animation: shake .3s ease; border-color: var(--accent); }
+.m-right.done { cursor: default; }
+@keyframes pop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.04)} }
+@keyframes shake { 0%,100%{transform:none} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+/* ── Sort / Sequence ── */
+.sort-list { display: flex; flex-direction: column; gap: 8px; }
+.sort-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid var(--border); border-radius: 10px;
+  background: rgba(255,255,255,.03);
+  cursor: grab; font-size: 14px;
+  transition: all .2s; user-select: none;
+}
+.sort-item:active { cursor: grabbing; }
+.sort-item .drag-handle { color: var(--muted); font-size: 16px; }
+.sort-item.drag-over { border-color: var(--gold); background: rgba(255,209,102,.08); }
+.sort-item.ok { border-color: var(--teal); }
+.sort-item.no { border-color: var(--accent); }
+.sort-submit {
+  margin-top: 12px;
+  padding: 10px 26px;
+  background: rgba(255,255,255,.06); border: 1px solid var(--border);
+  border-radius: 99px; color: var(--text);
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all .2s;
+}
+.sort-submit:hover:not(:disabled) { background: rgba(255,255,255,.1); }
+.sort-submit:disabled { opacity:.4; cursor:default; }
+
+/* ── Highlight ── */
+.hl-task { font-size: 14px; color: var(--muted); margin-bottom: 12px; }
+.hl-text { font-size: 15px; line-height: 2.1; }
+.hl-word {
+  padding: 2px 5px; border-radius: 5px;
+  cursor: pointer; transition: background .15s;
+  border: 1px solid transparent;
+}
+.hl-word:hover { background: rgba(255,255,255,.08); }
+.hl-word.sel { background: rgba(255,209,102,.25); border-color: var(--gold); }
+.hl-word.ok { background: rgba(6,214,160,.2); border-color: var(--teal); }
+.hl-word.no { background: rgba(255,107,107,.18); border-color: var(--accent); }
+.hl-submit {
+  margin-top: 16px;
+  padding: 10px 26px;
+  background: rgba(255,255,255,.06); border: 1px solid var(--border);
+  border-radius: 99px; color: var(--text);
+  font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all .2s;
+}
+.hl-submit:hover:not(:disabled) { background: rgba(255,255,255,.1); }
+.hl-submit:disabled { opacity:.4; cursor:default; }
+
+/* Explanation box */
+.ex-box {
+  margin-top: 16px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-size: 13.5px; line-height: 1.65;
+  display: none; animation: rise .25s ease;
+}
+.ex-box.show { display: block; }
+.ex-box.ok { background: rgba(6,214,160,.1); border: 1px solid rgba(6,214,160,.3); }
+.ex-box.no { background: rgba(255,107,107,.08); border: 1px solid rgba(255,107,107,.25); }
+.ex-head { font-weight: 700; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+.ex-src { font-size: 11px; color: var(--muted); margin-top: 8px; font-style: italic; }
+
+/* ── Finish area ── */
+.finish-area { text-align: center; padding: 40px 0; }
+.finish-btn {
+  padding: 14px 40px;
+  background: linear-gradient(135deg, #b388ff, #4cc9f0);
+  border: none; border-radius: 99px; color: #0c0c14;
+  font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 700;
+  cursor: pointer; transition: all .25s;
+  box-shadow: 0 8px 28px rgba(179,136,255,.4);
+}
+.finish-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(179,136,255,.55); }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 28px; left: 50%;
+  transform: translateX(-50%) translateY(70px);
+  background: var(--card2); border: 1px solid var(--border);
+  border-radius: 99px; padding: 9px 22px;
+  font-size: 13px; font-weight: 600; white-space: nowrap;
+  transition: transform .35s ease; z-index: 999;
+  box-shadow: 0 8px 24px rgba(0,0,0,.5);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.ok { border-color: var(--teal); color: var(--teal); }
+.toast.no { border-color: var(--accent); color: var(--accent); }
+.toast.warn { border-color: var(--gold); color: var(--gold); }
+
+/* ═══════════════ RESULTS ═══════════════ */
+.results { padding: 40px 0 20px; }
+.r-hero { text-align: center; margin-bottom: 40px; }
+.r-grade {
+  font-family: 'Fraunces', serif; font-size: 90px; font-weight: 900;
+  line-height: 1; margin: 16px 0;
+}
+.r-title { font-family: 'Fraunces', serif; font-size: 26px; margin-bottom: 8px; }
+.r-sub { color: var(--muted); font-size: 15px; }
+
+.r-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px;
+}
+.r-stat {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; padding: 20px; text-align: center;
+}
+.r-stat-val { font-family: 'Fraunces', serif; font-size: 36px; font-weight: 700; }
+.r-stat-lab { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+.r-breakdown {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 24px; margin-bottom: 24px;
+}
+.r-bk-title { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: var(--muted); margin-bottom: 16px; }
+.r-bk-row { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13.5px; }
+.r-bk-row:last-child { border-bottom: none; }
+.r-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.r-name { min-width: 110px; }
+.r-track { flex: 1; background: rgba(255,255,255,.05); border-radius: 99px; height: 6px; overflow: hidden; }
+.r-fill { height: 100%; border-radius: 99px; }
+.r-pct { font-weight: 600; min-width: 38px; text-align: right; }
+
+.r-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.r-btn {
+  padding: 13px 32px; border-radius: 99px; font-family: 'DM Sans',sans-serif;
+  font-size: 15px; font-weight: 600; cursor: pointer; transition: all .2s;
+}
+.r-btn.primary {
+  background: linear-gradient(135deg, #b388ff, #4cc9f0); border: none; color: #0c0c14;
+  box-shadow: 0 6px 24px rgba(179,136,255,.4);
+}
+.r-btn.primary:hover { transform: translateY(-2px); }
+.r-btn.sec { background: transparent; border: 1px solid var(--border); color: var(--text); }
+.r-btn.sec:hover { border-color: rgba(255,255,255,.25); background: rgba(255,255,255,.05); }
+
+/* Scroll lock helper */
+.noscroll { overflow: hidden; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ═══ SCREEN 1: START ═══ -->
+<div class="screen active" id="sc-start">
+  <div class="hero">
+    <div class="hero-label">Gymnasium · Klasse 10–13</div>
+    <h1>Literatur&shy;wissenschaft</h1>
+    <p>Konfiguriere dein Quiz und teste dein Wissen zu den Kapiteln 1–6.</p>
+  </div>
+
+  <!-- Kapitel-Auswahl -->
+  <div class="config-card">
+    <div class="config-title">📚 Welche Kapitel möchtest du üben?</div>
+    <div class="chapter-grid" id="ch-grid"></div>
+    <div class="all-toggle" id="all-toggle" onclick="toggleAll()">
+      <span class="at-icon">✨</span>
+      <span>Alle Kapitel auswählen</span>
+      <span style="margin-left:auto;font-size:18px" id="all-check">☐</span>
+    </div>
+  </div>
+
+  <!-- Umfang -->
+  <div class="config-card">
+    <div class="config-title">⏱ Wie viele Fragen?</div>
+    <div class="scope-row" id="scope-row">
+      <div class="scope-pill" data-scope="quick" onclick="setScope(this,'quick')">
+        <div class="sp-count">~10</div>
+        <div class="sp-label">Schnell-Check</div>
+        <div class="sp-desc">Zufällige Auswahl</div>
+      </div>
+      <div class="scope-pill" data-scope="medium" onclick="setScope(this,'medium')">
+        <div class="sp-count">~25</div>
+        <div class="sp-label">Mittel</div>
+        <div class="sp-desc">Ausgewogen</div>
+      </div>
+      <div class="scope-pill sel" data-scope="full" onclick="setScope(this,'full')">
+        <div class="sp-count">Alle</div>
+        <div class="sp-label">Komplett</div>
+        <div class="sp-desc">Jede Frage</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Schwierigkeit -->
+  <div class="config-card">
+    <div class="config-title">⭐ Schwierigkeitsgrad</div>
+    <div class="diff-row">
+      <div class="diff-pill sel-alle" data-diff="alle" onclick="setDiff(this,'alle')">🎯 Alle</div>
+      <div class="diff-pill" data-diff="leicht" onclick="setDiff(this,'leicht')">🟢 Leicht</div>
+      <div class="diff-pill" data-diff="mittel" onclick="setDiff(this,'mittel')">🟡 Mittel</div>
+      <div class="diff-pill" data-diff="schwer" onclick="setDiff(this,'schwer')">🔴 Schwer</div>
+    </div>
+  </div>
+
+  <!-- Aufgabentypen -->
+  <div class="config-card">
+    <div class="config-title">🎲 Aufgabentypen (mehrere möglich)</div>
+    <div class="type-row" id="type-row">
+      <div class="type-pill sel" data-type="multiple_choice" onclick="toggleType(this)">🔘 Multiple Choice</div>
+      <div class="type-pill sel" data-type="richtig_falsch" onclick="toggleType(this)">✅ Richtig / Falsch</div>
+      <div class="type-pill sel" data-type="lueckentext" onclick="toggleType(this)">✏️ Lückentext</div>
+      <div class="type-pill sel" data-type="zuordnung" onclick="toggleType(this)">🔗 Zuordnung</div>
+      <div class="type-pill sel" data-type="sortierung" onclick="toggleType(this)">🔢 Sortierung</div>
+      <div class="type-pill sel" data-type="markierung" onclick="toggleType(this)">🖊 Markierung</div>
+    </div>
+  </div>
+
+  <button class="start-btn" id="start-btn" onclick="launchQuiz()" disabled>Quiz starten →</button>
+  <div class="start-summary" id="start-summary">Wähle mindestens ein Kapitel aus.</div>
+</div>
+
+<!-- ═══ SCREEN 2: QUIZ ═══ -->
+<div class="screen" id="sc-quiz">
+  <div class="quiz-header">
+    <button class="back-btn" onclick="goBack()">← Zurück</button>
+    <div class="prog-wrap">
+      <div class="prog-meta">
+        <span id="prog-label">Frage 0 von 0</span>
+        <span id="prog-pct">0%</span>
+      </div>
+      <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="score-strip">
+    <div class="ss-item">
+      <div class="ss-icon">⭐</div>
+      <div><div class="ss-val" id="ss-pts" style="color:var(--gold)">0</div><div class="ss-lab">Punkte</div></div>
+    </div>
+    <div class="ss-item">
+      <div class="ss-icon">✅</div>
+      <div><div class="ss-val" id="ss-ok" style="color:var(--teal)">0</div><div class="ss-lab">Richtig</div></div>
+    </div>
+    <div class="ss-item">
+      <div class="ss-icon">📖</div>
+      <div><div class="ss-val" id="ss-done" style="color:var(--blue)">0</div><div class="ss-lab">Beantwortet</div></div>
+    </div>
+  </div>
+
+  <div id="q-container"></div>
+
+  <div class="finish-area">
+    <button class="finish-btn" onclick="showResults()">📊 Auswertung ansehen</button>
+  </div>
+</div>
+
+<!-- ═══ SCREEN 3: RESULTS ═══ -->
+<div class="screen" id="sc-results">
+  <div class="results">
+    <div class="r-hero">
+      <div id="r-stars" style="font-size:36px">⭐⭐⭐</div>
+      <div class="r-grade" id="r-pct">0%</div>
+      <div class="r-title" id="r-title">Gut gemacht!</div>
+      <div class="r-sub" id="r-sub">–</div>
+    </div>
+    <div class="r-stats">
+      <div class="r-stat"><div class="r-stat-val" id="r-ok" style="color:var(--teal)">0</div><div class="r-stat-lab">Richtig</div></div>
+      <div class="r-stat"><div class="r-stat-val" id="r-no" style="color:var(--accent)">0</div><div class="r-stat-lab">Falsch</div></div>
+      <div class="r-stat"><div class="r-stat-val" id="r-pts" style="color:var(--gold)">0</div><div class="r-stat-lab">Punkte</div></div>
+    </div>
+    <div class="r-breakdown" id="r-breakdown"></div>
+    <div class="r-actions">
+      <button class="r-btn primary" onclick="location.reload()">🔄 Neu konfigurieren</button>
+      <button class="r-btn sec" onclick="replayQuiz()">↺ Gleiche Einstellungen</button>
+    </div>
+  </div>
+</div>
+
+</div><!-- .wrap -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════
+const KAP = {
+  1: { name:'Was ist Literatur?', icon:'📖', color:'#b388ff', short:'Kap. 1' },
+  2: { name:'Epik',               icon:'✍️',  color:'#4cc9f0', short:'Kap. 2' },
+  3: { name:'Lyrik',              icon:'🎭',  color:'#ff9f43', short:'Kap. 3' },
+  4: { name:'Drama',              icon:'🎬',  color:'#06d6a0', short:'Kap. 4' },
+  5: { name:'Film',               icon:'🎥',  color:'#ff6b6b', short:'Kap. 5' },
+  6: { name:'Lit. Spiele',        icon:'🎮',  color:'#a29bfe', short:'Kap. 6' },
+};
+
+const ALL_Q = [
+  // ──── KAP 1 ────
+  { id:'K1_01', kap:1, typ:'multiple_choice', sw:'leicht',
+    frage:'Welche drei Großgattungen der Literatur unterscheidet die Literaturwissenschaft?',
+    opts:['Epik, Lyrik und Dramatik','Roman, Gedicht und Theater','Prosa, Vers und Dialog','Erzählung, Lyrik und Film'],
+    ok:0, ex:'Die drei Großgattungen sind Epik (Erzähler spricht), Lyrik (gebundene Sprache) und Dramatik (Sprache für verteilte Rollen). Diese Einteilung ist seit der Antike grundlegend.', src:'(6/1)' },
+  { id:'K1_02', kap:1, typ:'richtig_falsch', sw:'leicht',
+    frage:'Filme und Computerspiele mit einem Plot können als Teil der Großgattung Epik betrachtet werden.',
+    ok:true, ex:'Richtig! Filme und Computerspiele mit einer Fabel/einem Plot können der Epik zugeordnet werden – das Analysevokabular bleibt dasselbe.', src:'(6/10)' },
+  { id:'K1_03', kap:1, typ:'zuordnung', sw:'leicht',
+    frage:'Ordne die Merkmale den Großgattungen zu.',
+    paare:[{l:'Ein Erzähler spricht',r:'Epik'},{l:'Sprache für verteilte Rollen',r:'Dramatik'},{l:'Gebundene Sprache – der Autor entscheidet, wo die Zeile endet',r:'Lyrik'},{l:'Roman als typische Textsorte',r:'Epik'}],
+    ex:'Epik = Erzähler; Lyrik = Gedichte / gebundene Sprache; Dramatik = Theater / verteilte Rollen.', src:'(6/1)' },
+  { id:'K1_04', kap:1, typ:'multiple_choice', sw:'mittel',
+    frage:'Wer ist im erzählenden Computerspiel die Entsprechung zum Erzähler eines Romans?',
+    opts:['Der Regisseur','Der Game Writer / die Game Writerin','Der Publisher','Der Cutter'],
+    ok:1, ex:'In narrativen Computerspielen erfinden die „Game Writer" die Diegese und die Handlung – sie entsprechen dem Erzähler der Epik.', src:'(6/13)' },
+
+  // ──── KAP 2 ────
+  { id:'K2_01', kap:2, typ:'multiple_choice', sw:'leicht',
+    frage:'Was versteht man unter der „Diegese"?',
+    opts:['Die Biografie des Autors','Die im Werk dargestellte Welt','Die Erzählzeit des Textes','Der Verlag des Buches'],
+    ok:1, ex:'Diegese = die im Werk dargestellte Welt (z. B. die Welt von Star Wars oder die Welt in „Der Junge im gestreiften Pyjama").', src:'(7/5)' },
+  { id:'K2_02', kap:2, typ:'richtig_falsch', sw:'mittel',
+    frage:'Autor*in und Erzähler*in sind in einem literarischen Werk immer identisch.',
+    ok:false, ex:'Falsch! Autor ≠ Erzähler. Der Autor schreibt das Buch in der Realität, der Erzähler ist eine Figur innerhalb des Textes, die die Geschichte erzählt.', src:'(7/1)' },
+  { id:'K2_03', kap:2, typ:'multiple_choice', sw:'mittel',
+    frage:'Was bedeutet „homodiegetisch"?',
+    opts:['Der Erzähler ist kein Teil der Diegese','Der Erzähler ist Teil der Diegese','Der Erzähler ist zugleich die Hauptfigur','Der Erzähler weiß mehr als alle Figuren'],
+    ok:1, ex:'Homodiegetisch (gr. homo = gleich): Der Erzähler ist Teil der Diegese, taucht also selbst in der erzählten Welt auf.', src:'(8/4)' },
+  { id:'K2_04', kap:2, typ:'zuordnung', sw:'schwer',
+    frage:'Ordne die Erzählstandorte ihren Definitionen zu.',
+    paare:[{l:'Homodiegetisch',r:'Erzähler ist Teil der Diegese'},{l:'Heterodiegetisch',r:'Erzähler ist kein Teil der Diegese'},{l:'Autodiegetisch',r:'Erzähler ist zugleich die Hauptfigur'},{l:'Extradiegetisch',r:'Erzähler der äußersten Rahmenhandlung'}],
+    ex:'Diese vier Begriffe beschreiben die Positionierung des Erzählers relativ zur erzählten Welt.', src:'(8/4)' },
+  { id:'K2_05', kap:2, typ:'multiple_choice', sw:'mittel',
+    frage:'In „Forrest Gump" sitzt der Protagonist auf einer Parkbank und erzählt seine Lebensgeschichte. Die Parkbank-Szene ist …',
+    opts:['die Binnenerzählung','die Rahmenerzählung','eine Analepse','der intradiegetische Erzähler'],
+    ok:1, ex:'Die Parkbank bildet die Rahmenerzählung. Die Lebensgeschichte, die Forrest dort erzählt, ist die Binnenerzählung.', src:'(8/12)' },
+  { id:'K2_06', kap:2, typ:'multiple_choice', sw:'mittel',
+    frage:'Nullfokalisierung bedeutet: Der Erzähler weiß …',
+    opts:['… genauso viel wie die Figur','… weniger als die Figur','… mehr als die Figur','… gar nichts über die Figuren'],
+    ok:2, ex:'Nullfokalisierung: Erzähler > Figur. Der allwissende Erzähler weiß mehr als jede einzelne Figur.', src:'(9/5)' },
+  { id:'K2_07', kap:2, typ:'richtig_falsch', sw:'mittel',
+    frage:'Isochronie (zeitdeckendes Erzählen) liegt vor, wenn Erzählzeit und erzählte Zeit in etwa gleich lang sind.',
+    ok:true, ex:'Richtig! Isochronie = Erzählzeit ≈ erzählte Zeit. Das tritt oft bei Dialogen/Szenen auf.', src:'(10/8)' },
+  { id:'K2_08', kap:2, typ:'multiple_choice', sw:'mittel',
+    frage:'Die Beschreibung eines einzigen Blitzes nimmt in einem Roman mehrere Seiten ein. Das nennt man …',
+    opts:['Zeitraffung','Zeitdeckendes Erzählen','Zeitdehnende Erzählweise','Iteratives Erzählen'],
+    ok:2, ex:'Zeitdehnend: Die Erzählzeit ist länger als die erzählte Zeit. Ein kurzes Ereignis wird ausführlich beschrieben.', src:'(10/4)' },
+  { id:'K2_09', kap:2, typ:'zuordnung', sw:'mittel',
+    frage:'Ordne die Zeitfrequenz-Begriffe ihren Definitionen zu.',
+    paare:[{l:'Singulativ',r:'Was einmal geschieht, wird einmal erzählt'},{l:'Repetitiv',r:'Was einmal geschieht, wird mehrmals erzählt'},{l:'Iterativ',r:'Was mehrmals geschieht, wird einmal erzählt'}],
+    ex:'Singulativ (1→1), Repetitiv (1→mehrmals), Iterativ (mehrmals→1, z. B. „Wie jeden Morgen um sechs …").', src:'(11/4)' },
+  { id:'K2_10', kap:2, typ:'sortierung', sw:'mittel',
+    frage:'Bringe die fünf Zeitordnungs-Begriffe in die richtige Reihenfolge von „Rückblick" bis „Vorausschau":',
+    items:['Analepse (Rückblende)','Gleichzeitige Narration','Spätere Narration (Vergangenheitsform)','Frühere Narration (Futur)','Prolepse (Vorausschau)'],
+    correctOrder:[0,2,1,3,4],
+    ex:'Analepse = Rückblick; spätere Narration = klassisches Präteritum; gleichzeitig = Präsens; frühere Narration = Futur; Prolepse = Vorausschau.', src:'(11-12)' },
+  { id:'K2_11', kap:2, typ:'multiple_choice', sw:'mittel',
+    frage:'Welcher Satz ist ein Beispiel für <em>Erlebte Rede</em>?',
+    opts:['Sie sagte: „Ich muss ihn sehen!"','Sie sagte, sie müsse ihn treffen.','Sie musste ihn sehen. Durfte nicht zu spät sein.','Hoffentlich sehe ich ihn. Bloß nicht zu spät!'],
+    ok:2, ex:'Erlebte Rede steht zwischen direkter und indirekter Rede – sie gibt den Sachverhalt aus dem Inneren der Figur wieder, ohne vollständig zur Figur zu wechseln.', src:'(13/6)' },
+  { id:'K2_12', kap:2, typ:'zuordnung', sw:'schwer',
+    frage:'Ordne die Beispielsätze der richtigen Redeform zu.',
+    paare:[{l:'„Ich muss ihn sehen!"',r:'Direkte Rede'},{l:'Sie sagte, sie müsse ihn treffen.',r:'Indirekte Rede'},{l:'Sie musste ihn sehen. Durfte nicht zu spät sein.',r:'Erlebte Rede'},{l:'Hoffentlich sehe ich ihn. Bloß nicht vermasseln!',r:'Innerer Monolog'}],
+    ex:'Die vier Formen der Figurenrede unterscheiden sich in Distanz zum Erzähler, Stil und Wirkung.', src:'(12-14)' },
+  { id:'K2_13', kap:2, typ:'lueckentext', sw:'leicht',
+    frage:'Ergänze die Textsorten-Begriffe:',
+    saetze:[{t:'Kurze Erzählung mit realen Orten, übernatürlichen Elementen, unbekannter Verfasser*in:',a:'Sage'},{t:'Erschien in „Volkskalendern", zeigt Alltagsleben: ',a:'Kalendergeschichte'},{t:'Wunderwelt, Gut vs. Böse, unbekannter Ort und Zeit:',a:'Märchen'},{t:'Bildebene + Sachebene mit moralischer Lehre:',a:'Parabel'}],
+    ex:'Sage = reale Orte + Wunderbares; Kalendergeschichte = Volkskalender; Märchen = Wunderwelt; Parabel = Bildebene + Sachebene.', src:'(15-17)' },
+  { id:'K2_14', kap:2, typ:'multiple_choice', sw:'mittel',
+    frage:'Was unterscheidet die Novelle vom Roman?',
+    opts:['Die Novelle hat keine Hauptfiguren','Novelle: nur wenige, eindimensionale Protagonisten, eine Haupthandlung','Die Novelle spielt immer in der Gegenwart','Die Novelle ist kürzer als jede Kurzgeschichte'],
+    ok:1, ex:'Novelle vs. Roman: weniger Protagonisten, geringere Erzählzeit, Konzentration auf eine Haupthandlung. Oft gibt es eine überraschende Wendung.', src:'(16/8)' },
+  { id:'K2_15', kap:2, typ:'markierung', sw:'schwer',
+    frage:'Markiere im Text alle Wörter, die Formen der <strong>Figurenrede</strong> benennen.',
+    text:'In einem epischen Text findet man verschiedene Erzählweisen. Der Erzählerbericht informiert über die Diegese. Direkte Rede gibt wörtlich wieder, was eine Figur sagt. Die Indirekte Rede dagegen fasst zusammen und schafft Distanz. Mit der Erlebten Rede tritt der Erzähler in den Hintergrund. Beim Inneren Monolog spricht die Figur zu sich selbst. Schließlich gibt es noch den Bewusstseinsstrom mit seinen assoziativen Gedankenfetzen. Der Erzählerbericht ist hingegen kein Teil der Figurenrede.',
+    targets:['Direkte Rede','Indirekte Rede','Erlebten Rede','Inneren Monolog','Bewusstseinsstrom'],
+    ex:'Figurenrede umfasst: Direkte Rede, Indirekte Rede, Erlebte Rede, Innerer Monolog und Bewusstseinsstrom. Der Erzählerbericht ist keine Figurenrede.', src:'(12-14)' },
+
+  // ──── KAP 3 ────
+  { id:'K3_01', kap:3, typ:'richtig_falsch', sw:'leicht',
+    frage:'In der Lyrik ist der Autor immer identisch mit dem lyrischen Ich.',
+    ok:false, ex:'Falsch! Wie Autor ≠ Erzähler in der Epik gilt: Autor ≠ lyrisches Ich. Das lyrische Ich ist eine Sprechinstanz im Gedicht, die der Autor erschafft.', src:'(20/1)' },
+  { id:'K3_02', kap:3, typ:'multiple_choice', sw:'leicht',
+    frage:'Das Reimschema <code>abab</code> bezeichnet den …',
+    opts:['Paarreim','Kreuzreim','Umarmenden Reim','Schweifreim'],
+    ok:1, ex:'Schema abab = Kreuzreim: 1. Vers reimt mit 3., 2. Vers reimt mit 4.', src:'(20/8)' },
+  { id:'K3_03', kap:3, typ:'zuordnung', sw:'mittel',
+    frage:'Ordne die Reimschemata den Reimnamen zu.',
+    paare:[{l:'aa bb',r:'Paarreim'},{l:'abab',r:'Kreuzreim'},{l:'abba',r:'Umarmender Reim'},{l:'aabccb',r:'Schweifreim'}],
+    ex:'Paarreim (aa), Kreuzreim (abab), Umarmender Reim (abba), Schweifreim (aabccb).', src:'(20-21)' },
+  { id:'K3_04', kap:3, typ:'multiple_choice', sw:'mittel',
+    frage:'Was ist eine „Waise" in der Lyrik?',
+    opts:['Ein sehr kurzer Vers','Ein reimloser Vers in einem sich ansonsten reimenden Gedicht','Ein Gedicht ganz ohne Reim','Ein Vers, der zweimal vorkommt'],
+    ok:1, ex:'Eine Waise ist ein reimloser Vers innerhalb eines Gedichts, das sich sonst reimt – dadurch besonders auffällig und isoliert.', src:'(22/10)' },
+  { id:'K3_05', kap:3, typ:'multiple_choice', sw:'mittel',
+    frage:'Welches Metrum liegt im Wort <em>Gedicht</em> vor?',
+    opts:['Trochäus','Daktylus','Jambus','Anapäst'],
+    ok:2, ex:'Ge-DICHT: unbetont–betont = Jambus (◡–). Der Jambus ist ein ansteigender Versfuß.', src:'(22/6)' },
+  { id:'K3_06', kap:3, typ:'zuordnung', sw:'mittel',
+    frage:'Ordne die Versfüße ihren Betonungsmustern zu.',
+    paare:[{l:'Jambus',r:'◡– (unbetont–betont)'},{l:'Trochäus',r:'–◡ (betont–unbetont)'},{l:'Daktylus',r:'–◡◡ (betont–unbetont–unbetont)'},{l:'Anapäst',r:'◡◡– (unbetont–unbetont–betont)'}],
+    ex:'Jambus (Ge-DICHT), Trochäus (DICH-ter), Daktylus (ACH-ter-bahn), Anapäst (E-le-FANT).', src:'(22-23)' },
+  { id:'K3_07', kap:3, typ:'multiple_choice', sw:'schwer',
+    frage:'Was ist ein Enjambement?',
+    opts:['Eine besondere Art des Endreims','Ein Satz, der über das Versende hinweg fortgesetzt wird','Das Fehlen eines Metrums','Die Wiederholung desselben Verses'],
+    ok:1, ex:'Enjambement (Zeilensprung): Ein Satz wird über das Versende hinaus fortgeführt. Wirkung: fließend, drängend, spannungserzeugend.', src:'(25/3)' },
+  { id:'K3_08', kap:3, typ:'lueckentext', sw:'leicht',
+    frage:'Wie heißen die Strophenformen nach ihrer Zeilenzahl?',
+    saetze:[{t:'2 Verse:',a:'Distichon'},{t:'3 Verse:',a:'Terzett'},{t:'4 Verse:',a:'Quartett'},{t:'6 Verse:',a:'Sextett'}],
+    ex:'Distichon (2), Terzett (3), Quartett (4), Quintett (5), Sextett (6).', src:'(26/1)' },
+  { id:'K3_09', kap:3, typ:'multiple_choice', sw:'mittel',
+    frage:'Wie ist ein Sonett aufgebaut?',
+    opts:['Drei Quartette und ein Terzett','Zwei Quartette und zwei Terzette','14 Verse in einer Strophe','Vier gleich lange Strophen'],
+    ok:1, ex:'Sonett: 2 Quartette (je 4 Verse) + 2 Terzette (je 3 Verse), meist im Jambus verfasst.', src:'(27/12)' },
+  { id:'K3_10', kap:3, typ:'zuordnung', sw:'mittel',
+    frage:'Ordne die Gedichtformen ihren Merkmalen zu.',
+    paare:[{l:'5-7-5 Silben, 3 Verse, japanische Form',r:'Haiku'},{l:'2 Quartette + 2 Terzette, meist Jambus',r:'Sonett'},{l:'Klagegedicht, wehmütige Stimmung',r:'Elegie'},{l:'Lobgesang, keine festgelegte Form',r:'Hymne'}],
+    ex:'Jede Gedichtform hat charakteristische formale und/oder inhaltliche Merkmale.', src:'(25-27)' },
+  { id:'K3_11', kap:3, typ:'multiple_choice', sw:'mittel',
+    frage:'Was ist eine Metapher?',
+    opts:['Ein Vergleich mit „wie" oder „als ob"','Ein Vergleich ohne „wie" und „ob" – eine Übertragung','Wiederholung am Satzanfang','Verneinung des Gegenteils'],
+    ok:1, ex:'Metapher: Übertragung ohne „wie". Beispiel: „Jemandem das Herz brechen." Im Gegensatz: Vergleich mit „wie": „Er kämpft wie ein Löwe."', src:'(29/8)' },
+  { id:'K3_12', kap:3, typ:'zuordnung', sw:'schwer',
+    frage:'Ordne die Beispiele den rhetorischen Figuren zu.',
+    paare:[{l:'Er kämpft wie ein Löwe.',r:'Vergleich'},{l:'Der Wind heult.',r:'Personifikation'},{l:'Jemandem das Herz brechen.',r:'Metapher'},{l:'Sensenmann',r:'Allegorie'}],
+    ex:'Vergleich = mit „wie/als"; Personifikation = menschliche Züge für Nichtmenschliches; Metapher = Übertragung ohne „wie"; Allegorie = bildhaft-konkrete Darstellung des Abstrakten.', src:'(29-31)' },
+  { id:'K3_13', kap:3, typ:'multiple_choice', sw:'mittel',
+    frage:'Was versteht man unter einer Hyperbel?',
+    opts:['Eine beschönigende Umschreibung','Eine Übertreibung','Eine doppelte Verneinung','Eine Umschreibung durch Einzelmerkmale'],
+    ok:1, ex:'Hyperbel = Übertreibung. Beispiele: „todernst", „fuchsteufelswild". Sie betont einen Sachverhalt durch extreme Steigerung.', src:'(32/5)' },
+  { id:'K3_14', kap:3, typ:'multiple_choice', sw:'mittel',
+    frage:'Was ist ein Chiasmus?',
+    opts:['Gleichartig aufgebaute Sätze (a-b / a-b)','Überkreuzstellung von Satzgliedern (A-B / B-A)','Auslassung von Satzteilen','Unverbundene Reihung ohne Konjunktionen'],
+    ok:1, ex:'Chiasmus (A-B / B-A): „Die Kunst ist lang – und kurz ist unser Leben." Erkennungshilfe: Bleibt die Reihenfolge gleich → Parallelismus; kehrt sie sich um → Chiasmus.', src:'(33/7)' },
+  { id:'K3_15', kap:3, typ:'zuordnung', sw:'schwer',
+    frage:'Ordne die Satzfiguren ihren Beispielen zu.',
+    paare:[{l:'Ich kam, ich sah, ich siegte.',r:'Asyndeton'},{l:'Einigkeit und Recht und Freiheit',r:'Polysyndeton'},{l:'Je später der Abend, desto schöner die Gäste.',r:'Ellipse'},{l:'Die Kunst ist lang – kurz ist unser Leben.',r:'Chiasmus'}],
+    ex:'Asyndeton = keine Konjunktionen; Polysyndeton = häufig wiederholte Konjunktionen; Ellipse = Auslassung; Chiasmus = Überkreuzstellung.', src:'(33-35)' },
+  { id:'K3_16', kap:3, typ:'richtig_falsch', sw:'mittel',
+    frage:'Eine rhetorische Frage ist eine Frage, auf die keine Antwort erwartet wird.',
+    ok:true, ex:'Richtig! Die rhetorische Frage (Scheinfrage) erwartet keine Antwort. Beispiel: „Wie viele Menschen müssen noch sterben?" Wirkung: Dringlichkeit, Zustimmungsdruck.', src:'(38/5)' },
+  { id:'K3_17', kap:3, typ:'multiple_choice', sw:'mittel',
+    frage:'Was ist der Unterschied zwischen Antithese und Oxymoron?',
+    opts:['Kein Unterschied – beide sind Übertreibungen','Antithese: zwei Satzteile; Oxymoron: Widerspruch auf engstem Raum (ein Ausdruck)','Oxymoron = Frage ohne Antwort','Antithese kommt nur in Gedichten vor'],
+    ok:1, ex:'Antithese: „Klein ist der Strauch, groß ist der Baum." (zwei Satzteile). Oxymoron: „Hassliebe", „beredtes Schweigen" (ein Ausdruck).', src:'(36-38)' },
+  { id:'K3_18', kap:3, typ:'multiple_choice', sw:'leicht',
+    frage:'Was ist eine Alliteration?',
+    opts:['Wiederholung gleicher Wörter am Satzende','Gleiche Anfangsbuchstaben bei aufeinander folgenden Wörtern','Lautmalerische Wiedergabe von Geräuschen','Auslassung eines unbetonten Vokals'],
+    ok:1, ex:'Alliteration: gleiche Anfangslaute. Beispiel: „Milch macht müde Männer munter."', src:'(38/4)' },
+  { id:'K3_19', kap:3, typ:'lueckentext', sw:'schwer',
+    frage:'Ergänze die fehlenden Klangfiguren:',
+    saetze:[{t:'Gleiche Anfangsbuchstaben aufeinander folgender Wörter:',a:'Alliteration'},{t:'Lautmalerische Wiedergabe von Geräuschen:',a:'Onomatopoesie'},{t:'Wiederholung am Satzanfang:',a:'Anapher'},{t:'Wiederholung am Satzende:',a:'Epipher'}],
+    ex:'Klangfiguren entfalten ihre Wirkung besonders beim Vorlesen.', src:'(38-39)' },
+  { id:'K3_20', kap:3, typ:'markierung', sw:'schwer',
+    frage:'Markiere alle Wörter im Text, die <strong>Stilmittel der Kategorie „Satzfiguren"</strong> benennen.',
+    text:'Rhetorische Figuren lassen sich in vier Gruppen einteilen. Wortfiguren wie die Hyperbel oder Periphrase wirken auf einzelne Wörter. Satzfiguren wie das Asyndeton, die Anapher oder der Parallelismus verändern den Satzbau. Das Enjambement gilt als Satzfigur, die nur in Gedichten vorkommt. Gedankenfiguren wie Ironie und Antithese wirken auf der Ebene des Sinns. Klangfiguren wie die Alliteration oder Onomatopoesie betreffen den Klang. Der Chiasmus ist ebenfalls eine Satzfigur.',
+    targets:['Asyndeton','Anapher','Parallelismus','Enjambement','Chiasmus'],
+    ex:'Satzfiguren: Asyndeton, Polysyndeton, Anapher, Parallelismus, Chiasmus, Ellipse, Enjambement, Klimax, Inversion, Parataxe/Hypotaxe.', src:'(31-35)' },
+  { id:'K3_21', kap:3, typ:'richtig_falsch', sw:'leicht',
+    frage:'Die Litotes hebt einen Begriff durch doppelte Verneinung oder Verneinung des Gegenteils hervor.',
+    ok:true, ex:'Richtig! Litotes: „nicht selten", „nicht unüblich". Wirkung: bekräftigend durch Umweg, leicht ironisch.', src:'(32/8)' },
+  { id:'K3_22', kap:3, typ:'sortierung', sw:'schwer',
+    frage:'Bringe diese vier Kategorien rhetorischer Figuren in die Reihenfolge des Skripts (von der kleinsten Sprachebene zur größten):',
+    items:['Klangfiguren','Satzfiguren','Gedankenfiguren','Wortfiguren'],
+    correctOrder:[3,1,0,2],
+    ex:'Im Skript werden Wortfiguren (Ebene einzelner Wörter), Satzfiguren (Syntax), Klangfiguren (Laut/Klang) und Gedankenfiguren (Sinn/Aussage) unterschieden.', src:'(31)' },
+
+  // ──── KAP 4 ────
+  { id:'K4_01', kap:4, typ:'multiple_choice', sw:'leicht',
+    frage:'Was ist das Besondere des Dramas gegenüber der Epik?',
+    opts:['Das Drama hat immer einen Erzähler','Das Drama wird durch einen Erzähler vermittelt','Das Publikum erlebt die Handlung unmittelbar – ohne Erzähler','Das Drama besteht ausschließlich aus Monologen'],
+    ok:2, ex:'Im Drama erlebt das Publikum die Handlung unmittelbar. Es gibt keinen Erzähler als Vermittler – die Figuren sprechen direkt auf der Bühne.', src:'(41/5)' },
+  { id:'K4_02', kap:4, typ:'zuordnung', sw:'mittel',
+    frage:'Ordne die Dramenwerke ihren Gattungen zu.',
+    paare:[{l:'Sophokles: König Ödipus',r:'Tragödie'},{l:'Lessing: Minna von Barnhelm',r:'Komödie'},{l:'Dürrenmatt: Besuch der alten Dame',r:'Tragikomödie'},{l:'Beckett: Warten auf Godot',r:'Absurdes Theater'}],
+    ex:'Tragödie: unlösbarer Konflikt, Untergang; Komödie: lösbarer Konflikt, heiteres Ende; Tragikomödie: beides gemischt; Absurdes Theater: keine logische Handlung.', src:'(41-43)' },
+  { id:'K4_03', kap:4, typ:'multiple_choice', sw:'schwer',
+    frage:'Was ist ein typischer Verfremdungseffekt in Brechts Epischem Theater?',
+    opts:['Schauspieler verstärken die Empathie des Zuschauers','Lieder unterbrechen das Geschehen oder Schauspieler sprechen Zuschauer direkt an','Das Bühnenbild zeigt stets realistische Schauplätze','Der Zuschauer soll sich vollständig mit dem Helden identifizieren'],
+    ok:1, ex:'Verfremdungseffekte bei Brecht: Schauspieler verlassen die Rolle, Lieder unterbrechen, Spruchbänder kommentieren. Ziel: kritische Distanz statt Empathie.', src:'(43/5)' },
+  { id:'K4_04', kap:4, typ:'sortierung', sw:'mittel',
+    frage:'Bringe die Akte des Dramas nach Gustav Freytag in die richtige Reihenfolge:',
+    items:['Katastrophe / Lösung','Exposition','Retardierendes Moment','Peripetie (Höhepunkt)','Erregendes Moment'],
+    correctOrder:[1,4,3,2,0],
+    ex:'1. Exposition → 2. Erregendes Moment → 3. Peripetie → 4. Retardierendes Moment → 5. Katastrophe/Lösung.', src:'(45-47)' },
+  { id:'K4_05', kap:4, typ:'multiple_choice', sw:'mittel',
+    frage:'Was versteht man unter „Katharsis" in der Tragödie?',
+    opts:['Der Tod der Hauptfigur','Eine innere Läuterung beim Betrachter durch Mitleid und Furcht','Die Auflösung des Konflikts in der Komödie','Der Konflikt zwischen den Figuren'],
+    ok:1, ex:'Katharsis (gr. Reinigung): Das Schicksal der Hauptfigur soll Mitleid und Furcht erzeugen und so eine innere Reinigung/Läuterung beim Betrachter bewirken.', src:'(42/5)' },
+  { id:'K4_06', kap:4, typ:'lueckentext', sw:'mittel',
+    frage:'Ergänze die Monologarten:',
+    saetze:[{t:'Starke Affekte – Selbstgespräch aus Emotion heraus:',a:'Affektmonolog'},{t:'Abwägen von Für und Wider mit Entschlussfassung:',a:'Entschlussmonolog'},{t:'Durchdenken und Kommentieren von Geschehen:',a:'Reflexionsmonolog'},{t:'Erforschung der eigenen Persönlichkeit:',a:'Selbstcharakterisierungsmonolog'}],
+    ex:'Die vier Monologarten unterscheiden sich in ihrer Funktion: Emotion, Entscheidung, Reflexion oder Selbsterforschung.', src:'(47/7)' },
+  { id:'K4_07', kap:4, typ:'richtig_falsch', sw:'mittel',
+    frage:'In der klassischen Tragödie muss die Hauptfigur immer aus dem Adel stammen (Ständeklausel).',
+    ok:true, ex:'Richtig! In der klassischen Tragödie stammt die Hauptfigur aus dem Adel, um ihr die nötige „Fallhöhe" zu geben. Erst die Aufklärung überwindet diese Ständeklausel (bürgerliches Trauerspiel).', src:'(42/2)' },
+  { id:'K4_08', kap:4, typ:'multiple_choice', sw:'schwer',
+    frage:'Was ist der Unterschied zwischen „analytischem Drama" und „synthetischem Drama"?',
+    opts:['Kein Unterschied','Analytisch: Ein Verbrechen liegt vor der Bühnenhandlung und wird enthüllt. Synthetisch: Spannung entsteht in der Entwicklung auf das Ereignis hin.','Analytisch: nur Dialoge. Synthetisch: nur Monologe.','Analytisch: Komödie. Synthetisch: Tragödie.'],
+    ok:1, ex:'Analytisches Drama (Enthüllungsdrama): Bsp. König Ödipus. Synthetisches Drama (Zieldrama): Bsp. Antigone. Der Unterschied liegt in der Richtung des Spannungsaufbaus.', src:'(45/3)' },
+  { id:'K4_09', kap:4, typ:'richtig_falsch', sw:'leicht',
+    frage:'Das Drama ist primär für den Leser bestimmt, nicht für den Zuschauer.',
+    ok:false, ex:'Falsch! Das Drama ist für den Zuschauer bestimmt. Deshalb müssen bei der Analyse auch akustische (Sprache, Geräusche, Musik) und optische Zeichen (Gestik, Mimik, Bühnenbild) berücksichtigt werden.', src:'(48/1)' },
+
+  // ──── KAP 5 ────
+  { id:'K5_01', kap:5, typ:'multiple_choice', sw:'mittel',
+    frage:'Was ist der Unterschied zwischen „Erzählung" und „Narration" im Film?',
+    opts:['Kein Unterschied','Erzählung = das WAS (Reihe der Geschehen); Narration = das WIE (Stil, Präsentation)','Narration = das WAS; Erzählung = das WIE','Nur Erzählung existiert im Film'],
+    ok:1, ex:'Erzählung = das WAS des Films. Narration = das WIE (sprachlich, audiovisuell, Stil).', src:'(50/5)' },
+  { id:'K5_02', kap:5, typ:'multiple_choice', sw:'leicht',
+    frage:'Was bewirkt die Froschperspektive (Kamera von unten)?',
+    opts:['Personen wirken schwächer','Personen wirken mächtiger und bedrohlicher','Personen wirken sympathischer','Neutrale Wirkung'],
+    ok:1, ex:'Froschperspektive (von unten): Personen wirken mächtiger, bedrohlicher. Vogelperspektive (von oben): Personen wirken kleiner, schwächer.', src:'(53/5)' },
+  { id:'K5_03', kap:5, typ:'zuordnung', sw:'mittel',
+    frage:'Ordne die Filmberufe ihren Hauptaufgaben zu.',
+    paare:[{l:'Regisseur/in',r:'Künstlerische Gesamtvision, leitet Schauspieler'},{l:'Kameramann/-frau',r:'Visuelle Umsetzung, Einstellungen, Bildkomposition'},{l:'Cutter/in',r:'Montage – fügt Material zu schlüssigem Film zusammen'},{l:'Komponist/in',r:'Erschafft originale Filmmusik und Leitmotive'}],
+    ex:'Der Film ist eine kollaborative Arbeit. Jeder Beruf trägt auf spezifische Weise zur Gesamtwirkung bei.', src:'(56-58)' },
+  { id:'K5_04', kap:5, typ:'multiple_choice', sw:'mittel',
+    frage:'Was ist eine Parallelmontage?',
+    opts:['Zwei Einstellungen gehen ohne Schnitt ineinander über','Verschiedene Handlungsorte werden abwechselnd gezeigt','Kamera zeigt den Blick einer Figur','Harter Schnitt zwischen zwei unähnlichen Einstellungen'],
+    ok:1, ex:'Parallelmontage: Zwei (oder mehr) Handlungsorte werden abwechselnd gezeigt – so werden gleichzeitige Ereignisse an verschiedenen Orten dargestellt.', src:'(55/12)' },
+  { id:'K5_05', kap:5, typ:'richtig_falsch', sw:'mittel',
+    frage:'Extradiegetischer Ton (Off-Ton) ist Ton, den nur der Zuschauer hört – nicht die Figuren im Film.',
+    ok:true, ex:'Richtig! Extradiegetisch = Off-Ton (nur Zuschauer hört ihn). Intradiegetisch = On-Ton (auch die Figuren in der Diegese hören ihn).', src:'(55/4)' },
+  { id:'K5_06', kap:5, typ:'multiple_choice', sw:'schwer',
+    frage:'Was kennzeichnet den „Unreliable Narrator" im Film?',
+    opts:['Der Erzähler spricht sehr leise','Die gezeigte Realität entspricht nicht den tatsächlichen Ereignissen','Es gibt keinen Erzähler','Der Erzähler wechselt jede Szene'],
+    ok:1, ex:'Unzuverlässige Erzählung: Erzähler/Perspektivfigur verschweigt Infos, Erinnerungen sind verfälscht. Klassiker: „Fight Club", „The Usual Suspects", „Memento".', src:'(55/1)' },
+  { id:'K5_07', kap:5, typ:'lueckentext', sw:'mittel',
+    frage:'Ergänze die Begriffe zu Montage-Techniken:',
+    saetze:[{t:'Zwei sehr unterschiedliche Einstellungen folgen direkt aufeinander:',a:'harter Schnitt'},{t:'Zwei ähnliche Einstellungen folgen einander:',a:'weicher Schnitt'},{t:'Verschiedene Handlungsorte werden abwechselnd gezeigt:',a:'Parallelmontage'},{t:'Gesprächsdarstellung, Kamera wechselt mit Sprecher:',a:'Schuss-Gegenschuss'}],
+    ex:'Montagetechniken bestimmen Rhythmus und Wirkung einer Filmszene entscheidend mit.', src:'(55/5)' },
+
+  // ──── KAP 6 ────
+  { id:'K6_01', kap:6, typ:'multiple_choice', sw:'leicht',
+    frage:'Welches Spiel hat KEINE epischen Elemente?',
+    opts:['The Witcher','Red Dead Redemption 2','Tetris','Dungeons & Dragons'],
+    ok:2, ex:'Tetris ist ein abstraktes Videospiel ohne narrative Elemente. Spielreiz entsteht durch Problemlösung/Geschicklichkeit.', src:'(59/8)' },
+  { id:'K6_02', kap:6, typ:'zuordnung', sw:'mittel',
+    frage:'Ordne die Spiele ihrer Kategorie zu.',
+    paare:[{l:'Tetris, Pong, Snake',r:'Digitale Spiele ohne epische Elemente'},{l:'Catan, Monopoly',r:'Analoge Spiele mit narrativer Rahmung'},{l:'Dungeons & Dragons',r:'Narratives analoges Spiel'},{l:'The Witcher, Life is Strange',r:'Narrative digitale Spiele'}],
+    ex:'Spiele lassen sich nach dem Grad narrativer Elemente einteilen – von keinen bis zu vollständig narrativen Spielen.', src:'(59-61)' },
+  { id:'K6_03', kap:6, typ:'richtig_falsch', sw:'mittel',
+    frage:'Pen-&-Paper-Rollenspiele wie D&D können mit klassischen narratologischen Werkzeugen analysiert werden.',
+    ok:true, ex:'Richtig! Pen-&-Paper-Rollenspiele verschmelzen Spiel und Erzählung vollständig. Die entstehenden Geschichten können narratologisch analysiert werden (vgl. Kap. 2.2).', src:'(61/1)' },
+  { id:'K6_04', kap:6, typ:'richtig_falsch', sw:'schwer',
+    frage:'Digitale Open-World-Spiele bieten dieselbe kreative Freiheit wie analoge Pen-&-Paper-Rollenspiele.',
+    ok:false, ex:'Falsch! Digitale Spielwelten sind trotz „Open World" limitiert. Kreative Ausbrüche (z. B. ein nicht vorgesehener fliegender Teppich) erlaubt Software nicht.', src:'(61/8)' },
+  { id:'K6_05', kap:6, typ:'multiple_choice', sw:'mittel',
+    frage:'Was ist der Hauptunterschied zwischen Spielen mit „Narration als Rahmen" und „narrativen Spielen"?',
+    opts:['Kein Unterschied','Narration als Rahmen: Geschichte dient der Atmosphäre ohne Einfluss auf Spielmechanik; narrative Spiele: Geschichte ist zentral','Narrative Spiele sind immer digital','Spiele mit Rahmen sind immer analog'],
+    ok:1, ex:'Narration als Rahmen: Geschichte motiviert (Catan, Monopoly), beeinflusst aber nicht die Mechanik. Narrative Spiele: Geschichte ist zentral und beeinflusst alles (The Witcher).', src:'(59-61)' },
+  { id:'K6_06', kap:6, typ:'lueckentext', sw:'schwer',
+    frage:'Ergänze die spielspezifischen Analysekategorien (über die klassischen Methoden hinaus):',
+    saetze:[{t:'Spielmechaniken und Regeln: ludische ___',a:'Elemente'},{t:'Zusammenspiel von Geschichte und Spielgeschehen:',a:'Balance'},{t:'Entscheidungen der Spieler*innen:',a:'Interaktivität'},{t:'Eigenständiges Medium mit neuen Erzählformen: narratives ___',a:'Medium'}],
+    ex:'Spielspezifische Analyse berücksichtigt: Interaktivität, ludische Elemente, Balance Narration/Gameplay, Grad der spielerischen Freiheit.', src:'(62/1)' },
+];
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+let cfg = { chapters:[], scope:'full', diff:'alle', types:['multiple_choice','richtig_falsch','lueckentext','zuordnung','sortierung','markierung'] };
+let quiz = { qs:[], answers:{}, pts:0, okCount:0, doneCount:0, matchState:{} };
+let savedCfg = null;
+
+// ═══════════════════════════════════════════════════
+// BUILD START SCREEN
+// ═══════════════════════════════════════════════════
+function buildStartScreen() {
+  const grid = document.getElementById('ch-grid');
+  const counts = {};
+  ALL_Q.forEach(q => { counts[q.kap] = (counts[q.kap]||0)+1; });
+  Object.entries(KAP).forEach(([k,v]) => {
+    grid.innerHTML += `<div class="ch-chip" data-ch="${k}" onclick="toggleCh(this,${k})" style="color:${v.color}">
+      <div class="ch-chip::before" style="background:${v.color}"></div>
+      <span class="ci">${v.icon}</span>
+      <span class="ck">✓</span>
+      <div class="cn" style="color:${v.color}">${v.short}</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:2px">${v.name}</div>
+      <div class="cc">${counts[k]} Fragen</div>
+    </div>`;
+  });
+  updateStartSummary();
+}
+
+function toggleCh(el, ch) {
+  el.classList.toggle('sel');
+  if (el.classList.contains('sel')) {
+    el.style.borderColor = KAP[ch].color;
+    if (!cfg.chapters.includes(ch)) cfg.chapters.push(ch);
+  } else {
+    el.style.borderColor = '';
+    cfg.chapters = cfg.chapters.filter(c=>c!==ch);
+  }
+  syncAllToggle();
+  updateStartSummary();
+}
+
+function toggleAll() {
+  const chips = document.querySelectorAll('.ch-chip');
+  const allSel = document.getElementById('all-toggle').classList.contains('sel');
+  if (allSel) {
+    chips.forEach(c=>{ c.classList.remove('sel'); c.style.borderColor=''; });
+    cfg.chapters = [];
+    document.getElementById('all-toggle').classList.remove('sel');
+    document.getElementById('all-check').textContent = '☐';
+  } else {
+    cfg.chapters = [];
+    chips.forEach(c=>{
+      const ch = parseInt(c.dataset.ch);
+      c.classList.add('sel');
+      c.style.borderColor = KAP[ch].color;
+      cfg.chapters.push(ch);
+    });
+    document.getElementById('all-toggle').classList.add('sel');
+    document.getElementById('all-check').textContent = '✓';
+  }
+  updateStartSummary();
+}
+
+function syncAllToggle() {
+  const total = Object.keys(KAP).length;
+  const allSel = cfg.chapters.length === total;
+  document.getElementById('all-toggle').classList.toggle('sel', allSel);
+  document.getElementById('all-check').textContent = allSel ? '✓' : '☐';
+}
+
+function setScope(el, scope) {
+  document.querySelectorAll('.scope-pill').forEach(p=>p.classList.remove('sel'));
+  el.classList.add('sel');
+  cfg.scope = scope;
+  updateStartSummary();
+}
+
+function setDiff(el, diff) {
+  document.querySelectorAll('.diff-pill').forEach(p=>{ p.className='diff-pill'; });
+  el.classList.add('sel-'+diff);
+  cfg.diff = diff;
+  updateStartSummary();
+}
+
+function toggleType(el) {
+  const t = el.dataset.type;
+  el.classList.toggle('sel');
+  if (el.classList.contains('sel')) { if (!cfg.types.includes(t)) cfg.types.push(t); }
+  else { cfg.types = cfg.types.filter(x=>x!==t); }
+  updateStartSummary();
+}
+
+function updateStartSummary() {
+  const pool = buildPool();
+  const btn = document.getElementById('start-btn');
+  const sum = document.getElementById('start-summary');
+  if (cfg.chapters.length === 0) {
+    btn.disabled = true;
+    sum.textContent = 'Wähle mindestens ein Kapitel aus.';
+  } else if (cfg.types.length === 0) {
+    btn.disabled = true;
+    sum.textContent = 'Wähle mindestens einen Aufgabentypen aus.';
+  } else if (pool.length === 0) {
+    btn.disabled = true;
+    sum.textContent = 'Keine Fragen für diese Kombination verfügbar.';
+  } else {
+    btn.disabled = false;
+    const scopeLabel = {quick:'~10 Fragen (Schnell-Check)', medium:'~25 Fragen', full:'alle '+pool.length+' Fragen'}[cfg.scope];
+    sum.textContent = `${pool.length} Fragen verfügbar · ${scopeLabel}`;
+  }
+}
+
+function buildPool() {
+  let pool = ALL_Q.filter(q =>
+    cfg.chapters.includes(q.kap) &&
+    cfg.types.includes(q.typ) &&
+    (cfg.diff === 'alle' || q.sw === cfg.diff)
+  );
+  return pool;
+}
+
+function launchQuiz() {
+  savedCfg = JSON.parse(JSON.stringify(cfg));
+  let pool = buildPool();
+  pool = shuffle(pool);
+  if (cfg.scope === 'quick') pool = pool.slice(0, Math.min(10, pool.length));
+  else if (cfg.scope === 'medium') pool = pool.slice(0, Math.min(25, pool.length));
+  quiz = { qs: pool, answers:{}, pts:0, okCount:0, doneCount:0, matchState:{} };
+  renderQuiz();
+  showScreen('sc-quiz');
+}
+
+function replayQuiz() {
+  if (savedCfg) { cfg = savedCfg; launchQuiz(); }
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER QUIZ
+// ═══════════════════════════════════════════════════
+function renderQuiz() {
+  const cont = document.getElementById('q-container');
+  cont.innerHTML = '';
+  let lastKap = null;
+  quiz.qs.forEach((q, i) => {
+    if (q.kap !== lastKap) {
+      const sep = document.createElement('div');
+      sep.className = 'ch-sep';
+      sep.style.color = KAP[q.kap].color;
+      sep.textContent = `${KAP[q.kap].icon} Kapitel ${q.kap}: ${KAP[q.kap].name}`;
+      cont.appendChild(sep);
+      lastKap = q.kap;
+    }
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'card-'+q.id;
+    card.dataset.kap = q.kap;
+    card.innerHTML = buildCardHTML(q, i);
+    cont.appendChild(card);
+  });
+  updateProgress();
+}
+
+function buildCardHTML(q, i) {
+  const kap = KAP[q.kap];
+  const diffLabel = {leicht:'🟢 Leicht', mittel:'🟡 Mittel', schwer:'🔴 Schwer'}[q.sw];
+  const typLabel  = {multiple_choice:'Multiple Choice', richtig_falsch:'Richtig/Falsch', lueckentext:'Lückentext', zuordnung:'Zuordnung', sortierung:'Sortierung', markierung:'Markierung'}[q.typ];
+  let body = '';
+  if (q.typ==='multiple_choice') body = buildMC(q);
+  else if (q.typ==='richtig_falsch') body = buildTF(q);
+  else if (q.typ==='lueckentext') body = buildGap(q);
+  else if (q.typ==='zuordnung') body = buildMatch(q);
+  else if (q.typ==='sortierung') body = buildSort(q);
+  else if (q.typ==='markierung') body = buildHL(q);
+  return `<div class="q-meta">
+    <span class="q-tag" style="background:${kap.color}22;color:${kap.color}">${kap.icon} Kap.${q.kap}</span>
+    <span class="q-tag" style="background:rgba(255,255,255,.05);color:var(--muted)">${diffLabel}</span>
+    <span class="q-tag" style="background:rgba(255,255,255,.05);color:var(--muted)">${typLabel}</span>
+    <span class="q-num">${i+1} / ${quiz.qs.length}</span>
+  </div>
+  <div class="q-text">${q.frage}</div>
+  ${body}
+  <div class="ex-box" id="ex-${q.id}">
+    <div class="ex-head"><span id="ex-icon-${q.id}">✅</span> Erklärung</div>
+    <div>${q.ex}</div>
+    <div class="ex-src">Quelle: ${q.src}</div>
+  </div>`;
+}
+
+// ── MC ──
+function buildMC(q) {
+  const ltrs = ['A','B','C','D'];
+  return `<div class="mc-opts">${q.opts.map((o,i)=>`
+    <button class="mc-btn" id="mc-${q.id}-${i}" onclick="answerMC('${q.id}',${i},${q.ok})">
+      <span class="ltr">${ltrs[i]}</span><span>${o}</span>
+    </button>`).join('')}</div>`;
+}
+function answerMC(id, chosen, correct) {
+  if (quiz.answers[id]) return;
+  const q = quiz.qs.find(x=>x.id===id);
+  const ok = chosen === correct;
+  const pts = ok ? ptsByDiff(q.sw) : 0;
+  record(id, ok, pts);
+  q.opts.forEach((_,i)=>{
+    const b = document.getElementById(`mc-${id}-${i}`);
+    b.disabled = true;
+    if (i===correct) b.classList.add('ok');
+    else if (i===chosen) b.classList.add('no');
+  });
+  showEx(id, ok); toast(ok ? `✅ +${pts} Punkte` : '❌ Leider falsch', ok?'ok':'no');
+}
+
+// ── TF ──
+function buildTF(q) {
+  return `<div class="tf-row">
+    <button class="tf-btn t-btn" id="tf-${q.id}-t" onclick="answerTF('${q.id}',true,${q.ok})"><span class="tf-icon">✅</span>Richtig</button>
+    <button class="tf-btn f-btn" id="tf-${q.id}-f" onclick="answerTF('${q.id}',false,${q.ok})"><span class="tf-icon">❌</span>Falsch</button>
+  </div>`;
+}
+function answerTF(id, chosen, correct) {
+  if (quiz.answers[id]) return;
+  const q = quiz.qs.find(x=>x.id===id);
+  const ok = chosen === correct;
+  const pts = ok ? ptsByDiff(q.sw) : 0;
+  record(id, ok, pts);
+  const te = document.getElementById(`tf-${id}-t`);
+  const fe = document.getElementById(`tf-${id}-f`);
+  te.disabled = fe.disabled = true;
+  const chosenEl = chosen ? te : fe;
+  chosenEl.classList.add(ok?'ok':'no');
+  if (!ok) { const correctEl = correct ? te : fe; correctEl.classList.add('ok'); }
+  showEx(id, ok); toast(ok?`✅ +${pts} Punkte`:'❌ Leider falsch', ok?'ok':'no');
+}
+
+// ── GAP ──
+function buildGap(q) {
+  const rows = q.saetze.map((s,i)=>`<div class="gap-item">
+    <div class="gap-prompt">${s.t}</div>
+    <input class="gap-inp" id="gap-${q.id}-${i}" placeholder="Begriff eingeben …" data-ans="${s.a}" />
+    <div class="gap-hint" id="gap-hint-${q.id}-${i}" style="display:none"></div>
+  </div>`).join('');
+  return `<div class="gap-list">${rows}</div>
+  <button class="gap-submit" id="gsub-${q.id}" onclick="answerGap('${q.id}',${q.saetze.length})">Prüfen</button>`;
+}
+function answerGap(id, count) {
+  if (quiz.answers[id]) return;
+  const q = quiz.qs.find(x=>x.id===id);
+  let correct = 0;
+  for (let i=0;i<count;i++) {
+    const inp = document.getElementById(`gap-${id}-${i}`);
+    inp.disabled = true;
+    const val = inp.value.trim().toLowerCase();
+    const expected = inp.dataset.ans.toLowerCase();
+    const ok = val===expected || expected.includes(val) && val.length > 3;
+    inp.classList.add(ok?'ok':'no');
+    const hint = document.getElementById(`gap-hint-${id}-${i}`);
+    if (!ok) { hint.style.display='block'; hint.textContent = '→ '+inp.dataset.ans; }
+    if (ok) correct++;
+  }
+  document.getElementById(`gsub-${id}`).disabled = true;
+  const allOk = correct===count;
+  const pts = allOk ? ptsByDiff(q.sw) : correct>0 ? Math.round(ptsByDiff(q.sw)*correct/count) : 0;
+  record(id, allOk, pts);
+  showEx(id, allOk);
+  toast(allOk?`✅ +${pts} Punkte`:correct>0?`⚠️ Teilweise richtig +${pts}`:'❌ Falsch', allOk?'ok':correct>0?'warn':'no');
+}
+
+// ── MATCH ──
+function buildMatch(q) {
+  quiz.matchState[q.id] = { sel: null, matched:[], correct:0, total:q.paare.length };
+  const rsh = shuffle(q.paare.map(p=>p.r));
+  const lefts = q.paare.map((p,i)=>`<div class="m-item m-left" id="ml-${q.id}-${i}" onclick="selLeft('${q.id}',${i})">${p.l}</div>`).join('');
+  const rights = rsh.map((r,i)=>`<div class="m-item m-right" id="mr-${q.id}-${CSS.escape(r)}" data-r="${r.replace(/"/g,'&quot;')}" onclick="selRight('${q.id}','${r.replace(/'/g,"\\'")}' )">${r}</div>`).join('');
+  return `<div class="match-area">
+    <div><div class="match-col-label">Begriff / Beispiel</div><div class="match-left-items">${lefts}</div></div>
+    <div><div class="match-col-label">Definition / Gattung</div><div class="match-right-items">${rights}</div></div>
+  </div>`;
+}
+function selLeft(id, idx) {
+  const ms = quiz.matchState[id];
+  if (ms.matched.includes(idx)) return;
+  if (ms.sel !== null && ms.sel!==idx) document.getElementById(`ml-${id}-${ms.sel}`)?.classList.remove('active');
+  ms.sel = idx;
+  document.getElementById(`ml-${id}-${idx}`).classList.add('active');
+}
+function selRight(id, r) {
+  const ms = quiz.matchState[id];
+  if (ms.sel === null) { toast('Bitte zuerst links einen Begriff auswählen.','warn'); return; }
+  if (quiz.answers[id]) return;
+  const q = quiz.qs.find(x=>x.id===id);
+  const leftIdx = ms.sel;
+  const correctR = q.paare[leftIdx].r;
+  const rEl = document.querySelector(`#card-${id} .m-right[data-r="${r.replace(/"/g,'&quot;')}"]`);
+  if (!rEl || rEl.classList.contains('done')) return;
+  if (r===correctR) {
+    rEl.classList.add('hit','done');
+    const lEl = document.getElementById(`ml-${id}-${leftIdx}`);
+    lEl.classList.remove('active'); lEl.classList.add('done');
+    ms.matched.push(leftIdx); ms.correct++; ms.sel=null;
+    if (ms.matched.length===ms.total) {
+      const allOk = ms.correct===ms.total;
+      const pts = allOk ? ptsByDiff(q.sw) : Math.round(ptsByDiff(q.sw)*ms.correct/ms.total);
+      record(id, allOk, pts);
+      showEx(id, allOk);
+      toast(allOk?`✅ +${pts} Punkte`:`⚠️ +${pts} Punkte`, allOk?'ok':'warn');
+    }
+  } else {
+    rEl.classList.add('miss');
+    setTimeout(()=>rEl.classList.remove('miss'),500);
+    toast('❌ Nicht passend – versuch es nochmal','no');
+  }
+}
+
+// ── SORT ──
+function buildSort(q) {
+  const items = shuffle(q.items.map((it,i)=>({text:it,origIdx:i})));
+  quiz.matchState[q.id] = { order: items.map(x=>x.origIdx) };
+  const listItems = items.map((it,i)=>`<div class="sort-item" draggable="true" id="si-${q.id}-${i}" data-idx="${i}"
+    ondragstart="dragStart(event,'${q.id}',${i})"
+    ondragover="dragOver(event,'${q.id}',${i})"
+    ondrop="drop(event,'${q.id}',${i})"
+    ondragleave="dragLeave(event,'${q.id}',${i})">
+    <span class="drag-handle">⠿</span><span>${it.text}</span>
+  </div>`).join('');
+  return `<div class="sort-list" id="sl-${q.id}">${listItems}</div>
+  <button class="sort-submit" id="ssub-${q.id}" onclick="answerSort('${q.id}',${JSON.stringify(q.correctOrder)})">Reihenfolge prüfen</button>`;
+}
+let dragSrc = null;
+function dragStart(e,id,i) { dragSrc={id,i}; e.dataTransfer.effectAllowed='move'; }
+function dragOver(e,id,i) { e.preventDefault(); document.getElementById(`si-${id}-${i}`).classList.add('drag-over'); }
+function dragLeave(e,id,i) { document.getElementById(`si-${id}-${i}`).classList.remove('drag-over'); }
+function drop(e,id,i) {
+  e.preventDefault();
+  document.getElementById(`si-${id}-${i}`).classList.remove('drag-over');
+  if (!dragSrc || dragSrc.id!==id || dragSrc.i===i) return;
+  const ms = quiz.matchState[id];
+  const tmp = ms.order[dragSrc.i]; ms.order[dragSrc.i]=ms.order[i]; ms.order[i]=tmp;
+  // Swap DOM
+  const sl = document.getElementById(`sl-${id}`);
+  const items = [...sl.children];
+  const a = items[dragSrc.i], b = items[i];
+  const aNext = a.nextSibling;
+  if (aNext===b) { sl.insertBefore(b,a); } else { sl.insertBefore(a,b); if(aNext) sl.insertBefore(b,aNext); else sl.appendChild(b); }
+  dragSrc=null;
+}
+function answerSort(id, correctOrder) {
+  if (quiz.answers[id]) return;
+  const q = quiz.qs.find(x=>x.id===id);
+  const ms = quiz.matchState[id];
+  document.getElementById(`ssub-${id}`).disabled=true;
+  const sl = document.getElementById(`sl-${id}`);
+  const items = [...sl.children];
+  let correct=0;
+  items.forEach((el,pos)=>{
+    const origIdx = parseInt(el.dataset.idx);
+    // Map current positions to original indices
+  });
+  // Simpler check: read current order from DOM
+  const currentOrder = items.map(el=>parseInt(el.dataset.idx));
+  // Map slot positions to original items
+  const orderedOrigIdx = currentOrder.map(slotIdx=> {
+    // find what orig item is in this slot
+    return ms.order[slotIdx] !== undefined ? ms.order[slotIdx] : slotIdx;
+  });
+  // Re-check: just compare ms.order (which we kept updated) to correctOrder
+  let matches=0;
+  ms.order.forEach((v,i)=>{ if(v===correctOrder[i]) matches++; });
+  const allOk = matches===correctOrder.length;
+  items.forEach((el,i)=>{
+    const ok = ms.order[i]===correctOrder[i];
+    el.classList.add(ok?'ok':'no');
+  });
+  const pts = allOk ? ptsByDiff(q.sw) : matches>0?Math.round(ptsByDiff(q.sw)*matches/correctOrder.length):0;
+  record(id, allOk, pts);
+  showEx(id, allOk);
+  toast(allOk?`✅ +${pts} Punkte`:matches>0?`⚠️ Teilweise richtig +${pts}`:'❌ Reihenfolge falsch', allOk?'ok':matches>0?'warn':'no');
+}
+
+// ── HIGHLIGHT ──
+function buildHL(q) {
+  const words = q.text.split(' ');
+  const spans = words.map((w,i)=>`<span class="hl-word" id="hw-${q.id}-${i}" onclick="toggleHL('${q.id}',${i},'${w.replace(/'/g,"\\'")}')" data-w="${w}">${w}</span>`).join(' ');
+  quiz.matchState[q.id] = { sel:[] };
+  return `<div class="hl-task">${q.frage}</div><div class="hl-text">${spans}</div>
+  <button class="hl-submit" id="hsub-${q.id}" onclick="answerHL('${q.id}')">Markierung prüfen</button>`;
+}
+function toggleHL(id, idx, word) {
+  if (quiz.answers[id]) return;
+  const ms = quiz.matchState[id];
+  const el = document.getElementById(`hw-${id}-${idx}`);
+  if (ms.sel.includes(idx)) { ms.sel=ms.sel.filter(x=>x!==idx); el.classList.remove('sel'); }
+  else { ms.sel.push(idx); el.classList.add('sel'); }
+}
+function answerHL(id) {
+  if (quiz.answers[id]) return;
+  const q = quiz.qs.find(x=>x.id===id);
+  const ms = quiz.matchState[id];
+  document.getElementById(`hsub-${id}`).disabled=true;
+  const words = q.text.split(' ');
+  const targets = q.targets.map(t=>t.toLowerCase());
+  // Find which word-spans contain target strings
+  let found=0, total=q.targets.length;
+  words.forEach((w,i)=>{
+    const clean = w.replace(/[.,!?;:"""]/g,'').toLowerCase();
+    const isTarget = targets.some(t=>t.split(' ').includes(clean) || clean.includes(t.toLowerCase()));
+    const isSelected = ms.sel.includes(i);
+    const el = document.getElementById(`hw-${id}-${i}`);
+    if (el) {
+      if (isTarget && isSelected) { el.classList.remove('sel'); el.classList.add('ok'); found++; }
+      else if (!isTarget && isSelected) { el.classList.remove('sel'); el.classList.add('no'); }
+      else if (isTarget && !isSelected) { el.classList.add('ok'); }
+      el.style.cursor='default';
+    }
+  });
+  const pts = Math.round(ptsByDiff(q.sw) * found / total);
+  const allOk = found===total && ms.sel.length<=total;
+  record(id, allOk, pts);
+  showEx(id, allOk);
+  toast(found>0?`✅ ${found}/${total} erkannt · +${pts}`:'❌ Nichts korrekt markiert', found===total&&ms.sel.length===found?'ok':found>0?'warn':'no');
+}
+
+// ═══════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════
+function ptsByDiff(sw) { return {leicht:10,mittel:15,schwer:20}[sw]||10; }
+function record(id, ok, pts) {
+  quiz.answers[id]={ok,pts};
+  if(ok) quiz.okCount++;
+  quiz.pts+=pts; quiz.doneCount++;
+  updateProgress();
+}
+function updateProgress() {
+  const done=quiz.doneCount, total=quiz.qs.length;
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('prog-label').textContent=`Frage ${done} von ${total}`;
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('ss-pts').textContent=quiz.pts;
+  document.getElementById('ss-ok').textContent=quiz.okCount;
+  document.getElementById('ss-done').textContent=quiz.doneCount;
+}
+function showEx(id, ok) {
+  const box = document.getElementById(`ex-${id}`);
+  if (!box) return;
+  box.classList.add('show', ok?'ok':'no');
+  document.getElementById(`ex-icon-${id}`).textContent=ok?'✅':'❌';
+}
+function toast(msg, type) {
+  const t=document.getElementById('toast');
+  t.className='toast '+type;
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(t._to);
+  t._to=setTimeout(()=>t.classList.remove('show'),2800);
+}
+function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function goBack() {
+  if (confirm('Quiz abbrechen und zurück zur Konfiguration?')) showScreen('sc-start');
+}
+
+// ═══════════════════════════════════════════════════
+// RESULTS
+// ═══════════════════════════════════════════════════
+function showResults() {
+  showScreen('sc-results');
+  const total=quiz.qs.length, ok=quiz.okCount;
+  const pct=total?Math.round(ok/total*100):0;
+  document.getElementById('r-pct').textContent=pct+'%';
+  document.getElementById('r-pct').style.color=pct>=80?'var(--teal)':pct>=60?'var(--gold)':'var(--accent)';
+  document.getElementById('r-ok').textContent=ok;
+  document.getElementById('r-no').textContent=total-ok;
+  document.getElementById('r-pts').textContent=quiz.pts;
+  let stars,title,sub;
+  if(pct>=90){stars='⭐⭐⭐';title='Hervorragend!';sub='Du beherrschst den Stoff souverän.';}
+  else if(pct>=70){stars='⭐⭐';title='Sehr gut!';sub='Du kennst die meisten Begriffe – weiter so.';}
+  else if(pct>=50){stars='⭐';title='Auf gutem Weg!';sub='Mit etwas Übung wirst du den Rest auch meistern.';}
+  else{stars='📚';title='Noch Luft nach oben.';sub='Schau dir die Erklärungen nochmal an und versuche es erneut.';}
+  document.getElementById('r-stars').textContent=stars;
+  document.getElementById('r-title').textContent=title;
+  document.getElementById('r-sub').textContent=sub;
+
+  // Breakdown by chapter
+  const chapters=[...new Set(quiz.qs.map(q=>q.kap))].sort();
+  let html='<div class="r-bk-title">Ergebnis nach Kapitel</div>';
+  chapters.forEach(ch=>{
+    const qs=quiz.qs.filter(q=>q.kap===ch);
+    const okC=qs.filter(q=>quiz.answers[q.id]?.ok).length;
+    const p=qs.length?Math.round(okC/qs.length*100):0;
+    html+=`<div class="r-bk-row">
+      <div class="r-dot" style="background:${KAP[ch].color}"></div>
+      <div class="r-name">${KAP[ch].icon} ${KAP[ch].short}</div>
+      <div style="font-size:12px;color:var(--muted);min-width:70px">${okC}/${qs.length} richtig</div>
+      <div class="r-track"><div class="r-fill" style="width:${p}%;background:${KAP[ch].color}"></div></div>
+      <div class="r-pct" style="color:${KAP[ch].color}">${p}%</div>
+    </div>`;
+  });
+  document.getElementById('r-breakdown').innerHTML=html;
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+buildStartScreen();
+</script>
+</body>
+</html>
