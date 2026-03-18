@@ -1291,20 +1291,50 @@ footer {
 
 
 /* ── QUIZZE-SEKTION ─────────────────────────────────────────────────────────── */
+.quiz-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
 .quiz-feature-card {
   background: linear-gradient(135deg, #1e3a5f 0%, #163050 100%);
   border: 2px solid #4a9eda;
   border-radius: 16px;
   padding: 36px 40px;
   text-align: center;
-  max-width: 620px;
-  margin: 0 auto;
   box-shadow: 0 8px 32px rgba(74, 158, 218, 0.18);
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .quiz-feature-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 14px 40px rgba(74, 158, 218, 0.28);
+}
+
+/* Variante: Literaturwissenschaft-Quiz (lila Akzent) */
+.quiz-feature-card.quiz-lila {
+  background: linear-gradient(135deg, #2a1e5f 0%, #1e1640 100%);
+  border-color: #9b7fe8;
+  box-shadow: 0 8px 32px rgba(155, 127, 232, 0.18);
+}
+.quiz-feature-card.quiz-lila:hover {
+  box-shadow: 0 14px 40px rgba(155, 127, 232, 0.28);
+}
+.quiz-feature-card.quiz-lila .quiz-badge {
+  background: rgba(155, 127, 232, 0.2);
+  color: #c4aff5;
+  border-color: #9b7fe8;
+}
+.quiz-feature-card.quiz-lila .quiz-fach-badge {
+  border-color: #9b7fe8;
+  color: #c4aff5;
+}
+.quiz-feature-card.quiz-lila .btn-primary {
+  background: linear-gradient(135deg, #9b7fe8, #6a5acd);
+  box-shadow: 0 4px 16px rgba(155, 127, 232, 0.4);
+}
+.quiz-feature-card.quiz-lila .btn-primary:hover {
+  background: linear-gradient(135deg, #b39af0, #9b7fe8);
 }
 .quiz-feature-meta {
   display: flex;
@@ -1345,6 +1375,7 @@ footer {
 .quiz-btn { padding: 13px 36px; font-size: 1rem; font-weight: 700; }
 
 @media (max-width: 768px) {
+  .quiz-grid { grid-template-columns: 1fr; }
   .quiz-feature-card { padding: 28px 24px; }
 }
 @media (max-width: 480px) {
