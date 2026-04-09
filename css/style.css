@@ -1383,3 +1383,153 @@ footer {
   .quiz-feature-titel { font-size: 1.25rem; }
   .quiz-feature-desc { font-size: 0.88rem; }
 }
+
+
+/* ================================================================
+   WAS IST NEU?
+   ================================================================ */
+
+#was-ist-neu {
+    background-color: var(--farbe-weiss);
+    padding: 56px 0 64px;
+    border-bottom: 1px solid var(--farbe-rahmen);
+}
+
+/* Leuchtender Akzentbalken links an der Sektion */
+#was-ist-neu .section-titel::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 1em;
+    background: linear-gradient(to bottom, var(--farbe-akzent), var(--farbe-primaer));
+    border-radius: 3px;
+    margin-right: 12px;
+    vertical-align: middle;
+    position: relative;
+    top: -2px;
+}
+
+/* Lade-Platzhalter */
+.win-laden {
+    text-align: center;
+    color: var(--farbe-text-hell);
+    padding: 28px 0;
+    font-size: 0.95rem;
+}
+
+/* Kein-Inhalt-Nachricht */
+.win-leer {
+    color: var(--farbe-text-hell);
+    font-style: italic;
+    text-align: center;
+    padding: 28px 0;
+}
+
+/* Tabellen-Wrapper für horizontales Scrollen auf kleinen Screens */
+.win-tabellen-wrapper {
+    overflow-x: auto;
+    border-radius: var(--radius);
+    box-shadow: var(--schatten);
+}
+
+/* Tabelle */
+.win-tabelle {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+    background: var(--farbe-weiss);
+}
+
+.win-tabelle thead tr {
+    background: var(--farbe-primaer);
+    color: var(--farbe-weiss);
+}
+
+.win-tabelle thead th {
+    padding: 13px 18px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    white-space: nowrap;
+}
+
+.win-tabelle tbody tr {
+    border-bottom: 1px solid var(--farbe-rahmen);
+    transition: background-color var(--transition);
+}
+
+.win-tabelle tbody tr:last-child {
+    border-bottom: none;
+}
+
+.win-tabelle tbody tr:hover {
+    background-color: rgba(74, 158, 218, 0.06);
+}
+
+.win-tabelle td {
+    padding: 14px 18px;
+    vertical-align: top;
+}
+
+/* Kategorie-Spalte */
+.win-kat {
+    min-width: 150px;
+    white-space: nowrap;
+}
+
+.win-icon {
+    display: inline-block;
+    margin-right: 5px;
+    font-size: 1.05em;
+}
+
+.win-kat-text {
+    font-weight: 600;
+    color: var(--farbe-primaer);
+    font-size: 0.88rem;
+}
+
+.win-meta {
+    display: block;
+    color: var(--farbe-text-hell);
+    font-size: 0.78rem;
+    margin-top: 2px;
+    font-weight: 400;
+}
+
+/* Titel-Spalte */
+.win-titel a {
+    color: var(--farbe-text);
+    font-weight: 500;
+    transition: color var(--transition);
+}
+
+.win-titel a:hover {
+    color: var(--farbe-akzent);
+    text-decoration: underline;
+}
+
+/* Datum-Spalte */
+.win-datum {
+    white-space: nowrap;
+    color: var(--farbe-text-hell);
+    font-size: 0.86rem;
+    text-align: right;
+    min-width: 120px;
+}
+
+.win-uhrzeit {
+    color: var(--farbe-akzent);
+    font-size: 0.8rem;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .win-tabelle { font-size: 0.88rem; }
+    .win-tabelle td,
+    .win-tabelle th { padding: 11px 12px; }
+    .win-kat { min-width: 110px; }
+    .win-uhrzeit { display: none; }
+}

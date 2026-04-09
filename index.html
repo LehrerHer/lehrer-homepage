@@ -43,6 +43,7 @@
 
             <!-- Navigationslinks – Anker-Links zu den Sektionen der Seite -->
             <ul class="navbar-links" id="navbar-links">
+                <li><a href="#was-ist-neu">Was ist neu?</a></li>
                 <li><a href="#startseite" class="aktiv">Startseite</a></li>
                 <li><a href="#faecher">Fächer</a></li>
                 <li><a href="#materialien">Materialien</a></li>
@@ -83,6 +84,27 @@
                 <span class="fach-badge" role="listitem">💻 Informatik</span>
                 <span class="fach-badge" role="listitem">⚖️ Werte &amp; Normen</span>
                 <span class="fach-badge" role="listitem">🎭 AGs &amp; Projekte</span>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========================================================
+         WAS IST NEU?
+         Automatisch aktualisierter Überblick über die jüngsten
+         Ergänzungen: neue Materialien, Blogbeiträge, Quiz-Einträge.
+         ======================================================== -->
+    <section id="was-ist-neu">
+        <div class="container">
+
+            <h2 class="section-titel">Was ist neu?</h2>
+            <p class="section-untertitel">Die drei jüngsten Veränderungen je Kategorie – immer automatisch aktuell.</p>
+
+            <div class="win-tabellen-wrapper">
+                <div id="win-tabelle" class="win-laden" aria-live="polite" aria-label="Neuigkeiten werden geladen">
+                    ⏳ Lade Neuigkeiten …
+                </div>
             </div>
 
         </div>
@@ -325,6 +347,10 @@
     <script src="js/main.js"></script>
     <!-- Dynamische Inhalte aus inhalte.json -->
     <script src="js/dynamic-content.js"></script>
+    <!-- Supabase-Zugangsdaten (für Was ist neu? und Blog) -->
+    <script src="js/supabase-config.js"></script>
+    <!-- Was ist neu? – automatische Neuigkeiten-Übersicht -->
+    <script src="js/was-ist-neu.js"></script>
 
 </body>
 </html>
