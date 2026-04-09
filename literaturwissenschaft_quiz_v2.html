@@ -504,6 +504,53 @@ body::before {
 
 /* Scroll lock helper */
 .noscroll { overflow: hidden; }
+
+/* ═══════════════ BESTENLISTE ═══════════════ */
+.r-lb {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 16px; padding: 24px; margin-bottom: 24px;
+}
+.r-lb-header {
+  font-size: 12px; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--muted); margin-bottom: 16px;
+}
+.r-lb-row {
+  display: grid; grid-template-columns: 32px 1fr 56px 72px;
+  align-items: center; gap: 10px; padding: 9px 0;
+  border-bottom: 1px solid var(--border); font-size: 13.5px;
+}
+.r-lb-row:last-child { border-bottom: none; }
+.r-lb-row.colhead { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
+.r-lb-rank { text-align: center; font-weight: 700; }
+.r-lb-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.r-lb-score { color: var(--gold); font-weight: 600; text-align: right; }
+.r-lb-date { color: var(--muted); font-size: 12px; text-align: right; }
+
+/* ═══════════════ NAME-MODAL ═══════════════ */
+.lb-modal {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.78); z-index: 300;
+  align-items: center; justify-content: center; padding: 20px;
+}
+.lb-modal.show { display: flex; }
+.lb-modal-box {
+  background: var(--card2); border: 1px solid var(--purple);
+  border-radius: 20px; padding: 32px 28px; max-width: 380px; width: 100%;
+  text-align: center; box-shadow: 0 24px 64px rgba(0,0,0,.7);
+}
+.lb-modal-title {
+  font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700;
+  color: var(--gold); margin-bottom: 8px;
+}
+.lb-modal-sub { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+.lb-modal-input {
+  width: 100%; padding: 12px 16px; border-radius: 12px;
+  background: var(--card); border: 1px solid var(--border);
+  color: var(--text); font-family: 'DM Sans', sans-serif;
+  font-size: 16px; outline: none; margin-bottom: 16px;
+}
+.lb-modal-input:focus { border-color: var(--purple); }
+.lb-modal-btns { display: flex; gap: 10px; justify-content: center; }
 </style>
 </head>
 <body>
@@ -628,6 +675,10 @@ body::before {
       <div class="r-stat"><div class="r-stat-val" id="r-pts" style="color:var(--gold)">0</div><div class="r-stat-lab">Punkte</div></div>
     </div>
     <div class="r-breakdown" id="r-breakdown"></div>
+    <div id="r-lb" class="r-lb" style="display:none">
+      <div class="r-lb-header">🏆 Bestenliste – Top 10</div>
+      <div id="r-lb-table"></div>
+    </div>
     <div class="r-actions">
       <button class="r-btn primary" onclick="location.reload()">🔄 Neu konfigurieren</button>
       <button class="r-btn sec" onclick="replayQuiz()">↺ Gleiche Einstellungen</button>
@@ -635,9 +686,23 @@ body::before {
   </div>
 </div>
 
+<!-- Namenseingabe für Bestenliste -->
+<div class="lb-modal" id="lb-modal" role="dialog" aria-modal="true" aria-labelledby="lb-modal-title">
+  <div class="lb-modal-box">
+    <div class="lb-modal-title" id="lb-modal-title">🏆 Top-Ergebnis!</div>
+    <div class="lb-modal-sub">Möchtest du dich in die Bestenliste eintragen?</div>
+    <input class="lb-modal-input" id="lb-name-input" type="text" maxlength="30" placeholder="Dein Name" autocomplete="off" aria-label="Dein Name für die Bestenliste">
+    <div class="lb-modal-btns">
+      <button class="r-btn primary" onclick="saveLBEntry()">Eintragen</button>
+      <button class="r-btn sec" onclick="skipLBEntry()">Überspringen</button>
+    </div>
+  </div>
+</div>
+
 </div><!-- .wrap -->
 <div class="toast" id="toast"></div>
 
+<script src="js/supabase-config.js"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // DATA
@@ -1393,7 +1458,128 @@ function showResults() {
     </div>`;
   });
   document.getElementById('r-breakdown').innerHTML=html;
+
+  // Bestenliste: Eintrag anbieten oder direkt laden
+  const lbEl=document.getElementById('r-lb');
+  if(lbEl) lbEl.style.display='none';
+  if(typeof SUPABASE_KONFIGURIERT!=='undefined'&&SUPABASE_KONFIGURIERT){
+    if(pct>=50){
+      pendingLB={pct:pct, pts:quiz.pts, total:total, richtig:ok};
+      const inp=document.getElementById('lb-name-input');
+      if(inp) inp.value='';
+      const modal=document.getElementById('lb-modal');
+      if(modal){
+        modal.classList.add('show');
+        setTimeout(()=>inp&&inp.focus(),120);
+      }
+    } else {
+      lbAnzeigen();
+    }
+  }
 }
+
+// ═══════════════════════════════════════════════════
+// BESTENLISTE (Supabase – geteilte Bestenliste)
+// Einmalige Einrichtung: Tabelle im Supabase SQL-Editor anlegen:
+//   CREATE TABLE quiz_bestenliste (
+//     id       bigserial PRIMARY KEY,
+//     quiz     text not null,
+//     modus    text not null,
+//     name     text not null,
+//     punkte   integer not null default 0,
+//     gesamt   integer not null,
+//     richtig  integer not null,
+//     prozent  integer not null,
+//     datum    timestamptz default now()
+//   );
+//   ALTER TABLE quiz_bestenliste ENABLE ROW LEVEL SECURITY;
+//   CREATE POLICY "Lesen"      ON quiz_bestenliste FOR SELECT USING (true);
+//   CREATE POLICY "Einreichen" ON quiz_bestenliste FOR INSERT WITH CHECK (true);
+// ═══════════════════════════════════════════════════
+const LB_QUIZ  = 'literaturwissenschaft';
+const LB_MODUS = 'gesamt';
+let pendingLB  = null;
+
+async function lbLaden() {
+  if(typeof SUPABASE_KONFIGURIERT==='undefined'||!SUPABASE_KONFIGURIERT) return [];
+  try {
+    const url = SUPABASE_URL+'/rest/v1/quiz_bestenliste'
+      +'?quiz=eq.'+encodeURIComponent(LB_QUIZ)
+      +'&modus=eq.'+encodeURIComponent(LB_MODUS)
+      +'&order=prozent.desc,punkte.desc'
+      +'&limit=10'
+      +'&select=name,punkte,gesamt,richtig,prozent,datum';
+    const r = await fetch(url,{headers:{'Authorization':'Bearer '+SUPABASE_KEY,'apikey':SUPABASE_KEY}});
+    if(!r.ok) return [];
+    return await r.json();
+  } catch(e){ return []; }
+}
+
+async function lbSpeichern(name,pct,pts,total,richtig) {
+  if(typeof SUPABASE_KONFIGURIERT==='undefined'||!SUPABASE_KONFIGURIERT) return;
+  try {
+    await fetch(SUPABASE_URL+'/rest/v1/quiz_bestenliste',{
+      method:'POST',
+      headers:{
+        'Authorization':'Bearer '+SUPABASE_KEY,'apikey':SUPABASE_KEY,
+        'Content-Type':'application/json','Prefer':'return=minimal'
+      },
+      body:JSON.stringify({
+        quiz:LB_QUIZ, modus:LB_MODUS,
+        name:name.trim()||'???',
+        punkte:pts, gesamt:total, richtig:richtig, prozent:pct
+      })
+    });
+  } catch(e){}
+}
+
+function escLB(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+async function lbAnzeigen() {
+  const el=document.getElementById('r-lb');
+  const tbl=document.getElementById('r-lb-table');
+  if(!el||!tbl) return;
+  el.style.display='block';
+  tbl.innerHTML='<div style="text-align:center;color:var(--muted);padding:16px">⏳ Lade…</div>';
+  const list=await lbLaden();
+  if(list.length===0){
+    tbl.innerHTML='<div style="text-align:center;color:var(--muted);padding:16px">Noch keine Einträge – sei der Erste!</div>';
+    return;
+  }
+  const medals=['🥇','🥈','🥉'];
+  let html='<div class="r-lb-row colhead"><span class="r-lb-rank">#</span><span class="r-lb-name">Name</span><span class="r-lb-score">Score</span><span class="r-lb-date">Datum</span></div>';
+  list.forEach(function(e,i){
+    const rank=i<3?medals[i]:(i+1)+'.';
+    const ds=e.datum?new Date(e.datum).toLocaleDateString('de-DE'):'';
+    html+='<div class="r-lb-row">'
+      +'<span class="r-lb-rank">'+rank+'</span>'
+      +'<span class="r-lb-name">'+escLB(e.name)+'</span>'
+      +'<span class="r-lb-score">'+e.prozent+'%<span style="color:var(--muted);font-size:11px"> ('+e.richtig+'/'+e.gesamt+')</span></span>'
+      +'<span class="r-lb-date">'+escLB(ds)+'</span>'
+      +'</div>';
+  });
+  tbl.innerHTML=html;
+}
+
+async function saveLBEntry() {
+  const name=document.getElementById('lb-name-input').value;
+  document.getElementById('lb-modal').classList.remove('show');
+  if(pendingLB){
+    await lbSpeichern(name,pendingLB.pct,pendingLB.pts,pendingLB.total,pendingLB.richtig);
+    pendingLB=null;
+  }
+  lbAnzeigen();
+}
+
+function skipLBEntry() {
+  document.getElementById('lb-modal').classList.remove('show');
+  pendingLB=null;
+  lbAnzeigen();
+}
+
+document.getElementById('lb-name-input').addEventListener('keydown',function(e){
+  if(e.key==='Enter') saveLBEntry();
+});
 
 // ═══════════════════════════════════════════════════
 // INIT

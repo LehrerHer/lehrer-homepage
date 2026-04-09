@@ -335,6 +335,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
     </div>
   </div>
 </div>
+<script src="js/supabase-config.js"></script>
 <script>
 // ── DATENBASIS ────────────────────────────────────────────────────────────────
 var ALLE = [
@@ -988,59 +989,106 @@ function doAbort() {
   showResult();
 }
 
-// ── HIGHSCORES ────────────────────────────────────────────────────────────────
-var HS_KEY = "stilmittel_hs_v2";
+// ── HIGHSCORES (Supabase – geteilte Bestenliste) ──────────────────────────────
+// Einmalige Einrichtung: Tabelle im Supabase SQL-Editor anlegen:
+//   CREATE TABLE quiz_bestenliste (
+//     id       bigserial PRIMARY KEY,
+//     quiz     text not null,
+//     modus    text not null,
+//     name     text not null,
+//     punkte   integer not null default 0,
+//     gesamt   integer not null,
+//     richtig  integer not null,
+//     prozent  integer not null,
+//     datum    timestamptz default now()
+//   );
+//   ALTER TABLE quiz_bestenliste ENABLE ROW LEVEL SECURITY;
+//   CREATE POLICY "Lesen"      ON quiz_bestenliste FOR SELECT USING (true);
+//   CREATE POLICY "Einreichen" ON quiz_bestenliste FOR INSERT WITH CHECK (true);
+//
 var HS_MODES = ["name_from_beispiel", "name_from_erklaerung", "wirkung_from_name", "name_from_wirkung", "mixed"];
 var HS_LABELS = {
-  name_from_beispiel: "\u270f\ufe0f Bsp\u2192Name",
+  name_from_beispiel:   "\u270f\ufe0f Bsp\u2192Name",
   name_from_erklaerung: "\ud83d\udcd6 Erkl\u2192Name",
-  wirkung_from_name: "\ud83d\udca1 Name\u2192Wkg",
-  name_from_wirkung: "\ud83d\udd0d Wkg\u2192Name",
-  mixed: "\ud83c\udfb2 Gemischt"
+  wirkung_from_name:    "\ud83d\udca1 Name\u2192Wkg",
+  name_from_wirkung:    "\ud83d\udd0d Wkg\u2192Name",
+  mixed:                "\ud83c\udfb2 Gemischt"
 };
 var currentHSTab = "name_from_beispiel";
 var hsReturnTo = "home";
 var pendingHS = null;
+var HS_QUIZ = "stilmittel";
+var HS_TOP  = 10;
 
-function loadHS() {
-  try { return JSON.parse(localStorage.getItem(HS_KEY) || "{}"); } catch(e) { return {}; }
+async function loadHSFromDB(mode) {
+  if (typeof SUPABASE_KONFIGURIERT === "undefined" || !SUPABASE_KONFIGURIERT) return [];
+  try {
+    var url = SUPABASE_URL + "/rest/v1/quiz_bestenliste"
+      + "?quiz=eq." + encodeURIComponent(HS_QUIZ)
+      + "&modus=eq." + encodeURIComponent(mode)
+      + "&order=prozent.desc,gesamt.desc"
+      + "&limit=" + HS_TOP
+      + "&select=name,punkte,gesamt,richtig,prozent,datum";
+    var resp = await fetch(url, {
+      headers: { "Authorization": "Bearer " + SUPABASE_KEY, "apikey": SUPABASE_KEY }
+    });
+    if (!resp.ok) return [];
+    return await resp.json();
+  } catch(e) { return []; }
 }
-function saveHSData(data) {
-  try { localStorage.setItem(HS_KEY, JSON.stringify(data)); } catch(e) {}
+
+async function saveHSToDB(mode, name, pct, score, total) {
+  if (typeof SUPABASE_KONFIGURIERT === "undefined" || !SUPABASE_KONFIGURIERT) return;
+  try {
+    await fetch(SUPABASE_URL + "/rest/v1/quiz_bestenliste", {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + SUPABASE_KEY,
+        "apikey": SUPABASE_KEY,
+        "Content-Type": "application/json",
+        "Prefer": "return=minimal"
+      },
+      body: JSON.stringify({
+        quiz: HS_QUIZ, modus: mode,
+        name: name.trim() || "???",
+        punkte: score, gesamt: total,
+        richtig: score, prozent: pct
+      })
+    });
+  } catch(e) {}
 }
-function qualifiesForHS(mode, pct, total) {
-  var list = (loadHS()[mode] || []);
-  if (list.length < 5) return true;
+
+async function qualifiesForHS(mode, pct, total) {
+  var list = await loadHSFromDB(mode);
+  if (list.length < HS_TOP) return true;
   var worst = list[list.length - 1];
-  return pct > worst.pct || (pct === worst.pct && total > worst.total);
+  return pct > worst.prozent || (pct === worst.prozent && total > worst.gesamt);
 }
-function addToHS(mode, name, pct, score, total) {
-  var data = loadHS();
-  var list = (data[mode] || []);
-  var d = new Date();
-  var ds = d.getDate() + "." + (d.getMonth() + 1) + "." + d.getFullYear();
-  list.push({ name: name.trim() || "???", pct: pct, score: score, total: total, date: ds });
-  list.sort(function(a, b) { return b.pct - a.pct || b.total - a.total; });
-  data[mode] = list.slice(0, 5);
-  saveHSData(data);
-}
-function checkAndMaybePromptHS(mode, pct, score, total) {
-  if (!qualifiesForHS(mode, pct, total)) return;
+
+async function checkAndMaybePromptHS(mode, pct, score, total) {
+  if (!(await qualifiesForHS(mode, pct, total))) return;
   pendingHS = { mode: mode, pct: pct, score: score, total: total };
   document.getElementById("hs-name-input").value = "";
   document.getElementById("hs-modal").style.display = "flex";
   setTimeout(function() { document.getElementById("hs-name-input").focus(); }, 120);
 }
-function saveHSEntry() {
+
+async function saveHSEntry() {
   if (!pendingHS) return;
-  addToHS(pendingHS.mode, document.getElementById("hs-name-input").value, pendingHS.pct, pendingHS.score, pendingHS.total);
-  pendingHS = null;
+  var name = document.getElementById("hs-name-input").value;
   document.getElementById("hs-modal").style.display = "none";
+  await saveHSToDB(pendingHS.mode, name, pendingHS.pct, pendingHS.score, pendingHS.total);
+  pendingHS = null;
+  if (!document.getElementById("highscores").classList.contains("hidden")) {
+    renderHSTable(currentHSTab);
+  }
 }
+
 function skipHSEntry() {
   pendingHS = null;
   document.getElementById("hs-modal").style.display = "none";
 }
+
 function showHighscores(returnTo) {
   hsReturnTo = returnTo || "home";
   document.getElementById("home").classList.add("hidden");
@@ -1051,20 +1099,24 @@ function showHighscores(returnTo) {
   renderHSTabs();
   renderHSTable(currentHSTab);
 }
+
 function switchHSTab(mode) {
   currentHSTab = mode;
   renderHSTabs();
   renderHSTable(mode);
 }
+
 function renderHSTabs() {
   document.getElementById("hs-tabs").innerHTML = HS_MODES.map(function(m) {
     var cls = "hs-tab" + (m === currentHSTab ? " active" : "");
     return '<button class="' + cls + '" onclick="switchHSTab(\'' + m + '\')">' + HS_LABELS[m] + '</button>';
   }).join("");
 }
-function renderHSTable(mode) {
-  var list = (loadHS()[mode] || []);
+
+async function renderHSTable(mode) {
   var el = document.getElementById("hs-table-container");
+  el.innerHTML = '<div class="hs-empty" style="color:#4a7040">\u23f3 Lade\u2026</div>';
+  var list = await loadHSFromDB(mode);
   if (list.length === 0) {
     el.innerHTML = '<div class="hs-empty">-- NOCH KEINE EINTR\u00c4GE --<br><span style="font-size:0.65rem;color:#2a5020;font-family:\'Courier New\',monospace">Spiele eine Runde &amp; trage dich ein!</span></div>';
     return;
@@ -1073,18 +1125,21 @@ function renderHSTable(mode) {
   var rows = '<div class="hs-row header"><span class="hs-rank">#</span><span class="hs-name">NAME</span><span class="hs-score">SCORE</span><span class="hs-date">DATUM</span></div>';
   list.forEach(function(e, i) {
     var rank = i < 3 ? medals[i] : (i + 1) + ".";
+    var ds = e.datum ? new Date(e.datum).toLocaleDateString("de-DE") : "";
     rows += '<div class="hs-row">'
-      + '<span class="hs-rank">' + rank + '</span>'
+      + '<span class="hs-rank">' + escHS(rank) + '</span>'
       + '<span class="hs-name">' + escHS(e.name) + '</span>'
-      + '<span class="hs-score">' + e.pct + '%<span style="color:#2a6020;font-size:0.68em"> (' + e.score + '/' + e.total + ')</span></span>'
-      + '<span class="hs-date">' + escHS(e.date) + '</span>'
+      + '<span class="hs-score">' + e.prozent + '%<span style="color:#2a6020;font-size:0.68em"> (' + e.richtig + '/' + e.gesamt + ')</span></span>'
+      + '<span class="hs-date">' + escHS(ds) + '</span>'
       + '</div>';
   });
   el.innerHTML = '<div class="hs-table">' + rows + '</div>';
 }
+
 function escHS(s) {
   return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
+
 function closeHighscores() {
   document.getElementById("highscores").classList.add("hidden");
   if (hsReturnTo === "result") {
