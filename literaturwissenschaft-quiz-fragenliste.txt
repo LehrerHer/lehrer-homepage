@@ -1,0 +1,586 @@
+LITERATURWISSENSCHAFT-QUIZ – Vollständige Fragenliste
+==============================================================
+  63 Fragen in 6 Kapiteln
+
+
+==============================================================
+  KAPITEL 1: Was ist Literatur?
+==============================================================
+
+  [K1_01]  Multiple Choice  |  ◎ Leicht
+  Frage: Welche drei Großgattungen der Literatur unterscheidet die Literaturwissenschaft?
+    [✓]  Epik, Lyrik und Dramatik
+    [ ]  Roman, Gedicht und Theater
+    [ ]  Prosa, Vers und Dialog
+    [ ]  Erzählung, Lyrik und Film
+  Erklaerung: Die drei Großgattungen sind Epik (Erzähler spricht), Lyrik (gebundene Sprache) und Dramatik (Sprache für verteilte Rollen). Diese Einteilung ist seit der Antike grundlegend.
+  ----------------------------------------------------------
+
+  [K1_02]  Richtig / Falsch  |  ◎ Leicht
+  Frage: Filme und Computerspiele mit einem Plot können als Teil der Großgattung Epik betrachtet werden.
+    Antwort: RICHTIG
+  Erklaerung: Richtig! Filme und Computerspiele mit einer Fabel/einem Plot können der Epik zugeordnet werden – das Analysevokabular bleibt dasselbe.
+  ----------------------------------------------------------
+
+  [K1_03]  Zuordnung  |  ◎ Leicht
+  Frage: Ordne die Merkmale den Großgattungen zu.
+    Ein Erzähler spricht  ->  Epik
+    Sprache für verteilte Rollen  ->  Dramatik
+    Gebundene Sprache – der Autor entscheidet, wo die Zeile endet  ->  Lyrik
+    Roman als typische Textsorte  ->  Epik
+  Erklaerung: Epik = Erzähler; Lyrik = Gedichte / gebundene Sprache; Dramatik = Theater / verteilte Rollen.
+  ----------------------------------------------------------
+
+  [K1_04]  Multiple Choice  |  ◑ Mittel
+  Frage: Wer ist im erzählenden Computerspiel die Entsprechung zum Erzähler eines Romans?
+    [ ]  Der Regisseur
+    [✓]  Der Game Writer / die Game Writerin
+    [ ]  Der Publisher
+    [ ]  Der Cutter
+  Erklaerung: In narrativen Computerspielen erfinden die „Game Writer" die Diegese und die Handlung – sie entsprechen dem Erzähler der Epik.
+  ----------------------------------------------------------
+
+
+==============================================================
+  KAPITEL 2: Epik
+==============================================================
+
+  [K2_01]  Multiple Choice  |  ◎ Leicht
+  Frage: Was versteht man unter der „Diegese"?
+    [ ]  Die Biografie des Autors
+    [✓]  Die im Werk dargestellte Welt
+    [ ]  Die Erzählzeit des Textes
+    [ ]  Der Verlag des Buches
+  Erklaerung: Diegese = die im Werk dargestellte Welt (z. B. die Welt von Star Wars oder die Welt in „Der Junge im gestreiften Pyjama").
+  ----------------------------------------------------------
+
+  [K2_02]  Richtig / Falsch  |  ◑ Mittel
+  Frage: Autor*in und Erzähler*in sind in einem literarischen Werk immer identisch.
+    Antwort: FALSCH
+  Erklaerung: Falsch! Autor ≠ Erzähler. Der Autor schreibt das Buch in der Realität, der Erzähler ist eine Figur innerhalb des Textes, die die Geschichte erzählt.
+  ----------------------------------------------------------
+
+  [K2_03]  Multiple Choice  |  ◑ Mittel
+  Frage: Was bedeutet „homodiegetisch"?
+    [ ]  Der Erzähler ist kein Teil der Diegese
+    [✓]  Der Erzähler ist Teil der Diegese
+    [ ]  Der Erzähler ist zugleich die Hauptfigur
+    [ ]  Der Erzähler weiß mehr als alle Figuren
+  Erklaerung: Homodiegetisch (gr. homo = gleich): Der Erzähler ist Teil der Diegese, taucht also selbst in der erzählten Welt auf.
+  ----------------------------------------------------------
+
+  [K2_04]  Zuordnung  |  ● Schwer
+  Frage: Ordne die Erzählstandorte ihren Definitionen zu.
+    Homodiegetisch  ->  Erzähler ist Teil der Diegese
+    Heterodiegetisch  ->  Erzähler ist kein Teil der Diegese
+    Autodiegetisch  ->  Erzähler ist zugleich die Hauptfigur
+    Extradiegetisch  ->  Erzähler der äußersten Rahmenhandlung
+  Erklaerung: Diese vier Begriffe beschreiben die Positionierung des Erzählers relativ zur erzählten Welt.
+  ----------------------------------------------------------
+
+  [K2_05]  Multiple Choice  |  ◑ Mittel
+  Frage: In „Forrest Gump" sitzt der Protagonist auf einer Parkbank und erzählt seine Lebensgeschichte. Die Parkbank-Szene ist …
+    [ ]  die Binnenerzählung
+    [✓]  die Rahmenerzählung
+    [ ]  eine Analepse
+    [ ]  der intradiegetische Erzähler
+  Erklaerung: Die Parkbank bildet die Rahmenerzählung. Die Lebensgeschichte, die Forrest dort erzählt, ist die Binnenerzählung.
+  ----------------------------------------------------------
+
+  [K2_06]  Multiple Choice  |  ◑ Mittel
+  Frage: Nullfokalisierung bedeutet: Der Erzähler weiß …
+    [ ]  … genauso viel wie die Figur
+    [ ]  … weniger als die Figur
+    [✓]  … mehr als die Figur
+    [ ]  … gar nichts über die Figuren
+  Erklaerung: Nullfokalisierung: Erzähler > Figur. Der allwissende Erzähler weiß mehr als jede einzelne Figur.
+  ----------------------------------------------------------
+
+  [K2_07]  Richtig / Falsch  |  ◑ Mittel
+  Frage: Isochronie (zeitdeckendes Erzählen) liegt vor, wenn Erzählzeit und erzählte Zeit in etwa gleich lang sind.
+    Antwort: RICHTIG
+  Erklaerung: Richtig! Isochronie = Erzählzeit ≈ erzählte Zeit. Das tritt oft bei Dialogen/Szenen auf.
+  ----------------------------------------------------------
+
+  [K2_08]  Multiple Choice  |  ◑ Mittel
+  Frage: Die Beschreibung eines einzigen Blitzes nimmt in einem Roman mehrere Seiten ein. Das nennt man …
+    [ ]  Zeitraffung
+    [ ]  Zeitdeckendes Erzählen
+    [✓]  Zeitdehnende Erzählweise
+    [ ]  Iteratives Erzählen
+  Erklaerung: Zeitdehnend: Die Erzählzeit ist länger als die erzählte Zeit. Ein kurzes Ereignis wird ausführlich beschrieben.
+  ----------------------------------------------------------
+
+  [K2_09]  Zuordnung  |  ◑ Mittel
+  Frage: Ordne die Zeitfrequenz-Begriffe ihren Definitionen zu.
+    Singulativ  ->  Was einmal geschieht, wird einmal erzählt
+    Repetitiv  ->  Was einmal geschieht, wird mehrmals erzählt
+    Iterativ  ->  Was mehrmals geschieht, wird einmal erzählt
+  Erklaerung: Singulativ (1→1), Repetitiv (1→mehrmals), Iterativ (mehrmals→1, z. B. „Wie jeden Morgen um sechs …").
+  ----------------------------------------------------------
+
+  [K2_10]  Sortierung  |  ◑ Mittel
+  Frage: Bringe die fünf Zeitordnungs-Begriffe in die richtige Reihenfolge von „Rückblick" bis „Vorausschau":
+    1. Analepse (Rückblende)
+    2. Spätere Narration (Vergangenheitsform)
+    3. Gleichzeitige Narration
+    4. Frühere Narration (Futur)
+    5. Prolepse (Vorausschau)
+  Erklaerung: Analepse = Rückblick; spätere Narration = klassisches Präteritum; gleichzeitig = Präsens; frühere Narration = Futur; Prolepse = Vorausschau.
+  ----------------------------------------------------------
+
+  [K2_11]  Multiple Choice  |  ◑ Mittel
+  Frage: Welcher Satz ist ein Beispiel für Erlebte Rede?
+    [ ]  Sie sagte: „Ich muss ihn sehen!"
+    [ ]  Sie sagte, sie müsse ihn treffen.
+    [✓]  Sie musste ihn sehen. Durfte nicht zu spät sein.
+    [ ]  Hoffentlich sehe ich ihn. Bloß nicht zu spät!
+  Erklaerung: Erlebte Rede steht zwischen direkter und indirekter Rede – sie gibt den Sachverhalt aus dem Inneren der Figur wieder, ohne vollständig zur Figur zu wechseln.
+  ----------------------------------------------------------
+
+  [K2_12]  Zuordnung  |  ● Schwer
+  Frage: Ordne die Beispielsätze der richtigen Redeform zu.
+    „Ich muss ihn sehen!"  ->  Direkte Rede
+    Sie sagte, sie müsse ihn treffen.  ->  Indirekte Rede
+    Sie musste ihn sehen. Durfte nicht zu spät sein.  ->  Erlebte Rede
+    Hoffentlich sehe ich ihn. Bloß nicht vermasseln!  ->  Innerer Monolog
+  Erklaerung: Die vier Formen der Figurenrede unterscheiden sich in Distanz zum Erzähler, Stil und Wirkung.
+  ----------------------------------------------------------
+
+  [K2_13]  Lückentext  |  ◎ Leicht
+  Frage: Ergänze die Textsorten-Begriffe:
+    Luecke  : "Kurze Erzählung mit realen Orten, übernatürlichen Elementen, unbekannter Verfasser*in:"
+    Loesung : Sage
+    Luecke  : "Erschien in „Volkskalendern", zeigt Alltagsleben: "
+    Loesung : Kalendergeschichte
+    Luecke  : "Wunderwelt, Gut vs. Böse, unbekannter Ort und Zeit:"
+    Loesung : Märchen
+    Luecke  : "Bildebene + Sachebene mit moralischer Lehre:"
+    Loesung : Parabel
+  Erklaerung: Sage = reale Orte + Wunderbares; Kalendergeschichte = Volkskalender; Märchen = Wunderwelt; Parabel = Bildebene + Sachebene.
+  ----------------------------------------------------------
+
+  [K2_14]  Multiple Choice  |  ◑ Mittel
+  Frage: Was unterscheidet die Novelle vom Roman?
+    [ ]  Die Novelle hat keine Hauptfiguren
+    [✓]  Novelle: nur wenige, eindimensionale Protagonisten, eine Haupthandlung
+    [ ]  Die Novelle spielt immer in der Gegenwart
+    [ ]  Die Novelle ist kürzer als jede Kurzgeschichte
+  Erklaerung: Novelle vs. Roman: weniger Protagonisten, geringere Erzählzeit, Konzentration auf eine Haupthandlung. Oft gibt es eine überraschende Wendung.
+  ----------------------------------------------------------
+
+  [K2_15]  Markierung  |  ● Schwer
+  Frage: Markiere im Text alle Wörter, die Formen der Figurenrede benennen.
+    Zu markieren: Direkte Rede, Indirekte Rede, Erlebten Rede, Inneren Monolog, Bewusstseinsstrom
+  Erklaerung: Figurenrede umfasst: Direkte Rede, Indirekte Rede, Erlebte Rede, Innerer Monolog und Bewusstseinsstrom. Der Erzählerbericht ist keine Figurenrede.
+  ----------------------------------------------------------
+
+
+==============================================================
+  KAPITEL 3: Lyrik
+==============================================================
+
+  [K3_01]  Richtig / Falsch  |  ◎ Leicht
+  Frage: In der Lyrik ist der Autor immer identisch mit dem lyrischen Ich.
+    Antwort: FALSCH
+  Erklaerung: Falsch! Wie Autor ≠ Erzähler in der Epik gilt: Autor ≠ lyrisches Ich. Das lyrische Ich ist eine Sprechinstanz im Gedicht, die der Autor erschafft.
+  ----------------------------------------------------------
+
+  [K3_02]  Multiple Choice  |  ◎ Leicht
+  Frage: Das Reimschema abab bezeichnet den …
+    [ ]  Paarreim
+    [✓]  Kreuzreim
+    [ ]  Umarmenden Reim
+    [ ]  Schweifreim
+  Erklaerung: Schema abab = Kreuzreim: 1. Vers reimt mit 3., 2. Vers reimt mit 4.
+  ----------------------------------------------------------
+
+  [K3_03]  Zuordnung  |  ◑ Mittel
+  Frage: Ordne die Reimschemata den Reimnamen zu.
+    aa bb  ->  Paarreim
+    abab  ->  Kreuzreim
+    abba  ->  Umarmender Reim
+    aabccb  ->  Schweifreim
+  Erklaerung: Paarreim (aa), Kreuzreim (abab), Umarmender Reim (abba), Schweifreim (aabccb).
+  ----------------------------------------------------------
+
+  [K3_04]  Multiple Choice  |  ◑ Mittel
+  Frage: Was ist eine „Waise" in der Lyrik?
+    [ ]  Ein sehr kurzer Vers
+    [✓]  Ein reimloser Vers in einem sich ansonsten reimenden Gedicht
+    [ ]  Ein Gedicht ganz ohne Reim
+    [ ]  Ein Vers, der zweimal vorkommt
+  Erklaerung: Eine Waise ist ein reimloser Vers innerhalb eines Gedichts, das sich sonst reimt – dadurch besonders auffällig und isoliert.
+  ----------------------------------------------------------
+
+  [K3_05]  Multiple Choice  |  ◑ Mittel
+  Frage: Welches Metrum liegt im Wort Gedicht vor?
+    [ ]  Trochäus
+    [ ]  Daktylus
+    [✓]  Jambus
+    [ ]  Anapäst
+  Erklaerung: Ge-DICHT: unbetont–betont = Jambus (◡–). Der Jambus ist ein ansteigender Versfuß.
+  ----------------------------------------------------------
+
+  [K3_06]  Zuordnung  |  ◑ Mittel
+  Frage: Ordne die Versfüße ihren Betonungsmustern zu.
+    Jambus  ->  ◡– (unbetont–betont)
+    Trochäus  ->  –◡ (betont–unbetont)
+    Daktylus  ->  –◡◡ (betont–unbetont–unbetont)
+    Anapäst  ->  ◡◡– (unbetont–unbetont–betont)
+  Erklaerung: Jambus (Ge-DICHT), Trochäus (DICH-ter), Daktylus (ACH-ter-bahn), Anapäst (E-le-FANT).
+  ----------------------------------------------------------
+
+  [K3_07]  Multiple Choice  |  ● Schwer
+  Frage: Was ist ein Enjambement?
+    [ ]  Eine besondere Art des Endreims
+    [✓]  Ein Satz, der über das Versende hinweg fortgesetzt wird
+    [ ]  Das Fehlen eines Metrums
+    [ ]  Die Wiederholung desselben Verses
+  Erklaerung: Enjambement (Zeilensprung): Ein Satz wird über das Versende hinaus fortgeführt. Wirkung: fließend, drängend, spannungserzeugend.
+  ----------------------------------------------------------
+
+  [K3_08]  Lückentext  |  ◎ Leicht
+  Frage: Wie heißen die Strophenformen nach ihrer Zeilenzahl?
+    Luecke  : "2 Verse:"
+    Loesung : Distichon
+    Luecke  : "3 Verse:"
+    Loesung : Terzett
+    Luecke  : "4 Verse:"
+    Loesung : Quartett
+    Luecke  : "6 Verse:"
+    Loesung : Sextett
+  Erklaerung: Distichon (2), Terzett (3), Quartett (4), Quintett (5), Sextett (6).
+  ----------------------------------------------------------
+
+  [K3_09]  Multiple Choice  |  ◑ Mittel
+  Frage: Wie ist ein Sonett aufgebaut?
+    [ ]  Drei Quartette und ein Terzett
+    [✓]  Zwei Quartette und zwei Terzette
+    [ ]  14 Verse in einer Strophe
+    [ ]  Vier gleich lange Strophen
+  Erklaerung: Sonett: 2 Quartette (je 4 Verse) + 2 Terzette (je 3 Verse), meist im Jambus verfasst.
+  ----------------------------------------------------------
+
+  [K3_10]  Zuordnung  |  ◑ Mittel
+  Frage: Ordne die Gedichtformen ihren Merkmalen zu.
+    5-7-5 Silben, 3 Verse, japanische Form  ->  Haiku
+    2 Quartette + 2 Terzette, meist Jambus  ->  Sonett
+    Klagegedicht, wehmütige Stimmung  ->  Elegie
+    Lobgesang, keine festgelegte Form  ->  Hymne
+  Erklaerung: Jede Gedichtform hat charakteristische formale und/oder inhaltliche Merkmale.
+  ----------------------------------------------------------
+
+  [K3_11]  Multiple Choice  |  ◑ Mittel
+  Frage: Was ist eine Metapher?
+    [ ]  Ein Vergleich mit „wie" oder „als ob"
+    [✓]  Ein Vergleich ohne „wie" und „ob" – eine Übertragung
+    [ ]  Wiederholung am Satzanfang
+    [ ]  Verneinung des Gegenteils
+  Erklaerung: Metapher: Übertragung ohne „wie". Beispiel: „Jemandem das Herz brechen." Im Gegensatz: Vergleich mit „wie": „Er kämpft wie ein Löwe."
+  ----------------------------------------------------------
+
+  [K3_12]  Zuordnung  |  ● Schwer
+  Frage: Ordne die Beispiele den rhetorischen Figuren zu.
+    Er kämpft wie ein Löwe.  ->  Vergleich
+    Der Wind heult.  ->  Personifikation
+    Jemandem das Herz brechen.  ->  Metapher
+    Sensenmann  ->  Allegorie
+  Erklaerung: Vergleich = mit „wie/als"; Personifikation = menschliche Züge für Nichtmenschliches; Metapher = Übertragung ohne „wie"; Allegorie = bildhaft-konkrete Darstellung des Abstrakten.
+  ----------------------------------------------------------
+
+  [K3_13]  Multiple Choice  |  ◑ Mittel
+  Frage: Was versteht man unter einer Hyperbel?
+    [ ]  Eine beschönigende Umschreibung
+    [✓]  Eine Übertreibung
+    [ ]  Eine doppelte Verneinung
+    [ ]  Eine Umschreibung durch Einzelmerkmale
+  Erklaerung: Hyperbel = Übertreibung. Beispiele: „todernst", „fuchsteufelswild". Sie betont einen Sachverhalt durch extreme Steigerung.
+  ----------------------------------------------------------
+
+  [K3_14]  Multiple Choice  |  ◑ Mittel
+  Frage: Was ist ein Chiasmus?
+    [ ]  Gleichartig aufgebaute Sätze (a-b / a-b)
+    [✓]  Überkreuzstellung von Satzgliedern (A-B / B-A)
+    [ ]  Auslassung von Satzteilen
+    [ ]  Unverbundene Reihung ohne Konjunktionen
+  Erklaerung: Chiasmus (A-B / B-A): „Die Kunst ist lang – und kurz ist unser Leben." Erkennungshilfe: Bleibt die Reihenfolge gleich → Parallelismus; kehrt sie sich um → Chiasmus.
+  ----------------------------------------------------------
+
+  [K3_15]  Zuordnung  |  ● Schwer
+  Frage: Ordne die Satzfiguren ihren Beispielen zu.
+    Ich kam, ich sah, ich siegte.  ->  Asyndeton
+    Einigkeit und Recht und Freiheit  ->  Polysyndeton
+    Je später der Abend, desto schöner die Gäste.  ->  Ellipse
+    Die Kunst ist lang – kurz ist unser Leben.  ->  Chiasmus
+  Erklaerung: Asyndeton = keine Konjunktionen; Polysyndeton = häufig wiederholte Konjunktionen; Ellipse = Auslassung; Chiasmus = Überkreuzstellung.
+  ----------------------------------------------------------
+
+  [K3_16]  Richtig / Falsch  |  ◑ Mittel
+  Frage: Eine rhetorische Frage ist eine Frage, auf die keine Antwort erwartet wird.
+    Antwort: RICHTIG
+  Erklaerung: Richtig! Die rhetorische Frage (Scheinfrage) erwartet keine Antwort. Beispiel: „Wie viele Menschen müssen noch sterben?" Wirkung: Dringlichkeit, Zustimmungsdruck.
+  ----------------------------------------------------------
+
+  [K3_17]  Multiple Choice  |  ◑ Mittel
+  Frage: Was ist der Unterschied zwischen Antithese und Oxymoron?
+    [ ]  Kein Unterschied – beide sind Übertreibungen
+    [✓]  Antithese: zwei Satzteile; Oxymoron: Widerspruch auf engstem Raum (ein Ausdruck)
+    [ ]  Oxymoron = Frage ohne Antwort
+    [ ]  Antithese kommt nur in Gedichten vor
+  Erklaerung: Antithese: „Klein ist der Strauch, groß ist der Baum." (zwei Satzteile). Oxymoron: „Hassliebe", „beredtes Schweigen" (ein Ausdruck).
+  ----------------------------------------------------------
+
+  [K3_18]  Multiple Choice  |  ◎ Leicht
+  Frage: Was ist eine Alliteration?
+    [ ]  Wiederholung gleicher Wörter am Satzende
+    [✓]  Gleiche Anfangsbuchstaben bei aufeinander folgenden Wörtern
+    [ ]  Lautmalerische Wiedergabe von Geräuschen
+    [ ]  Auslassung eines unbetonten Vokals
+  Erklaerung: Alliteration: gleiche Anfangslaute. Beispiel: „Milch macht müde Männer munter."
+  ----------------------------------------------------------
+
+  [K3_19]  Lückentext  |  ● Schwer
+  Frage: Ergänze die fehlenden Klangfiguren:
+    Luecke  : "Gleiche Anfangsbuchstaben aufeinander folgender Wörter:"
+    Loesung : Alliteration
+    Luecke  : "Lautmalerische Wiedergabe von Geräuschen:"
+    Loesung : Onomatopoesie
+    Luecke  : "Wiederholung am Satzanfang:"
+    Loesung : Anapher
+    Luecke  : "Wiederholung am Satzende:"
+    Loesung : Epipher
+  Erklaerung: Klangfiguren entfalten ihre Wirkung besonders beim Vorlesen.
+  ----------------------------------------------------------
+
+  [K3_20]  Markierung  |  ● Schwer
+  Frage: Markiere alle Wörter im Text, die Stilmittel der Kategorie „Satzfiguren" benennen.
+    Zu markieren: Asyndeton, Anapher, Parallelismus, Enjambement, Chiasmus
+  Erklaerung: Satzfiguren: Asyndeton, Polysyndeton, Anapher, Parallelismus, Chiasmus, Ellipse, Enjambement, Klimax, Inversion, Parataxe/Hypotaxe.
+  ----------------------------------------------------------
+
+  [K3_21]  Richtig / Falsch  |  ◎ Leicht
+  Frage: Die Litotes hebt einen Begriff durch doppelte Verneinung oder Verneinung des Gegenteils hervor.
+    Antwort: RICHTIG
+  Erklaerung: Richtig! Litotes: „nicht selten", „nicht unüblich". Wirkung: bekräftigend durch Umweg, leicht ironisch.
+  ----------------------------------------------------------
+
+  [K3_22]  Sortierung  |  ● Schwer
+  Frage: Bringe diese vier Kategorien rhetorischer Figuren in die Reihenfolge des Skripts (von der kleinsten Sprachebene zur größten):
+    1. Wortfiguren
+    2. Satzfiguren
+    3. Klangfiguren
+    4. Gedankenfiguren
+  Erklaerung: Im Skript werden Wortfiguren (Ebene einzelner Wörter), Satzfiguren (Syntax), Klangfiguren (Laut/Klang) und Gedankenfiguren (Sinn/Aussage) unterschieden.
+  ----------------------------------------------------------
+
+
+==============================================================
+  KAPITEL 4: Drama
+==============================================================
+
+  [K4_01]  Multiple Choice  |  ◎ Leicht
+  Frage: Was ist das Besondere des Dramas gegenüber der Epik?
+    [ ]  Das Drama hat immer einen Erzähler
+    [ ]  Das Drama wird durch einen Erzähler vermittelt
+    [✓]  Das Publikum erlebt die Handlung unmittelbar – ohne Erzähler
+    [ ]  Das Drama besteht ausschließlich aus Monologen
+  Erklaerung: Im Drama erlebt das Publikum die Handlung unmittelbar. Es gibt keinen Erzähler als Vermittler – die Figuren sprechen direkt auf der Bühne.
+  ----------------------------------------------------------
+
+  [K4_02]  Zuordnung  |  ◑ Mittel
+  Frage: Ordne die Dramenwerke ihren Gattungen zu.
+    Sophokles: König Ödipus  ->  Tragödie
+    Lessing: Minna von Barnhelm  ->  Komödie
+    Dürrenmatt: Besuch der alten Dame  ->  Tragikomödie
+    Beckett: Warten auf Godot  ->  Absurdes Theater
+  Erklaerung: Tragödie: unlösbarer Konflikt, Untergang; Komödie: lösbarer Konflikt, heiteres Ende; Tragikomödie: beides gemischt; Absurdes Theater: keine logische Handlung.
+  ----------------------------------------------------------
+
+  [K4_03]  Multiple Choice  |  ● Schwer
+  Frage: Was ist ein typischer Verfremdungseffekt in Brechts Epischem Theater?
+    [ ]  Schauspieler verstärken die Empathie des Zuschauers
+    [✓]  Lieder unterbrechen das Geschehen oder Schauspieler sprechen Zuschauer direkt an
+    [ ]  Das Bühnenbild zeigt stets realistische Schauplätze
+    [ ]  Der Zuschauer soll sich vollständig mit dem Helden identifizieren
+  Erklaerung: Verfremdungseffekte bei Brecht: Schauspieler verlassen die Rolle, Lieder unterbrechen, Spruchbänder kommentieren. Ziel: kritische Distanz statt Empathie.
+  ----------------------------------------------------------
+
+  [K4_04]  Sortierung  |  ◑ Mittel
+  Frage: Bringe die Akte des Dramas nach Gustav Freytag in die richtige Reihenfolge:
+    1. Exposition
+    2. Erregendes Moment
+    3. Peripetie (Höhepunkt)
+    4. Retardierendes Moment
+    5. Katastrophe / Lösung
+  Erklaerung: 1. Exposition → 2. Erregendes Moment → 3. Peripetie → 4. Retardierendes Moment → 5. Katastrophe/Lösung.
+  ----------------------------------------------------------
+
+  [K4_05]  Multiple Choice  |  ◑ Mittel
+  Frage: Was versteht man unter „Katharsis" in der Tragödie?
+    [ ]  Der Tod der Hauptfigur
+    [✓]  Eine innere Läuterung beim Betrachter durch Mitleid und Furcht
+    [ ]  Die Auflösung des Konflikts in der Komödie
+    [ ]  Der Konflikt zwischen den Figuren
+  Erklaerung: Katharsis (gr. Reinigung): Das Schicksal der Hauptfigur soll Mitleid und Furcht erzeugen und so eine innere Reinigung/Läuterung beim Betrachter bewirken.
+  ----------------------------------------------------------
+
+  [K4_06]  Lückentext  |  ◑ Mittel
+  Frage: Ergänze die Monologarten:
+    Luecke  : "Starke Affekte – Selbstgespräch aus Emotion heraus:"
+    Loesung : Affektmonolog
+    Luecke  : "Abwägen von Für und Wider mit Entschlussfassung:"
+    Loesung : Entschlussmonolog
+    Luecke  : "Durchdenken und Kommentieren von Geschehen:"
+    Loesung : Reflexionsmonolog
+    Luecke  : "Erforschung der eigenen Persönlichkeit:"
+    Loesung : Selbstcharakterisierungsmonolog
+  Erklaerung: Die vier Monologarten unterscheiden sich in ihrer Funktion: Emotion, Entscheidung, Reflexion oder Selbsterforschung.
+  ----------------------------------------------------------
+
+  [K4_07]  Richtig / Falsch  |  ◑ Mittel
+  Frage: In der klassischen Tragödie muss die Hauptfigur immer aus dem Adel stammen (Ständeklausel).
+    Antwort: RICHTIG
+  Erklaerung: Richtig! In der klassischen Tragödie stammt die Hauptfigur aus dem Adel, um ihr die nötige „Fallhöhe" zu geben. Erst die Aufklärung überwindet diese Ständeklausel (bürgerliches Trauerspiel).
+  ----------------------------------------------------------
+
+  [K4_08]  Multiple Choice  |  ● Schwer
+  Frage: Was ist der Unterschied zwischen „analytischem Drama" und „synthetischem Drama"?
+    [ ]  Kein Unterschied
+    [✓]  Analytisch: Ein Verbrechen liegt vor der Bühnenhandlung und wird enthüllt. Synthetisch: Spannung entsteht in der Entwicklung auf das Ereignis hin.
+    [ ]  Analytisch: nur Dialoge. Synthetisch: nur Monologe.
+    [ ]  Analytisch: Komödie. Synthetisch: Tragödie.
+  Erklaerung: Analytisches Drama (Enthüllungsdrama): Bsp. König Ödipus. Synthetisches Drama (Zieldrama): Bsp. Antigone. Der Unterschied liegt in der Richtung des Spannungsaufbaus.
+  ----------------------------------------------------------
+
+  [K4_09]  Richtig / Falsch  |  ◎ Leicht
+  Frage: Das Drama ist primär für den Leser bestimmt, nicht für den Zuschauer.
+    Antwort: FALSCH
+  Erklaerung: Falsch! Das Drama ist für den Zuschauer bestimmt. Deshalb müssen bei der Analyse auch akustische (Sprache, Geräusche, Musik) und optische Zeichen (Gestik, Mimik, Bühnenbild) berücksichtigt werden.
+  ----------------------------------------------------------
+
+
+==============================================================
+  KAPITEL 5: Film
+==============================================================
+
+  [K5_01]  Multiple Choice  |  ◑ Mittel
+  Frage: Was ist der Unterschied zwischen „Erzählung" und „Narration" im Film?
+    [ ]  Kein Unterschied
+    [✓]  Erzählung = das WAS (Reihe der Geschehen); Narration = das WIE (Stil, Präsentation)
+    [ ]  Narration = das WAS; Erzählung = das WIE
+    [ ]  Nur Erzählung existiert im Film
+  Erklaerung: Erzählung = das WAS des Films. Narration = das WIE (sprachlich, audiovisuell, Stil).
+  ----------------------------------------------------------
+
+  [K5_02]  Multiple Choice  |  ◎ Leicht
+  Frage: Was bewirkt die Froschperspektive (Kamera von unten)?
+    [ ]  Personen wirken schwächer
+    [✓]  Personen wirken mächtiger und bedrohlicher
+    [ ]  Personen wirken sympathischer
+    [ ]  Neutrale Wirkung
+  Erklaerung: Froschperspektive (von unten): Personen wirken mächtiger, bedrohlicher. Vogelperspektive (von oben): Personen wirken kleiner, schwächer.
+  ----------------------------------------------------------
+
+  [K5_03]  Zuordnung  |  ◑ Mittel
+  Frage: Ordne die Filmberufe ihren Hauptaufgaben zu.
+    Regisseur/in  ->  Künstlerische Gesamtvision, leitet Schauspieler
+    Kameramann/-frau  ->  Visuelle Umsetzung, Einstellungen, Bildkomposition
+    Cutter/in  ->  Montage – fügt Material zu schlüssigem Film zusammen
+    Komponist/in  ->  Erschafft originale Filmmusik und Leitmotive
+  Erklaerung: Der Film ist eine kollaborative Arbeit. Jeder Beruf trägt auf spezifische Weise zur Gesamtwirkung bei.
+  ----------------------------------------------------------
+
+  [K5_04]  Multiple Choice  |  ◑ Mittel
+  Frage: Was ist eine Parallelmontage?
+    [ ]  Zwei Einstellungen gehen ohne Schnitt ineinander über
+    [✓]  Verschiedene Handlungsorte werden abwechselnd gezeigt
+    [ ]  Kamera zeigt den Blick einer Figur
+    [ ]  Harter Schnitt zwischen zwei unähnlichen Einstellungen
+  Erklaerung: Parallelmontage: Zwei (oder mehr) Handlungsorte werden abwechselnd gezeigt – so werden gleichzeitige Ereignisse an verschiedenen Orten dargestellt.
+  ----------------------------------------------------------
+
+  [K5_05]  Richtig / Falsch  |  ◑ Mittel
+  Frage: Extradiegetischer Ton (Off-Ton) ist Ton, den nur der Zuschauer hört – nicht die Figuren im Film.
+    Antwort: RICHTIG
+  Erklaerung: Richtig! Extradiegetisch = Off-Ton (nur Zuschauer hört ihn). Intradiegetisch = On-Ton (auch die Figuren in der Diegese hören ihn).
+  ----------------------------------------------------------
+
+  [K5_06]  Multiple Choice  |  ● Schwer
+  Frage: Was kennzeichnet den „Unreliable Narrator" im Film?
+    [ ]  Der Erzähler spricht sehr leise
+    [✓]  Die gezeigte Realität entspricht nicht den tatsächlichen Ereignissen
+    [ ]  Es gibt keinen Erzähler
+    [ ]  Der Erzähler wechselt jede Szene
+  Erklaerung: Unzuverlässige Erzählung: Erzähler/Perspektivfigur verschweigt Infos, Erinnerungen sind verfälscht. Klassiker: „Fight Club", „The Usual Suspects", „Memento".
+  ----------------------------------------------------------
+
+  [K5_07]  Lückentext  |  ◑ Mittel
+  Frage: Ergänze die Begriffe zu Montage-Techniken:
+    Luecke  : "Zwei sehr unterschiedliche Einstellungen folgen direkt aufeinander:"
+    Loesung : harter Schnitt
+    Luecke  : "Zwei ähnliche Einstellungen folgen einander:"
+    Loesung : weicher Schnitt
+    Luecke  : "Verschiedene Handlungsorte werden abwechselnd gezeigt:"
+    Loesung : Parallelmontage
+    Luecke  : "Gesprächsdarstellung, Kamera wechselt mit Sprecher:"
+    Loesung : Schuss-Gegenschuss
+  Erklaerung: Montagetechniken bestimmen Rhythmus und Wirkung einer Filmszene entscheidend mit.
+  ----------------------------------------------------------
+
+
+==============================================================
+  KAPITEL 6: Literarische Spiele
+==============================================================
+
+  [K6_01]  Multiple Choice  |  ◎ Leicht
+  Frage: Welches Spiel hat KEINE epischen Elemente?
+    [ ]  The Witcher
+    [ ]  Red Dead Redemption 2
+    [✓]  Tetris
+    [ ]  Dungeons & Dragons
+  Erklaerung: Tetris ist ein abstraktes Videospiel ohne narrative Elemente. Spielreiz entsteht durch Problemlösung/Geschicklichkeit.
+  ----------------------------------------------------------
+
+  [K6_02]  Zuordnung  |  ◑ Mittel
+  Frage: Ordne die Spiele ihrer Kategorie zu.
+    Tetris, Pong, Snake  ->  Digitale Spiele ohne epische Elemente
+    Catan, Monopoly  ->  Analoge Spiele mit narrativer Rahmung
+    Dungeons & Dragons  ->  Narratives analoges Spiel
+    The Witcher, Life is Strange  ->  Narrative digitale Spiele
+  Erklaerung: Spiele lassen sich nach dem Grad narrativer Elemente einteilen – von keinen bis zu vollständig narrativen Spielen.
+  ----------------------------------------------------------
+
+  [K6_03]  Richtig / Falsch  |  ◑ Mittel
+  Frage: Pen-&-Paper-Rollenspiele wie D&D können mit klassischen narratologischen Werkzeugen analysiert werden.
+    Antwort: RICHTIG
+  Erklaerung: Richtig! Pen-&-Paper-Rollenspiele verschmelzen Spiel und Erzählung vollständig. Die entstehenden Geschichten können narratologisch analysiert werden (vgl. Kap. 2.2).
+  ----------------------------------------------------------
+
+  [K6_04]  Richtig / Falsch  |  ● Schwer
+  Frage: Digitale Open-World-Spiele bieten dieselbe kreative Freiheit wie analoge Pen-&-Paper-Rollenspiele.
+    Antwort: FALSCH
+  Erklaerung: Falsch! Digitale Spielwelten sind trotz „Open World" limitiert. Kreative Ausbrüche (z. B. ein nicht vorgesehener fliegender Teppich) erlaubt Software nicht.
+  ----------------------------------------------------------
+
+  [K6_05]  Multiple Choice  |  ◑ Mittel
+  Frage: Was ist der Hauptunterschied zwischen Spielen mit „Narration als Rahmen" und „narrativen Spielen"?
+    [ ]  Kein Unterschied
+    [✓]  Narration als Rahmen: Geschichte dient der Atmosphäre ohne Einfluss auf Spielmechanik; narrative Spiele: Geschichte ist zentral
+    [ ]  Narrative Spiele sind immer digital
+    [ ]  Spiele mit Rahmen sind immer analog
+  Erklaerung: Narration als Rahmen: Geschichte motiviert (Catan, Monopoly), beeinflusst aber nicht die Mechanik. Narrative Spiele: Geschichte ist zentral und beeinflusst alles (The Witcher).
+  ----------------------------------------------------------
+
+  [K6_06]  Lückentext  |  ● Schwer
+  Frage: Ergänze die spielspezifischen Analysekategorien (über die klassischen Methoden hinaus):
+    Luecke  : "Spielmechaniken und Regeln: ludische ___"
+    Loesung : Elemente
+    Luecke  : "Zusammenspiel von Geschichte und Spielgeschehen:"
+    Loesung : Balance
+    Luecke  : "Entscheidungen der Spieler*innen:"
+    Loesung : Interaktivität
+    Luecke  : "Eigenständiges Medium mit neuen Erzählformen: narratives ___"
+    Loesung : Medium
+  Erklaerung: Spielspezifische Analyse berücksichtigt: Interaktivität, ludische Elemente, Balance Narration/Gameplay, Grad der spielerischen Freiheit.
+  ----------------------------------------------------------
