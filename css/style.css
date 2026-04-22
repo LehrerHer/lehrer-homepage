@@ -1293,7 +1293,7 @@ footer {
 /* ── QUIZZE-SEKTION ─────────────────────────────────────────────────────────── */
 .quiz-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
 }
 
@@ -1336,6 +1336,32 @@ footer {
 .quiz-feature-card.quiz-lila .btn-primary:hover {
   background: linear-gradient(135deg, #b39af0, #9b7fe8);
 }
+/* Variante: Rechtschreib-Quiz (grün Akzent) */
+.quiz-feature-card.quiz-gruen {
+  background: linear-gradient(135deg, #1a3d1a 0%, #0f2b0f 100%);
+  border-color: #5db85d;
+  box-shadow: 0 8px 32px rgba(93, 184, 93, 0.18);
+}
+.quiz-feature-card.quiz-gruen:hover {
+  box-shadow: 0 14px 40px rgba(93, 184, 93, 0.28);
+}
+.quiz-feature-card.quiz-gruen .quiz-badge {
+  background: rgba(93, 184, 93, 0.2);
+  color: #a3d9a3;
+  border-color: #5db85d;
+}
+.quiz-feature-card.quiz-gruen .quiz-fach-badge {
+  border-color: #5db85d;
+  color: #a3d9a3;
+}
+.quiz-feature-card.quiz-gruen .btn-primary {
+  background: linear-gradient(135deg, #5db85d, #3a8a3a);
+  box-shadow: 0 4px 16px rgba(93, 184, 93, 0.4);
+}
+.quiz-feature-card.quiz-gruen .btn-primary:hover {
+  background: linear-gradient(135deg, #7dcc7d, #5db85d);
+}
+
 .quiz-feature-meta {
   display: flex;
   gap: 10px;
