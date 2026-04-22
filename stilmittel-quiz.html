@@ -372,9 +372,9 @@ var ALLE = [
   {
     name: "Allegorie", kat: "Bildlichkeit", mittelstufe: false,
     bild: "\uD83C\uDFAD",
-    erklaerung: "Fortgesetzte Metapher \u2013 ein abstraktes Konzept wird als konkretes Bild dargestellt.",
-    beispiel: "\u201eSensenmann\u201c als Bild f\u00fcr den Tod  \u2016  \u201eJustitia\u201c mit Waage und Augenbinde",
-    wirkung: "versinnbildlicht Abstraktes"
+    erklaerung: "Ausgedehnte, aus mehreren Elementen aufgebaute Metapher \u2013 ein abstraktes Konzept wird als zusammenh\u00e4ngendes Bild dargestellt, das entschl\u00fcsselt werden muss.",
+    beispiel: "Der Tod als Figur mit Sense, schwarzem Umhang und Skelett (= Sensenmann)  \u2016  Justitia mit Waage, Schwert und Augenbinde (= Gerechtigkeit)",
+    wirkung: "versinnbildlicht Abstraktes, erfordert Deutung"
   },
   {
     name: "Metonymie", kat: "Bildlichkeit", mittelstufe: false,
@@ -391,11 +391,11 @@ var ALLE = [
     wirkung: "verknappend, verallgemeinernd, eindringlich"
   },
   {
-    name: "Chiffre", kat: "Bildlichkeit", mittelstufe: true,
+    name: "Chiffre", kat: "Bildlichkeit", mittelstufe: false,
     bild: "\uD83D\uDD10",
-    erklaerung: "Verschl\u00fcsseltes Zeichen, das ohne zus\u00e4tzliches Wissen nicht eindeutig zu entschl\u00fcsseln ist.",
-    beispiel: "\u201eJHWH\u201c in der hebr\u00e4ischen Bibel  \u2016  \u201eSchwarzschimmel nacht\u201c (Celan)",
-    wirkung: "verr\u00e4tselt, l\u00e4dt mit Bedeutung auf"
+    erklaerung: "Verschl\u00fcsseltes Zeichen der modernen Lyrik, dessen Bedeutung sich nicht eindeutig aufl\u00f6sen l\u00e4sst \u2013 das Bild bleibt bewusst offen oder r\u00e4tselhaft, oft nur im Gesamtwerk des Autors erschlie\u00dfbar.",
+    beispiel: "\u201eJHWH\u201c in der hebr\u00e4ischen Bibel  \u2016  \u201eSchwarze Milch der Fr\u00fche\u201c (Celan, Todesfuge)",
+    wirkung: "verr\u00e4tselt, l\u00e4dt mit Bedeutung auf, \u00f6ffnet Deutungsraum"
   },
   // ── WORTFIGUREN ──
   {
@@ -416,7 +416,7 @@ var ALLE = [
     name: "Understatement", kat: "Gedankenfigur", mittelstufe: false,
     bild: "\uD83E\uDD2B",
     erklaerung: "Bewusste Untertreibung eines Sachverhalts \u2014 etwas wird als kleiner, harmloser oder weniger bedeutsam dargestellt, als es tats\u00e4chlich ist",
-    beispiel: "\u201eDas war nicht ganz optimal.\u201c (nach einer Katastrophe)  \u2016  \u201eIch bin nicht ganz ungl\u00fccklich dar\u00fcber.\u201c (bei gro\u00dfer Freude)  \u2016  \u201eDas k\u00f6nnte schwierig werden.\u201c (wenn etwas fast aussichtslos ist)",
+    beispiel: "\u201eDas war nicht ganz optimal.\u201c (nach einer Katastrophe)  \u2016  \u201eDas k\u00f6nnte schwierig werden.\u201c (wenn etwas fast aussichtslos ist)  \u2016  \u201eNicht der schlechteste Abend.\u201c (nach einem Triumph)",
     wirkung: "abschw\u00e4chend, oft ironisch oder humorvoll \u2014 kann Distanz, Coolness oder Bescheidenheit ausdr\u00fccken"
   },
   {
@@ -427,7 +427,7 @@ var ALLE = [
     wirkung: "umschreibend, charakterisierend"
   },
   {
-    name: "Onomatopoesie", kat: "Wortfigur", mittelstufe: false,
+    name: "Onomatopoesie", kat: "Wortfigur", mittelstufe: true,
     bild: "\uD83D\uDD0A",
     erklaerung: "Sprachliche Nachahmung von Ger\u00e4uschen oder Kl\u00e4ngen.",
     beispiel: "\u201eKnall\u201c  \u2016  \u201eMiau\u201c  \u2016  \u201erumpeln\u201c  \u2016  \u201ezischen\u201c",
@@ -466,21 +466,21 @@ var ALLE = [
     name: "Parallelismus", kat: "Satzfigur", mittelstufe: true,
     bild: "\uD83D\uDCCF",
     erklaerung: "Wiederholung der gleichen syntaktischen Struktur in aufeinanderfolgenden S\u00e4tzen oder Satzteilen.",
-    beispiel: "\u201eHei\u00df die Liebe, kalt der Tod\u201c  \u2016  \u201eIch kam, ich sah, ich siegte\u201c (Caesar)",
+    beispiel: "\u201eHei\u00df die Liebe, kalt der Tod\u201c  \u2016  \u201eIch lache, wenn ich mag; ich weine, wenn ich muss.\u201c",
     wirkung: "ordnend, rhythmisch"
   },
   {
     name: "Klimax", kat: "Satzfigur", mittelstufe: true,
     bild: "\uD83D\uDCC8",
-    erklaerung: "Stufenweise Steigerung von Ausdruck zu Ausdruck.",
-    beispiel: "\u201eEr sei mein Freund, mein Engel, mein Gott\u201c (Schiller)  \u2016  \u201eVeni, vidi, vici\u201c (Caesar)",
-    wirkung: "steigernd, eindringlich"
+    erklaerung: "Stufenweise Steigerung von Ausdruck zu Ausdruck \u2014 jedes Glied ist bedeutsamer oder intensiver als das vorherige.",
+    beispiel: "\u201eEr sei mein Freund, mein Engel, mein Gott\u201c (Schiller)  \u2016  \u201eVeni, vidi, vici\u201c (Caesar: Ich kam, ich sah, ich siegte)",
+    wirkung: "steigernd, eindringlich, spannungsaufbauend"
   },
   {
     name: "Akkumulation", kat: "Satzfigur", mittelstufe: true,
     bild: "\uD83D\uDCE6",
     erklaerung: "Reihung von Begriffen, die einem gemeinsamen Oberbegriff zugeordnet werden k\u00f6nnen.",
-    beispiel: "\u201eSonne, Mond und Sterne!\u201c  \u2016  \u201eNun ruhen alle W\u00e4lder, Vieh, Menschen, St\u00e4dt und Felder\u201c (Gerhardt)",
+    beispiel: "\u201eRosen, Tulpen, Nelken \u2014 \u00fcberall bl\u00fcht es\u201c  \u2016  \u201eNun ruhen alle W\u00e4lder, Vieh, Menschen, St\u00e4dt und Felder\u201c (Gerhardt)",
     wirkung: "veranschaulicht, eindringlich"
   },
   {
@@ -530,7 +530,7 @@ var ALLE = [
     name: "Antithese", kat: "Gedankenfigur", mittelstufe: true,
     bild: "\u2194\uFE0F",
     erklaerung: "Gegen\u00fcberstellung gegens\u00e4tzlicher Begriffe oder Gedanken.",
-    beispiel: "\u201eKlein ist der Strauch, gro\u00df ist der Baum\u201c  \u2016  \u201eKrieg und Frieden\u201c (Tolstoi)",
+    beispiel: "\u201eKlein ist der Strauch, gro\u00df ist der Baum\u201c  \u2016  \u201eDer Mensch denkt, Gott lenkt.\u201c",
     wirkung: "kontrastierend, gegen\u00fcberstellend"
   },
   {
@@ -571,9 +571,9 @@ var ALLE = [
   {
     name: "Katachrese", kat: "Gedankenfigur", mittelstufe: false,
     bild: "\uD83E\uDDE9",
-    erklaerung: "Zwei Formen: (a) Tote Metapher \u2014 ein Bild, das durch Alltagsgebrauch nicht mehr als Bild wahrgenommen wird; (b) Bildbruch \u2014 zwei Metaphern werden widerspr\u00fcchlich kombiniert",
-    beispiel: "Tote Metapher: \u201eTischbein\u201c  \u2016  \u201eFlaschenhals\u201c  \u2016  \u201eArm des Flusses\u201c  ||  Bildbruch: \u201eDas schl\u00e4gt dem Fass die Krone ins Gesicht\u201c",
-    wirkung: "Tote Metapher: unauff\u00e4llig, verblasst; Bildbruch: unfreiwillig komisch oder stilistisch ungeschickt \u2014 oft ein Fehler"
+    erklaerung: "Zwei Formen: (a) Tote Metapher \u2014 ein Bild, das durch Alltagsgebrauch nicht mehr als Bild wahrgenommen wird; (b) Bildbruch \u2014 zwei unvereinbare Metaphern werden widerspr\u00fcchlich kombiniert",
+    beispiel: "Tote Metapher: \u201eTischbein\u201c  \u2016  \u201eFlaschenhals\u201c  \u2016  \u201eArm des Flusses\u201c  |  Bildbruch: \u201eDas schl\u00e4gt dem Fass die Krone ins Gesicht\u201c",
+    wirkung: "Tote Metapher: unauff\u00e4llig, verblasst  |  Bildbruch: unfreiwillig komisch oder stilistisch ungeschickt \u2014 oft ein Fehler"
   },
   // ── KLANGFIGUREN ──
   {
@@ -601,13 +601,13 @@ var ALLE = [
     name: "Epipher", kat: "Klangfigur", mittelstufe: false,
     bild: "\uD83D\uDD1A",
     erklaerung: "Wiederholung eines Wortes oder einer Wortgruppe am Ende aufeinanderfolgender S\u00e4tze oder Verse.",
-    beispiel: "\u201eIch fordere Moral, du lebst Moral\u201c  \u2016  \u201eDoch alle Lust will Ewigkeit, / will tiefe, tiefe Ewigkeit\u201c (Nietzsche)",
+    beispiel: "\u201eWir fordern Frieden, wir erk\u00e4mpfen Frieden.\u201c  \u2016  \u201eDoch alle Lust will Ewigkeit, / will tiefe, tiefe Ewigkeit\u201c (Nietzsche)",
     wirkung: "verst\u00e4rkend am Satzende"
   },
   {
     name: "Tautologie", kat: "Klangfigur", mittelstufe: false,
     bild: "\uD83E\uDEDE",
-    erklaerung: "Wiederholung desselben Sachverhalts mit anderen Worten oder bedeutungsgleichen Ausdr\u00fccken.",
+    erklaerung: "Wiederholung desselben Sachverhalts mit bedeutungsgleichen Ausdr\u00fccken \u2014 beide Teile sagen dasselbe, nicht blo\u00df \u00c4hnliches.",
     beispiel: "\u201evoll und ganz\u201c  \u2016  \u201enie und nimmer\u201c  \u2016  \u201eimmer und ewig\u201c",
     wirkung: "bekr\u00e4ftigend, redundant"
   },
