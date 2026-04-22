@@ -186,7 +186,6 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
       <span></span><span></span><span></span>
     </button>
     <ul class="navbar-links" id="navbar-links">
-      <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
       <li><a href="index.html">Startseite</a></li>
       <li><a href="index.html#faecher">F&auml;cher</a></li>
       <li><a href="index.html#materialien">Materialien</a></li>
@@ -318,6 +317,10 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
       <div class="arcade-sub">TOP&nbsp;5 &middot; STILMITTEL&nbsp;QUIZ</div>
       <div class="hs-tabs" id="hs-tabs"></div>
       <div id="hs-table-container"></div>
+      <div class="lb-wrap" id="hs-global-wrap" style="margin-top:18px">
+        <div class="lb-title" style="color:#a0f0a0">🌐 Geteilte Bestenliste (Top&nbsp;10)</div>
+        <div id="hs-global"><p class="lb-loading">Lädt…</p></div>
+      </div>
       <button class="hs-back-btn" onclick="closeHighscores()">&#9664; ZUR&Uuml;CK</button>
     </div>
   </div>
@@ -336,7 +339,6 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
     </div>
   </div>
 </div>
-<script src="js/supabase-config.js"></script>
 <script>
 // ── DATENBASIS ────────────────────────────────────────────────────────────────
 var ALLE = [
@@ -372,9 +374,9 @@ var ALLE = [
   {
     name: "Allegorie", kat: "Bildlichkeit", mittelstufe: false,
     bild: "\uD83C\uDFAD",
-    erklaerung: "Ausgedehnte, aus mehreren Elementen aufgebaute Metapher \u2013 ein abstraktes Konzept wird als zusammenh\u00e4ngendes Bild dargestellt, das entschl\u00fcsselt werden muss.",
-    beispiel: "Der Tod als Figur mit Sense, schwarzem Umhang und Skelett (= Sensenmann)  \u2016  Justitia mit Waage, Schwert und Augenbinde (= Gerechtigkeit)",
-    wirkung: "versinnbildlicht Abstraktes, erfordert Deutung"
+    erklaerung: "Fortgesetzte Metapher \u2013 ein abstraktes Konzept wird als konkretes Bild dargestellt.",
+    beispiel: "\u201eSensenmann\u201c als Bild f\u00fcr den Tod  \u2016  \u201eJustitia\u201c mit Waage und Augenbinde",
+    wirkung: "versinnbildlicht Abstraktes"
   },
   {
     name: "Metonymie", kat: "Bildlichkeit", mittelstufe: false,
@@ -391,11 +393,11 @@ var ALLE = [
     wirkung: "verknappend, verallgemeinernd, eindringlich"
   },
   {
-    name: "Chiffre", kat: "Bildlichkeit", mittelstufe: false,
+    name: "Chiffre", kat: "Bildlichkeit", mittelstufe: true,
     bild: "\uD83D\uDD10",
-    erklaerung: "Verschl\u00fcsseltes Zeichen der modernen Lyrik, dessen Bedeutung sich nicht eindeutig aufl\u00f6sen l\u00e4sst \u2013 das Bild bleibt bewusst offen oder r\u00e4tselhaft, oft nur im Gesamtwerk des Autors erschlie\u00dfbar.",
-    beispiel: "\u201eJHWH\u201c in der hebr\u00e4ischen Bibel  \u2016  \u201eSchwarze Milch der Fr\u00fche\u201c (Celan, Todesfuge)",
-    wirkung: "verr\u00e4tselt, l\u00e4dt mit Bedeutung auf, \u00f6ffnet Deutungsraum"
+    erklaerung: "Verschl\u00fcsseltes Zeichen, das ohne zus\u00e4tzliches Wissen nicht eindeutig zu entschl\u00fcsseln ist.",
+    beispiel: "\u201eJHWH\u201c in der hebr\u00e4ischen Bibel  \u2016  \u201eSchwarzschimmel nacht\u201c (Celan)",
+    wirkung: "verr\u00e4tselt, l\u00e4dt mit Bedeutung auf"
   },
   // ── WORTFIGUREN ──
   {
@@ -416,7 +418,7 @@ var ALLE = [
     name: "Understatement", kat: "Gedankenfigur", mittelstufe: false,
     bild: "\uD83E\uDD2B",
     erklaerung: "Bewusste Untertreibung eines Sachverhalts \u2014 etwas wird als kleiner, harmloser oder weniger bedeutsam dargestellt, als es tats\u00e4chlich ist",
-    beispiel: "\u201eDas war nicht ganz optimal.\u201c (nach einer Katastrophe)  \u2016  \u201eDas k\u00f6nnte schwierig werden.\u201c (wenn etwas fast aussichtslos ist)  \u2016  \u201eNicht der schlechteste Abend.\u201c (nach einem Triumph)",
+    beispiel: "\u201eDas war nicht ganz optimal.\u201c (nach einer Katastrophe)  \u2016  \u201eIch bin nicht ganz ungl\u00fccklich dar\u00fcber.\u201c (bei gro\u00dfer Freude)  \u2016  \u201eDas k\u00f6nnte schwierig werden.\u201c (wenn etwas fast aussichtslos ist)",
     wirkung: "abschw\u00e4chend, oft ironisch oder humorvoll \u2014 kann Distanz, Coolness oder Bescheidenheit ausdr\u00fccken"
   },
   {
@@ -427,7 +429,7 @@ var ALLE = [
     wirkung: "umschreibend, charakterisierend"
   },
   {
-    name: "Onomatopoesie", kat: "Wortfigur", mittelstufe: true,
+    name: "Onomatopoesie", kat: "Wortfigur", mittelstufe: false,
     bild: "\uD83D\uDD0A",
     erklaerung: "Sprachliche Nachahmung von Ger\u00e4uschen oder Kl\u00e4ngen.",
     beispiel: "\u201eKnall\u201c  \u2016  \u201eMiau\u201c  \u2016  \u201erumpeln\u201c  \u2016  \u201ezischen\u201c",
@@ -466,21 +468,21 @@ var ALLE = [
     name: "Parallelismus", kat: "Satzfigur", mittelstufe: true,
     bild: "\uD83D\uDCCF",
     erklaerung: "Wiederholung der gleichen syntaktischen Struktur in aufeinanderfolgenden S\u00e4tzen oder Satzteilen.",
-    beispiel: "\u201eHei\u00df die Liebe, kalt der Tod\u201c  \u2016  \u201eIch lache, wenn ich mag; ich weine, wenn ich muss.\u201c",
+    beispiel: "\u201eHei\u00df die Liebe, kalt der Tod\u201c  \u2016  \u201eIch kam, ich sah, ich siegte\u201c (Caesar)",
     wirkung: "ordnend, rhythmisch"
   },
   {
     name: "Klimax", kat: "Satzfigur", mittelstufe: true,
     bild: "\uD83D\uDCC8",
-    erklaerung: "Stufenweise Steigerung von Ausdruck zu Ausdruck \u2014 jedes Glied ist bedeutsamer oder intensiver als das vorherige.",
-    beispiel: "\u201eEr sei mein Freund, mein Engel, mein Gott\u201c (Schiller)  \u2016  \u201eVeni, vidi, vici\u201c (Caesar: Ich kam, ich sah, ich siegte)",
-    wirkung: "steigernd, eindringlich, spannungsaufbauend"
+    erklaerung: "Stufenweise Steigerung von Ausdruck zu Ausdruck.",
+    beispiel: "\u201eEr sei mein Freund, mein Engel, mein Gott\u201c (Schiller)  \u2016  \u201eVeni, vidi, vici\u201c (Caesar)",
+    wirkung: "steigernd, eindringlich"
   },
   {
     name: "Akkumulation", kat: "Satzfigur", mittelstufe: true,
     bild: "\uD83D\uDCE6",
     erklaerung: "Reihung von Begriffen, die einem gemeinsamen Oberbegriff zugeordnet werden k\u00f6nnen.",
-    beispiel: "\u201eRosen, Tulpen, Nelken \u2014 \u00fcberall bl\u00fcht es\u201c  \u2016  \u201eNun ruhen alle W\u00e4lder, Vieh, Menschen, St\u00e4dt und Felder\u201c (Gerhardt)",
+    beispiel: "\u201eSonne, Mond und Sterne!\u201c  \u2016  \u201eNun ruhen alle W\u00e4lder, Vieh, Menschen, St\u00e4dt und Felder\u201c (Gerhardt)",
     wirkung: "veranschaulicht, eindringlich"
   },
   {
@@ -530,7 +532,7 @@ var ALLE = [
     name: "Antithese", kat: "Gedankenfigur", mittelstufe: true,
     bild: "\u2194\uFE0F",
     erklaerung: "Gegen\u00fcberstellung gegens\u00e4tzlicher Begriffe oder Gedanken.",
-    beispiel: "\u201eKlein ist der Strauch, gro\u00df ist der Baum\u201c  \u2016  \u201eDer Mensch denkt, Gott lenkt.\u201c",
+    beispiel: "\u201eKlein ist der Strauch, gro\u00df ist der Baum\u201c  \u2016  \u201eKrieg und Frieden\u201c (Tolstoi)",
     wirkung: "kontrastierend, gegen\u00fcberstellend"
   },
   {
@@ -571,9 +573,9 @@ var ALLE = [
   {
     name: "Katachrese", kat: "Gedankenfigur", mittelstufe: false,
     bild: "\uD83E\uDDE9",
-    erklaerung: "Zwei Formen: (a) Tote Metapher \u2014 ein Bild, das durch Alltagsgebrauch nicht mehr als Bild wahrgenommen wird; (b) Bildbruch \u2014 zwei unvereinbare Metaphern werden widerspr\u00fcchlich kombiniert",
-    beispiel: "Tote Metapher: \u201eTischbein\u201c  \u2016  \u201eFlaschenhals\u201c  \u2016  \u201eArm des Flusses\u201c  |  Bildbruch: \u201eDas schl\u00e4gt dem Fass die Krone ins Gesicht\u201c",
-    wirkung: "Tote Metapher: unauff\u00e4llig, verblasst  |  Bildbruch: unfreiwillig komisch oder stilistisch ungeschickt \u2014 oft ein Fehler"
+    erklaerung: "Zwei Formen: (a) Tote Metapher \u2014 ein Bild, das durch Alltagsgebrauch nicht mehr als Bild wahrgenommen wird; (b) Bildbruch \u2014 zwei Metaphern werden widerspr\u00fcchlich kombiniert",
+    beispiel: "Tote Metapher: \u201eTischbein\u201c  \u2016  \u201eFlaschenhals\u201c  \u2016  \u201eArm des Flusses\u201c  ||  Bildbruch: \u201eDas schl\u00e4gt dem Fass die Krone ins Gesicht\u201c",
+    wirkung: "Tote Metapher: unauff\u00e4llig, verblasst; Bildbruch: unfreiwillig komisch oder stilistisch ungeschickt \u2014 oft ein Fehler"
   },
   // ── KLANGFIGUREN ──
   {
@@ -601,13 +603,13 @@ var ALLE = [
     name: "Epipher", kat: "Klangfigur", mittelstufe: false,
     bild: "\uD83D\uDD1A",
     erklaerung: "Wiederholung eines Wortes oder einer Wortgruppe am Ende aufeinanderfolgender S\u00e4tze oder Verse.",
-    beispiel: "\u201eWir fordern Frieden, wir erk\u00e4mpfen Frieden.\u201c  \u2016  \u201eDoch alle Lust will Ewigkeit, / will tiefe, tiefe Ewigkeit\u201c (Nietzsche)",
+    beispiel: "\u201eIch fordere Moral, du lebst Moral\u201c  \u2016  \u201eDoch alle Lust will Ewigkeit, / will tiefe, tiefe Ewigkeit\u201c (Nietzsche)",
     wirkung: "verst\u00e4rkend am Satzende"
   },
   {
     name: "Tautologie", kat: "Klangfigur", mittelstufe: false,
     bild: "\uD83E\uDEDE",
-    erklaerung: "Wiederholung desselben Sachverhalts mit bedeutungsgleichen Ausdr\u00fccken \u2014 beide Teile sagen dasselbe, nicht blo\u00df \u00c4hnliches.",
+    erklaerung: "Wiederholung desselben Sachverhalts mit anderen Worten oder bedeutungsgleichen Ausdr\u00fccken.",
     beispiel: "\u201evoll und ganz\u201c  \u2016  \u201enie und nimmer\u201c  \u2016  \u201eimmer und ewig\u201c",
     wirkung: "bekr\u00e4ftigend, redundant"
   },
@@ -990,106 +992,61 @@ function doAbort() {
   showResult();
 }
 
-// ── HIGHSCORES (Supabase – geteilte Bestenliste) ──────────────────────────────
-// Einmalige Einrichtung: Tabelle im Supabase SQL-Editor anlegen:
-//   CREATE TABLE quiz_bestenliste (
-//     id       bigserial PRIMARY KEY,
-//     quiz     text not null,
-//     modus    text not null,
-//     name     text not null,
-//     punkte   integer not null default 0,
-//     gesamt   integer not null,
-//     richtig  integer not null,
-//     prozent  integer not null,
-//     datum    timestamptz default now()
-//   );
-//   ALTER TABLE quiz_bestenliste ENABLE ROW LEVEL SECURITY;
-//   CREATE POLICY "Lesen"      ON quiz_bestenliste FOR SELECT USING (true);
-//   CREATE POLICY "Einreichen" ON quiz_bestenliste FOR INSERT WITH CHECK (true);
-//
+// ── HIGHSCORES ────────────────────────────────────────────────────────────────
+var HS_KEY = "stilmittel_hs_v2";
 var HS_MODES = ["name_from_beispiel", "name_from_erklaerung", "wirkung_from_name", "name_from_wirkung", "mixed"];
 var HS_LABELS = {
-  name_from_beispiel:   "\u270f\ufe0f Bsp\u2192Name",
+  name_from_beispiel: "\u270f\ufe0f Bsp\u2192Name",
   name_from_erklaerung: "\ud83d\udcd6 Erkl\u2192Name",
-  wirkung_from_name:    "\ud83d\udca1 Name\u2192Wkg",
-  name_from_wirkung:    "\ud83d\udd0d Wkg\u2192Name",
-  mixed:                "\ud83c\udfb2 Gemischt"
+  wirkung_from_name: "\ud83d\udca1 Name\u2192Wkg",
+  name_from_wirkung: "\ud83d\udd0d Wkg\u2192Name",
+  mixed: "\ud83c\udfb2 Gemischt"
 };
 var currentHSTab = "name_from_beispiel";
 var hsReturnTo = "home";
 var pendingHS = null;
-var HS_QUIZ = "stilmittel";
-var HS_TOP  = 10;
 
-async function loadHSFromDB(mode) {
-  if (typeof SUPABASE_KONFIGURIERT === "undefined" || !SUPABASE_KONFIGURIERT) return [];
-  try {
-    var url = SUPABASE_URL + "/rest/v1/quiz_bestenliste"
-      + "?quiz=eq." + encodeURIComponent(HS_QUIZ)
-      + "&modus=eq." + encodeURIComponent(mode)
-      + "&order=prozent.desc,gesamt.desc"
-      + "&limit=" + HS_TOP
-      + "&select=name,punkte,gesamt,richtig,prozent,datum";
-    var resp = await fetch(url, {
-      headers: { "Authorization": "Bearer " + SUPABASE_KEY, "apikey": SUPABASE_KEY }
-    });
-    if (!resp.ok) return [];
-    return await resp.json();
-  } catch(e) { return []; }
+function loadHS() {
+  try { return JSON.parse(localStorage.getItem(HS_KEY) || "{}"); } catch(e) { return {}; }
 }
-
-async function saveHSToDB(mode, name, pct, score, total) {
-  if (typeof SUPABASE_KONFIGURIERT === "undefined" || !SUPABASE_KONFIGURIERT) return;
-  try {
-    await fetch(SUPABASE_URL + "/rest/v1/quiz_bestenliste", {
-      method: "POST",
-      headers: {
-        "Authorization": "Bearer " + SUPABASE_KEY,
-        "apikey": SUPABASE_KEY,
-        "Content-Type": "application/json",
-        "Prefer": "return=minimal"
-      },
-      body: JSON.stringify({
-        quiz: HS_QUIZ, modus: mode,
-        name: name.trim() || "???",
-        punkte: score, gesamt: total,
-        richtig: score, prozent: pct
-      })
-    });
-  } catch(e) {}
+function saveHSData(data) {
+  try { localStorage.setItem(HS_KEY, JSON.stringify(data)); } catch(e) {}
 }
-
-async function qualifiesForHS(mode, pct, total) {
-  var list = await loadHSFromDB(mode);
-  if (list.length < HS_TOP) return true;
+function qualifiesForHS(mode, pct, total) {
+  var list = (loadHS()[mode] || []);
+  if (list.length < 5) return true;
   var worst = list[list.length - 1];
-  return pct > worst.prozent || (pct === worst.prozent && total > worst.gesamt);
+  return pct > worst.pct || (pct === worst.pct && total > worst.total);
 }
-
-async function checkAndMaybePromptHS(mode, pct, score, total) {
-  if (!(await qualifiesForHS(mode, pct, total))) return;
+function addToHS(mode, name, pct, score, total) {
+  var data = loadHS();
+  var list = (data[mode] || []);
+  var d = new Date();
+  var ds = d.getDate() + "." + (d.getMonth() + 1) + "." + d.getFullYear();
+  list.push({ name: name.trim() || "???", pct: pct, score: score, total: total, date: ds });
+  list.sort(function(a, b) { return b.pct - a.pct || b.total - a.total; });
+  data[mode] = list.slice(0, 5);
+  saveHSData(data);
+}
+function checkAndMaybePromptHS(mode, pct, score, total) {
+  if (!qualifiesForHS(mode, pct, total)) return;
   pendingHS = { mode: mode, pct: pct, score: score, total: total };
   document.getElementById("hs-name-input").value = "";
   document.getElementById("hs-modal").style.display = "flex";
   setTimeout(function() { document.getElementById("hs-name-input").focus(); }, 120);
 }
-
-async function saveHSEntry() {
+function saveHSEntry() {
   if (!pendingHS) return;
   var name = document.getElementById("hs-name-input").value;
-  document.getElementById("hs-modal").style.display = "none";
-  await saveHSToDB(pendingHS.mode, name, pendingHS.pct, pendingHS.score, pendingHS.total);
+  addToHS(pendingHS.mode, name, pendingHS.pct, pendingHS.score, pendingHS.total);
+  leaderboardSave('stilmittel-' + pendingHS.mode, name, pendingHS.score, pendingHS.total);
   pendingHS = null;
-  if (!document.getElementById("highscores").classList.contains("hidden")) {
-    renderHSTable(currentHSTab);
-  }
+  document.getElementById("hs-modal").style.display = "none";
 }
-
 function skipHSEntry() {
   pendingHS = null;
   document.getElementById("hs-modal").style.display = "none";
 }
-
 function showHighscores(returnTo) {
   hsReturnTo = returnTo || "home";
   document.getElementById("home").classList.add("hidden");
@@ -1099,25 +1056,31 @@ function showHighscores(returnTo) {
   currentHSTab = HS_MODES[0];
   renderHSTabs();
   renderHSTable(currentHSTab);
+  fetchGlobalHS(currentHSTab);
 }
-
 function switchHSTab(mode) {
   currentHSTab = mode;
   renderHSTabs();
   renderHSTable(mode);
+  fetchGlobalHS(mode);
 }
-
+function fetchGlobalHS(mode) {
+  var el = document.getElementById('hs-global');
+  if (!el) return;
+  el.innerHTML = '<p class="lb-loading">Lädt…</p>';
+  leaderboardFetch('stilmittel-' + mode).then(function(data) {
+    el.innerHTML = leaderboardHTML(data);
+  });
+}
 function renderHSTabs() {
   document.getElementById("hs-tabs").innerHTML = HS_MODES.map(function(m) {
     var cls = "hs-tab" + (m === currentHSTab ? " active" : "");
     return '<button class="' + cls + '" onclick="switchHSTab(\'' + m + '\')">' + HS_LABELS[m] + '</button>';
   }).join("");
 }
-
-async function renderHSTable(mode) {
+function renderHSTable(mode) {
+  var list = (loadHS()[mode] || []);
   var el = document.getElementById("hs-table-container");
-  el.innerHTML = '<div class="hs-empty" style="color:#4a7040">\u23f3 Lade\u2026</div>';
-  var list = await loadHSFromDB(mode);
   if (list.length === 0) {
     el.innerHTML = '<div class="hs-empty">-- NOCH KEINE EINTR\u00c4GE --<br><span style="font-size:0.65rem;color:#2a5020;font-family:\'Courier New\',monospace">Spiele eine Runde &amp; trage dich ein!</span></div>';
     return;
@@ -1126,21 +1089,18 @@ async function renderHSTable(mode) {
   var rows = '<div class="hs-row header"><span class="hs-rank">#</span><span class="hs-name">NAME</span><span class="hs-score">SCORE</span><span class="hs-date">DATUM</span></div>';
   list.forEach(function(e, i) {
     var rank = i < 3 ? medals[i] : (i + 1) + ".";
-    var ds = e.datum ? new Date(e.datum).toLocaleDateString("de-DE") : "";
     rows += '<div class="hs-row">'
-      + '<span class="hs-rank">' + escHS(rank) + '</span>'
+      + '<span class="hs-rank">' + rank + '</span>'
       + '<span class="hs-name">' + escHS(e.name) + '</span>'
-      + '<span class="hs-score">' + e.prozent + '%<span style="color:#2a6020;font-size:0.68em"> (' + e.richtig + '/' + e.gesamt + ')</span></span>'
-      + '<span class="hs-date">' + escHS(ds) + '</span>'
+      + '<span class="hs-score">' + e.pct + '%<span style="color:#2a6020;font-size:0.68em"> (' + e.score + '/' + e.total + ')</span></span>'
+      + '<span class="hs-date">' + escHS(e.date) + '</span>'
       + '</div>';
   });
   el.innerHTML = '<div class="hs-table">' + rows + '</div>';
 }
-
 function escHS(s) {
   return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 }
-
 function closeHighscores() {
   document.getElementById("highscores").classList.add("hidden");
   if (hsReturnTo === "result") {
@@ -1181,5 +1141,6 @@ function goHome() {
   });
 })();
 </script>
+<script src="js/supabase-leaderboard.js"></script>
 </body>
 </html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rechtschreibquiz – OBS Spelle</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: #f5f4f0;
+    color: #1a1a18;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+  #app {
+    max-width: 700px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 14px;
+    padding: 2rem 2rem 2.5rem;
+    border: 1px solid #e0ded6;
+  }
+  h1 { font-size: 22px; font-weight: 500; margin-bottom: 4px; }
+  .sub { font-size: 13px; color: #666; margin-bottom: 1.75rem; }
+
+/* Niveaustufen */
+.level-bar { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.lv-btn {
+flex: 1; min-width: 130px;
+padding: 10px 14px;
+border-radius: 10px;
+border: 1px solid #d0cec6;
+background: #fff;
+color: #1a1a18;
+cursor: pointer;
+text-align: center;
+transition: all .15s;
+}
+.lv-btn:hover { background: #f0efe8; }
+.lv-btn .lv-title { font-size: 14px; font-weight: 500; display: block; }
+.lv-btn .lv-sub { font-size: 11px; color: #777; display: block; margin-top: 3px; }
+.lv-btn.sel-56  { background: #E6F1FB; color: #0C447C; border-color: #85B7EB; }
+.lv-btn.sel-78  { background: #EAF3DE; color: #27500A; border-color: #97C459; }
+.lv-btn.sel-913 { background: #EEEDFE; color: #3C3489; border-color: #AFA9EC; }
+.lv-btn.sel-56 .lv-sub, .lv-btn.sel-78 .lv-sub, .lv-btn.sel-913 .lv-sub { color: inherit; opacity: .7; }
+
+/* Kategorie-Filter */
+.cat-bar { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 1.25rem; min-height: 28px; }
+.cat-btn {
+font-size: 11px; padding: 3px 10px;
+border-radius: 6px;
+border: 1px solid #d0cec6;
+background: #fff;
+color: #555;
+cursor: pointer;
+transition: all .15s;
+}
+.cat-btn:hover { background: #f0efe8; }
+.cat-btn.on { background: #EEEDFE; color: #3C3489; border-color: #AFA9EC; }
+
+/* Fortschritt */
+.progress-row { display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem; }
+.prog-bar { flex: 1; height: 5px; background: #eee; border-radius: 4px; overflow: hidden; }
+.prog-fill { height: 100%; background: #7F77DD; border-radius: 4px; transition: width .3s; }
+.prog-label { font-size: 12px; color: #888; white-space: nowrap; }
+
+/* Fragekarte */
+.q-card {
+background: #fff;
+border: 1px solid #e0ded6;
+border-radius: 12px;
+padding: 1.25rem 1.5rem;
+margin-bottom: 1rem;
+}
+.q-meta { font-size: 11px; color: #aaa; margin-bottom: 8px; letter-spacing: .06em; text-transform: uppercase; }
+.q-text { font-size: 15px; line-height: 1.65; margin-bottom: 1.25rem; }
+.q-text strong { font-weight: 500; text-decoration: underline; text-decoration-style: dotted; }
+
+/* Antwortoptionen */
+.options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.opt-btn {
+font-size: 14px;
+padding: 9px 13px;
+border-radius: 8px;
+border: 1px solid #d0cec6;
+background: #fff;
+color: #1a1a18;
+cursor: pointer;
+text-align: left;
+transition: all .15s;
+line-height: 1.4;
+font-family: inherit;
+}
+.opt-btn:hover:not(:disabled) { background: #f5f4f0; }
+.opt-btn.correct { background: #EAF3DE; color: #27500A; border-color: #97C459; }
+.opt-btn.wrong   { background: #FCEBEB; color: #791F1F; border-color: #F09595; }
+.opt-btn:disabled { cursor: default; }
+
+/* Feedback */
+.feedback {
+font-size: 13px; line-height: 1.6;
+padding: 9px 13px;
+border-radius: 8px;
+margin-top: 10px;
+display: none;
+}
+.feedback.show { display: block; }
+.feedback.ok  { background: #EAF3DE; color: #27500A; border-left: 3px solid #639922; }
+.feedback.nok { background: #FCEBEB; color: #791F1F; border-left: 3px solid #E24B4A; }
+
+/* Navigation */
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; }
+.next-btn {
+padding: 8px 22px;
+border-radius: 8px;
+border: 1px solid #d0cec6;
+background: #fff;
+color: #1a1a18;
+cursor: pointer;
+font-size: 14px;
+font-family: inherit;
+display: none;
+transition: background .15s;
+}
+.next-btn:hover { background: #f5f4f0; }
+.next-btn.show { display: inline-block; }
+.score-badge { font-size: 13px; color: #888; }
+
+/* Abschlusskarte */
+.done-card {
+background: #f5f4f0;
+border-radius: 12px;
+padding: 2rem;
+text-align: center;
+margin-top: 1rem;
+}
+.done-card h3 { font-size: 22px; font-weight: 500; margin-bottom: 8px; }
+.done-card p  { font-size: 14px; color: #666; margin-bottom: 1.5rem; }
+.restart-btn {
+padding: 9px 22px;
+border-radius: 8px;
+border: 1px solid #d0cec6;
+background: #fff;
+cursor: pointer;
+font-size: 14px;
+font-family: inherit;
+margin: 4px;
+transition: background .15s;
+}
+.restart-btn:hover { background: #f0efe8; }
+
+/* Level-Badge auf Fragekarte */
+.lv-badge {
+display: inline-block;
+font-size: 10px;
+padding: 2px 7px;
+border-radius: 5px;
+margin-left: 6px;
+vertical-align: middle;
+}
+.b56  { background: #E6F1FB; color: #185FA5; }
+.b78  { background: #EAF3DE; color: #3B6D11; }
+.b913 { background: #EEEDFE; color: #3C3489; }
+
+/* Starthinweis */
+.hint { color: #888; font-size: 14px; padding: 1rem 0; }
+
+@media (max-width: 480px) {
+#app { padding: 1.25rem 1rem 2rem; }
+.options { grid-template-columns: 1fr; }
+.level-bar { flex-direction: column; }
+}
+</style>
+
+</head>
+<body>
+<div id="app">
+  <h1>Rechtschreibquiz</h1>
+  <p class="sub">OBS Spelle &middot; Wähle deine Klassenstufe und die Themen</p>
+
+  <div class="level-bar" id="lv-bar">
+    <button class="lv-btn" data-lv="56"  onclick="setLevel('56',this)">
+      <span class="lv-title">Klasse 5 / 6</span>
+      <span class="lv-sub">Nomen, Satzschluss, ss/ß, Wortarten</span>
+    </button>
+    <button class="lv-btn" data-lv="78"  onclick="setLevel('78',this)">
+      <span class="lv-title">Klasse 7 / 8</span>
+      <span class="lv-sub">Nominalisierung, Komma, Getrenntschreibung</span>
+    </button>
+    <button class="lv-btn" data-lv="913" onclick="setLevel('913',this)">
+      <span class="lv-title">Klasse 9 – 13</span>
+      <span class="lv-sub">Konjunktiv, Fremdwörter, komplexe Zeichensetzung</span>
+    </button>
+  </div>
+
+  <div class="cat-bar" id="cat-bar"></div>
+
+  <div class="progress-row">
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <span class="prog-label" id="prog-label">– / –</span>
+  </div>
+
+  <div id="quiz-area"><p class="hint">Bitte wähle oben eine Klassenstufe, um zu starten.</p></div>
+</div>
+
+<div id="lb-section" style="display:none; max-width:700px; margin:24px auto 0; background:#fff; border-radius:14px; padding:1.5rem 2rem; border:1px solid #e0ded6; color:#1a1a18">
+  <div class="lb-title" style="color:#27500a">🌐 Geteilte Bestenliste</div>
+  <div id="rs-lb-form" class="lb-eingabe" style="display:none">
+    <input type="text" id="rs-lb-name" placeholder="Dein Name" maxlength="20"
+      style="border:1px solid #d0cec6;background:#f9f8f4;color:#1a1a18">
+    <button onclick="rsLbEintragen()" style="background:#27500a;color:#fff">📥 Eintragen</button>
+  </div>
+  <div id="rs-lb-container"><p class="lb-loading">Lädt…</p></div>
+</div>
+
+<script>
+const Q = [
+  // ── KLASSE 5/6 ──────────────────────────────────────────────
+  {lv:"56",cat:"Groß-/Kleinschreibung",q:"Welche Wörter werden großgeschrieben?",sentence:"Das ____ bellt laut.",opts:["hund","Hund","HUND","hunD"],ans:1,exp:"Nomen (Hauptwörter) werden immer großgeschrieben. ‚Hund' ist ein Nomen → Großschreibung."},
+  {lv:"56",cat:"Groß-/Kleinschreibung",q:"Welche Schreibung ist richtig?",sentence:"Meine ____ heißt Lisa.",opts:["schwester","Schwester","SCHWESTER","Schwesster"],ans:1,exp:"‚Schwester' ist ein Nomen → Großschreibung."},
+  {lv:"56",cat:"Groß-/Kleinschreibung",q:"Was wird hier großgeschrieben?",sentence:"Der ____ scheint hell.",opts:["mond","Mond","MOND","moond"],ans:1,exp:"‚Mond' ist ein Nomen und wird großgeschrieben."},
+  {lv:"56",cat:"Groß-/Kleinschreibung",q:"Welche Form ist richtig?",sentence:"Sie geht jeden Tag zur ____.",opts:["schule","Schule","sCHULE","schulle"],ans:1,exp:"‚Schule' ist ein Nomen → Großschreibung."},
+  {lv:"56",cat:"Groß-/Kleinschreibung",q:"Welches Wort muss kleingeschrieben werden?",sentence:"Er läuft ____ als sein Bruder.",opts:["Schneller","schneller","Schneler","SCHNELLER"],ans:1,exp:"‚schneller' ist hier ein Adjektiv, das eine Eigenschaft beschreibt → Kleinschreibung."},
+  {lv:"56",cat:"Groß-/Kleinschreibung",q:"Welche Schreibung ist korrekt?",sentence:"Das ist ein ____ Tag.",opts:["Schöner","schöner","SCHÖNER","schöNer"],ans:1,exp:"‚schöner' ist ein Adjektiv vor einem Nomen → Kleinschreibung."},
+  {lv:"56",cat:"Satzzeichen",q:"Welches Satzzeichen gehört ans Ende?",sentence:"Wie heißt du ____",opts:[".",",","?","!"],ans:2,exp:"Fragesätze enden mit einem Fragezeichen."},
+  {lv:"56",cat:"Satzzeichen",q:"Welches Satzzeichen fehlt?",sentence:"Ich gehe jetzt nach Hause ____",opts:["?","!",".",","],ans:2,exp:"Ein normaler Aussagesatz endet mit einem Punkt."},
+  {lv:"56",cat:"Satzzeichen",q:"Welches Zeichen gehört hier hin?",sentence:"Pass auf ____ sagte die Lehrerin.",opts:["– „",", „",": „","; „"],ans:2,exp:"Vor wörtlicher Rede steht ein Doppelpunkt, dann folgen die Anführungszeichen unten."},
+  {lv:"56",cat:"Satzzeichen",q:"Wie sieht die korrekte Zeichensetzung aus?",sentence:"Er rief ____ Hilfe ____",opts:['Er rief: „Hilfe!"','Er rief, Hilfe.','Er rief – Hilfe?','Er rief; Hilfe,'],ans:0,exp:"Wörtliche Rede wird mit Doppelpunkt eingeleitet, steht in Anführungszeichen und endet mit Ausrufezeichen."},
+  {lv:"56",cat:"s-Laute (ss/ß)",q:"Welche Schreibung ist richtig?",sentence:"Der Hund bei__t nicht.",opts:["beist","beißt","beisst","beißßt"],ans:1,exp:"Nach dem Diphthong ‚ei' steht ‚ß' → ‚beißt'."},
+  {lv:"56",cat:"s-Laute (ss/ß)",q:"Bitte ergänze richtig:",sentence:"Das Wa__er ist kalt.",opts:["Waßer","Wasser","Waseer","Wasßer"],ans:1,exp:"Nach kurzem Vokal steht ‚ss' → ‚Wasser'."},
+  {lv:"56",cat:"s-Laute (ss/ß)",q:"Welche Schreibung ist korrekt?",sentence:"Die Stra__e ist lang.",opts:["Straße","Strasse","Strase","Straase"],ans:0,exp:"Nach dem langen ‚a' steht ‚ß' → ‚Straße'."},
+  {lv:"56",cat:"s-Laute (ss/ß)",q:"Welche Form ist richtig?",sentence:"Er i__t gerne Pizza.",opts:["ist","isst","ißt","isßt"],ans:1,exp:"‚essen' → kurzes ‚e' → ‚isst' mit ‚ss'."},
+  {lv:"56",cat:"Wortarten",q:"Was ist ‚laufen' für eine Wortart?",sentence:"Er kann schnell ____.",opts:["Nomen","Verb","Adjektiv","Artikel"],ans:1,exp:"‚laufen' ist ein Verb (Tun-Wort). Verben beschreiben Handlungen oder Zustände."},
+  {lv:"56",cat:"Wortarten",q:"Was ist ‚klein' für eine Wortart?",sentence:"Das ist ein ____ Haus.",opts:["Nomen","Verb","Adjektiv","Konjunktion"],ans:2,exp:"‚klein' ist ein Adjektiv (Wie-Wort). Adjektive beschreiben Eigenschaften."},
+  {lv:"56",cat:"Wortarten",q:"Was ist ‚weil' für eine Wortart?",sentence:"Er bleibt zu Hause, ____ er krank ist.",opts:["Adjektiv","Nomen","Konjunktion","Pronomen"],ans:2,exp:"‚weil' ist eine unterordnende Konjunktion (Bindewort). Sie leitet einen Nebensatz ein."},
+  {lv:"56",cat:"Wortarten",q:"Was ist ‚schnell' hier für eine Wortart?",sentence:"Er läuft ____ nach Hause.",opts:["Adjektiv","Adverb","Nomen","Artikel"],ans:1,exp:"‚schnell' beschreibt hier das Verb → es ist ein Adverb (Umstandswort)."},
+  {lv:"56",cat:"Wortarten",q:"Was ist ‚der' in diesem Satz?",sentence:"____ Hund bellt.",opts:["Pronomen","Adjektiv","Artikel","Konjunktion"],ans:2,exp:"‚der' ist ein bestimmter Artikel (Geschlechtswort)."},
+  {lv:"56",cat:"Wortarten",q:"Welche Wortart ist ‚ich'?",sentence:"____ gehe heute ins Kino.",opts:["Nomen","Artikel","Konjunktion","Pronomen"],ans:3,exp:"‚ich' ist ein Personalpronomen (persönliches Fürwort)."},
+
+  // ── KLASSE 7/8 ──────────────────────────────────────────────
+  {lv:"78",cat:"Groß-/Kleinschreibung",q:"Welche Schreibung ist richtig?",sentence:"Ich habe nach langem Zögern endlich ____ gesagt.",opts:["ja","Ja","JA","jah"],ans:1,exp:"‚Ja' wird hier als Nomen verwendet (‚ein klares Ja') → Großschreibung."},
+  {lv:"78",cat:"Groß-/Kleinschreibung",q:"Welche Form ist korrekt?",sentence:"Es geschah im ____ – niemand hatte damit gerechnet.",opts:["verborgenen","Verborgenen","VERBORGENEN","verborgenes"],ans:1,exp:"Nach ‚im' (= in dem) steht ein substantiviertes Adjektiv → Großschreibung: ‚im Verborgenen'."},
+  {lv:"78",cat:"Groß-/Kleinschreibung",q:"Welche Schreibung ist korrekt?",sentence:"Das Schwimmen macht Spaß – vor allem das ____ Tauchen.",opts:["Tiefe","tiefe","TIEFE","tieffe"],ans:1,exp:"Das Adjektiv ‚tiefe' bezieht sich auf das bereits großgeschriebene Nomen ‚Tauchen' → Kleinschreibung des Adjektivs."},
+  {lv:"78",cat:"Groß-/Kleinschreibung",q:"Bitte wähle die korrekte Schreibweise.",sentence:"Die Züge fahren ____ und ____.",opts:["Hin und Her","hin und her","Hin und her","hin und Her"],ans:1,exp:"‚hin und her' ist eine feste Wendung mit Adverbien → Kleinschreibung."},
+  {lv:"78",cat:"s-Laute (ss/ß)",q:"Welche Schreibung ist richtig?",sentence:"Der Fluss flie__t nach dem Regen schnell.",opts:["fließt","fliessst","fleißt","fliests"],ans:0,exp:"Nach Diphthong ‚ie' steht ‚ß' → ‚fließt'."},
+  {lv:"78",cat:"s-Laute (ss/ß)",q:"Welche Schreibung ist korrekt?",sentence:"Sie a__en das ganze Essen auf.",opts:["asen","assssen","aßen","aessen"],ans:2,exp:"‚aßen' – Vergangenheitsform von ‚essen'. Langes ‚a' → ‚ß'."},
+  {lv:"78",cat:"s-Laute (ss/ß)",q:"Welche Form ist richtig?",sentence:"Ich wei__, dass du recht hast.",opts:["weiss","weis","weiß","weise"],ans:2,exp:"Diphthong ‚ei' gilt als langer Vokal → ‚ß'. In der Schweiz: ‚weiss', in Deutschland: ‚weiß'."},
+  {lv:"78",cat:"s-Laute (ss/ß)",q:"Bitte ergänze:",sentence:"Der Flu__ mündet ins Meer.",opts:["Fluss","Fluß","Flus","Flußs"],ans:0,exp:"Verlängerungsprobe: ‚Flüsse' → kurzes ‚u' → ‚ss'. Seit 1996 gilt in Deutschland: ‚Fluss'."},
+  {lv:"78",cat:"Getrennt-/Zusammenschreibung",q:"Welche Form ist korrekt?",sentence:"Er ist nach dem Unfall im Rollstuhl ____ geblieben.",opts:["sitzen","Sitzen","sitzengeblieben","Sitzengeblieben"],ans:2,exp:"‚sitzenbleiben' mit übertragener Bedeutung → Zusammenschreibung: ‚sitzengeblieben'."},
+  {lv:"78",cat:"Getrennt-/Zusammenschreibung",q:"Welche Form ist richtig?",sentence:"Das war nicht ____ gedacht.",opts:["Böse","böse","bösegedacht","boese"],ans:1,exp:"Adjektiv + Partizip ohne neue Gesamtbedeutung → Getrenntschreibung: ‚böse gedacht'."},
+  {lv:"78",cat:"Getrennt-/Zusammenschreibung",q:"Was ist richtig?",sentence:"Sie hat ihr Fahrrad ____ gestellt.",opts:["frei","Frei","freigestellt","Freigestellt"],ans:2,exp:"‚freistellen' mit übertragener Bedeutung → Zusammenschreibung im Partizip: ‚freigestellt'."},
+  {lv:"78",cat:"Getrennt-/Zusammenschreibung",q:"Welche Schreibung ist korrekt?",sentence:"Er hat die Tür ____ gemacht.",opts:["auf","Auf","aufgemacht","Aufgemacht"],ans:2,exp:"‚aufmachen' ist ein trennbares Verb; im Partizip II wird es zusammengeschrieben: ‚aufgemacht'."},
+  {lv:"78",cat:"Kommasetzung",q:"Wo fehlt das Komma?",sentence:"Weil er verschlafen hatte[,] kam er zu spät.",opts:["Kein Komma nötig","Nach ‚hatte'","Nach ‚spät'","Nach ‚er'"],ans:1,exp:"Nach einem vorangestellten Nebensatz steht ein Komma, bevor der Hauptsatz beginnt."},
+  {lv:"78",cat:"Kommasetzung",q:"Welche Aussage ist richtig?",sentence:"Er lachte laut und sie weinte leise.",opts:["Kein Komma nötig","Komma vor ‚und'","Komma nach ‚laut'","Komma nach ‚sie'"],ans:0,exp:"Zwei mit ‚und' verbundene Hauptsätze brauchen kein Komma – es ist aber möglich."},
+  {lv:"78",cat:"Kommasetzung",q:"Wo gehört das Komma?",sentence:"Das Buch[,] das ich gestern kaufte[,] ist spannend.",opts:["Nur nach ‚Buch'","Nur nach ‚kaufte'","Nach ‚Buch' und ‚kaufte'","Kein Komma"],ans:2,exp:"Eingeschobene Relativsätze werden beidseitig durch Komma abgegrenzt."},
+  {lv:"78",cat:"Kommasetzung",q:"Welche Kommasetzung ist korrekt?",sentence:"Obwohl es regnete, gingen wir spazieren.",opts:["Korrekt so","Kein Komma nötig","Komma nach ‚gingen'","Komma nach ‚spazieren'"],ans:0,exp:"Nach einem vorangestellten Nebensatz mit ‚obwohl' steht ein Komma."},
+  {lv:"78",cat:"Kommasetzung",q:"Ist die Kommasetzung richtig?",sentence:"Ich kaufte Äpfel, Birnen und Orangen.",opts:["Ja, korrekt","Nein, auch vor ‚und' ein Komma","Nein, kein Komma nach ‚Äpfel'","Nein, Komma nach ‚Orangen'"],ans:0,exp:"Bei Aufzählungen werden die Glieder durch Komma getrennt, aber vor dem abschließenden ‚und' steht kein Komma."},
+  {lv:"78",cat:"Verb-Formen",q:"Welche Zeitform ist das?",sentence:"Er hatte das Buch schon gelesen.",opts:["Präteritum","Perfekt","Plusquamperfekt","Futur"],ans:2,exp:"‚hatte … gelesen' ist das Plusquamperfekt. Es bezeichnet eine Handlung, die vor einer anderen vergangenen Handlung abgeschlossen war."},
+  {lv:"78",cat:"Verb-Formen",q:"Welche Form ist richtig (Passiv)?",sentence:"Das Fenster ____ geöffnet.",opts:["hat","wird","ist geworden","hätte"],ans:1,exp:"Vorgangspassiv: ‚wird geöffnet' = die Handlung läuft gerade ab."},
+  {lv:"78",cat:"Verb-Formen",q:"Welche Zeitform ist das?",sentence:"Sie wird morgen kommen.",opts:["Präsens","Präteritum","Perfekt","Futur I"],ans:3,exp:"‚wird … kommen' ist das Futur I. Es drückt eine zukünftige Handlung aus."},
+  {lv:"78",cat:"Verb-Formen",q:"Welche Form gehört in den Satz?",sentence:"Er fragte, ob sie mitkommen ____ .",opts:["will","wollte","wolle","würde"],ans:2,exp:"In der indirekten Rede nach Konjunktiv I: ‚Er fragte, ob sie mitkommen wolle.' (Konjunktiv I von ‚wollen')."},
+
+  // ── KLASSE 9–13 ──────────────────────────────────────────────
+  {lv:"913",cat:"Groß-/Kleinschreibung",q:"Welche Schreibung ist richtig?",sentence:"Er argumentierte ____ und überzeugend.",opts:["Sachlich","sachlich","SACHLICH","sächlich"],ans:1,exp:"‚sachlich' ist hier Adverb zum Verb ‚argumentierte' → Kleinschreibung."},
+  {lv:"913",cat:"Groß-/Kleinschreibung",q:"Welche Schreibung ist korrekt?",sentence:"Sie traf eine Entscheidung ____.",opts:["Fürs Erste","fürs Erste","fürs erste","Fürs erste"],ans:1,exp:"‚fürs' (= für das) ist kleinzuschreiben; ‚Erste' ist ein substantiviertes Adjektiv nach Präposition → Großschreibung: ‚fürs Erste'."},
+  {lv:"913",cat:"Groß-/Kleinschreibung",q:"Welche Form ist korrekt?",sentence:"Das ist ein Problem, das mich ____ beschäftigt.",opts:["Im Innersten","im Innersten","im innersten","Im innersten"],ans:1,exp:"‚im Innersten' – substantivierter Superlativ nach Präposition → Großschreibung."},
+  {lv:"913",cat:"Kommasetzung",q:"Ist die Zeichensetzung korrekt?",sentence:"Sie sagte, dass sie morgen früh käme.",opts:["Ja, korrekt","Nein, kein Komma nötig","Nein, zwei Kommas nötig","Nein, Komma nach ‚morgen'"],ans:0,exp:"Korrekt: Komma vor dem ‚dass'-Satz. ‚käme' ist der richtige Konjunktiv II als Form der indirekten Rede."},
+  {lv:"913",cat:"Kommasetzung",q:"Welche Zeichensetzung ist korrekt?",sentence:"Der Zeuge, ein alter Mann, schwieg beharrlich.",opts:["Korrekt so","Kein Komma nötig","Nur ein Komma nach ‚Zeuge'","Komma nach ‚Mann' und nach ‚schwieg'"],ans:0,exp:"Eine nachgestellte erklärende Apposition wird beidseitig durch Komma abgegrenzt."},
+  {lv:"913",cat:"Kommasetzung",q:"Welche Form der Zeichensetzung ist richtig?",sentence:"Wer lügt[,] dem ist nicht zu trauen.",opts:["Kein Komma nötig","Komma nach ‚lügt'","Komma nach ‚dem'","Komma nach ‚trauen'"],ans:1,exp:"Zwischen vorangestelltem Gliedsatz (‚Wer lügt') und dem Hauptsatz steht ein Komma."},
+  {lv:"913",cat:"Kommasetzung",q:"Welche Aussage zur Kommasetzung ist richtig?",sentence:"Er behauptet, er habe nichts gewusst.",opts:["Korrekt, Komma vor dem Nebensatz","Falsch, kein Komma nötig","Falsch, Komma nach ‚habe'","Falsch, nur Doppelpunkt nötig"],ans:0,exp:"Vor einem uneingeleiteten Nebensatz (ohne Konjunktion) steht ein Komma."},
+  {lv:"913",cat:"Konjunktiv / Indirekte Rede",q:"Welche Form ist korrekt (Konjunktiv I)?",sentence:"Er sagte, er ____ morgen kommen.",opts:["kommt","käme","werde kommen","würde kommen"],ans:2,exp:"Konjunktiv I Futur: ‚er werde kommen'. Da ‚komme' (Konjunktiv I Präsens) gleichlautend mit dem Indikativ wäre, wird als Ersatzform ‚werde kommen' bevorzugt."},
+  {lv:"913",cat:"Konjunktiv / Indirekte Rede",q:"Was ist die korrekte indirekte Rede?",sentence:'Anna sagte: „Ich habe das Buch gelesen."',opts:["Anna sagte, sie hat das Buch gelesen.","Anna sagte, sie habe das Buch gelesen.","Anna sagte, sie hätte das Buch gelesen.","Anna sagte, sie hatte das Buch gelesen."],ans:1,exp:"Konjunktiv I Perfekt: ‚sie habe gelesen'. ‚Hat' (Indikativ) wäre falsch; ‚hätte' wäre Konjunktiv II und nur als Ersatzform nötig."},
+  {lv:"913",cat:"Konjunktiv / Indirekte Rede",q:"Welche Form ist die korrekte Ersatzform?",sentence:"Sie sagten, sie ____ heute Unterricht.",opts:["haben","hatten","hätten","haben gehabt"],ans:2,exp:"‚haben' (Konjunktiv I) ist mit dem Indikativ gleichlautend → Ersatzform: Konjunktiv II: ‚hätten'."},
+  {lv:"913",cat:"Konjunktiv / Indirekte Rede",q:"Welche Form gehört hier hin?",sentence:"Er fragte, ob sie die Aufgabe ____.",opts:["verstehen","verstehe","versteht","verstand"],ans:1,exp:"In indirekter Rede nach ‚ob' steht Konjunktiv I: ‚verstehe'. ‚Versteht' wäre Indikativ – das darf in indirekter Rede nicht stehen."},
+  {lv:"913",cat:"Fremdwörter",q:"Welche Form ist richtig (Akkusativ)?",sentence:"Der Zeuge beschrieb einen ____ Vorfall.",opts:["grotesken","groteske","grotesker","groteskes"],ans:0,exp:"‚grotesk' im Akkusativ Singular maskulin nach unbestimmtem Artikel: ‚einen grotesken Vorfall'."},
+  {lv:"913",cat:"Fremdwörter",q:"Welche Schreibung ist korrekt?",sentence:"Das Restaurant hatte eine tolle ____.",opts:["Atmosphäre","Atmosfäre","Athmosphäre","Atmosphähre"],ans:0,exp:"‚Atmosphäre' – griechisch: atmos + sphaira. Das ‚ph' bleibt, Umlaut ‚ä' ist korrekt."},
+  {lv:"913",cat:"Fremdwörter",q:"Welche Schreibung ist richtig?",sentence:"Das war eine ____ Situation.",opts:["absurde","absuurde","apssurde","absürd"],ans:0,exp:"‚absurd' (lateinisch: absurdus) → Adjektiv: ‚absurde' im Nominativ/Akkusativ feminin."},
+  {lv:"913",cat:"Fremdwörter",q:"Wie schreibt man das Wort?",sentence:"Die ____ des Lehrers war beeindruckend.",opts:["Kompetenz","Kompetanze","Komeptenz","Compétenz"],ans:0,exp:"‚Kompetenz' – lateinisch: competentia. Betonung auf der dritten Silbe."},
+  {lv:"913",cat:"Getrennt-/Zusammenschreibung",q:"Welche Schreibung ist korrekt?",sentence:"Die ____ Industrie wächst.",opts:["Stahl erzeugende","Stahl Erzeugende","stahlerzeugende","Stahler zeugende"],ans:2,exp:"Zusammengesetzte Adjektive, deren erster Bestandteil ein Nomen ist, werden zusammengeschrieben: ‚die stahlerzeugende Industrie'."},
+  {lv:"913",cat:"Getrennt-/Zusammenschreibung",q:"Welche Form ist richtig?",sentence:"Ich komme, ____ ich fertig bin.",opts:["sobald","so bald","So bald","So Bald"],ans:0,exp:"Als Konjunktion, die einen Gliedsatz einleitet, wird ‚sobald' zusammengeschrieben."},
+  {lv:"913",cat:"Getrennt-/Zusammenschreibung",q:"Was ist hier korrekt?",sentence:"Er wurde im Prozess ____.",opts:["frei gesprochen","freigesprochen","Frei gesprochen","Freigesprochen"],ans:1,exp:"‚freisprechen' in übertragener Bedeutung (= für unschuldig erklären) → Zusammenschreibung im Partizip: ‚freigesprochen'."},
+  {lv:"913",cat:"Zeichensetzung (Semikolon/Gedankenstrich)",q:"Welches Zeichen passt hier am besten?",sentence:"Er liebte sie ____ sie liebte ihn nicht.",opts:["und","oder","; aber",", obwohl"],ans:2,exp:"Das Semikolon trennt zwei inhaltlich eng zusammengehörende, aber entgegengesetzte Hauptsätze. ‚; aber' ist hier die stilistisch präziseste Variante."},
+  {lv:"913",cat:"Zeichensetzung (Semikolon/Gedankenstrich)",q:"Welche Aussage zur Zeichensetzung ist richtig?",sentence:"Der Angeklagte – so schien es – wusste mehr, als er zugab.",opts:["Korrekt: Gedankenstriche rahmen einen Einschub","Falsch: Kommas nötig statt Gedankenstriche","Falsch: Klammern wären korrekt","Falsch: Semikolon nötig"],ans:0,exp:"Gedankenstriche können – wie Kommas oder Klammern – einen eingeschobenen Satzteil hervorheben. Hier ist der Einschub ‚so schien es' betont abgesetzt."},
+  {lv:"913",cat:"Zeichensetzung (Semikolon/Gedankenstrich)",q:"Welche Zeichensetzung ist richtig?",sentence:"Sie brachte alles mit ____",opts:["– Stift, Heft und Lineal.",": Stift, Heft und Lineal.",", Stift, Heft und Lineal.",". Stift, Heft und Lineal."],ans:1,exp:"Vor einer erläuternden Aufzählung, die das Vorhergehende konkretisiert, steht ein Doppelpunkt."},
+];
+
+const LEVELS = {
+  "56":  {label:"Klasse 5/6",  cls:"b56"},
+  "78":  {label:"Klasse 7/8",  cls:"b78"},
+  "913": {label:"Klasse 9–13", cls:"b913"},
+};
+
+let curLv = null, active = new Set(), pool = [], idx = 0, score = 0, answered = false;
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+
+function setLevel(lv, btn){
+  curLv = lv;
+  document.querySelectorAll('.lv-btn').forEach(b=>{b.className='lv-btn';});
+  btn.classList.add('sel-'+lv);
+  const cats = [...new Set(Q.filter(q=>q.lv===lv).map(q=>q.cat))];
+  active = new Set(cats);
+  buildPool();
+  renderCats();
+  renderQ();
+}
+
+function buildPool(){
+  if(!curLv) return;
+  pool = shuffle(Q.filter(q=>q.lv===curLv && active.has(q.cat)));
+  idx=0; score=0;
+  const lb=document.getElementById('lb-section'); if(lb) lb.style.display='none';
+}
+
+function renderCats(){
+  const bar = document.getElementById('cat-bar');
+  bar.innerHTML='';
+  if(!curLv) return;
+  const cats = [...new Set(Q.filter(q=>q.lv===curLv).map(q=>q.cat))];
+  cats.forEach(c=>{
+    const b=document.createElement('button');
+    b.className='cat-btn'+(active.has(c)?' on':'');
+    b.textContent=c;
+    b.onclick=()=>{
+      if(active.has(c)&&active.size>1) active.delete(c);
+      else active.add(c);
+      buildPool(); renderCats(); renderQ();
+    };
+    bar.appendChild(b);
+  });
+}
+
+function renderQ(){
+  const area = document.getElementById('quiz-area');
+  if(!curLv || pool.length===0){
+    area.innerHTML='<p class="hint">Keine Fragen für diese Auswahl. Bitte mehr Kategorien aktivieren.</p>';
+    document.getElementById('prog-fill').style.width='0%';
+    document.getElementById('prog-label').textContent='– / –';
+    return;
+  }
+  if(idx>=pool.length){
+    const pct=Math.round(score/pool.length*100);
+    const msg=pct>=80?'Ausgezeichnet!':pct>=60?'Ordentlich – weiterüben!':'Da ist noch Luft nach oben.';
+    area.innerHTML=`<div class="done-card"><h3>${score} von ${pool.length} richtig (${pct}\u202f%)</h3><p>${msg}</p><button class="restart-btn" onclick="buildPool();renderQ()">Nochmal (gleiche Stufe)</button></div>`;
+    document.getElementById('prog-fill').style.width='100%';
+    document.getElementById('prog-label').textContent=pool.length+' / '+pool.length;
+    // Bestenliste anzeigen
+    const lbSec=document.getElementById('lb-section');
+    if(lbSec){
+      const quizKey='rechtschreib-'+curLv;
+      lbSec.style.display='';
+      lbSec.dataset.quiz=quizKey;
+      lbSec.dataset.score=score;
+      lbSec.dataset.maximum=pool.length;
+      const lbForm=document.getElementById('rs-lb-form');
+      if(lbForm){lbForm.style.display='';document.getElementById('rs-lb-name').value='';}
+      leaderboardFetch(quizKey).then(function(data){
+        document.getElementById('rs-lb-container').innerHTML=leaderboardHTML(data);
+      });
+    }
+    return;
+  }
+  answered=false;
+  const q=pool[idx];
+  const lvcls=LEVELS[q.lv].cls;
+  const lvlbl=LEVELS[q.lv].label;
+  updateProgress();
+  area.innerHTML=`
+<div class="q-card">
+  <div class="q-meta">${q.cat} <span class="lv-badge ${lvcls}">${lvlbl}</span></div>
+  <div class="q-text">${q.q}<br><br><em>${q.sentence.replace(/____/g,'<strong>____</strong>')}</em></div>
+  <div class="options" id="opts"></div>
+  <div class="feedback" id="fb"></div>
+</div>
+<div class="nav-row">
+  <span class="score-badge" id="sc">${score} richtig</span>
+  <button class="next-btn" id="next-btn" onclick="next()">Weiter →</button>
+</div>`;
+  const opts=document.getElementById('opts');
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');
+    b.className='opt-btn'; b.textContent=o;
+    b.onclick=()=>answer(i);
+    opts.appendChild(b);
+  });
+}
+
+function answer(i){
+  if(answered)return; answered=true;
+  const q=pool[idx];
+  document.querySelectorAll('.opt-btn').forEach((b,j)=>{
+    b.disabled=true;
+    if(j===q.ans) b.classList.add('correct');
+    else if(j===i && i!==q.ans) b.classList.add('wrong');
+  });
+  const fb=document.getElementById('fb');
+  if(i===q.ans){score++;fb.className='feedback show ok';fb.innerHTML='&#10003; Richtig! '+q.exp;}
+  else{fb.className='feedback show nok';fb.innerHTML='&#10007; Leider falsch. '+q.exp;}
+  document.getElementById('sc').textContent=score+' richtig';
+  document.getElementById('next-btn').classList.add('show');
+  updateProgress();
+}
+
+function next(){idx++;renderQ();}
+
+function updateProgress(){
+  const done=Math.min(idx,pool.length);
+  const total=pool.length||1;
+  document.getElementById('prog-fill').style.width=(done/total*100)+'%';
+  document.getElementById('prog-label').textContent=done+' / '+total;
+}
+
+async function rsLbEintragen(){
+  const name=document.getElementById('rs-lb-name').value.trim()||'Anonym';
+  const lbSec=document.getElementById('lb-section');
+  const quizKey=lbSec.dataset.quiz;
+  const ok=await leaderboardSave(quizKey,name,+lbSec.dataset.score,+lbSec.dataset.maximum);
+  if(ok){
+    document.getElementById('rs-lb-form').innerHTML='<p class="lb-ok">✓ Eingetragen!</p>';
+    const data=await leaderboardFetch(quizKey);
+    document.getElementById('rs-lb-container').innerHTML=leaderboardHTML(data);
+  }
+}
+</script>
+<script src="js/supabase-leaderboard.js"></script>
+
+</body>
+</html>

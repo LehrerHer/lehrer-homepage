@@ -504,91 +504,9 @@ body::before {
 
 /* Scroll lock helper */
 .noscroll { overflow: hidden; }
-
-/* ═══════════════ BESTENLISTE ═══════════════ */
-.r-lb {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: 16px; padding: 24px; margin-bottom: 24px;
-}
-.r-lb-header {
-  font-size: 12px; text-transform: uppercase; letter-spacing: .12em;
-  color: var(--muted); margin-bottom: 16px;
-}
-.r-lb-row {
-  display: grid; grid-template-columns: 32px 1fr 56px 72px;
-  align-items: center; gap: 10px; padding: 9px 0;
-  border-bottom: 1px solid var(--border); font-size: 13.5px;
-}
-.r-lb-row:last-child { border-bottom: none; }
-.r-lb-row.colhead { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; }
-.r-lb-rank { text-align: center; font-weight: 700; }
-.r-lb-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.r-lb-score { color: var(--gold); font-weight: 600; text-align: right; }
-.r-lb-date { color: var(--muted); font-size: 12px; text-align: right; }
-
-/* ═══════════════ NAME-MODAL ═══════════════ */
-.lb-modal {
-  display: none; position: fixed; inset: 0;
-  background: rgba(0,0,0,.78); z-index: 300;
-  align-items: center; justify-content: center; padding: 20px;
-}
-.lb-modal.show { display: flex; }
-.lb-modal-box {
-  background: var(--card2); border: 1px solid var(--purple);
-  border-radius: 20px; padding: 32px 28px; max-width: 380px; width: 100%;
-  text-align: center; box-shadow: 0 24px 64px rgba(0,0,0,.7);
-}
-.lb-modal-title {
-  font-family: 'Fraunces', serif; font-size: 22px; font-weight: 700;
-  color: var(--gold); margin-bottom: 8px;
-}
-.lb-modal-sub { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
-.lb-modal-input {
-  width: 100%; padding: 12px 16px; border-radius: 12px;
-  background: var(--card); border: 1px solid var(--border);
-  color: var(--text); font-family: 'DM Sans', sans-serif;
-  font-size: 16px; outline: none; margin-bottom: 16px;
-}
-.lb-modal-input:focus { border-color: var(--purple); }
-.lb-modal-btns { display: flex; gap: 10px; justify-content: center; }
-
-/* ── HOMEPAGE-NAVBAR ──────────────────────────────────────────────────────── */
-.navbar { background-color: #1e3a5f; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.25); }
-.navbar-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-.navbar-logo { color: #fff; font-size: 1.15rem; font-weight: 700; letter-spacing: 0.2px; text-decoration: none; font-family: 'Inter', sans-serif; }
-.navbar-logo span { color: #4a9eda; }
-.navbar-links { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
-.navbar-links a { color: rgba(255,255,255,0.82); padding: 8px 14px; border-radius: 8px; font-size: 0.95rem; font-weight: 500; font-family: 'Inter', sans-serif; text-decoration: none; transition: background-color 0.3s, color 0.3s; }
-.navbar-links a:hover, .navbar-links a.aktiv { background-color: rgba(255,255,255,0.15); color: #fff; }
-.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; }
-.hamburger span { display: block; width: 24px; height: 2px; background-color: #fff; border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
-@media (max-width: 768px) {
-  .hamburger { display: flex; }
-  .navbar-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background-color: #1e3a5f; padding: 12px 16px; gap: 2px; box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
-  .navbar-links.offen { display: flex; }
-  .navbar-links a { padding: 12px 14px; display: block; font-size: 1rem; }
-}
 </style>
 </head>
 <body>
-<!-- NAVIGATION (Homepage-Navbar) -->
-<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
-  <div class="navbar-inner">
-    <a href="index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
-    <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
-      <span></span><span></span><span></span>
-    </button>
-    <ul class="navbar-links" id="navbar-links">
-      <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
-      <li><a href="index.html">Startseite</a></li>
-      <li><a href="index.html#faecher">F&auml;cher</a></li>
-      <li><a href="index.html#materialien">Materialien</a></li>
-      <li><a href="index.html#quizze" class="aktiv">Quiz</a></li>
-      <li><a href="blog.html">Blog</a></li>
-      <li><a href="index.html#kontakt">Kontakt</a></li>
-    </ul>
-  </div>
-</nav>
 <div class="wrap">
 
 <!-- ═══ SCREEN 1: START ═══ -->
@@ -710,26 +628,20 @@ body::before {
       <div class="r-stat"><div class="r-stat-val" id="r-pts" style="color:var(--gold)">0</div><div class="r-stat-lab">Punkte</div></div>
     </div>
     <div class="r-breakdown" id="r-breakdown"></div>
-    <div id="r-lb" class="r-lb" style="display:none">
-      <div class="r-lb-header">🏆 Bestenliste – Top 10</div>
-      <div id="r-lb-table"></div>
-    </div>
     <div class="r-actions">
       <button class="r-btn primary" onclick="location.reload()">🔄 Neu konfigurieren</button>
       <button class="r-btn sec" onclick="replayQuiz()">↺ Gleiche Einstellungen</button>
     </div>
-  </div>
-</div>
 
-<!-- Namenseingabe für Bestenliste -->
-<div class="lb-modal" id="lb-modal" role="dialog" aria-modal="true" aria-labelledby="lb-modal-title">
-  <div class="lb-modal-box">
-    <div class="lb-modal-title" id="lb-modal-title">🏆 Top-Ergebnis!</div>
-    <div class="lb-modal-sub">Möchtest du dich in die Bestenliste eintragen?</div>
-    <input class="lb-modal-input" id="lb-name-input" type="text" maxlength="30" placeholder="Dein Name" autocomplete="off" aria-label="Dein Name für die Bestenliste">
-    <div class="lb-modal-btns">
-      <button class="r-btn primary" onclick="saveLBEntry()">Eintragen</button>
-      <button class="r-btn sec" onclick="skipLBEntry()">Überspringen</button>
+    <!-- Geteilte Bestenliste -->
+    <div class="lb-wrap" id="lw-lb-wrap" style="display:none">
+      <div class="lb-title" style="color:var(--teal)">🌐 Geteilte Bestenliste (Top 10)</div>
+      <div id="lw-lb-form" class="lb-eingabe">
+        <input type="text" id="lw-lb-name" placeholder="Dein Name (max. 20 Zeichen)" maxlength="20"
+          style="border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);color:inherit">
+        <button onclick="lwLbEintragen()" style="background:var(--teal);color:#0d1117">📥 Eintragen</button>
+      </div>
+      <div id="lw-lb-container"><p class="lb-loading">Lädt…</p></div>
     </div>
   </div>
 </div>
@@ -737,7 +649,6 @@ body::before {
 </div><!-- .wrap -->
 <div class="toast" id="toast"></div>
 
-<script src="js/supabase-config.js"></script>
 <script>
 // ═══════════════════════════════════════════════════
 // DATA
@@ -805,10 +716,10 @@ const ALL_Q = [
     paare:[{l:'Singulativ',r:'Was einmal geschieht, wird einmal erzählt'},{l:'Repetitiv',r:'Was einmal geschieht, wird mehrmals erzählt'},{l:'Iterativ',r:'Was mehrmals geschieht, wird einmal erzählt'}],
     ex:'Singulativ (1→1), Repetitiv (1→mehrmals), Iterativ (mehrmals→1, z. B. „Wie jeden Morgen um sechs …").', src:'(11/4)' },
   { id:'K2_10', kap:2, typ:'sortierung', sw:'mittel',
-    frage:'Bringe die vier Zeittypen der Narration in die richtige Reihenfolge von „Rückblick“ bis „Vorausschau“ — geordnet nach der Position des Erzählzeitpunkts relativ zur Diegese:',
-    items:['Spätere Narration (Vergangenheitsform — klassische Erzählposition)','Gleichzeitige Narration (Präsens — begleitet die Handlung simultan)','Eingeschobene Narration (zwischen die Momente der Handlung eingefügt)','Frühere Narration (Futur — prädiktive Erzählung)'],
-    correctOrder:[0,1,2,3],
-    ex:'Zeittypen der Narration nach dem Skript: spätere Narration (Präteritum), gleichzeitige Narration (Präsens), eingeschobene Narration (Plusquamperfekt/eingesch. Rückblick) und frühere Narration (Futur/prädiktiv). Analepse und Prolepse gehören zur Zeitordnung, nicht zur Zeit der Narration, und waren in der ursprünglichen Frage fälschlich vermischt.', src:'(11-12)' },
+    frage:'Bringe die fünf Zeitordnungs-Begriffe in die richtige Reihenfolge von „Rückblick" bis „Vorausschau":',
+    items:['Analepse (Rückblende)','Gleichzeitige Narration','Spätere Narration (Vergangenheitsform)','Frühere Narration (Futur)','Prolepse (Vorausschau)'],
+    correctOrder:[0,2,1,3,4],
+    ex:'Analepse = Rückblick; spätere Narration = klassisches Präteritum; gleichzeitig = Präsens; frühere Narration = Futur; Prolepse = Vorausschau.', src:'(11-12)' },
   { id:'K2_11', kap:2, typ:'multiple_choice', sw:'mittel',
     frage:'Welcher Satz ist ein Beispiel für <em>Erlebte Rede</em>?',
     opts:['Sie sagte: „Ich muss ihn sehen!"','Sie sagte, sie müsse ihn treffen.','Sie musste ihn sehen. Durfte nicht zu spät sein.','Hoffentlich sehe ich ihn. Bloß nicht zu spät!'],
@@ -877,8 +788,8 @@ const ALL_Q = [
     ok:1, ex:'Metapher: Übertragung ohne „wie". Beispiel: „Jemandem das Herz brechen." Im Gegensatz: Vergleich mit „wie": „Er kämpft wie ein Löwe."', src:'(29/8)' },
   { id:'K3_12', kap:3, typ:'zuordnung', sw:'schwer',
     frage:'Ordne die Beispiele den rhetorischen Figuren zu.',
-    paare:[{l:'Er kämpft wie ein Löwe.',r:'Vergleich'},{l:'Der Wind heult.',r:'Personifikation'},{l:'Jemandem das Herz brechen.',r:'Metapher'},{l:'Der Tod als Figur mit Sense, schwarzem Umhang und Skelett',r:'Allegorie'}],
-    ex:'Vergleich = mit „wie/als"; Personifikation = menschliche Züge für Nichtmenschliches; Metapher = Übertragung ohne „wie"; Allegorie = bildhaft-konkrete Darstellung des Abstrakten durch mehrere Elemente.', src:'(29-31)' },
+    paare:[{l:'Er kämpft wie ein Löwe.',r:'Vergleich'},{l:'Der Wind heult.',r:'Personifikation'},{l:'Jemandem das Herz brechen.',r:'Metapher'},{l:'Sensenmann',r:'Allegorie'}],
+    ex:'Vergleich = mit „wie/als"; Personifikation = menschliche Züge für Nichtmenschliches; Metapher = Übertragung ohne „wie"; Allegorie = bildhaft-konkrete Darstellung des Abstrakten.', src:'(29-31)' },
   { id:'K3_13', kap:3, typ:'multiple_choice', sw:'mittel',
     frage:'Was versteht man unter einer Hyperbel?',
     opts:['Eine beschönigende Umschreibung','Eine Übertreibung','Eine doppelte Verneinung','Eine Umschreibung durch Einzelmerkmale'],
@@ -889,8 +800,8 @@ const ALL_Q = [
     ok:1, ex:'Chiasmus (A-B / B-A): „Die Kunst ist lang – und kurz ist unser Leben." Erkennungshilfe: Bleibt die Reihenfolge gleich → Parallelismus; kehrt sie sich um → Chiasmus.', src:'(33/7)' },
   { id:'K3_15', kap:3, typ:'zuordnung', sw:'schwer',
     frage:'Ordne die Satzfiguren ihren Beispielen zu.',
-    paare:[{l:'Alles rennet, rettet, flüchtet.',r:'Asyndeton'},{l:'Einigkeit und Recht und Freiheit',r:'Polysyndeton'},{l:'Je später der Abend, desto schöner die Gäste.',r:'Ellipse'},{l:'Die Kunst ist lang – kurz ist unser Leben.',r:'Chiasmus'}],
-    ex:'Asyndeton = keine Konjunktionen; Polysyndeton = häufig wiederholte Konjunktionen; Ellipse = Auslassung; Chiasmus = Überkreuzstellung (A-B / B-A). — Hinweis: „Ich kam, ich sah, ich siegte“ ist primär eine Klimax, kein Asyndeton.', src:'(33-35)' },
+    paare:[{l:'Ich kam, ich sah, ich siegte.',r:'Asyndeton'},{l:'Einigkeit und Recht und Freiheit',r:'Polysyndeton'},{l:'Je später der Abend, desto schöner die Gäste.',r:'Ellipse'},{l:'Die Kunst ist lang – kurz ist unser Leben.',r:'Chiasmus'}],
+    ex:'Asyndeton = keine Konjunktionen; Polysyndeton = häufig wiederholte Konjunktionen; Ellipse = Auslassung; Chiasmus = Überkreuzstellung.', src:'(33-35)' },
   { id:'K3_16', kap:3, typ:'richtig_falsch', sw:'mittel',
     frage:'Eine rhetorische Frage ist eine Frage, auf die keine Antwort erwartet wird.',
     ok:true, ex:'Richtig! Die rhetorische Frage (Scheinfrage) erwartet keine Antwort. Beispiel: „Wie viele Menschen müssen noch sterben?" Wirkung: Dringlichkeit, Zustimmungsdruck.', src:'(38/5)' },
@@ -908,17 +819,17 @@ const ALL_Q = [
     ex:'Klangfiguren entfalten ihre Wirkung besonders beim Vorlesen.', src:'(38-39)' },
   { id:'K3_20', kap:3, typ:'markierung', sw:'schwer',
     frage:'Markiere alle Wörter im Text, die <strong>Stilmittel der Kategorie „Satzfiguren"</strong> benennen.',
-    text:'Rhetorische Figuren lassen sich in vier Gruppen einteilen. Wortfiguren wie die Hyperbel oder Periphrase wirken auf einzelne Wörter. Satzfiguren wie das Asyndeton, die Ellipse oder der Parallelismus verändern den Satzbau. Das Enjambement gilt als Satzfigur, die nur in Gedichten vorkommt. Gedankenfiguren wie Ironie und Antithese wirken auf der Ebene des Sinns. Klangfiguren wie die Alliteration oder Onomatopoesie betreffen den Klang. Der Chiasmus ist ebenfalls eine Satzfigur.',
-    targets:['Asyndeton','Parallelismus','Enjambement','Chiasmus','Ellipse'],
-    ex:'Satzfiguren im Skript: Asyndeton, Polysyndeton, Parallelismus, Chiasmus, Ellipse, Enjambement, Klimax, Inversion, Parataxe, Hypotaxe. — Hinweis: Anapher gehört zu den Klangfiguren und wurde aus der Markierungsliste entfernt.', src:'(31-35)' },
+    text:'Rhetorische Figuren lassen sich in vier Gruppen einteilen. Wortfiguren wie die Hyperbel oder Periphrase wirken auf einzelne Wörter. Satzfiguren wie das Asyndeton, die Anapher oder der Parallelismus verändern den Satzbau. Das Enjambement gilt als Satzfigur, die nur in Gedichten vorkommt. Gedankenfiguren wie Ironie und Antithese wirken auf der Ebene des Sinns. Klangfiguren wie die Alliteration oder Onomatopoesie betreffen den Klang. Der Chiasmus ist ebenfalls eine Satzfigur.',
+    targets:['Asyndeton','Anapher','Parallelismus','Enjambement','Chiasmus'],
+    ex:'Satzfiguren: Asyndeton, Polysyndeton, Anapher, Parallelismus, Chiasmus, Ellipse, Enjambement, Klimax, Inversion, Parataxe/Hypotaxe.', src:'(31-35)' },
   { id:'K3_21', kap:3, typ:'richtig_falsch', sw:'leicht',
     frage:'Die Litotes hebt einen Begriff durch doppelte Verneinung oder Verneinung des Gegenteils hervor.',
     ok:true, ex:'Richtig! Litotes: „nicht selten", „nicht unüblich". Wirkung: bekräftigend durch Umweg, leicht ironisch.', src:'(32/8)' },
   { id:'K3_22', kap:3, typ:'sortierung', sw:'schwer',
-    frage:'Bringe diese vier Kategorien rhetorischer Figuren in die Reihenfolge, in der sie im Skript behandelt werden:',
+    frage:'Bringe diese vier Kategorien rhetorischer Figuren in die Reihenfolge des Skripts (von der kleinsten Sprachebene zur größten):',
     items:['Klangfiguren','Satzfiguren','Gedankenfiguren','Wortfiguren'],
-    correctOrder:[3,1,2,0],
-    ex:'Reihenfolge im Skript (Kap. 3.7.2): Wortfiguren → Satzfiguren → Gedankenfiguren → Klangfiguren. Die ursprüngliche Frage hatte Gedankenfiguren und Klangfiguren vertauscht.', src:'(31)' },
+    correctOrder:[3,1,0,2],
+    ex:'Im Skript werden Wortfiguren (Ebene einzelner Wörter), Satzfiguren (Syntax), Klangfiguren (Laut/Klang) und Gedankenfiguren (Sinn/Aussage) unterschieden.', src:'(31)' },
 
   // ──── KAP 4 ────
   { id:'K4_01', kap:4, typ:'multiple_choice', sw:'leicht',
@@ -934,10 +845,10 @@ const ALL_Q = [
     opts:['Schauspieler verstärken die Empathie des Zuschauers','Lieder unterbrechen das Geschehen oder Schauspieler sprechen Zuschauer direkt an','Das Bühnenbild zeigt stets realistische Schauplätze','Der Zuschauer soll sich vollständig mit dem Helden identifizieren'],
     ok:1, ex:'Verfremdungseffekte bei Brecht: Schauspieler verlassen die Rolle, Lieder unterbrechen, Spruchbänder kommentieren. Ziel: kritische Distanz statt Empathie.', src:'(43/5)' },
   { id:'K4_04', kap:4, typ:'sortierung', sw:'mittel',
-    frage:'Bringe die fünf Akte des Dramas nach dem Schema von Gustav Freytag in die richtige Reihenfolge:',
-    items:['Katastrophe / Lösung','Exposition','Retardierendes Moment','Peripetie (Höhepunkt des Konflikts)','Erregendes Moment'],
+    frage:'Bringe die Akte des Dramas nach Gustav Freytag in die richtige Reihenfolge:',
+    items:['Katastrophe / Lösung','Exposition','Retardierendes Moment','Peripetie (Höhepunkt)','Erregendes Moment'],
     correctOrder:[1,4,3,2,0],
-    ex:'1. Exposition → 2. Erregendes Moment → 3. Peripetie (Höhepunkt des Konflikts, Wendepunkt) → 4. Retardierendes Moment → 5. Katastrophe/Lösung. — Hinweis: Peripetie bezeichnet im Skript den „Höhepunkt des Konflikts“ und meint im klassischen Sinne den Wendepunkt, an dem sich das Schicksal der Hauptfigur entscheidet.', src:'(45-47)' },
+    ex:'1. Exposition → 2. Erregendes Moment → 3. Peripetie → 4. Retardierendes Moment → 5. Katastrophe/Lösung.', src:'(45-47)' },
   { id:'K4_05', kap:4, typ:'multiple_choice', sw:'mittel',
     frage:'Was versteht man unter „Katharsis" in der Tragödie?',
     opts:['Der Tod der Hauptfigur','Eine innere Läuterung beim Betrachter durch Mitleid und Furcht','Die Auflösung des Konflikts in der Komödie','Der Konflikt zwischen den Figuren'],
@@ -952,7 +863,7 @@ const ALL_Q = [
   { id:'K4_08', kap:4, typ:'multiple_choice', sw:'schwer',
     frage:'Was ist der Unterschied zwischen „analytischem Drama" und „synthetischem Drama"?',
     opts:['Kein Unterschied','Analytisch: Ein Verbrechen liegt vor der Bühnenhandlung und wird enthüllt. Synthetisch: Spannung entsteht in der Entwicklung auf das Ereignis hin.','Analytisch: nur Dialoge. Synthetisch: nur Monologe.','Analytisch: Komödie. Synthetisch: Tragödie.'],
-    ok:1, ex:'Analytisches Drama (Enthüllungsdrama): Bsp. König Ödipus, Der zerbrochene Krug. Synthetisches Drama (Zieldrama): Bsp. Antigone, Kabale und Liebe. Der Unterschied liegt in der Richtung des Spannungsaufbaus.', src:'(45/3)' },
+    ok:1, ex:'Analytisches Drama (Enthüllungsdrama): Bsp. König Ödipus. Synthetisches Drama (Zieldrama): Bsp. Antigone. Der Unterschied liegt in der Richtung des Spannungsaufbaus.', src:'(45/3)' },
   { id:'K4_09', kap:4, typ:'richtig_falsch', sw:'leicht',
     frage:'Das Drama ist primär für den Leser bestimmt, nicht für den Zuschauer.',
     ok:false, ex:'Falsch! Das Drama ist für den Zuschauer bestimmt. Deshalb müssen bei der Analyse auch akustische (Sprache, Geräusche, Musik) und optische Zeichen (Gestik, Mimik, Bühnenbild) berücksichtigt werden.', src:'(48/1)' },
@@ -980,7 +891,7 @@ const ALL_Q = [
   { id:'K5_06', kap:5, typ:'multiple_choice', sw:'schwer',
     frage:'Was kennzeichnet den „Unreliable Narrator" im Film?',
     opts:['Der Erzähler spricht sehr leise','Die gezeigte Realität entspricht nicht den tatsächlichen Ereignissen','Es gibt keinen Erzähler','Der Erzähler wechselt jede Szene'],
-    ok:1, ex:'Unzuverlässige Erzählung: Erzähler/Perspektivfigur verschweigt Infos, Erinnerungen sind verfälscht oder die Kamera täuscht visuell. Klassiker: „Fight Club", „The Usual Suspects", „Memento", „Black Swan".', src:'(55/1)' },
+    ok:1, ex:'Unzuverlässige Erzählung: Erzähler/Perspektivfigur verschweigt Infos, Erinnerungen sind verfälscht. Klassiker: „Fight Club", „The Usual Suspects", „Memento".', src:'(55/1)' },
   { id:'K5_07', kap:5, typ:'lueckentext', sw:'mittel',
     frage:'Ergänze die Begriffe zu Montage-Techniken:',
     saetze:[{t:'Zwei sehr unterschiedliche Einstellungen folgen direkt aufeinander:',a:'harter Schnitt'},{t:'Zwei ähnliche Einstellungen folgen einander:',a:'weicher Schnitt'},{t:'Verschiedene Handlungsorte werden abwechselnd gezeigt:',a:'Parallelmontage'},{t:'Gesprächsdarstellung, Kamera wechselt mit Sprecher:',a:'Schuss-Gegenschuss'}],
@@ -1494,150 +1405,33 @@ function showResults() {
   });
   document.getElementById('r-breakdown').innerHTML=html;
 
-  // Bestenliste: Eintrag anbieten oder direkt laden
-  const lbEl=document.getElementById('r-lb');
-  if(lbEl) lbEl.style.display='none';
-  if(typeof SUPABASE_KONFIGURIERT!=='undefined'&&SUPABASE_KONFIGURIERT){
-    if(pct>=50){
-      pendingLB={pct:pct, pts:quiz.pts, total:total, richtig:ok};
-      const inp=document.getElementById('lb-name-input');
-      if(inp) inp.value='';
-      const modal=document.getElementById('lb-modal');
-      if(modal){
-        modal.classList.add('show');
-        setTimeout(()=>inp&&inp.focus(),120);
-      }
-    } else {
-      lbAnzeigen();
-    }
-  }
-}
-
-// ═══════════════════════════════════════════════════
-// BESTENLISTE (Supabase – geteilte Bestenliste)
-// Einmalige Einrichtung: Tabelle im Supabase SQL-Editor anlegen:
-//   CREATE TABLE quiz_bestenliste (
-//     id       bigserial PRIMARY KEY,
-//     quiz     text not null,
-//     modus    text not null,
-//     name     text not null,
-//     punkte   integer not null default 0,
-//     gesamt   integer not null,
-//     richtig  integer not null,
-//     prozent  integer not null,
-//     datum    timestamptz default now()
-//   );
-//   ALTER TABLE quiz_bestenliste ENABLE ROW LEVEL SECURITY;
-//   CREATE POLICY "Lesen"      ON quiz_bestenliste FOR SELECT USING (true);
-//   CREATE POLICY "Einreichen" ON quiz_bestenliste FOR INSERT WITH CHECK (true);
-// ═══════════════════════════════════════════════════
-const LB_QUIZ  = 'literaturwissenschaft';
-const LB_MODUS = 'gesamt';
-let pendingLB  = null;
-
-async function lbLaden() {
-  if(typeof SUPABASE_KONFIGURIERT==='undefined'||!SUPABASE_KONFIGURIERT) return [];
-  try {
-    const url = SUPABASE_URL+'/rest/v1/quiz_bestenliste'
-      +'?quiz=eq.'+encodeURIComponent(LB_QUIZ)
-      +'&modus=eq.'+encodeURIComponent(LB_MODUS)
-      +'&order=prozent.desc,punkte.desc'
-      +'&limit=10'
-      +'&select=name,punkte,gesamt,richtig,prozent,datum';
-    const r = await fetch(url,{headers:{'Authorization':'Bearer '+SUPABASE_KEY,'apikey':SUPABASE_KEY}});
-    if(!r.ok) return [];
-    return await r.json();
-  } catch(e){ return []; }
-}
-
-async function lbSpeichern(name,pct,pts,total,richtig) {
-  if(typeof SUPABASE_KONFIGURIERT==='undefined'||!SUPABASE_KONFIGURIERT) return;
-  try {
-    await fetch(SUPABASE_URL+'/rest/v1/quiz_bestenliste',{
-      method:'POST',
-      headers:{
-        'Authorization':'Bearer '+SUPABASE_KEY,'apikey':SUPABASE_KEY,
-        'Content-Type':'application/json','Prefer':'return=minimal'
-      },
-      body:JSON.stringify({
-        quiz:LB_QUIZ, modus:LB_MODUS,
-        name:name.trim()||'???',
-        punkte:pts, gesamt:total, richtig:richtig, prozent:pct
-      })
+  // Geteilte Bestenliste anzeigen
+  var lbWrap = document.getElementById('lw-lb-wrap');
+  if (lbWrap) {
+    lbWrap.style.display = '';
+    lbWrap._ok = ok; lbWrap._total = total;
+    leaderboardFetch('literaturwissenschaft').then(function(data) {
+      document.getElementById('lw-lb-container').innerHTML = leaderboardHTML(data);
     });
-  } catch(e){}
-}
-
-function escLB(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-async function lbAnzeigen() {
-  const el=document.getElementById('r-lb');
-  const tbl=document.getElementById('r-lb-table');
-  if(!el||!tbl) return;
-  el.style.display='block';
-  tbl.innerHTML='<div style="text-align:center;color:var(--muted);padding:16px">⏳ Lade…</div>';
-  const list=await lbLaden();
-  if(list.length===0){
-    tbl.innerHTML='<div style="text-align:center;color:var(--muted);padding:16px">Noch keine Einträge – sei der Erste!</div>';
-    return;
   }
-  const medals=['🥇','🥈','🥉'];
-  let html='<div class="r-lb-row colhead"><span class="r-lb-rank">#</span><span class="r-lb-name">Name</span><span class="r-lb-score">Score</span><span class="r-lb-date">Datum</span></div>';
-  list.forEach(function(e,i){
-    const rank=i<3?medals[i]:(i+1)+'.';
-    const ds=e.datum?new Date(e.datum).toLocaleDateString('de-DE'):'';
-    html+='<div class="r-lb-row">'
-      +'<span class="r-lb-rank">'+rank+'</span>'
-      +'<span class="r-lb-name">'+escLB(e.name)+'</span>'
-      +'<span class="r-lb-score">'+e.prozent+'%<span style="color:var(--muted);font-size:11px"> ('+e.richtig+'/'+e.gesamt+')</span></span>'
-      +'<span class="r-lb-date">'+escLB(ds)+'</span>'
-      +'</div>';
-  });
-  tbl.innerHTML=html;
 }
 
-async function saveLBEntry() {
-  const name=document.getElementById('lb-name-input').value;
-  document.getElementById('lb-modal').classList.remove('show');
-  if(pendingLB){
-    await lbSpeichern(name,pendingLB.pct,pendingLB.pts,pendingLB.total,pendingLB.richtig);
-    pendingLB=null;
+async function lwLbEintragen() {
+  var name = document.getElementById('lw-lb-name').value.trim() || 'Anonym';
+  var wrap = document.getElementById('lw-lb-wrap');
+  var ok = await leaderboardSave('literaturwissenschaft', name, wrap._ok, wrap._total);
+  if (ok) {
+    document.getElementById('lw-lb-form').innerHTML = '<p class="lb-ok">✓ Eingetragen!</p>';
+    var data = await leaderboardFetch('literaturwissenschaft');
+    document.getElementById('lw-lb-container').innerHTML = leaderboardHTML(data);
   }
-  lbAnzeigen();
 }
-
-function skipLBEntry() {
-  document.getElementById('lb-modal').classList.remove('show');
-  pendingLB=null;
-  lbAnzeigen();
-}
-
-document.getElementById('lb-name-input').addEventListener('keydown',function(e){
-  if(e.key==='Enter') saveLBEntry();
-});
 
 // ═══════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════
 buildStartScreen();
-
-// ── HAMBURGER-MENÜ ────────────────────────────────────────────────────────────
-(function() {
-  var btn  = document.getElementById('hamburger');
-  var menu = document.getElementById('navbar-links');
-  if (!btn || !menu) return;
-  btn.addEventListener('click', function() {
-    var open = menu.classList.toggle('offen');
-    btn.setAttribute('aria-expanded', open);
-    btn.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
-  });
-  document.addEventListener('click', function(e) {
-    if (!btn.contains(e.target) && !menu.contains(e.target)) {
-      menu.classList.remove('offen');
-      btn.setAttribute('aria-expanded', 'false');
-    }
-  });
-})();
 </script>
+<script src="js/supabase-leaderboard.js"></script>
 </body>
 </html>
