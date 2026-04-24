@@ -1,3 +1,5 @@
+const { pool } = require('./database');
+
 const BADGE_DEFINITIONS = [
   { id: 'erster-tag',       name: 'Erster Tag',       icon: '🌟', description: 'Herzlich willkommen bei Lernhelden!' },
   { id: '100xp',            name: '100 XP',            icon: '💯', description: '100 XP erreicht!' },
@@ -17,51 +19,58 @@ const XP_BADGES = [
   { xp: 2000, id: 'legende' },
 ];
 
-function checkAndAwardBadges(db, studentId) {
-  const student = db.prepare('SELECT xp FROM students WHERE id = ?').get(studentId);
-  if (!student) return [];
+async function checkAndAwardBadges(studentId) {
+  const { rows: sr } = await pool.query('SELECT xp FROM students WHERE id = $1', [studentId]);
+  if (!sr[0]) return [];
 
-  const existing = new Set(
-    db.prepare('SELECT badge_id FROM student_badges WHERE student_id = ?')
-      .all(studentId)
-      .map(b => b.badge_id)
+  const { rows: existing } = await pool.query(
+    'SELECT badge_id FROM student_badges WHERE student_id = $1', [studentId]
   );
-
+  const has = new Set(existing.map(b => b.badge_id));
   const newBadges = [];
-  const insert = db.prepare('INSERT OR IGNORE INTO student_badges (student_id, badge_id) VALUES (?, ?)');
+  const xp = sr[0].xp;
 
-  for (const { xp, id } of XP_BADGES) {
-    if (student.xp >= xp && !existing.has(id)) {
-      insert.run(studentId, id);
-      newBadges.push(BADGE_DEFINITIONS.find(b => b.id === id));
-      existing.add(id);
+  for (const { xp: threshold, id } of XP_BADGES) {
+    if (xp >= threshold && !has.has(id)) {
+      const r = await pool.query(
+        'INSERT INTO student_badges (student_id, badge_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
+        [studentId, id]
+      );
+      if (r.rowCount > 0) { newBadges.push(BADGE_DEFINITIONS.find(b => b.id === id)); has.add(id); }
     }
   }
 
-  if (!existing.has('erster-tag')) {
-    insert.run(studentId, 'erster-tag');
-    newBadges.push(BADGE_DEFINITIONS.find(b => b.id === 'erster-tag'));
+  if (!has.has('erster-tag')) {
+    const r = await pool.query(
+      'INSERT INTO student_badges (student_id, badge_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
+      [studentId, 'erster-tag']
+    );
+    if (r.rowCount > 0) newBadges.push(BADGE_DEFINITIONS.find(b => b.id === 'erster-tag'));
   }
 
   return newBadges;
 }
 
-function awardBadge(db, studentId, badgeId) {
+async function awardBadge(studentId, badgeId) {
   const badge = BADGE_DEFINITIONS.find(b => b.id === badgeId);
   if (!badge) return null;
-  const result = db.prepare('INSERT OR IGNORE INTO student_badges (student_id, badge_id) VALUES (?, ?)').run(studentId, badgeId);
-  return result.changes > 0 ? badge : null;
+  const r = await pool.query(
+    'INSERT INTO student_badges (student_id, badge_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
+    [studentId, badgeId]
+  );
+  return r.rowCount > 0 ? badge : null;
 }
 
-function checkStreakBadge(db, studentId) {
-  const streak = db.prepare('SELECT current_streak FROM streaks WHERE student_id = ?').get(studentId);
-  if (!streak || streak.current_streak < 3) return null;
-
-  const existing = db.prepare('SELECT 1 FROM student_badges WHERE student_id = ? AND badge_id = ?').get(studentId, 'dreitages-streak');
-  if (existing) return null;
-
-  db.prepare('INSERT OR IGNORE INTO student_badges (student_id, badge_id) VALUES (?, ?)').run(studentId, 'dreitages-streak');
-  return BADGE_DEFINITIONS.find(b => b.id === 'dreitages-streak');
+async function checkStreakBadge(studentId) {
+  const { rows } = await pool.query(
+    'SELECT current_streak FROM streaks WHERE student_id = $1', [studentId]
+  );
+  if (!rows[0] || rows[0].current_streak < 3) return null;
+  const r = await pool.query(
+    'INSERT INTO student_badges (student_id, badge_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
+    [studentId, 'dreitages-streak']
+  );
+  return r.rowCount > 0 ? BADGE_DEFINITIONS.find(b => b.id === 'dreitages-streak') : null;
 }
 
 module.exports = { BADGE_DEFINITIONS, checkAndAwardBadges, awardBadge, checkStreakBadge };

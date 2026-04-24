@@ -1,24 +1,17 @@
-const Database = require('better-sqlite3');
+const { Pool } = require('pg');
 const path = require('path');
 const fs = require('fs');
 
-const DB_PATH = process.env.DB_PATH || path.join(__dirname, 'lernhelden.db');
-let db;
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_SSL === 'false' ? false : { rejectUnauthorized: false },
+});
 
-function getDB() {
-  if (!db) {
-    db = new Database(DB_PATH);
-    db.pragma('journal_mode = WAL');
-    db.pragma('foreign_keys = ON');
-  }
-  return db;
-}
-
-function initDB() {
-  const database = getDB();
+async function initDB() {
   const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
-  database.exec(schema);
-  return database;
+  await pool.query(schema);
+  console.log('✅ Datenbank bereit');
+  return pool;
 }
 
-module.exports = { getDB, initDB };
+module.exports = { pool, initDB };
