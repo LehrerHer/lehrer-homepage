@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lernhelden Admin – Export</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav class="admin-nav">
+  <span class="admin-logo">🛡️ Lernhelden Admin</span>
+  <a href="/admin/dashboard">Dashboard</a>
+  <a href="/admin/schueler">Schüler</a>
+  <a href="/admin/quiz">Quizzes</a>
+  <a href="/admin/export" class="active">Export</a>
+  <a href="#" id="logoutBtn" style="color:#ef4444!important">Abmelden</a>
+</nav>
+
+<div class="container">
+  <div class="page-header">
+    <h1>Daten exportieren</h1>
+    <p>Schülerdaten als CSV herunterladen</p>
+  </div>
+
+  <div class="card" style="text-align:center;padding:3rem 2rem">
+    <div style="font-size:3rem;margin-bottom:1rem">📊</div>
+    <h2 style="font-size:1.4rem;margin-bottom:0.5rem">CSV-Export</h2>
+    <p style="color:#666;margin-bottom:1.5rem">
+      Exportiert: Spitzname, Klarname, Klasse, XP, Level, Badges, letzter Login, Anmeldedatum
+    </p>
+    <a href="/api/admin/export" class="btn btn-primary" style="display:inline-flex">
+      ⬇️ CSV herunterladen
+    </a>
+    <p class="text-muted mt-2" style="font-size:0.8rem">
+      Die Datei kann mit Excel oder LibreOffice Calc geöffnet werden (UTF-8 BOM).
+    </p>
+  </div>
+
+  <div class="card mt-2">
+    <h2 style="font-size:1.2rem;margin-bottom:1rem">Vorschau</h2>
+    <div id="preview"><div class="loading">Wird geladen</div></div>
+  </div>
+</div>
+
+<script>
+document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+  e.preventDefault();
+  await fetch('/api/auth/admin-logout', { method: 'POST' });
+  window.location.href = '/admin';
+});
+
+async function loadPreview() {
+  try {
+    const res = await fetch('/api/admin/students');
+    if (res.status === 401) { window.location.href = '/admin'; return; }
+    const students = await res.json();
+
+    const preview = document.getElementById('preview');
+    if (!students.length) {
+      preview.innerHTML = '<p class="text-muted">Noch keine Schüler vorhanden.</p>';
+      return;
+    }
+
+    preview.innerHTML = `
+      <div style="overflow-x:auto">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Spitzname</th><th>Klarname</th><th>Klasse</th>
+              <th>XP</th><th>Level</th><th>Badges</th><th>Letzter Login</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${students.slice(0, 20).map(s => `
+              <tr>
+                <td>${s.nick}</td>
+                <td>${s.real_name || '–'}</td>
+                <td>${s.class || '–'}</td>
+                <td style="color:var(--c3);font-weight:800">${s.xp}</td>
+                <td>${s.levelName}</td>
+                <td>${s.badge_count}</td>
+                <td>${s.last_active ? new Date(s.last_active).toLocaleDateString('de-DE') : '–'}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+        ${students.length > 20 ? `<p class="text-muted mt-1">… und ${students.length - 20} weitere.</p>` : ''}
+      </div>
+    `;
+  } catch {
+    document.getElementById('preview').innerHTML = '<div class="alert alert-error">Fehler beim Laden der Vorschau.</div>';
+  }
+}
+
+loadPreview();
+</script>
+</body>
+</html>

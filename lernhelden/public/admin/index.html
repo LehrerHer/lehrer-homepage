@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lernhelden – Admin</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="login-page" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)">
+  <div class="login-card">
+    <div class="login-logo" style="color:var(--c2)">🛡️ Admin</div>
+    <p class="login-subtitle">Lernhelden Verwaltung</p>
+
+    <div id="msg"></div>
+
+    <form id="adminLoginForm">
+      <div class="form-group">
+        <label for="password">Passwort</label>
+        <input type="password" id="password" name="password" placeholder="Admin-Passwort" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%" id="submitBtn">Anmelden</button>
+    </form>
+
+    <p class="text-muted mt-2">
+      <a href="/" style="color:var(--c4)">← Zurück zur Startseite</a>
+    </p>
+  </div>
+</div>
+
+<script>
+// Redirect if already logged in
+(async () => {
+  const res = await fetch('/api/auth/admin-me');
+  const data = await res.json();
+  if (data.loggedIn) window.location.href = '/admin/dashboard';
+})();
+
+document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const msg = document.getElementById('msg');
+  const submitBtn = document.getElementById('submitBtn');
+  msg.innerHTML = '';
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Bitte warten…';
+
+  const password = document.getElementById('password').value;
+  try {
+    const res = await fetch('/api/auth/admin-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      msg.innerHTML = `<div class="alert alert-error">${data.error}</div>`;
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Anmelden';
+      return;
+    }
+    window.location.href = '/admin/dashboard';
+  } catch {
+    msg.innerHTML = '<div class="alert alert-error">Verbindungsfehler.</div>';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Anmelden';
+  }
+});
+</script>
+</body>
+</html>

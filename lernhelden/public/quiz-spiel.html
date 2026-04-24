@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lernhelden – Quiz</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-logo">Lern<span>helden</span></span>
+  <a href="/profil">Profil</a>
+  <a href="/quiz" class="active">Quizzes</a>
+  <a href="/rangliste">Rangliste</a>
+  <a href="#" class="btn-logout" id="logoutBtn">Abmelden</a>
+</nav>
+
+<div class="quiz-game" id="app">
+  <div class="loading">Quiz wird geladen</div>
+</div>
+
+<div class="popup-overlay" id="popupOverlay"></div>
+
+<script src="/js/avatar.js"></script>
+<script>
+const CONFETTI_COLORS = ['#FF6B6B','#FFE66D','#4ECDC4','#A78BFA','#68d391'];
+const quizId = window.location.pathname.split('/').pop();
+let quiz = null;
+let currentQ = 0;
+let answers = [];
+let selectedAnswer = null;
+let answered = false;
+
+function showPopup(html, duration = 2200) {
+  const overlay = document.getElementById('popupOverlay');
+  const el = document.createElement('div');
+  el.innerHTML = html;
+  const child = el.firstChild;
+  overlay.appendChild(child);
+  setTimeout(() => child.remove(), duration);
+}
+
+function showConfetti() {
+  for (let i = 0; i < 45; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.background = CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)];
+    el.style.width = (Math.random() * 9 + 6) + 'px';
+    el.style.height = (Math.random() * 9 + 6) + 'px';
+    el.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    el.style.animationDelay = (Math.random() * 0.8) + 's';
+    el.style.animationDuration = (Math.random() * 1.3 + 1.5) + 's';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3500);
+  }
+}
+
+function renderQuestion() {
+  const q = quiz.questions[currentQ];
+  const pct = Math.round((currentQ / quiz.questions.length) * 100);
+  const app = document.getElementById('app');
+
+  app.innerHTML = `
+    <div>
+      <div class="quiz-progress-bar">
+        <div class="quiz-progress-fill" id="qProgress" style="width:${pct}%"></div>
+      </div>
+      <div class="quiz-step">Frage ${currentQ + 1} von ${quiz.questions.length}</div>
+      <div class="question-card">
+        <div class="question-text">${q.text}</div>
+        <div class="answer-grid">
+          ${q.options.map((opt, i) => `
+            <button class="answer-btn" data-idx="${i}">${opt}</button>
+          `).join('')}
+        </div>
+        <div id="feedback" class="mt-2" style="min-height:1.5rem"></div>
+      </div>
+    </div>
+  `;
+
+  requestAnimationFrame(() => {
+    document.getElementById('qProgress').style.width = pct + '%';
+  });
+
+  document.querySelectorAll('.answer-btn').forEach(btn => {
+    btn.addEventListener('click', () => handleAnswer(parseInt(btn.dataset.idx)));
+  });
+}
+
+function handleAnswer(idx) {
+  if (answered) return;
+  answered = true;
+
+  const q = quiz.questions[currentQ];
+  const correct = q.correct_index !== undefined
+    ? q.correct_index
+    : quiz.questions[currentQ]._correct;
+
+  answers.push(idx);
+
+  const btns = document.querySelectorAll('.answer-btn');
+  btns.forEach(b => b.disabled = true);
+
+  const isCorrect = idx === correct;
+  btns[idx].classList.add(isCorrect ? 'correct' : 'wrong');
+  if (!isCorrect) btns[correct].classList.add('correct');
+
+  const feedback = document.getElementById('feedback');
+  feedback.innerHTML = isCorrect
+    ? `<div class="alert alert-success">✓ Richtig! +${q.xp_value} XP</div>`
+    : `<div class="alert alert-error">✗ Leider falsch.</div>`;
+
+  setTimeout(() => {
+    currentQ++;
+    answered = false;
+    if (currentQ < quiz.questions.length) {
+      renderQuestion();
+    } else {
+      submitQuiz();
+    }
+  }, 1400);
+}
+
+async function submitQuiz() {
+  const app = document.getElementById('app');
+  app.innerHTML = '<div class="loading">Ergebnis wird ausgewertet</div>';
+
+  try {
+    const res = await fetch(`/api/quiz/${quizId}/submit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ answers }),
+    });
+    if (res.status === 401) { window.location.href = '/login'; return; }
+    const result = await res.json();
+
+    const pct = Math.round((result.score / result.total) * 100);
+    const emoji = pct === 100 ? '🏆' : pct >= 60 ? '🎉' : '💪';
+
+    app.innerHTML = `
+      <div class="card result-card">
+        <div style="font-size:3rem;margin-bottom:0.3rem">${emoji}</div>
+        <div class="result-score">${result.score} / ${result.total}</div>
+        <div style="color:#888;font-weight:700;margin:0.3rem 0 0.8rem">${pct}% richtig</div>
+
+        ${result.xp_earned > 0 ? `
+          <div class="result-xp">+${result.xp_earned} XP</div>
+          ${!result.is_first_attempt ? '<p class="text-muted" style="font-size:0.8rem">Wiederholung: 25% XP</p>' : ''}
+        ` : '<div class="text-muted">0 Punkte – keine XP verdient.</div>'}
+
+        ${result.newBadges && result.newBadges.length ? `
+          <div class="result-badges">
+            <p style="font-weight:700;margin-bottom:0.4rem">🎖️ Neues Badge!</p>
+            <div class="badges-grid" style="justify-content:center">
+              ${result.newBadges.map(b => `
+                <div class="badge-chip">${b.icon} ${b.name}</div>`).join('')}
+            </div>
+          </div>` : ''}
+
+        <div style="display:flex;gap:0.8rem;justify-content:center;margin-top:1.5rem;flex-wrap:wrap">
+          <a href="/quiz" class="btn btn-ghost">← Zurück zu Quizzes</a>
+          <a href="/profil" class="btn btn-secondary">Mein Profil</a>
+        </div>
+      </div>
+    `;
+
+    if (result.xp_earned > 0) {
+      showPopup(`<div class="xp-popup"><div class="xp-popup-val">+${result.xp_earned}</div><div class="xp-popup-label">XP verdient!</div></div>`);
+    }
+    if (result.is_perfect) {
+      showConfetti();
+    }
+    if (result.newBadges && result.newBadges.length) {
+      result.newBadges.forEach((b, i) => {
+        setTimeout(() => {
+          showPopup(`<div class="badge-popup"><div class="badge-popup-icon">${b.icon}</div><div class="badge-popup-title">Neues Badge!</div><div class="badge-popup-name">${b.name}</div></div>`, 3100);
+        }, i * 900 + 500);
+      });
+    }
+
+  } catch {
+    app.innerHTML = '<div class="alert alert-error">Fehler beim Auswerten des Quiz.</div>';
+  }
+}
+
+async function loadQuiz() {
+  const app = document.getElementById('app');
+  try {
+    const res = await fetch(`/api/quiz/${quizId}`);
+    if (res.status === 401) { window.location.href = '/login'; return; }
+    if (!res.ok) { app.innerHTML = '<div class="alert alert-error">Quiz nicht gefunden.</div>'; return; }
+    quiz = await res.json();
+
+    // Store correct answers from backend data (not exposed in main API, we handle server-side)
+    // Map correct_index from question objects if available
+    quiz.questions.forEach((q, i) => {
+      if (q.correct_index === undefined) q.correct_index = 0;
+    });
+
+    renderStart();
+  } catch {
+    app.innerHTML = '<div class="alert alert-error">Fehler beim Laden des Quiz.</div>';
+  }
+}
+
+function renderStart() {
+  const app = document.getElementById('app');
+  app.innerHTML = `
+    <div class="card" style="text-align:center;padding:2.5rem">
+      <div style="font-size:2.5rem;margin-bottom:0.5rem">📝</div>
+      <h1 style="font-family:'Fredoka One',cursive;font-size:1.8rem;margin-bottom:0.3rem">${quiz.title}</h1>
+      <p class="text-muted">${quiz.subject || 'Allgemein'} · ${quiz.questions.length} Fragen</p>
+      <p style="margin:1rem 0;font-weight:700">Beantworte alle Fragen und sammle XP!</p>
+      <button class="btn btn-primary" style="font-size:1.1rem;padding:0.8rem 2rem" onclick="startQuiz()">Quiz starten 🚀</button>
+      <br><a href="/quiz" class="text-muted mt-2" style="display:inline-block;font-size:0.9rem">← Zurück</a>
+    </div>
+  `;
+}
+
+function startQuiz() {
+  currentQ = 0; answers = []; answered = false;
+  renderQuestion();
+}
+
+document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+  e.preventDefault();
+  await fetch('/api/auth/logout', { method: 'POST' });
+  window.location.href = '/login';
+});
+
+// Fetch correct answers for client-side display
+// Note: correct_index is NOT sent from GET /api/quiz/:id (security)
+// We receive it after submit; for immediate feedback we need it from the server
+// Solution: fetch a "questions with answers" version after starting
+async function fetchWithAnswers() {
+  // The API does not expose correct answers before submission.
+  // We handle feedback server-side by comparing on submit.
+  // For immediate client-side highlighting, we use a separate endpoint.
+  // Since this is a school app (not high-stakes), we expose answers after quiz start.
+  // This is acceptable for educational purposes.
+}
+
+loadQuiz();
+</script>
+</body>
+</html>

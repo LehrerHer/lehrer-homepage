@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lernhelden Admin – Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<nav class="admin-nav">
+  <span class="admin-logo">🛡️ Lernhelden Admin</span>
+  <a href="/admin/dashboard" class="active">Dashboard</a>
+  <a href="/admin/schueler">Schüler</a>
+  <a href="/admin/quiz">Quizzes</a>
+  <a href="/admin/export">Export</a>
+  <a href="#" id="logoutBtn" style="color:#ef4444!important">Abmelden</a>
+</nav>
+
+<div class="container-wide">
+  <div class="page-header">
+    <h1>Dashboard</h1>
+    <p>Übersicht über alle Aktivitäten</p>
+  </div>
+
+  <div class="stats-grid" id="stats">
+    <div class="stat-card"><div class="stat-val">–</div><div class="stat-label">Schüler</div></div>
+    <div class="stat-card"><div class="stat-val">–</div><div class="stat-label">Quizzes</div></div>
+    <div class="stat-card"><div class="stat-val">–</div><div class="stat-label">Gesamt XP</div></div>
+    <div class="stat-card"><div class="stat-val">–</div><div class="stat-label">Heute aktiv</div></div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size:1.2rem;margin-bottom:1rem">Letzte Aktivitäten</h2>
+    <div id="recentActivity"><div class="loading">Wird geladen</div></div>
+  </div>
+</div>
+
+<script>
+document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+  e.preventDefault();
+  await fetch('/api/auth/admin-logout', { method: 'POST' });
+  window.location.href = '/admin';
+});
+
+async function load() {
+  try {
+    const res = await fetch('/api/admin/stats');
+    if (res.status === 401) { window.location.href = '/admin'; return; }
+    const data = await res.json();
+
+    const cards = document.querySelectorAll('.stat-card .stat-val');
+    cards[0].textContent = data.student_count;
+    cards[1].textContent = data.quiz_count;
+    cards[2].textContent = data.total_xp;
+    cards[3].textContent = data.active_today;
+
+    const act = document.getElementById('recentActivity');
+    if (!data.recent.length) {
+      act.innerHTML = '<p class="text-muted">Noch keine Aktivitäten.</p>';
+      return;
+    }
+    act.innerHTML = `
+      <ul class="xp-log-list">
+        ${data.recent.map(r => `
+          <li class="xp-log-item">
+            <span><strong>${r.nick}</strong> – ${r.reason || 'XP erhalten'}</span>
+            <span class="xp-amount ${r.amount >= 0 ? 'pos' : 'neg'}">${r.amount >= 0 ? '+' : ''}${r.amount} XP</span>
+          </li>`).join('')}
+      </ul>`;
+  } catch {
+    document.querySelector('.container-wide').insertAdjacentHTML('afterbegin', '<div class="alert alert-error">Fehler beim Laden.</div>');
+  }
+}
+
+load();
+</script>
+</body>
+</html>

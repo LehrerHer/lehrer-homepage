@@ -1,0 +1,5 @@
+node_modules/
+.env
+db/lernhelden.db
+db/lernhelden.db-shm
+db/lernhelden.db-wal
