@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lernhelden – Digitale Arbeitsblätter</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .ab-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.2rem;
+    }
+    .ab-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+      border-left: 5px solid var(--c3);
+      transition: transform 0.2s;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      color: var(--ink);
+    }
+    .ab-card:hover { transform: translateY(-4px); }
+    .ab-card.completed { border-left-color: var(--c4); opacity: 0.85; }
+    .ab-fach {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--c3);
+      margin-bottom: 0.4rem;
+    }
+    .ab-card.completed .ab-fach { color: var(--c4); }
+    .ab-titel { font-family: 'Fredoka One', cursive; font-size: 1.2rem; margin-bottom: 0.4rem; }
+    .ab-desc { font-size: 0.85rem; color: #666; line-height: 1.4; margin-bottom: 0.8rem; }
+    .ab-meta { font-size: 0.82rem; color: #888; display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap; }
+    .ab-xp-badge {
+      background: linear-gradient(135deg, var(--c3), #34d399);
+      color: #fff;
+      font-weight: 800;
+      font-size: 0.78rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+    }
+    .ab-done-tag {
+      background: var(--c4);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 0.15rem 0.5rem;
+      border-radius: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-logo">Lern<span>helden</span></span>
+  <a href="/profil">Profil</a>
+  <a href="/quiz">Quizzes</a>
+  <a href="/arbeitsblatt" class="active">Arbeitsblätter</a>
+  <a href="/rangliste">Rangliste</a>
+  <a href="#" class="btn-logout" id="logoutBtn">Abmelden</a>
+</nav>
+
+<div class="container">
+  <div class="page-header">
+    <h1>📋 Digitale Arbeitsblätter</h1>
+    <p>Löse interaktive Aufgaben und verdiene XP für dein Heldenprofil!</p>
+  </div>
+
+  <div class="alert alert-info mb-2" style="display:flex;gap:0.5rem;align-items:center">
+    <span style="font-size:1.2rem">💡</span>
+    <span>Beim ersten Mal gibt es volle XP – bei Wiederholungen 25%. Lies die Aufgaben sorgfältig!</span>
+  </div>
+
+  <div id="app"><div class="loading">Arbeitsblätter werden geladen</div></div>
+</div>
+
+<script>
+async function load() {
+  const app = document.getElementById('app');
+  try {
+    const res = await fetch('/api/arbeitsblatt');
+    if (res.status === 401) { window.location.href = '/login'; return; }
+    const sheets = await res.json();
+
+    if (!sheets.length) {
+      app.innerHTML = '<p class="text-muted text-center">Noch keine Arbeitsblätter vorhanden.</p>';
+      return;
+    }
+
+    // Gruppierung nach Fach
+    const bySubject = {};
+    sheets.forEach(s => {
+      const fach = s.subject || 'Allgemein';
+      if (!bySubject[fach]) bySubject[fach] = [];
+      bySubject[fach].push(s);
+    });
+
+    let html = '';
+    for (const [fach, items] of Object.entries(bySubject)) {
+      html += `<h2 style="font-family:'Fredoka One',cursive;font-size:1.3rem;margin:1.5rem 0 0.8rem;color:var(--ink)">${fach}</h2>`;
+      html += `<div class="ab-grid">`;
+      html += items.map(s => {
+        const done = s.attempt_count > 0;
+        const maxXP = s.max_xp || 0;
+        return `
+          <a href="/arbeitsblatt/${s.id}" class="ab-card ${done ? 'completed' : ''}">
+            <div class="ab-fach">${s.subject || 'Allgemein'}</div>
+            <div class="ab-titel">${s.title}</div>
+            ${s.description ? `<div class="ab-desc">${s.description}</div>` : ''}
+            <div class="ab-meta">
+              <span>📝 ${s.question_count} Aufgaben</span>
+              <span class="ab-xp-badge">bis zu ${maxXP + 25} XP</span>
+              ${done ? `<span class="ab-done-tag">✓ Erledigt (${s.attempt_count}×)</span>` : ''}
+              ${done && s.first_xp ? `<span style="color:var(--c4);font-weight:800">Erstes Mal: +${s.first_xp} XP</span>` : ''}
+            </div>
+          </a>`;
+      }).join('');
+      html += '</div>';
+    }
+
+    app.innerHTML = html;
+  } catch {
+    app.innerHTML = '<div class="alert alert-error">Fehler beim Laden der Arbeitsblätter.</div>';
+  }
+}
+
+document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+  e.preventDefault();
+  await fetch('/api/auth/logout', { method: 'POST' });
+  window.location.href = '/login';
+});
+
+load();
+</script>
+</body>
+</html>

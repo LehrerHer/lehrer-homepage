@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lernhelden Admin – Quizzes</title>
+  <title>Lernhelden Admin – Quizzes & Arbeitsblätter</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -19,43 +19,42 @@
 
 <div class="container-wide">
   <div class="flex-between mb-2" style="flex-wrap:wrap;gap:0.8rem">
-    <h1 style="font-family:'Fredoka One',cursive;font-size:1.8rem">Quizzes verwalten</h1>
-    <button class="btn btn-primary" onclick="showCreateForm()">+ Neues Quiz</button>
+    <h1 style="font-family:'Fredoka One',cursive;font-size:1.8rem">Quizzes &amp; Arbeitsblätter</h1>
+    <div style="display:flex;gap:0.6rem">
+      <button class="btn btn-primary" onclick="showCreateForm('quiz')">+ Neues Quiz</button>
+      <button class="btn btn-secondary" onclick="showCreateForm('arbeitsblatt')">+ Neues Arbeitsblatt</button>
+    </div>
   </div>
 
   <div id="msg"></div>
+  <div id="quizList"><div class="loading">Wird geladen</div></div>
 
-  <!-- Quiz List -->
-  <div id="quizList">
-    <div class="loading">Quizzes werden geladen</div>
-  </div>
-
-  <!-- Create Form -->
+  <!-- Erstell-Formular (wird per JS eingefügt) -->
   <div id="createForm" class="hidden">
     <div class="card">
       <div class="flex-between mb-2">
-        <h2 style="font-size:1.3rem">Neues Quiz erstellen</h2>
+        <h2 id="createFormTitle" style="font-size:1.3rem">Neues Quiz erstellen</h2>
         <button class="btn btn-ghost btn-sm" onclick="hideCreateForm()">Abbrechen</button>
       </div>
-
       <div id="createMsg"></div>
+      <input type="hidden" id="createType" value="quiz">
 
       <div class="form-group">
-        <label>Quiz-Titel *</label>
+        <label>Titel *</label>
         <input type="text" id="quizTitle" placeholder="z.B. Mathematik: Gleichungen">
       </div>
       <div class="form-group">
         <label>Fach</label>
         <input type="text" id="quizSubject" placeholder="z.B. Mathematik">
       </div>
+      <div class="form-group">
+        <label>Beschreibung (optional)</label>
+        <textarea id="quizDesc" placeholder="Kurze Beschreibung für die Schüler…" rows="2" style="resize:vertical"></textarea>
+      </div>
 
       <div id="questionsContainer"></div>
-
-      <button class="btn btn-ghost" style="width:100%;border-style:dashed;margin-bottom:1rem" onclick="addQuestion()">
-        + Frage hinzufügen
-      </button>
-
-      <button class="btn btn-primary" style="width:100%" onclick="saveQuiz()">Quiz speichern</button>
+      <button class="btn btn-ghost" style="width:100%;border-style:dashed;margin-bottom:1rem" onclick="addQuestion()">+ Frage hinzufügen</button>
+      <button class="btn btn-primary" style="width:100%" onclick="saveQuiz()">Speichern</button>
     </div>
   </div>
 </div>
@@ -69,13 +68,16 @@ document.getElementById('logoutBtn').addEventListener('click', async (e) => {
   window.location.href = '/admin';
 });
 
-function showCreateForm() {
+function showCreateForm(type) {
+  document.getElementById('createType').value = type;
+  document.getElementById('createFormTitle').textContent =
+    type === 'arbeitsblatt' ? 'Neues Arbeitsblatt erstellen' : 'Neues Quiz erstellen';
   document.getElementById('createForm').classList.remove('hidden');
   document.getElementById('quizList').classList.add('hidden');
   questionCount = 0;
   document.getElementById('questionsContainer').innerHTML = '';
-  document.getElementById('quizTitle').value = '';
-  document.getElementById('quizSubject').value = '';
+  ['quizTitle','quizSubject','quizDesc'].forEach(id => { document.getElementById(id).value = ''; });
+  document.getElementById('createMsg').innerHTML = '';
   addQuestion();
   document.getElementById('createForm').scrollIntoView({ behavior: 'smooth' });
 }
@@ -88,14 +90,13 @@ function hideCreateForm() {
 function addQuestion() {
   questionCount++;
   const n = questionCount;
-  const container = document.getElementById('questionsContainer');
   const div = document.createElement('div');
   div.className = 'question-builder';
   div.id = `q${n}`;
   div.innerHTML = `
     <div class="question-builder-header">
-      <span>Frage ${n}</span>
-      <button type="button" class="btn btn-sm btn-danger" onclick="removeQuestion(${n})">✕</button>
+      <span>Frage / Aufgabe ${n}</span>
+      <button type="button" class="btn btn-sm btn-danger" onclick="document.getElementById('q${n}').remove()">✕</button>
     </div>
     <div class="form-group" style="margin-bottom:0.6rem">
       <input type="text" id="q${n}_text" placeholder="Fragetext eingeben…" style="font-weight:700">
@@ -113,18 +114,15 @@ function addQuestion() {
       <input type="number" id="q${n}_xp" value="15" min="5" max="50" style="width:80px">
     </div>
   `;
-  container.appendChild(div);
-}
-
-function removeQuestion(n) {
-  const el = document.getElementById(`q${n}`);
-  if (el) el.remove();
+  document.getElementById('questionsContainer').appendChild(div);
 }
 
 async function saveQuiz() {
   const msg = document.getElementById('createMsg');
   const title = document.getElementById('quizTitle').value.trim();
   const subject = document.getElementById('quizSubject').value.trim();
+  const description = document.getElementById('quizDesc').value.trim();
+  const type = document.getElementById('createType').value;
 
   if (!title) { msg.innerHTML = '<div class="alert alert-error">Bitte einen Titel eingeben.</div>'; return; }
 
@@ -135,104 +133,124 @@ async function saveQuiz() {
     const text = document.getElementById(`q${n}_text`)?.value.trim();
     if (!text) continue;
     const options = [0,1,2,3].map(i => document.getElementById(`q${n}_opt${i}`)?.value.trim() || '');
-    if (options.some(o => !o)) { msg.innerHTML = `<div class="alert alert-error">Bitte alle Antwortoptionen bei Frage ${n} ausfüllen.</div>`; return; }
+    if (options.some(o => !o)) {
+      msg.innerHTML = `<div class="alert alert-error">Bitte alle Antwortoptionen bei Frage ${n} ausfüllen.</div>`;
+      return;
+    }
     const correct_index = parseInt(document.querySelector(`input[name="correct_${n}"]:checked`)?.value ?? 0);
     const xp_value = parseInt(document.getElementById(`q${n}_xp`)?.value ?? 15);
     questions.push({ text, options, correct_index, xp_value });
   }
 
-  if (!questions.length) { msg.innerHTML = '<div class="alert alert-error">Mindestens eine vollständige Frage erforderlich.</div>'; return; }
+  if (!questions.length) {
+    msg.innerHTML = '<div class="alert alert-error">Mindestens eine vollständige Frage erforderlich.</div>';
+    return;
+  }
 
   try {
     const res = await fetch('/api/admin/quiz', {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, subject, questions }),
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, subject, description, type, questions }),
     });
     const data = await res.json();
     if (!res.ok) { msg.innerHTML = `<div class="alert alert-error">${data.error}</div>`; return; }
-    msg.innerHTML = `<div class="alert alert-success">✓ Quiz "${title}" mit ${questions.length} Fragen gespeichert!</div>`;
-    setTimeout(() => { hideCreateForm(); loadQuizzes(); }, 1500);
-  } catch { msg.innerHTML = '<div class="alert alert-error">Serverfehler.</div>'; }
+    const label = type === 'arbeitsblatt' ? 'Arbeitsblatt' : 'Quiz';
+    msg.innerHTML = `<div class="alert alert-success">✓ ${label} "${title}" mit ${questions.length} Fragen gespeichert!</div>`;
+    setTimeout(() => { hideCreateForm(); loadAll(); }, 1500);
+  } catch {
+    msg.innerHTML = '<div class="alert alert-error">Serverfehler.</div>';
+  }
 }
 
-async function deleteQuiz(id, title) {
-  if (!confirm(`Quiz "${title}" wirklich löschen?`)) return;
+async function deleteItem(id, title) {
+  if (!confirm(`"${title}" wirklich löschen?`)) return;
   const res = await fetch(`/api/admin/quiz/${id}`, { method: 'DELETE' });
   if (!res.ok) { alert('Fehler beim Löschen.'); return; }
-  loadQuizzes();
+  loadAll();
 }
 
-async function loadQuizzes() {
+function renderTable(items, emptyText) {
+  if (!items.length) return `<p class="text-muted" style="padding:1rem">${emptyText}</p>`;
+  return `
+    <div style="overflow-x:auto">
+      <table class="admin-table">
+        <thead><tr><th>Titel</th><th>Fach</th><th>Fragen</th><th>Erstellt</th><th>Aktionen</th></tr></thead>
+        <tbody>
+          ${items.map(q => `
+            <tr>
+              <td><strong>${q.title}</strong>${q.description ? `<br><span class="text-muted" style="font-size:0.78rem">${q.description.substring(0,80)}…</span>` : ''}</td>
+              <td>${q.subject || '–'}</td>
+              <td>${q.question_count}</td>
+              <td>${new Date(q.created_at).toLocaleDateString('de-DE')}</td>
+              <td>
+                <button class="btn btn-sm btn-danger" onclick="deleteItem(${q.id},'${q.title.replace(/'/g,"\\'")}')">Löschen</button>
+              </td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+async function loadAll() {
   const list = document.getElementById('quizList');
   try {
-    const res = await fetch('/api/admin/quiz');
-    if (res.status === 401) { window.location.href = '/admin'; return; }
-    const quizzes = await res.json();
+    const [itemsRes, resultsRes] = await Promise.all([
+      fetch('/api/admin/quiz'),
+      fetch('/api/admin/results'),
+    ]);
+    if (itemsRes.status === 401) { window.location.href = '/admin'; return; }
 
-    if (!quizzes.length) {
-      list.innerHTML = '<p class="text-muted text-center" style="padding:1rem">Noch keine Quizzes. Erstelle dein erstes!</p>';
-      return;
-    }
+    const items = await itemsRes.json();
+    const results = await resultsRes.json();
+
+    const quizzes = items.filter(i => i.type === 'quiz');
+    const sheets = items.filter(i => i.type === 'arbeitsblatt');
 
     list.innerHTML = `
-      <div class="admin-table-wrap">
-        <table class="admin-table">
-          <thead>
-            <tr><th>Titel</th><th>Fach</th><th>Fragen</th><th>Erstellt</th><th>Aktionen</th></tr>
-          </thead>
-          <tbody>
-            ${quizzes.map(q => `
-              <tr>
-                <td><strong>${q.title}</strong></td>
-                <td>${q.subject || '–'}</td>
-                <td>${q.question_count}</td>
-                <td>${new Date(q.created_at).toLocaleDateString('de-DE')}</td>
-                <td>
-                  <button class="btn btn-sm btn-danger" onclick="deleteQuiz(${q.id},'${q.title.replace(/'/g,"\\'")}')">Löschen</button>
-                </td>
-              </tr>`).join('')}
-          </tbody>
-        </table>
+      <div class="card mb-2">
+        <div class="flex-between mb-1">
+          <h2 style="font-size:1.2rem">⚡ Quizzes (${quizzes.length})</h2>
+          <button class="btn btn-primary btn-sm" onclick="showCreateForm('quiz')">+ Neu</button>
+        </div>
+        ${renderTable(quizzes, 'Noch keine Quizzes. Erstelle dein erstes!')}
       </div>
-      <div class="card mt-2">
-        <h2 style="font-size:1.1rem;margin-bottom:0.8rem">Quiz-Ergebnisse (letzte 50)</h2>
-        <div id="resultsTable"><div class="loading">Wird geladen</div></div>
+
+      <div class="card mb-2">
+        <div class="flex-between mb-1">
+          <h2 style="font-size:1.2rem">📋 Digitale Arbeitsblätter (${sheets.length})</h2>
+          <button class="btn btn-secondary btn-sm" onclick="showCreateForm('arbeitsblatt')">+ Neu</button>
+        </div>
+        ${renderTable(sheets, 'Noch keine Arbeitsblätter.')}
+      </div>
+
+      <div class="card">
+        <h2 style="font-size:1.1rem;margin-bottom:0.8rem">Letzte Ergebnisse (${results.length})</h2>
+        ${results.length ? `
+          <div style="overflow-x:auto">
+            <table class="admin-table">
+              <thead><tr><th>Schüler</th><th>Titel</th><th>Score</th><th>XP</th><th>Versuch</th><th>Datum</th></tr></thead>
+              <tbody>
+                ${results.slice(0,50).map(r => `
+                  <tr>
+                    <td><strong>${r.nick}</strong></td>
+                    <td>${r.quiz_title}</td>
+                    <td>${r.score}/${r.total} (${Math.round(r.score/r.total*100)}%)</td>
+                    <td style="color:var(--c3);font-weight:800">+${r.xp_earned}</td>
+                    <td>${r.attempt_number}.</td>
+                    <td>${new Date(r.completed_at).toLocaleDateString('de-DE')}</td>
+                  </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>` : '<p class="text-muted">Noch keine Ergebnisse.</p>'}
       </div>
     `;
-    loadResults();
-  } catch {
+  } catch (err) {
     list.innerHTML = '<div class="alert alert-error">Fehler beim Laden.</div>';
   }
 }
 
-async function loadResults() {
-  const el = document.getElementById('resultsTable');
-  if (!el) return;
-  try {
-    const res = await fetch('/api/admin/results');
-    const results = await res.json();
-    if (!results.length) { el.innerHTML = '<p class="text-muted">Noch keine Ergebnisse.</p>'; return; }
-    el.innerHTML = `
-      <div style="overflow-x:auto">
-        <table class="admin-table">
-          <thead><tr><th>Schüler</th><th>Quiz</th><th>Score</th><th>XP</th><th>Versuch</th><th>Datum</th></tr></thead>
-          <tbody>
-            ${results.slice(0,50).map(r => `
-              <tr>
-                <td><strong>${r.nick}</strong></td>
-                <td>${r.quiz_title}</td>
-                <td>${r.score}/${r.total} (${Math.round(r.score/r.total*100)}%)</td>
-                <td style="color:var(--c3);font-weight:800">+${r.xp_earned}</td>
-                <td>${r.attempt_number}.</td>
-                <td>${new Date(r.completed_at).toLocaleDateString('de-DE')}</td>
-              </tr>`).join('')}
-          </tbody>
-        </table>
-      </div>`;
-  } catch {}
-}
-
-loadQuizzes();
+loadAll();
 </script>
 </body>
 </html>

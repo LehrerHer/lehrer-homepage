@@ -47,11 +47,13 @@ CREATE TABLE IF NOT EXISTS streaks (
   FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
 );
 
--- Quizzes
+-- Quizzes & Arbeitsblätter (type: 'quiz' | 'arbeitsblatt')
 CREATE TABLE IF NOT EXISTS quizzes (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   title TEXT NOT NULL,
   subject TEXT,
+  type TEXT DEFAULT 'quiz',
+  description TEXT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 

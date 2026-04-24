@@ -47,7 +47,7 @@
                 <li><a href="#startseite" class="aktiv">Startseite</a></li>
                 <li><a href="#faecher">Fächer</a></li>
                 <li><a href="#materialien">Materialien</a></li>
-                <li><a href="#quizze">Quiz</a></li>
+                <li><a href="#lernkolosseum">Lernkolosseum</a></li>
                 <li><a href="blog.html">Blog</a></li>
                 <li><a href="#kontakt">Kontakt</a></li>
             </ul>
@@ -201,15 +201,60 @@
 
 
     <!-- ========================================================
-         INTERAKTIVE QUIZZE
+         LERNKOLOSSEUM – Herrmanns Lernwelt
+         Gamifizierter Lernbereich: Heldenprofil, Heldenrangliste,
+         interaktive Quizze und digitale Arbeitsblätter.
          ======================================================== -->
-    <section id="quizze">
+    <section id="lernkolosseum" class="lernkolosseum-section">
         <div class="container">
 
-            <h2 class="section-titel">Interaktive Quiz</h2>
-            <p class="section-untertitel">Lernmittel zum selbstständigen Üben – direkt im Browser, ohne Anmeldung.</p>
+            <!-- Bereich-Header -->
+            <div class="kolosseum-header">
+                <div class="kolosseum-eyebrow">🏛️ Herrmanns Lernwelt</div>
+                <h2 class="section-titel kolosseum-titel">Lernkolosseum</h2>
+                <p class="section-untertitel kolosseum-untertitel">
+                    Dein interaktiver Lernbereich – sammle XP, steige auf und werde zur Legende!
+                </p>
+            </div>
 
-            <div class="quiz-grid">
+            <!-- === PORTALE: Heldenprofil · Heldenrangliste · Arbeitsblätter === -->
+            <div class="portale-grid" role="list" aria-label="Lernkolosseum-Bereiche">
+
+                <a href="http://localhost:3000/login" class="portal-karte portal-held"
+                   target="_blank" rel="noopener noreferrer" role="listitem">
+                    <div class="portal-glow" aria-hidden="true"></div>
+                    <div class="portal-emoji" aria-hidden="true">🦸</div>
+                    <div class="portal-name">Heldenprofil</div>
+                    <div class="portal-desc">Avatar · XP · Badges · Level</div>
+                    <div class="portal-pfeil">Einloggen →</div>
+                </a>
+
+                <a href="http://localhost:3000/rangliste" class="portal-karte portal-rangliste"
+                   target="_blank" rel="noopener noreferrer" role="listitem">
+                    <div class="portal-glow" aria-hidden="true"></div>
+                    <div class="portal-emoji" aria-hidden="true">🏆</div>
+                    <div class="portal-name">Heldenrangliste</div>
+                    <div class="portal-desc">Wer ist die Nummer&nbsp;1 der Klasse?</div>
+                    <div class="portal-pfeil">Zur Rangliste →</div>
+                </a>
+
+                <a href="http://localhost:3000/arbeitsblatt" class="portal-karte portal-arbeitsblatt"
+                   target="_blank" rel="noopener noreferrer" role="listitem">
+                    <div class="portal-glow" aria-hidden="true"></div>
+                    <div class="portal-emoji" aria-hidden="true">📝</div>
+                    <div class="portal-name">Arbeitsblätter</div>
+                    <div class="portal-desc">Aufgaben lösen und XP verdienen</div>
+                    <div class="portal-pfeil">Zu den Aufgaben →</div>
+                </a>
+
+            </div>
+
+            <!-- === ÜBUNGSQUIZZE (ohne Login) === -->
+            <div class="kolosseum-divider" aria-hidden="true">
+                <span>⚔️ Übungsquizze – kein Login nötig</span>
+            </div>
+
+            <div class="kolosseum-quiz-grid">
 
                 <div class="quiz-feature-card">
                     <div class="quiz-feature-meta">
@@ -256,6 +301,49 @@
                     <a href="rechtschreibquiz.html" class="btn btn-primary quiz-btn">Zum Quiz starten →</a>
                 </div>
 
+            </div>
+
+            <!-- === DIGITALE ARBEITSBLÄTTER === -->
+            <div class="kolosseum-divider" aria-hidden="true">
+                <span>📝 Digitale Arbeitsblätter – XP-Punkte für dein Heldenprofil</span>
+            </div>
+
+            <div class="arbeitsblatt-intro">
+                <div class="arbeitsblatt-intro-text">
+                    <h3 class="arbeitsblatt-intro-titel">📋 Interaktive Arbeitsblätter</h3>
+                    <p>
+                        Löse Aufgaben direkt im Browser – von Textanalyse über Mathematik bis Englisch.
+                        Jedes abgeschlossene Arbeitsblatt bringt dir <strong>XP für dein Heldenprofil</strong>!
+                    </p>
+                    <div class="arbeitsblatt-badges-info">
+                        <span class="arbeitsblatt-badge-chip">📖 Deutsch</span>
+                        <span class="arbeitsblatt-badge-chip">🔢 Mathematik</span>
+                        <span class="arbeitsblatt-badge-chip">🌐 Englisch</span>
+                        <span class="arbeitsblatt-badge-chip">⚡ XP verdienen</span>
+                    </div>
+                    <a href="http://localhost:3000/arbeitsblatt" class="btn btn-primary"
+                       target="_blank" rel="noopener noreferrer"
+                       style="margin-top:1.2rem;display:inline-flex;align-items:center;gap:0.4rem">
+                        📝 Zu den Arbeitsblättern →
+                    </a>
+                </div>
+                <div class="arbeitsblatt-vorschau" aria-hidden="true">
+                    <div class="ab-vorschau-karte">
+                        <div class="ab-vc-fach">📖 Deutsch</div>
+                        <div class="ab-vc-titel">Kurztext analysieren</div>
+                        <div class="ab-vc-xp">+35 XP</div>
+                    </div>
+                    <div class="ab-vorschau-karte">
+                        <div class="ab-vc-fach">🔢 Mathematik</div>
+                        <div class="ab-vc-titel">Textaufgaben</div>
+                        <div class="ab-vc-xp">+40 XP</div>
+                    </div>
+                    <div class="ab-vorschau-karte">
+                        <div class="ab-vc-fach">🌐 Englisch</div>
+                        <div class="ab-vc-titel">Reading Comprehension</div>
+                        <div class="ab-vc-xp">+35 XP</div>
+                    </div>
+                </div>
             </div>
 
         </div>
