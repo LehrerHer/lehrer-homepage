@@ -9,6 +9,7 @@ const { requireStudent, requireAdmin } = require('./middleware/auth');
 const authRouter = require('./routes/auth');
 const studentsRouter = require('./routes/students');
 const quizRouter = require('./routes/quiz');
+const worksheetsRouter = require('./routes/worksheets');
 const adminRouter = require('./routes/admin');
 
 const app = express();
@@ -35,6 +36,7 @@ app.use(session({
 app.use('/api/auth', authRouter);
 app.use('/api/students', studentsRouter);
 app.use('/api/quiz', quizRouter);
+app.use('/api/arbeitsblatt', worksheetsRouter);
 app.use('/api/admin', adminRouter);
 
 // Seiten-Routen
@@ -46,8 +48,10 @@ app.get('/', (req, res) => {
 app.get('/login',     (req, res) => res.sendFile(pub('login.html')));
 app.get('/rangliste', (req, res) => res.sendFile(pub('rangliste.html')));
 app.get('/profil',    requireStudent, (req, res) => res.sendFile(pub('profil.html')));
-app.get('/quiz',      requireStudent, (req, res) => res.sendFile(pub('quiz.html')));
-app.get('/quiz/:id',  requireStudent, (req, res) => res.sendFile(pub('quiz-spiel.html')));
+app.get('/quiz',             requireStudent, (req, res) => res.sendFile(pub('quiz.html')));
+app.get('/quiz/:id',         requireStudent, (req, res) => res.sendFile(pub('quiz-spiel.html')));
+app.get('/arbeitsblatt',     requireStudent, (req, res) => res.sendFile(pub('arbeitsblatt.html')));
+app.get('/arbeitsblatt/:id', requireStudent, (req, res) => res.sendFile(pub('arbeitsblatt-spiel.html')));
 app.get('/admin',          (req, res) => res.sendFile(pub('admin/index.html')));
 app.get('/admin/dashboard',(req, res, next) => { if (req.session && req.session.adminId) return res.sendFile(pub('admin/dashboard.html')); res.redirect('/admin'); });
 app.get('/admin/schueler', (req, res, next) => { if (req.session && req.session.adminId) return res.sendFile(pub('admin/schueler.html')); res.redirect('/admin'); });

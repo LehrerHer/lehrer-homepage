@@ -125,24 +125,24 @@ router.delete('/students/:id', (req, res) => {
 router.get('/quiz', (req, res) => {
   const db = getDB();
   const quizzes = db.prepare(`
-    SELECT q.id, q.title, q.subject, q.created_at,
+    SELECT q.id, q.title, q.subject, q.type, q.created_at,
       (SELECT COUNT(*) FROM questions WHERE quiz_id = q.id) as question_count
-    FROM quizzes q ORDER BY q.created_at DESC
+    FROM quizzes q ORDER BY q.type, q.created_at DESC
   `).all();
   res.json(quizzes);
 });
 
 router.post('/quiz', (req, res) => {
-  const { title, subject, questions } = req.body;
+  const { title, subject, questions, type = 'quiz', description } = req.body;
   if (!title || !Array.isArray(questions) || questions.length === 0) {
     return res.status(400).json({ error: 'Titel und mindestens eine Frage erforderlich' });
   }
 
   const db = getDB();
-  const insertQuiz = db.prepare('INSERT INTO quizzes (title, subject) VALUES (?, ?)');
+  const insertQuiz = db.prepare('INSERT INTO quizzes (title, subject, type, description) VALUES (?, ?, ?, ?)');
   const insertQ = db.prepare('INSERT INTO questions (quiz_id, question_text, options, correct_index, xp_value) VALUES (?, ?, ?, ?, ?)');
 
-  const { lastInsertRowid } = insertQuiz.run(title, subject || null);
+  const { lastInsertRowid } = insertQuiz.run(title, subject || null, type, description || null);
   for (const q of questions) {
     if (!q.text || !Array.isArray(q.options) || q.options.length !== 4) continue;
     insertQ.run(lastInsertRowid, q.text, JSON.stringify(q.options), q.correct_index ?? 0, q.xp_value ?? 15);
