@@ -16,8 +16,9 @@
     var alleZeigen = container.dataset.alle === 'true';
     var limit    = container.dataset.limit ? parseInt(container.dataset.limit, 10) : 0;
     var basePath = container.dataset.basepath || '';
+    var jsonSrc = container.dataset.src || (basePath + 'inhalte.json');
 
-    fetch(basePath + 'inhalte.json')
+    fetch(jsonSrc)
         .then(function (r) { return r.json(); })
         .then(function (daten) {
             var items = daten.materialien || [];

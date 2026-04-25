@@ -248,6 +248,33 @@ router.get('/badges', (req, res) => {
   res.json(BADGE_DEFINITIONS);
 });
 
+router.get('/materialien', async (req, res) => {
+  try {
+    const { rows } = await pool.query('SELECT * FROM materials ORDER BY datum DESC, created_at DESC');
+    res.json(rows);
+  } catch (err) { console.error(err); res.status(500).json({ error: 'Serverfehler' }); }
+});
+
+router.post('/materialien', async (req, res) => {
+  const { titel, beschreibung, icon, url, seite, datum } = req.body;
+  if (!titel) return res.status(400).json({ error: 'Titel erforderlich' });
+  try {
+    const { rows } = await pool.query(
+      'INSERT INTO materials (titel, beschreibung, icon, url, seite, datum) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *',
+      [titel.trim(), beschreibung || '', icon || '📄', url || null, seite || 'allgemein', datum || null]
+    );
+    res.json({ success: true, material: rows[0] });
+  } catch (err) { console.error(err); res.status(500).json({ error: 'Serverfehler' }); }
+});
+
+router.delete('/materialien/:id', async (req, res) => {
+  try {
+    const result = await pool.query('DELETE FROM materials WHERE id = $1', [parseInt(req.params.id)]);
+    if (result.rowCount === 0) return res.status(404).json({ error: 'Material nicht gefunden' });
+    res.json({ success: true });
+  } catch (err) { console.error(err); res.status(500).json({ error: 'Serverfehler' }); }
+});
+
 router.get('/export', async (req, res) => {
   try {
     const { rows: students } = await pool.query(`

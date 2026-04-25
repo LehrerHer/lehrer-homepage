@@ -74,6 +74,18 @@ CREATE TABLE IF NOT EXISTS quiz_results (
   completed_at   TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- Materialien für die Homepage
+CREATE TABLE IF NOT EXISTS materials (
+  id           BIGSERIAL PRIMARY KEY,
+  titel        TEXT NOT NULL,
+  beschreibung TEXT DEFAULT '',
+  icon         TEXT DEFAULT '📄',
+  url          TEXT,
+  seite        TEXT DEFAULT 'allgemein',
+  datum        DATE DEFAULT CURRENT_DATE,
+  created_at   TIMESTAMPTZ DEFAULT NOW()
+);
+
 -- Vorbereitung für zukünftige Wettkämpfe
 CREATE TABLE IF NOT EXISTS challenges (
   id             BIGSERIAL PRIMARY KEY,

@@ -5,13 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lerngladiatoren Admin – Dashboard</title>
   <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .portal-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    @media (max-width: 640px) { .portal-grid { grid-template-columns: 1fr; } }
+    .portal-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2.5rem 2rem;
+      text-decoration: none;
+      color: var(--ink);
+      border-top: 5px solid var(--c3);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .portal-card:nth-child(2) { border-top-color: var(--c4); }
+    .portal-card:hover { transform: translateY(-5px); box-shadow: 0 12px 32px rgba(0,0,0,0.13); }
+    .portal-card-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .portal-card h2 { font-family: 'Fredoka One', cursive; font-size: 1.7rem; margin-bottom: 0.6rem; }
+    .portal-card p { color: #666; font-size: 0.95rem; line-height: 1.5; flex: 1; }
+    .portal-card-btn {
+      margin-top: 1.5rem;
+      display: inline-block;
+      padding: 0.65rem 1.4rem;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 0.9rem;
+      background: var(--c3);
+      color: #fff;
+      align-self: flex-start;
+    }
+    .portal-card:nth-child(2) .portal-card-btn { background: var(--c4); }
+    .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-top: 1.5rem; }
+    @media (max-width: 640px) { .stats-grid { grid-template-columns: repeat(2,1fr); } }
+  </style>
 </head>
 <body>
 
 <nav class="admin-nav">
   <span class="admin-logo">🛡️ Lerngladiatoren Admin</span>
   <a href="/admin/dashboard" class="active">Dashboard</a>
-  <a href="/admin/schueler">Schüler</a>
+  <a href="/admin/schueler">Gladiatoren</a>
+  <a href="/admin/materialien">Materialien</a>
   <a href="/admin/quiz">Quizzes</a>
   <a href="/admin/export">Export</a>
   <a href="#" id="logoutBtn" style="color:#ef4444!important">Abmelden</a>
@@ -19,18 +60,37 @@
 
 <div class="container-wide">
   <div class="page-header">
-    <h1>Dashboard</h1>
-    <p>Übersicht über alle Aktivitäten</p>
+    <h1>🏛️ Admin-Zentrale</h1>
+    <p>Was möchtest du heute tun?</p>
   </div>
 
-  <div class="stats-grid" id="stats">
-    <div class="stat-card"><div class="stat-val">–</div><div class="stat-label">Schüler</div></div>
-    <div class="stat-card"><div class="stat-val">–</div><div class="stat-label">Quizzes</div></div>
-    <div class="stat-card"><div class="stat-val">–</div><div class="stat-label">Gesamt XP</div></div>
-    <div class="stat-card"><div class="stat-val">–</div><div class="stat-label">Heute aktiv</div></div>
+  <div class="portal-grid">
+    <a href="/admin/materialien" class="portal-card">
+      <div class="portal-card-icon">📚</div>
+      <h2>Materialien verwalten</h2>
+      <p>Unterrichtsmaterialien hinzufügen oder entfernen – sie erscheinen automatisch im Materialien-Bereich der Homepage.</p>
+      <span class="portal-card-btn">Materialien verwalten →</span>
+    </a>
+
+    <a href="/admin/schueler" class="portal-card">
+      <div class="portal-card-icon">⚔️</div>
+      <h2>Lerngladiatoren</h2>
+      <p>Schülerinnen und Schüler anlegen, PIN vergeben, XP anpassen und die Kämpfe im Kolosseum verwalten.</p>
+      <span class="portal-card-btn">Gladiatoren verwalten →</span>
+    </a>
   </div>
 
   <div class="card">
+    <h2 style="font-size:1.1rem;margin-bottom:0.8rem;color:#888;font-weight:700;text-transform:uppercase;letter-spacing:0.04em">Überblick</h2>
+    <div class="stats-grid" id="stats">
+      <div class="stat-card"><div class="stat-val">–</div><div class="stat-label">Gladiatoren</div></div>
+      <div class="stat-card"><div class="stat-val">–</div><div class="stat-label">Materialien</div></div>
+      <div class="stat-card"><div class="stat-val">–</div><div class="stat-label">Gesamt XP</div></div>
+      <div class="stat-card"><div class="stat-val">–</div><div class="stat-label">Heute aktiv</div></div>
+    </div>
+  </div>
+
+  <div class="card mt-2">
     <h2 style="font-size:1.2rem;margin-bottom:1rem">Letzte Aktivitäten</h2>
     <div id="recentActivity"><div class="loading">Wird geladen</div></div>
   </div>
@@ -45,13 +105,17 @@ document.getElementById('logoutBtn').addEventListener('click', async (e) => {
 
 async function load() {
   try {
-    const res = await fetch('/api/admin/stats');
-    if (res.status === 401) { window.location.href = '/admin'; return; }
-    const data = await res.json();
+    const [statsRes, matRes] = await Promise.all([
+      fetch('/api/admin/stats'),
+      fetch('/api/admin/materialien'),
+    ]);
+    if (statsRes.status === 401) { window.location.href = '/admin'; return; }
+    const data = await statsRes.json();
+    const mats = matRes.ok ? await matRes.json() : [];
 
     const cards = document.querySelectorAll('.stat-card .stat-val');
     cards[0].textContent = data.student_count;
-    cards[1].textContent = data.quiz_count;
+    cards[1].textContent = mats.length;
     cards[2].textContent = data.total_xp;
     cards[3].textContent = data.active_today;
 
