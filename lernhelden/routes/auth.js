@@ -97,12 +97,19 @@ router.post('/admin-login', adminLoginLimiter, async (req, res) => {
 
   try {
     let hash = process.env.ADMIN_PASSWORD_HASH;
+    if (!hash && process.env.ADMIN_PASSWORD) {
+      hash = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);
+    }
     if (!hash) hash = await bcrypt.hash('lernhelden', 10);
+
     const valid = await bcrypt.compare(password, hash);
     if (!valid) return res.status(401).json({ error: 'Falsches Passwort' });
 
     req.session.adminId = 'admin';
-    res.json({ success: true });
+    req.session.save(err => {
+      if (err) { console.error('Session-Fehler:', err); return res.status(500).json({ error: 'Session-Fehler' }); }
+      res.json({ success: true });
+    });
   } catch (err) {
     console.error('Admin-Login-Fehler:', err);
     res.status(500).json({ error: 'Serverfehler' });

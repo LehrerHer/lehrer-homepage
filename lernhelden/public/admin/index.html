@@ -53,11 +53,14 @@ document.getElementById('adminLoginForm').addEventListener('submit', async (e) =
     });
     const data = await res.json();
     if (!res.ok) {
-      msg.innerHTML = `<div class="alert alert-error">${data.error}</div>`;
+      msg.innerHTML = `<div class="alert alert-error">❌ ${data.error}</div>`;
       submitBtn.disabled = false;
       submitBtn.textContent = 'Anmelden';
+      document.getElementById('password').value = '';
+      document.getElementById('password').focus();
       return;
     }
+    submitBtn.textContent = '✓ Weiterleitung…';
     window.location.href = '/admin/dashboard';
   } catch {
     msg.innerHTML = '<div class="alert alert-error">Verbindungsfehler.</div>';
