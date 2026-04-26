@@ -8,7 +8,7 @@ const LEVELS = [
   { name: 'Lehrling',  xpNeeded: 0    },
   { name: 'Entdecker', xpNeeded: 100  },
   { name: 'Kämpfer',   xpNeeded: 250  },
-  { name: 'Held',      xpNeeded: 500  },
+  { name: 'Veteran',   xpNeeded: 500  },
   { name: 'Ritter',    xpNeeded: 900  },
   { name: 'Champion',  xpNeeded: 1400 },
   { name: 'Legende',   xpNeeded: 2000 },

@@ -78,7 +78,7 @@ async function main() {
     await initDB();
     await seedDemoData();
     app.listen(PORT, () => {
-      console.log(`\n🦸 Lernhelden läuft auf http://localhost:${PORT}\n`);
+      console.log(`\n🏛️  Lerngladiatoren läuft auf http://localhost:${PORT}\n`);
       if (!process.env.SESSION_SECRET)      console.warn('⚠️  SESSION_SECRET nicht gesetzt – unsicher für Produktion!');
       if (!process.env.ADMIN_PASSWORD_HASH) console.warn('⚠️  ADMIN_PASSWORD_HASH nicht gesetzt – Standard-Passwort: "lernhelden"');
     });

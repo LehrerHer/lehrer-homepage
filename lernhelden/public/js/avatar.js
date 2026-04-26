@@ -2,7 +2,7 @@ const LEVELS = [
   { name: 'Lehrling',  xpNeeded: 0,    color: '#a0aec0', glow: false, crown: false, sword: false, shield: false },
   { name: 'Entdecker', xpNeeded: 100,  color: '#68d391', glow: false, crown: false, sword: false, shield: false },
   { name: 'Kämpfer',   xpNeeded: 250,  color: '#4299e1', glow: false, crown: false, sword: true,  shield: false },
-  { name: 'Held',      xpNeeded: 500,  color: '#9f7aea', glow: true,  crown: false, sword: true,  shield: true  },
+  { name: 'Veteran',   xpNeeded: 500,  color: '#9f7aea', glow: true,  crown: false, sword: true,  shield: true  },
   { name: 'Ritter',    xpNeeded: 900,  color: '#f6ad55', glow: true,  crown: false, sword: true,  shield: true  },
   { name: 'Champion',  xpNeeded: 1400, color: '#fc8181', glow: true,  crown: true,  sword: true,  shield: true  },
   { name: 'Legende',   xpNeeded: 2000, color: '#ffd700', glow: true,  crown: true,  sword: true,  shield: true  },
