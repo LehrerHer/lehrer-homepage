@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
+const PgSession = require('connect-pg-simple')(session);
 const path = require('path');
 const { initDB, pool } = require('./db/database');
 const { seedDemoData } = require('./db/seeds');
@@ -20,12 +21,14 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  secret: process.env.SESSION_SECRET || 'lernhelden-dev-secret-bitte-aendern',
+  store: new PgSession({ pool, tableName: 'session', createTableIfMissing: false }),
+  secret: process.env.SESSION_SECRET || 'lerngladiatoren-dev-secret-bitte-aendern',
   resave: false,
   saveUninitialized: false,
   cookie: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: 'auto',
+    sameSite: 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000,
   },
 }));
