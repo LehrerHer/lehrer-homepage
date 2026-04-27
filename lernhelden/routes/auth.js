@@ -128,12 +128,19 @@ router.post('/admin-login', adminLoginLimiter, async (req, res) => {
 
   try {
     let hash = process.env.ADMIN_PASSWORD_HASH;
-    if (!hash && process.env.ADMIN_PASSWORD) {
+    let authMethod = 'fallback:lernhelden';
+    if (hash) {
+      authMethod = 'ADMIN_PASSWORD_HASH';
+    } else if (process.env.ADMIN_PASSWORD) {
       hash = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10);
+      authMethod = 'ADMIN_PASSWORD';
+    } else {
+      hash = await bcrypt.hash('lernhelden', 10);
     }
-    if (!hash) hash = await bcrypt.hash('lernhelden', 10);
+    console.log('[admin-login] auth method:', authMethod, '| password length entered:', password.length);
 
     const valid = await bcrypt.compare(password, hash);
+    console.log('[admin-login] password valid:', valid);
     if (!valid) {
       if (isForm) return res.redirect('/admin?error=wrong');
       return res.status(401).json({ error: 'Falsches Passwort' });
