@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heldenrangliste – Lernkolosseum</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .page-header {
+      text-align: center;
+      padding: 2.5rem 0 1.5rem;
+    }
+    .page-header h1 { font-size: 2.2rem; color: var(--ink); }
+    .page-header p  { color: var(--ink-soft); margin-top: 0.4rem; }
+
+    .rangliste-wrap { margin-top: 1.5rem; }
+
+    .rangliste-table { width: 100%; border-collapse: collapse; }
+    .rangliste-table th {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      background: var(--ink);
+      color: #fff;
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1rem;
+    }
+    .rangliste-table th:last-child,
+    .rangliste-table td:last-child { text-align: right; }
+
+    .rangliste-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: middle;
+      font-size: 0.95rem;
+    }
+    .rangliste-table tr:hover td { background: var(--bg); }
+
+    .rank-medal { font-size: 1.4rem; }
+    .rank-num   { font-weight: 800; color: var(--ink-soft); }
+
+    .nick-cell { font-weight: 700; }
+    .nick-cell.me { color: var(--c1); }
+    .nick-cell.me::after { content: ' ← Du'; font-size: 0.75rem; font-weight: 600; }
+
+    .xp-cell {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.1rem;
+      color: var(--c3);
+    }
+
+    .level-chip {
+      display: inline-block;
+      background: var(--bg);
+      border-radius: 50px;
+      padding: 0.2rem 0.7rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--ink-soft);
+    }
+
+    .empty { text-align: center; padding: 3rem; color: var(--ink-soft); }
+
+    @media (max-width: 600px) {
+      .rangliste-table th:nth-child(3),
+      .rangliste-table td:nth-child(3) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="/profil.html" class="nav-brand">🏛️ Lernkolosseum</a>
+    <div class="nav-links">
+      <a href="/profil.html">Profil</a>
+      <a href="/rangliste.html" class="active">Rangliste</a>
+      <a href="/quiz.html">Quizze</a>
+      <button id="logout-btn" class="btn btn-ghost nav-action" style="font-size:.9rem">Ausloggen</button>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-bottom: 3rem;">
+
+    <div class="page-header">
+      <h1>🏆 Heldenrangliste</h1>
+      <p>Die stärksten Helden des Lernkolosseum</p>
+    </div>
+
+    <div class="card rangliste-wrap">
+      <table class="rangliste-table" id="rangliste-table">
+        <thead>
+          <tr>
+            <th style="width:60px">#</th>
+            <th>Held</th>
+            <th>Level</th>
+            <th>Abzeichen</th>
+            <th>XP</th>
+          </tr>
+        </thead>
+        <tbody id="rangliste-body">
+          <tr><td colspan="5" class="empty">Wird geladen…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <script src="/js/avatar.js"></script>
+  <script>
+    (function () {
+      const MEDALS = ['🥇', '🥈', '🥉'];
+
+      async function init() {
+        const meRes = await fetch('/api/auth/me');
+        if (!meRes.ok) { window.location.href = '/login.html'; return; }
+        const me = await meRes.json();
+
+        const res = await fetch('/api/students/rangliste');
+        if (!res.ok) return;
+        const students = await res.json();
+
+        const tbody = document.getElementById('rangliste-body');
+        if (!students.length) {
+          tbody.innerHTML = '<tr><td colspan="5" class="empty">Noch keine Helden – seid die Ersten!</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = students.map((s, i) => {
+          const rank   = i + 1;
+          const rankEl = rank <= 3 ? `<span class="rank-medal">${MEDALS[rank - 1]}</span>` : `<span class="rank-num">${rank}</span>`;
+          const info   = getLevelInfo(s.xp);
+          const isMe   = s.id === me.id;
+          return `
+            <tr>
+              <td>${rankEl}</td>
+              <td><span class="nick-cell${isMe ? ' me' : ''}">${escHtml(s.nick)}</span></td>
+              <td><span class="level-chip">${info.level.name}</span></td>
+              <td style="text-align:center">${'🏅'.repeat(Math.min(s.badge_count, 5))}${s.badge_count > 5 ? ` +${s.badge_count - 5}` : s.badge_count === 0 ? '–' : ''}</td>
+              <td class="xp-cell">${s.xp} XP</td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      function escHtml(s) {
+        return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+
+      document.getElementById('logout-btn').addEventListener('click', async () => {
+        await fetch('/api/auth/logout', { method: 'POST' });
+        window.location.href = '/login.html';
+      });
+
+      init().catch(console.error);
+    })();
+  </script>
+</body>
+</html>

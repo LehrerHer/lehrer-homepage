@@ -15,6 +15,7 @@
     .activity-row:last-child { border-bottom: none; }
     .xp-pill { font-family: 'Fredoka One', sans-serif; font-size: 1rem; color: var(--c3); }
     .xp-pill.neg { color: var(--c1); }
+    .quick-links { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
   </style>
 </head>
 <body>
@@ -23,6 +24,7 @@
     <div class="nav-links">
       <a href="/admin/dashboard.html" class="active">Dashboard</a>
       <a href="/admin/schueler.html">Schüler</a>
+      <a href="/admin/quiz.html">Quizze</a>
       <a href="/api/admin/export">CSV Export</a>
       <button id="logout-btn" class="btn btn-ghost nav-action" style="font-size:.85rem">Ausloggen</button>
     </div>
@@ -44,6 +46,15 @@
         <div class="stat-value" id="stat-badges">–</div>
         <div class="stat-label">Abzeichen freigeschaltet</div>
       </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-quizzes">–</div>
+        <div class="stat-label">Quizze</div>
+      </div>
+    </div>
+
+    <div class="quick-links">
+      <a href="/admin/schueler.html" class="btn btn-primary">+ Schüler anlegen</a>
+      <a href="/admin/quiz.html" class="btn btn-secondary">+ Quiz anlegen</a>
     </div>
 
     <div class="card">
@@ -68,6 +79,7 @@
       document.getElementById('stat-students').textContent = data.totalStudents;
       document.getElementById('stat-xp').textContent       = data.totalXP.toLocaleString('de-DE');
       document.getElementById('stat-badges').textContent   = data.totalBadges;
+      document.getElementById('stat-quizzes').textContent  = data.quizCount;
 
       const list = document.getElementById('activity-list');
       if (!data.recentActivity.length) {

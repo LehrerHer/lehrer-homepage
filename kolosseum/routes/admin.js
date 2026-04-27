@@ -13,12 +13,13 @@ router.get('/stats', (req, res) => {
   const totalStudents  = db.prepare('SELECT COUNT(*) as c FROM students').get().c;
   const totalXP        = db.prepare('SELECT COALESCE(SUM(xp),0) as t FROM students').get().t;
   const totalBadges    = db.prepare('SELECT COUNT(*) as c FROM student_badges').get().c;
+  const quizCount      = db.prepare('SELECT COUNT(*) AS n FROM quizzes').get().n;
   const recentActivity = db.prepare(`
     SELECT s.nick, x.amount, x.reason, x.created_at
     FROM xp_log x JOIN students s ON s.id = x.student_id
     ORDER BY x.created_at DESC LIMIT 10
   `).all();
-  res.json({ totalStudents, totalXP, totalBadges, recentActivity });
+  res.json({ totalStudents, totalXP, totalBadges, quizCount, recentActivity });
 });
 
 // GET /api/admin/students
@@ -134,6 +135,81 @@ router.get('/export', (req, res) => {
   res.setHeader('Content-Type', 'text/csv; charset=utf-8');
   res.setHeader('Content-Disposition', 'attachment; filename="kolosseum-export.csv"');
   res.send('﻿' + csv);
+});
+
+// === QUIZ-VERWALTUNG ===
+
+// GET /api/admin/quizzes
+router.get('/quizzes', (req, res) => {
+  const quizzes = db.prepare(`
+    SELECT q.id, q.title, q.subject, q.created_at,
+           COUNT(qu.id) AS question_count
+    FROM quizzes q
+    LEFT JOIN questions qu ON qu.quiz_id = q.id
+    GROUP BY q.id
+    ORDER BY q.created_at DESC
+  `).all();
+  res.json(quizzes);
+});
+
+// GET /api/admin/quizzes/:id – Quiz mit allen Fragen inkl. richtiger Antwort
+router.get('/quizzes/:id', (req, res) => {
+  const quiz = db.prepare('SELECT * FROM quizzes WHERE id = ?').get(Number(req.params.id));
+  if (!quiz) return res.status(404).json({ error: 'Quiz nicht gefunden.' });
+
+  const questions = db.prepare(
+    'SELECT * FROM questions WHERE quiz_id = ? ORDER BY id ASC'
+  ).all(quiz.id);
+
+  res.json({ quiz, questions: questions.map((q) => ({ ...q, options: JSON.parse(q.options) })) });
+});
+
+// POST /api/admin/quizzes – Quiz anlegen
+router.post('/quizzes', (req, res) => {
+  const { title, subject } = req.body;
+  if (!title) return res.status(400).json({ error: 'Titel erforderlich.' });
+
+  const result = db.prepare(
+    'INSERT INTO quizzes (title, subject) VALUES (?, ?)'
+  ).run(title.trim(), subject ? subject.trim() : null);
+
+  res.status(201).json({ ok: true, id: result.lastInsertRowid });
+});
+
+// POST /api/admin/quizzes/:id/questions – Frage hinzufügen
+router.post('/quizzes/:id/questions', (req, res) => {
+  const quizId = Number(req.params.id);
+  const { question_text, options, correct_index, xp_value } = req.body;
+
+  if (!question_text || !Array.isArray(options) || options.length < 2) {
+    return res.status(400).json({ error: 'Fragetext und mindestens 2 Antworten erforderlich.' });
+  }
+  if (typeof correct_index !== 'number' || correct_index < 0 || correct_index >= options.length) {
+    return res.status(400).json({ error: 'correct_index ungültig.' });
+  }
+
+  const quiz = db.prepare('SELECT id FROM quizzes WHERE id = ?').get(quizId);
+  if (!quiz) return res.status(404).json({ error: 'Quiz nicht gefunden.' });
+
+  const result = db.prepare(
+    'INSERT INTO questions (quiz_id, question_text, options, correct_index, xp_value) VALUES (?, ?, ?, ?, ?)'
+  ).run(quizId, question_text.trim(), JSON.stringify(options), correct_index, xp_value || 15);
+
+  res.status(201).json({ ok: true, id: result.lastInsertRowid });
+});
+
+// DELETE /api/admin/quizzes/:id
+router.delete('/quizzes/:id', (req, res) => {
+  const info = db.prepare('DELETE FROM quizzes WHERE id = ?').run(Number(req.params.id));
+  if (info.changes === 0) return res.status(404).json({ error: 'Quiz nicht gefunden.' });
+  res.json({ ok: true });
+});
+
+// DELETE /api/admin/questions/:id
+router.delete('/questions/:id', (req, res) => {
+  const info = db.prepare('DELETE FROM questions WHERE id = ?').run(Number(req.params.id));
+  if (info.changes === 0) return res.status(404).json({ error: 'Frage nicht gefunden.' });
+  res.json({ ok: true });
 });
 
 module.exports = router;

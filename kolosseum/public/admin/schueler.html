@@ -26,7 +26,6 @@
     .btn-sm:hover { opacity: 0.8; }
     .btn-xp  { background: var(--c3); color: #fff; }
     .btn-del { background: var(--c1); color: #fff; }
-    .btn-badge { background: var(--c2); color: var(--ink); }
 
     /* Modal */
     .modal-bg {
@@ -52,6 +51,7 @@
     <div class="nav-links">
       <a href="/admin/dashboard.html">Dashboard</a>
       <a href="/admin/schueler.html" class="active">Schüler</a>
+      <a href="/admin/quiz.html">Quizze</a>
       <a href="/api/admin/export">CSV Export</a>
       <button id="logout-btn" class="btn btn-ghost nav-action" style="font-size:.85rem">Ausloggen</button>
     </div>
@@ -138,10 +138,8 @@
 
   <script src="/js/avatar.js"></script>
   <script>
-    const LEVEL_NAMES = ['Lehrling','Entdecker','Kämpfer','Held','Ritter','Champion','Legende'];
     function levelName(xp) {
-      const info = getLevelInfo(xp);
-      return `${info.level.name}`;
+      return getLevelInfo(xp).level.name;
     }
     function levelIndex(xp) {
       return getLevelInfo(xp).index + 1;

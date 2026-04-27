@@ -46,6 +46,11 @@
   </div>
 
   <script>
+    // Bereits eingeloggt? Weiterleiten.
+    fetch('/api/auth/admin/check').then(r => {
+      if (r.ok) window.location.href = '/admin/dashboard.html';
+    });
+
     const form   = document.getElementById('admin-form');
     const errEl  = document.getElementById('error-msg');
     const btn    = document.getElementById('login-btn');
