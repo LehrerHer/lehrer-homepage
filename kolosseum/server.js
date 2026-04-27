@@ -6,6 +6,7 @@ const path = require('path');
 const { db, SQLiteSessionStore } = require('./db/database');
 const authRoutes     = require('./routes/auth');
 const studentRoutes  = require('./routes/students');
+const adminRoutes    = require('./routes/admin');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -33,6 +34,7 @@ app.use(session({
 // Routes
 app.use('/api/auth',     authRoutes);
 app.use('/api/students', studentRoutes);
+app.use('/api/admin',    adminRoutes);
 
 // SPA-Catch: alle nicht-API-Routen geben die jeweilige HTML-Datei zurück
 // (oder leiten zu login weiter)

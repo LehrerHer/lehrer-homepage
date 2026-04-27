@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin – Lernkolosseum</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+    .login-wrap { width: 100%; max-width: 380px; padding: 1rem; }
+    .login-logo { text-align: center; margin-bottom: 1.75rem; }
+    .login-logo span { font-size: 3rem; display: block; }
+    .login-logo h1 { font-family: 'Fredoka One', sans-serif; font-size: 1.8rem; color: var(--c2); }
+    .login-logo p  { color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-top: 0.2rem; }
+    .btn-login { width: 100%; margin-top: 0.5rem; }
+    .back-link {
+      display: block; text-align: center; margin-top: 1.25rem;
+      color: rgba(255,255,255,0.35); font-size: 0.85rem; text-decoration: none;
+      transition: color var(--transition);
+    }
+    .back-link:hover { color: rgba(255,255,255,0.65); }
+  </style>
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-logo">
+      <span>⚙️</span>
+      <h1>Admin-Bereich</h1>
+      <p>Lernkolosseum</p>
+    </div>
+    <div class="card">
+      <form id="admin-form" novalidate>
+        <div class="form-group">
+          <label for="password">Passwort</label>
+          <input type="password" id="password" name="password" placeholder="Admin-Passwort" required autocomplete="current-password">
+        </div>
+        <div class="form-error" id="error-msg" role="alert" aria-live="polite"></div>
+        <button type="submit" class="btn btn-primary btn-login" id="login-btn">Einloggen</button>
+      </form>
+    </div>
+    <a href="/login.html" class="back-link">← Zur Schüler-Anmeldung</a>
+  </div>
+
+  <script>
+    const form   = document.getElementById('admin-form');
+    const errEl  = document.getElementById('error-msg');
+    const btn    = document.getElementById('login-btn');
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      errEl.textContent = '';
+      btn.disabled = true; btn.textContent = '…';
+
+      const password = document.getElementById('password').value;
+      try {
+        const res  = await fetch('/api/auth/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password }),
+        });
+        const data = await res.json();
+        if (!res.ok) { errEl.textContent = data.error; btn.disabled = false; btn.textContent = 'Einloggen'; return; }
+        window.location.href = data.redirect || '/admin/dashboard.html';
+      } catch {
+        errEl.textContent = 'Verbindungsfehler.';
+        btn.disabled = false; btn.textContent = 'Einloggen';
+      }
+    });
+  </script>
+</body>
+</html>

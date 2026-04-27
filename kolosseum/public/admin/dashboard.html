@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard – Admin</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .admin-nav { background: #12122a; }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 2rem 0 1.5rem; }
+    .stat-card { background: var(--card); border-radius: var(--radius); padding: 1.5rem; box-shadow: var(--shadow); text-align: center; }
+    .stat-value { font-family: 'Fredoka One', sans-serif; font-size: 2.5rem; color: var(--c4); }
+    .stat-label { color: var(--ink-soft); font-size: 0.9rem; font-weight: 700; margin-top: 0.25rem; }
+    .activity-row { display: flex; justify-content: space-between; align-items: center; padding: 0.65rem 1rem; border-bottom: 1px solid #e2e8f0; font-size: 0.9rem; }
+    .activity-row:last-child { border-bottom: none; }
+    .xp-pill { font-family: 'Fredoka One', sans-serif; font-size: 1rem; color: var(--c3); }
+    .xp-pill.neg { color: var(--c1); }
+  </style>
+</head>
+<body>
+  <nav class="nav admin-nav">
+    <a href="/admin/dashboard.html" class="nav-brand">⚙️ Admin</a>
+    <div class="nav-links">
+      <a href="/admin/dashboard.html" class="active">Dashboard</a>
+      <a href="/admin/schueler.html">Schüler</a>
+      <a href="/api/admin/export">CSV Export</a>
+      <button id="logout-btn" class="btn btn-ghost nav-action" style="font-size:.85rem">Ausloggen</button>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-bottom:3rem">
+    <h1 style="margin-top:2rem;font-size:1.8rem">Dashboard</h1>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="stat-students">–</div>
+        <div class="stat-label">Schülerinnen & Schüler</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-xp">–</div>
+        <div class="stat-label">Gesamt-XP vergeben</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-badges">–</div>
+        <div class="stat-label">Abzeichen freigeschaltet</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="font-size:1.2rem;margin-bottom:1rem">📜 Letzte Aktivitäten</h2>
+      <div id="activity-list"><div class="text-soft">Wird geladen…</div></div>
+    </div>
+  </main>
+
+  <script>
+    function fmtDate(iso) {
+      if (!iso) return '';
+      return new Date(iso).toLocaleString('de-DE', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' });
+    }
+
+    async function init() {
+      const chk = await fetch('/api/auth/admin/check');
+      if (!chk.ok) { window.location.href = '/admin/index.html'; return; }
+
+      const res  = await fetch('/api/admin/stats');
+      const data = await res.json();
+
+      document.getElementById('stat-students').textContent = data.totalStudents;
+      document.getElementById('stat-xp').textContent       = data.totalXP.toLocaleString('de-DE');
+      document.getElementById('stat-badges').textContent   = data.totalBadges;
+
+      const list = document.getElementById('activity-list');
+      if (!data.recentActivity.length) {
+        list.innerHTML = '<div class="text-soft" style="padding:1rem">Noch keine Aktivitäten.</div>';
+      } else {
+        list.innerHTML = data.recentActivity.map(a => `
+          <div class="activity-row">
+            <span><strong>${a.nick}</strong> – ${a.reason || 'XP erhalten'}</span>
+            <div style="display:flex;gap:.75rem;align-items:center">
+              <span class="text-soft" style="font-size:.8rem">${fmtDate(a.created_at)}</span>
+              <span class="xp-pill${a.amount < 0 ? ' neg' : ''}">${a.amount > 0 ? '+' : ''}${a.amount} XP</span>
+            </div>
+          </div>`).join('');
+      }
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await fetch('/api/auth/admin/logout', { method: 'POST' });
+      window.location.href = '/admin/index.html';
+    });
+
+    init().catch(console.error);
+  </script>
+</body>
+</html>
