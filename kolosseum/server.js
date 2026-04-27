@@ -6,9 +6,13 @@ const path = require('path');
 const { db, SQLiteSessionStore } = require('./db/database');
 const authRoutes     = require('./routes/auth');
 const studentRoutes  = require('./routes/students');
+const adminRoutes    = require('./routes/admin');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Render (und andere Reverse-Proxies) leiten HTTPS-Requests weiter
+if (process.env.NODE_ENV === 'production') app.set('trust proxy', 1);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -30,6 +34,7 @@ app.use(session({
 // Routes
 app.use('/api/auth',     authRoutes);
 app.use('/api/students', studentRoutes);
+app.use('/api/admin',    adminRoutes);
 
 // SPA-Catch: alle nicht-API-Routen geben die jeweilige HTML-Datei zurück
 // (oder leiten zu login weiter)

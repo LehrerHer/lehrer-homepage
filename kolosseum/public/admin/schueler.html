@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schüler – Admin</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .admin-nav { background: #12122a; }
+    .toolbar { display: flex; gap: 1rem; align-items: center; margin: 2rem 0 1rem; flex-wrap: wrap; }
+    .toolbar h1 { font-size: 1.8rem; flex: 1; }
+
+    /* Tabelle */
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th { background: var(--ink); color: #fff; padding: 0.75rem 1rem; text-align: left; font-family: 'Fredoka One', sans-serif; white-space: nowrap; }
+    td { padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
+    tr:hover td { background: var(--bg); }
+    .level-pill {
+      display: inline-block; padding: 0.2rem 0.65rem; border-radius: 50px;
+      font-size: 0.78rem; font-weight: 700; background: var(--c4); color: #fff;
+    }
+    .badge-count { color: var(--ink-soft); font-size: 0.85rem; }
+    .actions { display: flex; gap: 0.5rem; }
+    .btn-sm { padding: 0.35rem 0.75rem; font-size: 0.82rem; border-radius: 50px; border: none; cursor: pointer; font-family: 'Nunito', sans-serif; font-weight: 700; transition: opacity 0.2s; }
+    .btn-sm:hover { opacity: 0.8; }
+    .btn-xp  { background: var(--c3); color: #fff; }
+    .btn-del { background: var(--c1); color: #fff; }
+    .btn-badge { background: var(--c2); color: var(--ink); }
+
+    /* Modal */
+    .modal-bg {
+      position: fixed; inset: 0; background: rgba(26,26,46,0.6);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 999; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    }
+    .modal-bg.open { opacity: 1; pointer-events: all; }
+    .modal {
+      background: var(--card); border-radius: var(--radius); padding: 2rem;
+      max-width: 420px; width: 90%; box-shadow: var(--shadow-lg);
+      transform: scale(0.9); transition: transform 0.25s cubic-bezier(.34,1.56,.64,1);
+    }
+    .modal-bg.open .modal { transform: scale(1); }
+    .modal h2 { font-size: 1.3rem; margin-bottom: 1.25rem; }
+    .modal-footer { display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 1.25rem; }
+    .btn-cancel { background: #e2e8f0; color: var(--ink); }
+  </style>
+</head>
+<body>
+  <nav class="nav admin-nav">
+    <a href="/admin/dashboard.html" class="nav-brand">⚙️ Admin</a>
+    <div class="nav-links">
+      <a href="/admin/dashboard.html">Dashboard</a>
+      <a href="/admin/schueler.html" class="active">Schüler</a>
+      <a href="/api/admin/export">CSV Export</a>
+      <button id="logout-btn" class="btn btn-ghost nav-action" style="font-size:.85rem">Ausloggen</button>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-bottom:3rem">
+    <div class="toolbar">
+      <h1>Schülerinnen & Schüler</h1>
+      <button class="btn btn-primary" id="new-btn">+ Neu anlegen</button>
+    </div>
+
+    <div class="card table-wrap">
+      <table id="students-table">
+        <thead>
+          <tr>
+            <th>Spitzname</th>
+            <th>Klarname</th>
+            <th>Klasse</th>
+            <th>XP</th>
+            <th>Level</th>
+            <th>Abzeichen</th>
+            <th>Aktionen</th>
+          </tr>
+        </thead>
+        <tbody id="students-body">
+          <tr><td colspan="7" class="text-soft">Wird geladen…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <!-- Modal: Neuer Schüler -->
+  <div class="modal-bg" id="new-modal">
+    <div class="modal">
+      <h2>Neuen Schüler anlegen</h2>
+      <form id="new-form" novalidate>
+        <div class="form-group">
+          <label>Spitzname *</label>
+          <input type="text" id="new-nick" placeholder="z. B. Blitzadler" maxlength="30" required>
+        </div>
+        <div class="form-group">
+          <label>PIN (4 Ziffern) *</label>
+          <input type="text" id="new-pin" placeholder="z. B. 4782" maxlength="4" inputmode="numeric" required>
+        </div>
+        <div class="form-group">
+          <label>Klarname (optional)</label>
+          <input type="text" id="new-realname" placeholder="z. B. Max Mustermann">
+        </div>
+        <div class="form-group">
+          <label>Klasse (optional)</label>
+          <input type="text" id="new-class" placeholder="z. B. 8b">
+        </div>
+        <div class="form-error" id="new-error"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-cancel" id="new-cancel">Abbrechen</button>
+          <button type="submit" class="btn btn-primary btn-sm">Anlegen</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: XP anpassen -->
+  <div class="modal-bg" id="xp-modal">
+    <div class="modal">
+      <h2 id="xp-modal-title">XP anpassen</h2>
+      <form id="xp-form" novalidate>
+        <input type="hidden" id="xp-student-id">
+        <div class="form-group">
+          <label>XP-Betrag (negativ zum Abziehen)</label>
+          <input type="number" id="xp-amount" placeholder="z. B. 50 oder -20">
+        </div>
+        <div class="form-group">
+          <label>Grund</label>
+          <input type="text" id="xp-reason" placeholder="z. B. Arbeitsblatt eingereicht">
+        </div>
+        <div class="form-error" id="xp-error"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-cancel" id="xp-cancel">Abbrechen</button>
+          <button type="submit" class="btn btn-primary btn-sm">Speichern</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/avatar.js"></script>
+  <script>
+    const LEVEL_NAMES = ['Lehrling','Entdecker','Kämpfer','Held','Ritter','Champion','Legende'];
+    function levelName(xp) {
+      const info = getLevelInfo(xp);
+      return `${info.level.name}`;
+    }
+    function levelIndex(xp) {
+      return getLevelInfo(xp).index + 1;
+    }
+
+    let studentsData = [];
+
+    // ── Tabelle rendern ──────────────────────────────────────────────────────
+    function renderTable(students) {
+      const tbody = document.getElementById('students-body');
+      if (!students.length) {
+        tbody.innerHTML = '<tr><td colspan="7" class="text-soft">Noch keine Schüler angelegt.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = students.map(s => `
+        <tr>
+          <td><strong>${s.nick}</strong></td>
+          <td>${s.real_name || '<span class="text-soft">–</span>'}</td>
+          <td>${s.class    || '<span class="text-soft">–</span>'}</td>
+          <td><strong>${s.xp}</strong></td>
+          <td><span class="level-pill">Lvl ${levelIndex(s.xp)} ${levelName(s.xp)}</span></td>
+          <td class="badge-count">${s.badges.length} / 8</td>
+          <td>
+            <div class="actions">
+              <button class="btn-sm btn-xp"  onclick="openXP(${s.id}, '${s.nick}')">XP</button>
+              <button class="btn-sm btn-del" onclick="deleteStudent(${s.id}, '${s.nick}')">Löschen</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function loadStudents() {
+      const res  = await fetch('/api/admin/students');
+      studentsData = await res.json();
+      renderTable(studentsData);
+    }
+
+    // ── Modals ───────────────────────────────────────────────────────────────
+    function openModal(id)  { document.getElementById(id).classList.add('open'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+    document.getElementById('new-btn').addEventListener('click', () => openModal('new-modal'));
+    document.getElementById('new-cancel').addEventListener('click', () => closeModal('new-modal'));
+    document.getElementById('xp-cancel').addEventListener('click',  () => closeModal('xp-modal'));
+
+    // Neuen Schüler anlegen
+    document.getElementById('new-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const errEl = document.getElementById('new-error');
+      errEl.textContent = '';
+      const nick     = document.getElementById('new-nick').value.trim();
+      const pin      = document.getElementById('new-pin').value.trim();
+      const realName = document.getElementById('new-realname').value.trim();
+      const klasse   = document.getElementById('new-class').value.trim();
+
+      const res  = await fetch('/api/admin/students', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nick, pin, real_name: realName, class: klasse }),
+      });
+      const data = await res.json();
+      if (!res.ok) { errEl.textContent = data.error; return; }
+
+      closeModal('new-modal');
+      document.getElementById('new-form').reset();
+      await loadStudents();
+    });
+
+    // XP anpassen
+    function openXP(id, nick) {
+      document.getElementById('xp-student-id').value = id;
+      document.getElementById('xp-modal-title').textContent = `XP anpassen – ${nick}`;
+      document.getElementById('xp-error').textContent = '';
+      document.getElementById('xp-form').reset();
+      document.getElementById('xp-student-id').value = id;
+      openModal('xp-modal');
+    }
+
+    document.getElementById('xp-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const errEl  = document.getElementById('xp-error');
+      const id     = document.getElementById('xp-student-id').value;
+      const amount = document.getElementById('xp-amount').value;
+      const reason = document.getElementById('xp-reason').value.trim();
+
+      const res  = await fetch(`/api/admin/students/${id}/xp`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: Number(amount), reason }),
+      });
+      const data = await res.json();
+      if (!res.ok) { errEl.textContent = data.error; return; }
+
+      closeModal('xp-modal');
+      await loadStudents();
+    });
+
+    // Schüler löschen
+    async function deleteStudent(id, nick) {
+      if (!confirm(`"${nick}" wirklich löschen? Alle XP und Abzeichen gehen verloren.`)) return;
+      await fetch(`/api/admin/students/${id}`, { method: 'DELETE' });
+      await loadStudents();
+    }
+
+    // ── Init ─────────────────────────────────────────────────────────────────
+    async function init() {
+      const chk = await fetch('/api/auth/admin/check');
+      if (!chk.ok) { window.location.href = '/admin/index.html'; return; }
+      await loadStudents();
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await fetch('/api/auth/admin/logout', { method: 'POST' });
+      window.location.href = '/admin/index.html';
+    });
+
+    // PIN: nur Ziffern
+    document.getElementById('new-pin').addEventListener('input', e => {
+      e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+    });
+
+    init().catch(console.error);
+  </script>
+</body>
+</html>
