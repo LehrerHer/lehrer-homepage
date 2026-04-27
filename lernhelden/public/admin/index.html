@@ -14,7 +14,7 @@
 
     <div id="msg"></div>
 
-    <form id="adminLoginForm">
+    <form id="adminLoginForm" method="POST" action="/api/auth/admin-login">
       <div class="form-group">
         <label for="password">Passwort</label>
         <input type="password" id="password" name="password" placeholder="Admin-Passwort" autocomplete="current-password" required>
@@ -29,45 +29,62 @@
 </div>
 
 <script>
-// Redirect if already logged in
-(async () => {
-  const res = await fetch('/api/auth/admin-me');
-  const data = await res.json();
-  if (data.loggedIn) window.location.href = '/admin/dashboard';
-})();
-
-document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const msg = document.getElementById('msg');
-  const submitBtn = document.getElementById('submitBtn');
-  msg.innerHTML = '';
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Bitte warten…';
-
-  const password = document.getElementById('password').value;
-  try {
-    const res = await fetch('/api/auth/admin-login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password }),
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      msg.innerHTML = `<div class="alert alert-error">❌ ${data.error}</div>`;
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Anmelden';
-      document.getElementById('password').value = '';
-      document.getElementById('password').focus();
-      return;
-    }
-    submitBtn.textContent = '✓ Weiterleitung…';
-    window.location.href = '/admin/dashboard';
-  } catch {
-    msg.innerHTML = '<div class="alert alert-error">Verbindungsfehler.</div>';
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Anmelden';
+(function () {
+  // Show error from query param (server-side redirect sets ?error=...)
+  const params = new URLSearchParams(window.location.search);
+  const err = params.get('error');
+  if (err) {
+    const msgs = {
+      wrong:   'Falsches Passwort.',
+      missing: 'Bitte Passwort eingeben.',
+      server:  'Serverfehler – bitte erneut versuchen.',
+    };
+    document.getElementById('msg').innerHTML =
+      `<div class="alert alert-error">❌ ${msgs[err] || 'Fehler beim Anmelden.'}</div>`;
+    // Clean up URL so reload doesn't re-show the error
+    history.replaceState({}, '', '/admin');
   }
-});
+
+  // Redirect if already logged in
+  fetch('/api/auth/admin-me')
+    .then(r => r.json())
+    .then(d => { if (d.loggedIn) window.location.href = '/admin/dashboard'; })
+    .catch(() => {});
+
+  // Progressive enhancement: AJAX submit so the button shows feedback
+  document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    const msg = document.getElementById('msg');
+    msg.innerHTML = '';
+    btn.disabled = true;
+    btn.textContent = 'Bitte warten…';
+
+    const password = document.getElementById('password').value;
+    try {
+      const res = await fetch('/api/auth/admin-login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        msg.innerHTML = `<div class="alert alert-error">❌ ${data.error}</div>`;
+        btn.disabled = false;
+        btn.textContent = 'Anmelden';
+        document.getElementById('password').value = '';
+        document.getElementById('password').focus();
+        return;
+      }
+      btn.textContent = '✓ Weiterleitung…';
+      window.location.href = '/admin/dashboard';
+    } catch {
+      // JS fetch failed — fall back to native form submit
+      document.getElementById('adminLoginForm').removeEventListener('submit', arguments.callee);
+      document.getElementById('adminLoginForm').submit();
+    }
+  });
+})();
 </script>
 </body>
 </html>

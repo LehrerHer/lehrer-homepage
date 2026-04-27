@@ -119,7 +119,12 @@ function setAdminCookie(req, res) {
 
 router.post('/admin-login', adminLoginLimiter, async (req, res) => {
   const { password } = req.body;
-  if (!password) return res.status(400).json({ error: 'Passwort erforderlich' });
+  const isForm = !(req.headers['content-type'] || '').includes('application/json');
+
+  if (!password) {
+    if (isForm) return res.redirect('/admin?error=missing');
+    return res.status(400).json({ error: 'Passwort erforderlich' });
+  }
 
   try {
     let hash = process.env.ADMIN_PASSWORD_HASH;
@@ -129,12 +134,17 @@ router.post('/admin-login', adminLoginLimiter, async (req, res) => {
     if (!hash) hash = await bcrypt.hash('lernhelden', 10);
 
     const valid = await bcrypt.compare(password, hash);
-    if (!valid) return res.status(401).json({ error: 'Falsches Passwort' });
+    if (!valid) {
+      if (isForm) return res.redirect('/admin?error=wrong');
+      return res.status(401).json({ error: 'Falsches Passwort' });
+    }
 
     setAdminCookie(req, res);
+    if (isForm) return res.redirect('/admin/dashboard');
     res.json({ success: true });
   } catch (err) {
     console.error('Admin-Login-Fehler:', err);
+    if (isForm) return res.redirect('/admin?error=server');
     res.status(500).json({ error: 'Serverfehler' });
   }
 });
