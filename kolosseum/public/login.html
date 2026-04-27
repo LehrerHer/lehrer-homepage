@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lernkolosseum – Anmelden</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--ink) 0%, #2d2d5e 100%);
+    }
+
+    .login-wrap {
+      width: 100%;
+      max-width: 420px;
+      padding: 1rem;
+    }
+
+    .login-logo {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .login-logo .trophy { font-size: 4rem; display: block; margin-bottom: 0.5rem; }
+    .login-logo h1 {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 2.2rem;
+      color: var(--c2);
+      letter-spacing: 0.02em;
+    }
+    .login-logo p { color: rgba(255,255,255,0.6); font-size: 0.95rem; margin-top: 0.25rem; }
+
+    .login-card { background: var(--card); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow-lg); }
+
+    .pin-input {
+      letter-spacing: 0.5rem;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    .btn-login {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1.1rem;
+      margin-top: 0.5rem;
+    }
+
+    .admin-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.5rem;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .admin-link:hover { color: rgba(255,255,255,0.7); }
+  </style>
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-logo">
+      <span class="trophy">🏛️</span>
+      <h1>Lernkolosseum</h1>
+      <p>Melde dich mit deinem Spitznamen und deiner PIN an.</p>
+    </div>
+
+    <div class="login-card">
+      <form id="login-form" novalidate>
+        <div class="form-group">
+          <label for="nick">Dein Spitzname</label>
+          <input
+            type="text"
+            id="nick"
+            name="nick"
+            placeholder="z. B. Blitzadler"
+            autocomplete="username"
+            autocapitalize="none"
+            required
+            maxlength="30"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="pin">Deine PIN</label>
+          <input
+            type="password"
+            id="pin"
+            name="pin"
+            placeholder="••••"
+            class="pin-input"
+            maxlength="4"
+            inputmode="numeric"
+            pattern="[0-9]{4}"
+            autocomplete="current-password"
+            required
+          >
+        </div>
+
+        <div class="form-error" id="login-error" role="alert" aria-live="polite"></div>
+
+        <button type="submit" class="btn btn-primary btn-login" id="login-btn">
+          Einloggen ⚔️
+        </button>
+      </form>
+    </div>
+
+    <a href="/admin/index.html" class="admin-link">Admin-Bereich</a>
+  </div>
+
+  <script>
+    const form = document.getElementById('login-form');
+    const errorEl = document.getElementById('login-error');
+    const btn = document.getElementById('login-btn');
+    const pinInput = document.getElementById('pin');
+
+    // Nur Ziffern im PIN-Feld
+    pinInput.addEventListener('input', () => {
+      pinInput.value = pinInput.value.replace(/\D/g, '').slice(0, 4);
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorEl.textContent = '';
+      btn.disabled = true;
+      btn.textContent = '…';
+
+      const nick = document.getElementById('nick').value.trim();
+      const pin  = pinInput.value;
+
+      if (!nick || pin.length !== 4) {
+        errorEl.textContent = 'Bitte Spitzname und 4-stellige PIN eingeben.';
+        btn.disabled = false;
+        btn.textContent = 'Einloggen ⚔️';
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nick, pin }),
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          errorEl.textContent = data.error || 'Anmeldung fehlgeschlagen.';
+          btn.disabled = false;
+          btn.textContent = 'Einloggen ⚔️';
+          return;
+        }
+
+        window.location.href = data.redirect || '/profil.html';
+      } catch {
+        errorEl.textContent = 'Verbindungsfehler. Bitte erneut versuchen.';
+        btn.disabled = false;
+        btn.textContent = 'Einloggen ⚔️';
+      }
+    });
+  </script>
+</body>
+</html>
