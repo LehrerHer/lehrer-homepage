@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(session({
-  store: new PgSession({ pool, tableName: 'session', createTableIfMissing: false }),
+  store: new PgSession({ pool, tableName: 'session', createTableIfMissing: true }),
   secret: process.env.SESSION_SECRET || 'lerngladiatoren-dev-secret-bitte-aendern',
   resave: false,
   saveUninitialized: false,
