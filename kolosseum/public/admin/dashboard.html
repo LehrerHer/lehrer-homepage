@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard – Admin</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .admin-nav {
+      background: #12122a;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+    .admin-brand {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.3rem;
+      color: var(--c1);
+      text-decoration: none;
+    }
+    .admin-nav-links { display: flex; gap: 1.25rem; align-items: center; }
+    .admin-nav-links a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+    .admin-nav-links a:hover, .admin-nav-links a.active { color: #fff; }
+
+    .page-header { padding: 2rem 0 1.25rem; }
+    .page-header h1 { font-size: 1.8rem; }
+    .page-header p  { color: var(--ink-soft); margin-top: 0.25rem; }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      text-align: center;
+      padding: 1.5rem 1rem;
+    }
+    .stat-value {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 2.5rem;
+      color: var(--c3);
+    }
+    .stat-label { font-size: 0.85rem; font-weight: 700; color: var(--ink-soft); margin-top: 0.25rem; }
+
+    .activity-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .activity-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.65rem 1rem;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+    }
+    .activity-nick { font-weight: 700; }
+    .activity-reason { color: var(--ink-soft); }
+    .activity-xp {
+      font-family: 'Fredoka One', sans-serif;
+      color: var(--c3);
+      white-space: nowrap;
+    }
+    .activity-xp.neg { color: var(--c1); }
+
+    .activity-date { font-size: 0.78rem; color: var(--ink-soft); white-space: nowrap; }
+
+    .quick-links {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="admin-nav">
+    <a href="/admin/dashboard.html" class="admin-brand">⚙️ Admin</a>
+    <div class="admin-nav-links">
+      <a href="/admin/dashboard.html" class="active">Dashboard</a>
+      <a href="/admin/schueler.html">Schüler</a>
+      <a href="/admin/quiz.html">Quizze</a>
+      <button id="logout-btn" class="btn btn-ghost" style="font-size:.85rem;padding:.5rem 1rem">Ausloggen</button>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-bottom:3rem">
+
+    <div class="page-header">
+      <h1>📊 Dashboard</h1>
+      <p>Übersicht über das Lernkolosseum</p>
+    </div>
+
+    <div class="stats-grid" id="stats-grid">
+      <div class="card stat-card"><div class="stat-value" id="stat-students">–</div><div class="stat-label">Schüler</div></div>
+      <div class="card stat-card"><div class="stat-value" id="stat-xp">–</div><div class="stat-label">Gesamt-XP</div></div>
+      <div class="card stat-card"><div class="stat-value" id="stat-quizzes">–</div><div class="stat-label">Quizze</div></div>
+    </div>
+
+    <div class="quick-links">
+      <a href="/admin/schueler.html" class="btn btn-primary">+ Schüler anlegen</a>
+      <a href="/admin/quiz.html" class="btn btn-secondary">+ Quiz anlegen</a>
+      <a href="/api/admin/export" class="btn btn-ghost">⬇ CSV-Export</a>
+    </div>
+
+    <div class="card">
+      <h2 style="font-size:1.2rem;margin-bottom:1rem">📜 Letzte Aktivitäten</h2>
+      <div class="activity-list" id="activity-list">
+        <div class="text-soft">Wird geladen…</div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    (function () {
+      async function init() {
+        const check = await fetch('/api/auth/admin/check');
+        if (!check.ok) { window.location.href = '/admin/index.html'; return; }
+
+        const res = await fetch('/api/admin/stats');
+        if (!res.ok) return;
+        const { studentCount, totalXp, quizCount, recentActivity } = await res.json();
+
+        document.getElementById('stat-students').textContent = studentCount;
+        document.getElementById('stat-xp').textContent      = totalXp.toLocaleString('de-DE');
+        document.getElementById('stat-quizzes').textContent = quizCount;
+
+        const list = document.getElementById('activity-list');
+        if (!recentActivity.length) {
+          list.innerHTML = '<div class="text-soft">Noch keine Aktivitäten.</div>';
+          return;
+        }
+
+        list.innerHTML = recentActivity.map((a) => `
+          <div class="activity-item">
+            <div>
+              <span class="activity-nick">${escHtml(a.nick)}</span>
+              <span class="activity-reason"> – ${escHtml(a.reason || 'XP')}</span>
+            </div>
+            <div style="display:flex;gap:.75rem;align-items:center">
+              <span class="activity-date">${fmtDate(a.created_at)}</span>
+              <span class="activity-xp${a.amount < 0 ? ' neg' : ''}">${a.amount > 0 ? '+' : ''}${a.amount} XP</span>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      function fmtDate(iso) {
+        if (!iso) return '';
+        return new Date(iso).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+      }
+
+      function escHtml(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+
+      document.getElementById('logout-btn').addEventListener('click', async () => {
+        await fetch('/api/auth/admin/logout', { method: 'POST' });
+        window.location.href = '/admin/index.html';
+      });
+
+      init().catch(console.error);
+    })();
+  </script>
+</body>
+</html>

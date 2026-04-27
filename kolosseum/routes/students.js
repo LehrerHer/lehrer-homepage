@@ -45,4 +45,19 @@ router.get('/profile', requireStudent, (req, res) => {
   res.json({ student, badges, xpLog });
 });
 
+// GET /api/students/rangliste – Top-Schüler nach XP
+router.get('/rangliste', requireStudent, (req, res) => {
+  const students = db.prepare(`
+    SELECT s.id, s.nick, s.xp,
+           COUNT(sb.badge_id) AS badge_count
+    FROM students s
+    LEFT JOIN student_badges sb ON sb.student_id = s.id
+    GROUP BY s.id
+    ORDER BY s.xp DESC, s.nick ASC
+    LIMIT 50
+  `).all();
+
+  res.json(students);
+});
+
 module.exports = router;

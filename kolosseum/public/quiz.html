@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quizze – Lernkolosseum</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .page-header {
+      text-align: center;
+      padding: 2.5rem 0 1.5rem;
+    }
+    .page-header h1 { font-size: 2.2rem; }
+    .page-header p  { color: var(--ink-soft); margin-top: 0.4rem; }
+
+    .quiz-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.5rem;
+    }
+
+    .quiz-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .quiz-subject {
+      display: inline-block;
+      background: var(--c4);
+      color: #fff;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 0.2rem 0.65rem;
+      border-radius: 50px;
+    }
+
+    .quiz-title {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.3rem;
+      color: var(--ink);
+    }
+
+    .quiz-meta {
+      display: flex;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      font-weight: 700;
+    }
+
+    .quiz-result-bar {
+      background: #e2e8f0;
+      border-radius: 50px;
+      height: 8px;
+      overflow: hidden;
+    }
+    .quiz-result-fill {
+      height: 100%;
+      border-radius: 50px;
+      background: linear-gradient(90deg, var(--c3), var(--c4));
+    }
+
+    .quiz-result-label {
+      font-size: 0.8rem;
+      color: var(--ink-soft);
+      font-weight: 600;
+    }
+
+    .quiz-card .btn { align-self: flex-start; margin-top: auto; }
+
+    .empty { text-align: center; padding: 3rem; color: var(--ink-soft); }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="/profil.html" class="nav-brand">🏛️ Lernkolosseum</a>
+    <div class="nav-links">
+      <a href="/profil.html">Profil</a>
+      <a href="/rangliste.html">Rangliste</a>
+      <a href="/quiz.html" class="active">Quizze</a>
+      <button id="logout-btn" class="btn btn-ghost nav-action" style="font-size:.9rem">Ausloggen</button>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-bottom: 3rem;">
+
+    <div class="page-header">
+      <h1>🎮 Quizze</h1>
+      <p>Teste dein Wissen und sammle XP!</p>
+    </div>
+
+    <div class="quiz-grid" id="quiz-grid">
+      <div class="card"><div class="empty">Wird geladen…</div></div>
+    </div>
+
+  </main>
+
+  <script>
+    (function () {
+      async function init() {
+        const meRes = await fetch('/api/auth/me');
+        if (!meRes.ok) { window.location.href = '/login.html'; return; }
+
+        const res = await fetch('/api/quizzes');
+        if (!res.ok) return;
+        const quizzes = await res.json();
+
+        const grid = document.getElementById('quiz-grid');
+
+        if (!quizzes.length) {
+          grid.innerHTML = '<div class="card"><div class="empty">Noch keine Quizze vorhanden.</div></div>';
+          return;
+        }
+
+        grid.innerHTML = quizzes.map((q) => {
+          const result = q.myResult;
+          const xpMax  = q.question_count * 15;
+          const pct    = result ? Math.round((result.best_score / q.question_count) * 100) : null;
+
+          const resultHtml = result ? `
+            <div>
+              <div class="quiz-result-label">Beste Runde: ${result.best_score}/${q.question_count} (${pct}%) · ${result.best_xp} XP · ${result.attempts}× gespielt</div>
+              <div class="quiz-result-bar mt-1">
+                <div class="quiz-result-fill" style="width:${pct}%"></div>
+              </div>
+            </div>
+          ` : '<div class="quiz-result-label">Noch nicht gespielt</div>';
+
+          return `
+            <div class="card quiz-card">
+              ${q.subject ? `<span class="quiz-subject">${escHtml(q.subject)}</span>` : ''}
+              <div class="quiz-title">${escHtml(q.title)}</div>
+              <div class="quiz-meta">
+                <span>📝 ${q.question_count} Fragen</span>
+                <span>⚡ bis zu ${xpMax} XP</span>
+              </div>
+              ${resultHtml}
+              <a href="/quiz-spiel.html?id=${q.id}" class="btn btn-primary">
+                ${result ? 'Nochmal spielen' : 'Quiz starten'} →
+              </a>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function escHtml(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+
+      document.getElementById('logout-btn').addEventListener('click', async () => {
+        await fetch('/api/auth/logout', { method: 'POST' });
+        window.location.href = '/login.html';
+      });
+
+      init().catch(console.error);
+    })();
+  </script>
+</body>
+</html>
