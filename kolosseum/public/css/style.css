@@ -1,0 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+
+/* === DESIGN TOKENS === */
+:root {
+  --c1: #FF6B6B;
+  --c2: #FFE66D;
+  --c3: #4ECDC4;
+  --c4: #A78BFA;
+  --ink: #1a1a2e;
+  --ink-soft: #4a4a6a;
+  --card: #ffffff;
+  --bg: #f0f4ff;
+  --shadow: 0 4px 20px rgba(26,26,46,0.12);
+  --shadow-lg: 0 8px 32px rgba(26,26,46,0.18);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: 0.25s cubic-bezier(.4,0,.2,1);
+}
+
+/* === RESET === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; scroll-behavior: smooth; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+h1, h2, h3, .display {
+  font-family: 'Fredoka One', sans-serif;
+  line-height: 1.2;
+}
+
+/* === LAYOUT === */
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.center { text-align: center; }
+
+/* === CARDS === */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+}
+
+/* === BUTTONS === */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border: none;
+  border-radius: 50px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+  text-decoration: none;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.btn:active { transform: translateY(0); }
+
+.btn-primary { background: var(--c1); color: #fff; }
+.btn-primary:hover { background: #e05555; }
+
+.btn-secondary { background: var(--c4); color: #fff; }
+.btn-ghost { background: transparent; color: var(--ink); border: 2px solid var(--ink); }
+
+/* === FORMS === */
+.form-group { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.25rem; }
+
+label {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="number"],
+select,
+textarea {
+  padding: 0.8rem 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: var(--radius-sm);
+  font-family: 'Nunito', sans-serif;
+  font-size: 1rem;
+  color: var(--ink);
+  background: #fff;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  width: 100%;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--c4);
+  box-shadow: 0 0 0 3px rgba(167,139,250,0.2);
+}
+
+.form-error {
+  color: var(--c1);
+  font-size: 0.9rem;
+  font-weight: 700;
+  min-height: 1.2em;
+}
+
+/* === NAV === */
+.nav {
+  background: var(--ink);
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow);
+}
+.nav-brand {
+  font-family: 'Fredoka One', sans-serif;
+  font-size: 1.4rem;
+  color: var(--c2);
+  text-decoration: none;
+}
+.nav-links { display: flex; gap: 1.5rem; align-items: center; }
+.nav-links a {
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: color var(--transition);
+}
+.nav-links a:hover, .nav-links a.active { color: #fff; }
+
+/* === XP BALKEN === */
+.xp-bar-wrap {
+  background: #e2e8f0;
+  border-radius: 50px;
+  height: 14px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+}
+.xp-bar-fill {
+  height: 100%;
+  border-radius: 50px;
+  background: linear-gradient(90deg, var(--c3), var(--c4));
+  transition: width 0.8s cubic-bezier(.4,0,.2,1);
+}
+
+/* === BADGE === */
+.badge-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.badge-item {
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.9rem;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+}
+.badge-item.locked { opacity: 0.35; filter: grayscale(1); }
+
+/* === POPUPS === */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(26,26,46,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+}
+.popup-overlay.visible { opacity: 1; pointer-events: all; }
+
+.popup-box {
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+  padding: 2rem;
+  text-align: center;
+  max-width: 340px;
+  width: 90%;
+  transform: scale(0.8);
+  transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+}
+.popup-overlay.visible .popup-box { transform: scale(1); }
+
+.popup-xp { color: var(--c3); font-size: 2.5rem; font-family: 'Fredoka One', sans-serif; }
+.popup-badge { font-size: 3.5rem; }
+
+/* === KONFETTI (CSS only) === */
+@keyframes konfetti-fall {
+  0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(200px) rotate(720deg); opacity: 0; }
+}
+.konfetti-piece {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  animation: konfetti-fall 1.2s ease-in forwards;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+/* === RANGLISTE === */
+.rangliste-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.rangliste-table th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  background: var(--ink);
+  color: #fff;
+  font-family: 'Fredoka One', sans-serif;
+  font-size: 1rem;
+}
+.rangliste-table td {
+  padding: 0.85rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  vertical-align: middle;
+}
+.rangliste-table tr:hover td { background: var(--bg); }
+.rank-gold   { color: #ffd700; font-weight: 800; }
+.rank-silver { color: #9aa0a6; font-weight: 800; }
+.rank-bronze { color: #cd7f32; font-weight: 800; }
+
+/* === UTILITY === */
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.text-soft { color: var(--ink-soft); font-size: 0.9rem; }
+.text-big  { font-size: 1.2rem; font-weight: 700; }
+.divider   { border: none; border-top: 2px solid #e2e8f0; margin: 1.5rem 0; }
+
+/* === RESPONSIVE === */
+@media (max-width: 600px) {
+  .card { padding: 1.25rem; }
+  .nav-links { gap: 0.75rem; }
+}
