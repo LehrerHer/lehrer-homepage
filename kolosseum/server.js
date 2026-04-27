@@ -10,6 +10,9 @@ const studentRoutes  = require('./routes/students');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Render (und andere Reverse-Proxies) leiten HTTPS-Requests weiter
+if (process.env.NODE_ENV === 'production') app.set('trust proxy', 1);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
