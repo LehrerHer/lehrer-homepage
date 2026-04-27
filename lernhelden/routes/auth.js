@@ -1,9 +1,11 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const router = express.Router();
 const { pool } = require('../db/database');
 const { checkAndAwardBadges, checkStreakBadge } = require('../db/badges');
 const { loginLimiter, adminLoginLimiter } = require('../middleware/rateLimit');
+const { isAdminAuthed, getAdminSecret } = require('../middleware/auth');
 
 async function updateStreak(studentId) {
   const today = new Date().toISOString().split('T')[0];
@@ -51,6 +53,8 @@ async function grantStreakXP(studentId) {
   return 20;
 }
 
+// ── Schüler-Login ───────────────────────────────────────────────────────────
+
 router.post('/login', loginLimiter, async (req, res) => {
   const { nick, pin } = req.body;
   if (!nick || !pin) return res.status(400).json({ error: 'Nick und PIN erforderlich' });
@@ -72,8 +76,10 @@ router.post('/login', loginLimiter, async (req, res) => {
 
     req.session.studentId = student.id;
     req.session.studentNick = student.nick;
-
-    res.json({ success: true, nick: student.nick, streakXP, newBadges });
+    req.session.save(err => {
+      if (err) { console.error('Session-Fehler:', err); return res.status(500).json({ error: 'Session-Fehler' }); }
+      res.json({ success: true, nick: student.nick, streakXP, newBadges });
+    });
   } catch (err) {
     console.error('Login-Fehler:', err);
     res.status(500).json({ error: 'Serverfehler beim Login' });
@@ -91,6 +97,26 @@ router.get('/me', (req, res) => {
   res.json({ loggedIn: false });
 });
 
+// ── Admin-Login (stateless signed cookie, kein Session-Store) ──────────────
+
+function setAdminCookie(req, res) {
+  const ts = Date.now().toString(36);
+  const sig = crypto
+    .createHmac('sha256', getAdminSecret())
+    .update('admin:' + ts)
+    .digest('base64url');
+  const token = ts + '.' + sig;
+  const isSecure = req.secure || req.headers['x-forwarded-proto'] === 'https';
+  res.setHeader('Set-Cookie', [
+    `adminAuth=${encodeURIComponent(token)}`,
+    'HttpOnly',
+    'SameSite=Lax',
+    `Max-Age=${7 * 24 * 3600}`,
+    'Path=/',
+    ...(isSecure ? ['Secure'] : []),
+  ].join('; '));
+}
+
 router.post('/admin-login', adminLoginLimiter, async (req, res) => {
   const { password } = req.body;
   if (!password) return res.status(400).json({ error: 'Passwort erforderlich' });
@@ -105,11 +131,8 @@ router.post('/admin-login', adminLoginLimiter, async (req, res) => {
     const valid = await bcrypt.compare(password, hash);
     if (!valid) return res.status(401).json({ error: 'Falsches Passwort' });
 
-    req.session.adminId = 'admin';
-    req.session.save(err => {
-      if (err) { console.error('Session-Fehler:', err); return res.status(500).json({ error: 'Session-Fehler' }); }
-      res.json({ success: true });
-    });
+    setAdminCookie(req, res);
+    res.json({ success: true });
   } catch (err) {
     console.error('Admin-Login-Fehler:', err);
     res.status(500).json({ error: 'Serverfehler' });
@@ -117,12 +140,12 @@ router.post('/admin-login', adminLoginLimiter, async (req, res) => {
 });
 
 router.post('/admin-logout', (req, res) => {
-  req.session.adminId = null;
-  req.session.save(() => res.json({ success: true }));
+  res.setHeader('Set-Cookie', 'adminAuth=; HttpOnly; SameSite=Lax; Max-Age=0; Path=/');
+  res.json({ success: true });
 });
 
 router.get('/admin-me', (req, res) => {
-  res.json({ loggedIn: !!(req.session && req.session.adminId) });
+  res.json({ loggedIn: isAdminAuthed(req) });
 });
 
 module.exports = router;

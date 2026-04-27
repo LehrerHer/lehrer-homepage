@@ -5,7 +5,7 @@ const PgSession = require('connect-pg-simple')(session);
 const path = require('path');
 const { initDB, pool } = require('./db/database');
 const { seedDemoData } = require('./db/seeds');
-const { requireStudent, requireAdmin } = require('./middleware/auth');
+const { requireStudent, requireAdmin, isAdminAuthed } = require('./middleware/auth');
 const authRouter = require('./routes/auth');
 const studentsRouter = require('./routes/students');
 const quizRouter = require('./routes/quiz');
@@ -70,11 +70,11 @@ app.get('/inhalte.json', async (req, res) => {
 });
 
 app.get('/admin',            (req, res) => res.sendFile(pub('admin/index.html')));
-app.get('/admin/dashboard',  (req, res) => { if (req.session?.adminId) return res.sendFile(pub('admin/dashboard.html')); res.redirect('/admin'); });
-app.get('/admin/schueler',   (req, res) => { if (req.session?.adminId) return res.sendFile(pub('admin/schueler.html')); res.redirect('/admin'); });
-app.get('/admin/quiz',       (req, res) => { if (req.session?.adminId) return res.sendFile(pub('admin/quiz.html'));      res.redirect('/admin'); });
-app.get('/admin/export',        (req, res) => { if (req.session?.adminId) return res.sendFile(pub('admin/export.html'));       res.redirect('/admin'); });
-app.get('/admin/materialien',   (req, res) => { if (req.session?.adminId) return res.sendFile(pub('admin/materialien.html')); res.redirect('/admin'); });
+app.get('/admin/dashboard',  (req, res) => { if (isAdminAuthed(req)) return res.sendFile(pub('admin/dashboard.html')); res.redirect('/admin'); });
+app.get('/admin/schueler',   (req, res) => { if (isAdminAuthed(req)) return res.sendFile(pub('admin/schueler.html')); res.redirect('/admin'); });
+app.get('/admin/quiz',       (req, res) => { if (isAdminAuthed(req)) return res.sendFile(pub('admin/quiz.html'));      res.redirect('/admin'); });
+app.get('/admin/export',     (req, res) => { if (isAdminAuthed(req)) return res.sendFile(pub('admin/export.html'));    res.redirect('/admin'); });
+app.get('/admin/materialien',(req, res) => { if (isAdminAuthed(req)) return res.sendFile(pub('admin/materialien.html')); res.redirect('/admin'); });
 
 async function main() {
   try {
