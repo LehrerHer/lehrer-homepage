@@ -6,6 +6,7 @@ const loginLimiter = rateLimit({
   message: { error: 'Zu viele Anmeldeversuche. Bitte 15 Minuten warten.' },
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { trustProxy: false },
 });
 
 const adminLoginLimiter = rateLimit({
@@ -14,6 +15,7 @@ const adminLoginLimiter = rateLimit({
   message: { error: 'Zu viele Admin-Anmeldeversuche. Bitte 15 Minuten warten.' },
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { trustProxy: false },
 });
 
 module.exports = { loginLimiter, adminLoginLimiter };
