@@ -135,6 +135,49 @@
         .catch(function () { return []; });
     }
 
+    function ladeEntwicklungen() {
+        /* Manuell gepflegte Liste neu entwickelter Funktionen */
+        var eintraege = [
+            {
+                titel: 'Lernkolosseum: Quizsystem mit XP-Vergabe',
+                datum: '2026-04-25T12:00:00',
+                url:   'https://kolosseum.lehrer-herrmann.de/quiz.html'
+            },
+            {
+                titel: 'Lernkolosseum: Heldenrangliste',
+                datum: '2026-04-22T12:00:00',
+                url:   'https://kolosseum.lehrer-herrmann.de/rangliste.html'
+            },
+            {
+                titel: 'Lernkolosseum: Selbst-Registrierung mit Schul-E-Mail',
+                datum: '2026-04-20T12:00:00',
+                url:   'https://kolosseum.lehrer-herrmann.de/register.html'
+            },
+            {
+                titel: 'Admin-Panel für Schüler- und Quiz-Verwaltung',
+                datum: '2026-04-18T12:00:00',
+                url:   'https://kolosseum.lehrer-herrmann.de/admin/'
+            },
+            {
+                titel: 'Lernkolosseum mit Avatar-Levelsystem gestartet',
+                datum: '2026-04-10T12:00:00',
+                url:   'https://kolosseum.lehrer-herrmann.de/login.html'
+            }
+        ];
+        return Promise.resolve(eintraege.slice(0, 3).map(function (e) {
+            return {
+                typ:      'entwicklung',
+                icon:     '🛠️',
+                kat:      'Neue Funktion',
+                titel:    e.titel,
+                meta:     'Lernkolosseum',
+                datum:    e.datum,
+                url:      e.url,
+                nurDatum: true
+            };
+        }));
+    }
+
     /* ---- Rendern ---- */
 
     function render(alle) {
@@ -186,9 +229,10 @@
         Promise.all([
             ladeMaterialien(),
             ladeBlogbeitraege(),
-            ladeQuizBestenliste()
+            ladeQuizBestenliste(),
+            ladeEntwicklungen()
         ]).then(function (ergebnisse) {
-            var alle = ergebnisse[0].concat(ergebnisse[1]).concat(ergebnisse[2]);
+            var alle = ergebnisse[0].concat(ergebnisse[1]).concat(ergebnisse[2]).concat(ergebnisse[3]);
             render(alle);
         });
     }

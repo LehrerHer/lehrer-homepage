@@ -217,6 +217,13 @@ ul {
 /* Fach-Badges im Hero */
 .hero-faecher {
     display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.hero-faecher-reihe {
+    display: flex;
     gap: 10px;
     justify-content: center;
     flex-wrap: wrap;
