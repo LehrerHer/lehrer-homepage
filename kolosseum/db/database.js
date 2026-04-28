@@ -16,6 +16,13 @@ db.pragma('foreign_keys = ON');
 const schema = fs.readFileSync(path.join(__dirname, 'schema.sql'), 'utf8');
 db.exec(schema);
 
+// Migration: email-Spalte nachrüsten falls noch nicht vorhanden
+const cols = db.prepare("PRAGMA table_info(students)").all().map(c => c.name);
+if (!cols.includes('email')) {
+  db.exec('ALTER TABLE students ADD COLUMN email TEXT');
+  db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_students_email ON students(email) WHERE email IS NOT NULL');
+}
+
 // Session-Store für express-session auf Basis von better-sqlite3
 class SQLiteSessionStore {
   constructor(session) {

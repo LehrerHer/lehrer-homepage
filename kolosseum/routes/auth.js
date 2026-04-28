@@ -47,6 +47,63 @@ router.get('/me', requireStudent, (req, res) => {
   res.json(student);
 });
 
+// POST /api/auth/register – Selbstregistrierung mit Schul-E-Mail
+router.post('/register', loginLimiter, async (req, res) => {
+  const { email, nick, pin } = req.body;
+
+  if (!email || !nick || !pin) {
+    return res.status(400).json({ error: 'E-Mail, Spitzname und PIN erforderlich.' });
+  }
+
+  // E-Mail-Format prüfen
+  const emailLower = email.trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailLower)) {
+    return res.status(400).json({ error: 'Ungültige E-Mail-Adresse.' });
+  }
+
+  // Domain gegen Allowlist prüfen
+  const allowed = (process.env.ALLOWED_DOMAINS || 'obsspelle.de')
+    .split(',').map(d => d.trim().toLowerCase()).filter(Boolean);
+  const domain = emailLower.split('@')[1];
+  if (!allowed.includes(domain)) {
+    return res.status(403).json({
+      error: `Registrierung nur mit Schuladresse möglich (z. B. @${allowed[0]}).`,
+    });
+  }
+
+  // PIN-Format prüfen
+  if (!/^\d{4}$/.test(String(pin))) {
+    return res.status(400).json({ error: 'PIN muss genau 4 Ziffern haben.' });
+  }
+
+  // Spitzname: nur erlaubte Zeichen, 2–20 Zeichen
+  const nickClean = nick.trim();
+  if (nickClean.length < 2 || nickClean.length > 20) {
+    return res.status(400).json({ error: 'Spitzname muss 2–20 Zeichen lang sein.' });
+  }
+
+  // Eindeutigkeit prüfen
+  if (db.prepare('SELECT id FROM students WHERE email = ?').get(emailLower)) {
+    return res.status(409).json({ error: 'Diese E-Mail-Adresse ist bereits registriert.' });
+  }
+  if (db.prepare('SELECT id FROM students WHERE nick = ?').get(nickClean)) {
+    return res.status(409).json({ error: 'Dieser Spitzname ist bereits vergeben.' });
+  }
+
+  const pin_hash = await bcrypt.hash(String(pin), 10);
+  const { lastInsertRowid: studentId } = db.prepare(
+    'INSERT INTO students (nick, pin_hash, email) VALUES (?, ?, ?)'
+  ).run(nickClean, pin_hash, emailLower);
+
+  // Erster-Tag-Badge
+  db.prepare('INSERT OR IGNORE INTO student_badges (student_id, badge_id) VALUES (?, ?)').run(studentId, 'first_day');
+
+  req.session.studentId = studentId;
+  req.session.nick = nickClean;
+
+  res.status(201).json({ ok: true, nick: nickClean, redirect: '/profil.html' });
+});
+
 // POST /api/auth/admin/login
 router.post('/admin/login', loginLimiter, async (req, res) => {
   const { password } = req.body;

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrieren – Lernkolosseum</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--ink) 0%, #2d2d5e 100%);
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 440px;
+      padding: 1rem;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .logo .icon { font-size: 4rem; display: block; margin-bottom: 0.5rem; }
+    .logo h1 {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 2.2rem;
+      color: var(--c2);
+    }
+    .logo p { color: rgba(255,255,255,0.6); font-size: 0.95rem; margin-top: 0.25rem; }
+
+    .card { background: var(--card); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow-lg); }
+
+    .steps {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+    }
+    .step {
+      flex: 1;
+      height: 4px;
+      border-radius: 2px;
+      background: #e2e8f0;
+      transition: background 0.3s;
+    }
+    .step.done { background: var(--c3); }
+    .step.active { background: var(--c4); }
+
+    .pin-input {
+      letter-spacing: 0.5rem;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    .hint {
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      margin-top: 0.25rem;
+    }
+
+    .btn-full { width: 100%; padding: 1rem; font-size: 1.1rem; margin-top: 0.5rem; }
+
+    .bottom-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.5rem;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .bottom-link:hover { color: rgba(255,255,255,0.7); }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <div class="logo">
+      <span class="icon">🏛️</span>
+      <h1>Lernkolosseum</h1>
+      <p>Erstelle deinen Helden-Account</p>
+    </div>
+
+    <div class="card">
+      <!-- Fortschrittsanzeige -->
+      <div class="steps" id="steps">
+        <div class="step active" id="step-1"></div>
+        <div class="step" id="step-2"></div>
+        <div class="step" id="step-3"></div>
+      </div>
+
+      <!-- Schritt 1: E-Mail -->
+      <div id="view-email">
+        <h2 style="font-size:1.2rem;margin-bottom:1.25rem">Schritt 1 – Deine Schuladresse</h2>
+        <form id="form-email" novalidate>
+          <div class="form-group">
+            <label for="email">Schul-E-Mail-Adresse</label>
+            <input type="email" id="email" placeholder="deinname@obsspelle.de"
+                   autocomplete="email" inputmode="email" required>
+            <div class="hint" id="domain-hint">Nur Adressen der Oberschule Spelle erlaubt.</div>
+          </div>
+          <div class="form-error" id="email-error" role="alert" aria-live="polite"></div>
+          <button type="submit" class="btn btn-primary btn-full">Weiter →</button>
+        </form>
+      </div>
+
+      <!-- Schritt 2: Spitzname -->
+      <div id="view-nick" style="display:none">
+        <h2 style="font-size:1.2rem;margin-bottom:1.25rem">Schritt 2 – Dein Helden-Name</h2>
+        <form id="form-nick" novalidate>
+          <div class="form-group">
+            <label for="nick">Spitzname</label>
+            <input type="text" id="nick" placeholder="z. B. Blitzadler"
+                   maxlength="20" autocapitalize="none" required>
+            <div class="hint">2–20 Zeichen. Dieser Name ist für alle sichtbar.</div>
+          </div>
+          <div class="form-error" id="nick-error" role="alert" aria-live="polite"></div>
+          <button type="submit" class="btn btn-primary btn-full">Weiter →</button>
+        </form>
+      </div>
+
+      <!-- Schritt 3: PIN -->
+      <div id="view-pin" style="display:none">
+        <h2 style="font-size:1.2rem;margin-bottom:1.25rem">Schritt 3 – Deine PIN</h2>
+        <form id="form-pin" novalidate>
+          <div class="form-group">
+            <label for="pin">4-stellige PIN</label>
+            <input type="password" id="pin" placeholder="••••"
+                   class="pin-input" maxlength="4" inputmode="numeric"
+                   pattern="[0-9]{4}" autocomplete="new-password" required>
+            <div class="hint">Nur Ziffern, genau 4 Stellen. Merke sie dir gut!</div>
+          </div>
+          <div class="form-group">
+            <label for="pin2">PIN wiederholen</label>
+            <input type="password" id="pin2" placeholder="••••"
+                   class="pin-input" maxlength="4" inputmode="numeric"
+                   autocomplete="new-password" required>
+          </div>
+          <div class="form-error" id="pin-error" role="alert" aria-live="polite"></div>
+          <button type="submit" class="btn btn-primary btn-full" id="register-btn">
+            Account erstellen 🏛️
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <a href="/login.html" class="bottom-link">← Schon registriert? Hier anmelden</a>
+  </div>
+
+  <script>
+    (function () {
+      let emailVal = '';
+      let nickVal  = '';
+
+      // ── Hilfsfunktionen ─────────────────────────────────────────────────────
+
+      function showView(name) {
+        ['email', 'nick', 'pin'].forEach(v => {
+          document.getElementById(`view-${v}`).style.display = v === name ? 'block' : 'none';
+          const stepEl = document.getElementById(`step-${['email','nick','pin'].indexOf(v) + 1}`);
+          const idx = ['email','nick','pin'].indexOf(name);
+          const vIdx = ['email','nick','pin'].indexOf(v);
+          stepEl.className = `step ${vIdx < idx ? 'done' : vIdx === idx ? 'active' : ''}`;
+        });
+      }
+
+      // ── Schritt 1: E-Mail ────────────────────────────────────────────────────
+
+      document.getElementById('form-email').addEventListener('submit', async e => {
+        e.preventDefault();
+        const errEl = document.getElementById('email-error');
+        errEl.textContent = '';
+        const val = document.getElementById('email').value.trim().toLowerCase();
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+          errEl.textContent = 'Bitte eine gültige E-Mail-Adresse eingeben.';
+          return;
+        }
+
+        emailVal = val;
+        showView('nick');
+        setTimeout(() => document.getElementById('nick').focus(), 50);
+      });
+
+      // ── Schritt 2: Spitzname ─────────────────────────────────────────────────
+
+      document.getElementById('form-nick').addEventListener('submit', e => {
+        e.preventDefault();
+        const errEl = document.getElementById('nick-error');
+        errEl.textContent = '';
+        const val = document.getElementById('nick').value.trim();
+
+        if (val.length < 2 || val.length > 20) {
+          errEl.textContent = 'Spitzname muss 2–20 Zeichen lang sein.';
+          return;
+        }
+
+        nickVal = val;
+        showView('pin');
+        setTimeout(() => document.getElementById('pin').focus(), 50);
+      });
+
+      // ── PIN: nur Ziffern ─────────────────────────────────────────────────────
+
+      ['pin', 'pin2'].forEach(id => {
+        document.getElementById(id).addEventListener('input', e => {
+          e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+        });
+      });
+
+      // ── Schritt 3: Registrierung abschicken ──────────────────────────────────
+
+      document.getElementById('form-pin').addEventListener('submit', async e => {
+        e.preventDefault();
+        const errEl = document.getElementById('pin-error');
+        const btn   = document.getElementById('register-btn');
+        errEl.textContent = '';
+
+        const pin  = document.getElementById('pin').value;
+        const pin2 = document.getElementById('pin2').value;
+
+        if (pin.length !== 4) { errEl.textContent = 'PIN muss genau 4 Ziffern haben.'; return; }
+        if (pin !== pin2)     { errEl.textContent = 'Die PINs stimmen nicht überein.'; return; }
+
+        btn.disabled = true;
+        btn.textContent = '…';
+
+        try {
+          const res  = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: emailVal, nick: nickVal, pin }),
+          });
+          const data = await res.json();
+
+          if (!res.ok) {
+            errEl.textContent = data.error || 'Registrierung fehlgeschlagen.';
+            btn.disabled = false;
+            btn.textContent = 'Account erstellen 🏛️';
+            // Bei E-Mail-Fehler zurück zu Schritt 1
+            if (data.error && data.error.includes('E-Mail')) showView('email');
+            // Bei Spitzname-Fehler zurück zu Schritt 2
+            if (data.error && data.error.includes('Spitzname')) showView('nick');
+            return;
+          }
+
+          window.location.href = data.redirect || '/profil.html';
+        } catch {
+          errEl.textContent = 'Verbindungsfehler. Bitte erneut versuchen.';
+          btn.disabled = false;
+          btn.textContent = 'Account erstellen 🏛️';
+        }
+      });
+
+      // ── Bereits eingeloggt? ──────────────────────────────────────────────────
+      fetch('/api/auth/me').then(r => {
+        if (r.ok) window.location.href = '/profil.html';
+      });
+    })();
+  </script>
+</body>
+</html>
