@@ -1677,6 +1677,27 @@ footer {
     color: #fff;
 }
 
+/* Ghost-Variante (ohne Login spielen) */
+.kolosseum-btn-ghost {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    box-shadow: none;
+}
+.kolosseum-btn-ghost:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: none;
+}
+
+/* CTA-Gruppe: zwei Buttons nebeneinander */
+.kolosseum-cta-gruppe {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 0;
+}
+
 /* === PORTAL-KARTEN === */
 .portale-grid {
     display: grid;

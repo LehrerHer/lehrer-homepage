@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Heldenprofil – Lernkolosseum</title>
+  <title>Gladiator-Profil – Lernkolosseum</title>
   <link rel="stylesheet" href="/css/style.css">
   <style>
     /* === PROFIL LAYOUT === */
@@ -161,7 +161,7 @@
         </div>
 
         <div class="hero-nick" id="hero-nick">…</div>
-        <div class="hero-level" id="hero-level">Lehrling</div>
+        <div class="hero-level" id="hero-level">Rekrut</div>
 
         <div class="xp-section">
           <div class="xp-total" id="xp-total">0 XP</div>
@@ -172,7 +172,7 @@
           <div class="xp-bar-wrap">
             <div class="xp-bar-fill" id="xp-bar-fill" style="width:0%"></div>
           </div>
-          <div class="text-soft mt-1" id="xp-next-label">Nächstes Level: Entdecker</div>
+          <div class="text-soft mt-1" id="xp-next-label">Nächstes Level: Gladiator</div>
         </div>
       </div>
 
@@ -181,7 +181,7 @@
 
         <!-- Badges -->
         <div class="card">
-          <h2 style="font-size:1.3rem; margin-bottom:1rem;">🏅 Abzeichen</h2>
+          <h2 style="font-size:1.3rem; margin-bottom:1rem;">🗡️ Ausrüstung</h2>
           <div class="badge-grid" id="badge-grid">
             <div class="text-soft">Wird geladen…</div>
           </div>
@@ -189,7 +189,7 @@
 
         <!-- XP-Log -->
         <div class="card">
-          <h2 style="font-size:1.3rem; margin-bottom:1rem;">📜 Letzte Aktivitäten</h2>
+          <h2 style="font-size:1.3rem; margin-bottom:1rem;">📜 Kampfchronik</h2>
           <div class="xp-log-list" id="xp-log-list">
             <div class="text-soft">Wird geladen…</div>
           </div>
@@ -203,7 +203,7 @@
   <div class="popup-overlay" id="badge-popup" role="dialog" aria-modal="true" aria-labelledby="popup-badge-name">
     <div class="popup-box">
       <span class="popup-emoji" id="popup-emoji">🌟</span>
-      <div class="popup-title" id="popup-badge-name">Abzeichen freigeschaltet!</div>
+      <div class="popup-title" id="popup-badge-name">Ausrüstung erspielt!</div>
       <div class="popup-sub"   id="popup-badge-desc"></div>
       <button class="btn btn-primary popup-btn" id="popup-close-btn">Super! ✨</button>
     </div>
@@ -232,7 +232,7 @@
       if (!badgeQueue.length) return;
       const badge = badgeQueue.shift();
       popupEmoji.textContent = badge.emoji;
-      popupName.textContent  = `Abzeichen freigeschaltet: ${badge.name}`;
+      popupName.textContent  = `Ausrüstung erspielt: ${badge.name}`;
       popupDesc.textContent  = badge.desc;
       popup.classList.add('visible');
     }

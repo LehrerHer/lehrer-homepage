@@ -104,12 +104,12 @@ router.delete('/students/:id', (req, res) => {
 // GET /api/admin/export  (CSV mit BOM für Excel)
 router.get('/export', (req, res) => {
   const LEVEL_NAMES = [
-    { name: 'Lehrling', xp: 0 }, { name: 'Entdecker', xp: 100 },
-    { name: 'Kämpfer',  xp: 250 }, { name: 'Held',    xp: 500 },
-    { name: 'Ritter',   xp: 900 }, { name: 'Champion', xp: 1400 },
-    { name: 'Legende',  xp: 2000 },
+    { name: 'Rekrut',    xp: 0 }, { name: 'Gladiator', xp: 100 },
+    { name: 'Kämpfer',   xp: 250 }, { name: 'Krieger',  xp: 500 },
+    { name: 'Veteran',   xp: 900 }, { name: 'Champion', xp: 1400 },
+    { name: 'Legende',   xp: 2000 },
   ];
-  const getLevel = xp => [...LEVEL_NAMES].reverse().find(l => xp >= l.xp)?.name ?? 'Lehrling';
+  const getLevel = xp => [...LEVEL_NAMES].reverse().find(l => xp >= l.xp)?.name ?? 'Rekrut';
 
   const students = db.prepare(`
     SELECT s.id, s.nick, s.xp, s.created_at, s.last_active, sn.real_name, sn.class

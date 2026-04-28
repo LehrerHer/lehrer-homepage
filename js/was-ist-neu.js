@@ -144,22 +144,22 @@
                 url:   'https://kolosseum.lehrer-herrmann.de/quiz.html'
             },
             {
-                titel: 'Lernkolosseum: Heldenrangliste',
+                titel: 'Lernkolosseum: Gladiatorenrangliste',
                 datum: '2026-04-22T12:00:00',
                 url:   'https://kolosseum.lehrer-herrmann.de/rangliste.html'
             },
             {
-                titel: 'Lernkolosseum: Selbst-Registrierung mit Schul-E-Mail',
+                titel: 'Lernkolosseum: Registrierung mit Schul-E-Mail',
                 datum: '2026-04-20T12:00:00',
                 url:   'https://kolosseum.lehrer-herrmann.de/register.html'
             },
             {
-                titel: 'Admin-Panel für Schüler- und Quiz-Verwaltung',
+                titel: 'Admin-Panel für Gladiatoren- und Quiz-Verwaltung',
                 datum: '2026-04-18T12:00:00',
                 url:   'https://kolosseum.lehrer-herrmann.de/admin/'
             },
             {
-                titel: 'Lernkolosseum mit Avatar-Levelsystem gestartet',
+                titel: 'Lernkolosseum: Gladiator aufleveln, Waffen erspielen',
                 datum: '2026-04-10T12:00:00',
                 url:   'https://kolosseum.lehrer-herrmann.de/login.html'
             }
