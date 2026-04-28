@@ -224,24 +224,25 @@
       <div class="result-actions">
         <button class="btn btn-primary" id="retry-btn">Nochmal</button>
         <a href="/quiz.html" class="btn btn-secondary">Alle Quizze</a>
-        <a href="/profil.html" class="btn btn-ghost">Zum Profil</a>
+        <a href="/profil.html" class="btn btn-ghost" id="profil-btn">Zum Profil</a>
       </div>
     </div>
   </div>
 
   <script>
     (function () {
-      let quiz     = null;
+      let quiz      = null;
       let questions = [];
-      let current  = 0;
-      let answers  = [];
-      let quizId   = null;
+      let current   = 0;
+      let answers   = [];
+      let quizId    = null;
+      let loggedIn  = false;
 
       // ── Init ────────────────────────────────────────────────────────────────
 
       async function init() {
         const meRes = await fetch('/api/auth/me');
-        if (!meRes.ok) { window.location.href = '/login.html'; return; }
+        loggedIn = meRes.ok;
 
         const params = new URLSearchParams(window.location.search);
         quizId = params.get('id');
@@ -341,14 +342,22 @@
         document.getElementById('question-card').style.display = 'none';
         document.getElementById('progress-row').style.display  = 'none';
 
-        const res = await fetch(`/api/quizzes/${quizId}/submit`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ answers }),
-        });
-
-        const result = await res.json();
-        showResult(result);
+        if (loggedIn) {
+          // Eingeloggt → Server speichert Ergebnis und XP
+          const res = await fetch(`/api/quizzes/${quizId}/submit`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ answers }),
+          });
+          const result = await res.json();
+          showResult(result);
+        } else {
+          // Gast → lokal auswerten (correct_index kommt jetzt vom Server)
+          let score = 0;
+          const maxXp = questions.reduce((sum, q) => sum + (q.xp_value || 15), 0);
+          questions.forEach((q, i) => { if (answers[i] === q.correct_index) score++; });
+          showResult({ score, total: questions.length, xpEarned: 0, isRepeat: false, isGuest: true, maxXp });
+        }
       }
 
       // ── Ergebnis anzeigen ───────────────────────────────────────────────────
@@ -364,15 +373,26 @@
 
         document.getElementById('result-emoji').textContent = emoji;
         document.getElementById('result-title').textContent =
-          pct === 100 ? 'Perfektes Quiz!' : pct >= 60 ? 'Super gemacht!' : 'Weiter üben!';
+          pct === 100 ? 'Perfekter Sieg!' : pct >= 60 ? 'Gut gekämpft!' : 'Weiter üben!';
         document.getElementById('result-score').textContent =
-          `${result.score}/${result.total} (${pct}%)`;
-        document.getElementById('result-xp').textContent =
-          result.xpEarned > 0 ? `+${result.xpEarned} XP erhalten` : 'Keine neuen XP (Wiederholung)';
+          `${result.score} / ${result.total} (${pct}%)`;
 
-        if (result.isRepeat) {
-          document.getElementById('result-repeat').textContent =
-            'Bei Wiederholungen gibt es nur 25% der XP.';
+        const xpEl     = document.getElementById('result-xp');
+        const repeatEl = document.getElementById('result-repeat');
+
+        if (result.isGuest) {
+          // Gast: XP-Einladung anzeigen
+          xpEl.textContent = `Dein Gladiator hätte ${result.maxXp} Kampferfahrung verdient!`;
+          repeatEl.innerHTML =
+            `<a href="/register.html" class="btn btn-primary" style="margin-top:.75rem;display:inline-flex">
+               🗡️ Gladiator werden &amp; XP kassieren
+             </a>`;
+        } else if (result.xpEarned > 0) {
+          xpEl.textContent = `+${result.xpEarned} Kampferfahrung erhalten ⚔️`;
+          repeatEl.textContent = '';
+        } else {
+          xpEl.textContent = 'Bereits absolviert – keine neuen Kampferfahrung.';
+          repeatEl.textContent = 'Jedes Quiz zählt nur beim ersten Mal.';
         }
 
         document.getElementById('result-overlay').classList.add('visible');

@@ -103,9 +103,22 @@
 
   <script>
     (function () {
+      let loggedIn = false;
+
       async function init() {
         const meRes = await fetch('/api/auth/me');
-        if (!meRes.ok) { window.location.href = '/login.html'; return; }
+        loggedIn = meRes.ok;
+
+        // Logout-Button nur für eingeloggte SuS zeigen
+        const logoutBtn = document.getElementById('logout-btn');
+        if (loggedIn) {
+          logoutBtn.addEventListener('click', async () => {
+            await fetch('/api/auth/logout', { method: 'POST' });
+            window.location.href = '/login.html';
+          });
+        } else {
+          logoutBtn.style.display = 'none';
+        }
 
         const res = await fetch('/api/quizzes');
         if (!res.ok) return;
@@ -119,18 +132,26 @@
         }
 
         grid.innerHTML = quizzes.map((q) => {
-          const result = q.myResult;
+          const result = loggedIn ? q.myResult : null;
           const xpMax  = q.question_count * 15;
           const pct    = result ? Math.round((result.best_score / q.question_count) * 100) : null;
 
-          const resultHtml = result ? `
-            <div>
-              <div class="quiz-result-label">Beste Runde: ${result.best_score}/${q.question_count} (${pct}%) · ${result.best_xp} XP · ${result.attempts}× gespielt</div>
-              <div class="quiz-result-bar mt-1">
-                <div class="quiz-result-fill" style="width:${pct}%"></div>
-              </div>
-            </div>
-          ` : '<div class="quiz-result-label">Noch nicht gespielt</div>';
+          let resultHtml;
+          if (result) {
+            resultHtml = `
+              <div>
+                <div class="quiz-result-label">Beste Runde: ${result.best_score}/${q.question_count} (${pct}%) · ${result.best_xp} XP · ${result.attempts}× gespielt</div>
+                <div class="quiz-result-bar mt-1">
+                  <div class="quiz-result-fill" style="width:${pct}%"></div>
+                </div>
+              </div>`;
+          } else if (loggedIn) {
+            resultHtml = '<div class="quiz-result-label">Noch nicht gespielt – bis zu ' + xpMax + ' Kampferfahrung!</div>';
+          } else {
+            resultHtml = '<div class="quiz-result-label" style="color:var(--c4)">⚔️ Gladiator werden → XP verdienen</div>';
+          }
+
+          const btnLabel = result && result.attempts > 0 ? 'Nochmal spielen' : 'Quiz starten';
 
           return `
             <div class="card quiz-card">
@@ -138,11 +159,11 @@
               <div class="quiz-title">${escHtml(q.title)}</div>
               <div class="quiz-meta">
                 <span>📝 ${q.question_count} Fragen</span>
-                <span>⚡ bis zu ${xpMax} XP</span>
+                <span>⚡ bis zu ${xpMax} Kampferfahrung</span>
               </div>
               ${resultHtml}
               <a href="/quiz-spiel.html?id=${q.id}" class="btn btn-primary">
-                ${result ? 'Nochmal spielen' : 'Quiz starten'} →
+                ${btnLabel} →
               </a>
             </div>
           `;
@@ -152,11 +173,6 @@
       function escHtml(s) {
         return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       }
-
-      document.getElementById('logout-btn').addEventListener('click', async () => {
-        await fetch('/api/auth/logout', { method: 'POST' });
-        window.location.href = '/login.html';
-      });
 
       init().catch(console.error);
     })();

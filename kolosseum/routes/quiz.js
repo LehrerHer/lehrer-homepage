@@ -35,7 +35,7 @@ router.get('/:id', (req, res) => {
   if (!quiz) return res.status(404).json({ error: 'Quiz nicht gefunden.' });
 
   const questions = db.prepare(
-    'SELECT id, question_text, options, xp_value FROM questions WHERE quiz_id = ? ORDER BY id ASC'
+    'SELECT id, question_text, options, correct_index, xp_value FROM questions WHERE quiz_id = ? ORDER BY id ASC'
   ).all(quiz.id);
 
   res.json({
@@ -87,19 +87,14 @@ router.post('/:id/submit', requireStudent, (req, res) => {
     'INSERT INTO quiz_results (student_id, quiz_id, score, total, xp_earned, attempt_number) VALUES (?, ?, ?, ?, ?, ?)'
   ).run(studentId, quizId, score, questions.length, xpEarned, prevAttempts + 1);
 
-  // XP gutschreiben (auch bei Wiederholung, aber nur bei erstem Versuch vollen Betrag)
-  const xpToAdd = prevAttempts === 0 ? xpEarned : Math.floor(xpEarned * 0.25);
+  // XP nur beim ersten Mal gutschreiben – Wiederholungen bringen keine XP
+  const xpToAdd = prevAttempts === 0 ? xpEarned : 0;
   if (xpToAdd > 0) {
-    const student = db.prepare('SELECT xp FROM students WHERE id = ?').get(studentId);
     db.prepare('UPDATE students SET xp = xp + ?, last_active = CURRENT_TIMESTAMP WHERE id = ?')
       .run(xpToAdd, studentId);
     db.prepare(
       'INSERT INTO xp_log (student_id, amount, reason, quiz_id) VALUES (?, ?, ?, ?)'
-    ).run(studentId, xpToAdd,
-      prevAttempts === 0
-        ? `Quiz: ${quiz.title}`
-        : `Quiz (Wiederholung): ${quiz.title}`,
-      quizId);
+    ).run(studentId, xpToAdd, `Quiz: ${quiz.title}`, quizId);
   }
 
   // Badges prüfen
