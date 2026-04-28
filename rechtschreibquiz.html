@@ -226,6 +226,9 @@ vertical-align: middle;
   <div id="quiz-area"><p class="hint">Bitte wähle oben eine Klassenstufe, um zu starten.</p></div>
 </div>
 
+<div id="kb" style="display:none; max-width:700px; margin:24px auto 0; border:2px solid #4a9eda; border-radius:14px; padding:18px 20px; background:#e8f4fc; text-align:center; font-family:system-ui,sans-serif; line-height:1.6; color:#1a1a18">
+  <div id="kb-content"></div>
+</div>
 <div id="lb-section" style="display:none; max-width:700px; margin:24px auto 0; background:#fff; border-radius:14px; padding:1.5rem 2rem; border:1px solid #e0ded6; color:#1a1a18">
   <div style="font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;color:#27500a">🌐 Geteilte Bestenliste</div>
   <div id="rs-lb-form" style="display:none;display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
@@ -333,6 +336,7 @@ function buildPool(){
   pool = shuffle(Q.filter(q=>q.lv===curLv && active.has(q.cat)));
   idx=0; score=0;
   const lb=document.getElementById('lb-section'); if(lb) lb.style.display='none';
+  const kb=document.getElementById('kb'); if(kb){ kb.style.display='none'; document.getElementById('kb-content').innerHTML=''; }
 }
 
 function renderCats(){
@@ -367,6 +371,7 @@ function renderQ(){
     area.innerHTML=`<div class="done-card"><h3>${score} von ${pool.length} richtig (${pct}\u202f%)</h3><p>${msg}</p><button class="restart-btn" onclick="buildPool();renderQ()">Nochmal (gleiche Stufe)</button></div>`;
     document.getElementById('prog-fill').style.width='100%';
     document.getElementById('prog-label').textContent=pool.length+' / '+pool.length;
+    kolosseumReport(score, pool.length, 'rechtschreibung');
     // Bestenliste anzeigen
     const lbSec=document.getElementById('lb-section');
     if(lbSec){
@@ -493,6 +498,47 @@ async function rsLbEintragen(){
   await rsLbSpeichern(lbSec.dataset.modus,name,+lbSec.dataset.score,+lbSec.dataset.maximum);
   document.getElementById('rs-lb-form').innerHTML='<p style="text-align:center;color:#27500a;font-weight:600;padding:10px">✓ Eingetragen!</p>';
   rsLbAnzeigen(lbSec.dataset.modus);
+}
+
+// ── LERNKOLOSSEUM-INTEGRATION ─────────────────────────────────────────────────
+async function kolosseumReport(score, total, quizSlug) {
+  var banner = document.getElementById('kb');
+  var content = document.getElementById('kb-content');
+  if (!banner || !content) return;
+  var xpMax = score * 15;
+  try {
+    var meRes = await fetch('https://kolosseum.lehrer-herrmann.de/api/auth/me', { credentials: 'include' });
+    if (!meRes.ok) {
+      banner.style.display = 'block';
+      content.innerHTML =
+        '<span style="font-size:1.4rem">⚔️</span><br>'
+        + '<strong>Dein Gladiator hätte ' + xpMax + ' Kampferfahrung verdient!</strong><br>'
+        + '<a href="https://kolosseum.lehrer-herrmann.de/register.html" '
+        +    'style="display:inline-block;margin-top:10px;background:#4a9eda;color:#fff;'
+        +    'padding:9px 22px;border-radius:10px;text-decoration:none;font-weight:700">'
+        +    '🗡️ Gladiator werden &amp; XP kassieren</a>';
+      return;
+    }
+    var submitRes = await fetch('https://kolosseum.lehrer-herrmann.de/api/external/submit', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ quizSlug: quizSlug, score: score, total: total })
+    });
+    var result = await submitRes.json();
+    banner.style.display = 'block';
+    if (result.xpEarned > 0) {
+      content.innerHTML =
+        '⚔️ <strong>+' + result.xpEarned + ' Kampferfahrung</strong> für deinen Gladiator!<br>'
+        + '<a href="https://kolosseum.lehrer-herrmann.de/profil.html" '
+        +    'style="display:inline-block;margin-top:8px;color:#4a9eda;text-decoration:none;font-weight:700">'
+        +    'Zum Gladiator-Profil →</a>';
+    } else {
+      content.innerHTML =
+        '⚔️ Bereits absolviert – <strong>keine neuen Kampferfahrung</strong>.<br>'
+        + '<small style="color:#888">Jedes Quiz zählt nur beim ersten Mal.</small>';
+    }
+  } catch(e) { /* Fehler still schlucken */ }
 }
 </script>
 <script src="js/supabase-config.js"></script>

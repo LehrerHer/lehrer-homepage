@@ -83,6 +83,19 @@ CREATE TABLE IF NOT EXISTS challenges (
   FOREIGN KEY (opponent_id) REFERENCES students(id) ON DELETE CASCADE
 );
 
+-- Ergebnisse der externen (statischen) Quizze
+CREATE TABLE IF NOT EXISTS external_quiz_results (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  student_id INTEGER NOT NULL,
+  quiz_slug TEXT NOT NULL,
+  score INTEGER NOT NULL,
+  total INTEGER NOT NULL,
+  xp_earned INTEGER NOT NULL DEFAULT 0,
+  attempt_number INTEGER NOT NULL DEFAULT 1,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+);
+
 -- Sessions (eigener Store via better-sqlite3)
 CREATE TABLE IF NOT EXISTS sessions (
   sid TEXT PRIMARY KEY,

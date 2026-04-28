@@ -4,16 +4,30 @@ const session = require('express-session');
 const path = require('path');
 
 const { db, SQLiteSessionStore } = require('./db/database');
-const authRoutes    = require('./routes/auth');
-const studentRoutes = require('./routes/students');
-const adminRoutes   = require('./routes/admin');
-const quizRoutes    = require('./routes/quiz');
+const authRoutes     = require('./routes/auth');
+const studentRoutes  = require('./routes/students');
+const adminRoutes    = require('./routes/admin');
+const quizRoutes     = require('./routes/quiz');
+const externalRoutes = require('./routes/external');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Render (und andere Reverse-Proxies) leiten HTTPS-Requests weiter
 if (process.env.NODE_ENV === 'production') app.set('trust proxy', 1);
+
+// CORS für lehrer-herrmann.de – erlaubt cross-origin Fetches von den statischen Quizzen
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin === 'https://lehrer-herrmann.de') {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  }
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
+  next();
+});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,6 +42,8 @@ app.use(session({
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
+    // SameSite=none nötig damit cross-origin Requests von lehrer-herrmann.de den Cookie mitsenden
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     maxAge: 7 * 24 * 60 * 60 * 1000,
   },
 }));
@@ -37,6 +53,7 @@ app.use('/api/auth',     authRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/admin',    adminRoutes);
 app.use('/api/quizzes',  quizRoutes);
+app.use('/api/external', externalRoutes);
 
 // SPA-Catch: alle nicht-API-Routen geben die jeweilige HTML-Datei zurück
 // (oder leiten zu login weiter)
