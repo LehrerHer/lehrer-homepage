@@ -308,10 +308,6 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
     <button class="btn-secondary" onclick="goHome()">Modus w&auml;hlen</button>
     <button class="btn-secondary" onclick="showHighscores('result')">&#127942; Bestenliste</button>
   </div>
-  <!-- Lernkolosseum-Banner -->
-  <div id="kb" style="display:none;margin-top:24px;border:2px solid var(--accent);border-radius:14px;padding:18px 20px;background:rgba(74,158,218,0.08);text-align:center;line-height:1.6">
-    <div id="kb-content"></div>
-  </div>
 </div>
 <!-- HIGHSCORES -->
 <div id="highscores" class="wrap hidden">
@@ -1146,47 +1142,9 @@ function goHome() {
   });
 })();
 
-// ── LERNKOLOSSEUM-INTEGRATION ─────────────────────────────────────────────────
-async function kolosseumReport(score, total, quizSlug) {
-  var banner = document.getElementById('kb');
-  var content = document.getElementById('kb-content');
-  if (!banner || !content) return;
-  var xpMax = score * 15;
-  try {
-    var meRes = await fetch('https://kolosseum.lehrer-herrmann.de/api/auth/me', { credentials: 'include' });
-    if (!meRes.ok) {
-      banner.style.display = 'block';
-      content.innerHTML =
-        '<span style="font-size:1.4rem">⚔️</span><br>'
-        + '<strong>Dein Gladiator hätte ' + xpMax + ' Kampferfahrung verdient!</strong><br>'
-        + '<a href="https://kolosseum.lehrer-herrmann.de/register.html" '
-        +    'style="display:inline-block;margin-top:10px;background:var(--accent);color:#0d1b2e;'
-        +    'padding:9px 22px;border-radius:10px;text-decoration:none;font-weight:700">'
-        +    '🗡️ Gladiator werden &amp; XP kassieren</a>';
-      return;
-    }
-    var submitRes = await fetch('https://kolosseum.lehrer-herrmann.de/api/external/submit', {
-      method: 'POST',
-      credentials: 'include',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ quizSlug: quizSlug, score: score, total: total })
-    });
-    var result = await submitRes.json();
-    banner.style.display = 'block';
-    if (result.xpEarned > 0) {
-      content.innerHTML =
-        '⚔️ <strong>+' + result.xpEarned + ' Kampferfahrung</strong> für deinen Gladiator!<br>'
-        + '<a href="https://kolosseum.lehrer-herrmann.de/profil.html" '
-        +    'style="display:inline-block;margin-top:8px;color:var(--accent);text-decoration:none;font-weight:700">'
-        +    'Zum Gladiator-Profil →</a>';
-    } else {
-      content.innerHTML =
-        '⚔️ Bereits absolviert – <strong>keine neuen Kampferfahrung</strong>.<br>'
-        + '<small style="opacity:.65">Jedes Quiz zählt nur beim ersten Mal.</small>';
-    }
-  } catch(e) { /* Fehler still schlucken */ }
-}
 </script>
 <script src="js/supabase-leaderboard.js"></script>
+<script src="js/kolosseum-prompt.js"></script>
+<script src="js/arena-bar.js"></script>
 </body>
 </html>

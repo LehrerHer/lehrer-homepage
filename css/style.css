@@ -1689,6 +1689,28 @@ footer {
     box-shadow: none;
 }
 
+/* === KOLOSSEUM TEASER (kompakter Startseiten-Block) === */
+.kolosseum-teaser {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    background: linear-gradient(135deg, #f0f6ff, #e8f4fe);
+    border: 1.5px solid rgba(74,158,218,.25);
+    border-radius: var(--radius);
+    padding: 2rem 2.5rem;
+    flex-wrap: wrap;
+}
+.kolosseum-teaser-left { flex: 1; min-width: 240px; }
+.kolosseum-teaser-right {
+    display: flex; flex-direction: column; gap: .5rem;
+    flex-shrink: 0;
+}
+@media (max-width: 600px) {
+    .kolosseum-teaser { padding: 1.5rem; }
+    .kolosseum-teaser-right { flex-direction: row; }
+}
+
 /* CTA-Gruppe: zwei Buttons nebeneinander */
 .kolosseum-cta-gruppe {
     display: flex;
