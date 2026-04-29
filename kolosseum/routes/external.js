@@ -60,4 +60,15 @@ router.post('/submit', requireStudent, (req, res) => {
   });
 });
 
+// GET /api/external/completions – Abgeschlossene externe Quizze des eingeloggten SuS
+router.get('/completions', (req, res) => {
+  if (!req.session || !req.session.studentId) {
+    return res.json({ completions: [] });
+  }
+  const rows = db.prepare(
+    'SELECT DISTINCT quiz_slug FROM external_quiz_results WHERE student_id = ?'
+  ).all(req.session.studentId);
+  res.json({ completions: rows.map(r => r.quiz_slug) });
+});
+
 module.exports = router;
