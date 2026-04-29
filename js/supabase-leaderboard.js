@@ -1,10 +1,8 @@
 /* ============================================================
-   GETEILTE BESTENLISTE via Supabase REST API
-   Nutzt SUPABASE_URL + SUPABASE_KEY aus js/supabase-config.js
-   (muss vor dieser Datei eingebunden sein)
+   QUIZ-BESTENLISTE – eigener Hetzner-Server
+   Nutzt API_BASE aus js/supabase-config.js
    ============================================================ */
 
-// ─── CSS (einmalig injiziert) ─────────────────────────────────────
 (function () {
   var s = document.createElement('style');
   s.textContent = [
@@ -27,27 +25,22 @@
   document.head.appendChild(s);
 })();
 
+function _lbBase() {
+  return (typeof API_BASE !== 'undefined') ? API_BASE : 'https://kolosseum.lehrer-herrmann.de';
+}
+
 // ─── Eintrag speichern ────────────────────────────────────────────
 async function leaderboardSave(quiz, name, punkte, maximum) {
-  if (typeof SUPABASE_KONFIGURIERT === 'undefined' || !SUPABASE_KONFIGURIERT) return false;
-  var prozent = maximum > 0 ? Math.round(punkte / maximum * 100) : 0;
+  // quiz kann z.B. 'stilmittel-gesamt' sein – wir leiten den Basis-slug ab
+  var quizBase  = String(quiz).split('-')[0];
+  var modus     = String(quiz).includes('-') ? String(quiz).slice(quizBase.length + 1) : null;
+  var sauber    = (String(name || '').trim() || 'Anonym').slice(0, 20);
+
   try {
-    var res = await fetch(SUPABASE_URL + '/rest/v1/quiz_bestenliste', {
+    var res = await fetch(_lbBase() + '/api/leaderboard', {
       method: 'POST',
-      headers: {
-        'apikey':          SUPABASE_KEY,
-        'Authorization':   'Bearer ' + SUPABASE_KEY,
-        'Content-Type':    'application/json',
-        'Prefer':          'return=minimal'
-      },
-      body: JSON.stringify({
-        quiz:    String(quiz).slice(0, 60),
-        name:    (String(name || 'Anonym').trim() || 'Anonym').slice(0, 20),
-        modus:   String(quiz).replace(/^stilmittel-/, ''),
-        punkte:  +punkte,
-        maximum: +maximum,
-        prozent: prozent
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ quiz: quizBase, modus: modus, name: sauber, punkte: +punkte, maximum: +maximum })
     });
     return res.ok;
   } catch (e) { return false; }
@@ -55,26 +48,22 @@ async function leaderboardSave(quiz, name, punkte, maximum) {
 
 // ─── Top-N abrufen ────────────────────────────────────────────────
 async function leaderboardFetch(quiz, limit) {
-  if (typeof SUPABASE_KONFIGURIERT === 'undefined' || !SUPABASE_KONFIGURIERT) return null;
+  var quizBase = String(quiz).split('-')[0];
+  var modus    = String(quiz).includes('-') ? String(quiz).slice(quizBase.length + 1) : null;
+  var url      = _lbBase() + '/api/leaderboard/' + encodeURIComponent(quizBase)
+               + '?limit=' + (limit || 10)
+               + (modus ? '&modus=' + encodeURIComponent(modus) : '');
   try {
-    var res = await fetch(
-      SUPABASE_URL + '/rest/v1/quiz_bestenliste'
-        + '?quiz=eq.' + encodeURIComponent(quiz)
-        + '&order=prozent.desc,punkte.desc,datum.asc'
-        + '&limit=' + (limit || 10),
-      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY } }
-    );
+    var res = await fetch(url);
     return res.ok ? await res.json() : [];
   } catch (e) { return []; }
 }
 
 // ─── HTML-Darstellung ─────────────────────────────────────────────
 function leaderboardHTML(eintraege) {
-  if (typeof SUPABASE_KONFIGURIERT === 'undefined' || !SUPABASE_KONFIGURIERT) {
-    return '<p class="lb-hinweis">🔧 Bestenliste nicht konfiguriert.</p>';
-  }
   if (eintraege === null) return '<p class="lb-loading">Lädt…</p>';
-  if (!eintraege.length) return '<p class="lb-leer">Noch keine Einträge – sei der erste! 🚀</p>';
+  if (!Array.isArray(eintraege) || !eintraege.length)
+    return '<p class="lb-leer">Noch keine Einträge – sei der erste! 🚀</p>';
   var m = ['🥇', '🥈', '🥉'];
   return '<div class="lb-table">'
     + '<div class="lb-row lb-head"><span class="lb-rang">#</span><span>Name</span><span>Score</span><span style="text-align:right">Datum</span></div>'

@@ -96,6 +96,33 @@ CREATE TABLE IF NOT EXISTS external_quiz_results (
   FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
 );
 
+-- Schüler*innenblog
+CREATE TABLE IF NOT EXISTS blog_beitraege (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  titel        TEXT NOT NULL,
+  autor        TEXT NOT NULL,
+  klasse       TEXT NOT NULL,
+  fach         TEXT NOT NULL,
+  beschreibung TEXT,
+  datei_url    TEXT,
+  datei_typ    TEXT,
+  genehmigt    INTEGER NOT NULL DEFAULT 0,
+  datum        DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Quiz-Bestenliste (Stilmittel, Literaturwissenschaft, Rechtschreibung)
+CREATE TABLE IF NOT EXISTS quiz_bestenliste (
+  id      INTEGER PRIMARY KEY AUTOINCREMENT,
+  quiz    TEXT NOT NULL,
+  modus   TEXT,
+  name    TEXT NOT NULL,
+  punkte  INTEGER NOT NULL,
+  maximum INTEGER NOT NULL,
+  prozent INTEGER NOT NULL,
+  datum   DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_quiz_bl ON quiz_bestenliste(quiz, modus);
+
 -- Sessions (eigener Store via better-sqlite3)
 CREATE TABLE IF NOT EXISTS sessions (
   sid TEXT PRIMARY KEY,

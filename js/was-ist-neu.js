@@ -4,10 +4,10 @@
 
    Kategorien:
      1. Neue Funktionen  (manuell gepflegt)
-     2. Quiz-Bestenliste (Supabase quiz_bestenliste)
+     2. Quiz-Bestenliste (Kolosseum API)
      3. Avataraufstiege  (Kolosseum API)
      4. Neue Materialien (inhalte.json)
-     5. Blogbeiträge     (Supabase blog_beitraege)
+     5. Blogbeiträge     (Kolosseum API)
    ============================================================ */
 
 (function () {
@@ -42,6 +42,8 @@
         } catch (e) { return String(isoStr); }
     }
 
+    var API = (typeof API_BASE !== 'undefined') ? API_BASE : 'https://kolosseum.lehrer-herrmann.de';
+
     /* ---- Datenquellen (max. 2 pro Kategorie) ---- */
 
     function ladeMaterialien() {
@@ -65,16 +67,14 @@
     }
 
     function ladeBlogbeitraege() {
-        if (typeof SUPABASE_KONFIGURIERT === 'undefined' || !SUPABASE_KONFIGURIERT) return Promise.resolve([]);
-        var url = SUPABASE_URL + '/rest/v1/blog_beitraege'
-            + '?select=titel,autor,klasse,datum&order=datum.desc&limit=2';
-        return fetch(url, { headers: { 'Authorization': 'Bearer ' + SUPABASE_KEY, 'apikey': SUPABASE_KEY } })
+        return fetch(API + '/api/blog?limit=2')
             .then(function (r) { return r.ok ? r.json() : []; })
             .then(function (d) {
-                return d.map(function (b) {
+                return d.slice(0, 2).map(function (b) {
                     return {
                         icon: '✍️', kat: 'Blog',
-                        titel: b.titel, meta: (b.autor || '') + (b.klasse ? ' · Kl. ' + b.klasse : ''),
+                        titel: b.titel,
+                        meta: (b.autor || '') + (b.klasse ? ' \xB7 Kl. ' + b.klasse : ''),
                         datum: b.datum, url: 'blog.html'
                     };
                 });
@@ -83,13 +83,10 @@
     }
 
     function ladeQuizBestenliste() {
-        if (typeof SUPABASE_KONFIGURIERT === 'undefined' || !SUPABASE_KONFIGURIERT) return Promise.resolve([]);
-        var url = SUPABASE_URL + '/rest/v1/quiz_bestenliste'
-            + '?select=name,quiz,prozent,datum&order=datum.desc&limit=2';
-        return fetch(url, { headers: { 'Authorization': 'Bearer ' + SUPABASE_KEY, 'apikey': SUPABASE_KEY } })
+        return fetch(API + '/api/leaderboard/alle?limit=2')
             .then(function (r) { return r.ok ? r.json() : []; })
             .then(function (d) {
-                return d.map(function (e) {
+                return d.slice(0, 2).map(function (e) {
                     return {
                         icon: '🏆', kat: 'Quiz-Bestleistung',
                         titel: esc(e.name || '???') + ' – ' + e.prozent + ' %',
@@ -102,14 +99,14 @@
     }
 
     function ladeAvataraufstiege() {
-        return fetch('https://kolosseum.lehrer-herrmann.de/api/public/recent-gladiatoren')
+        return fetch(API + '/api/public/recent-gladiatoren')
             .then(function (r) { return r.ok ? r.json() : []; })
             .then(function (d) {
                 return d.map(function (g) {
                     return {
                         icon: g.level_icon || '⚔️', kat: 'Avatar-Aufstieg',
                         titel: esc(g.nickname) + ' → ' + esc(g.level_name),
-                        meta:  g.xp + ' XP',
+                        meta:  g.xp + ' XP',
                         datum: g.last_active,
                         url:   'https://kolosseum.lehrer-herrmann.de/rangliste.html'
                     };

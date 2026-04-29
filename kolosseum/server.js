@@ -8,8 +8,10 @@ const authRoutes     = require('./routes/auth');
 const studentRoutes  = require('./routes/students');
 const adminRoutes    = require('./routes/admin');
 const quizRoutes     = require('./routes/quiz');
-const externalRoutes = require('./routes/external');
-const publicRoutes   = require('./routes/public');
+const externalRoutes   = require('./routes/external');
+const publicRoutes     = require('./routes/public');
+const leaderboardRoutes = require('./routes/leaderboard');
+const blogRoutes        = require('./routes/blog');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -23,7 +25,7 @@ app.use((req, res, next) => {
   if (origin === 'https://lehrer-herrmann.de') {
     res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   }
   if (req.method === 'OPTIONS') return res.sendStatus(204);
@@ -33,6 +35,8 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+// Hochgeladene Blog-Dateien statisch ausliefern
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const store = new SQLiteSessionStore(session);
 app.use(session({
@@ -54,8 +58,10 @@ app.use('/api/auth',     authRoutes);
 app.use('/api/students', studentRoutes);
 app.use('/api/admin',    adminRoutes);
 app.use('/api/quizzes',  quizRoutes);
-app.use('/api/external', externalRoutes);
-app.use('/api/public',   publicRoutes);
+app.use('/api/external',    externalRoutes);
+app.use('/api/public',      publicRoutes);
+app.use('/api/leaderboard', leaderboardRoutes);
+app.use('/api/blog',        blogRoutes);
 
 // SPA-Catch: alle nicht-API-Routen geben die jeweilige HTML-Datei zurück
 // (oder leiten zu login weiter)

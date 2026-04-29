@@ -53,44 +53,37 @@
             .replace(/'/g, '&#39;');
     }
 
-    /* ---- Beiträge von Supabase laden ---- */
+    /* ---- Beiträge vom eigenen Server laden ---- */
 
     async function beitraegeLaden() {
-        /* Wenn Supabase konfiguriert → live Daten laden */
-        if (typeof SUPABASE_KONFIGURIERT !== 'undefined' && SUPABASE_KONFIGURIERT) {
-            const antwort = await fetch(
-                `${SUPABASE_URL}/rest/v1/blog_beitraege?select=*&order=datum.desc`,
-                {
-                    headers: {
-                        'Authorization': `Bearer ${SUPABASE_KEY}`,
-                        'apikey':        SUPABASE_KEY
-                    }
-                }
-            );
-
-            if (!antwort.ok) {
-                throw new Error(`Supabase: ${antwort.status}`);
-            }
-
+        var base = (typeof API_BASE !== 'undefined') ? API_BASE : 'https://kolosseum.lehrer-herrmann.de';
+        try {
+            const antwort = await fetch(base + '/api/blog');
+            if (!antwort.ok) throw new Error('HTTP ' + antwort.status);
             const daten = await antwort.json();
-
-            /* Supabase-Spalten → internes Format */
-            return daten.map(function (b) {
-                const istBild = b.datei_typ === 'bild';
-                return {
-                    id:           b.id,
-                    titel:        b.titel,
-                    autor:        b.autor,
-                    klasse:       b.klasse,
-                    fach:         b.fach,
-                    datum:        b.datum ? b.datum.slice(0, 10) : '',
-                    beschreibung: b.beschreibung || '',
-                    datei:        b.datei_url || '',
-                    dateiTyp:     b.datei_typ || 'sonstige',
-                    vorschaubild: istBild ? b.datei_url : null,
-                    textinhalt:   null
-                };
-            });
+            if (daten.length > 0) {
+                return daten.map(function (b) {
+                    var dateiUrl = b.datei_url
+                        ? (b.datei_url.startsWith('http') ? b.datei_url : base + b.datei_url)
+                        : '';
+                    var istBild = b.datei_typ === 'bild';
+                    return {
+                        id:           b.id,
+                        titel:        b.titel,
+                        autor:        b.autor,
+                        klasse:       b.klasse,
+                        fach:         b.fach,
+                        datum:        b.datum ? b.datum.slice(0, 10) : '',
+                        beschreibung: b.beschreibung || '',
+                        datei:        dateiUrl,
+                        dateiTyp:     b.datei_typ || 'sonstige',
+                        vorschaubild: istBild ? dateiUrl : null,
+                        textinhalt:   null
+                    };
+                });
+            }
+        } catch (fehler) {
+            console.warn('Blog-API nicht erreichbar, nutze Beispieldaten:', fehler);
         }
 
         /* Fallback: statische Beispieldaten aus blog-daten.js */
@@ -308,13 +301,7 @@
         beitraege.forEach(function (b) { grid.appendChild(karteErstellen(b)); });
         filterAnwenden();
 
-        /* Hinweis wenn Beispieldaten angezeigt werden */
-        if (typeof SUPABASE_KONFIGURIERT !== 'undefined' && !SUPABASE_KONFIGURIERT) {
-            const hinweis = document.createElement('p');
-            hinweis.style.cssText = 'text-align:center;font-size:.82rem;color:var(--farbe-text-hell);margin-top:32px;';
-            hinweis.textContent = '⚙️ Beispieldaten – Supabase noch nicht eingerichtet (js/supabase-config.js).';
-            grid.insertAdjacentElement('afterend', hinweis);
-        }
+        /* kein Supabase-Hinweis mehr nötig */
     }
 
     blogRendern();

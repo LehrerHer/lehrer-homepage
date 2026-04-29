@@ -1,79 +1,9 @@
 /* ============================================================
-   SUPABASE-KONFIGURATION
-   Jan Herrmann · Oberschule Spelle
-
-   ============================================================
-   EINMALIGE EINRICHTUNG (ca. 10 Minuten, dauerhaft kostenlos):
-   ============================================================
-
-   SCHRITT 1 – Konto anlegen
-   ─────────────────────────
-   → https://supabase.com aufrufen und kostenlos registrieren
-   → "New project" klicken, Name vergeben (z. B. "schuelerblog")
-   → Passwort merken (für die Datenbank), Region: "Central EU"
-   → Ca. 2 Minuten warten bis das Projekt bereit ist
-
-   SCHRITT 2 – Datenbanktabelle anlegen
-   ──────────────────────────────────────
-   → Links auf "SQL Editor" klicken
-   → Diesen SQL-Code einfügen und auf "Run" klicken:
-
-   ┌─────────────────────────────────────────────────────────┐
-   │  CREATE TABLE blog_beitraege (                          │
-   │    id           bigserial PRIMARY KEY,                  │
-   │    titel        text not null,                          │
-   │    autor        text not null,                          │
-   │    klasse       text not null,                          │
-   │    fach         text not null,                          │
-   │    datum        timestamptz default now(),              │
-   │    beschreibung text,                                   │
-   │    datei_url    text,                                   │
-   │    datei_typ    text                                    │
-   │  );                                                     │
-   │                                                         │
-   │  ALTER TABLE blog_beitraege                             │
-   │    ENABLE ROW LEVEL SECURITY;                           │
-   │                                                         │
-   │  CREATE POLICY "Lesen"                                  │
-   │    ON blog_beitraege FOR SELECT USING (true);           │
-   │                                                         │
-   │  CREATE POLICY "Einreichen"                             │
-   │    ON blog_beitraege FOR INSERT WITH CHECK (true);      │
-   └─────────────────────────────────────────────────────────┘
-
-   SCHRITT 3 – Datei-Speicher anlegen
-   ────────────────────────────────────
-   → Links auf "Storage" klicken
-   → "New bucket" klicken
-     - Name: blog-beitraege
-     - "Public bucket" aktivieren  ← wichtig!
-     - "Create bucket" klicken
-   → Auf den neuen Bucket klicken → "Policies" → "New policy"
-     → "Full customization" wählen:
-       Policy name: Hochladen erlaubt
-       Allowed operation: INSERT
-       Target roles: anon
-       → "Review" → "Save policy"
-
-   SCHRITT 4 – Zugangsdaten eintragen
-   ────────────────────────────────────
-   → Links auf "Settings" → "API" klicken
-   → "Project URL" kopieren → unten bei SUPABASE_URL eintragen
-   → "anon" / "public" Key kopieren → unten bei SUPABASE_KEY eintragen
-
+   API-KONFIGURATION – Hetzner / Kolosseum-Server
+   Ersetzt die frühere Supabase-Anbindung vollständig.
    ============================================================ */
 
+const API_BASE = 'https://kolosseum.lehrer-herrmann.de';
 
-/* ↓↓↓ HIER DEINE ZUGANGSDATEN EINTRAGEN ↓↓↓ */
-
-const SUPABASE_URL = 'https://cwcvqjcdxveuzkzlkvgl.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImN3Y3ZxamNkeHZldXpremxrdmdsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI0ODM2MDMsImV4cCI6MjA4ODA1OTYwM30.jeokNmCCLJcmkPUuAGtsRN7YWbnbkwNQ-JmdpusVuPA';
-
-/* ↑↑↑ HIER DEINE ZUGANGSDATEN EINTRAGEN ↑↑↑ */
-
-
-/* Wird automatisch erkannt – nicht ändern */
-const SUPABASE_KONFIGURIERT = (
-    SUPABASE_URL !== 'https://DEIN-PROJEKT.supabase.co' &&
-    SUPABASE_KEY !== 'DEIN-ANON-KEY'
-);
+/* Abwärtskompatibilität: Code der noch SUPABASE_KONFIGURIERT prüft */
+const SUPABASE_KONFIGURIERT = false;
