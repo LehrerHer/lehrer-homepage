@@ -1972,3 +1972,99 @@ footer {
 @media (max-width: 480px) {
     .kolosseum-quiz-grid { grid-template-columns: 1fr; }
 }
+
+/* === DIGITALE MATERIALIEN – Arbeitsblätter & Quizze === */
+#digitale-materialien {
+    padding: 3rem 0;
+    background: var(--farbe-weiss);
+}
+
+.dm-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.dm-karte {
+    background: #fff;
+    border: 1.5px solid var(--farbe-rahmen);
+    border-radius: 12px;
+    padding: 1.25rem 1.25rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .55rem;
+    transition: box-shadow var(--transition), border-color var(--transition), transform var(--transition);
+    text-decoration: none;
+    color: inherit;
+}
+.dm-karte:hover {
+    box-shadow: 0 6px 20px rgba(30,58,95,.12);
+    border-color: var(--farbe-akzent);
+    transform: translateY(-2px);
+    color: inherit;
+}
+
+.dm-karte-badges {
+    display: flex;
+    gap: .35rem;
+    flex-wrap: wrap;
+}
+
+.dm-typ {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 6px;
+}
+.dm-typ-ab   { background: #E6F1FB; color: #0C447C; }
+.dm-typ-quiz { background: #FFF3CD; color: #7A4800; }
+
+.dm-fach {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: #f0f0f0;
+    color: #555;
+}
+
+.dm-icon {
+    font-size: 1.6rem;
+    line-height: 1;
+    margin-top: .1rem;
+}
+
+.dm-titel {
+    font-size: .97rem;
+    font-weight: 600;
+    color: var(--farbe-primaer);
+    line-height: 1.3;
+}
+
+.dm-beschr {
+    font-size: .82rem;
+    color: var(--farbe-text-hell, #6c757d);
+    line-height: 1.5;
+    flex: 1;
+}
+
+.dm-pfeil {
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--farbe-akzent);
+    margin-top: .2rem;
+}
+
+@media (max-width: 900px) {
+    .dm-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+    .dm-grid { grid-template-columns: 1fr; }
+}
