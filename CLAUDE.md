@@ -18,15 +18,21 @@ This file provides context for AI assistants (e.g., Claude Code) working on this
 
 ```
 lehrer-homepage/
-├── index.html       # Main homepage: hero, subject cards, materials, contact
-├── abgabe.html      # Student assignment submission form (Formspree-powered)
+├── index.html           # Main homepage: hero, subject cards, materials, contact
+├── abgabe.html          # Student assignment submission form (Formspree-powered)
 ├── css/
-│   └── style.css    # All site styles (~736 lines)
-└── js/
-    └── main.js      # All site JavaScript (~222 lines)
+│   └── style.css        # All site styles
+├── js/
+│   └── main.js          # All site JavaScript
+├── materialien/         # Generated interactive worksheets (HTML)
+├── upload/              # Drop folder for raw worksheet files
+│   └── _erledigt/       # Processed originals (moved here after conversion)
+└── tools/
+    ├── ab_generator.py  # Watch-loop: upload/ → Claude API → materialien/ → git push
+    └── requirements.txt # Python dependencies (anthropic)
 ```
 
-There are no subdirectories for components, no transpilation, and no generated output folders.
+There are no build tools, transpilation steps, or generated output folders beyond `materialien/`.
 
 ---
 

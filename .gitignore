@@ -1,0 +1,21 @@
+# Hochgeladene Rohdateien — werden nach Verarbeitung nach _erledigt/ verschoben
+upload/*.pdf
+upload/*.jpg
+upload/*.jpeg
+upload/*.png
+upload/*.txt
+upload/*.md
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+*.swp
