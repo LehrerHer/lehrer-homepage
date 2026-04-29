@@ -1,11 +1,13 @@
 /* ============================================================
-   WAS IST NEU? – Automatische Neuigkeiten-Übersicht
+   WAS IST NEU? – Kompakte Neuigkeiten-Übersicht (je 2 pro Kategorie)
    Jan Herrmann · Oberschule Spelle
 
-   Kombiniert bis zu 3 aktuelle Einträge aus:
-     1. Neue Materialien   (inhalte.json)
-     2. Neue Blogbeiträge  (Supabase blog_beitraege)
-     3. Quiz-Bestenliste   (Supabase quiz_bestenliste)
+   Kategorien:
+     1. Neue Funktionen  (manuell gepflegt)
+     2. Quiz-Bestenliste (Supabase quiz_bestenliste)
+     3. Avataraufstiege  (Kolosseum API)
+     4. Neue Materialien (inhalte.json)
+     5. Blogbeiträge     (Supabase blog_beitraege)
    ============================================================ */
 
 (function () {
@@ -26,9 +28,7 @@
         gesamt:              'Gesamt'
     };
 
-    /* ---- Hilfsfunktionen ---- */
-
-    function escape(s) {
+    function esc(s) {
         return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
@@ -36,204 +36,165 @@
         if (!isoStr) return '–';
         try {
             var d = new Date(isoStr);
-            var datumTeil = d.toLocaleDateString('de-DE', {
-                day: '2-digit', month: '2-digit', year: 'numeric'
-            });
+            var datumTeil = d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit' });
             if (nurDatum) return datumTeil;
-            return datumTeil + '<br><span class="win-uhrzeit">'
-                + d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })
-                + ' Uhr</span>';
+            return datumTeil + ' ' + d.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
         } catch (e) { return String(isoStr); }
     }
 
-    /* ---- Datenquellen ---- */
+    /* ---- Datenquellen (max. 2 pro Kategorie) ---- */
 
     function ladeMaterialien() {
         return fetch('inhalte.json')
             .then(function (r) { return r.ok ? r.json() : { materialien: [] }; })
             .then(function (d) {
-                var items = (d.materialien || []).slice()
+                return (d.materialien || []).slice()
                     .sort(function (a, b) { return (b.datum || '').localeCompare(a.datum || ''); })
-                    .slice(0, 3);
-                return items.map(function (m) {
+                    .slice(0, 2)
+                    .map(function (m) {
+                        return {
+                            icon: '📥', kat: 'Materialien',
+                            titel: m.titel, meta: m.beschreibung || '',
+                            datum: m.datum ? m.datum + 'T00:00:00' : null,
+                            url:  m.url || 'index.html#digitalematerialien',
+                            nurDatum: true
+                        };
+                    });
+            })
+            .catch(function () { return []; });
+    }
+
+    function ladeBlogbeitraege() {
+        if (typeof SUPABASE_KONFIGURIERT === 'undefined' || !SUPABASE_KONFIGURIERT) return Promise.resolve([]);
+        var url = SUPABASE_URL + '/rest/v1/blog_beitraege'
+            + '?select=titel,autor,klasse,datum&order=datum.desc&limit=2';
+        return fetch(url, { headers: { 'Authorization': 'Bearer ' + SUPABASE_KEY, 'apikey': SUPABASE_KEY } })
+            .then(function (r) { return r.ok ? r.json() : []; })
+            .then(function (d) {
+                return d.map(function (b) {
                     return {
-                        typ:    'material',
-                        icon:   '📥',
-                        kat:    'Neues Material',
-                        titel:  m.titel,
-                        meta:   m.beschreibung || '',
-                        datum:  m.datum ? m.datum + 'T00:00:00' : null,
-                        url:    m.url || 'index.html#materialien',
-                        nurDatum: true
+                        icon: '✍️', kat: 'Blog',
+                        titel: b.titel, meta: (b.autor || '') + (b.klasse ? ' · Kl. ' + b.klasse : ''),
+                        datum: b.datum, url: 'blog.html'
                     };
                 });
             })
             .catch(function () { return []; });
     }
 
-    function ladeBlogbeitraege() {
-        if (typeof SUPABASE_KONFIGURIERT === 'undefined' || !SUPABASE_KONFIGURIERT) {
-            return Promise.resolve([]);
-        }
-        var url = SUPABASE_URL
-            + '/rest/v1/blog_beitraege'
-            + '?select=titel,autor,klasse,fach,datum'
-            + '&order=datum.desc&limit=3';
-        return fetch(url, {
-            headers: {
-                'Authorization': 'Bearer ' + SUPABASE_KEY,
-                'apikey':        SUPABASE_KEY
-            }
-        })
-        .then(function (r) { return r.ok ? r.json() : []; })
-        .then(function (d) {
-            return d.map(function (b) {
-                return {
-                    typ:   'blog',
-                    icon:  '✍️',
-                    kat:   'Blogbeitrag',
-                    titel: b.titel,
-                    meta:  (b.autor || '') + (b.klasse ? ' · Kl. ' + b.klasse : ''),
-                    datum: b.datum,
-                    url:   'blog.html'
-                };
-            });
-        })
-        .catch(function () { return []; });
+    function ladeQuizBestenliste() {
+        if (typeof SUPABASE_KONFIGURIERT === 'undefined' || !SUPABASE_KONFIGURIERT) return Promise.resolve([]);
+        var url = SUPABASE_URL + '/rest/v1/quiz_bestenliste'
+            + '?select=name,quiz,prozent,datum&order=datum.desc&limit=2';
+        return fetch(url, { headers: { 'Authorization': 'Bearer ' + SUPABASE_KEY, 'apikey': SUPABASE_KEY } })
+            .then(function (r) { return r.ok ? r.json() : []; })
+            .then(function (d) {
+                return d.map(function (e) {
+                    return {
+                        icon: '🏆', kat: 'Quiz-Bestleistung',
+                        titel: esc(e.name || '???') + ' – ' + e.prozent + ' %',
+                        meta: QUIZ_LABELS[e.quiz] || e.quiz,
+                        datum: e.datum, url: QUIZ_URLS[e.quiz] || 'index.html#digitalematerialien'
+                    };
+                });
+            })
+            .catch(function () { return []; });
     }
 
-    function ladeQuizBestenliste() {
-        if (typeof SUPABASE_KONFIGURIERT === 'undefined' || !SUPABASE_KONFIGURIERT) {
-            return Promise.resolve([]);
-        }
-        var url = SUPABASE_URL
-            + '/rest/v1/quiz_bestenliste'
-            + '?select=name,quiz,modus,prozent,datum'
-            + '&order=datum.desc&limit=3';
-        return fetch(url, {
-            headers: {
-                'Authorization': 'Bearer ' + SUPABASE_KEY,
-                'apikey':        SUPABASE_KEY
-            }
-        })
-        .then(function (r) { return r.ok ? r.json() : []; })
-        .then(function (d) {
-            return d.map(function (e) {
-                var quizLabel = QUIZ_LABELS[e.quiz] || e.quiz;
-                var modLabel  = QUIZ_LABELS[e.modus] || e.modus;
-                return {
-                    typ:   'quiz',
-                    icon:  '🏆',
-                    kat:   'Quiz-Bestenliste',
-                    titel: (e.name || '???') + ' – ' + e.prozent + '\u00a0%',
-                    meta:  quizLabel + (modLabel ? ' · ' + modLabel : ''),
-                    datum: e.datum,
-                    url:   QUIZ_URLS[e.quiz] || 'index.html#quizze'
-                };
-            });
-        })
-        .catch(function () { return []; });
+    function ladeAvataraufstiege() {
+        return fetch('https://kolosseum.lehrer-herrmann.de/api/public/recent-gladiatoren')
+            .then(function (r) { return r.ok ? r.json() : []; })
+            .then(function (d) {
+                return d.map(function (g) {
+                    return {
+                        icon: g.level_icon || '⚔️', kat: 'Avatar-Aufstieg',
+                        titel: esc(g.nickname) + ' → ' + esc(g.level_name),
+                        meta:  g.xp + ' XP',
+                        datum: g.last_active,
+                        url:   'https://kolosseum.lehrer-herrmann.de/rangliste.html'
+                    };
+                });
+            })
+            .catch(function () { return []; });
     }
 
     function ladeEntwicklungen() {
-        /* Manuell gepflegte Liste neu entwickelter Funktionen */
         var eintraege = [
-            {
-                titel: 'Lernkolosseum: Quizsystem mit XP-Vergabe',
-                datum: '2026-04-25T12:00:00',
-                url:   'https://kolosseum.lehrer-herrmann.de/quiz.html'
-            },
-            {
-                titel: 'Lernkolosseum: Gladiatorenrangliste',
-                datum: '2026-04-22T12:00:00',
-                url:   'https://kolosseum.lehrer-herrmann.de/rangliste.html'
-            },
-            {
-                titel: 'Lernkolosseum: Registrierung mit Schul-E-Mail',
-                datum: '2026-04-20T12:00:00',
-                url:   'https://kolosseum.lehrer-herrmann.de/register.html'
-            },
-            {
-                titel: 'Admin-Panel für Gladiatoren- und Quiz-Verwaltung',
-                datum: '2026-04-18T12:00:00',
-                url:   'https://kolosseum.lehrer-herrmann.de/admin/'
-            },
-            {
-                titel: 'Lernkolosseum: Gladiator aufleveln, Waffen erspielen',
-                datum: '2026-04-10T12:00:00',
-                url:   'https://kolosseum.lehrer-herrmann.de/login.html'
-            }
+            { titel: 'Kolosseum: Fächer & Materialien + Fortschritt', datum: '2026-04-29T12:00:00', url: 'kolosseum.html' },
+            { titel: 'Arena-Statusleiste auf allen Seiten', datum: '2026-04-28T12:00:00', url: 'kolosseum.html' },
+            { titel: 'Neue Kolosseum-Unterseite mit Level-System', datum: '2026-04-27T12:00:00', url: 'kolosseum.html' },
+            { titel: 'Quizze ohne Login spielbar', datum: '2026-04-25T12:00:00', url: 'stilmittel-quiz.html' },
         ];
-        return Promise.resolve(eintraege.slice(0, 3).map(function (e) {
+        return Promise.resolve(eintraege.slice(0, 2).map(function (e) {
             return {
-                typ:      'entwicklung',
-                icon:     '🛠️',
-                kat:      'Neue Funktion',
-                titel:    e.titel,
-                meta:     'Lernkolosseum',
-                datum:    e.datum,
-                url:      e.url,
-                nurDatum: true
+                icon: '🛠️', kat: 'Neue Funktion',
+                titel: e.titel, meta: 'Lernkolosseum',
+                datum: e.datum, url: e.url, nurDatum: true
             };
         }));
     }
 
-    /* ---- Rendern ---- */
+    /* ---- Kompaktes Spalten-Rendering ---- */
 
-    function render(alle) {
+    function render(gruppen) {
         var container = document.getElementById('win-tabelle');
         if (!container) return;
 
-        if (alle.length === 0) {
+        var hatInhalte = Object.values(gruppen).some(function (arr) { return arr.length > 0; });
+        if (!hatInhalte) {
             container.innerHTML = '<p class="win-leer">Noch keine Neuigkeiten vorhanden.</p>';
             return;
         }
 
-        /* Nach Datum absteigend sortieren */
-        alle.sort(function (a, b) {
-            return new Date(b.datum || 0) - new Date(a.datum || 0);
-        });
+        var reihenfolge = ['Neue Funktion', 'Quiz-Bestleistung', 'Avatar-Aufstieg', 'Materialien', 'Blog'];
 
-        var zeilen = alle.map(function (item) {
-            return '<tr>'
-                + '<td class="win-kat"><span class="win-icon" aria-hidden="true">'
-                +   escape(item.icon) + '</span>'
-                +   '<span class="win-kat-text">' + escape(item.kat) + '</span>'
-                +   (item.meta ? '<br><span class="win-meta">' + escape(item.meta) + '</span>' : '')
-                + '</td>'
-                + '<td class="win-titel">'
-                +   '<a href="' + escape(item.url) + '">' + escape(item.titel) + '</a>'
-                + '</td>'
-                + '<td class="win-datum">'
-                +   formatDatum(item.datum, item.nurDatum)
-                + '</td>'
-                + '</tr>';
+        var cols = reihenfolge.map(function (kat) {
+            var items = gruppen[kat] || [];
+            if (!items.length) return '';
+
+            var itemsHtml = items.map(function (item) {
+                return '<a href="' + esc(item.url) + '" class="win-item">'
+                    + '<span class="win-item-titel">' + item.titel + '</span>'
+                    + (item.meta ? '<span class="win-item-meta">' + esc(item.meta) + '</span>' : '')
+                    + '<span class="win-item-datum">' + formatDatum(item.datum, item.nurDatum) + '</span>'
+                    + '</a>';
+            }).join('');
+
+            return '<div class="win-col">'
+                + '<div class="win-col-header">'
+                + '<span class="win-col-icon" aria-hidden="true">' + esc(items[0].icon) + '</span>'
+                + '<span class="win-col-label">' + esc(kat) + '</span>'
+                + '</div>'
+                + itemsHtml
+                + '</div>';
         }).join('');
 
-        container.innerHTML =
-            '<table class="win-tabelle" role="table" aria-label="Neuigkeiten">'
-            + '<thead>'
-            + '<tr>'
-            + '<th scope="col">Kategorie</th>'
-            + '<th scope="col">Inhalt</th>'
-            + '<th scope="col">Datum&nbsp;/&nbsp;Uhrzeit</th>'
-            + '</tr>'
-            + '</thead>'
-            + '<tbody>' + zeilen + '</tbody>'
-            + '</table>';
+        container.innerHTML = '<div class="win-grid">' + cols + '</div>';
+    }
+
+    /* ---- Gruppieren nach Kategorie ---- */
+
+    function gruppieren(alle) {
+        var gruppen = {};
+        alle.forEach(function (item) {
+            if (!gruppen[item.kat]) gruppen[item.kat] = [];
+            gruppen[item.kat].push(item);
+        });
+        return gruppen;
     }
 
     /* ---- Start ---- */
 
     function laden() {
         Promise.all([
-            ladeMaterialien(),
-            ladeBlogbeitraege(),
+            ladeEntwicklungen(),
             ladeQuizBestenliste(),
-            ladeEntwicklungen()
+            ladeAvataraufstiege(),
+            ladeMaterialien(),
+            ladeBlogbeitraege()
         ]).then(function (ergebnisse) {
-            var alle = ergebnisse[0].concat(ergebnisse[1]).concat(ergebnisse[2]).concat(ergebnisse[3]);
-            render(alle);
+            var alle = [].concat.apply([], ergebnisse);
+            render(gruppieren(alle));
         });
     }
 

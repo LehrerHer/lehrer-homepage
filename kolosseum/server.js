@@ -9,6 +9,7 @@ const studentRoutes  = require('./routes/students');
 const adminRoutes    = require('./routes/admin');
 const quizRoutes     = require('./routes/quiz');
 const externalRoutes = require('./routes/external');
+const publicRoutes   = require('./routes/public');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -54,6 +55,7 @@ app.use('/api/students', studentRoutes);
 app.use('/api/admin',    adminRoutes);
 app.use('/api/quizzes',  quizRoutes);
 app.use('/api/external', externalRoutes);
+app.use('/api/public',   publicRoutes);
 
 // SPA-Catch: alle nicht-API-Routen geben die jeweilige HTML-Datei zurück
 // (oder leiten zu login weiter)
