@@ -165,3 +165,91 @@ All changes must maintain:
 - Do not change text content from German to another language
 - Do not add global JavaScript variables (use IIFEs)
 - Do not hardcode colors — use the existing CSS variables
+
+---
+
+## Interaktive Arbeitsblätter (Worksheet-Generator)
+
+Dieser Assistent unterstützt Jan Herrmann und sein Kollegium dabei, hochgeladene
+Arbeitsblätter (PDF, Bild oder Text) in interaktive, eigenständige HTML-Dateien
+umzuwandeln, die direkt auf der statischen Homepage eingebettet werden können.
+
+### Ablageort
+
+Generierte Arbeitsblatt-Dateien gehören in den Unterordner `materialien/`:
+
+```
+lehrer-homepage/
+└── materialien/
+    ├── deutsch_einfuehrung_5r_2026-04.html
+    └── ...
+```
+
+Von `index.html` werden sie im Abschnitt `#materialien` verlinkt.
+
+### Ausgabeformat
+
+Jede generierte Datei ist eine vollständige, standalone HTML-Datei mit:
+- Eingebettetem CSS (kein externes Stylesheet)
+- Eingebettetem JavaScript (keine externen Bibliotheken außer ggf. cdn.jsdelivr.net für spezifische Komponenten)
+- Responsivem Design (funktioniert auf Schüler-Smartphones)
+- Einheitlichem Designsystem (siehe unten)
+
+### Designsystem für Arbeitsblätter
+
+Die Farben orientieren sich an der Homepage:
+
+| Rolle             | Wert      | Verwendung                        |
+|-------------------|-----------|-----------------------------------|
+| Primärfarbe       | `#1e3a5f` | Überschriften, Buttons            |
+| Akzentfarbe       | `#4a9eda` | Links, Fokus-Zustände             |
+| Korrekt-Feedback  | `#2ecc71` | Grün bei richtiger Antwort        |
+| Fehler-Feedback   | `#e74c3c` | Rot bei falscher Antwort          |
+| Hintergrund       | `#f4f6f7` | Seiten-Hintergrund                |
+| Karten-Hintergrund| `#ffffff`  | Aufgaben-Karten                   |
+
+Weitere Vorgaben:
+- Schriftart: `system-ui, sans-serif`
+- `border-radius: 8px`, `box-shadow` auf Karten
+- Maximale Breite: `800px`, zentriert
+
+### AB-Typen und ihre Umsetzung
+
+| Typ | Umsetzung |
+|-----|-----------|
+| **Lückentext** | Input-Felder inline im Text, Auswertung per Button, Feedback pro Lücke + Gesamtpunktzahl |
+| **Multiple Choice** | Radio-Buttons oder Checkboxen, klares Feedback nach Abgabe, kein Mehrfachversuch ohne Reset |
+| **Zuordnung** | Drag & Drop oder Dropdown-Menüs je nach Komplexität |
+| **Textanalyse / offen** | Textarea mit Zeichenzähler, Musterlösung aufklappbar (zunächst verborgen) |
+| **Schreibaufgabe** | Strukturierte Textfelder mit Hilfestellungen, optionale Bewertungsrubrik einblendbar |
+| **Sonstiges** | Typ selbst erkennen, passendste interaktive Umsetzung wählen |
+
+### Metadaten-Header
+
+Jede generierte HTML-Datei beginnt mit einem auskommentierten Block:
+
+```html
+<!--
+  Titel: [Titel des AB]
+  Fach: [erkanntes Fach]
+  Klasse/Niveau: [erkanntes Niveau oder "nicht angegeben"]
+  AB-Typ: [Lückentext / MC / Zuordnung / Offen / Gemischt]
+  Erstellt: [Datum]
+  Quelle: [Originalformat des hochgeladenen Dokuments]
+-->
+```
+
+### Dateiname-Konvention
+
+```
+fach_thema_klasse_JJJJ-MM.html
+```
+
+Beispiel: `deutsch_einfuehrung_9r_2026-04.html`
+
+### Workflow-Hinweis nach der Generierung
+
+Nach der HTML-Ausgabe kurz angeben:
+- Welche Inhalte nicht eindeutig erkannt werden konnten
+- Ob Musterlösungen fehlen und nachgereicht werden sollten
+- Ob Annahmen über das Niveau getroffen wurden
