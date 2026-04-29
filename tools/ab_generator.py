@@ -134,6 +134,8 @@ def git_commit_push(html_path: Path) -> None:
         cwd=ROOT,
         check=True,
     )
+    # Vor dem Push remote-Änderungen holen, um Konflikte zu vermeiden
+    subprocess.run(["git", "pull", "--rebase", "origin", "HEAD"], cwd=ROOT, check=True)
     subprocess.run(["git", "push", "-u", "origin", "HEAD"], cwd=ROOT, check=True)
 
 
