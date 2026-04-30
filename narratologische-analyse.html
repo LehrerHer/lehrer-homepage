@@ -86,10 +86,30 @@ button.primary:hover{background:#d4e8f8}
 /* Info-Hinweis */
 .info-box{background:#f0f6ff;border:.5px solid #b5d4f4;border-radius:8px;padding:.75rem 1rem;font-size:13px;color:#0C447C;margin-bottom:1.5rem}
 
+/* Abschicken-Dialog */
+.dialog-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;align-items:center;justify-content:center}
+.dialog-overlay.aktiv{display:flex}
+.dialog-box{background:#fff;border-radius:12px;padding:1.75rem 2rem;max-width:420px;width:90%;box-shadow:0 8px 32px rgba(0,0,0,.18)}
+.dialog-box h3{font-size:16px;margin-bottom:1rem;color:#111}
+.dialog-box label{font-size:12px;color:#555;display:block;margin-bottom:3px;margin-top:.75rem}
+.dialog-box input{width:100%;font-size:14px;border:.5px solid #ccc;border-radius:8px;padding:7px 10px;font-family:inherit}
+.dialog-box input:focus{outline:none;border-color:#378ADD}
+.dialog-row{display:flex;gap:8px;margin-top:1.25rem}
+.dialog-row button{flex:1}
+.status-msg{font-size:13px;margin-top:.75rem;padding:.5rem .75rem;border-radius:6px;display:none}
+.status-ok{background:#e6f9f0;color:#0F6E56;display:block}
+.status-err{background:#fdecea;color:#b71c1c;display:block}
+
 /* Responsive */
 @media(max-width:700px){
   .sheet{padding:1.25rem;margin-top:1rem}
   .grid,.wgrid{grid-template-columns:1fr}
+}
+@media print{
+  .navbar,.btn-row,.dialog-overlay,.info-box{display:none!important}
+  body{background:#fff;padding:0}
+  .sheet{box-shadow:none;border:none;padding:0;margin:0;max-width:100%}
+  select,input,textarea{border:.5px solid #999!important}
 }
 </style>
 </head>
@@ -186,12 +206,43 @@ button.primary:hover{background:#d4e8f8}
   <label class="flabel">Meine Erzählung</label>
   <textarea id="erzaehlung" rows="9" placeholder="Schreibe hier deine Erzählung …"></textarea>
 
+  <!-- Name / Klasse Felder -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:1.5rem">
+    <div>
+      <label class="flabel" style="margin-top:0">Dein Name</label>
+      <input type="text" id="schueler-name" placeholder="Vorname Nachname">
+    </div>
+    <div>
+      <label class="flabel" style="margin-top:0">Klasse / Kurs</label>
+      <input type="text" id="schueler-klasse" placeholder="z. B. 9r oder Q1">
+    </div>
+  </div>
+
   <div class="btn-row">
-    <button class="primary" onclick="speichern()">💾 Antworten speichern</button>
+    <button class="primary" onclick="abschicken()">📤 Abgabe abschicken</button>
+    <button class="primary" onclick="speichern()">💾 Zwischenspeichern</button>
+    <button onclick="drucken()">🖨️ Drucken / PDF</button>
     <button onclick="zuruecksetzen()">Zurücksetzen</button>
     <span class="saved" id="saved-msg">✓ Gespeichert!</span>
   </div>
 
+</div>
+
+<!-- Abschicken-Dialog -->
+<div class="dialog-overlay" id="dialog-overlay">
+  <div class="dialog-box">
+    <h3>Abgabe bestätigen</h3>
+    <p style="font-size:13px;color:#555">Bitte prüfe deine Angaben – nach dem Abschicken können keine Änderungen mehr vorgenommen werden.</p>
+    <label>Dein Name</label>
+    <input type="text" id="dlg-name" readonly style="background:#f4f3f0">
+    <label>Klasse / Kurs</label>
+    <input type="text" id="dlg-klasse" readonly style="background:#f4f3f0">
+    <div class="status-msg" id="dlg-status"></div>
+    <div class="dialog-row">
+      <button class="primary" id="dlg-senden-btn" onclick="dialogSenden()">Jetzt abschicken</button>
+      <button onclick="dialogSchliessen()">Abbrechen</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -234,7 +285,7 @@ function buildGrid(){
 function allIds(){
   const ids=[];
   TEXTS.forEach(t=>CATS.forEach(c=>ids.push('t'+t.id+'-'+c.key)));
-  ids.push('wirkung-1','wirkung-2','wirkung-3','erzaehler-beschr','erzaehlung');
+  ids.push('wirkung-1','wirkung-2','wirkung-3','erzaehler-beschr','erzaehlung','schueler-name','schueler-klasse');
   return ids;
 }
 
@@ -264,6 +315,72 @@ buildGrid();
 
 // Autosave alle 60 Sekunden
 setInterval(speichern, 60000);
+
+// ---- Abgabe via Formspree ----
+const FORMSPREE_ID = 'YOUR_FORM_ID'; // ← hier deine Formspree-ID eintragen
+
+function sammelAntworten(){
+  const d={};
+  allIds().forEach(id=>{const el=document.getElementById(id);if(el)d[id]=el.value;});
+  d['schueler-name']=document.getElementById('schueler-name').value.trim();
+  d['schueler-klasse']=document.getElementById('schueler-klasse').value.trim();
+  return d;
+}
+
+function abschicken(){
+  speichern();
+  const name=document.getElementById('schueler-name').value.trim();
+  const klasse=document.getElementById('schueler-klasse').value.trim();
+  if(!name||!klasse){alert('Bitte gib deinen Namen und deine Klasse ein.');return;}
+  document.getElementById('dlg-name').value=name;
+  document.getElementById('dlg-klasse').value=klasse;
+  document.getElementById('dlg-status').className='status-msg';
+  document.getElementById('dlg-status').textContent='';
+  document.getElementById('dlg-senden-btn').disabled=false;
+  document.getElementById('dialog-overlay').classList.add('aktiv');
+}
+
+function dialogSchliessen(){
+  document.getElementById('dialog-overlay').classList.remove('aktiv');
+}
+
+async function dialogSenden(){
+  if(FORMSPREE_ID==='YOUR_FORM_ID'){
+    alert('Formspree noch nicht eingerichtet. Bitte wende dich an deinen Lehrer oder nutze die Drucken-Funktion.');
+    return;
+  }
+  const btn=document.getElementById('dlg-senden-btn');
+  btn.disabled=true;btn.textContent='Wird gesendet …';
+  const data=sammelAntworten();
+  const status=document.getElementById('dlg-status');
+  try{
+    const res=await fetch('https://formspree.io/f/'+FORMSPREE_ID,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify(data)
+    });
+    if(res.ok){
+      status.textContent='✓ Abgabe erfolgreich! Du kannst das Fenster jetzt schließen.';
+      status.className='status-msg status-ok';
+      btn.textContent='Gesendet ✓';
+    } else {
+      throw new Error('HTTP '+res.status);
+    }
+  }catch(e){
+    status.textContent='Fehler beim Senden – bitte versuche es erneut oder nutze die Drucken-Funktion.';
+    status.className='status-msg status-err';
+    btn.disabled=false;btn.textContent='Erneut versuchen';
+  }
+}
+
+function drucken(){
+  speichern();
+  window.print();
+}
+
+document.getElementById('dialog-overlay').addEventListener('click',function(e){
+  if(e.target===this)dialogSchliessen();
+});
 </script>
 
 <script src="js/arena-bar.js"></script>
