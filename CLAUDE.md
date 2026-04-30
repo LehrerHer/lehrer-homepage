@@ -129,9 +129,17 @@ Four self-contained IIFE modules, each independent:
 - Check JavaScript in browser DevTools console
 
 ### Git
-- Default branch: `master`
-- Feature branches follow the pattern: `claude/<description>-<session-id>`
+- Default branch: `main`
+- **Push direkt auf `main`** – keine PRs, keine Feature-Branches. Einzelentwickler-Projekt.
+- Commit-Befehl immer mit `-c user.email="jan@lehrer-herrmann.de" -c user.name="Jan Herrmann"`
+- Push aus Worktrees: `git push origin HEAD:main`
 - Commit messages should be in English or German (existing commits are in German)
+
+### Deploy nach Änderungen (Lernkolosseum)
+Nach jedem Push auf main auf dem Server:
+```bash
+ssh root@178.105.35.83 "cd /var/www/lehrer-homepage && git pull && pm2 restart kolosseum"
+```
 
 ---
 
