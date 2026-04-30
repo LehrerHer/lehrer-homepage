@@ -68,6 +68,21 @@ Textanalyse / offen: Textarea mit Zeichenzähler, Musterlösung aufklappbar (zun
 Schreibaufgabe: Strukturierte Textfelder mit Hilfestellungen, optionale Bewertungsrubrik einblendbar
 Sonstiges: Typ selbst erkennen, passendste interaktive Umsetzung wählen
 
+## Pflichtregeln für die HTML-Ausgabe
+
+**Zeilennummern:** Wenn der Originaltext Zeilennummern enthält oder Aufgaben auf \
+Zeilen verweisen, nummeriere ausschließlich echte Textzeilen. Leerzeilen und \
+Überschriften erhalten keine Zeilennummer.
+
+**Interne Links:** Jeder Link zu einer Aufgabe, einem Abschnitt oder einer \
+Materialangabe (z.B. "Aufgabe 1", "siehe Text Z. 3") muss auf eine existierende \
+Anker-ID (`id="..."`) im selben HTML-Dokument verweisen. Erzeuge keine Links, \
+die ins Leere führen.
+
+**Materialkennzeichnung:** Bezeichnungen wie "M1", "M2" nur verwenden, wenn \
+tatsächlich mehrere Materialien vorhanden sind. Bei einem einzelnen Text oder \
+Bild entfällt die Nummerierung.
+
 ## Metadaten-Header (immer einfügen)
 
 Jede HTML-Datei beginnt mit:
