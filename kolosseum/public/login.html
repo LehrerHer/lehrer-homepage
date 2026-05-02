@@ -35,12 +35,6 @@
 
     .login-card { background: var(--card); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow-lg); }
 
-    .pin-input {
-      letter-spacing: 0.5rem;
-      font-size: 1.5rem;
-      text-align: center;
-    }
-
     .btn-login {
       width: 100%;
       padding: 1rem;
@@ -48,7 +42,13 @@
       margin-top: 0.5rem;
     }
 
-    .admin-link {
+    .hint {
+      font-size: 0.82rem;
+      color: var(--ink-soft);
+      margin-top: 0.25rem;
+    }
+
+    .bottom-link {
       display: block;
       text-align: center;
       margin-top: 1.5rem;
@@ -57,7 +57,7 @@
       text-decoration: none;
       transition: color var(--transition);
     }
-    .admin-link:hover { color: rgba(255,255,255,0.7); }
+    .bottom-link:hover { color: rgba(255,255,255,0.7); }
   </style>
 </head>
 <body>
@@ -71,30 +71,26 @@
     <div class="login-card">
       <form id="login-form" novalidate>
         <div class="form-group">
-          <label for="nick">Dein Spitzname</label>
+          <label for="identifier">E-Mail oder Avatarname</label>
           <input
             type="text"
-            id="nick"
-            name="nick"
-            placeholder="z. B. Blitzadler"
+            id="identifier"
+            name="identifier"
+            placeholder="deine@email.de oder Avatarname"
             autocomplete="username"
             autocapitalize="none"
             required
-            maxlength="30"
           >
+          <div class="hint">Du kannst dich mit deiner E-Mail-Adresse oder deinem Avatarnamen anmelden.</div>
         </div>
 
         <div class="form-group">
-          <label for="pin">Deine PIN</label>
+          <label for="password">Passwort</label>
           <input
             type="password"
-            id="pin"
-            name="pin"
-            placeholder="••••"
-            class="pin-input"
-            maxlength="4"
-            inputmode="numeric"
-            pattern="[0-9]{4}"
+            id="password"
+            name="password"
+            placeholder="Dein Passwort"
             autocomplete="current-password"
             required
           >
@@ -108,61 +104,62 @@
       </form>
     </div>
 
-    <a href="/register.html" class="admin-link" style="color:rgba(255,255,255,0.65);font-size:1rem;margin-top:1rem">
+    <a href="/register.html" class="bottom-link" style="color:rgba(255,255,255,0.65);font-size:1rem;margin-top:1rem">
       Noch kein Gladiator? Jetzt registrieren →
     </a>
-    <a href="/admin/index.html" class="admin-link">Admin-Bereich</a>
+    <a href="/admin/index.html" class="bottom-link">Admin-Bereich</a>
   </div>
 
   <script>
-    const form = document.getElementById('login-form');
-    const errorEl = document.getElementById('login-error');
-    const btn = document.getElementById('login-btn');
-    const pinInput = document.getElementById('pin');
+    (function () {
+      'use strict';
 
-    // Nur Ziffern im PIN-Feld
-    pinInput.addEventListener('input', () => {
-      pinInput.value = pinInput.value.replace(/\D/g, '').slice(0, 4);
-    });
+      const form    = document.getElementById('login-form');
+      const errorEl = document.getElementById('login-error');
+      const btn     = document.getElementById('login-btn');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      errorEl.textContent = '';
-      btn.disabled = true;
-      btn.textContent = '…';
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errorEl.textContent = '';
+        btn.disabled        = true;
+        btn.textContent     = '…';
 
-      const nick = document.getElementById('nick').value.trim();
-      const pin  = pinInput.value;
+        const identifier = document.getElementById('identifier').value.trim();
+        const password   = document.getElementById('password').value;
 
-      if (!nick || pin.length !== 4) {
-        errorEl.textContent = 'Bitte Spitzname und 4-stellige PIN eingeben.';
-        btn.disabled = false;
-        btn.textContent = 'Einloggen ⚔️';
-        return;
-      }
-
-      try {
-        const res = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ nick, pin }),
-        });
-        const data = await res.json();
-
-        if (!res.ok) {
-          errorEl.textContent = data.error || 'Anmeldung fehlgeschlagen.';
-          btn.disabled = false;
+        if (!identifier || !password) {
+          errorEl.textContent = 'Bitte E-Mail/Avatarname und Passwort eingeben.';
+          btn.disabled    = false;
           btn.textContent = 'Einloggen ⚔️';
           return;
         }
 
-        window.location.href = data.redirect || '/profil.html';
-      } catch {
-        errorEl.textContent = 'Verbindungsfehler. Bitte erneut versuchen.';
-        btn.disabled = false;
-        btn.textContent = 'Einloggen ⚔️';
-      }
-    });
+        try {
+          const res  = await fetch('/api/auth/login', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ identifier, password }),
+          });
+          const data = await res.json();
+
+          if (!res.ok) {
+            errorEl.textContent = data.error || 'Anmeldung fehlgeschlagen.';
+            btn.disabled    = false;
+            btn.textContent = 'Einloggen ⚔️';
+            return;
+          }
+
+          window.location.href = data.redirect || '/profil.html';
+        } catch {
+          errorEl.textContent = 'Verbindungsfehler. Bitte erneut versuchen.';
+          btn.disabled    = false;
+          btn.textContent = 'Einloggen ⚔️';
+        }
+      });
+
+      // Bereits eingeloggt?
+      fetch('/api/auth/me').then(r => { if (r.ok) window.location.href = '/profil.html'; });
+    })();
   </script>
   <script src="/js/arena-bar.js"></script>
 </body>

@@ -129,3 +129,14 @@ CREATE TABLE IF NOT EXISTS sessions (
   sess TEXT NOT NULL,
   expired DATETIME NOT NULL
 );
+
+-- Einladungslinks für Registrierung (nur mit gültigem Token möglich)
+CREATE TABLE IF NOT EXISTS invite_tokens (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  token TEXT UNIQUE NOT NULL,
+  label TEXT,
+  expires_at DATETIME NOT NULL,
+  max_uses INTEGER DEFAULT 1,
+  use_count INTEGER DEFAULT 0,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
