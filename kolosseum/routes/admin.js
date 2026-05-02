@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const { db } = require('../db/database');
 const { requireAdmin } = require('../middleware/auth');
 const { BADGE_DEFINITIONS, awardBadge, checkAndAwardBadges } = require('../db/badges');
@@ -209,6 +210,39 @@ router.delete('/quizzes/:id', (req, res) => {
 router.delete('/questions/:id', (req, res) => {
   const info = db.prepare('DELETE FROM questions WHERE id = ?').run(Number(req.params.id));
   if (info.changes === 0) return res.status(404).json({ error: 'Frage nicht gefunden.' });
+  res.json({ ok: true });
+});
+
+// === EINLADUNGSLINKS ===
+
+// GET /api/admin/invite-tokens
+router.get('/invite-tokens', (req, res) => {
+  const tokens = db.prepare(`
+    SELECT id, token, label, expires_at, max_uses, use_count, created_at
+    FROM invite_tokens
+    ORDER BY created_at DESC
+  `).all();
+  res.json(tokens);
+});
+
+// POST /api/admin/invite-tokens – neuen Link generieren
+router.post('/invite-tokens', (req, res) => {
+  const { label, expires_hours = 72, max_uses = 1 } = req.body;
+
+  const token = crypto.randomBytes(20).toString('hex');
+  const expiresAt = new Date(Date.now() + Number(expires_hours) * 3_600_000).toISOString();
+
+  const { lastInsertRowid: id } = db.prepare(
+    'INSERT INTO invite_tokens (token, label, expires_at, max_uses) VALUES (?, ?, ?, ?)'
+  ).run(token, label?.trim() || null, expiresAt, Number(max_uses));
+
+  res.status(201).json({ id, token, expires_at: expiresAt });
+});
+
+// DELETE /api/admin/invite-tokens/:id – Link widerrufen
+router.delete('/invite-tokens/:id', (req, res) => {
+  const info = db.prepare('DELETE FROM invite_tokens WHERE id = ?').run(Number(req.params.id));
+  if (info.changes === 0) return res.status(404).json({ error: 'Token nicht gefunden.' });
   res.json({ ok: true });
 });
 

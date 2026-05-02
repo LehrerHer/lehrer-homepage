@@ -23,6 +23,10 @@ if (!cols.includes('email')) {
   db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_students_email ON students(email) WHERE email IS NOT NULL');
 }
 
+// Migration: invite_tokens-Tabelle (wird durch schema.sql CREATE IF NOT EXISTS angelegt,
+// aber der Index muss separat sichergestellt werden)
+db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_invite_tokens_token ON invite_tokens(token)');
+
 // Session-Store für express-session auf Basis von better-sqlite3
 class SQLiteSessionStore {
   constructor(session) {

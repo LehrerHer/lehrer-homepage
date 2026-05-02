@@ -1,27 +1,32 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const { db } = require('../db/database');
 const { loginLimiter } = require('../middleware/rateLimit');
 const { requireStudent, requireAdmin } = require('../middleware/auth');
 
 const router = express.Router();
 
-// POST /api/auth/login
+// POST /api/auth/login – Email oder Nick + Passwort
 router.post('/login', loginLimiter, async (req, res) => {
-  const { nick, pin } = req.body;
+  const { identifier, password } = req.body;
 
-  if (!nick || !pin) {
-    return res.status(400).json({ error: 'Spitzname und PIN erforderlich.' });
+  if (!identifier || !password) {
+    return res.status(400).json({ error: 'Anmeldename und Passwort erforderlich.' });
   }
 
-  const student = db.prepare('SELECT * FROM students WHERE nick = ?').get(nick.trim());
+  const id = identifier.trim().toLowerCase();
+  const student = db.prepare(
+    'SELECT * FROM students WHERE LOWER(email) = ? OR LOWER(nick) = ?'
+  ).get(id, id);
+
   if (!student) {
-    return res.status(401).json({ error: 'Spitzname oder PIN falsch.' });
+    return res.status(401).json({ error: 'Anmeldename oder Passwort falsch.' });
   }
 
-  const match = await bcrypt.compare(String(pin), student.pin_hash);
+  const match = await bcrypt.compare(String(password), student.pin_hash);
   if (!match) {
-    return res.status(401).json({ error: 'Spitzname oder PIN falsch.' });
+    return res.status(401).json({ error: 'Anmeldename oder Passwort falsch.' });
   }
 
   db.prepare('UPDATE students SET last_active = CURRENT_TIMESTAMP WHERE id = ?').run(student.id);
@@ -42,17 +47,47 @@ router.post('/logout', (req, res) => {
 
 // GET /api/auth/me
 router.get('/me', requireStudent, (req, res) => {
-  const student = db.prepare('SELECT id, nick, xp, created_at, last_active FROM students WHERE id = ?').get(req.session.studentId);
+  const student = db.prepare(
+    'SELECT id, nick, xp, created_at, last_active FROM students WHERE id = ?'
+  ).get(req.session.studentId);
   if (!student) return res.status(404).json({ error: 'Nicht gefunden.' });
   res.json(student);
 });
 
-// POST /api/auth/register – Selbstregistrierung mit Schul-E-Mail
-router.post('/register', loginLimiter, async (req, res) => {
-  const { email, nick, pin } = req.body;
+// GET /api/auth/validate-token/:token – prüft Einladungslink (ohne Registrierung)
+router.get('/validate-token/:token', (req, res) => {
+  const token = db.prepare(
+    `SELECT id, label, expires_at, max_uses, use_count
+     FROM invite_tokens
+     WHERE token = ?
+       AND expires_at > CURRENT_TIMESTAMP
+       AND (max_uses = 0 OR use_count < max_uses)`
+  ).get(req.params.token);
 
-  if (!email || !nick || !pin) {
-    return res.status(400).json({ error: 'E-Mail, Spitzname und PIN erforderlich.' });
+  if (!token) {
+    return res.status(404).json({ error: 'Einladungslink ungültig oder abgelaufen.' });
+  }
+  res.json({ ok: true, label: token.label || null });
+});
+
+// POST /api/auth/register – Registrierung mit Einladungstoken
+router.post('/register', loginLimiter, async (req, res) => {
+  const { token, email, nick, password } = req.body;
+
+  if (!token || !email || !nick || !password) {
+    return res.status(400).json({ error: 'Token, E-Mail, Avatarname und Passwort erforderlich.' });
+  }
+
+  // Token prüfen und sperren (atomisch)
+  const inviteRow = db.prepare(
+    `SELECT id FROM invite_tokens
+     WHERE token = ?
+       AND expires_at > CURRENT_TIMESTAMP
+       AND (max_uses = 0 OR use_count < max_uses)`
+  ).get(token);
+
+  if (!inviteRow) {
+    return res.status(403).json({ error: 'Einladungslink ungültig oder abgelaufen.' });
   }
 
   // E-Mail-Format prüfen
@@ -61,42 +96,44 @@ router.post('/register', loginLimiter, async (req, res) => {
     return res.status(400).json({ error: 'Ungültige E-Mail-Adresse.' });
   }
 
-  // Domain gegen Allowlist prüfen
-  const allowed = (process.env.ALLOWED_DOMAINS || 'obsspelle.de')
-    .split(',').map(d => d.trim().toLowerCase()).filter(Boolean);
-  const domain = emailLower.split('@')[1];
-  if (!allowed.includes(domain)) {
-    return res.status(403).json({
-      error: `Registrierung nur mit Schuladresse möglich (z. B. @${allowed[0]}).`,
-    });
+  // Passwort: mindestens 8 Zeichen
+  if (String(password).length < 8) {
+    return res.status(400).json({ error: 'Passwort muss mindestens 8 Zeichen haben.' });
   }
 
-  // PIN-Format prüfen
-  if (!/^\d{4}$/.test(String(pin))) {
-    return res.status(400).json({ error: 'PIN muss genau 4 Ziffern haben.' });
-  }
-
-  // Spitzname: nur erlaubte Zeichen, 2–20 Zeichen
+  // Avatarname: 2–20 Zeichen
   const nickClean = nick.trim();
   if (nickClean.length < 2 || nickClean.length > 20) {
-    return res.status(400).json({ error: 'Spitzname muss 2–20 Zeichen lang sein.' });
+    return res.status(400).json({ error: 'Avatarname muss 2–20 Zeichen lang sein.' });
   }
 
   // Eindeutigkeit prüfen
   if (db.prepare('SELECT id FROM students WHERE email = ?').get(emailLower)) {
     return res.status(409).json({ error: 'Diese E-Mail-Adresse ist bereits registriert.' });
   }
-  if (db.prepare('SELECT id FROM students WHERE nick = ?').get(nickClean)) {
-    return res.status(409).json({ error: 'Dieser Spitzname ist bereits vergeben.' });
+  if (db.prepare('SELECT id FROM students WHERE LOWER(nick) = ?').get(nickClean.toLowerCase())) {
+    return res.status(409).json({ error: 'Dieser Avatarname ist bereits vergeben.' });
   }
 
-  const pin_hash = await bcrypt.hash(String(pin), 10);
-  const { lastInsertRowid: studentId } = db.prepare(
-    'INSERT INTO students (nick, pin_hash, email) VALUES (?, ?, ?)'
-  ).run(nickClean, pin_hash, emailLower);
+  const pin_hash = await bcrypt.hash(String(password), 10);
 
-  // Erster-Tag-Badge
-  db.prepare('INSERT OR IGNORE INTO student_badges (student_id, badge_id) VALUES (?, ?)').run(studentId, 'first_day');
+  const register = db.transaction(() => {
+    const { lastInsertRowid: studentId } = db.prepare(
+      'INSERT INTO students (nick, pin_hash, email) VALUES (?, ?, ?)'
+    ).run(nickClean, pin_hash, emailLower);
+
+    db.prepare(
+      'UPDATE invite_tokens SET use_count = use_count + 1 WHERE id = ?'
+    ).run(inviteRow.id);
+
+    return studentId;
+  });
+
+  const studentId = register();
+
+  db.prepare(
+    'INSERT OR IGNORE INTO student_badges (student_id, badge_id) VALUES (?, ?)'
+  ).run(studentId, 'first_day');
 
   req.session.studentId = studentId;
   req.session.nick = nickClean;
