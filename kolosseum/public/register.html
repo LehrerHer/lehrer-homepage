@@ -199,6 +199,9 @@
     let emailVal = '';
     let nickVal  = '';
 
+    // Nach Registrierung immer zum Portal
+    const afterRegisterUrl = 'https://lehrer-herrmann.de/portal.html';
+
     function showView(name) {
       VIEWS.forEach((v, i) => {
         document.getElementById('view-' + v).style.display = v === name ? 'block' : 'none';
@@ -332,7 +335,7 @@
           return;
         }
 
-        window.location.href = data.redirect || '/profil.html';
+        window.location.href = afterRegisterUrl;
       } catch {
         setErr('password-error', 'Verbindungsfehler. Bitte erneut versuchen.');
         btn.disabled    = false;

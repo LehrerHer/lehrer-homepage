@@ -66,7 +66,7 @@
         '<p>',
           'Diese Seite ist nur für Schülerinnen und Schüler mit einem Kolosseum-Account zugänglich.',
         '</p>',
-        '<a href="' + K + '/login.html" class="__ag_btn">',
+        '<a href="' + K + '/login.html?next=' + encodeURIComponent(location.href) + '" class="__ag_btn">',
           '🏛️ Jetzt einloggen',
         '</a>',
         '<div class="__ag_hint">',
