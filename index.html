@@ -49,7 +49,7 @@
             <!-- Navigationslinks – Anker-Links zu den Sektionen der Seite -->
             <ul class="navbar-links" id="navbar-links">
                 <li><a href="#was-ist-neu">Was ist neu?</a></li>
-                <li><a href="#startseite" class="aktiv">Startseite</a></li>
+                <li><a href="#faecher">Fächer</a></li>
                 <li><a href="portal.html">Materialien &amp; Quizze</a></li>
                 <li><a href="kolosseum.html">🏛️ Arena</a></li>
                 <li><a href="blog.html">Blog</a></li>
@@ -86,7 +86,7 @@
             </p>
 
             <!-- Fächer-Badges (kleine Kennzeichnungen) -->
-            <div class="hero-faecher" role="list" aria-label="Unterrichtsfächer">
+            <div class="hero-faecher" role="list" aria-label="Unterrichtsfächer" id="faecher">
                 <!-- Erste Reihe: Hauptfächer -->
                 <div class="hero-faecher-reihe">
                     <a href="fach-deutsch.html" class="fach-badge" role="listitem">📖 Deutsch</a>
@@ -126,6 +126,74 @@
     </section>
 
 
+
+
+    <!-- ========================================================
+         BEREICHE-ÜBERSICHT – immer öffentlich sichtbar
+         Links und kurze Erklärung zu den Hauptbereichen der Homepage
+         ======================================================== -->
+    <section id="bereiche-uebersicht">
+        <div class="container">
+
+            <h2 class="section-titel">Was Sie hier finden</h2>
+            <p class="section-untertitel">Alle Bereiche der Homepage auf einen Blick – öffentlich oder mit Login.</p>
+
+            <div class="bereiche-grid">
+
+                <!-- Fächervorstellung – öffentlich -->
+                <div class="bereich-karte bereich-oeffnetlich">
+                    <div class="bereich-badge-zeile">
+                        <span class="bereich-status bereich-status-offen">✓ Öffentlich</span>
+                    </div>
+                    <div class="bereich-icon">📚</div>
+                    <h3>Fächervorstellung</h3>
+                    <p>Übersicht über alle Unterrichtsfächer: Deutsch, Geschichte, Wirtschaft/Politik, Informatik, Werte &amp; Normen und AGs &amp; Projekte.</p>
+                    <div class="bereich-links">
+                        <a href="fach-deutsch.html">📖 Deutsch</a>
+                        <a href="fach-geschichte.html">🏛️ Geschichte</a>
+                        <a href="fach-wipo.html">🌍 WiPo</a>
+                        <a href="fach-informatik.html">💻 Informatik</a>
+                        <a href="fach-werte-normen.html">⚖️ W&amp;N</a>
+                        <a href="fach-ag-projekte.html">🎭 AGs</a>
+                    </div>
+                </div>
+
+                <!-- Arena / Lernkolosseum – teilweise öffentlich -->
+                <a href="kolosseum.html" class="bereich-karte bereich-arena">
+                    <div class="bereich-badge-zeile">
+                        <span class="bereich-status bereich-status-offen">✓ Öffentlich spielbar</span>
+                    </div>
+                    <div class="bereich-icon">🏛️</div>
+                    <h3>Arena – Lernkolosseum</h3>
+                    <p>Spiele Quizze direkt im Browser – ohne Anmeldung. Als Gladiator kämpfst du dich durch Ranglisten und levelst auf.</p>
+                    <span class="bereich-cta">→ Zur Arena</span>
+                </a>
+
+                <!-- Materialien & Quizze – Login nötig -->
+                <a href="portal.html" class="bereich-karte bereich-gesperrt">
+                    <div class="bereich-badge-zeile">
+                        <span class="bereich-status bereich-status-gesperrt">🔒 Login nötig</span>
+                    </div>
+                    <div class="bereich-icon">📋</div>
+                    <h3>Materialien &amp; Quizze</h3>
+                    <p>Arbeitsblätter, Hilfen, Erklärungen und Links – geordnet nach Fächern: Deutsch, Geschichte, Wirtschaft, Werte &amp; Normen, Informatik und mehr.</p>
+                    <span class="bereich-cta">→ Zum Materialportal</span>
+                </a>
+
+                <!-- Schüler*innenblog – Login nötig -->
+                <a href="blog.html" class="bereich-karte bereich-gesperrt">
+                    <div class="bereich-badge-zeile">
+                        <span class="bereich-status bereich-status-gesperrt">🔒 Login nötig</span>
+                    </div>
+                    <div class="bereich-icon">✍️</div>
+                    <h3>Schüler*innenblog</h3>
+                    <p>Schülerinnen und Schüler veröffentlichen hier Texte, Gedichte, Fotos und Projekte aus dem Unterricht.</p>
+                    <span class="bereich-cta">→ Zum Blog</span>
+                </a>
+
+            </div>
+        </div>
+    </section>
 
 
     <!-- ========================================================
@@ -355,9 +423,11 @@
                 <div class="kontakt-karte">
                     <div class="kontakt-icon">✉️</div>
                     <h3>E-Mail</h3>
-                    <!-- Hier eure Schul-E-Mail-Adresse eintragen:
-                         <a href="mailto:j.herrmann@schule.de">j.herrmann@schule.de</a> -->
-                    <p>Über das Sekretariat oder die offizielle Schul-E-Mail-Adresse erreichbar.</p>
+                    <p>
+                        <a href="mailto:jan.herrmann@obsspelle.de" style="color:var(--farbe-akzent);font-weight:600">
+                            jan.herrmann<wbr>@obsspelle.de
+                        </a>
+                    </p>
                 </div>
 
                 <div class="kontakt-karte">

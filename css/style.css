@@ -2175,3 +2175,120 @@ footer {
         font-size: 1.6rem;
     }
 }
+
+
+/* ================================================================
+   BEREICHE-ÜBERSICHT (Homepage – immer öffentlich sichtbar)
+   ================================================================ */
+
+#bereiche-uebersicht {
+    background: var(--farbe-hintergrund);
+    padding: 4rem 0;
+}
+
+.bereiche-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1rem;
+}
+
+.bereich-karte {
+    background: #fff;
+    border: 1.5px solid var(--farbe-rahmen);
+    border-radius: 14px;
+    padding: 1.5rem 1.4rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow var(--transition), transform var(--transition), border-color var(--transition);
+}
+
+.bereich-karte:hover {
+    box-shadow: 0 6px 24px rgba(30,58,95,.13);
+    transform: translateY(-3px);
+    border-color: var(--farbe-akzent);
+    color: inherit;
+}
+
+.bereich-badge-zeile {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.bereich-status {
+    font-size: .75rem;
+    font-weight: 600;
+    padding: .2rem .6rem;
+    border-radius: 20px;
+    letter-spacing: .02em;
+}
+
+.bereich-status-offen {
+    background: #e8f8f0;
+    color: #1a7a4a;
+}
+
+.bereich-status-gesperrt {
+    background: #fef0e7;
+    color: #b05600;
+}
+
+.bereich-icon {
+    font-size: 2.2rem;
+    line-height: 1;
+    margin-top: .25rem;
+}
+
+.bereich-karte h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--farbe-primaer);
+    margin: 0;
+}
+
+.bereich-karte p {
+    font-size: .9rem;
+    color: var(--farbe-text-hell);
+    line-height: 1.6;
+    margin: 0;
+    flex: 1;
+}
+
+.bereich-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin-top: .25rem;
+}
+
+.bereich-links a {
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--farbe-akzent);
+    text-decoration: none;
+    background: rgba(74,158,218,.1);
+    padding: .25rem .65rem;
+    border-radius: 20px;
+    transition: background var(--transition);
+}
+
+.bereich-links a:hover {
+    background: rgba(74,158,218,.22);
+}
+
+.bereich-cta {
+    font-size: .9rem;
+    font-weight: 700;
+    color: var(--farbe-akzent);
+    margin-top: .25rem;
+}
+
+@media (max-width: 600px) {
+    .bereiche-grid {
+        grid-template-columns: 1fr;
+    }
+}
