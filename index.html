@@ -14,6 +14,11 @@
 
     <!-- Eigenes Stylesheet -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Geschützte Sektionen standardmäßig ausblenden (homepage-gate.js blendet sie ein) -->
+    <style>
+        #lernkolosseum, #digitale-materialien, #blog-teaser { display: none; }
+    </style>
 </head>
 <body>
 
@@ -121,6 +126,47 @@
     </section>
 
 
+
+
+    <!-- ========================================================
+         LOGIN-GATE – wird ausgeblendet, sobald eingeloggt
+         ======================================================== -->
+    <section id="homepage-login-gate">
+        <div class="container">
+            <div style="
+                max-width: 560px;
+                margin: 0 auto;
+                background: #fff;
+                border: 1px solid #d6e4f0;
+                border-radius: 16px;
+                padding: 2.5rem 2rem;
+                text-align: center;
+                box-shadow: 0 2px 16px rgba(30,58,95,.08);
+            ">
+                <div style="font-size:2.5rem;margin-bottom:1rem">🔒</div>
+                <h2 style="font-size:1.3rem;color:var(--primary-color,#1e3a5f);margin:0 0 .75rem">
+                    Materialien nur für Schülerinnen und Schüler
+                </h2>
+                <p style="color:#555;font-size:.95rem;line-height:1.65;margin:0 0 1.5rem">
+                    Arbeitsblätter, Quizze und weitere Unterrichtsmaterialien stehen eingeloggten
+                    Schülerinnen und Schülern zur Verfügung – kostenlos und ohne Werbung.
+                </p>
+                <a href="https://kolosseum.lehrer-herrmann.de/login.html"
+                   style="
+                       display:inline-block;padding:.85rem 2rem;
+                       background:var(--accent-color,#4a9eda);color:#fff;
+                       border-radius:8px;font-size:1rem;font-weight:700;
+                       text-decoration:none;margin-bottom:.75rem;
+                   ">
+                    🏛️ Jetzt einloggen
+                </a>
+                <p style="font-size:.82rem;color:#888;margin:.5rem 0 0">
+                    Noch kein Account?
+                    <a href="#kontakt" style="color:var(--accent-color,#4a9eda)">Herrn Herrmann um einen Einladungslink bitten →</a>
+                </p>
+            </div>
+        </div>
+    </section>
 
 
     <!-- ========================================================
@@ -320,6 +366,16 @@
                     <p>Nach Absprache oder direkt nach dem Unterricht – einfach ansprechen!</p>
                 </div>
 
+                <div class="kontakt-karte">
+                    <div class="kontakt-icon">🔑</div>
+                    <h3>Account &amp; Zugang</h3>
+                    <p>
+                        Kein Account, vergessenes Passwort oder Probleme beim Einloggen?
+                        Herrn Herrmann persönlich ansprechen oder per Schul-E-Mail schreiben –
+                        er schickt dir einen neuen Einladungslink.
+                    </p>
+                </div>
+
             </div>
         </div>
     </section>
@@ -350,6 +406,7 @@
     <script src="js/was-ist-neu.js"></script>
     <script src="js/arena-bar.js"></script>
     <script src="js/kolosseum-login-widget.js"></script>
+    <script src="js/homepage-gate.js"></script>
     <!-- GoatCounter Analytics – cookiefrei, DSGVO-konform -->
     <!-- Konto anlegen auf goatcounter.com und DEIN-CODE durch deinen Code ersetzen -->
     <script data-goatcounter="https://lehrer-herrmann.goatcounter.com/count"
