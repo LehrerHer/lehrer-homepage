@@ -1,0 +1,570 @@
+```html
+<!--
+  Titel: Aesop – Die Schildkröte und der Hase
+  Fach: Deutsch
+  Klasse/Niveau: Jahrgang 5/6
+  AB-Typ: Offen (Charakterbeschreibung + Moral/Lehre)
+  Erstellt: 2025-07-10
+  Quelle: PDF (2 Seiten)
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <script src="/js/auth-guard.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aesop – Die Schildkröte und der Hase</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, sans-serif;
+      background: #f4f6f7;
+      color: #222;
+      padding: 16px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ── */
+    header {
+      background: #1e3a5f;
+      color: #fff;
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 20px;
+    }
+    header .meta {
+      font-size: 0.8rem;
+      opacity: 0.75;
+      margin-bottom: 6px;
+    }
+    header h1 {
+      font-size: 1.5rem;
+      font-style: italic;
+    }
+    header h1 span { font-style: normal; }
+
+    /* ── Karte ── */
+    .card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.1);
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .card h2 {
+      color: #1e3a5f;
+      font-size: 1.15rem;
+      margin-bottom: 14px;
+      border-left: 4px solid #4a9eda;
+      padding-left: 10px;
+    }
+
+    /* ── Fabeltext ── */
+    .fabel-text {
+      position: relative;
+    }
+    .fabel-text .lines {
+      counter-reset: line;
+      font-size: 0.97rem;
+    }
+    .fabel-text p {
+      margin-bottom: 0.6em;
+      padding-left: 3.2em;
+      position: relative;
+    }
+    .line-num {
+      position: absolute;
+      left: 0;
+      width: 2.8em;
+      text-align: right;
+      color: #4a9eda;
+      font-size: 0.8rem;
+      user-select: none;
+      padding-right: 0.5em;
+      top: 0;
+    }
+
+    /* ── Tab-Navigation ── */
+    .tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .tab-btn {
+      flex: 1 1 auto;
+      min-width: 140px;
+      background: #fff;
+      border: 2px solid #1e3a5f;
+      color: #1e3a5f;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+    .tab-btn:hover { background: #e8f0f8; }
+    .tab-btn.active {
+      background: #1e3a5f;
+      color: #fff;
+    }
+
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Emoji-Illustration ── */
+    .emoji-hero {
+      font-size: 3.5rem;
+      text-align: center;
+      margin-bottom: 14px;
+      line-height: 1;
+    }
+
+    /* ── Textarea & Counter ── */
+    .field-group {
+      margin-bottom: 18px;
+    }
+    .field-group label {
+      display: block;
+      font-weight: 600;
+      color: #1e3a5f;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+    .field-group .hint {
+      font-size: 0.8rem;
+      color: #666;
+      margin-bottom: 6px;
+    }
+    textarea {
+      width: 100%;
+      border: 2px solid #cdd5dd;
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-family: system-ui, sans-serif;
+      font-size: 0.95rem;
+      resize: vertical;
+      min-height: 120px;
+      transition: border-color .2s;
+      color: #222;
+      background: #fafbfc;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: #4a9eda;
+      background: #fff;
+    }
+    .char-counter {
+      text-align: right;
+      font-size: 0.78rem;
+      color: #888;
+      margin-top: 3px;
+    }
+    .char-counter.warn { color: #e74c3c; }
+
+    /* ── Eigenschafts-Tags ── */
+    .tag-area {
+      margin-bottom: 14px;
+    }
+    .tag-area p {
+      font-size: 0.82rem;
+      color: #555;
+      margin-bottom: 8px;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .tag {
+      background: #e8f0f8;
+      border: 2px solid #4a9eda;
+      color: #1e3a5f;
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background .15s, color .15s;
+      user-select: none;
+    }
+    .tag.selected {
+      background: #1e3a5f;
+      color: #fff;
+      border-color: #1e3a5f;
+    }
+    .tag-notice {
+      font-size: 0.78rem;
+      color: #888;
+      margin-top: 6px;
+    }
+
+    /* ── Musterlösung ── */
+    .muster-toggle {
+      background: none;
+      border: 2px solid #4a9eda;
+      color: #4a9eda;
+      border-radius: 6px;
+      padding: 7px 16px;
+      font-size: 0.88rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background .2s, color .2s;
+      margin-top: 4px;
+    }
+    .muster-toggle:hover {
+      background: #4a9eda;
+      color: #fff;
+    }
+    .muster-box {
+      display: none;
+      background: #f0faf4;
+      border: 2px solid #2ecc71;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-top: 12px;
+      font-size: 0.9rem;
+      color: #1a5c36;
+      line-height: 1.6;
+    }
+    .muster-box.open { display: block; }
+    .muster-box h3 {
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+      color: #1e3a5f;
+    }
+    .muster-box ul {
+      padding-left: 1.2em;
+    }
+    .muster-box ul li { margin-bottom: 4px; }
+
+    /* ── Speichern-Button ── */
+    .save-btn {
+      display: inline-block;
+      background: #1e3a5f;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 28px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s;
+      margin-top: 8px;
+    }
+    .save-btn:hover { background: #2d5488; }
+
+    .save-note {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 8px;
+    }
+
+    /* ── Fortschrittsbalken ── */
+    .progress-wrap {
+      background: #e0e7ef;
+      border-radius: 999px;
+      height: 8px;
+      margin-bottom: 6px;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background: #4a9eda;
+      border-radius: 999px;
+      transition: width .4s ease;
+      width: 0%;
+    }
+    .progress-label {
+      font-size: 0.8rem;
+      color: #555;
+      margin-bottom: 16px;
+    }
+
+    /* ── Checklist (Schreibaufgaben-Hilfe) ── */
+    .checklist {
+      list-style: none;
+      padding: 0;
+    }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+      color: #444;
+    }
+    .checklist li input[type="checkbox"] {
+      margin-top: 2px;
+      accent-color: #1e3a5f;
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    /* ── Responsiv ── */
+    @media (max-width: 500px) {
+      .tab-btn { font-size: 0.82rem; padding: 8px 10px; }
+      header h1 { font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ══ HEADER ══ -->
+  <header>
+    <div class="meta">Deutsch · Fabeln · Jahrgang 5/6 · Gruppenarbeit</div>
+    <h1>M1 <em>Aesop:</em> <span>Die Schildkröte und der Hase</span></h1>
+  </header>
+
+  <!-- ══ FORTSCHRITT ══ -->
+  <div class="card" style="padding:16px 24px;">
+    <div style="font-weight:600;color:#1e3a5f;margin-bottom:6px;font-size:0.9rem;">Dein Fortschritt</div>
+    <div class="progress-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="progress-label" id="progressLabel">0 von 3 Aufgaben bearbeitet</div>
+  </div>
+
+  <!-- ══ TABS ══ -->
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" onclick="showTab('text',this)" role="tab">📖 Fabeltext</button>
+    <button class="tab-btn" onclick="showTab('aufgaben',this)" role="tab">✏️ Aufgaben</button>
+    <button class="tab-btn" onclick="showTab('abgabe',this)" role="tab">💾 Abgabe</button>
+  </div>
+
+  <!-- ══════════════ TAB 1: Fabeltext ══════════════ -->
+  <div id="tab-text" class="tab-panel active">
+    <div class="card fabel-text">
+      <h2>📜 Der Fabeltext</h2>
+      <div class="lines">
+        <p><span class="line-num">1</span>Eine Schildkröte wurde wegen ihrer Langsamkeit von einem Hasen verspottet. Trotzdem wagte sie es, den Hasen zum Wettlauf herauszufordern. Der Hase ließ sich mehr aus Scherz als aus Prahlerei darauf ein.</p>
+        <p><span class="line-num">5</span>Es kam der Tag, an dem der Wettlauf stattfinden sollte. Das Ziel wurde festgelegt und beide betraten im gleichen Augenblick die Laufbahn.</p>
+        <p><span class="line-num">8</span>Die Schildkröte kroch langsam und unermüdlich. Der Hase dagegen legte sich mit mächtigen Sprüngen gleich ins Zeug, wollte er den Spott für die Schildkröte doch auf die Spitze treiben.</p>
+        <p><span class="line-num">11</span>Als der Hase nur noch wenige Schritte vom Ziel entfernt war, setzte er sich schnaufend ins Gras und schlief kurz darauf ein. Die großen Sprünge hatten ihn nämlich müde gemacht.</p>
+        <p><span class="line-num">15</span>Doch plötzlich sah sich der Hase vom Jubel der Zuschauer geweckt, denn die Schildkröte hatte gerade das Ziel erreicht und gewonnen.</p>
+        <p><span class="line-num">18</span>Der Hase musste zugeben, dass das Vertrauen in seine Schnelligkeit ihn so leichtsinnig gemacht hatte, dass sogar ein langsames Kriechtier ihn mit Ausdauer besiegen konnte.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🔍 Fachbegriff: Fabel</h2>
+      <p style="font-size:0.92rem;color:#444;">Eine <strong>Fabel</strong> ist eine kurze Geschichte, in der Tiere oder Dinge wie Menschen denken, sprechen und handeln. Am Ende steht eine <strong>Moral</strong> (= Lehre), die zeigt, wie man sich im Leben besser verhalten soll.</p>
+    </div>
+
+    <div style="text-align:center;margin-bottom:20px;">
+      <button class="save-btn" onclick="showTab('aufgaben', document.querySelectorAll('.tab-btn')[1])">
+        Zu den Aufgaben →
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════ TAB 2: Aufgaben ══════════════ -->
+  <div id="tab-aufgaben" class="tab-panel">
+
+    <!-- ── Aufgabe 1: Der Hase ── -->
+    <div class="card" id="card-hase">
+      <h2>🐇 Aufgabe 1 – Der Hase ist …</h2>
+      <div class="emoji-hero">🐇</div>
+
+      <div class="tag-area">
+        <p>Klicke auf passende Eigenschaften (mehrere möglich) – oder schreibe deine eigenen unten:</p>
+        <div class="tags" id="tags-hase">
+          <span class="tag" onclick="toggleTag(this,'hase')">schnell</span>
+          <span class="tag" onclick="toggleTag(this,'hase')">prahlerhaft</span>
+          <span class="tag" onclick="toggleTag(this,'hase')">leichtsinnig</span>
+          <span class="tag" onclick="toggleTag(this,'hase')">arrogant</span>
+          <span class="tag" onclick="toggleTag(this,'hase')">selbstüberschätzend</span>
+          <span class="tag" onclick="toggleTag(this,'hase')">verspottend</span>
+          <span class="tag" onclick="toggleTag(this,'hase')">unvorsichtig</span>
+          <span class="tag" onclick="toggleTag(this,'hase')">lustig</span>
+          <span class="tag" onclick="toggleTag(this,'hase')">mutig</span>
+          <span class="tag" onclick="toggleTag(this,'hase')">faul</span>
+        </div>
+        <div class="tag-notice">Ausgewählt: <span id="selected-hase">–</span></div>
+      </div>
+
+      <div class="field-group">
+        <label for="ta-hase">Beschreibe den Hasen in eigenen Worten:</label>
+        <div class="hint">💡 Schau dir an, wie er sich verhält, was er tut und sagt. Nutze Zeilennummern aus dem Text!</div>
+        <textarea id="ta-hase" placeholder="Der Hase ist … Er verhält sich …" oninput="updateCounter('hase');updateProgress()"></textarea>
+        <div class="char-counter" id="cc-hase">0 Zeichen</div>
+      </div>
+
+      <!-- Checkliste -->
+      <details style="margin-bottom:14px;">
+        <summary style="cursor:pointer;color:#4a9eda;font-weight:600;font-size:0.88rem;">📋 Schreibhilfe einblenden</summary>
+        <ul class="checklist" style="margin-top:10px;">
+          <li><input type="checkbox"> Ich beschreibe, wie der Hase am Anfang handelt (Z. 1–4).</li>
+          <li><input type="checkbox"> Ich erkläre, warum der Hase einschläft (Z. 11–14).</li>
+          <li><input type="checkbox"> Ich sage, was der Hase am Ende erkennt (Z. 18–20).</li>
+          <li><input type="checkbox"> Ich benutze mindestens 3 beschreibende Adjektive.</li>
+        </ul>
+      </details>
+
+      <button class="muster-toggle" onclick="toggleMuster('muster-hase',this)">💡 Musterlösung anzeigen</button>
+      <div class="muster-box" id="muster-hase">
+        <h3>Musterlösung – Der Hase ist …</h3>
+        <ul>
+          <li><strong>schnell und selbstsicher</strong> – er hat große Sprünge und legt sich sofort ins Zeug (Z. 8–9).</li>
+          <li><strong>arrogant und prahlerhaft</strong> – er will den Spott für die Schildkröte „auf die Spitze treiben" (Z. 10).</li>
+          <li><strong>leichtsinnig</strong> – er schläft ein, obwohl er noch nicht am Ziel ist (Z. 11–12).</li>
+          <li><strong>selbstüberschätzend</strong> – er vertraut zu sehr auf seine Schnelligkeit (Z. 18–19).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ── Aufgabe 2: Die Schildkröte ── -->
+    <div class="card" id="card-sk">
+      <h2>🐢 Aufgabe 2 – Die Schildkröte ist …</h2>
+      <div class="emoji-hero">🐢</div>
+
+      <div class="tag-area">
+        <p>Klicke auf passende Eigenschaften (mehrere möglich):</p>
+        <div class="tags" id="tags-sk">
+          <span class="tag" onclick="toggleTag(this,'sk')">langsam</span>
+          <span class="tag" onclick="toggleTag(this,'sk')">ausdauernd</span>
+          <span class="tag" onclick="toggleTag(this,'sk')">mutig</span>
+          <span class="tag" onclick="toggleTag(this,'sk')">fleißig</span>
+          <span class="tag" onclick="toggleTag(this,'sk')">zielstrebig</span>
+          <span class="tag" onclick="toggleTag(this,'sk')">bescheiden</span>
+          <span class="tag" onclick="toggleTag(this,'sk')">tapfer</span>
+          <span class="tag" onclick="toggleTag(this,'sk')">unermüdlich</span>
+          <span class="tag" onclick="toggleTag(this,'sk')">selbstbewusst</span>
+          <span class="tag" onclick="toggleTag(this,'sk')">geduldig</span>
+        </div>
+        <div class="tag-notice">Ausgewählt: <span id="selected-sk">–</span></div>
+      </div>
+
+      <div class="field-group">
+        <label for="ta-sk">Beschreibe die Schildkröte in eigenen Worten:</label>
+        <div class="hint">💡 Überlege: Was macht sie trotz ihrer Langsamkeit besonders?</div>
+        <textarea id="ta-sk" placeholder="Die Schildkröte ist … Sie zeigt …" onInput="updateCounter('sk');updateProgress()"></textarea>
+        <div class="char-counter" id="cc-sk">0 Zeichen</div>
+      </div>
+
+      <details style="margin-bottom:14px;">
+        <summary style="cursor:pointer;color:#4a9eda;font-weight:600;font-size:0.88rem;">📋 Schreibhilfe einblenden</summary>
+        <ul class="checklist" style="margin-top:10px;">
+          <li><input type="checkbox"> Ich erkläre, warum die Schildkröte den Wettlauf wagt (Z. 2–3).</li>
+          <li><input type="checkbox"> Ich beschreibe, wie sie läuft (Z. 8).</li>
+          <li><input type="checkbox"> Ich erkläre, warum sie gewinnt.</li>
+          <li><input type="checkbox"> Ich benutze mindestens 3 passende Adjektive.</li>
+        </ul>
+      </details>
+
+      <button class="muster-toggle" onclick="toggleMuster('muster-sk',this)">💡 Musterlösung anzeigen</button>
+      <div class="muster-box" id="muster-sk">
+        <h3>Musterlösung – Die Schildkröte ist …</h3>
+        <ul>
+          <li><strong>mutig</strong> – sie fordert den Hasen trotz Spott zum Wettlauf heraus (Z. 2–3).</li>
+          <li><strong>ausdauernd und unermüdlich</strong> – sie kroch „langsam und unermüdlich" (Z. 8).</li>
+          <li><strong>zielstrebig</strong> – sie gibt nicht auf, obwohl der Hase viel schneller ist.</li>
+          <li><strong>geduldig</strong> – sie vertraut darauf, dass Beharrlichkeit belohnt wird.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ── Aufgabe 3: Moral ── -->
+    <div class="card" id="card-moral">
+      <h2>🏁 Aufgabe 3 – Die Lehre/Moral der Fabel lautet:</h2>
+      <div class="emoji-hero">🏆</div>
+
+      <div class="field-group">
+        <label for="ta-moral">Schreibe die Moral der Fabel in deinen eigenen Worten:</label>
+        <div class="hint">💡 Was soll diese Geschichte uns lehren? Was kann man aus dem Verhalten der Tiere lernen?</div>
+        <textarea id="ta-moral" placeholder="Die Moral dieser Fabel ist …" rows="5" onInput="updateCounter('moral');updateProgress()"></textarea>
+        <div class="char-counter" id="cc-moral">0 Zeichen</div>
+      </div>
+
+      <div class="field-group">
+        <label for="ta-beispiel">Kannst du ein Beispiel aus dem Alltag nennen, in dem die Moral gilt?</label>
+        <div class="hint">💡 z. B. in der Schule, beim Sport, im Freundeskreis …</div>
+        <textarea id="ta-beispiel" placeholder="Ein Beispiel aus dem Alltag ist …" rows="4" onInput="updateCounter('beispiel')"></textarea>
+        <div class="char-counter" id="cc-beispiel">0 Zeichen</div>
+      </div>
+
+      <details style="margin-bottom:14px;">
+        <summary style="cursor:pointer;color:#4a9eda;font-weight:600;font-size:0.88rem;">📋 Schreibhilfe einblenden</summary>
+        <ul class="checklist" style="margin-top:10px;">
+          <li><input type="checkbox"> Ich erkläre, was der Hase falsch gemacht hat.</li>
+          <li><input type="checkbox"> Ich erkläre, was die Schildkröte richtig gemacht hat.</li>
+          <li><input type="checkbox"> Ich formuliere die Lehre als allgemeinen Satz (z. B. „Man sollte …").</li>
+          <li><input type="checkbox"> Ich gebe ein Beispiel aus meinem eigenen Leben.</li>
+        </ul>
+      </details>
+
+      <button class="muster-toggle" onclick="toggleMuster('muster-moral',this)">💡 Musterlösung anzeigen</button>
+      <div class="muster-box" id="muster-moral">
+        <h3>Musterlösung – Moral der Fabel</h3>
+        <p>Man sollte sich nicht auf seine natürlichen Talente verlassen und leichtsinnig werden. Ausdauer und Beharrlichkeit können Schnelligkeit und Begabung schlagen. Wer anderen gegenüber arrogant ist und seine eigene Überlegenheit überschätzt, kann am Ende verlieren.</p>
+        <p style="margin-top:8px;"><strong>Mögliches Beispiel:</strong> In der Schule hilft es nicht, wenn man in einem Fach begabt ist, aber nie lernt – ein fleißiger Schüler, der regelmäßig übt, kann bessere Noten erzielen.</p>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-bottom:20px;">
+      <button class="save-btn" onclick="showTab('abgabe', document.querySelectorAll('.tab-btn')[2])">
+        Zur Abgabe →
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════ TAB 3: Abgabe ══════════════ -->
+  <div id="tab-abgabe" class="tab-panel">
+    <div class="card">
+      <h2>💾 Deine Antworten – Zusammenfassung</h2>
+      <p style="font-size:0.9rem;color:#555;margin-bottom:16px;">Hier siehst du eine Übersicht deiner eingegebenen Antworten. Du kannst den Text markieren und kopieren oder die Seite drucken.</p>
+
+      <div id="summary-box" style="background:#f4f6f7;border-radius:8px;padding:16px;font-size:0.9rem;line-height:1.7;color:#333;min-height:120px;">
+        <em style="color:#aaa;">Noch keine Eingaben vorhanden.</em>
+      </div>
+
+      <div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;">
+        <button class="save-btn" onclick="buildSummary()">🔄 Zusammenfassung aktualisieren</button>
+        <button class="save-btn" style="background:#4a9eda;" onclick="window.print()">🖨️ Drucken</button>
+      </div>
+      <p class="save-note">Tipp: Klicke auf „Drucken", um deine Antworten als PDF zu speichern oder auszudrucken.</p>
+    </div>
+
+    <div class="card">
+      <h2>✅ Selbsteinschätzung</h2>
+      <p style="font-size:0.88rem;color:#555;margin-bottom:14px;">Wie gut hast du die Aufgaben erledigt? Bewerte dich selbst ehrlich:</p>
+
+      <div id="self-assess">
+        <div style="margin-bottom:14px;">
+          <p style="font-weight:600;font-size:0.9rem;margin-bottom:8px;">Aufgabe 1 – Den Hasen beschreiben:</p>
+          <div class="tags">
+            <span class="tag" onclick="selfRate(this,'r1')" data-group="r1">😕 Noch schwierig</span>
+            <span class="tag" onclick="selfRate(this,'r1')" data-group="r1">🙂 Geht so</span>
+            <span class="tag" onclick="selfRate(this,'r1')" data-group="r1">😊 Gut geschafft</span>
+          </div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <p style="font-weight:600;font-size:0.9rem;margin-bottom:8px;">Aufgabe 2 – Die Schildkröte beschreiben:</p>
+          <div class="tags">
+            <span class="tag" onclick="selfRate(this,'r2')" data-group="r2">😕 Noch schwierig</span>
+            <span class="tag" onclick="selfRate(this,'r2')" data-group="r2">🙂 Geht so</span>
+            <span class="tag" onclick="selfRate(this,'r2')" data-group="r2">😊 Gut geschafft</span>
+          </div>
+        </div>
+        <div style="margin-bottom:14px;">
+          <p style="font-weight:600;font-size:0.9rem;margin-bottom:8px;">Aufgabe 3 – Die Moral formulieren:</p>
+          <div class="tags">
+            <span class="tag" onclick="selfRate(this,'r3')" data-group="r3">😕 Noch schwierig</span>
+            <span class="tag" onclick="selfRate(this,'r3')" data-group="r3">🙂 Geht so</span>
+            <span class="tag" onclick="selfRate(this,'r3')" data-group="r3">😊 Gut geschafft</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+  /*

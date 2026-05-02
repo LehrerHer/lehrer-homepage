@@ -1,0 +1,223 @@
+STILMITTEL-QUIZ – Inhaltsliste
+============================================================
+Gesamt: 39 Stilmittel
+
+
+────────────────────────────────────────────────────────────
+  KATEGORIE: KLANGFIGUR
+────────────────────────────────────────────────────────────
+
+  [★ Mittelstufe]  Alliteration
+  │  Erklärung : Wiederholung des gleichen Anfangslauts bei benachbarten Wörtern.
+  │  Beispiel  : „Milch macht müde Männer munter“  ‖  „Mit Mann und Maus“  ‖  „Wer wirbt, wirbt Wähler“
+  │  Wirkung   : betont, einprägsam, klingend
+
+  [★ Mittelstufe]  Anapher
+  │  Erklärung : Wiederholung eines Wortes oder einer Wortgruppe am Anfang aufeinanderfolgender Sätze oder Verse.
+  │  Beispiel  : „Kein Licht. Kein Ton.“  ‖  „Wer nie sein Brot mit Tränen aß, / Wer nie …“ (Goethe)
+  │  Wirkung   : verstärkend, rhythmisch
+
+  [○ Oberstufe]  Elision
+  │  Erklärung : Auslassung eines Lautes oder einer Silbe, meist um das Versmaß einzuhalten. — Vor allem in Lyrik, erkennbar am Apostroph (’)
+  │  Beispiel  : „in ew’gen Tau“ (statt: ewigen)  ‖  „Hab’ ich“ (statt: Habe ich)
+  │  Wirkung   : Metrum erhaltend, klanglich weich — vor allem in älteren Gedichten; in moderner Prosa kaum vorhanden
+
+  [○ Oberstufe]  Epipher
+  │  Erklärung : Wiederholung eines Wortes oder einer Wortgruppe am Ende aufeinanderfolgender Sätze oder Verse.
+  │  Beispiel  : „Wir fordern Frieden, wir erkämpfen Frieden.“  ‖  „Doch alle Lust will Ewigkeit, / will tiefe, tiefe Ewigkeit“ (Nietzsche)
+  │  Wirkung   : verstärkend am Satzende
+
+  [○ Oberstufe]  Repetitio
+  │  Erklärung : Wiederholung eines Wortes oder Ausdrucks innerhalb eines Satzes oder Verses.
+  │  Beispiel  : „O Mutter! Was ist Seligkeit? O Mutter!“ (Bürger)  ‖  „Mein Vater, mein Vater“ (Goethe)
+  │  Wirkung   : eindringlich, wiederholend
+
+  [○ Oberstufe]  Tautologie
+  │  Erklärung : Wiederholung desselben Sachverhalts mit bedeutungsgleichen Ausdrücken — beide Teile sagen dasselbe, nicht bloß Ähnliches.
+  │  Beispiel  : „voll und ganz“  ‖  „nie und nimmer“  ‖  „immer und ewig“
+  │  Wirkung   : bekräftigend, redundant
+
+
+────────────────────────────────────────────────────────────
+  KATEGORIE: GEDANKENFIGUR
+────────────────────────────────────────────────────────────
+
+  [★ Mittelstufe]  Antithese
+  │  Erklärung : Gegenüberstellung gegensätzlicher Begriffe oder Gedanken.
+  │  Beispiel  : „Klein ist der Strauch, groß ist der Baum“  ‖  „Der Mensch denkt, Gott lenkt.“
+  │  Wirkung   : kontrastierend, gegenüberstellend
+
+  [★ Mittelstufe]  Ironie
+  │  Erklärung : Das Gegenteil des Gemeinten wird gesagt — die eigentliche Bedeutung ergibt sich erst aus dem Kontext, dem Tonfall oder dem Vorwissen des Lesers
+  │  Beispiel  : „Wir haben’s ja“ (wenn Geld knapp ist)  ‖  „Das hast du ja toll hinbekommen!“
+  │  Wirkung   : doppelbödig, verschlüsselt; in geschriebenen Texten nur durch Kontextanalyse erkennbar — kann belustigen, distanzieren oder verletzen
+
+  [○ Oberstufe]  Katachrese
+  │  Erklärung : Zwei Formen: (a) Tote Metapher — ein Bild, das durch Alltagsgebrauch nicht mehr als Bild wahrgenommen wird; (b) Bildbruch — zwei unvereinbare Metaphern werden widersprüchlich kombiniert
+  │  Beispiel  : Tote Metapher: „Tischbein“  ‖  „Flaschenhals“  ‖  „Arm des Flusses“  |  Bildbruch: „Das schlägt dem Fass die Krone ins Gesicht“
+  │  Wirkung   : Tote Metapher: unauffällig, verblasst  |  Bildbruch: unfreiwillig komisch oder stilistisch ungeschickt — oft ein Fehler
+
+  [○ Oberstufe]  Oxymoron
+  │  Erklärung : Verbindung zweier sich logisch widersprechender Begriffe in einer Wortgruppe.
+  │  Beispiel  : „Hassliebe“  ‖  „beredtes Schweigen“  ‖  „alter Knabe“
+  │  Wirkung   : widersprüchlich, spannungserzeugend
+
+  [○ Oberstufe]  Paradoxon
+  │  Erklärung : Scheinbar widersprüchliche Aussage, die bei näherem Hinsehen einen tieferen Sinn enthält.
+  │  Beispiel  : „Ich weiß, dass ich nichts weiß“ (Sokrates)  ‖  „Weniger ist mehr“ (Mies van der Rohe)
+  │  Wirkung   : scheinbar widersprüchlich, zum Nachdenken
+
+  [★ Mittelstufe]  Rhetorische Frage
+  │  Erklärung : Eine Frage, auf die keine Antwort erwartet wird – die Antwort ist bereits klar.
+  │  Beispiel  : „Wie viele Menschen müssen noch sterben?“  ‖  „Bin ich denn der Einzige, der das sieht?“
+  │  Wirkung   : bindet Leser/Hörer ein — wer die Frage beantwortet, stimmt dem Sprecher bereits zu; erzeugt Zustimmungsdruck, Dringlichkeit oder Nachdenklichkeit
+
+  [★ Mittelstufe]  Sarkasmus
+  │  Erklärung : Beißender, verletzender Spott – schärfer und gemeiner als Ironie.
+  │  Beispiel  : „Gibt’s dein T-Shirt auch in deiner Größe?“  ‖  „Glanzleistung – wie immer!“
+  │  Wirkung   : beißend spöttisch, verletzend
+
+  [○ Oberstufe]  Understatement
+  │  Erklärung : Bewusste Untertreibung eines Sachverhalts — etwas wird als kleiner, harmloser oder weniger bedeutsam dargestellt, als es tatsächlich ist
+  │  Beispiel  : „Das war nicht ganz optimal.“ (nach einer Katastrophe)  ‖  „Das könnte schwierig werden.“ (wenn etwas fast aussichtslos ist)  ‖  „Nicht der schlechteste Abend.“ (nach einem Triumph)
+  │  Wirkung   : abschwächend, oft ironisch oder humorvoll — kann Distanz, Coolness oder Bescheidenheit ausdrücken
+
+
+────────────────────────────────────────────────────────────
+  KATEGORIE: WORTFIGUR
+────────────────────────────────────────────────────────────
+
+  [○ Oberstufe]  Emphase
+  │  Erklärung : Nachdrückliche Hervorhebung eines Wortes oder Ausdrucks.
+  │  Beispiel  : „Menschen! Menschen!“ (Schiller)  ‖  „DAS ist Kunst!“
+  │  Wirkung   : betont, emotional aufgeladen
+
+  [★ Mittelstufe]  Euphemismus
+  │  Erklärung : Beschönigende Umschreibung eines unangenehmen oder anstößigen Sachverhalts.
+  │  Beispiel  : „entschlafen“ (statt: sterben)  ‖  „freisetzen“ (statt: entlassen)  ‖  „kollateraler Schaden“ (statt: getötete Zivilisten)
+  │  Wirkung   : abmildernd, verhüllend — kann schützen oder Mitgefühl erzeugen, aber auch gezielt verschleiern und manipulieren (besonders in Politik und Medien)
+
+  [★ Mittelstufe]  Hyperbel
+  │  Erklärung : Starke Übertreibung eines Sachverhalts.
+  │  Beispiel  : „todernst“  ‖  „fuchsteufelswild“  ‖  „ein Meer von Tränen“
+  │  Wirkung   : übertreibt, intensiviert
+
+  [○ Oberstufe]  Litotes
+  │  Erklärung : Hervorhebung eines Begriffs durch doppelte Verneinung oder Verneinung des Gegenteils
+  │  Beispiel  : „nicht selten“  ‖  „nicht unüblich“  ‖  „Er hat damit nicht Unrecht.“
+  │  Wirkung   : bekräftigend durch Umweg, erzeugt einen leicht ironischen Ton
+
+  [★ Mittelstufe]  Onomatopoesie
+  │  Erklärung : Sprachliche Nachahmung von Geräuschen oder Klängen.
+  │  Beispiel  : „Knall“  ‖  „Miau“  ‖  „rumpeln“  ‖  „zischen“
+  │  Wirkung   : lautmalerisch, klangnachahmend
+
+  [○ Oberstufe]  Periphrase
+  │  Erklärung : Umschreibung eines Begriffs durch kennzeichnende Eigenschaften.
+  │  Beispiel  : „Halbgötter in Weiß“ (statt: Ärzte)  ‖  „der Allmächtige“ (statt: Gott)
+  │  Wirkung   : umschreibend, charakterisierend
+
+
+────────────────────────────────────────────────────────────
+  KATEGORIE: SATZFIGUR
+────────────────────────────────────────────────────────────
+
+  [★ Mittelstufe]  Akkumulation
+  │  Erklärung : Reihung von Begriffen, die einem gemeinsamen Oberbegriff zugeordnet werden können.
+  │  Beispiel  : „Rosen, Tulpen, Nelken — überall blüht es“  ‖  „Nun ruhen alle Wälder, Vieh, Menschen, Städt und Felder“ (Gerhardt)
+  │  Wirkung   : veranschaulicht, eindringlich
+
+  [○ Oberstufe]  Asyndeton
+  │  Erklärung : Reihung von Wörtern oder Satzteilen ohne verbindende Konjunktionen.
+  │  Beispiel  : „Ein Rot, ein Grün, ein Grau vorbeigesendet“ (Rilke)  ‖  „Alles rennet, rettet, flüchtet“ (Schiller)
+  │  Wirkung   : temporeich, aufzählend, drängend
+
+  [★ Mittelstufe]  Chiasmus
+  │  Erklärung : Überkreuzstellung von syntaktisch oder inhaltlich einander entsprechenden Satzgliedern — die Reihenfolge wird in der zweiten Hälfte umgekehrt (Schema: A–B / B–A)
+  │  Beispiel  : „Die Kunst ist lang – und kurz ist unser Leben“ (Goethe)
+  │  Wirkung   : pointiert, einprägsam, symmetrisch — erzeugt den Eindruck von Ausgewogenheit oder Gegensätzlichkeit
+
+  [★ Mittelstufe]  Ellipse
+  │  Erklärung : Auslassung eines Satzteils, der gedanklich ergänzt werden kann.
+  │  Beispiel  : „Je später der Abend, desto schöner die Gäste“  ‖  „Ende gut, alles gut.“
+  │  Wirkung   : knapp, dramatisch, temporeich
+
+  [★ Mittelstufe]  Enjambement
+  │  Erklärung : Zeilensprung – ein Satz wird über das Versende hinaus in der nächsten Zeile fortgesetzt. — Nur in Lyrik, nicht in Prosa
+  │  Beispiel  : „Über allen Gipfeln / Ist Ruh“ (Goethe)  ‖  „Ich bin so wild nach deinem / Erdbeermund“ (Villon/Klammer)
+  │  Wirkung   : fließend, drängend, spannungserzeugend — nur in Gedichten; in Prosatexten nicht anwendbar
+
+  [★ Mittelstufe]  Hypotaxe
+  │  Erklärung : Verschachtelung von Haupt- und Nebensätzen (Satzgefüge) mit Unterordnung.
+  │  Beispiel  : „An einem der letzten Maitage, das Wetter war sommerlich, bog ein Landauer ein …“ (Fontane)
+  │  Wirkung   : komplex, ausschweifend, detailreich
+
+  [○ Oberstufe]  Inversion
+  │  Erklärung : Umstellung der üblichen Satzgliedfolge zur Hervorhebung.
+  │  Beispiel  : „In der ungeheuren Weite / Reget keine Welle sich“ (Goethe)  ‖  „Dunkel war’s, der Mond schien helle“
+  │  Wirkung   : hervorhebend durch Umstellung
+
+  [★ Mittelstufe]  Klimax
+  │  Erklärung : Stufenweise Steigerung von Ausdruck zu Ausdruck — jedes Glied ist bedeutsamer oder intensiver als das vorherige.
+  │  Beispiel  : „Er sei mein Freund, mein Engel, mein Gott“ (Schiller)  ‖  „Veni, vidi, vici“ (Caesar: Ich kam, ich sah, ich siegte)
+  │  Wirkung   : steigernd, eindringlich, spannungsaufbauend
+
+  [★ Mittelstufe]  Parallelismus
+  │  Erklärung : Wiederholung der gleichen syntaktischen Struktur in aufeinanderfolgenden Sätzen oder Satzteilen.
+  │  Beispiel  : „Heiß die Liebe, kalt der Tod“  ‖  „Ich lache, wenn ich mag; ich weine, wenn ich muss.“
+  │  Wirkung   : ordnend, rhythmisch
+
+  [★ Mittelstufe]  Parataxe
+  │  Erklärung : Aneinanderreihung von Hauptsätzen (Satzreihe) ohne Unterordnung.
+  │  Beispiel  : „Am Anfang schuf Gott Himmel und Erde. Und die Erde war wüst.“ (1. Mose)
+  │  Wirkung   : klar, direkt, schlicht
+
+  [○ Oberstufe]  Polysyndeton
+  │  Erklärung : Reihung, bei der zwischen allen Gliedern die gleiche Konjunktion wiederholt wird.
+  │  Beispiel  : „Einigkeit und Recht und Freiheit“  ‖  „Und es wallet und siedet und brauset und zischt“ (Schiller)
+  │  Wirkung   : verlangsamend, aufzählend, feierlich
+
+
+────────────────────────────────────────────────────────────
+  KATEGORIE: BILDLICHKEIT
+────────────────────────────────────────────────────────────
+
+  [○ Oberstufe]  Allegorie
+  │  Erklärung : Ausgedehnte, aus mehreren Elementen aufgebaute Metapher – ein abstraktes Konzept wird als zusammenhängendes Bild dargestellt, das entschlüsselt werden muss.
+  │  Beispiel  : Der Tod als Figur mit Sense, schwarzem Umhang und Skelett (= Sensenmann)  ‖  Justitia mit Waage, Schwert und Augenbinde (= Gerechtigkeit)
+  │  Wirkung   : versinnbildlicht Abstraktes, erfordert Deutung
+
+  [○ Oberstufe]  Chiffre
+  │  Erklärung : Verschlüsseltes Zeichen der modernen Lyrik, dessen Bedeutung sich nicht eindeutig auflösen lässt – das Bild bleibt bewusst offen oder rätselhaft, oft nur im Gesamtwerk des Autors erschließbar.
+  │  Beispiel  : „JHWH“ in der hebräischen Bibel  ‖  „Schwarze Milch der Frühe“ (Celan, Todesfuge)
+  │  Wirkung   : verrätselt, lädt mit Bedeutung auf, öffnet Deutungsraum
+
+  [★ Mittelstufe]  Metapher
+  │  Erklärung : Bildlicher Ausdruck ohne Vergleichswort – ein Wort wird aus seinem eigentlichen Bedeutungsbereich in einen anderen übertragen.
+  │  Beispiel  : „Jemandem das Herz brechen“  ‖  „Das Feuer der Leidenschaft“
+  │  Wirkung   : veranschaulicht, verdichtet
+
+  [○ Oberstufe]  Metonymie
+  │  Erklärung : Ersetzung eines Begriffs durch einen sachlich verwandten (räumlich, zeitlich, ursächlich).
+  │  Beispiel  : „Brecht lesen“ (statt: ein Werk von Brecht)  ‖  „Das Weiße Haus erklärte …“
+  │  Wirkung   : verdichtet, ersetzt Begriff durch verwandten
+
+  [★ Mittelstufe]  Personifikation
+  │  Erklärung : Menschliche Eigenschaften werden auf Nichtmenschliches übertragen.
+  │  Beispiel  : „Die Sonne lacht“  ‖  „Der Wind flüstert“
+  │  Wirkung   : verlebendigt, vermenschlicht
+
+  [★ Mittelstufe]  Symbol
+  │  Erklärung : Ein konkreter Gegenstand steht für eine abstrakte Idee, oft kulturell festgelegt.
+  │  Beispiel  : Rose = Liebe  ‖  Taube = Frieden
+  │  Wirkung   : verdichtend, kulturell
+
+  [○ Oberstufe]  Synekdoche
+  │  Erklärung : Ein Teil steht für das Ganze (pars pro toto) oder das Ganze für einen Teil (totum pro parte) — Ersetzung innerhalb desselben Begriffsfelds
+  │  Beispiel  : „Pro Nase zwei Würste“ (Nase = Person)  ‖  „Deutschland hat gewonnen“ ( = die Mannschaft)  ‖  „Solange du deine Füße unter meinen Tisch stellst …“ (Tisch = Haushalt)
+  │  Wirkung   : verknappend, verallgemeinernd, eindringlich
+
+  [★ Mittelstufe]  Vergleich
+  │  Erklärung : Verknüpfung zweier Bedeutungsbereiche durch „wie“ oder „als“.
+  │  Beispiel  : „Er kämpft wie ein Löwe“  ‖  „Stärker als der Tod“
+  │  Wirkung   : veranschaulicht, verbindet

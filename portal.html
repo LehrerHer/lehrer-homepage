@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/auth-guard.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Meine Inhalte – Jan Herrmann</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .portal-header {
+            background: linear-gradient(135deg, var(--farbe-primaer) 0%, #2d5a8e 100%);
+            color: #fff;
+            padding: 2.5rem 0 2rem;
+        }
+        .portal-header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .portal-header p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.95rem;
+        }
+        .welcome-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.25);
+            border-radius: 20px;
+            padding: 0.3rem 0.9rem;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Kategorien */
+        .portal-section {
+            padding: 2.5rem 0 1rem;
+        }
+        .portal-section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--farbe-primaer);
+            margin-bottom: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .portal-section-title::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: var(--farbe-rahmen);
+            border-radius: 1px;
+        }
+
+        /* Fächer-Grid */
+        .fach-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 0.9rem;
+        }
+        .fach-card {
+            background: var(--farbe-weiss);
+            border: 1px solid var(--farbe-rahmen);
+            border-radius: 10px;
+            padding: 1.25rem 1rem;
+            text-align: center;
+            text-decoration: none;
+            color: var(--farbe-text);
+            transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+            box-shadow: var(--schatten);
+        }
+        .fach-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(30,58,95,0.15);
+            border-color: var(--farbe-akzent);
+        }
+        .fach-card .icon { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
+        .fach-card .name { font-weight: 600; font-size: 0.92rem; }
+
+        /* Material-Grid */
+        .material-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 0.9rem;
+        }
+        .material-card {
+            background: var(--farbe-weiss);
+            border: 1px solid var(--farbe-rahmen);
+            border-left: 4px solid var(--farbe-primaer-hell);
+            border-radius: 0 10px 10px 0;
+            padding: 1rem 1.1rem;
+            text-decoration: none;
+            color: var(--farbe-text);
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            transition: box-shadow 0.18s, border-left-color 0.18s;
+            box-shadow: var(--schatten);
+        }
+        .material-card:hover {
+            box-shadow: 0 4px 16px rgba(30,58,95,0.15);
+            border-left-color: var(--farbe-akzent);
+        }
+        .material-card .mc-badges {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.2rem;
+        }
+        .mc-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 4px;
+            background: #e8f4fd;
+            color: var(--farbe-primaer);
+        }
+        .mc-badge.quiz   { background: #fff3e0; color: #c07000; }
+        .mc-badge.ab     { background: #e8f5e9; color: #2e7d32; }
+        .mc-badge.pdf    { background: #fce4ec; color: #b71c1c; }
+        .material-card .mc-title { font-weight: 600; font-size: 0.92rem; }
+        .material-card .mc-desc  { font-size: 0.82rem; color: var(--farbe-text-hell); }
+        .material-card .mc-fach  { font-size: 0.78rem; color: var(--farbe-text-hell); margin-top: auto; padding-top: 0.4rem; }
+
+        /* Materialien (PDFs aus inhalte.json) */
+        .pdf-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+        .pdf-row {
+            background: var(--farbe-weiss);
+            border: 1px solid var(--farbe-rahmen);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--farbe-text);
+            transition: box-shadow 0.15s;
+            box-shadow: var(--schatten);
+        }
+        .pdf-row:hover { box-shadow: 0 4px 16px rgba(30,58,95,0.13); }
+        .pdf-row .pdf-icon { font-size: 1.4rem; flex-shrink: 0; }
+        .pdf-row .pdf-info { flex: 1; min-width: 0; }
+        .pdf-row .pdf-title { font-weight: 600; font-size: 0.9rem; }
+        .pdf-row .pdf-desc  { font-size: 0.8rem; color: var(--farbe-text-hell); }
+        .pdf-row .pdf-arrow { color: var(--farbe-akzent); font-size: 1rem; flex-shrink: 0; }
+
+        .empty-hint {
+            color: var(--farbe-text-hell);
+            font-size: 0.9rem;
+            padding: 0.75rem 0;
+        }
+
+        /* Kolosseum-Banner */
+        .kolo-banner {
+            background: linear-gradient(135deg, #0f1d35 0%, #1a2f52 100%);
+            border-radius: 12px;
+            padding: 1.5rem 1.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+        .kolo-banner-text h3 {
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 0.25rem;
+        }
+        .kolo-banner-text p {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.87rem;
+        }
+        .kolo-banner-btns { display: flex; gap: 0.65rem; flex-wrap: wrap; }
+        .kolo-btn-primary {
+            background: #4a9eda; color: #fff;
+            padding: 0.65rem 1.2rem; border-radius: 7px;
+            font-size: 0.9rem; font-weight: 700; text-decoration: none;
+            white-space: nowrap;
+        }
+        .kolo-btn-secondary {
+            background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.65rem 1.2rem; border-radius: 7px;
+            font-size: 0.9rem; font-weight: 600; text-decoration: none;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 600px) {
+            .fach-grid { grid-template-columns: repeat(2, 1fr); }
+            .material-grid { grid-template-columns: 1fr; }
+            .portal-header h1 { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+        <div class="container navbar-inner">
+            <a href="index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
+            <button class="hamburger" id="hamburger"
+                    aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="navbar-links" id="navbar-links">
+                <li><a href="index.html">Startseite</a></li>
+                <li><a href="portal.html" class="aktiv">Meine Inhalte</a></li>
+                <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html">🏛️ Mein Profil</a></li>
+                <li><a href="index.html#kontakt">Kontakt</a></li>
+            </ul>
+            <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+        </div>
+    </nav>
+
+    <!-- Portal-Header mit Willkommensgruß -->
+    <div class="portal-header">
+        <div class="container">
+            <div class="welcome-chip" id="welcome-chip">
+                <span id="user-avatar">🗡️</span>
+                <span id="user-greeting">Wird geladen…</span>
+            </div>
+            <h1>Meine Inhalte</h1>
+            <p>Fächer, Arbeitsblätter, Quizze und Materialien auf einen Blick</p>
+        </div>
+    </div>
+
+    <main class="container">
+
+        <!-- FÄCHER -->
+        <section class="portal-section">
+            <h2 class="portal-section-title">📚 Fächer</h2>
+            <div class="fach-grid">
+                <a href="fach-deutsch.html" class="fach-card">
+                    <span class="icon">📖</span>
+                    <span class="name">Deutsch</span>
+                </a>
+                <a href="fach-geschichte.html" class="fach-card">
+                    <span class="icon">🏛️</span>
+                    <span class="name">Geschichte</span>
+                </a>
+                <a href="fach-wipo.html" class="fach-card">
+                    <span class="icon">🌍</span>
+                    <span class="name">Wirtschaft/Politik</span>
+                </a>
+                <a href="fach-informatik.html" class="fach-card">
+                    <span class="icon">💻</span>
+                    <span class="name">Informatik</span>
+                </a>
+                <a href="fach-werte-normen.html" class="fach-card">
+                    <span class="icon">⚖️</span>
+                    <span class="name">Werte &amp; Normen</span>
+                </a>
+                <a href="fach-ag-projekte.html" class="fach-card">
+                    <span class="icon">🎭</span>
+                    <span class="name">AGs &amp; Projekte</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- INTERAKTIVE ARBEITSBLÄTTER -->
+        <section class="portal-section">
+            <h2 class="portal-section-title">📄 Interaktive Arbeitsblätter</h2>
+            <div class="material-grid">
+                <a href="narratologische-analyse.html" class="material-card">
+                    <div class="mc-badges">
+                        <span class="mc-badge ab">Arbeitsblatt</span>
+                        <span class="mc-badge">📖 Deutsch</span>
+                    </div>
+                    <div class="mc-title">Narratologische Analyse</div>
+                    <div class="mc-desc">Erzählerstandort, Fokalisierung, Zeitstruktur und Figurenrede</div>
+                </a>
+                <a href="deutsch-dialektische-eroerterung.html" class="material-card">
+                    <div class="mc-badges">
+                        <span class="mc-badge ab">Arbeitsblatt</span>
+                        <span class="mc-badge">📖 Deutsch</span>
+                    </div>
+                    <div class="mc-title">Dialektische Erörterung</div>
+                    <div class="mc-desc">Aufbau und Schreiben einer dialektischen Erörterung</div>
+                </a>
+                <a href="fuenfschrittlesemethode.html" class="material-card">
+                    <div class="mc-badges">
+                        <span class="mc-badge ab">Arbeitsblatt</span>
+                        <span class="mc-badge">📖 Deutsch</span>
+                    </div>
+                    <div class="mc-title">Fünf-Schritt-Lesemethode</div>
+                    <div class="mc-desc">Strategisches Lesen mit der SQ3R-Methode</div>
+                </a>
+                <a href="ab-herrschaft-mittelalter.html" class="material-card">
+                    <div class="mc-badges">
+                        <span class="mc-badge ab">Arbeitsblatt</span>
+                        <span class="mc-badge">🏛️ Geschichte</span>
+                    </div>
+                    <div class="mc-title">Herrschaft im Mittelalter</div>
+                    <div class="mc-desc">König, Adel und Kirche – Strukturen mittelalterlicher Herrschaft</div>
+                </a>
+            </div>
+            <!-- Generierte Arbeitsblätter (automatisch befüllt) -->
+            <div id="generated-abs" style="margin-top:0.9rem"></div>
+        </section>
+
+        <!-- QUIZZE -->
+        <section class="portal-section">
+            <h2 class="portal-section-title">🎮 Quizze</h2>
+            <div class="material-grid">
+                <a href="stilmittel-quiz.html" class="material-card">
+                    <div class="mc-badges">
+                        <span class="mc-badge quiz">⚔️ Quiz</span>
+                        <span class="mc-badge">📖 Deutsch</span>
+                    </div>
+                    <div class="mc-title">Stilmittel-Quiz</div>
+                    <div class="mc-desc">Rhetorische Figuren erkennen und benennen</div>
+                </a>
+                <a href="literaturwissenschaft_quiz_v2.html" class="material-card">
+                    <div class="mc-badges">
+                        <span class="mc-badge quiz">⚔️ Quiz</span>
+                        <span class="mc-badge">📖 Deutsch</span>
+                    </div>
+                    <div class="mc-title">Literaturwissenschaft</div>
+                    <div class="mc-desc">Begriffe und Konzepte der Literaturanalyse</div>
+                </a>
+                <a href="rechtschreibquiz.html" class="material-card">
+                    <div class="mc-badges">
+                        <span class="mc-badge quiz">⚔️ Quiz</span>
+                        <span class="mc-badge">📖 Deutsch</span>
+                    </div>
+                    <div class="mc-title">Rechtschreib-Quiz</div>
+                    <div class="mc-desc">Häufige Fehler und Regeln der deutschen Rechtschreibung</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- HERUNTERLADBARE MATERIALIEN -->
+        <section class="portal-section">
+            <h2 class="portal-section-title">📥 Downloadmaterialien</h2>
+            <div class="pdf-list" id="pdf-list">
+                <div class="empty-hint">Wird geladen…</div>
+            </div>
+        </section>
+
+        <!-- BLOG -->
+        <section class="portal-section">
+            <h2 class="portal-section-title">✍️ Blog</h2>
+            <div class="material-grid">
+                <a href="blog.html" class="material-card">
+                    <div class="mc-badges"><span class="mc-badge">Schüler*innenblog</span></div>
+                    <div class="mc-title">Beiträge lesen</div>
+                    <div class="mc-desc">Texte, Bilder und Projekte von Schülerinnen und Schülern</div>
+                </a>
+                <a href="blog-einreichen.html" class="material-card">
+                    <div class="mc-badges"><span class="mc-badge">Einreichen</span></div>
+                    <div class="mc-title">Beitrag einreichen</div>
+                    <div class="mc-desc">Eigenen Text oder Beitrag zur Veröffentlichung einreichen</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- LERNKOLOSSEUM -->
+        <section class="portal-section" style="padding-bottom:0">
+            <h2 class="portal-section-title">🏛️ Lernkolosseum</h2>
+        </section>
+        <div class="kolo-banner">
+            <div class="kolo-banner-text">
+                <h3>Dein Gladiator wartet auf dich</h3>
+                <p>XP sammeln, Badges freischalten und auf der Rangliste aufsteigen</p>
+            </div>
+            <div class="kolo-banner-btns">
+                <a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="kolo-btn-primary">
+                    Mein Profil →
+                </a>
+                <a href="https://kolosseum.lehrer-herrmann.de/rangliste.html" class="kolo-btn-secondary">
+                    Rangliste
+                </a>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <p>© <span id="footer-jahr"></span> Jan Herrmann</p>
+            <nav class="footer-links" aria-label="Rechtliche Links">
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/kolosseum-login-widget.js"></script>
+    <script>
+    (function () {
+        // Footer-Jahr
+        var y = document.getElementById('footer-jahr');
+        if (y) y.textContent = new Date().getFullYear();
+
+        var K = 'https://kolosseum.lehrer-herrmann.de';
+        var LEVELS = [
+            {name:'Rekrut',min:0},{name:'Gladiator',min:100},{name:'Kämpfer',min:250},
+            {name:'Krieger',min:500},{name:'Veteran',min:900},{name:'Champion',min:1400},
+            {name:'Legende',min:2000}
+        ];
+        var AVATARS = ['🗡️','⚔️','🛡️','🪖','🏆','👑','🌟'];
+        function levelIdx(xp) {
+            for (var i = LEVELS.length-1; i >= 0; i--) if (xp >= LEVELS[i].min) return i;
+            return 0;
+        }
+
+        // Begrüßung mit Avatar
+        fetch(K + '/api/auth/me', { credentials: 'include' })
+            .then(function(r){ return r.ok ? r.json() : null; })
+            .then(function(u){
+                if (!u) return;
+                var idx = levelIdx(u.xp || 0);
+                document.getElementById('user-avatar').textContent   = AVATARS[idx];
+                document.getElementById('user-greeting').textContent =
+                    u.nick + ' · ' + LEVELS[idx].name + ' · ' + (u.xp || 0) + ' XP';
+            });
+
+        // PDF-Materialien aus inhalte.json laden
+        fetch('inhalte.json')
+            .then(function(r){ return r.json(); })
+            .then(function(d){
+                var list = document.getElementById('pdf-list');
+                var mats = (d.materialien || []);
+                if (!mats.length) {
+                    list.innerHTML = '<div class="empty-hint">Noch keine Downloadmaterialien vorhanden.</div>';
+                    return;
+                }
+                list.innerHTML = mats.map(function(m){
+                    return '<a href="' + m.url + '" class="pdf-row" target="_blank" rel="noopener">'
+                        + '<span class="pdf-icon">' + (m.icon || '📄') + '</span>'
+                        + '<div class="pdf-info">'
+                        +   '<div class="pdf-title">' + m.titel + '</div>'
+                        +   (m.beschreibung ? '<div class="pdf-desc">' + m.beschreibung + '</div>' : '')
+                        + '</div>'
+                        + '<span class="pdf-arrow">↓</span>'
+                        + '</a>';
+                }).join('');
+            })
+            .catch(function(){
+                document.getElementById('pdf-list').innerHTML =
+                    '<div class="empty-hint">Materialien konnten nicht geladen werden.</div>';
+            });
+    })();
+    </script>
+            // Wird befüllt, sobald ab_generator.py den Eintrag schreibt
+        }
+    })();
+    </script>
+    <script src="js/arena-bar.js"></script>
+</body>
+</html>

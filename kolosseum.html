@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+    <script src="/js/auth-guard.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lernkolosseum – Jan Herrmann</title>
+  <meta name="description" content="Das Lernkolosseum: Quizze spielen, Gladiator werden und mit jedem richtigen Abschluss aufleveln. Stilmittel, Literaturwissenschaft, Rechtschreibung und mehr.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Fredoka+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+
+    /* ── HERO ───────────────────────────────────────────────────────────── */
+    .arena-hero {
+      background: linear-gradient(160deg, #0a1628 0%, #0f2044 45%, #1a0f2e 100%);
+      color: #fff;
+      text-align: center;
+      padding: 5rem 1.5rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .arena-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 60%, rgba(74,158,218,.18) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 80% 30%, rgba(99,179,237,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .arena-hero-eyebrow {
+      display: inline-block;
+      font-size: .78rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase;
+      color: #7ec8f0;
+      background: rgba(74,158,218,.15);
+      border: 1px solid rgba(74,158,218,.3);
+      border-radius: 50px; padding: .3rem 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .arena-hero h1 {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: clamp(2.4rem, 7vw, 4.2rem);
+      letter-spacing: .01em; line-height: 1.1;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #fff 30%, #7ec8f0 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .arena-hero p {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: rgba(255,255,255,.7);
+      max-width: 560px; margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+    .arena-hero-cta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .arena-btn-primary {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: #4a9eda; color: #fff;
+      padding: .85rem 2rem; border-radius: 10px;
+      font-weight: 700; font-size: .95rem; text-decoration: none;
+      transition: background .2s, transform .2s;
+    }
+    .arena-btn-primary:hover { background: #3a8ecb; transform: translateY(-2px); }
+    .arena-btn-ghost {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: transparent; color: rgba(255,255,255,.8);
+      border: 2px solid rgba(255,255,255,.25);
+      padding: .85rem 2rem; border-radius: 10px;
+      font-weight: 700; font-size: .95rem; text-decoration: none;
+      transition: border-color .2s, color .2s;
+    }
+    .arena-btn-ghost:hover { border-color: rgba(255,255,255,.6); color: #fff; }
+
+    /* ── LEVEL-STRIP ──────────────────────────────────────────────────── */
+    .level-strip {
+      background: #0f1d35;
+      border-top: 1px solid rgba(74,158,218,.15);
+      border-bottom: 1px solid rgba(74,158,218,.15);
+      padding: 1rem 0;
+      overflow-x: auto;
+    }
+    .level-strip-inner {
+      display: flex; align-items: center; justify-content: center;
+      gap: 0; min-width: 480px; max-width: 800px; margin: 0 auto;
+      padding: 0 1rem;
+    }
+    .lv-item {
+      display: flex; flex-direction: column; align-items: center;
+      gap: .2rem; flex: 1;
+      font-family: 'Inter', sans-serif; font-size: .68rem;
+      color: rgba(255,255,255,.5); text-align: center;
+    }
+    .lv-item .lv-icon { font-size: 1.3rem; }
+    .lv-item .lv-xp { font-size: .58rem; color: rgba(255,255,255,.3); }
+    .lv-arrow { color: rgba(74,158,218,.4); font-size: .8rem; flex-shrink: 0; padding: 0 4px; }
+
+    /* ── FEATURES ─────────────────────────────────────────────────────── */
+    .arena-features {
+      background: #f8fafc;
+      padding: 3.5rem 0;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .feat-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 1.75rem 1.5rem;
+      border: 1px solid #e8f0fe;
+      text-align: center;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .feat-card:hover { box-shadow: 0 8px 32px rgba(74,158,218,.12); transform: translateY(-3px); }
+    .feat-icon { font-size: 2.4rem; display: block; margin-bottom: .75rem; }
+    .feat-title { font-size: 1.1rem; font-weight: 700; color: var(--farbe-primaer); margin-bottom: .5rem; }
+    .feat-desc { font-size: .88rem; color: #555; line-height: 1.55; }
+
+    /* ── QUIZZE ───────────────────────────────────────────────────────── */
+    .arena-section {
+      padding: 3rem 0;
+    }
+    .arena-section-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 1.5rem; flex-wrap: wrap; gap: .5rem;
+    }
+    .arena-section-title {
+      font-size: 1.5rem; font-weight: 700;
+      color: var(--farbe-primaer);
+    }
+    .arena-section-more {
+      font-size: .85rem; font-weight: 700;
+      color: var(--farbe-akzent); text-decoration: none;
+    }
+    .arena-section-more:hover { text-decoration: underline; }
+
+    .quiz-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+    }
+    .quiz-card-a {
+      display: flex; flex-direction: column; gap: .7rem;
+      background: #fff; border-radius: 14px; padding: 1.4rem 1.4rem 1.25rem;
+      border: 1.5px solid #e2e8f0;
+      text-decoration: none; color: inherit;
+      transition: border-color .2s, box-shadow .2s, transform .2s;
+    }
+    .quiz-card-a:hover {
+      border-color: var(--farbe-akzent);
+      box-shadow: 0 6px 24px rgba(74,158,218,.15);
+      transform: translateY(-2px);
+    }
+    .qca-fach {
+      display: inline-block;
+      font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+      color: #fff; background: var(--farbe-primaer);
+      border-radius: 50px; padding: .15rem .6rem;
+      align-self: flex-start;
+    }
+    .qca-icon { font-size: 2rem; }
+    .qca-title { font-weight: 700; font-size: 1.05rem; color: var(--farbe-primaer); }
+    .qca-desc { font-size: .84rem; color: #555; line-height: 1.5; }
+    .qca-cta {
+      display: inline-flex; align-items: center; gap: .3rem;
+      margin-top: auto; font-size: .82rem; font-weight: 700;
+      color: var(--farbe-akzent);
+    }
+
+    .arena-quiz-card-a { /* Kolosseum-Quizze = dunkle Variante */
+      background: #0f1d35; border-color: rgba(74,158,218,.2);
+      color: #e8f0fe;
+    }
+    .arena-quiz-card-a .qca-title { color: #7ec8f0; }
+    .arena-quiz-card-a .qca-desc { color: rgba(255,255,255,.6); }
+    .arena-quiz-card-a:hover { border-color: #4a9eda; box-shadow: 0 6px 24px rgba(74,158,218,.2); }
+    .arena-quiz-card-a .qca-cta { color: #4a9eda; }
+
+    .arena-quizze-bg { background: #0a1628; }
+    .arena-quizze-bg .arena-section-title { color: #7ec8f0; }
+
+    /* ── XP-ERKLÄRUNG ─────────────────────────────────────────────────── */
+    .xp-section {
+      background: linear-gradient(135deg, #0f2044, #1a0f2e);
+      color: #fff;
+      padding: 3.5rem 0;
+    }
+    .xp-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    @media (max-width: 680px) { .xp-inner { grid-template-columns: 1fr; } }
+    .xp-text h2 { font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem; }
+    .xp-text p { color: rgba(255,255,255,.7); line-height: 1.7; margin-bottom: 1rem; }
+    .xp-text ul {
+      list-style: none; padding: 0;
+      display: flex; flex-direction: column; gap: .5rem;
+    }
+    .xp-text li {
+      display: flex; align-items: center; gap: .6rem;
+      font-size: .9rem; color: rgba(255,255,255,.75);
+    }
+    .xp-visual {
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(74,158,218,.25);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+    .xp-row {
+      display: flex; align-items: center; gap: .75rem;
+      padding: .6rem 0;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      font-size: .88rem;
+    }
+    .xp-row:last-child { border-bottom: none; }
+    .xp-badge {
+      min-width: 32px; text-align: center; font-size: 1.2rem;
+    }
+    .xp-name { flex: 1; font-weight: 600; }
+    .xp-pts { color: #7ec8f0; font-weight: 700; font-size: .8rem; }
+
+    /* ── REGISTER CTA ─────────────────────────────────────────────────── */
+    .register-cta {
+      background: #f8fafc;
+      text-align: center;
+      padding: 3.5rem 1.5rem;
+    }
+    .register-cta h2 { font-size: 1.8rem; font-weight: 700; color: var(--farbe-primaer); margin-bottom: .75rem; }
+    .register-cta p { color: #555; max-width: 480px; margin: 0 auto 2rem; line-height: 1.6; }
+    .register-cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+    @media (max-width: 480px) {
+      .arena-hero { padding: 3rem 1rem 2.5rem; }
+    }
+
+    /* ── FÄCHER-KARTEN ─────────────────────────────────────────────────── */
+    .faecher-karten-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media (max-width: 680px) { .faecher-karten-grid { grid-template-columns: 1fr; } }
+
+    .fach-karte {
+      background: #fff;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 1.25rem 1.25rem 1rem;
+      display: flex; flex-direction: column; gap: .75rem;
+    }
+    .fach-karte-bald { opacity: .65; }
+
+    .fach-karte-top {
+      display: flex; align-items: center; gap: .75rem;
+    }
+    .fach-karte-emoji { font-size: 1.75rem; flex-shrink: 0; }
+    .fach-karte-meta { flex: 1; }
+    .fach-karte-name  { font-weight: 700; font-size: 1rem; color: var(--farbe-primaer); }
+    .fach-karte-zaehler { font-size: .78rem; color: #888; margin-top: 1px; }
+    .fach-karte-seite {
+      font-size: .78rem; font-weight: 700; color: var(--farbe-akzent);
+      text-decoration: none; white-space: nowrap; flex-shrink: 0;
+    }
+    .fach-karte-seite:hover { text-decoration: underline; }
+
+    .fach-fortschritt {
+      font-size: .82rem; color: #0F6E56; font-weight: 600;
+      background: #E1F5EE; border-radius: 6px; padding: .3rem .7rem;
+    }
+
+    .fach-mat-liste {
+      display: flex; flex-wrap: wrap; gap: .4rem;
+    }
+    .fach-mat {
+      display: inline-block;
+      font-size: .75rem; font-weight: 600;
+      padding: .25rem .65rem; border-radius: 6px;
+      text-decoration: none;
+      transition: opacity .15s;
+    }
+    .fach-mat:hover { opacity: .75; }
+    .fach-mat-quiz { background: #FFF3CD; color: #7A4800; }
+    .fach-mat-ab   { background: #E6F1FB; color: #0C447C; }
+    .fach-mat.erledigt::after { content: ' ✓'; }
+    .fach-mat-quiz.erledigt { background: #E1F5EE; color: #085041; }
+
+    .fach-bald-hinweis {
+      font-size: .78rem; color: #aaa; font-style: italic;
+    }
+
+    /* ── DUELL-TEASER ─────────────────────────────────────────────────── */
+    .duell-teaser {
+      display: flex; align-items: center; gap: 1.5rem;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(74,158,218,.2);
+      border-radius: 16px;
+      padding: 1.5rem 2rem;
+      flex-wrap: wrap;
+    }
+    .duell-teaser-badge {
+      display: inline-block;
+      font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      background: rgba(255,200,50,.15); color: #ffd966; border: 1px solid rgba(255,200,50,.3);
+      border-radius: 50px; padding: .25rem .85rem;
+      flex-shrink: 0;
+    }
+    .duell-teaser-body { flex: 1; min-width: 200px; }
+    .duell-teaser-titel { font-size: 1.15rem; font-weight: 700; color: #7ec8f0; margin-bottom: .4rem; }
+    .duell-teaser-text  { font-size: .87rem; color: rgba(255,255,255,.65); line-height: 1.6; }
+    .duell-teaser-text strong { color: rgba(255,255,255,.9); }
+    .duell-teaser-status { flex-shrink: 0; }
+    .duell-teaser-level {
+      text-align: center; font-size: .95rem; font-weight: 700;
+      color: #7ec8f0; line-height: 1.4;
+    }
+    .duell-teaser-level span { font-size: .75rem; color: rgba(255,255,255,.4); font-weight: 400; }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR (statische Seite) -->
+  <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="navbar-inner">
+      <a href="index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
+      <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="navbar-links" id="navbar-links">
+        <li><a href="index.html">Startseite</a></li>
+        <li><a href="index.html#materialien">Materialien</a></li>
+        <li><a href="kolosseum.html" class="aktiv">🏛️ Kolosseum</a></li>
+        <li><a href="blog.html">Blog</a></li>
+        <li><a href="index.html#kontakt">Kontakt</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="arena-hero">
+    <div class="arena-hero-eyebrow">🏛️ Herrmanns Lernwelt</div>
+    <h1>Lernkolosseum</h1>
+    <p>Bewähre dich in der Arena des Wissens. Spiele Quizze und löse Aufgaben – sofort und ohne Anmeldung. Oder werde Gladiator und levele deinen Avatar auf.</p>
+    <div class="arena-hero-cta">
+      <a href="https://kolosseum.lehrer-herrmann.de/register.html" class="arena-btn-primary" target="_blank" rel="noopener">🗡️ Gladiator werden</a>
+      <a href="https://kolosseum.lehrer-herrmann.de/login.html" class="arena-btn-ghost" target="_blank" rel="noopener">Einloggen</a>
+    </div>
+  </section>
+
+  <!-- LEVEL-STRIP -->
+  <div class="level-strip" aria-label="Gladiatoren-Levelsystem">
+    <div class="level-strip-inner">
+      <div class="lv-item"><span class="lv-icon">🪖</span><span>Rekrut</span><span class="lv-xp">0 XP</span></div>
+      <span class="lv-arrow">›</span>
+      <div class="lv-item"><span class="lv-icon">⚔️</span><span>Gladiator</span><span class="lv-xp">100 XP</span></div>
+      <span class="lv-arrow">›</span>
+      <div class="lv-item"><span class="lv-icon">🗡️</span><span>Kämpfer</span><span class="lv-xp">250 XP</span></div>
+      <span class="lv-arrow">›</span>
+      <div class="lv-item"><span class="lv-icon">🛡️</span><span>Krieger</span><span class="lv-xp">500 XP</span></div>
+      <span class="lv-arrow">›</span>
+      <div class="lv-item"><span class="lv-icon">🔱</span><span>Veteran</span><span class="lv-xp">900 XP</span></div>
+      <span class="lv-arrow">›</span>
+      <div class="lv-item"><span class="lv-icon">👑</span><span>Champion</span><span class="lv-xp">1400 XP</span></div>
+      <span class="lv-arrow">›</span>
+      <div class="lv-item"><span class="lv-icon">🏆</span><span>Legende</span><span class="lv-xp">2000 XP</span></div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section class="arena-features">
+    <div class="container">
+      <div class="features-grid">
+        <div class="feat-card">
+          <span class="feat-icon">🎯</span>
+          <div class="feat-title">Sofort spielen</div>
+          <p class="feat-desc">Alle Quizze sind ohne Registrierung zugänglich. Einfach klicken und loslegen.</p>
+        </div>
+        <div class="feat-card">
+          <span class="feat-icon">⚡</span>
+          <div class="feat-title">XP verdienen</div>
+          <p class="feat-desc">Jede richtige Antwort bringt Kampferfahrung. Beim ersten Abschluss gibt es die volle Punktzahl.</p>
+        </div>
+        <div class="feat-card">
+          <span class="feat-icon">🗡️</span>
+          <div class="feat-title">Ausrüstung erspielen</div>
+          <p class="feat-desc">Mit jedem Level bekommt dein Gladiator neue Waffen und Rüstung. Vom Rekrut zur Legende.</p>
+        </div>
+        <div class="feat-card">
+          <span class="feat-icon">🏆</span>
+          <div class="feat-title">Rangliste</div>
+          <p class="feat-desc">Kämpfe um die Spitzenposition in der Gladiatorenrangliste. Wer sammelt die meiste Kampferfahrung?</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZZE (statische Seite) -->
+  <section class="arena-section">
+    <div class="container">
+      <div class="arena-section-header">
+        <div class="arena-section-title">⚔️ Quizze</div>
+      </div>
+      <div class="quiz-cards">
+
+        <a href="stilmittel-quiz.html" class="quiz-card-a">
+          <span class="qca-fach">Deutsch</span>
+          <span class="qca-icon">📚</span>
+          <div class="qca-title">Stilmittel-Quiz</div>
+          <p class="qca-desc">39 Stilmittel interaktiv üben – 5 Spielmodi, Bestenliste und Wiederholungsmodus. Klasse 5 bis Abitur.</p>
+          <span class="qca-cta">Quiz starten →</span>
+        </a>
+
+        <a href="literaturwissenschaft_quiz_v2.html" class="quiz-card-a">
+          <span class="qca-fach">Deutsch</span>
+          <span class="qca-icon">🎭</span>
+          <div class="qca-title">Literaturwissenschaft</div>
+          <p class="qca-desc">Epik, Lyrik, Drama, Film und mehr – 6 Kapitel mit Multiple-Choice, Richtig/Falsch und Zuordnung.</p>
+          <span class="qca-cta">Quiz starten →</span>
+        </a>
+
+        <a href="rechtschreibquiz.html" class="quiz-card-a">
+          <span class="qca-fach">Deutsch</span>
+          <span class="qca-icon">✏️</span>
+          <div class="qca-title">Rechtschreib-Quiz</div>
+          <p class="qca-desc">Groß-/Kleinschreibung, Kommasetzung, s-Laute – drei Niveaustufen für Klasse 5 bis 13.</p>
+          <span class="qca-cta">Quiz starten →</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FÄCHER & MATERIALIEN -->
+  <section class="arena-section" style="background:#f8fafc;border-top:1px solid #e8f0fe">
+    <div class="container">
+      <div class="arena-section-header">
+        <div class="arena-section-title">📚 Fächer &amp; Materialien</div>
+      </div>
+      <p style="color:#555;font-size:.9rem;margin-bottom:1.75rem;max-width:560px">
+        Alle digitalen Arbeitsblätter und Quizze – nach Fach sortiert, direkt im Browser, ohne Anmeldung.
+      </p>
+
+      <div class="faecher-karten-grid">
+
+        <!-- DEUTSCH -->
+        <div class="fach-karte">
+          <div class="fach-karte-top">
+            <span class="fach-karte-emoji">📖</span>
+            <div class="fach-karte-meta">
+              <div class="fach-karte-name">Deutsch</div>
+              <div class="fach-karte-zaehler">3 Quizze · 3 Arbeitsblätter</div>
+            </div>
+            <a href="fach-deutsch.html" class="fach-karte-seite">Fachseite →</a>
+          </div>
+          <div id="deutsch-fortschritt" class="fach-fortschritt" style="display:none"></div>
+          <div class="fach-mat-liste">
+            <a href="stilmittel-quiz.html" class="fach-mat fach-mat-quiz" data-slug="stilmittel">Stilmittel ⚔️</a>
+            <a href="literaturwissenschaft_quiz_v2.html" class="fach-mat fach-mat-quiz" data-slug="literaturwissenschaft">Literaturwissenschaft ⚔️</a>
+            <a href="rechtschreibquiz.html" class="fach-mat fach-mat-quiz" data-slug="rechtschreibung">Rechtschreibung ⚔️</a>
+            <a href="narratologische-analyse.html" class="fach-mat fach-mat-ab">Narratologische Analyse</a>
+            <a href="deutsch-dialektische-eroerterung.html" class="fach-mat fach-mat-ab">Dialektische Erörterung</a>
+            <a href="fuenfschrittlesemethode.html" class="fach-mat fach-mat-ab">5-Schritt-Lesemethode</a>
+          </div>
+        </div>
+
+        <!-- GESCHICHTE -->
+        <div class="fach-karte fach-karte-bald">
+          <div class="fach-karte-top">
+            <span class="fach-karte-emoji">🏛️</span>
+            <div class="fach-karte-meta">
+              <div class="fach-karte-name">Geschichte</div>
+              <div class="fach-karte-zaehler">Materialien in Vorbereitung</div>
+            </div>
+            <a href="fach-geschichte.html" class="fach-karte-seite">Fachseite →</a>
+          </div>
+          <div class="fach-bald-hinweis">Demnächst verfügbar</div>
+        </div>
+
+        <!-- WIRTSCHAFT/POLITIK -->
+        <div class="fach-karte fach-karte-bald">
+          <div class="fach-karte-top">
+            <span class="fach-karte-emoji">🌍</span>
+            <div class="fach-karte-meta">
+              <div class="fach-karte-name">Wirtschaft/Politik</div>
+              <div class="fach-karte-zaehler">Materialien in Vorbereitung</div>
+            </div>
+            <a href="fach-wipo.html" class="fach-karte-seite">Fachseite →</a>
+          </div>
+          <div class="fach-bald-hinweis">Demnächst verfügbar</div>
+        </div>
+
+        <!-- INFORMATIK -->
+        <div class="fach-karte fach-karte-bald">
+          <div class="fach-karte-top">
+            <span class="fach-karte-emoji">💻</span>
+            <div class="fach-karte-meta">
+              <div class="fach-karte-name">Informatik</div>
+              <div class="fach-karte-zaehler">Materialien in Vorbereitung</div>
+            </div>
+            <a href="fach-informatik.html" class="fach-karte-seite">Fachseite →</a>
+          </div>
+          <div class="fach-bald-hinweis">Demnächst verfügbar</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- DUELL-TEASER (coming soon) -->
+  <section class="arena-section arena-quizze-bg" style="padding:2.5rem 0">
+    <div class="container">
+      <div class="duell-teaser">
+        <div class="duell-teaser-badge">🔜 Geplant</div>
+        <div class="duell-teaser-body">
+          <h3 class="duell-teaser-titel">⚔️ Gladiatoren-Duelle</h3>
+          <p class="duell-teaser-text">
+            Sobald du den Rang <strong>Kämpfer</strong> (250 XP) erreicht hast, wirst du andere Gladiatoren
+            zu einem Wissensduell herausfordern können – ein Quiz, beide gegen die Zeit, nur einer gewinnt XP.
+            Wer hat den schärferen Verstand?
+          </p>
+        </div>
+        <div class="duell-teaser-status">
+            <div class="duell-teaser-level">🗡️ Kämpfer<br><span>ab 250 XP</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- XP-ERKLÄRUNG -->
+  <section class="xp-section">
+    <div class="container">
+      <div class="xp-inner">
+        <div class="xp-text">
+          <h2>So funktioniert die Kampferfahrung</h2>
+          <p>Jede richtige Antwort bringt deinem Gladiator Kampferfahrung (XP). Die ersten 100 XP heben dich vom Rekruten zum Gladiator – von da an geht es steil aufwärts.</p>
+          <ul>
+            <li>✅ Jede richtige Quiz-Antwort → 15 XP</li>
+            <li>🏆 Vollständige Runde ohne Fehler → Perfekter-Sieg-Badge</li>
+            <li>🔄 Wiederholungen bringen keine XP – sei beim ersten Mal fokussiert!</li>
+            <li>📋 Quizze im Kolosseum zählen genauso wie externe Quizze</li>
+          </ul>
+        </div>
+        <div class="xp-visual">
+          <div class="xp-row"><span class="xp-badge">🪖</span><span class="xp-name">Rekrut</span><span class="xp-pts">Start</span></div>
+          <div class="xp-row"><span class="xp-badge">⚔️</span><span class="xp-name">Gladiator</span><span class="xp-pts">100 XP</span></div>
+          <div class="xp-row"><span class="xp-badge">🗡️</span><span class="xp-name">Kämpfer</span><span class="xp-pts">250 XP · Schwert erspielt</span></div>
+          <div class="xp-row"><span class="xp-badge">🛡️</span><span class="xp-name">Krieger</span><span class="xp-pts">500 XP · Schild erspielt</span></div>
+          <div class="xp-row"><span class="xp-badge">🔱</span><span class="xp-name">Veteran</span><span class="xp-pts">900 XP</span></div>
+          <div class="xp-row"><span class="xp-badge">👑</span><span class="xp-name">Champion</span><span class="xp-pts">1400 XP · Krone erspielt</span></div>
+          <div class="xp-row"><span class="xp-badge">🏆</span><span class="xp-name">Legende</span><span class="xp-pts">2000 XP</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTER CTA -->
+  <section class="register-cta">
+    <div class="container">
+      <h2>Werde Gladiator</h2>
+      <p>Registriere dich mit deiner Schuladresse, wähle einen Spitznamen und starte deine Arena-Karriere. Kostenlos und ohne Werbung.</p>
+      <div class="register-cta-btns">
+        <a href="https://kolosseum.lehrer-herrmann.de/register.html" class="btn btn-primary" target="_blank" rel="noopener" style="font-size:1rem;padding:.85rem 2rem">🗡️ Jetzt Gladiator werden</a>
+        <a href="https://kolosseum.lehrer-herrmann.de/login.html" class="btn btn-secondary" target="_blank" rel="noopener" style="font-size:1rem;padding:.85rem 2rem">Einloggen</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Hamburger (kopiert von main.js)
+    (function () {
+      var btn  = document.getElementById('hamburger');
+      var menu = document.getElementById('navbar-links');
+      if (!btn || !menu) return;
+      btn.addEventListener('click', function () {
+        var open = menu.classList.toggle('offen');
+        btn.setAttribute('aria-expanded', open);
+      });
+      document.addEventListener('click', function (e) {
+        if (!btn.contains(e.target) && !menu.contains(e.target)) {
+          menu.classList.remove('offen');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+    })();
+
+    // Abgeschlossene Quizze laden und Fächer-Karten aktualisieren
+    (function () {
+      fetch('https://kolosseum.lehrer-herrmann.de/api/auth/me', { credentials: 'include' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (me) {
+          if (!me || !me.id) return; // Gast – nichts anzeigen
+          // Completions abrufen
+          return fetch('https://kolosseum.lehrer-herrmann.de/api/external/completions', { credentials: 'include' })
+            .then(function (r) { return r.ok ? r.json() : { completions: [] }; })
+            .then(function (data) {
+              var done = data.completions || [];
+              // Quiz-Badges abhaken
+              done.forEach(function (slug) {
+                var el = document.querySelector('.fach-mat[data-slug="' + slug + '"]');
+                if (el) el.classList.add('erledigt');
+              });
+              // Fortschrittszeile für Deutsch
+              var total = 3; // 3 trackbare Quizze
+              var count = done.filter(function (s) {
+                return ['stilmittel','literaturwissenschaft','rechtschreibung'].includes(s);
+              }).length;
+              var fp = document.getElementById('deutsch-fortschritt');
+              if (fp) {
+                fp.textContent = count === total
+                  ? '✓ Alle 3 Quizze absolviert!'
+                  : count + ' von ' + total + ' Quizzen absolviert';
+                fp.style.display = 'block';
+              }
+            });
+        })
+        .catch(function () {});
+    })();
+  </script>
+  <script src="js/arena-bar.js"></script>
+</body>
+</html>

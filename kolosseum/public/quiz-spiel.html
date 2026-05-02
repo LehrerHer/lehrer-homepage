@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz spielen – Lernkolosseum</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .quiz-wrap {
+      max-width: 680px;
+      margin: 2rem auto;
+    }
+
+    /* Fortschrittsbalken oben */
+    .progress-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .progress-label {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--ink-soft);
+      white-space: nowrap;
+    }
+    .progress-bar-wrap {
+      flex: 1;
+      background: #e2e8f0;
+      border-radius: 50px;
+      height: 10px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 50px;
+      background: linear-gradient(90deg, var(--c1), var(--c2));
+      transition: width 0.4s ease;
+    }
+
+    /* Fragetitel */
+    .quiz-title-bar {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .quiz-title-bar h1 {
+      font-size: 1.5rem;
+      color: var(--ink);
+    }
+    .quiz-title-bar .subject-chip {
+      display: inline-block;
+      background: var(--c4);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.2rem 0.65rem;
+      border-radius: 50px;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Frage-Karte */
+    .question-card {
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .question-text {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      line-height: 1.45;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+    }
+
+    .option-btn {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background: var(--bg);
+      border: 2px solid #e2e8f0;
+      border-radius: var(--radius-sm);
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--ink);
+      cursor: pointer;
+      text-align: left;
+      transition: border-color var(--transition), background var(--transition), transform var(--transition);
+    }
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--c4);
+      background: #fff;
+      transform: translateY(-2px);
+    }
+    .option-btn.correct {
+      border-color: var(--c3);
+      background: rgba(78, 205, 196, 0.12);
+      color: #1a8a82;
+    }
+    .option-btn.wrong {
+      border-color: var(--c1);
+      background: rgba(255, 107, 107, 0.1);
+      color: #c0392b;
+    }
+    .option-btn:disabled { cursor: default; }
+
+    .feedback-row {
+      margin-top: 1.25rem;
+      min-height: 1.5rem;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .feedback-correct { color: var(--c3); }
+    .feedback-wrong   { color: var(--c1); }
+
+    .next-btn-wrap { text-align: center; margin-top: 1.25rem; }
+
+    /* Ergebnis-Overlay */
+    .result-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(26,26,46,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .result-overlay.visible { opacity: 1; pointer-events: all; }
+
+    .result-box {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-lg);
+      padding: 2.5rem 2rem;
+      text-align: center;
+      max-width: 380px;
+      width: 90%;
+      transform: scale(0.8);
+      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .result-overlay.visible .result-box { transform: scale(1); }
+
+    .result-emoji { font-size: 4rem; display: block; margin-bottom: 0.75rem; }
+    .result-title { font-family: 'Fredoka One', sans-serif; font-size: 1.8rem; }
+    .result-score {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 3rem;
+      color: var(--c3);
+      margin: 0.5rem 0;
+    }
+    .result-xp { font-size: 1.1rem; font-weight: 700; color: var(--ink-soft); }
+    .result-repeat { font-size: 0.85rem; color: var(--ink-soft); margin-top: 0.5rem; }
+    .result-actions { display: flex; gap: 0.75rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
+
+    @media (max-width: 520px) {
+      .options-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="/profil.html" class="nav-brand">🏛️ Lernkolosseum</a>
+    <div class="nav-links">
+      <a href="/profil.html">Profil</a>
+      <a href="/rangliste.html">Rangliste</a>
+      <a href="/quiz.html" class="active">Quizze</a>
+      <a href="https://lehrer-herrmann.de" style="color:rgba(255,255,255,0.45);font-size:0.82rem;text-decoration:none;margin-left:0.5rem" title="Zurück zur Lehrerhomepage">🏠</a>
+    </div>
+  </nav>
+
+  <main class="container">
+    <div class="quiz-wrap" id="quiz-wrap">
+
+      <div class="quiz-title-bar" id="quiz-title-bar" style="display:none">
+        <div id="quiz-subject-chip"></div>
+        <h1 id="quiz-title"></h1>
+      </div>
+
+      <div class="progress-row" id="progress-row" style="display:none">
+        <span class="progress-label" id="progress-label">1 / 5</span>
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-fill" id="progress-bar-fill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="card question-card" id="question-card" style="display:none">
+        <div class="question-text" id="question-text"></div>
+        <div class="options-grid" id="options-grid"></div>
+        <div class="feedback-row" id="feedback-row"></div>
+        <div class="next-btn-wrap" id="next-btn-wrap" style="display:none">
+          <button class="btn btn-primary" id="next-btn">Weiter →</button>
+        </div>
+      </div>
+
+      <div id="loading-msg" style="text-align:center;padding:4rem;color:var(--ink-soft)">
+        Quiz wird geladen…
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Ergebnis-Overlay -->
+  <div class="result-overlay" id="result-overlay" role="dialog" aria-modal="true">
+    <div class="result-box">
+      <span class="result-emoji" id="result-emoji">🎉</span>
+      <div class="result-title" id="result-title">Quiz abgeschlossen!</div>
+      <div class="result-score" id="result-score">0/0</div>
+      <div class="result-xp" id="result-xp">+0 XP erhalten</div>
+      <div class="result-repeat" id="result-repeat"></div>
+      <div class="result-actions">
+        <button class="btn btn-primary" id="retry-btn">Nochmal</button>
+        <a href="/quiz.html" class="btn btn-secondary">Alle Quizze</a>
+        <a href="/profil.html" class="btn btn-ghost" id="profil-btn">Zum Profil</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      let quiz      = null;
+      let questions = [];
+      let current   = 0;
+      let answers   = [];
+      let quizId    = null;
+      let loggedIn  = false;
+
+      // ── Init ────────────────────────────────────────────────────────────────
+
+      async function init() {
+        const meRes = await fetch('/api/auth/me');
+        loggedIn = meRes.ok;
+
+        const params = new URLSearchParams(window.location.search);
+        quizId = params.get('id');
+        if (!quizId) { window.location.href = '/quiz.html'; return; }
+
+        const res = await fetch(`/api/quizzes/${quizId}`);
+        if (!res.ok) { window.location.href = '/quiz.html'; return; }
+
+        const data = await res.json();
+        quiz      = data.quiz;
+        questions = data.questions;
+
+        if (!questions.length) {
+          document.getElementById('loading-msg').textContent = 'Dieses Quiz hat noch keine Fragen.';
+          return;
+        }
+
+        document.title = `${quiz.title} – Lernkolosseum`;
+        document.getElementById('quiz-title').textContent = quiz.title;
+
+        const chip = document.getElementById('quiz-subject-chip');
+        if (quiz.subject) {
+          chip.innerHTML = `<span class="subject-chip">${escHtml(quiz.subject)}</span>`;
+        }
+
+        document.getElementById('loading-msg').style.display    = 'none';
+        document.getElementById('quiz-title-bar').style.display = 'block';
+        document.getElementById('progress-row').style.display   = 'flex';
+        document.getElementById('question-card').style.display  = 'block';
+
+        showQuestion();
+      }
+
+      // ── Frage anzeigen ───────────────────────────────────────────────────────
+
+      function showQuestion() {
+        const q = questions[current];
+
+        document.getElementById('progress-label').textContent = `${current + 1} / ${questions.length}`;
+        document.getElementById('progress-bar-fill').style.width =
+          `${Math.round((current / questions.length) * 100)}%`;
+
+        document.getElementById('question-text').textContent = q.question_text;
+        document.getElementById('feedback-row').textContent  = '';
+        document.getElementById('next-btn-wrap').style.display = 'none';
+
+        const grid = document.getElementById('options-grid');
+        grid.innerHTML = '';
+        q.options.forEach((opt, i) => {
+          const btn = document.createElement('button');
+          btn.className = 'option-btn';
+          btn.textContent = opt;
+          btn.dataset.index = i;
+          btn.addEventListener('click', () => selectAnswer(i));
+          grid.appendChild(btn);
+        });
+      }
+
+      // ── Antwort wählen ───────────────────────────────────────────────────────
+
+      function selectAnswer(chosenIndex) {
+        const q    = questions[current];
+        const btns = document.querySelectorAll('.option-btn');
+        btns.forEach((b) => b.disabled = true);
+
+        answers[current] = chosenIndex;
+
+        const correct = chosenIndex === q.correct_index;
+        btns[chosenIndex].classList.add(correct ? 'correct' : 'wrong');
+        if (!correct) btns[q.correct_index].classList.add('correct');
+
+        const fb = document.getElementById('feedback-row');
+        fb.textContent  = correct ? '✅ Richtig!' : `❌ Falsch – richtig war: ${q.options[q.correct_index]}`;
+        fb.className    = `feedback-row ${correct ? 'feedback-correct' : 'feedback-wrong'}`;
+
+        document.getElementById('next-btn-wrap').style.display = 'block';
+      }
+
+      // ── Weiter / Abschicken ─────────────────────────────────────────────────
+
+      document.getElementById('next-btn').addEventListener('click', () => {
+        if (current < questions.length - 1) {
+          current++;
+          // Karte neu animieren
+          const card = document.getElementById('question-card');
+          card.style.animation = 'none';
+          requestAnimationFrame(() => {
+            card.style.animation = '';
+            showQuestion();
+          });
+        } else {
+          submitQuiz();
+        }
+      });
+
+      async function submitQuiz() {
+        document.getElementById('question-card').style.display = 'none';
+        document.getElementById('progress-row').style.display  = 'none';
+
+        if (loggedIn) {
+          // Eingeloggt → Server speichert Ergebnis und XP
+          const res = await fetch(`/api/quizzes/${quizId}/submit`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ answers }),
+          });
+          const result = await res.json();
+          showResult(result);
+        } else {
+          // Gast → lokal auswerten (correct_index kommt jetzt vom Server)
+          let score = 0;
+          const maxXp = questions.reduce((sum, q) => sum + (q.xp_value || 15), 0);
+          questions.forEach((q, i) => { if (answers[i] === q.correct_index) score++; });
+          showResult({ score, total: questions.length, xpEarned: 0, isRepeat: false, isGuest: true, maxXp });
+        }
+      }
+
+      // ── Ergebnis anzeigen ───────────────────────────────────────────────────
+
+      function showResult(result) {
+        const pct = Math.round((result.score / result.total) * 100);
+
+        let emoji = '😅';
+        if (pct === 100) emoji = '🏆';
+        else if (pct >= 80) emoji = '🎉';
+        else if (pct >= 60) emoji = '😊';
+        else if (pct >= 40) emoji = '🤔';
+
+        document.getElementById('result-emoji').textContent = emoji;
+        document.getElementById('result-title').textContent =
+          pct === 100 ? 'Perfekter Sieg!' : pct >= 60 ? 'Gut gekämpft!' : 'Weiter üben!';
+        document.getElementById('result-score').textContent =
+          `${result.score} / ${result.total} (${pct}%)`;
+
+        const xpEl     = document.getElementById('result-xp');
+        const repeatEl = document.getElementById('result-repeat');
+
+        if (result.isGuest) {
+          // Gast: XP-Einladung anzeigen
+          xpEl.textContent = `Dein Gladiator hätte ${result.maxXp} Kampferfahrung verdient!`;
+          repeatEl.innerHTML =
+            `<a href="/register.html" class="btn btn-primary" style="margin-top:.75rem;display:inline-flex">
+               🗡️ Gladiator werden &amp; XP kassieren
+             </a>`;
+        } else if (result.xpEarned > 0) {
+          xpEl.textContent = `+${result.xpEarned} Kampferfahrung erhalten ⚔️`;
+          repeatEl.textContent = '';
+        } else {
+          xpEl.textContent = 'Bereits absolviert – keine neuen Kampferfahrung.';
+          repeatEl.textContent = 'Jedes Quiz zählt nur beim ersten Mal.';
+        }
+
+        document.getElementById('result-overlay').classList.add('visible');
+      }
+
+      document.getElementById('retry-btn').addEventListener('click', () => {
+        document.getElementById('result-overlay').classList.remove('visible');
+        current = 0;
+        answers = [];
+        document.getElementById('question-card').style.display = 'block';
+        document.getElementById('progress-row').style.display  = 'flex';
+        showQuestion();
+      });
+
+      function escHtml(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+
+      init().catch(console.error);
+    })();
+  </script>
+  <script src="/js/arena-bar.js"></script>
+</body>
+</html>

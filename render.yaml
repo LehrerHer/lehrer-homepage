@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: lernkolosseum
+    runtime: node
+    rootDir: kolosseum
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DB_PATH
+        value: /data/kolosseum.db
+      # ADMIN_PASSWORD_HASH muss manuell im Render-Dashboard gesetzt werden
+      # Generieren mit: node -e "require('bcryptjs').hashSync('DeinPasswort',10)" |> console.log
+
+    disk:
+      name: kolosseum-daten
+      mountPath: /data
+      sizeGB: 1

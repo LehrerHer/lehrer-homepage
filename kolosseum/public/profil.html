@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gladiator-Profil – Lernkolosseum</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* === PROFIL LAYOUT === */
+    .profil-grid {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    /* Avatar-Karte */
+    .avatar-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      text-align: center;
+    }
+    .avatar-wrap {
+      background: linear-gradient(135deg, var(--bg) 0%, #dde8ff 100%);
+      border-radius: 50%;
+      width: 160px;
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .avatar-wrap svg { width: 140px; height: 140px; }
+
+    .hero-nick {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.6rem;
+      color: var(--ink);
+    }
+    .hero-level {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--ink-soft);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* XP-Sektion */
+    .xp-section { margin-top: 0.25rem; width: 100%; }
+    .xp-numbers {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--ink-soft);
+      margin-bottom: 0.3rem;
+    }
+    .xp-total {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 2rem;
+      color: var(--c3);
+    }
+
+    /* Info-Karte rechts */
+    .info-stack { display: flex; flex-direction: column; gap: 1.5rem; }
+
+    /* Badge-Grid */
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.75rem;
+    }
+    .badge-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      padding: 0.85rem 0.5rem;
+      text-align: center;
+      transition: transform var(--transition);
+    }
+    .badge-item:not(.locked):hover { transform: translateY(-3px); }
+    .badge-item .badge-emoji { font-size: 2rem; line-height: 1; }
+    .badge-item .badge-name  { font-weight: 700; font-size: 0.85rem; }
+    .badge-item .badge-desc  { font-size: 0.75rem; color: var(--ink-soft); }
+    .badge-item.locked       { opacity: 0.3; filter: grayscale(1); }
+
+    /* XP-Log */
+    .xp-log-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .xp-log-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 1rem;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      font-size: 0.9rem;
+    }
+    .xp-log-amount {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.1rem;
+      color: var(--c3);
+    }
+    .xp-log-amount.negative { color: var(--c1); }
+    .xp-log-empty { color: var(--ink-soft); font-size: 0.9rem; text-align: center; padding: 1rem; }
+
+    /* Logout-Button */
+    .nav-action { font-size: 0.9rem; }
+
+    /* Badge-Popup */
+    .popup-overlay { position: fixed; inset: 0; background: rgba(26,26,46,0.55);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 999; opacity: 0; pointer-events: none;
+      transition: opacity 0.25s; }
+    .popup-overlay.visible { opacity: 1; pointer-events: all; }
+    .popup-box {
+      background: var(--card); border-radius: var(--radius);
+      box-shadow: var(--shadow-lg); padding: 2.5rem 2rem;
+      text-align: center; max-width: 320px; width: 90%;
+      transform: scale(0.75);
+      transition: transform 0.35s cubic-bezier(.34,1.56,.64,1);
+    }
+    .popup-overlay.visible .popup-box { transform: scale(1); }
+    .popup-emoji { font-size: 4rem; display: block; margin-bottom: 0.5rem; }
+    .popup-title { font-family: 'Fredoka One', sans-serif; font-size: 1.5rem; color: var(--ink); }
+    .popup-sub   { color: var(--ink-soft); font-size: 0.95rem; margin-top: 0.3rem; }
+    .popup-btn   { margin-top: 1.25rem; }
+
+    @media (max-width: 640px) {
+      .profil-grid { grid-template-columns: 1fr; }
+      .avatar-card { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="/profil.html" class="nav-brand">🏛️ Lernkolosseum</a>
+    <div class="nav-links">
+      <a href="/profil.html" class="active">Profil</a>
+      <a href="/rangliste.html">Rangliste</a>
+      <a href="/quiz.html">Quizze</a>
+      <button id="logout-btn" class="btn nav-action" style="background:transparent;color:#fff;border:2px solid rgba(255,255,255,0.5);font-size:.9rem">Ausloggen</button>
+      <a href="https://lehrer-herrmann.de" style="color:rgba(255,255,255,0.45);font-size:0.82rem;text-decoration:none;margin-left:0.5rem" title="Zurück zur Lehrerhomepage">🏠</a>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-bottom: 3rem;">
+    <div class="profil-grid">
+
+      <!-- Linke Spalte: Avatar + XP -->
+      <div class="avatar-card card">
+        <div class="avatar-wrap" id="avatar-wrap">
+          <!-- SVG wird per JS eingefügt -->
+          <div style="font-size:3rem;">⏳</div>
+        </div>
+
+        <div class="hero-nick" id="hero-nick">…</div>
+        <div class="hero-level" id="hero-level">Rekrut</div>
+
+        <div class="xp-section">
+          <div class="xp-total" id="xp-total">0 XP</div>
+          <div class="xp-numbers">
+            <span id="xp-in-level">0</span>
+            <span id="xp-for-next">/ 100 XP</span>
+          </div>
+          <div class="xp-bar-wrap">
+            <div class="xp-bar-fill" id="xp-bar-fill" style="width:0%"></div>
+          </div>
+          <div class="text-soft mt-1" id="xp-next-label">Nächstes Level: Gladiator</div>
+        </div>
+      </div>
+
+      <!-- Rechte Spalte: Badges + XP-Log -->
+      <div class="info-stack">
+
+        <!-- Badges -->
+        <div class="card">
+          <h2 style="font-size:1.3rem; margin-bottom:1rem;">🗡️ Ausrüstung</h2>
+          <div class="badge-grid" id="badge-grid">
+            <div class="text-soft">Wird geladen…</div>
+          </div>
+        </div>
+
+        <!-- XP-Log -->
+        <div class="card">
+          <h2 style="font-size:1.3rem; margin-bottom:1rem;">📜 Kampfchronik</h2>
+          <div class="xp-log-list" id="xp-log-list">
+            <div class="text-soft">Wird geladen…</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Badge-Popup -->
+  <div class="popup-overlay" id="badge-popup" role="dialog" aria-modal="true" aria-labelledby="popup-badge-name">
+    <div class="popup-box">
+      <span class="popup-emoji" id="popup-emoji">🌟</span>
+      <div class="popup-title" id="popup-badge-name">Ausrüstung erspielt!</div>
+      <div class="popup-sub"   id="popup-badge-desc"></div>
+      <button class="btn btn-primary popup-btn" id="popup-close-btn">Super! ✨</button>
+    </div>
+  </div>
+
+  <script src="/js/avatar.js"></script>
+  <script>
+    // ── Hilfsfunktionen ──────────────────────────────────────────────────────
+
+    function formatDate(iso) {
+      if (!iso) return '';
+      return new Date(iso).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    // ── Badge-Popup ──────────────────────────────────────────────────────────
+
+    const popup      = document.getElementById('badge-popup');
+    const popupEmoji = document.getElementById('popup-emoji');
+    const popupName  = document.getElementById('popup-badge-name');
+    const popupDesc  = document.getElementById('popup-badge-desc');
+    const popupClose = document.getElementById('popup-close-btn');
+
+    let badgeQueue = [];
+
+    function showNextBadge() {
+      if (!badgeQueue.length) return;
+      const badge = badgeQueue.shift();
+      popupEmoji.textContent = badge.emoji;
+      popupName.textContent  = `Ausrüstung erspielt: ${badge.name}`;
+      popupDesc.textContent  = badge.desc;
+      popup.classList.add('visible');
+    }
+
+    popupClose.addEventListener('click', () => {
+      popup.classList.remove('visible');
+      setTimeout(showNextBadge, 300);
+    });
+
+    // ── Profil rendern ───────────────────────────────────────────────────────
+
+    function renderProfile({ student, badges, xpLog }) {
+      // Avatar
+      const avatarWrap = document.getElementById('avatar-wrap');
+      avatarWrap.innerHTML = drawAvatar(student.xp);
+
+      // Nick + Level
+      document.getElementById('hero-nick').textContent = student.nick;
+      const info = getLevelInfo(student.xp);
+      document.getElementById('hero-level').textContent =
+        `Level ${info.index + 1} – ${info.level.name}`;
+
+      // XP-Anzeige
+      document.getElementById('xp-total').textContent = `${student.xp} XP`;
+      if (info.next) {
+        document.getElementById('xp-in-level').textContent = info.xpInLevel;
+        document.getElementById('xp-for-next').textContent = `/ ${info.xpNeededForNext} XP`;
+        document.getElementById('xp-next-label').textContent =
+          `Nächstes Level: ${info.next.name}`;
+      } else {
+        document.getElementById('xp-in-level').textContent = '';
+        document.getElementById('xp-for-next').textContent = 'Maximales Level erreicht!';
+        document.getElementById('xp-next-label').textContent = '';
+      }
+
+      // XP-Balken animiert einfüllen
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          document.getElementById('xp-bar-fill').style.width =
+            `${Math.round(info.progress * 100)}%`;
+        }, 100);
+      });
+
+      // Badges
+      const grid = document.getElementById('badge-grid');
+      grid.innerHTML = '';
+      const newBadges = [];
+      badges.forEach((b) => {
+        const el = document.createElement('div');
+        el.className = `badge-item${b.earned ? '' : ' locked'}`;
+        el.innerHTML = `
+          <span class="badge-emoji">${b.emoji}</span>
+          <span class="badge-name">${b.name}</span>
+          <span class="badge-desc">${b.desc}</span>
+          ${b.earned && b.earnedAt ? `<span class="text-soft" style="font-size:.7rem">${formatDate(b.earnedAt)}</span>` : ''}
+        `;
+        grid.appendChild(el);
+        if (b.isNew) newBadges.push(b);
+      });
+
+      // Neu freigeschaltete Badges zeigen
+      badgeQueue = newBadges;
+      if (badgeQueue.length) setTimeout(showNextBadge, 500);
+
+      // XP-Log
+      const logList = document.getElementById('xp-log-list');
+      if (!xpLog.length) {
+        logList.innerHTML = '<div class="xp-log-empty">Noch keine Aktivitäten.</div>';
+      } else {
+        logList.innerHTML = xpLog.map((e) => `
+          <div class="xp-log-item">
+            <span>${e.reason || 'XP erhalten'}</span>
+            <div style="display:flex;gap:.75rem;align-items:center">
+              <span class="text-soft" style="font-size:.8rem">${formatDate(e.created_at)}</span>
+              <span class="xp-log-amount${e.amount < 0 ? ' negative' : ''}">
+                ${e.amount > 0 ? '+' : ''}${e.amount} XP
+              </span>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    // ── Initialisierung ──────────────────────────────────────────────────────
+
+    async function init() {
+      // Session prüfen
+      const meRes = await fetch('/api/auth/me');
+      if (!meRes.ok) { window.location.href = '/login.html'; return; }
+
+      const profileRes = await fetch('/api/students/profile');
+      if (!profileRes.ok) { window.location.href = '/login.html'; return; }
+
+      const data = await profileRes.json();
+      renderProfile(data);
+    }
+
+    // Logout
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      window.location.href = '/login.html';
+    });
+
+    init().catch(console.error);
+  </script>
+  <script src="/js/arena-bar.js"></script>
+</body>
+</html>

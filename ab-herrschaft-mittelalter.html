@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+    <script src="/js/auth-guard.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Interaktives Arbeitsblatt: Herrschaft im Mittelalter – Quelle und Darstellung zur Grundherrschaft, Jahrgang 6.">
+<title>Herrschaft im Mittelalter – Arbeitsblatt Jahrgang 6</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+/* ── Pergament-Theme ─────────────────────────────────────── */
+:root {
+  --parchment:      #f5e9c8;
+  --parchment-dark: #e8d5a0;
+  --ink:            #2a1f0e;
+  --ink-light:      #4a3520;
+  --red:            #8b1a1a;
+  --gold:           #b8860b;
+  --border-p:       #7a5c2e;
+  --green:          #1a5c1a;
+}
+
+.ab-wrap {
+  max-width: 820px;
+  margin: 2.5rem auto 5rem;
+  padding: 0 1rem;
+}
+
+.page {
+  background: var(--parchment);
+  border: 3px solid var(--border-p);
+  box-shadow: 0 0 0 6px #3a2a12, 0 0 0 8px var(--gold), 0 20px 60px rgba(0,0,0,.4);
+  border-radius: 2px;
+  padding: 3rem 3.5rem 3.5rem;
+  position: relative;
+  font-family: 'Crimson Text', Georgia, serif;
+  color: var(--ink);
+}
+.page::before, .page::after {
+  content: '✦'; position: absolute; font-size: 1.4rem; color: var(--gold); top: 1.2rem;
+}
+.page::before { left: 1.5rem; }
+.page::after  { right: 1.5rem; }
+
+/* Header */
+.ab-header { text-align: center; border-bottom: 2px solid var(--gold); padding-bottom: 1.4rem; margin-bottom: .6rem; }
+.meta-bar { display: flex; justify-content: center; gap: 1.2rem; font-size: .82rem; color: var(--ink-light); font-style: italic; margin-bottom: 1rem; }
+.klass-badge { background: var(--red); color: #f5e9c8; padding: .15rem .7rem; border-radius: 2px; font-style: normal; font-family: 'Cinzel', serif; font-size: .75rem; letter-spacing: .08em; }
+.ab-header h1 { font-family: 'Cinzel', serif; font-size: 1.75rem; font-weight: 700; color: var(--ink); line-height: 1.2; letter-spacing: .04em; }
+.ab-header h1 span { display: block; font-size: 1rem; font-weight: 400; color: var(--ink-light); margin-top: .3rem; font-family: 'Crimson Text', serif; font-style: italic; }
+.ornament-line { text-align: center; color: var(--gold); font-size: 1rem; letter-spacing: .5em; margin: .8rem 0 1.5rem; }
+
+/* Intro */
+.intro-box { background: rgba(184,134,11,.08); border-left: 4px solid var(--gold); padding: .9rem 1.2rem; margin-bottom: 2rem; font-size: 1rem; line-height: 1.6; color: var(--ink-light); }
+.intro-box strong { color: var(--ink); font-weight: 600; }
+
+/* Section Header */
+.ab-h2 { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 600; color: var(--red); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .9rem; display: flex; align-items: center; gap: .7rem; }
+.ab-h2::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, var(--red), transparent); }
+
+/* Materialien */
+.source-block, .darstellung-block { margin-bottom: 2.2rem; }
+.source-label { display: inline-block; background: var(--red); color: #f5e9c8; font-family: 'Cinzel', serif; font-size: .72rem; letter-spacing: .12em; padding: .2rem .8rem; margin-bottom: .7rem; text-transform: uppercase; }
+.darst-label  { display: inline-block; background: var(--gold); color: var(--ink); font-family: 'Cinzel', serif; font-size: .72rem; letter-spacing: .12em; padding: .2rem .8rem; margin-bottom: .7rem; text-transform: uppercase; }
+.source-text { background: rgba(42,31,14,.04); border: 1px solid var(--parchment-dark); border-left: 4px solid var(--red); padding: 1.1rem 1.4rem; font-size: 1.02rem; line-height: 1.75; font-style: italic; color: var(--ink); position: relative; }
+.source-text::before { content: '\201C'; font-size: 4rem; color: rgba(139,26,26,.12); position: absolute; top: -.5rem; left: .4rem; line-height: 1; font-family: Georgia, serif; }
+.darst-text { background: rgba(184,134,11,.05); border: 1px solid var(--parchment-dark); border-left: 4px solid var(--gold); padding: 1.1rem 1.4rem; font-size: 1.02rem; line-height: 1.8; color: var(--ink); }
+.source-citation { text-align: right; font-size: .82rem; color: var(--ink-light); font-style: normal; margin-top: .5rem; }
+.darst-citation  { text-align: right; font-size: .82rem; color: var(--ink-light); font-style: italic; margin-top: .5rem; }
+
+/* Begriffe */
+.begriffe-box { background: rgba(42,31,14,.05); border: 1px dashed var(--border-p); border-radius: 2px; padding: 1rem 1.3rem; margin-bottom: 2.2rem; }
+.begriffe-title { font-family: 'Cinzel', serif; font-size: .8rem; font-weight: 600; color: var(--ink-light); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .7rem; }
+.begriffe-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: .5rem 1rem; }
+.Begriff { font-size: .95rem; line-height: 1.5; }
+.Begriff strong { color: var(--red); font-weight: 600; }
+
+/* Aufgaben */
+.tasks-block { margin-bottom: 1.5rem; }
+.task { display: flex; gap: 1rem; margin-bottom: 1.6rem; align-items: flex-start; }
+.task-num { flex-shrink: 0; width: 2rem; height: 2rem; background: var(--red); color: #f5e9c8; font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 700; display: flex; align-items: center; justify-content: center; border-radius: 50%; margin-top: .05rem; }
+.task-content { flex: 1; }
+.task-afb { display: inline-block; font-size: .7rem; font-family: 'Cinzel', serif; letter-spacing: .08em; color: var(--gold); border: 1px solid var(--gold); padding: .05rem .45rem; margin-left: .5rem; vertical-align: middle; text-transform: uppercase; }
+.task-text { font-size: 1.05rem; line-height: 1.65; color: var(--ink); }
+.task-hint { font-size: .88rem; color: var(--ink-light); font-style: italic; margin-top: .35rem; border-left: 2px solid var(--parchment-dark); padding-left: .6rem; }
+
+textarea {
+  width: 100%; margin-top: .6rem;
+  background: rgba(245,233,200,.6);
+  border: 1px solid var(--parchment-dark); border-bottom: 2px solid var(--border-p);
+  border-radius: 1px;
+  padding: .6rem .8rem;
+  font-family: 'Crimson Text', Georgia, serif; font-size: 1rem; color: var(--ink);
+  resize: vertical; min-height: 80px; outline: none;
+  transition: border-color .2s, box-shadow .2s; line-height: 1.7;
+}
+textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(184,134,11,.15); }
+textarea::placeholder { color: rgba(42,31,14,.35); font-style: italic; }
+
+/* Speicherstatus */
+.autosave-info {
+  text-align: right; font-size: .78rem; color: var(--ink-light);
+  font-family: 'Cinzel', serif; letter-spacing: .05em;
+  margin-bottom: 1.5rem; font-style: italic;
+}
+
+/* Check-Button */
+.check-btn {
+  display: block; width: 100%; margin-top: 2rem;
+  padding: .85rem 1.5rem;
+  background: var(--red); color: #f5e9c8;
+  font-family: 'Cinzel', serif; font-size: .95rem; letter-spacing: .12em; text-transform: uppercase;
+  border: none; cursor: pointer;
+  transition: background .2s, transform .1s;
+}
+.check-btn:hover:not(:disabled) { background: #6e1414; }
+.check-btn:active:not(:disabled) { transform: scale(.99); }
+.check-btn:disabled { background: var(--border-p); cursor: not-allowed; opacity: .7; }
+
+/* Feedback */
+.feedback-section { margin-top: 2rem; display: none; }
+.feedback-section.visible { display: block; }
+.feedback-title { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 600; color: var(--green); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 1.2rem; display: flex; align-items: center; gap: .7rem; }
+.feedback-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(to right, var(--green), transparent); }
+.feedback-item { margin-bottom: 1.3rem; border-left: 4px solid var(--green); padding: .9rem 1.1rem; background: rgba(26,92,26,.05); border-radius: 0 2px 2px 0; font-size: 1rem; line-height: 1.7; color: var(--ink); }
+.feedback-item-num { font-family: 'Cinzel', serif; font-size: .75rem; font-weight: 600; color: var(--green); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .4rem; }
+.feedback-loading { text-align: center; font-style: italic; color: var(--ink-light); padding: 1.5rem; font-size: 1rem; }
+.feedback-error { border-left-color: var(--red) !important; background: rgba(139,26,26,.05) !important; }
+.feedback-error-text { color: var(--red); font-size: .95rem; }
+
+.divider { border: none; border-top: 1px solid var(--parchment-dark); margin: 1.8rem 0; }
+
+/* Footer */
+.ab-footer { margin-top: 2.5rem; padding-top: 1rem; border-top: 2px solid var(--gold); display: flex; justify-content: space-between; align-items: center; font-size: .78rem; color: var(--ink-light); letter-spacing: .03em; }
+.footer-orn { color: var(--gold); font-size: 1.1rem; }
+
+@media (max-width: 640px) {
+  .page { padding: 2rem 1.5rem 2.5rem; }
+  .ab-header h1 { font-size: 1.4rem; }
+  .begriffe-grid { grid-template-columns: 1fr; }
+  .meta-bar { flex-direction: column; align-items: center; gap: .3rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+        <a href="index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
+        <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="navbar-links" id="navbar-links">
+            <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
+            <li><a href="index.html#startseite">Startseite</a></li>
+            <li><a href="index.html#faecher" class="aktiv">Fächer</a></li>
+            <li><a href="index.html#digitalematerialien">Materialien</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="index.html#kontakt">Kontakt</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="ab-wrap">
+<div class="page">
+
+  <div class="ab-header">
+    <div class="meta-bar">
+      <span>Geschichte &middot; Jahrgang 6</span>
+      <span class="klass-badge">Herrschaft im Mittelalter</span>
+    </div>
+    <h1>
+      Wer herrschte im Mittelalter &ndash; und warum?
+      <span>Quelle und Darstellung zur Grundherrschaft</span>
+    </h1>
+  </div>
+
+  <div class="ornament-line">&#10022; &middot; &middot; &middot; &#10022; &middot; &middot; &middot; &#10022;</div>
+
+  <div class="intro-box">
+    <strong>Worum geht es?</strong> Im Mittelalter lebten die meisten Menschen als Bauern auf dem Land &ndash; und sie waren nicht frei. Sie mussten für einen Herrn arbeiten und ihm Abgaben zahlen. Aber warum dachten die Menschen damals, dass das so sein <em>musste</em>? Diese Frage untersuchen wir heute mithilfe einer <strong>Quelle</strong> und einer <strong>Darstellung</strong>.
+  </div>
+
+  <!-- QUELLE -->
+  <div class="source-block">
+    <div class="ab-h2">Material 1</div>
+    <span class="source-label">Quelle</span>
+    <div class="source-text">
+      Wegen der Sünde des ersten Menschen ist dem Menschengeschlecht durch göttliche Fügung die Strafe die Knechtschaft auferlegt worden. Gott hat jenen, für die die Freiheit nicht passt, in großer Barmherzigkeit die Knechtschaft auferlegt. Und obgleich die Erbsünde durch die Gnade der Taufe allen Gläubigen genommen ist, hat der gerechte Gott die Menschen so unterschieden, dass er die einen zu Knechten gemacht, die andern zu Herren einsetzte, damit die Möglichkeit zu freveln für die Knechte durch die Macht der Herren eingeschränkt würde.
+    </div>
+    <div class="source-citation">Burchard von Worms, <em>Decretorum libri XX</em>, entstanden 1008&ndash;1012 n.&thinsp;Chr.</div>
+  </div>
+
+  <!-- DARSTELLUNG -->
+  <div class="darstellung-block">
+    <div class="ab-h2">Material 2</div>
+    <span class="darst-label">Darstellung</span>
+    <div class="darst-text">
+      Die überwiegende Mehrheit der bäuerlichen Bevölkerung im Mittelalter befand sich in Abhängigkeit von einem Grundherrn, der meist zugleich Gerichtsherr war. Das Verhältnis zwischen Grundherrn und den abhängigen Bauern war ein Treue- und Schutzverhältnis: Die Bauern mussten dem Herrn dienen und Abgaben zahlen, der Herr wiederum war verpflichtet, die Bauern zu schützen und für Recht zu sorgen.
+      <br><br>
+      Die abhängigen Bauern hatten zahlreiche Pflichten zu erfüllen: Sie leisteten sogenannte Frondienste &ndash; sie mussten also Felder des Herrn bestellen, oft mit ihren eigenen Zugtieren und Geräten. Außerdem mussten sie Naturalabgaben liefern, also Teile ihrer Ernte abgeben. Daneben bewirtschafteten sie ihre eigenen Höfe zur Selbstversorgung.
+      <br><br>
+      Diese Gesellschaftsordnung wurde von den Menschen im Mittelalter als gottgewollt betrachtet. Es galt die Überzeugung, dass jeder Mensch an dem Platz zu bleiben habe, den Gott ihm zugewiesen hat.
+    </div>
+    <div class="darst-citation">Nach: Martin Deusch, „Bäuerliches Leben in der Grundherrschaft", in: Westfälische Geschichte (LWL), o.&thinsp;J.</div>
+  </div>
+
+  <!-- BEGRIFFE -->
+  <div class="begriffe-box">
+    <div class="begriffe-title">📜 &nbsp;Wichtige Begriffe &ndash; Erklärhilfe</div>
+    <div class="begriffe-grid">
+      <div class="Begriff"><strong>Knechtschaft</strong> &ndash; das Leben in Unfreiheit, Abhängigkeit von einem Herrn</div>
+      <div class="Begriff"><strong>Erbsünde</strong> &ndash; nach christlichem Glauben die Sünde aller Menschen seit Adam und Eva</div>
+      <div class="Begriff"><strong>Grundherr</strong> &ndash; Besitzer von Land und Herr über die darauf lebenden Bauern</div>
+      <div class="Begriff"><strong>Frondienst</strong> &ndash; Pflichtarbeit der abhängigen Bauern für den Herrn, ohne Bezahlung</div>
+      <div class="Begriff"><strong>Hörigkeit</strong> &ndash; Zustand der Unfreiheit; hörige Bauern durften den Hof nicht einfach verlassen</div>
+      <div class="Begriff"><strong>gottgewollt</strong> &ndash; von Gott so eingerichtet und daher unveränderlich</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- AUTOSAVE-HINWEIS -->
+  <div class="autosave-info" id="autosave-info">✦ Antworten werden automatisch gespeichert</div>
+
+  <!-- AUFGABEN -->
+  <div class="tasks-block">
+    <div class="ab-h2">Aufgaben</div>
+
+    <div class="task">
+      <div class="task-num">1</div>
+      <div class="task-content">
+        <div class="task-text">
+          Lies die <strong>Quelle</strong> (M1) sorgfältig. Erkläre in eigenen Worten: Warum sagt Burchard von Worms, dass es Herren und Knechte geben muss?
+          <span class="task-afb">AFB I</span>
+        </div>
+        <div class="task-hint">Tipp: Suche nach dem Wort „Gott" in der Quelle. Was begründet Burchard damit?</div>
+        <textarea id="a1" placeholder="Burchard von Worms begründet die Herrschaft damit, dass …"></textarea>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-num">2</div>
+      <div class="task-content">
+        <div class="task-text">
+          Lies die <strong>Darstellung</strong> (M2). Nenne mindestens <strong>drei Pflichten</strong>, die abhängige Bauern im Mittelalter gegenüber ihrem Grundherrn hatten.
+          <span class="task-afb">AFB I</span>
+        </div>
+        <textarea id="a2" placeholder="Die abhängigen Bauern mussten …&#10;1. …&#10;2. …&#10;3. …"></textarea>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-num">3</div>
+      <div class="task-content">
+        <div class="task-text">
+          Vergleiche Quelle und Darstellung: Worin sind sie sich <strong>einig</strong>? Was erklärt nur die Quelle, was nur die Darstellung?
+          <span class="task-afb">AFB II</span>
+        </div>
+        <div class="task-hint">Tipp: Schau, was beide Texte über den Grund der Herrschaft sagen. Dann schau, was die Darstellung zusätzlich zeigt, was in der Quelle fehlt.</div>
+        <textarea id="a3" placeholder="Beide Texte sagen, dass … &#10;&#10;Nur die Quelle erklärt … &#10;&#10;Nur die Darstellung zeigt …" style="min-height:110px"></textarea>
+      </div>
+    </div>
+
+    <div class="task">
+      <div class="task-num">4</div>
+      <div class="task-content">
+        <div class="task-text">
+          Burchard von Worms schrieb um 1010 n.&thinsp;Chr. &ndash; er war ein Bischof, also ein hoher Kirchenmann. Erkläre: Warum ist das wichtig, wenn wir seine Aussagen über Herren und Knechte beurteilen?
+          <span class="task-afb">AFB II&ndash;III</span>
+        </div>
+        <div class="task-hint">Tipp: Überlege, warum jemand, der selbst zur herrschenden Schicht gehört, die bestehende Ordnung als „gottgewollt" darstellt.</div>
+        <textarea id="a4" placeholder="Es ist wichtig zu beachten, dass Burchard Bischof war, weil …" style="min-height:100px"></textarea>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BUTTON -->
+  <button class="check-btn" id="checkBtn" onclick="checkAnswers()">
+    &#10022; &nbsp; Antworten überprüfen lassen
+  </button>
+
+  <!-- FEEDBACK -->
+  <div class="feedback-section" id="feedbackSection">
+    <div class="feedback-title">Musterlösung &amp; Rückmeldung</div>
+    <div id="feedbackContent"></div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="ab-footer">
+    <span>Fach Geschichte &middot; Jahrgang 6</span>
+    <span class="footer-orn">&#10022;</span>
+    <span>Herrschaft im Mittelalter</span>
+  </div>
+
+</div><!-- .page -->
+</div><!-- .ab-wrap -->
+
+<footer>
+    <div class="container footer-inner">
+        <p>&copy; <span id="footer-jahr">2025</span> Jan Herrmann &nbsp;&middot;&nbsp; Oberschule Spelle</p>
+        <nav class="footer-links" aria-label="Rechtliche Links">
+            <a href="index.html#impressum">Impressum</a>
+            <a href="index.html#datenschutz">Datenschutz</a>
+        </nav>
+    </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/arena-bar.js"></script>
+
+<script>
+(function () {
+  'use strict';
+
+  var SAVE_KEY = 'herr_v1';
+  var IDS = ['a1','a2','a3','a4'];
+
+  /* ── Autosave laden ── */
+  try {
+    var saved = JSON.parse(localStorage.getItem(SAVE_KEY) || '{}');
+    IDS.forEach(function (id) {
+      if (saved[id]) document.getElementById(id).value = saved[id];
+    });
+  } catch (e) {}
+
+  /* ── Autosave schreiben ── */
+  function save() {
+    var data = {};
+    IDS.forEach(function (id) { data[id] = document.getElementById(id).value; });
+    localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+    var info = document.getElementById('autosave-info');
+    var now = new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+    if (info) info.textContent = '✦ Gespeichert um ' + now;
+  }
+
+  IDS.forEach(function (id) {
+    document.getElementById(id).addEventListener('input', function () {
+      clearTimeout(window._saveTimer);
+      window._saveTimer = setTimeout(save, 800);
+    });
+  });
+
+  setInterval(save, 60000);
+})();
+
+/* ── KI-Feedback ──────────────────────────────────────────── */
+async function checkAnswers() {
+  var a1 = document.getElementById('a1').value.trim();
+  var a2 = document.getElementById('a2').value.trim();
+  var a3 = document.getElementById('a3').value.trim();
+  var a4 = document.getElementById('a4').value.trim();
+
+  if (!a1 && !a2 && !a3 && !a4) {
+    alert('Bitte beantworte zuerst mindestens eine Aufgabe.');
+    return;
+  }
+
+  var btn     = document.getElementById('checkBtn');
+  var section = document.getElementById('feedbackSection');
+  var content = document.getElementById('feedbackContent');
+
+  btn.disabled    = true;
+  btn.textContent = '… wird überprüft';
+  section.classList.add('visible');
+  content.innerHTML = '<div class="feedback-loading">⏳ Deine Antworten werden gerade ausgewertet …</div>';
+
+  var base = (typeof API_BASE !== 'undefined') ? API_BASE : 'https://kolosseum.lehrer-herrmann.de';
+
+  try {
+    var res = await fetch(base + '/api/ai-feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        worksheet: 'herrschaft-mittelalter',
+        answers: { a1: a1, a2: a2, a3: a3, a4: a4 }
+      })
+    });
+
+    var data = await res.json();
+    if (!res.ok || !data.feedback) throw new Error(data.error || 'Unbekannter Fehler');
+
+    var fullText = data.feedback;
+    var rawParts = fullText.split(/(?=Aufgabe\s*[1-4]\s*:)/i).filter(function (s) { return s.trim(); });
+    var labels   = ['Aufgabe 1', 'Aufgabe 2', 'Aufgabe 3', 'Aufgabe 4'];
+
+    var html = '';
+    if (rawParts.length >= 2) {
+      rawParts.forEach(function (part, i) {
+        var body = part.replace(/^Aufgabe\s*\d+\s*:\s*/i, '').trim();
+        html += '<div class="feedback-item">'
+          + '<div class="feedback-item-num">' + (labels[i] || 'Rückmeldung ' + (i + 1)) + '</div>'
+          + esc(body).replace(/\n/g, '<br>')
+          + '</div>';
+      });
+    } else {
+      html = '<div class="feedback-item">' + esc(fullText).replace(/\n/g, '<br>') + '</div>';
+    }
+
+    content.innerHTML = html;
+
+  } catch (err) {
+    content.innerHTML = '<div class="feedback-item feedback-error">'
+      + '<div class="feedback-error-text">Es gab leider einen Fehler bei der Überprüfung. Bitte versuche es erneut.<br>'
+      + '<small>' + esc(err.message) + '</small></div>'
+      + '</div>';
+  }
+
+  btn.disabled    = false;
+  btn.textContent = '✦  Antworten erneut überprüfen';
+  section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+</script>
+</body>
+</html>
