@@ -62,10 +62,20 @@ h2{font-size:15px;font-weight:600;margin:1.75rem 0 .75rem;color:#111}
 select,input[type=text],textarea{
   width:100%;font-size:13px;border:.5px solid #ccc;border-radius:8px;
   padding:5px 8px;background:#fff;color:#1a1a1a;font-family:inherit;
-  transition:border-color .15s
+  transition:border-color .15s,background-color .2s
 }
 select:focus,input:focus,textarea:focus{outline:none;border-color:#378ADD}
 textarea{resize:vertical;line-height:1.6;padding:.6rem .75rem}
+
+/* Auswertungs-Feedback */
+select.richtig,input.richtig{border-color:#2ecc71!important;background:#f0fdf4!important}
+select.falsch, input.falsch {border-color:#e74c3c!important;background:#fff5f5!important}
+
+.muster-wrap{margin-top:4px}
+.muster-toggle{font-size:11px;color:#0C447C;background:none;border:none;padding:0;cursor:pointer;text-decoration:underline;font-family:inherit}
+.muster-toggle:hover{color:#378ADD}
+.muster-box{display:none;font-size:12px;color:#0F6E56;background:#f0fdf4;border:.5px solid #a7f3d0;border-radius:6px;padding:5px 8px;margin-top:3px}
+.muster-box.sichtbar{display:block}
 
 /* Wirkung */
 .wgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1.5rem}
@@ -73,6 +83,12 @@ textarea{resize:vertical;line-height:1.6;padding:.6rem .75rem}
 
 /* Aufgabe 3 */
 .flabel{font-size:12px;color:#666;margin-bottom:3px;margin-top:8px;display:block}
+.wort-feedback{font-size:12px;border-radius:6px;padding:6px 10px;margin-top:6px;display:none}
+.wort-feedback.wenig{background:#fff8e1;border:.5px solid #f6cc5a;color:#7a5500}
+.wort-feedback.viel {background:#f0fdf4;border:.5px solid #a7f3d0;color:#0F6E56}
+
+/* Ergebnis-Banner */
+.ergebnis-banner{display:none;margin-top:1.5rem;padding:.9rem 1.2rem;border-radius:10px;font-size:14px;font-weight:600;text-align:center;background:#E6F1FB;border:.5px solid #B5D4F4;color:#0C447C}
 
 /* Buttons */
 .btn-row{display:flex;gap:8px;margin-top:1.5rem;align-items:center;flex-wrap:wrap}
@@ -90,6 +106,12 @@ button.primary:hover{background:#d4e8f8}
 @media(max-width:700px){
   .sheet{padding:1.25rem;margin-top:1rem}
   .grid,.wgrid{grid-template-columns:1fr}
+}
+@media print{
+  .navbar,.btn-row,.info-box,.muster-toggle,.wort-feedback,.ergebnis-banner{display:none!important}
+  body{background:#fff;padding:0}
+  .sheet{box-shadow:none;border:none;padding:0;margin:0;max-width:100%}
+  select,input,textarea{border:.5px solid #999!important}
 }
 </style>
 </head>
@@ -167,14 +189,26 @@ button.primary:hover{background:#d4e8f8}
     <div>
       <p class="wlabel"><span class="badge b1">Text I</span></p>
       <textarea id="wirkung-1" rows="6" placeholder="Wirkung des Erzählers …"></textarea>
+      <div class="muster-wrap">
+        <button class="muster-toggle" onclick="toggleMuster('muster-w1')">Musterlösung anzeigen</button>
+        <div class="muster-box" id="muster-w1">baut Spannung auf</div>
+      </div>
     </div>
     <div>
       <p class="wlabel"><span class="badge b2">Text II</span></p>
       <textarea id="wirkung-2" rows="6" placeholder="Wirkung des Erzählers …"></textarea>
+      <div class="muster-wrap">
+        <button class="muster-toggle" onclick="toggleMuster('muster-w2')">Musterlösung anzeigen</button>
+        <div class="muster-box" id="muster-w2">will beeinflussen</div>
+      </div>
     </div>
     <div>
       <p class="wlabel"><span class="badge b3">Text III</span></p>
       <textarea id="wirkung-3" rows="6" placeholder="Wirkung des Erzählers …"></textarea>
+      <div class="muster-wrap">
+        <button class="muster-toggle" onclick="toggleMuster('muster-w3')">Musterlösung anzeigen</button>
+        <div class="muster-box" id="muster-w3">langweilig</div>
+      </div>
     </div>
   </div>
 
@@ -185,9 +219,13 @@ button.primary:hover{background:#d4e8f8}
   <input type="text" id="erzaehler-beschr" placeholder="z. B. auktorialer Er-Erzähler, humorvoll, nachzeitig …" style="margin-bottom:10px">
   <label class="flabel">Meine Erzählung</label>
   <textarea id="erzaehlung" rows="9" placeholder="Schreibe hier deine Erzählung …"></textarea>
+  <div class="wort-feedback" id="wort-feedback"></div>
+
+  <div class="ergebnis-banner" id="ergebnis-banner"></div>
 
   <div class="btn-row">
-    <button class="primary" onclick="speichern()">💾 Antworten speichern</button>
+    <button class="primary" onclick="auswerten()">✅ Auswerten</button>
+    <button onclick="speichern()">💾 Speichern</button>
     <button onclick="zuruecksetzen()">Zurücksetzen</button>
     <span class="saved" id="saved-msg">✓ Gespeichert!</span>
   </div>
@@ -198,20 +236,34 @@ button.primary:hover{background:#d4e8f8}
 const TEXTS=[{id:'1',label:'Text I',badge:'b1'},{id:'2',label:'Text II',badge:'b2'},{id:'3',label:'Text III',badge:'b3'}];
 const CATS=[
   {key:'stand',label:'Erzählerstandort',type:'select',opts:['– wählen –','homodiegetisch','homodiegetisch (autodiegetisch)','heterodiegetisch']},
-  {key:'form',label:'Erzählform',type:'select',opts:['– wählen –','Ich-Erzählung','Er-/Sie-Erzählung']},
-  {key:'fok',label:'Fokalisierung',type:'select',opts:['– wählen –','Nullfokalisierung','interne Fokalisierung','externe Fokalisierung']},
-  {key:'dauer',label:'Zeitdauer',type:'select',opts:['– wählen –','Zeitdehnung','Zeitraffung','Zeitdeckung']},
-  {key:'ord',label:'Zeitordnung',type:'select',opts:['– wählen –','Chronologie','Anachronie – Analepse','Anachronie – Prolepse']},
-  {key:'freq',label:'Frequenz',type:'select',opts:['– wählen –','singulativ','repetitiv','iterativ']},
-  {key:'nar',label:'Zeit der Narration',type:'select',opts:['– wählen –','später (nachzeitig)','früher (vorzeitig)','gleichzeitig','eingeschoben']},
-  {key:'rede',label:'Figurenrede',type:'select',opts:['– wählen –','direkte Rede','indirekte Rede','erlebte Rede','innerer Monolog','Bewusstseinsstrom','keine Figurenrede']},
-  {key:'halt',label:'Erzählhaltung',type:'text',placeholder:'z. B. neutral, ironisch, empathisch …'},
-  {key:'beleg',label:'Textbeleg',type:'text',placeholder:'Zitat aus dem Text …'}
+  {key:'form', label:'Erzählform',      type:'select',opts:['– wählen –','Ich-Erzählung','Er-/Sie-Erzählung']},
+  {key:'fok',  label:'Fokalisierung',   type:'select',opts:['– wählen –','Nullfokalisierung','interne Fokalisierung','externe Fokalisierung']},
+  {key:'dauer',label:'Zeitdauer',       type:'select',opts:['– wählen –','Zeitdehnung','Zeitraffung','Zeitdeckung']},
+  {key:'ord',  label:'Zeitordnung',     type:'select',opts:['– wählen –','Chronologie','Anachronie – Analepse','Anachronie – Prolepse']},
+  {key:'freq', label:'Frequenz',        type:'select',opts:['– wählen –','singulativ','repetitiv','iterativ']},
+  {key:'nar',  label:'Zeit der Narration',type:'select',opts:['– wählen –','später (nachzeitig)','früher (vorzeitig)','gleichzeitig','eingeschoben']},
+  {key:'rede', label:'Figurenrede',     type:'select',opts:['– wählen –','direkte Rede','indirekte Rede','erlebte Rede','innerer Monolog','Bewusstseinsstrom','keine Figurenrede']},
+  {key:'halt', label:'Erzählhaltung',   type:'text',  placeholder:'z. B. neutral, ironisch, empathisch …', muster:['lakonisch','kommentierend, emphatisch','neutral']},
+  {key:'beleg',label:'Textbeleg',       type:'text',  placeholder:'Zitat aus dem Text …',                  muster:['„als ich gestern"','„der arme Junge"','„Ein Junge sieht … er geht"']}
 ];
+
+const LOESUNGEN={
+  't1-stand':'homodiegetisch (autodiegetisch)', 't2-stand':'heterodiegetisch',        't3-stand':'heterodiegetisch',
+  't1-form': 'Ich-Erzählung',                  't2-form': 'Er-/Sie-Erzählung',        't3-form': 'Er-/Sie-Erzählung',
+  't1-fok':  'interne Fokalisierung',           't2-fok':  'Nullfokalisierung',         't3-fok':  'externe Fokalisierung',
+  't1-dauer':'Zeitraffung',                     't2-dauer':'Zeitraffung',               't3-dauer':'Zeitraffung',
+  't1-ord':  'Chronologie',                     't2-ord':  'Anachronie – Prolepse',     't3-ord':  'Chronologie',
+  't1-freq': 'singulativ',                      't2-freq': 'singulativ',                't3-freq': 'singulativ',
+  't1-nar':  'später (nachzeitig)',             't2-nar':  'später (nachzeitig)',        't3-nar':  'gleichzeitig',
+  't1-rede': 'keine Figurenrede',               't2-rede': 'keine Figurenrede',         't3-rede': 'keine Figurenrede'
+};
+
+// Durchschnittliche Wortanzahl der drei Beispieltexte
+const WORT_SCHWELLE = 45;
 
 function buildGrid(){
   const grid=document.getElementById('grid');
-  TEXTS.forEach(t=>{
+  TEXTS.forEach((t,ti)=>{
     const card=document.createElement('div');
     card.className='card';
     card.innerHTML='<span class="badge '+t.badge+'">'+t.label+'</span>';
@@ -224,11 +276,30 @@ function buildGrid(){
         c.opts.forEach(o=>{const op=document.createElement('option');op.value=o.startsWith('–')?'':o;op.textContent=o;sel.appendChild(op);});
         card.appendChild(sel);
       } else {
-        const inp=document.createElement('input');inp.type='text';inp.id=fid;inp.placeholder=c.placeholder||'';card.appendChild(inp);
+        const wrap=document.createElement('div');
+        const inp=document.createElement('input');inp.type='text';inp.id=fid;inp.placeholder=c.placeholder||'';
+        wrap.appendChild(inp);
+        if(c.muster){
+          const mid='muster-'+fid;
+          const btn=document.createElement('button');btn.className='muster-toggle';btn.textContent='Musterlösung anzeigen';
+          btn.setAttribute('onclick','toggleMuster("'+mid+'")');
+          const box=document.createElement('div');box.className='muster-box';box.id=mid;box.textContent=c.muster[ti];
+          const mwrap=document.createElement('div');mwrap.className='muster-wrap';mwrap.appendChild(btn);mwrap.appendChild(box);
+          wrap.appendChild(mwrap);
+        }
+        card.appendChild(wrap);
       }
     });
     grid.appendChild(card);
   });
+}
+
+function toggleMuster(id){
+  const box=document.getElementById(id);
+  if(!box)return;
+  const sichtbar=box.classList.toggle('sichtbar');
+  const btn=box.previousElementSibling;
+  if(btn)btn.textContent=sichtbar?'Musterlösung verbergen':'Musterlösung anzeigen';
 }
 
 function allIds(){
@@ -248,8 +319,52 @@ function speichern(){
 
 function zuruecksetzen(){
   if(!confirm('Alle Eingaben löschen?'))return;
-  allIds().forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  allIds().forEach(id=>{
+    const el=document.getElementById(id);
+    if(el){el.value='';el.classList.remove('richtig','falsch');}
+  });
+  document.getElementById('wort-feedback').style.display='none';
+  document.getElementById('ergebnis-banner').style.display='none';
   try{localStorage.removeItem('narr_v2');}catch(e){}
+}
+
+function auswerten(){
+  speichern();
+  let richtig=0, gesamt=0;
+
+  // Dropdowns prüfen
+  Object.entries(LOESUNGEN).forEach(([id,lsg])=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    gesamt++;
+    el.classList.remove('richtig','falsch');
+    if(el.value===lsg){el.classList.add('richtig');richtig++;}
+    else{el.classList.add('falsch');}
+  });
+
+  // Wortzahl-Feedback für eigene Erzählung
+  const erzText=(document.getElementById('erzaehlung').value||'').trim();
+  const woerter=erzText?erzText.split(/\s+/).filter(w=>w.length>0).length:0;
+  const fb=document.getElementById('wort-feedback');
+  if(woerter===0){
+    fb.style.display='none';
+  } else if(woerter<WORT_SCHWELLE){
+    fb.className='wort-feedback wenig';
+    fb.textContent='Du bist etwas faul gewesen, oder? Deine Erzählung ist sehr kurz ('+woerter+' Wörter).';
+    fb.style.display='block';
+  } else {
+    fb.className='wort-feedback viel';
+    fb.textContent='Sehr schön – deine Erzählung ist ausführlich und gut ausgearbeitet ('+woerter+' Wörter)! 👍';
+    fb.style.display='block';
+  }
+
+  // Ergebnis-Banner
+  const banner=document.getElementById('ergebnis-banner');
+  const prozent=Math.round(richtig/gesamt*100);
+  let emoji=prozent>=80?'🎉':prozent>=50?'👍':'💪';
+  banner.textContent=emoji+' Aufgabe 1: '+richtig+' von '+gesamt+' Antworten richtig ('+prozent+' %)';
+  banner.style.display='block';
+  banner.scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
 buildGrid();
@@ -262,8 +377,7 @@ buildGrid();
   }catch(e){}
 })();
 
-// Autosave alle 60 Sekunden
-setInterval(speichern, 60000);
+setInterval(speichern,60000);
 </script>
 
 <script src="js/arena-bar.js"></script>
