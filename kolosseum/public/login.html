@@ -118,6 +118,20 @@
       const errorEl = document.getElementById('login-error');
       const btn     = document.getElementById('login-btn');
 
+      // ?next – Rücksprung zur Ausgangsseite nach dem Login
+      // Nur lehrer-herrmann.de und localhost erlaubt (kein Open-Redirect)
+      const nextParam = new URLSearchParams(location.search).get('next') || '';
+      function safeNext(fallback) {
+        try {
+          const u = new URL(nextParam);
+          if (u.hostname === 'lehrer-herrmann.de' || u.hostname === 'localhost' || u.hostname === '127.0.0.1') {
+            return nextParam;
+          }
+        } catch {}
+        return fallback;
+      }
+      const afterLoginUrl = safeNext('https://lehrer-herrmann.de/portal.html');
+
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         errorEl.textContent = '';
@@ -149,7 +163,7 @@
             return;
           }
 
-          window.location.href = data.redirect || '/profil.html';
+          window.location.href = afterLoginUrl;
         } catch {
           errorEl.textContent = 'Verbindungsfehler. Bitte erneut versuchen.';
           btn.disabled    = false;
