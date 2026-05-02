@@ -122,12 +122,23 @@ def build_content_block(path: Path) -> dict:
     return {"type": "image", "source": {"type": "base64", "media_type": media, "data": data}}
 
 
+_AUTH_GUARD = '<script src="/js/auth-guard.js"></script>'
+
 def extract_html(text: str) -> str:
     if "<!DOCTYPE html>" in text:
         start = text.index("<!DOCTYPE html>")
         end = text.rfind("</html>")
         if end != -1:
-            return text[start : end + 7]
+            html = text[start : end + 7]
+            # Auth-Guard einbauen, falls noch nicht vorhanden
+            if _AUTH_GUARD not in html:
+                for needle in ('<meta charset="UTF-8" />', '<meta charset="UTF-8">'):
+                    if needle in html:
+                        html = html.replace(needle, needle + "\n  " + _AUTH_GUARD, 1)
+                        break
+                else:
+                    html = html.replace("<head>", "<head>\n  " + _AUTH_GUARD, 1)
+            return html
     return text
 
 
