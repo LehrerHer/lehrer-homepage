@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Kontakt zu Jan Herrmann, Lehrer an der Oberschule Spelle.">
+    <title>Kontakt – Jan Herrmann</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+        <div class="container navbar-inner">
+            <a href="index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
+
+            <button
+                class="hamburger"
+                id="hamburger"
+                aria-label="Menü öffnen"
+                aria-expanded="false"
+                aria-controls="navbar-links"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="navbar-links" id="navbar-links">
+                <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
+                <li><a href="index.html#faecher">Fächer</a></li>
+                <li><a href="portal.html">Materialien &amp; Quizze</a></li>
+                <li><a href="kolosseum.html">🏛️ Arena</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="kontakt.html" aria-current="page">Kontakt</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <main class="legal-main">
+        <div class="container legal-container">
+
+            <section class="legal-section">
+                <h1 class="legal-titel">Kontakt</h1>
+                <p style="color:var(--farbe-text-hell);margin-bottom:2rem">
+                    Fragen, Terminwünsche oder Probleme mit dem Account? So erreichen Sie mich:
+                </p>
+
+                <div class="kontakt-grid" style="margin-bottom:2rem">
+
+                    <div class="kontakt-karte">
+                        <div class="kontakt-icon">🏫</div>
+                        <h3>Schule</h3>
+                        <p>Oberschule Spelle<br>Niedersachsen</p>
+                    </div>
+
+                    <div class="kontakt-karte">
+                        <div class="kontakt-icon">✉️</div>
+                        <h3>E-Mail</h3>
+                        <p id="email-anzeige" style="font-family:monospace;font-size:.95rem;color:var(--farbe-primaer);font-weight:600">
+                            <!-- wird per JS befüllt -->
+                            jan.herrmann [AT] obsspelle.de
+                        </p>
+                        <p style="margin-top:.5rem">
+                            <a id="email-link" href="#" style="font-size:.85rem;color:var(--farbe-akzent)">
+                                → E-Mail schreiben
+                            </a>
+                        </p>
+                    </div>
+
+                    <div class="kontakt-karte">
+                        <div class="kontakt-icon">⏰</div>
+                        <h3>Sprechzeiten</h3>
+                        <p>Nach Absprache oder direkt nach dem Unterricht – einfach ansprechen!</p>
+                    </div>
+
+                    <div class="kontakt-karte">
+                        <div class="kontakt-icon">🔑</div>
+                        <h3>Account &amp; Zugang</h3>
+                        <p>
+                            Kein Account, vergessenes Passwort oder Probleme beim Einloggen?
+                            Herrn Herrmann persönlich ansprechen – er schickt einen neuen Einladungslink.
+                        </p>
+                    </div>
+
+                </div>
+
+                <p style="font-size:.85rem;color:var(--farbe-text-hell)">
+                    ← <a href="index.html" style="color:var(--farbe-akzent)">Zurück zur Startseite</a>
+                </p>
+            </section>
+
+        </div>
+    </main>
+
+
+    <footer>
+        <div class="container footer-inner">
+            <p>© <span id="footer-jahr">2025</span> Jan Herrmann</p>
+            <nav class="footer-links" aria-label="Rechtliche Links">
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        /* E-Mail-Adresse per JS zusammensetzen – kein @ im HTML-Quelltext */
+        (function () {
+            var u = 'jan.herrmann';
+            var d = 'obsspelle' + '.de';
+            var link = document.getElementById('email-link');
+            var anzeige = document.getElementById('email-anzeige');
+            if (link) link.href = 'mailto:' + u + '@' + d;
+            if (anzeige) anzeige.textContent = u + ' [AT] ' + d;
+        })();
+    </script>
+    <script data-goatcounter="https://lehrer-herrmann.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
