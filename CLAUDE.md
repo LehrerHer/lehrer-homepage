@@ -55,12 +55,63 @@ Visit `http://localhost:8000` to view the site.
 
 ---
 
+## Seitenstruktur (vom Betreiber entworfen)
+
+Die Homepage ist in zwei Hauptbereiche gegliedert:
+
+```
+Startseite (index.html)
+├── Vorstellung „Wer bin ich?" (Hero)
+├── Was ist neu? (Funktionen, Quiz-Leistungen, Materialien)
+├── Bereiche-Übersicht (Links + kurze Erklärung zu allen Bereichen)
+├── Kontakt → kontakt.html (E-Mail verschleiert, kein @ im HTML)
+└── Footer: © Impressum · Datenschutz
+│
+├── ÖFFENTLICH
+│   └── Fächervorstellung
+│       ├── fach-deutsch.html
+│       ├── fach-geschichte.html
+│       ├── fach-wipo.html          (Wirtschaft/Politik)
+│       ├── fach-informatik.html
+│       ├── fach-werte-normen.html
+│       └── fach-ag-projekte.html
+│
+└── GESCHLOSSEN (Login nötig – Kolosseum-Account)
+    ├── Materialien & Quizze (portal.html)
+    │   ├── Deutsch        → Arbeitsblätter, Materialien (Hilfen/Links), Quizze
+    │   ├── Geschichte     → Arbeitsblätter, Materialien, Quizze
+    │   ├── andere Fächer
+    │   │   ├── Wirtschaft/Politik
+    │   │   ├── Werte und Normen
+    │   │   ├── Informatik
+    │   │   └── Gestaltendes Werken
+    │   └── AGs & Projekte
+    ├── Schüler*innenblog (blog.html)
+    │   └── blog-einreichen.html
+    └── Lernkolosseum (kolosseum.html)
+        ├── Profil (kolosseum/public/profil.html)
+        │   ├── Rangliste
+        │   ├── Link zu: Materialien
+        │   └── Arena (Quiz-Spiel)
+        └── Admin-Ebene (kolosseum/public/admin/)
+            ├── Einladungslink erstellen
+            ├── Material hochladen
+            └── Manuelle XP-Vergabe
+```
+
+### Zugangslogik (`js/homepage-gate.js`)
+- Prüft Kolosseum-Session via `GET /api/auth/me`
+- **Eingeloggt**: Lernkolosseum-Teaser, Materialien-Sektion und Blog-Teaser werden eingeblendet; Login-Gate ausgeblendet
+- **Nicht eingeloggt**: Login-Gate sichtbar; geschützte Sektionen ausgeblendet
+- Die Bereiche-Übersicht (`#bereiche-uebersicht`) ist **immer öffentlich** sichtbar
+
+---
+
 ## Key Files and Their Roles
 
 ### `index.html`
 - Main teacher profile page
-- Sections: sticky navbar, hero, subjects (`#faecher`), materials (`#materialien`), contact (`#kontakt`), footer
-- All section IDs are used by `main.js` for scroll-spy navigation
+- Sections: sticky navbar, hero (`#startseite`), was-ist-neu (`#was-ist-neu`), bereiche-übersicht (`#bereiche-uebersicht`), login-gate, lernkolosseum, digitalematerialien, blog-teaser, kontakt (`#kontakt`), footer
 - Copyright year is set dynamically via `id="footer-jahr"`
 
 ### `abgabe.html`
