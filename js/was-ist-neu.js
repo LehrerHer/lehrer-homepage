@@ -8,6 +8,9 @@
      3. Avataraufstiege  (Kolosseum API)
      4. Neue Materialien (inhalte.json)
      5. Blogbeiträge     (Kolosseum API)
+
+   Extra-Block:
+     → Letzte 5 Gladiatoren mit XP-Aktivität (Kolosseum API)
    ============================================================ */
 
 (function () {
@@ -89,7 +92,7 @@
                 return d.slice(0, 2).map(function (e) {
                     return {
                         icon: '🏆', kat: 'Quiz-Bestleistung',
-                        titel: esc(e.name || '???') + ' – ' + e.prozent + ' %',
+                        titel: esc(e.name || '???') + ' – ' + e.prozent + ' %',
                         meta: QUIZ_LABELS[e.quiz] || e.quiz,
                         datum: e.datum, url: QUIZ_URLS[e.quiz] || 'index.html#digitalematerialien'
                     };
@@ -116,11 +119,19 @@
     }
 
     function ladeEntwicklungen() {
+        /* -------------------------------------------------------
+           Neue Einträge oben ergänzen, älteste unten lassen.
+           Es werden nur die ersten 2 angezeigt.
+           ------------------------------------------------------- */
         var eintraege = [
-            { titel: 'Kolosseum: Fächer & Materialien + Fortschritt', datum: '2026-04-29T12:00:00', url: 'kolosseum.html' },
-            { titel: 'Arena-Statusleiste auf allen Seiten', datum: '2026-04-28T12:00:00', url: 'kolosseum.html' },
-            { titel: 'Neue Kolosseum-Unterseite mit Level-System', datum: '2026-04-27T12:00:00', url: 'kolosseum.html' },
-            { titel: 'Quizze ohne Login spielbar', datum: '2026-04-25T12:00:00', url: 'stilmittel-quiz.html' },
+            { titel: 'Impressum & Datenschutz eingerichtet',           datum: '2026-05-03T12:00:00', url: 'impressum.html' },
+            { titel: 'Nutzungshinweise auf Abgabe- & Blog-Formular',   datum: '2026-05-03T11:00:00', url: 'impressum.html#nutzung' },
+            { titel: 'GoatCounter Analytics (cookiefrei) eingebunden', datum: '2026-04-30T10:00:00', url: 'datenschutz.html' },
+            { titel: 'AB Herrschaft im Mittelalter + KI-Feedback',     datum: '2026-04-29T17:00:00', url: 'ab-herrschaft-mittelalter.html' },
+            { titel: 'Kolosseum: Fächer & Materialien + Fortschritt',  datum: '2026-04-29T12:00:00', url: 'kolosseum.html' },
+            { titel: 'Arena-Statusleiste auf allen Seiten',            datum: '2026-04-28T12:00:00', url: 'kolosseum.html' },
+            { titel: 'Upload-Interface für Lehrkräfte',                datum: '2026-04-27T12:00:00', url: 'lehrer-upload.html' },
+            { titel: 'Quizze ohne Login spielbar',                     datum: '2026-04-25T12:00:00', url: 'stilmittel-quiz.html' },
         ];
         return Promise.resolve(eintraege.slice(0, 2).map(function (e) {
             return {
@@ -131,14 +142,57 @@
         }));
     }
 
-    /* ---- Kompaktes Spalten-Rendering ---- */
+    /* ---- XP-Aktivitätsliste (5 zuletzt aktive Gladiatoren) ---- */
 
-    function render(gruppen) {
+    function ladeXpAktivitaet() {
+        return fetch(API + '/api/public/xp-aktivitaet')
+            .then(function (r) { return r.ok ? r.json() : []; })
+            .catch(function () { return []; });
+    }
+
+    /* ---- Rendering ---- */
+
+    function renderGladiatoren(gladiatoren) {
+        if (!gladiatoren || !gladiatoren.length) return '';
+
+        var zeilen = gladiatoren.map(function (g, i) {
+            var rangBadge = g.rang <= 3
+                ? ['🥇', '🥈', '🥉'][g.rang - 1]
+                : '#' + g.rang;
+            return '<div class="win-gladiator-zeile">'
+                + '<span class="win-gladiator-rang">' + rangBadge + '</span>'
+                + '<span class="win-gladiator-level" title="' + esc(g.level_name) + '">' + esc(g.level_icon) + '</span>'
+                + '<span class="win-gladiator-name">' + esc(g.nickname) + '</span>'
+                + '<span class="win-gladiator-level-name">' + esc(g.level_name) + '</span>'
+                + '<span class="win-gladiator-xp">' + g.xp + ' XP</span>'
+                + '<span class="win-gladiator-datum">' + formatDatum(g.last_active) + '</span>'
+                + '</div>';
+        }).join('');
+
+        return '<div class="win-gladiatoren-block">'
+            + '<div class="win-gladiatoren-header">'
+            + '<span>⚔️</span>'
+            + '<span>Zuletzt aktive Gladiatoren</span>'
+            + '<a href="https://kolosseum.lehrer-herrmann.de/rangliste.html" class="win-gladiatoren-mehr">→ Rangliste</a>'
+            + '</div>'
+            + '<div class="win-gladiatoren-liste">'
+            + '<div class="win-gladiator-kopf">'
+            + '<span>Rang</span><span>Lvl</span><span>Name</span><span>Stufe</span>'
+            + '<span>XP</span><span>Zuletzt aktiv</span>'
+            + '</div>'
+            + zeilen
+            + '</div>'
+            + '</div>';
+    }
+
+    function render(gruppen, gladiatoren) {
         var container = document.getElementById('win-tabelle');
         if (!container) return;
 
-        var hatInhalte = Object.values(gruppen).some(function (arr) { return arr.length > 0; });
-        if (!hatInhalte) {
+        var hatKategorien = Object.keys(gruppen).some(function (k) { return gruppen[k].length > 0; });
+        var hatGladiatoren = gladiatoren && gladiatoren.length > 0;
+
+        if (!hatKategorien && !hatGladiatoren) {
             container.innerHTML = '<p class="win-leer">Noch keine Neuigkeiten vorhanden.</p>';
             return;
         }
@@ -166,10 +220,9 @@
                 + '</div>';
         }).join('');
 
-        container.innerHTML = '<div class="win-grid">' + cols + '</div>';
+        container.innerHTML = (cols ? '<div class="win-grid">' + cols + '</div>' : '')
+            + renderGladiatoren(gladiatoren);
     }
-
-    /* ---- Gruppieren nach Kategorie ---- */
 
     function gruppieren(alle) {
         var gruppen = {};
@@ -188,10 +241,12 @@
             ladeQuizBestenliste(),
             ladeAvataraufstiege(),
             ladeMaterialien(),
-            ladeBlogbeitraege()
+            ladeBlogbeitraege(),
+            ladeXpAktivitaet()
         ]).then(function (ergebnisse) {
-            var alle = [].concat.apply([], ergebnisse);
-            render(gruppieren(alle));
+            var gladiatoren = ergebnisse[5];
+            var kategorien  = [].concat.apply([], ergebnisse.slice(0, 5));
+            render(gruppieren(kategorien), gladiatoren);
         });
     }
 

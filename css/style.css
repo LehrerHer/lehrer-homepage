@@ -1569,6 +1569,128 @@ footer {
 
 
 /* ================================================================
+   WAS IST NEU? – Gladiatoren-Aktivitätsliste
+   ================================================================ */
+
+.win-gladiatoren-block {
+    margin-top: 1.25rem;
+    border: 1px solid var(--farbe-rahmen);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.win-gladiatoren-header {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .45rem .8rem;
+    background: var(--farbe-primaer);
+    color: #fff;
+    font-size: .68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+}
+
+.win-gladiatoren-mehr {
+    margin-left: auto;
+    color: rgba(255,255,255,.75);
+    text-decoration: none;
+    font-size: .67rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    transition: color var(--transition);
+}
+.win-gladiatoren-mehr:hover { color: #fff; }
+
+.win-gladiatoren-liste {
+    background: var(--farbe-hintergrund);
+}
+
+.win-gladiator-kopf,
+.win-gladiator-zeile {
+    display: grid;
+    grid-template-columns: 2.2rem 1.8rem 1fr 1fr 4.5rem 8rem;
+    align-items: center;
+    gap: .4rem;
+    padding: .35rem .8rem;
+    font-size: .75rem;
+}
+
+.win-gladiator-kopf {
+    background: rgba(30,58,95,.06);
+    border-bottom: 1px solid var(--farbe-rahmen);
+    font-size: .65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--farbe-text-hell);
+}
+
+.win-gladiator-zeile {
+    border-bottom: 1px solid var(--farbe-rahmen);
+    color: var(--farbe-text);
+    transition: background var(--transition);
+}
+.win-gladiator-zeile:last-child { border-bottom: none; }
+.win-gladiator-zeile:hover { background: rgba(74,158,218,.07); }
+
+.win-gladiator-rang {
+    font-size: .8rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--farbe-primaer);
+}
+
+.win-gladiator-level {
+    font-size: .95rem;
+    text-align: center;
+}
+
+.win-gladiator-name {
+    font-weight: 600;
+    color: var(--farbe-primaer);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.win-gladiator-level-name {
+    color: var(--farbe-text-hell);
+    font-size: .72rem;
+}
+
+.win-gladiator-xp {
+    font-weight: 600;
+    color: var(--farbe-akzent);
+    text-align: right;
+}
+
+.win-gladiator-datum {
+    color: var(--farbe-text-hell);
+    font-size: .67rem;
+    text-align: right;
+}
+
+@media (max-width: 700px) {
+    .win-gladiator-kopf,
+    .win-gladiator-zeile {
+        grid-template-columns: 2rem 1.6rem 1fr 3.5rem 6rem;
+    }
+    .win-gladiator-level-name { display: none; }
+}
+
+@media (max-width: 480px) {
+    .win-gladiator-kopf,
+    .win-gladiator-zeile {
+        grid-template-columns: 2rem 1.6rem 1fr 3.5rem;
+    }
+    .win-gladiator-datum { display: none; }
+}
+
+
+/* ================================================================
    LERNKOLOSSEUM – Herrmanns Lernwelt
    ================================================================ */
 
