@@ -181,16 +181,34 @@ Four self-contained IIFE modules, each independent:
 
 ### Git
 - Default branch: `main`
-- **Push direkt auf `main`** – keine PRs, keine Feature-Branches. Einzelentwickler-Projekt.
+- **Einzelentwickler-Projekt – IMMER direkt auf `main` pushen, niemals Feature-Branches stehen lassen.**
 - Commit-Befehl immer mit `-c user.email="jan@lehrer-herrmann.de" -c user.name="Jan Herrmann"`
-- Push aus Worktrees: `git push origin HEAD:main`
-- Commit messages should be in English or German (existing commits are in German)
+- Commit messages in German or English
 
-### Deploy nach Änderungen (Lernkolosseum)
-Nach jedem Push auf main auf dem Server:
+**Wenn das Harness einen Feature-Branch zuweist** (z. B. `claude/xyz`), nach Abschluss der Arbeit sofort auf `main` mergen:
 ```bash
-ssh root@178.105.35.83 "cd /var/www/lehrer-homepage && git pull && pm2 restart kolosseum"
+git checkout main
+git merge --no-ff claude/xyz -m "Merge: <kurze Beschreibung>"
+git push origin main
 ```
+Danach den Feature-Branch lokal löschen (remote-Branches werden beim nächsten Cleanup entfernt).
+
+### Deploy – vollautomatisch via GitHub-Webhook
+Der Server (178.105.35.83) zieht automatisch, sobald ein Push auf `main` bei GitHub eingeht.
+**Kein manueller SSH-Befehl nötig.**
+
+Einmalige Einrichtung (nur wenn der Webhook noch nicht aktiv ist):
+1. Auf dem Server in `/var/www/lehrer-homepage/kolosseum/.env` setzen:
+   ```
+   DEPLOY_SECRET=<zufälliges Secret>
+   DEPLOY_DIR=/var/www/lehrer-homepage
+   PM2_APP=kolosseum
+   ```
+2. In den GitHub-Repository-Einstellungen unter *Webhooks* eintragen:
+   - Payload URL: `https://kolosseum.lehrer-herrmann.de/api/deploy`
+   - Content type: `application/json`
+   - Secret: dasselbe wie `DEPLOY_SECRET`
+   - Event: *Just the push event*
 
 ---
 
