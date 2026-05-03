@@ -2033,3 +2033,145 @@ footer {
 @media (max-width: 560px) {
     .dm-grid { grid-template-columns: 1fr; }
 }
+
+
+/* ================================================================
+   LEGAL-SEITEN (impressum.html, datenschutz.html)
+   ================================================================ */
+
+.legal-main {
+    padding: 3rem 0 4rem;
+    min-height: calc(100vh - 140px);
+}
+
+.legal-container {
+    max-width: 800px;
+}
+
+.legal-titel {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--farbe-primaer);
+    margin-bottom: 6px;
+}
+
+.legal-gemaess {
+    font-size: 0.88rem;
+    color: var(--farbe-text-hell);
+    margin-bottom: 2.5rem;
+}
+
+.legal-section {
+    margin-bottom: 3rem;
+}
+
+.legal-abschnitt-titel {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--farbe-primaer);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--farbe-rahmen);
+}
+
+.legal-block {
+    background-color: var(--farbe-weiss);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1rem;
+    box-shadow: var(--schatten);
+}
+
+.legal-block h2 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--farbe-primaer);
+    margin-bottom: 0.6rem;
+}
+
+.legal-block h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--farbe-primaer);
+    margin-bottom: 0.6rem;
+}
+
+.legal-block p {
+    font-size: 0.93rem;
+    color: var(--farbe-text);
+    line-height: 1.7;
+    margin-bottom: 0.7rem;
+}
+
+.legal-block p:last-child {
+    margin-bottom: 0;
+}
+
+.legal-block address {
+    font-style: normal;
+    font-size: 0.93rem;
+    line-height: 1.8;
+    color: var(--farbe-text);
+    margin-bottom: 0.5rem;
+}
+
+.legal-hinweis-klein {
+    font-size: 0.82rem !important;
+    color: var(--farbe-text-hell) !important;
+}
+
+.legal-liste {
+    list-style: disc;
+    padding-left: 1.3rem;
+    margin: 0.6rem 0;
+}
+
+.legal-liste li {
+    font-size: 0.93rem;
+    color: var(--farbe-text);
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+}
+
+.legal-block-warnung {
+    border-left: 4px solid #e67e22;
+    background-color: #fff8f3;
+}
+
+.legal-block-warnung h3 {
+    color: #c0392b;
+}
+
+
+/* ================================================================
+   NUTZUNGSHINWEIS (auf Formular-Seiten)
+   ================================================================ */
+
+.nutzungshinweis {
+    background-color: #fff3cd;
+    border: 1px solid #ffc107;
+    border-left: 4px solid #e67e22;
+    border-radius: var(--radius);
+    padding: 0.9rem 1.1rem;
+    font-size: 0.88rem;
+    color: #5a3e00;
+    line-height: 1.6;
+}
+
+.nutzungshinweis a {
+    color: #7d4e00;
+    text-decoration: underline;
+}
+
+.nutzungshinweis a:hover {
+    color: var(--farbe-primaer);
+}
+
+@media (max-width: 600px) {
+    .legal-block {
+        padding: 1rem 1.1rem;
+    }
+    .legal-titel {
+        font-size: 1.6rem;
+    }
+}
