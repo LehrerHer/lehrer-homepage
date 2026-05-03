@@ -19,4 +19,13 @@ venv/
 # Editor
 .vscode/
 *.swp
-".claude/worktrees/" 
+
+# Claude Code interne Worktrees – niemals committen
+.claude/worktrees/
+
+# iCloud-Duplikate (Dateien mit " 2" im Namen)
+*\ 2.html
+*\ 2.js
+*\ 2.md
+*\ 2.json
+*\ 2.example
