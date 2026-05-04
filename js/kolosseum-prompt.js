@@ -147,7 +147,19 @@
       var result = await submitRes.json();
       var npp = result.notenpunkte !== undefined ? result.notenpunkte : np;
 
-      if (result.xpEarned > 0) {
+      if (result.xpEarned > 0 && result.isImprovement) {
+        // Wiederholung mit Verbesserung
+        openModal(
+          '<span class="kp-emoji">📈</span>'
+          + '<div class="kp-title">Verbessert! +' + result.xpEarned + '&thinsp;Kampferfahrung!</div>'
+          + '<div class="kp-sub">'
+          +   npp + '&thinsp;Notenpunkte · Du hast dein bisheriges Ergebnis übertroffen! ⚔️'
+          + '</div>'
+          + '<a href="' + K + '/profil.html" class="kp-btn kp-btn-primary" target="_blank" rel="noopener">Zum Gladiator-Profil →</a>'
+          + '<button class="kp-dismiss" onclick="kpClose()">Schließen</button>'
+        );
+      } else if (result.xpEarned > 0) {
+        // Erster Versuch mit XP
         openModal(
           '<span class="kp-emoji">🏆</span>'
           + '<div class="kp-title">+' + result.xpEarned + '&thinsp;Kampferfahrung!</div>'
@@ -158,12 +170,13 @@
           + '<button class="kp-dismiss" onclick="kpClose()">Schließen</button>'
         );
       } else {
+        // Kein Fortschritt (Ergebnis schlechter oder gleich wie bisher)
         openModal(
           '<span class="kp-emoji">⚔️</span>'
-          + '<div class="kp-title">Bereits absolviert</div>'
+          + '<div class="kp-title">Kein neuer Rekord</div>'
           + '<div class="kp-sub">'
-          +   'Ergebnis heute: <strong>' + npp + '&thinsp;Notenpunkte</strong> · '
-          +   'Jedes Quiz zählt nur beim ersten Mal für XP – probiere andere Quizze!'
+          +   'Ergebnis: <strong>' + npp + '&thinsp;Notenpunkte</strong> · '
+          +   'Übe weiter – XP gibt es, sobald du dein bisheriges Ergebnis übertriffst!'
           + '</div>'
           + '<a href="' + K + '/quiz.html" class="kp-btn kp-btn-primary" target="_blank" rel="noopener">Mehr Quizze in der Arena →</a>'
           + '<button class="kp-dismiss" onclick="kpClose()">Schließen</button>'

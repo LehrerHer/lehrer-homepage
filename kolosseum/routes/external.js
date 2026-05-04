@@ -49,15 +49,17 @@ router.post('/submit', requireStudent, (req, res) => {
     return res.status(400).json({ error: 'Ungültige score/total-Werte.' });
   }
 
-  // Wie oft hat dieser SuS das Quiz schon gemacht?
-  const prevAttempts = db.prepare(
-    'SELECT COUNT(*) AS n FROM external_quiz_results WHERE student_id = ? AND quiz_slug = ?'
-  ).get(studentId, quizSlug).n;
+  // Bisherige Bestleistung (XP-Wert) ermitteln
+  const prevBest = db.prepare(
+    'SELECT COUNT(*) AS n, MAX(xp_earned) AS best_xp FROM external_quiz_results WHERE student_id = ? AND quiz_slug = ?'
+  ).get(studentId, quizSlug);
+  const prevAttempts = prevBest.n;
+  const bestXpSoFar = prevBest.best_xp || 0;
 
   const notenpunkte = computeNotenpunkte(score, total);
   const xpEarned = notenpunkte * total;
-  // XP nur beim ersten Mal vergeben
-  const xpToAdd = prevAttempts === 0 ? xpEarned : 0;
+  // Verbesserungs-Differenz: nur die XP gutschreiben, die über das bisherige Bestergebnis hinausgehen
+  const xpToAdd = Math.max(0, xpEarned - bestXpSoFar);
 
   // Ergebnis speichern
   db.prepare(
@@ -78,6 +80,7 @@ router.post('/submit', requireStudent, (req, res) => {
     xpEarned: xpToAdd,
     notenpunkte,
     isRepeat: prevAttempts > 0,
+    isImprovement: xpToAdd > 0 && prevAttempts > 0,
     total,
   });
 });
