@@ -25,14 +25,14 @@ function getLevel(xp) {
 router.get('/recent-gladiatoren', (req, res) => {
   try {
     const rows = db.prepare(
-      `SELECT nickname, xp, last_active
+      `SELECT nick, xp, last_active
        FROM students
        WHERE xp >= 100
        ORDER BY last_active DESC
        LIMIT 2`
     ).all();
     const result = rows.map(r => ({
-      nickname:    r.nickname,
+      nickname:    r.nick,
       xp:          r.xp,
       level_name:  getLevel(r.xp).name,
       level_icon:  getLevel(r.xp).icon,

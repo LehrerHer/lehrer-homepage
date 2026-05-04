@@ -68,7 +68,7 @@ router.post('/einreichen', submitLimiter, upload.single('datei'), (req, res) => 
   const { titel, autor, klasse, fach, beschreibung } = req.body;
 
   if (!titel || !autor || !klasse || !fach) {
-    if (req.file) fs.unlinkSync(req.file.path).catch?.(() => {});
+    if (req.file) fs.unlink(req.file.path, () => {});
     return res.status(400).json({ error: 'Pflichtfelder fehlen.' });
   }
 
