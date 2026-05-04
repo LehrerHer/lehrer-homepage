@@ -88,11 +88,12 @@ Startseite (index.html)
     │   └── AGs & Projekte
     ├── Schüler*innenblog (blog.html)
     │   └── blog-einreichen.html
-    └── Lernkolosseum (kolosseum.html)
-        ├── Profil (kolosseum/public/profil.html)
-        │   ├── Rangliste
-        │   ├── Link zu: Materialien
-        │   └── Arena (Quiz-Spiel)
+    └── Lernkolosseum
+        ├── Übersicht/Landing (kolosseum.html) – geschützt via auth-guard.js
+        │   └── Einstiegsseite mit Quizliste und XP-Erklärung (nur für Eingeloggte)
+        ├── Profil (kolosseum/public/profil.html) – primäres Ziel aller Arena-Links
+        │   ├── Rangliste (kolosseum/public/rangliste.html)
+        │   └── Arena / Quiz-Spiel
         └── Admin-Ebene (kolosseum/public/admin/)
             ├── Einladungslink erstellen
             ├── Material hochladen
@@ -103,7 +104,12 @@ Startseite (index.html)
 - Prüft Kolosseum-Session via `GET /api/auth/me`
 - **Eingeloggt**: Lernkolosseum-Teaser, Materialien-Sektion und Blog-Teaser werden eingeblendet; Login-Gate ausgeblendet
 - **Nicht eingeloggt**: Login-Gate sichtbar; geschützte Sektionen ausgeblendet
-- Die Bereiche-Übersicht (`#bereiche-uebersicht`) ist **immer öffentlich** sichtbar
+- Die Bereiche-Übersicht (`#bereiche-uebersicht`) ist **immer öffentlich** sichtbar, zeigt jedoch alle Bereiche inkl. Lernkolosseum als **„🔒 Login nötig"**
+
+### Link-Ziel für Lernkolosseum
+- Alle „Zur Arena"-Links (Bereiche-Übersicht, Lernkolosseum-Teaser, Navbar) zeigen auf **`kolosseum/public/profil.html`**
+- `kolosseum.html` ist eine sekundäre Übersichtsseite (geschützt via `auth-guard.js`), die Quizze und XP-Info bündelt
+- Öffentlich vorgelagerte Inhalte (z. B. Demo-Quizze ohne Login) werden später bewusst ergänzt – noch nicht vorhanden
 
 ---
 
