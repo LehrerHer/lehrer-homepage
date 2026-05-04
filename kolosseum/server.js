@@ -34,6 +34,10 @@ app.use((req, res, next) => {
   next();
 });
 
+// Deploy-Webhook VOR express.json() registrieren,
+// damit der rohe Body für die HMAC-Prüfung erhalten bleibt.
+app.use('/api/deploy',     deployRoutes);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -65,7 +69,6 @@ app.use('/api/public',      publicRoutes);
 app.use('/api/leaderboard', leaderboardRoutes);
 app.use('/api/blog',        blogRoutes);
 app.use('/api/ai-feedback', aiFeedbackRoutes);
-app.use('/api/deploy',     deployRoutes);
 
 // SPA-Catch: alle nicht-API-Routen geben die jeweilige HTML-Datei zurück
 // (oder leiten zu login weiter)
