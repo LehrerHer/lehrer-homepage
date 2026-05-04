@@ -96,6 +96,12 @@
       <p>Kämpfe in der Arena – jede richtige Antwort bringt deinem Gladiator Kampferfahrung.</p>
     </div>
 
+    <!-- Fächerübergreifendes Arenaquiz -->
+    <h2 style="margin-top:2rem;margin-bottom:0.75rem;font-size:1.05rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.07em;font-weight:700">🏛️ Fächerübergreifend</h2>
+    <div class="quiz-grid" id="uebergreifend-grid">
+      <div class="card"><div class="empty">Wird geladen…</div></div>
+    </div>
+
     <!-- Externe Quizze (statische Seiten auf lehrer-herrmann.de) -->
     <h2 style="margin-top:2rem;margin-bottom:0.75rem;font-size:1.05rem;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.07em;font-weight:700">📚 Deutsch – Externe Quizze</h2>
     <div class="quiz-grid" id="extern-grid">
@@ -112,6 +118,17 @@
   <script>
     (function () {
       let loggedIn = false;
+
+      const UEBERGREIFEND_QUIZZE = [
+        {
+          slug: 'lernquiz-jahrgang5',
+          title: 'Lernquiz Jahrgang 5',
+          desc: '100 Fragen aus Deutsch, Mathematik, Englisch, Erdkunde, Geschichte, Biologie, Physik, Musik, Kunst, Sport und Informatik.',
+          url: 'https://lehrer-herrmann.de/lernquiz_jahrgang5.html',
+          icon: '🏛️',
+          faecher: 'Fächerübergreifend · 100 Fragen',
+        },
+      ];
 
       const EXTERN_QUIZZE = [
         {
@@ -137,19 +154,23 @@
         },
       ];
 
-      async function renderExternGrid(completions) {
-        const grid = document.getElementById('extern-grid');
-        grid.innerHTML = EXTERN_QUIZZE.map(q => {
+      function renderQuizCards(quizList, completions, gridId) {
+        const grid = document.getElementById(gridId);
+        grid.innerHTML = quizList.map(q => {
           const done = completions.includes(q.slug);
           const badgeHtml = done
             ? '<span style="background:#2ecc71;color:#fff;font-size:.72rem;font-weight:700;padding:.2rem .6rem;border-radius:50px">✓ Absolviert</span>'
             : (loggedIn
                 ? '<span style="color:var(--ink-soft);font-size:.82rem">Noch nicht gespielt</span>'
                 : '<span style="color:var(--c4);font-size:.82rem">⚔️ Login → XP verdienen</span>');
+          const meta = q.faecher
+            ? `<div style="font-size:.82rem;color:var(--ink-soft);font-weight:700">${escHtml(q.faecher)}</div>`
+            : '';
           return `
             <div class="card quiz-card">
-              <span class="quiz-subject">Deutsch</span>
+              <span class="quiz-subject">${q.faecher ? 'Fächerübergreifend' : 'Deutsch'}</span>
               <div class="quiz-title">${q.icon} ${escHtml(q.title)}</div>
+              ${meta}
               <div style="font-size:.84rem;color:var(--ink-soft);line-height:1.45">${escHtml(q.desc)}</div>
               <div style="margin-top:.25rem">${badgeHtml}</div>
               <a href="${q.url}" class="btn btn-primary" style="margin-top:auto">
@@ -158,6 +179,8 @@
             </div>`;
         }).join('');
       }
+
+
 
       async function init() {
         const meRes = await fetch('/api/auth/me');
@@ -183,7 +206,8 @@
             completions = compData.completions || [];
           }
         } catch (_) {}
-        await renderExternGrid(completions);
+        renderQuizCards(UEBERGREIFEND_QUIZZE, completions, 'uebergreifend-grid');
+        renderQuizCards(EXTERN_QUIZZE, completions, 'extern-grid');
 
         const res = await fetch('/api/quizzes');
         if (!res.ok) return;

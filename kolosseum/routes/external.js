@@ -5,11 +5,12 @@ const { checkAndAwardBadges } = require('../db/badges');
 
 const router = express.Router();
 
-const VALID_SLUGS = ['stilmittel', 'literaturwissenschaft', 'rechtschreibung'];
+const VALID_SLUGS = ['stilmittel', 'literaturwissenschaft', 'rechtschreibung', 'lernquiz-jahrgang5'];
 const QUIZ_LABELS = {
-  stilmittel:          'Stilmittel-Quiz',
+  stilmittel:            'Stilmittel-Quiz',
   literaturwissenschaft: 'Literaturwissenschaft-Quiz',
-  rechtschreibung:     'Rechtschreib-Quiz',
+  rechtschreibung:       'Rechtschreib-Quiz',
+  'lernquiz-jahrgang5':  'Lernquiz Jahrgang 5',
 };
 
 // Notenpunkte-Tabelle (Oberstufe, 0–15 Punkte)
