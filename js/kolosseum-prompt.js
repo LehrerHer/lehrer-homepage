@@ -92,9 +92,31 @@
   /* Globale Schließen-Funktion für inline-Buttons */
   window.kpClose = closeModal;
 
+  /* ── Notenpunkte-Berechnung (spiegelt Server-Logik) ── */
+  function computeNotenpunkte(score, total) {
+    var pct = total > 0 ? (score / total) * 100 : 0;
+    if (pct >= 95) return 15;
+    if (pct >= 90) return 14;
+    if (pct >= 85) return 13;
+    if (pct >= 80) return 12;
+    if (pct >= 75) return 11;
+    if (pct >= 70) return 10;
+    if (pct >= 65) return  9;
+    if (pct >= 60) return  8;
+    if (pct >= 55) return  7;
+    if (pct >= 50) return  6;
+    if (pct >= 45) return  5;
+    if (pct >= 40) return  4;
+    if (pct >= 33) return  3;
+    if (pct >= 27) return  2;
+    if (pct >= 20) return  1;
+    return 0;
+  }
+
   /* ── Haupt-API ── */
   window.kolosseumReport = async function (score, total, quizSlug) {
-    var xpMax = score * 15;
+    var np    = computeNotenpunkte(score, total);
+    var xpMax = np * total;
 
     try {
       var meRes = await fetch(K + '/api/auth/me', { credentials: 'include' });
@@ -104,7 +126,10 @@
         openModal(
           '<span class="kp-emoji">⚔️</span>'
           + '<div class="kp-title">XP nicht gespeichert</div>'
-          + '<div class="kp-sub">Du hättest <strong>' + xpMax + '&thinsp;Kampferfahrung</strong> für deinen Gladiator verdient!</div>'
+          + '<div class="kp-sub">'
+          +   'Ergebnis: <strong>' + np + '&thinsp;Notenpunkte</strong> · '
+          +   'das wären <strong>' + xpMax + '&thinsp;Kampferfahrung</strong> für deinen Gladiator!'
+          + '</div>'
           + '<a href="' + K + '/login.html" class="kp-btn kp-btn-primary" target="_blank" rel="noopener">Einloggen &amp; XP sichern</a>'
           + '<a href="' + K + '/register.html" class="kp-btn kp-btn-outline" target="_blank" rel="noopener">🗡️ Gladiator erstellen</a>'
           + '<button class="kp-dismiss" onclick="kpClose()">Ohne Login fortfahren</button>'
@@ -120,12 +145,15 @@
         body: JSON.stringify({ quizSlug: quizSlug, score: score, total: total }),
       });
       var result = await submitRes.json();
+      var npp = result.notenpunkte !== undefined ? result.notenpunkte : np;
 
       if (result.xpEarned > 0) {
         openModal(
           '<span class="kp-emoji">🏆</span>'
           + '<div class="kp-title">+' + result.xpEarned + '&thinsp;Kampferfahrung!</div>'
-          + '<div class="kp-sub">Dein Gladiator ist stärker geworden. ⚔️</div>'
+          + '<div class="kp-sub">'
+          +   npp + '&thinsp;Notenpunkte · Dein Gladiator ist stärker geworden. ⚔️'
+          + '</div>'
           + '<a href="' + K + '/profil.html" class="kp-btn kp-btn-primary" target="_blank" rel="noopener">Zum Gladiator-Profil →</a>'
           + '<button class="kp-dismiss" onclick="kpClose()">Schließen</button>'
         );
@@ -133,7 +161,10 @@
         openModal(
           '<span class="kp-emoji">⚔️</span>'
           + '<div class="kp-title">Bereits absolviert</div>'
-          + '<div class="kp-sub">Jedes Quiz zählt nur beim ersten Mal – probiere andere Quizze!</div>'
+          + '<div class="kp-sub">'
+          +   'Ergebnis heute: <strong>' + npp + '&thinsp;Notenpunkte</strong> · '
+          +   'Jedes Quiz zählt nur beim ersten Mal für XP – probiere andere Quizze!'
+          + '</div>'
           + '<a href="' + K + '/quiz.html" class="kp-btn kp-btn-primary" target="_blank" rel="noopener">Mehr Quizze in der Arena →</a>'
           + '<button class="kp-dismiss" onclick="kpClose()">Schließen</button>'
         );
