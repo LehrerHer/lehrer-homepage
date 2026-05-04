@@ -139,7 +139,7 @@ Die Punktetabelle (Rohpunkte = prozentualer Anteil richtiger Antworten):
 | 1           | ≥ 20 %        |
 | 0           | < 20 %        |
 
-XP werden nur beim **ersten** Absolvieren gutgeschrieben. Die Berechnung findet server-seitig in `kolosseum/routes/external.js` (`computeNotenpunkte`) und client-seitig (Vorschau für Gäste) in `js/kolosseum-prompt.js` statt.
+XP werden bei **Verbesserungen** gutgeschrieben: Es zählt immer die Differenz zwischen dem neuen Ergebnis und dem bisherigen Bestergebnis. Wer beim ersten Versuch 100 XP erreicht und sich beim zweiten Mal auf 150 XP verbessert, bekommt 50 XP gutgeschrieben. Die Berechnung findet server-seitig in `kolosseum/routes/external.js` (`computeNotenpunkte`) und client-seitig (Vorschau für Gäste) in `js/kolosseum-prompt.js` statt.
 
 ---
 
