@@ -145,6 +145,7 @@
       <a href="/profil.html" class="active">Profil</a>
       <a href="/rangliste.html">Rangliste</a>
       <a href="/quiz.html">Quizze</a>
+      <a href="/charakter.html">Charakter</a>
       <button id="logout-btn" class="btn nav-action" style="background:transparent;color:#fff;border:2px solid rgba(255,255,255,0.5);font-size:.9rem">Ausloggen</button>
       <a href="https://lehrer-herrmann.de" style="color:rgba(255,255,255,0.45);font-size:0.82rem;text-decoration:none;margin-left:0.5rem" title="Zurück zur Lehrerhomepage">🏠</a>
     </div>
@@ -162,6 +163,10 @@
 
         <div class="hero-nick" id="hero-nick">…</div>
         <div class="hero-level" id="hero-level">Rekrut</div>
+
+        <a href="/charakter.html" id="charakter-link"
+           style="font-size:.8rem;color:var(--ink-soft);text-decoration:none;opacity:.7;margin-top:-.25rem"
+           title="Charakter anpassen">✏️ Charakter bearbeiten</a>
 
         <div class="xp-section">
           <div class="xp-total" id="xp-total">0 XP</div>
@@ -210,6 +215,7 @@
   </div>
 
   <script src="/js/avatar.js"></script>
+  <script src="/js/charakter-avatar.js"></script>
   <script>
     // ── Hilfsfunktionen ──────────────────────────────────────────────────────
 
@@ -244,10 +250,14 @@
 
     // ── Profil rendern ───────────────────────────────────────────────────────
 
-    function renderProfile({ student, badges, xpLog }) {
-      // Avatar
+    function renderProfile({ student, badges, xpLog, avatarConfig }) {
+      // Avatar – custom Charakter wenn vorhanden, sonst XP-basierter Gladiator
       const avatarWrap = document.getElementById('avatar-wrap');
-      avatarWrap.innerHTML = drawAvatar(student.xp);
+      if (avatarConfig && window.drawCharakterAvatar) {
+        avatarWrap.innerHTML = drawCharakterAvatar(avatarConfig, 140);
+      } else {
+        avatarWrap.innerHTML = drawAvatar(student.xp);
+      }
 
       // Nick + Level
       document.getElementById('hero-nick').textContent = student.nick;
@@ -323,10 +333,17 @@
       const meRes = await fetch('/api/auth/me');
       if (!meRes.ok) { window.location.href = '/login.html'; return; }
 
-      const profileRes = await fetch('/api/students/profile');
+      const [profileRes, avatarRes] = await Promise.all([
+        fetch('/api/students/profile'),
+        fetch('/api/students/avatar'),
+      ]);
       if (!profileRes.ok) { window.location.href = '/login.html'; return; }
 
       const data = await profileRes.json();
+      if (avatarRes.ok) {
+        const av = await avatarRes.json();
+        data.avatarConfig = av.avatarConfig;
+      }
       renderProfile(data);
     }
 

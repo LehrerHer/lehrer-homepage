@@ -45,6 +45,27 @@ router.get('/profile', requireStudent, (req, res) => {
   res.json({ student, badges, xpLog });
 });
 
+// GET /api/students/avatar – eigene Avatar-Konfig lesen
+router.get('/avatar', requireStudent, (req, res) => {
+  const row = db.prepare('SELECT avatar_config FROM students WHERE id = ?').get(req.session.studentId);
+  if (!row) return res.status(404).json({ error: 'Nicht gefunden.' });
+  res.json({ avatarConfig: row.avatar_config ? JSON.parse(row.avatar_config) : null });
+});
+
+// PATCH /api/students/avatar – Avatar-Konfig speichern
+router.patch('/avatar', requireStudent, (req, res) => {
+  const allowed = new Set(['classId', 'raceId', 'genderId', 'skinId', 'hairColorId', 'accessoryId', 'name']);
+  const input = req.body;
+  if (typeof input !== 'object' || input === null) return res.status(400).json({ error: 'Ungültige Daten.' });
+  const sanitized = {};
+  for (const key of allowed) {
+    if (key in input) sanitized[key] = String(input[key]).slice(0, 40);
+  }
+  db.prepare('UPDATE students SET avatar_config = ? WHERE id = ?')
+    .run(JSON.stringify(sanitized), req.session.studentId);
+  res.json({ ok: true });
+});
+
 // GET /api/students/rangliste – Top-Schüler nach XP
 router.get('/rangliste', requireStudent, (req, res) => {
   const students = db.prepare(`

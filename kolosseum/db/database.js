@@ -22,6 +22,9 @@ if (!cols.includes('email')) {
   db.exec('ALTER TABLE students ADD COLUMN email TEXT');
   db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_students_email ON students(email) WHERE email IS NOT NULL');
 }
+if (!cols.includes('avatar_config')) {
+  db.exec('ALTER TABLE students ADD COLUMN avatar_config TEXT');
+}
 
 // Migration: invite_tokens-Tabelle (wird durch schema.sql CREATE IF NOT EXISTS angelegt,
 // aber der Index muss separat sichergestellt werden)
