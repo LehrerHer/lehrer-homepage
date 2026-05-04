@@ -1,0 +1,324 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap');
+  
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  
+  body { font-family: 'Nunito', sans-serif; }
+
+  .sheet {
+    padding: 1.5rem 1.5rem 1rem;
+    max-width: 680px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--color-border-tertiary);
+  }
+
+  .title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+
+  .meta-row {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 10px;
+    flex-wrap: wrap;
+  }
+
+  .meta-field {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+
+  .meta-line {
+    display: inline-block;
+    width: 100px;
+    border-bottom: 1.5px solid var(--color-border-primary);
+  }
+
+  .tasks-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .task-card {
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+  }
+
+  .task-num {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-text-tertiary);
+    min-width: 18px;
+  }
+
+  .task-expr {
+    font-family: 'Baloo 2', cursive;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    flex: 1;
+    letter-spacing: 0.02em;
+  }
+
+  .answer-box {
+    width: 60px;
+    height: 32px;
+    border: none;
+    border-bottom: 2px solid var(--color-border-primary);
+    background: transparent;
+    font-family: 'Baloo 2', cursive;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    text-align: center;
+    outline: none;
+    border-radius: 0;
+  }
+
+  .answer-box:focus {
+    border-bottom-color: #185FA5;
+  }
+
+  .answer-box.correct { border-bottom-color: #3B6D11; color: #3B6D11; }
+  .answer-box.wrong { border-bottom-color: #A32D2D; color: #A32D2D; }
+
+  .type-badge {
+    position: absolute;
+    top: 5px;
+    right: 8px;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+
+  .badge-plus  { background: #EAF3DE; color: #3B6D11; }
+  .badge-minus { background: #FAECE7; color: #993C1D; }
+  .badge-mal   { background: #E6F1FB; color: #185FA5; }
+  .badge-div   { background: #FAEEDA; color: #854F0B; }
+
+  .btn-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  button {
+    font-family: 'Nunito', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 7px 18px;
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-secondary);
+    background: var(--color-background-primary);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  button:hover { background: var(--color-background-secondary); }
+
+  button.primary {
+    background: #185FA5;
+    color: #E6F1FB;
+    border-color: #185FA5;
+  }
+
+  button.primary:hover { background: #0C447C; }
+
+  .result-banner {
+    display: none;
+    border-radius: var(--border-radius-lg);
+    border: 0.5px solid var(--color-border-tertiary);
+    padding: 1rem 1.25rem;
+    text-align: center;
+    background: var(--color-background-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .result-big {
+    font-family: 'Baloo 2', cursive;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .result-sub {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+  }
+
+  .star-row {
+    font-size: 22px;
+    margin: 6px 0;
+    letter-spacing: 3px;
+  }
+</style>
+
+<div class="sheet">
+  <div class="header">
+    <div class="title">Rechenblatt — Zahlenraum bis 1000</div>
+    <div class="subtitle">Klasse 2 &middot; Addition, Subtraktion, Multiplikation, Division</div>
+    <div class="meta-row">
+      <div class="meta-field">Name: <span class="meta-line"></span></div>
+      <div class="meta-field">Datum: <span class="meta-line"></span></div>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button onclick="newSheet()">Neue Aufgaben</button>
+    <button class="primary" onclick="checkAll()">Auswerten ✓</button>
+    <button onclick="resetAnswers()">Antworten löschen</button>
+  </div>
+
+  <div class="tasks-grid" id="tasks"></div>
+
+  <div class="result-banner" id="result">
+    <div class="result-big" id="result-text"></div>
+    <div class="star-row" id="result-stars"></div>
+    <div class="result-sub" id="result-sub"></div>
+  </div>
+</div>
+
+<script>
+const tasks = [];
+
+function rnd(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function makeTask(type) {
+  let a, b, expr, ans;
+  if (type === '+') {
+    a = rnd(10, 700); b = rnd(10, 999 - a);
+    expr = `${a} + ${b}`; ans = a + b;
+  } else if (type === '-') {
+    a = rnd(100, 999); b = rnd(10, a - 1);
+    expr = `${a} − ${b}`; ans = a - b;
+  } else if (type === '×') {
+    const tables = [2,3,4,5,6,7,8,9,10];
+    a = tables[rnd(0, tables.length-1)]; b = rnd(2, 10);
+    if (Math.random() < 0.5) { let t=a; a=b; b=t; }
+    expr = `${a} · ${b}`; ans = a * b;
+  } else {
+    const tables = [2,3,4,5,6,7,8,9,10];
+    b = tables[rnd(0, tables.length-1)]; a = b * rnd(2, 10);
+    expr = `${a} : ${b}`; ans = a / b;
+  }
+  return { type, expr, ans };
+}
+
+function buildSheet() {
+  tasks.length = 0;
+  const types = ['+','-','×','÷'];
+  const dist = [8, 8, 5, 4];
+  types.forEach((t, i) => { for (let j=0; j<dist[i]; j++) tasks.push(makeTask(t === '÷' ? '÷' : t)); });
+  shuffle(tasks);
+  renderTasks();
+  document.getElementById('result').style.display = 'none';
+}
+
+function shuffle(arr) {
+  for (let i=arr.length-1;i>0;i--) {
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+}
+
+function typeLabel(t) {
+  if (t==='+') return ['Plus','badge-plus'];
+  if (t==='-') return ['Minus','badge-minus'];
+  if (t==='×') return ['Mal','badge-mal'];
+  return ['Geteilt','badge-div'];
+}
+
+function renderTasks() {
+  const grid = document.getElementById('tasks');
+  grid.innerHTML = '';
+  tasks.forEach((t, i) => {
+    const [lbl, cls] = typeLabel(t.type);
+    const div = document.createElement('div');
+    div.className = 'task-card';
+    div.innerHTML = `
+      <span class="task-num">${i+1}.</span>
+      <span class="task-expr">${t.expr} =</span>
+      <input class="answer-box" id="a${i}" type="number" inputmode="numeric" autocomplete="off" />
+      <span class="type-badge ${cls}">${lbl}</span>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function checkAll() {
+  let correct = 0, filled = 0;
+  tasks.forEach((t, i) => {
+    const inp = document.getElementById('a'+i);
+    const val = inp.value.trim();
+    if (val === '') { inp.className='answer-box'; return; }
+    filled++;
+    if (parseInt(val) === t.ans) { inp.className='answer-box correct'; correct++; }
+    else { inp.className='answer-box wrong'; }
+  });
+
+  const banner = document.getElementById('result');
+  const total = tasks.length;
+  const wrong = filled - correct;
+  const skipped = total - filled;
+
+  let emoji = correct === total ? '🏆' : correct >= 20 ? '⭐' : correct >= 15 ? '👍' : '💪';
+  let stars = '★'.repeat(Math.round(correct/total*5)) + '☆'.repeat(5-Math.round(correct/total*5));
+
+  document.getElementById('result-text').textContent = `${correct} von ${total} richtig ${emoji}`;
+  document.getElementById('result-stars').textContent = stars;
+  let sub = `Fehler: ${wrong}`;
+  if (skipped > 0) sub += ` · Offen: ${skipped}`;
+  document.getElementById('result-sub').textContent = sub;
+  banner.style.display = 'block';
+  banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function newSheet() {
+  buildSheet();
+}
+
+function resetAnswers() {
+  tasks.forEach((t, i) => {
+    const inp = document.getElementById('a'+i);
+    if (inp) { inp.value=''; inp.className='answer-box'; }
+  });
+  document.getElementById('result').style.display = 'none';
+}
+
+buildSheet();
+</script>
