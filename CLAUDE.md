@@ -179,19 +179,15 @@ Four self-contained IIFE modules, each independent:
 - Validate HTML manually or with the W3C validator
 - Check JavaScript in browser DevTools console
 
-### Git
-- Default branch: `main`
-- **Einzelentwickler-Projekt – IMMER direkt auf `main` pushen, niemals Feature-Branches stehen lassen.**
-- Commit-Befehl immer mit `-c user.email="jan@lehrer-herrmann.de" -c user.name="Jan Herrmann"`
-- Commit messages in German or English
+### Git — PFLICHTREGELN FÜR CLAUDE
 
-**Wenn das Harness einen Feature-Branch zuweist** (z. B. `claude/xyz`), nach Abschluss der Arbeit sofort auf `main` mergen:
-```bash
-git checkout main
-git merge --no-ff claude/xyz -m "Merge: <kurze Beschreibung>"
-git push origin main
-```
-Danach den Feature-Branch lokal löschen (remote-Branches werden beim nächsten Cleanup entfernt).
+- **NIE direkt auf `main` committen oder pushen.** Kein einziger Commit darf direkt auf `main` landen.
+- **Immer auf dem zugewiesenen Feature-Branch arbeiten.** Der Branch wird vom Harness vorgegeben (`claude/<beschreibung>-<session-id>`). Existiert er noch nicht lokal: `git checkout -b claude/<beschreibung>-<id>`.
+- **Kein `git reset --hard main`**, kein Merge von `main` in den Feature-Branch ohne explizite Aufforderung des Nutzers.
+- **Kein Force-Push auf `main`** — unter keinen Umständen.
+- Nach Abschluss der Arbeit den Feature-Branch pushen (`git push -u origin <branch>`). Den Nutzer fragen, ob er mergen soll — nie selbst mergen, außer der Nutzer fordert das ausdrücklich auf.
+- Commit-Befehl immer mit `-c user.email="jan@lehrer-herrmann.de" -c user.name="Jan Herrmann"`
+- Commit-Nachrichten auf Deutsch oder Englisch
 
 ### Deploy – vollautomatisch via GitHub-Webhook
 Der Server (178.105.35.83) zieht automatisch, sobald ein Push auf `main` bei GitHub eingeht.
