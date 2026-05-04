@@ -112,6 +112,35 @@ Startseite (index.html)
 - `kolosseum.html` ist eine sekundäre Übersichtsseite (geschützt via `auth-guard.js`), die Quizze und XP-Info bündelt
 - Öffentlich vorgelagerte Inhalte (z. B. Demo-Quizze ohne Login) werden später bewusst ergänzt – noch nicht vorhanden
 
+### XP-Berechnung: Externe Quizze (Notenpunkte-System)
+
+Externe Quizze (Stilmittel, Literaturwissenschaft, Rechtschreibung) vergeben XP nach dem Notenpunkte-System der gymnasialen Oberstufe. Die Formel lautet:
+
+**XP = Notenpunkte × Anzahl gespielter Fragen**
+
+Die Punktetabelle (Rohpunkte = prozentualer Anteil richtiger Antworten):
+
+| Notenpunkte | Rohpunkte (%) |
+|:-----------:|:-------------:|
+| 15          | ≥ 95 %        |
+| 14          | ≥ 90 %        |
+| 13          | ≥ 85 %        |
+| 12          | ≥ 80 %        |
+| 11          | ≥ 75 %        |
+| 10          | ≥ 70 %        |
+| 9           | ≥ 65 %        |
+| 8           | ≥ 60 %        |
+| 7           | ≥ 55 %        |
+| 6           | ≥ 50 %        |
+| 5           | ≥ 45 %        |
+| 4           | ≥ 40 %        |
+| 3           | ≥ 33 %        |
+| 2           | ≥ 27 %        |
+| 1           | ≥ 20 %        |
+| 0           | < 20 %        |
+
+XP werden nur beim **ersten** Absolvieren gutgeschrieben. Die Berechnung findet server-seitig in `kolosseum/routes/external.js` (`computeNotenpunkte`) und client-seitig (Vorschau für Gäste) in `js/kolosseum-prompt.js` statt.
+
 ---
 
 ## Key Files and Their Roles

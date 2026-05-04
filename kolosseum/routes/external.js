@@ -6,12 +6,32 @@ const { checkAndAwardBadges } = require('../db/badges');
 const router = express.Router();
 
 const VALID_SLUGS = ['stilmittel', 'literaturwissenschaft', 'rechtschreibung'];
-const XP_PER_CORRECT = 15;
 const QUIZ_LABELS = {
   stilmittel:          'Stilmittel-Quiz',
   literaturwissenschaft: 'Literaturwissenschaft-Quiz',
   rechtschreibung:     'Rechtschreib-Quiz',
 };
+
+// Notenpunkte-Tabelle (Oberstufe, 0–15 Punkte)
+function computeNotenpunkte(score, total) {
+  const pct = total > 0 ? (score / total) * 100 : 0;
+  if (pct >= 95) return 15;
+  if (pct >= 90) return 14;
+  if (pct >= 85) return 13;
+  if (pct >= 80) return 12;
+  if (pct >= 75) return 11;
+  if (pct >= 70) return 10;
+  if (pct >= 65) return  9;
+  if (pct >= 60) return  8;
+  if (pct >= 55) return  7;
+  if (pct >= 50) return  6;
+  if (pct >= 45) return  5;
+  if (pct >= 40) return  4;
+  if (pct >= 33) return  3;
+  if (pct >= 27) return  2;
+  if (pct >= 20) return  1;
+  return 0;
+}
 
 // POST /api/external/submit – Ergebnis eines statischen Quizzes einreichen
 router.post('/submit', requireStudent, (req, res) => {
@@ -34,7 +54,8 @@ router.post('/submit', requireStudent, (req, res) => {
     'SELECT COUNT(*) AS n FROM external_quiz_results WHERE student_id = ? AND quiz_slug = ?'
   ).get(studentId, quizSlug).n;
 
-  const xpEarned = score * XP_PER_CORRECT;
+  const notenpunkte = computeNotenpunkte(score, total);
+  const xpEarned = notenpunkte * total;
   // XP nur beim ersten Mal vergeben
   const xpToAdd = prevAttempts === 0 ? xpEarned : 0;
 
@@ -55,6 +76,7 @@ router.post('/submit', requireStudent, (req, res) => {
 
   res.json({
     xpEarned: xpToAdd,
+    notenpunkte,
     isRepeat: prevAttempts > 0,
     total,
   });
