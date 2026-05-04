@@ -1,0 +1,285 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+#quiz-wrap { padding: 1rem 0; max-width: 640px; }
+.quiz-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 1.25rem; line-height: 1.4; }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.subject-badge { font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 20px; background: var(--color-background-secondary); color: var(--color-text-secondary); border: 0.5px solid var(--color-border-tertiary); }
+.progress-bar-bg { background: var(--color-background-secondary); border-radius: 4px; height: 6px; margin-bottom: 1.5rem; }
+.progress-bar-fill { height: 6px; border-radius: 4px; background: #1D9E75; transition: width 0.4s ease; }
+.q-counter { font-size: 13px; color: var(--color-text-secondary); }
+.q-text { font-size: 16px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 1.25rem; line-height: 1.5; }
+.options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.25rem; }
+.opt-btn { text-align: left; padding: 10px 14px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 14px; cursor: pointer; transition: background 0.15s, border-color 0.15s; }
+.opt-btn:hover:not(:disabled) { background: var(--color-background-secondary); border-color: var(--color-border-primary); }
+.opt-btn.correct { background: #EAF3DE; border-color: #639922; color: #27500A; }
+.opt-btn.wrong { background: #FCEBEB; border-color: #E24B4A; color: #501313; }
+.opt-btn:disabled { cursor: default; }
+.feedback { font-size: 13px; padding: 10px 14px; border-radius: var(--border-radius-md); margin-bottom: 1rem; display: none; line-height: 1.5; }
+.feedback.show { display: block; }
+.feedback.correct-fb { background: #EAF3DE; color: #27500A; border: 0.5px solid #639922; }
+.feedback.wrong-fb { background: #FCEBEB; color: #501313; border: 0.5px solid #E24B4A; }
+.next-btn { padding: 9px 22px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 14px; cursor: pointer; display: none; }
+.next-btn.show { display: inline-block; }
+.next-btn:hover { background: var(--color-background-secondary); }
+.stats { display: flex; gap: 12px; margin-bottom: 1.5rem; }
+.stat-card { flex: 1; background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 14px; }
+.stat-label { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 2px; }
+.stat-val { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+.result-wrap { text-align: center; padding: 2rem 0; }
+.result-score { font-size: 48px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 0.5rem; }
+.result-sub { font-size: 15px; color: var(--color-text-secondary); margin-bottom: 1.5rem; }
+.restart-btn { padding: 10px 28px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 14px; cursor: pointer; }
+.restart-btn:hover { background: var(--color-background-secondary); }
+</style>
+
+<div id="quiz-wrap">
+  <h2 class="quiz-title">100 Fragen für Gymnasiastinnen und Gymnasiasten des Jahrgangs 5</h2>
+  <div class="header">
+    <span class="q-counter" id="q-counter">Frage 1 von 100</span>
+    <span class="subject-badge" id="subject-badge"></span>
+  </div>
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill" style="width:1%"></div></div>
+  <div class="stats">
+    <div class="stat-card"><div class="stat-label">Richtig</div><div class="stat-val" id="stat-r" style="color:#27500A">0</div></div>
+    <div class="stat-card"><div class="stat-label">Falsch</div><div class="stat-val" id="stat-f" style="color:#A32D2D">0</div></div>
+    <div class="stat-card"><div class="stat-label">Noch offen</div><div class="stat-val" id="stat-o">100</div></div>
+  </div>
+  <div class="q-text" id="q-text"></div>
+  <div class="options" id="options"></div>
+  <div class="feedback" id="feedback"></div>
+  <button class="next-btn" id="next-btn">Weiter →</button>
+  <div class="result-wrap" id="result-wrap" style="display:none">
+    <div class="result-score" id="result-score"></div>
+    <div class="result-sub" id="result-sub"></div>
+    <button class="restart-btn" onclick="restart()">Quiz neu starten</button>
+  </div>
+</div>
+
+<script>
+const allQ = [
+  // DEUTSCH – 17
+  {s:"Deutsch", q:"Welche Wortart ist das Wort 'schnell'?", o:["Adjektiv","Nomen","Verb","Konjunktion"], a:0, e:"'Schnell' ist ein Adjektiv – es beschreibt eine Eigenschaft."},
+  {s:"Deutsch", q:"Was bezeichnet ein Nomen?", o:["Personen, Tiere oder Dinge","Handlungen und Vorgänge","Eigenschaften von Dingen","Verbindungen zwischen Sätzen"], a:0, e:"Nomen bezeichnen Personen, Tiere, Sachen und Begriffe. Sie werden großgeschrieben."},
+  {s:"Deutsch", q:"Was ist der Plural von 'das Kind'?", o:["die Kinder","die Kinds","die Kinde","die Kindern"], a:0, e:"Der Plural von 'das Kind' lautet 'die Kinder'."},
+  {s:"Deutsch", q:"'Geh bitte nach Hause!' – welche Satzart ist das?", o:["Aufforderungssatz","Aussagesatz","Fragesatz","Ausrufesatz"], a:0, e:"Ein Aufforderungssatz enthält eine Aufforderung oder einen Befehl."},
+  {s:"Deutsch", q:"Welches Zeichen steht am Ende eines Fragesatzes?", o:["Fragezeichen","Ausrufezeichen","Doppelpunkt","Semikolon"], a:0, e:"Fragesätze enden mit einem Fragezeichen (?)."},
+  {s:"Deutsch", q:"Was ist ein Verb?", o:["Ein Tunwort für Handlungen","Ein Namenwort für Dinge","Ein Begleiter des Nomens","Ein Verbindungswort"], a:0, e:"Verben drücken Handlungen, Vorgänge oder Zustände aus."},
+  {s:"Deutsch", q:"Welcher Artikel gehört zu 'Sonne'?", o:["die","der","das","ein"], a:0, e:"'Die Sonne' – das Wort Sonne ist weiblich."},
+  {s:"Deutsch", q:"'Ich sehe den Hund.' – In welchem Fall steht 'den Hund'?", o:["Akkusativ","Nominativ","Dativ","Genitiv"], a:0, e:"'Den Hund' steht im Akkusativ (4. Fall) – er ist das direkte Objekt."},
+  {s:"Deutsch", q:"Wie lautet der Komparativ von 'gut'?", o:["besser","guterer","mehr gut","gutlicher"], a:0, e:"'Gut' wird unregelmäßig gesteigert: gut – besser – am besten."},
+  {s:"Deutsch", q:"Was ist ein Synonym?", o:["Ein bedeutungsähnliches Wort","Ein bedeutungsgegenteiliges Wort","Ein fremdsprachiges Wort","Ein veraltetes Wort"], a:0, e:"Synonyme sind Wörter mit gleicher oder ähnlicher Bedeutung, z.B. 'groß' und 'riesig'."},
+  {s:"Deutsch", q:"Was ist ein Antonym?", o:["Ein Wort mit gegenteiliger Bedeutung","Ein Wort mit gleicher Bedeutung","Ein zusammengesetztes Wort","Ein veraltetes Wort"], a:0, e:"Antonyme sind Wörter mit entgegengesetzter Bedeutung, z.B. 'groß' und 'klein'."},
+  {s:"Deutsch", q:"Was ist ein Kompositum?", o:["Ein zusammengesetztes Wort","Ein gebeugtes Verb","Ein verkürzter Satz","Ein Fremdwort"], a:0, e:"Ein Kompositum ist ein zusammengesetztes Wort, z.B. 'Schultasche'."},
+  {s:"Deutsch", q:"Was ist eine Metapher?", o:["Ein sprachliches Bild","Ein Reimschema","Ein langer Satz","Ein Fremdwort"], a:0, e:"Eine Metapher ist ein sprachliches Bild, z.B. 'Er ist ein Löwe' (= tapfer)."},
+  {s:"Deutsch", q:"Was steht vor einer wörtlichen Rede?", o:["Anführungszeichen","Ein Komma","Ein Punkt","Ein Doppelpunkt"], a:0, e:"Wörtliche Rede wird in Anführungszeichen gesetzt: Er sagte: \"Guten Morgen!\""},
+  {s:"Deutsch", q:"Welche Zeitform benutzt man mündlich für Vergangenes?", o:["Perfekt","Präsens","Futur","Konjunktiv"], a:0, e:"Im mündlichen Deutsch verwendet man für Vergangenes häufig das Perfekt."},
+  {s:"Deutsch", q:"Was ist ein Aufsatz?", o:["Ein Text zu einem Thema","Ein kurzes Wortprotokoll","Eine Liste von Sätzen","Eine Sammlung von Wörtern"], a:0, e:"Ein Aufsatz ist ein längerer zusammenhängender Text zu einem bestimmten Thema."},
+  {s:"Deutsch", q:"Was ist ein Gedicht?", o:["Ein Text mit Versen und Rhythmus","Ein langer Erlebnisbericht","Eine Nacherzählung mit Dialog","Ein sachlicher Informationstext"], a:0, e:"Ein Gedicht ist ein literarischer Text, der in Versen gegliedert ist und oft Rhythmus und Reim verwendet."},
+
+  // MATHEMATIK – 17
+  {s:"Mathematik", q:"Was ist 7 × 8?", o:["56","54","63","48"], a:0, e:"7 × 8 = 56."},
+  {s:"Mathematik", q:"Was ist die Hälfte von 144?", o:["72","62","82","68"], a:0, e:"144 ÷ 2 = 72."},
+  {s:"Mathematik", q:"Wie viele Ecken hat ein Würfel?", o:["8","6","12","4"], a:0, e:"Ein Würfel hat 8 Ecken, 6 Flächen und 12 Kanten."},
+  {s:"Mathematik", q:"Was ist 25% von 200?", o:["50","25","75","40"], a:0, e:"25% = 1/4. Ein Viertel von 200 ist 50."},
+  {s:"Mathematik", q:"Welche Zahl ist durch 3 teilbar?", o:["132","124","127","134"], a:0, e:"132: Quersumme 1+3+2=6, teilbar durch 3."},
+  {s:"Mathematik", q:"Wie viel Grad hat ein rechter Winkel?", o:["90°","45°","60°","180°"], a:0, e:"Ein rechter Winkel beträgt genau 90°."},
+  {s:"Mathematik", q:"Was ergibt 1000 – 347?", o:["653","643","663","673"], a:0, e:"1000 – 347 = 653."},
+  {s:"Mathematik", q:"Wie viele Minuten hat eine Stunde?", o:["60","50","100","30"], a:0, e:"Eine Stunde hat 60 Minuten."},
+  {s:"Mathematik", q:"Welche dieser Zahlen ist eine Primzahl?", o:["17","1","9","15"], a:0, e:"17 ist eine Primzahl – teilbar nur durch 1 und 17."},
+  {s:"Mathematik", q:"Flächeninhalt eines Rechtecks: 5 cm × 3 cm?", o:["15 cm²","8 cm²","16 cm²","12 cm²"], a:0, e:"Flächeninhalt = Länge × Breite = 5 × 3 = 15 cm²."},
+  {s:"Mathematik", q:"Umfang eines Quadrats mit 4 cm Seite?", o:["16 cm","8 cm","12 cm","20 cm"], a:0, e:"Umfang = 4 × Seite = 4 × 4 = 16 cm."},
+  {s:"Mathematik", q:"Was ist ein Bruch?", o:["Ein Teil eines Ganzen","Eine Zahl über 100","Eine negative Zahl","Eine Dezimalzahl"], a:0, e:"Ein Bruch stellt einen Teil eines Ganzen dar (Zähler / Nenner)."},
+  {s:"Mathematik", q:"Was ist 10²?", o:["100","20","12","1000"], a:0, e:"10² = 10 × 10 = 100."},
+  {s:"Mathematik", q:"Was ist der ggT von 12 und 18?", o:["6","3","4","9"], a:0, e:"Teiler von 12 und 18: der größte gemeinsame Teiler ist 6."},
+  {s:"Mathematik", q:"Was ist 0,5 als Bruch?", o:["1/2","1/4","1/3","2/3"], a:0, e:"0,5 = 5/10 = 1/2."},
+  {s:"Mathematik", q:"Wie viel ist ein Drittel von 90?", o:["30","20","45","15"], a:0, e:"90 ÷ 3 = 30."},
+  {s:"Mathematik", q:"Wie viele Seiten hat ein Sechseck?", o:["6","5","7","8"], a:0, e:"Ein Sechseck (Hexagon) hat genau 6 Seiten und 6 Ecken."},
+
+  // ENGLISCH – 10
+  {s:"Englisch", q:"Was bedeutet 'school'?", o:["Schule","Schuhe","Stuhl","Schwimmbad"], a:0, e:"'School' bedeutet 'Schule'."},
+  {s:"Englisch", q:"'How old ___ you?' – welches Wort fehlt?", o:["are","is","am","be"], a:0, e:"'How old are you?' – bei 'you' verwendet man 'are'."},
+  {s:"Englisch", q:"Wie lautet der Plural von 'child'?", o:["children","childs","childes","childre"], a:0, e:"'Child' hat einen unregelmäßigen Plural: children."},
+  {s:"Englisch", q:"Was bedeutet 'beautiful'?", o:["schön","laut","mutig","schnell"], a:0, e:"'Beautiful' bedeutet 'schön'."},
+  {s:"Englisch", q:"Was ist 'summer' auf Deutsch?", o:["Sommer","Frühling","Herbst","Winter"], a:0, e:"'Summer' ist der Sommer."},
+  {s:"Englisch", q:"Was heißt 'I don't understand'?", o:["Ich verstehe nicht.","Ich verstehe.","Ich höre nicht.","Ich sehe nicht."], a:0, e:"'I don't understand' = 'Ich verstehe nicht.'"},
+  {s:"Englisch", q:"Verneinung von 'She likes cats' – was ist richtig?", o:["She doesn't like cats.","She not likes cats.","She don't like cats.","She isn't like cats."], a:0, e:"Bei she/he/it im Simple Present: doesn't + Infinitiv."},
+  {s:"Englisch", q:"Was bedeutet 'hungry'?", o:["hungrig","müde","fröhlich","wütend"], a:0, e:"'Hungry' bedeutet 'hungrig'."},
+  {s:"Englisch", q:"Wie heißt Mittwoch auf Englisch?", o:["Wednesday","Monday","Tuesday","Thursday"], a:0, e:"Wednesday ist Mittwoch."},
+  {s:"Englisch", q:"Welches dieser Wörter ist ein Adjektiv?", o:["happy","run","book","they"], a:0, e:"'Happy' ist ein Adjektiv und bedeutet 'glücklich'."},
+
+  // ERDKUNDE – 10
+  {s:"Erdkunde", q:"Was ist die Hauptstadt von Niedersachsen?", o:["Hannover","Osnabrück","Göttingen","Braunschweig"], a:0, e:"Hannover ist die Landeshauptstadt von Niedersachsen."},
+  {s:"Erdkunde", q:"Welche Meere liegen im Norden Deutschlands?", o:["Nordsee und Ostsee","Nordsee und Mittelmeer","Ostsee und Atlantik","Nordsee und Schwarzes Meer"], a:0, e:"Deutschland grenzt im Norden an Nordsee und Ostsee."},
+  {s:"Erdkunde", q:"Welcher Fluss fließt durch Köln?", o:["Rhein","Elbe","Main","Weser"], a:0, e:"Der Rhein fließt durch Köln."},
+  {s:"Erdkunde", q:"Wie viele Bundesländer hat Deutschland?", o:["16","14","15","17"], a:0, e:"Deutschland hat 16 Bundesländer."},
+  {s:"Erdkunde", q:"Was ist der höchste Berg Deutschlands?", o:["Zugspitze","Feldberg","Brocken","Watzmann"], a:0, e:"Die Zugspitze (2.962 m) ist der höchste Berg Deutschlands."},
+  {s:"Erdkunde", q:"Welcher Kontinent ist der größte?", o:["Asien","Afrika","Amerika","Australien"], a:0, e:"Asien ist der flächenmäßig größte Kontinent."},
+  {s:"Erdkunde", q:"Was ist die Hauptstadt Deutschlands?", o:["Berlin","München","Hamburg","Frankfurt"], a:0, e:"Berlin ist die Hauptstadt der Bundesrepublik Deutschland."},
+  {s:"Erdkunde", q:"Wofür steht das Sachsenross im Wappen Niedersachsens?", o:["Es ist das Wappentier des Landes","Es ist das Symbol der Polizei","Es ist das Wappen der Stadt Hannover","Es ist ein altes Hauszeichen"], a:0, e:"Das Sachsenross (weißes Pferd auf Rot) ist das Wappentier Niedersachsens."},
+  {s:"Erdkunde", q:"Was ist ein Vulkan?", o:["Eine Öffnung, durch die Lava austritt","Ein sehr tiefer Bergsee","Ein hohles Gebirgstal","Eine heiße Quelle"], a:0, e:"Ein Vulkan ist eine Öffnung in der Erdkruste, durch die Lava und Gase austreten."},
+  {s:"Erdkunde", q:"Was sind Kontinente?", o:["Die großen Landmassen der Erde","Sehr große Inseln im Ozean","Tiefe Meeresgebiete","Gebirgsketten zwischen Ländern"], a:0, e:"Kontinente sind die sieben großen Landmassen der Erde."},
+
+  // GESCHICHTE – 11
+  {s:"Geschichte", q:"In welchem Jahr wurde die Berliner Mauer gebaut?", o:["1961","1945","1953","1968"], a:0, e:"Die Berliner Mauer wurde am 13. August 1961 errichtet."},
+  {s:"Geschichte", q:"Wann endete der Zweite Weltkrieg in Europa?", o:["1945","1943","1944","1946"], a:0, e:"Der Zweite Weltkrieg endete in Europa am 8. Mai 1945."},
+  {s:"Geschichte", q:"Was waren Ritter im Mittelalter?", o:["Bewaffnete Kämpfer zu Pferd","Wandernde Händler","Reisende Handwerker","Gelehrte Mönche"], a:0, e:"Ritter waren bewaffnete Kämpfer zu Pferd im Dienst eines Adligen."},
+  {s:"Geschichte", q:"Was kennzeichnet die Steinzeit?", o:["Werkzeuge aus Stein, Jäger und Sammler","Schmelzen von Metallen","Bau von Steinburgen","Handel mit Edelsteinen"], a:0, e:"In der Steinzeit lebten Menschen als Jäger und Sammler und nutzten Steinwerkzeuge."},
+  {s:"Geschichte", q:"Wofür wurden die ägyptischen Pyramiden gebaut?", o:["Als Grabmäler für Pharaonen","Als Tempel für Götter","Als Speicher für Getreide","Als Festungen gegen Feinde"], a:0, e:"Die Pyramiden sind gewaltige Grabmäler der altägyptischen Pharaonen."},
+  {s:"Geschichte", q:"Was hinterließen die Römer in Germanien?", o:["Städte, Straßen und den Limes","Burgen und Windmühlen","Häfen und Leuchttürme","Klöster und Kathedralen"], a:0, e:"Die Römer errichteten Legionslager, Städte (z.B. Köln), Straßen und den Limes."},
+  {s:"Geschichte", q:"Was war die Magna Charta (1215)?", o:["Ein Vertrag über Rechte des Adels","Ein Friedensvertrag nach einem Krieg","Ein Kirchendokument des Papstes","Ein römisches Gesetzeswerk"], a:0, e:"Die Magna Charta war ein Vertrag zwischen König Johann und dem englischen Adel."},
+  {s:"Geschichte", q:"Wo lebten die Germanen zur Römerzeit?", o:["Nördlich des Rheins und östlich der Elbe","Im heutigen Griechenland","Im Römischen Reich selbst","Im heutigen Spanien"], a:0, e:"Germanen lebten nördlich des Rheins und östlich der Elbe."},
+  {s:"Geschichte", q:"Was war ein Kloster im Mittelalter?", o:["Eine Gemeinschaft von Mönchen mit Kirche","Eine befestigte Adelsburg","Ein Marktflecken mit Rathaus","Ein Handwerkerhaus in der Stadt"], a:0, e:"Klöster waren Gemeinschaften von Mönchen oder Nonnen – wichtige Bildungs- und Kulturzentren."},
+  {s:"Geschichte", q:"Wann fiel die Berliner Mauer?", o:["1989","1985","1991","1993"], a:0, e:"Die Berliner Mauer fiel am 9. November 1989."},
+  {s:"Geschichte", q:"Was war das Mittelalter?", o:["Epoche zwischen Antike und Neuzeit","Die Zeit der Steinwerkzeuge","Die Epoche nach dem 2. Weltkrieg","Die Zeit des Römischen Reiches"], a:0, e:"Das Mittelalter ist die Epoche zwischen Antike (ca. 500 n.Chr.) und Neuzeit (ca. 1500 n.Chr.)."},
+
+  // BIOLOGIE – 11
+  {s:"Biologie", q:"Was ist Photosynthese?", o:["Pflanzen erzeugen aus Licht Zucker und Sauerstoff","Pflanzen atmen Sauerstoff ein","Tiere verdauen ihre Nahrung","Pilze wachsen im Dunkeln"], a:0, e:"Bei der Photosynthese wandeln Pflanzen Licht, Wasser und CO₂ in Zucker und Sauerstoff um."},
+  {s:"Biologie", q:"Was haben alle Wirbeltiere gemeinsam?", o:["Eine Wirbelsäule","Einen Panzer aus Knochen","Sechs Beine","Kiemen zum Atmen"], a:0, e:"Wirbeltiere besitzen eine Wirbelsäule."},
+  {s:"Biologie", q:"Was ist die Aufgabe des Herzens?", o:["Blut durch den Körper pumpen","Sauerstoff aus der Luft holen","Nahrung verdauen und filtern","Wärme im Körper erzeugen"], a:0, e:"Das Herz pumpt Blut durch den gesamten Körper und versorgt alle Organe mit Sauerstoff."},
+  {s:"Biologie", q:"Was kennzeichnet ein Insekt?", o:["6 Beine und 3 Körperabschnitte","8 Beine und 2 Körperteile","4 Beine und Fell","Flossen und Schuppen"], a:0, e:"Insekten haben 6 Beine, einen dreigeteilten Körper und oft zwei Flügelpaare."},
+  {s:"Biologie", q:"Was kennzeichnet ein Säugetier?", o:["Warmblütig und säugt Jungtiere","Legt Eier und ist kaltblütig","Hat Schuppen und Kiemen","Hat sechs Beine und Flügel"], a:0, e:"Säugetiere sind warmblütig und ernähren ihre Jungen mit Muttermilch."},
+  {s:"Biologie", q:"Welcher Teil der Pflanze nimmt Wasser auf?", o:["Die Wurzeln","Die Blätter","Die Blüten","Der Stängel"], a:0, e:"Die Wurzeln nehmen Wasser und Mineralstoffe aus dem Boden auf."},
+  {s:"Biologie", q:"Was sind Bakterien?", o:["Einzeller ohne Zellkern","Sehr kleine Pflanzen","Winzige Tierchen","Schädliche Viren"], a:0, e:"Bakterien sind einzellige Lebewesen ohne Zellkern (Prokaryoten)."},
+  {s:"Biologie", q:"Was zeigt ein Nahrungsnetz?", o:["Wer wen in einem Ökosystem frisst","Wie Pflanzen wachsen","Wie Tiere schlafen","Welche Tiere zusammenleben"], a:0, e:"Ein Nahrungsnetz zeigt die Verflechtung von Fresser-Beute-Beziehungen in einem Ökosystem."},
+  {s:"Biologie", q:"Was ist die Aufgabe der Lunge?", o:["Sauerstoff aufnehmen, CO₂ abgeben","Blut reinigen und filtern","Nahrung zerkleinern und verdauen","Hormone ins Blut abgeben"], a:0, e:"Die Lunge nimmt Sauerstoff auf und gibt Kohlendioxid ab."},
+  {s:"Biologie", q:"Was ist Chlorophyll?", o:["Der grüne Farbstoff in Blättern","Ein Nährstoff im Boden","Ein Gas in der Luft","Ein Stoff im Wasser"], a:0, e:"Chlorophyll ist der grüne Farbstoff in Pflanzen, der Licht für die Photosynthese aufnimmt."},
+  {s:"Biologie", q:"Was ist ein Ökosystem?", o:["Lebewesen und ihre Umwelt zusammen","Nur alle Tiere eines Waldes","Nur die Pflanzen einer Region","Ein einzelner Organismus"], a:0, e:"Ein Ökosystem umfasst alle Lebewesen und ihre unbelebte Umwelt in einem Gebiet."},
+
+  // PHYSIK – 5
+  {s:"Physik", q:"Was ist Schwerkraft?", o:["Die Anziehung der Erde auf Körper","Die Kraft eines Magneten","Die Kraft des Windes","Die Kraft beim Schieben"], a:0, e:"Die Schwerkraft (Gravitation) zieht alle Körper zur Erde hin."},
+  {s:"Physik", q:"Was misst ein Thermometer?", o:["Temperatur","Luftdruck","Windstärke","Gewicht"], a:0, e:"Mit einem Thermometer misst man Temperaturen in Grad Celsius (°C)."},
+  {s:"Physik", q:"Was enthält weißes Licht?", o:["Alle Farben des Spektrums","Nur weiße Strahlung","Nur Rot und Blau","Nur gelbes Licht"], a:0, e:"Weißes Licht enthält alle Farben des Spektrums – sichtbar z.B. beim Regenbogen."},
+  {s:"Physik", q:"Was ist elektrischer Strom?", o:["Bewegung von Elektronen im Leiter","Bewegung von Wasser in Rohren","Wärme aus einer Heizung","Licht aus einer Lampe"], a:0, e:"Elektrischer Strom entsteht durch die gerichtete Bewegung von Elektronen."},
+  {s:"Physik", q:"Was ist ein Hebel?", o:["Ein starrer Körper mit Drehpunkt","Ein Werkzeug ohne festen Punkt","Eine Art Schraube","Ein Messinstrument"], a:0, e:"Ein Hebel ist ein starrer Körper mit Drehpunkt, der Kräfte überträgt oder verstärkt."},
+
+  // MUSIK – 5
+  {s:"Musik", q:"Wie viele Töne hat eine Durtonleiter (mit Oktave)?", o:["8","5","6","10"], a:0, e:"Eine Durtonleiter hat 7 verschiedene Töne plus die Oktave (8. Ton)."},
+  {s:"Musik", q:"Was ist ein Takt in der Musik?", o:["Die rhythmische Grundeinheit","Eine Pause zwischen Tönen","Eine besondere Melodie","Ein Notensymbol"], a:0, e:"Der Takt ist die regelmäßige rhythmische Grundeinheit, z.B. 4 Schläge beim 4/4-Takt."},
+  {s:"Musik", q:"Zu welcher Familie gehört die Geige?", o:["Streichinstrumente","Blasinstrumente","Schlaginstrumente","Tasteninstrumente"], a:0, e:"Die Geige (Violine) gehört zu den Streichinstrumenten."},
+  {s:"Musik", q:"Was bedeutet 'forte' in der Musik?", o:["Laut","Leise","Langsam","Schnell"], a:0, e:"'Forte' (f) bedeutet 'laut'. Das Gegenteil ist 'piano' (p) = leise."},
+  {s:"Musik", q:"Was ist eine Melodie?", o:["Eine sinnvolle Folge von Tönen","Der Rhythmus eines Liedes","Der Text eines Liedes","Ein einzelner langer Ton"], a:0, e:"Eine Melodie ist eine bedeutungsvolle Abfolge von Tönen unterschiedlicher Höhe."},
+
+  // KUNST – 4
+  {s:"Kunst", q:"Was sind die drei Primärfarben beim Malen?", o:["Rot, Gelb, Blau","Grün, Lila, Orange","Schwarz, Weiß, Grau","Türkis, Magenta, Gelb"], a:0, e:"Die Primärfarben beim Malen sind Rot, Gelb und Blau."},
+  {s:"Kunst", q:"Was entsteht aus Gelb und Blau gemischt?", o:["Grün","Orange","Lila","Braun"], a:0, e:"Gelb + Blau = Grün (Sekundärfarbe)."},
+  {s:"Kunst", q:"Was ist eine Collage?", o:["Bild aus aufgeklebten Materialien","Skulptur aus Ton","Gemälde mit Ölfarbe","Zeichnung mit Bleistift"], a:0, e:"Eine Collage entsteht durch Aufkleben verschiedener Materialien."},
+  {s:"Kunst", q:"Was zeigt die Perspektive in der Kunst?", o:["Raumtiefe auf einer Fläche","Mischtechnik mit Wasser","Eine besondere Linienart","Eine Farbmischungsmethode"], a:0, e:"Perspektive ist die Darstellung dreidimensionaler Tiefe auf einer zweidimensionalen Fläche."},
+
+  // SPORT – 5 (war 4, eine neu ergänzt)
+  {s:"Sport", q:"Wie viele Spieler stehen beim Fußball pro Team auf dem Feld?", o:["11","9","10","12"], a:0, e:"Beim Fußball spielen 11 Spieler pro Mannschaft (einschließlich Torwart)."},
+  {s:"Sport", q:"Wie weit ist ein Marathon?", o:["42,195 km","21,1 km","30 km","50 km"], a:0, e:"Ein Marathon ist 42,195 km lang."},
+  {s:"Sport", q:"In welchem Sport gibt es einen 'Aufschlag'?", o:["Tennis","Fußball","Basketball","Leichtathletik"], a:0, e:"Im Tennis beginnt jeder Punkt mit einem Aufschlag (Service)."},
+  {s:"Sport", q:"Was kennzeichnet den Brustschwimmstil?", o:["Froschbeine und symmetrische Arme","Rückenlage mit Armwechsel","Schmetterlingsbewegung der Arme","Seitliche Körperlage"], a:0, e:"Beim Brustschwimmen werden die Arme symmetrisch gezogen und die Beine wie ein Frosch bewegt."},
+  {s:"Sport", q:"Wie viele Punkte zählt ein Korb beim Basketball?", o:["2 Punkte (von innen)","1 Punkt","4 Punkte","3 Punkte"], a:0, e:"Ein normaler Feldkorb zählt 2 Punkte. Würfe von jenseits der Dreierlinie zählen 3, Freiwürfe 1 Punkt."},
+
+  // INFORMATIK – 5
+  {s:"Informatik", q:"Was ist ein Algorithmus?", o:["Schrittweise Anleitung zur Problemlösung","Ein Computerspiel zum Lernen","Ein Eingabegerät am PC","Ein Datenspeichermedium"], a:0, e:"Ein Algorithmus ist eine eindeutige, schrittweise Anleitung zur Lösung eines Problems."},
+  {s:"Informatik", q:"Was ist das Internet?", o:["Ein weltweites Netzwerk aus Computern","Ein Programm auf dem PC","Ein lokales Schulnetzwerk","Ein Speichermedium"], a:0, e:"Das Internet ist ein weltweites Netz, das Milliarden von Geräten miteinander verbindet."},
+  {s:"Informatik", q:"Was ist eine Datenbank?", o:["System zur geordneten Datenspeicherung","Ein Ordner auf dem Desktop","Ein Computerspiel","Ein Druckprogramm"], a:0, e:"Eine Datenbank ist ein System zur strukturierten Speicherung und Verwaltung großer Datenmengen."},
+  {s:"Informatik", q:"Was ist ein Pixel?", o:["Der kleinste Bildpunkt am Bildschirm","Ein Computerprogramm","Ein Speicherformat","Ein Netzwerkkabel"], a:0, e:"Ein Pixel (Picture Element) ist der kleinste Bildpunkt eines digitalen Bildes oder Displays."},
+  {s:"Informatik", q:"Was ist die Aufgabe einer Tastatur?", o:["Texte und Befehle eingeben","Bilder auf dem Bildschirm anzeigen","Dateien und Dokumente speichern","Dokumente ausdrucken"], a:0, e:"Eine Tastatur ist ein Eingabegerät zur Text- und Befehlseingabe."},
+];
+
+// Laufzeit-Prüfung
+const total = allQ.length;
+if (total !== 100) {
+  document.getElementById('q-text').textContent = 'Fehler: ' + total + ' Fragen geladen, erwartet 100.';
+}
+
+let questions = [...allQ];
+let current = 0, correct = 0, wrong = 0, answered = false;
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function shuffleOptions(q) {
+  const opts = q.o.map((text, i) => ({ text, correct: i === q.a }));
+  for (let i = opts.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [opts[i], opts[j]] = [opts[j], opts[i]];
+  }
+  return opts;
+}
+
+let currentOpts = [];
+
+function loadQuestion() {
+  if (current >= questions.length) { showResult(); return; }
+  const q = questions[current];
+  answered = false;
+  currentOpts = shuffleOptions(q);
+  document.getElementById('q-counter').textContent = `Frage ${current + 1} von ${total}`;
+  document.getElementById('subject-badge').textContent = q.s;
+  document.getElementById('progress-fill').style.width = ((current / total) * 100) + '%';
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('stat-r').textContent = correct;
+  document.getElementById('stat-f').textContent = wrong;
+  document.getElementById('stat-o').textContent = total - current;
+  const fb = document.getElementById('feedback');
+  fb.className = 'feedback'; fb.textContent = '';
+  document.getElementById('next-btn').className = 'next-btn';
+  const opts = document.getElementById('options');
+  opts.innerHTML = '';
+  currentOpts.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.className = 'opt-btn';
+    b.textContent = opt.text;
+    b.onclick = () => selectAnswer(i);
+    opts.appendChild(b);
+  });
+}
+
+function selectAnswer(i) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  const btns = document.querySelectorAll('.opt-btn');
+  btns.forEach(b => b.disabled = true);
+  const fb = document.getElementById('feedback');
+  const correctIdx = currentOpts.findIndex(o => o.correct);
+  if (currentOpts[i].correct) {
+    btns[i].classList.add('correct');
+    correct++;
+    fb.className = 'feedback correct-fb show';
+    fb.textContent = '✓ Richtig! ' + q.e;
+  } else {
+    btns[i].classList.add('wrong');
+    btns[correctIdx].classList.add('correct');
+    wrong++;
+    fb.className = 'feedback wrong-fb show';
+    fb.textContent = '✗ Leider falsch. Richtig ist: „' + currentOpts[correctIdx].text + '". ' + q.e;
+  }
+  document.getElementById('stat-r').textContent = correct;
+  document.getElementById('stat-f').textContent = wrong;
+  document.getElementById('next-btn').className = 'next-btn show';
+}
+
+document.getElementById('next-btn').onclick = () => { current++; loadQuestion(); };
+
+function showResult() {
+  document.getElementById('quiz-wrap').style.display = 'none';
+  const rw = document.getElementById('result-wrap');
+  rw.style.display = 'block';
+  const pct = Math.round((correct / total) * 100);
+  document.getElementById('result-score').textContent = correct + ' / ' + total;
+  let msg = pct >= 80 ? 'Ausgezeichnet!' : pct >= 60 ? 'Gut gemacht!' : pct >= 40 ? 'Weiter üben!' : 'Nicht aufgeben!';
+  document.getElementById('result-sub').textContent = pct + '% richtig – ' + msg;
+}
+
+function restart() {
+  questions = shuffle([...allQ]);
+  current = 0; correct = 0; wrong = 0;
+  document.getElementById('result-wrap').style.display = 'none';
+  document.getElementById('quiz-wrap').style.display = 'block';
+  loadQuestion();
+}
+
+shuffle(questions);
+loadQuestion();
+</script>
