@@ -74,6 +74,7 @@ Startseite (index.html)
 │       ├── fach-wipo.html          (Wirtschaft/Politik)
 │       ├── fach-informatik.html
 │       ├── fach-werte-normen.html
+│       ├── fach-andere.html        (Mathe, Englisch, Sport, Bio, Chemie, Physik, Musik, Erdkunde, Gestaltendes Werken)
 │       └── fach-ag-projekte.html
 │
 └── GESCHLOSSEN (Login nötig – Kolosseum-Account)
