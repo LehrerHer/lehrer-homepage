@@ -1,0 +1,499 @@
+<!--
+  Titel: Rechenblatt – Zahlenraum bis 1000
+  Fach: Mathematik
+  Klasse/Niveau: Klasse 2
+  AB-Typ: Interaktiv (Addition, Subtraktion, Multiplikation, Division)
+  Erstellt: 2026-05-04
+  Quelle: HTML (manuell erstellt)
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <script src="/js/auth-guard.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rechenblatt bis 1000 – Klasse 2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    :root {
+      --color-background-primary:   #ffffff;
+      --color-background-secondary: #f4f6f7;
+      --color-text-primary:         #1e3a5f;
+      --color-text-secondary:       #555;
+      --color-text-tertiary:        #888;
+      --color-border-primary:       #1e3a5f;
+      --color-border-secondary:     #c8d5e8;
+      --color-border-tertiary:      #e2e8f0;
+      --border-radius-md:           8px;
+      --border-radius-lg:           12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: var(--color-background-secondary); }
+
+    .ab-wrapper {
+      max-width: 720px;
+      margin: 2rem auto 2rem;
+      padding: 0 1rem;
+    }
+
+    .sheet {
+      background: var(--color-background-primary);
+      border-radius: 14px;
+      box-shadow: 0 2px 16px rgba(30,58,95,.10);
+      padding: 2rem 2rem 1.5rem;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--color-border-tertiary);
+    }
+
+    .title {
+      font-family: 'Baloo 2', cursive;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .meta-field {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--color-text-secondary);
+    }
+
+    .meta-line {
+      display: inline-block;
+      width: 100px;
+      border-bottom: 1.5px solid var(--color-border-primary);
+    }
+
+    .tasks-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 480px) {
+      .tasks-grid { grid-template-columns: 1fr; }
+    }
+
+    .task-card {
+      background: var(--color-background-secondary);
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--border-radius-md);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+    }
+
+    .task-num {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--color-text-tertiary);
+      min-width: 18px;
+    }
+
+    .task-expr {
+      font-family: 'Baloo 2', cursive;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      flex: 1;
+      letter-spacing: 0.02em;
+    }
+
+    .answer-box {
+      width: 60px;
+      height: 32px;
+      border: none;
+      border-bottom: 2px solid var(--color-border-primary);
+      background: transparent;
+      font-family: 'Baloo 2', cursive;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      text-align: center;
+      outline: none;
+      border-radius: 0;
+    }
+
+    .answer-box:focus { border-bottom-color: #185FA5; }
+    .answer-box.correct { border-bottom-color: #2ecc71; color: #2ecc71; }
+    .answer-box.wrong   { border-bottom-color: #e74c3c; color: #e74c3c; }
+
+    .type-badge {
+      position: absolute;
+      top: 5px;
+      right: 8px;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    .badge-plus  { background: #EAF3DE; color: #3B6D11; }
+    .badge-minus { background: #FAECE7; color: #993C1D; }
+    .badge-mal   { background: #E6F1FB; color: #185FA5; }
+    .badge-div   { background: #FAEEDA; color: #854F0B; }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .ab-btn {
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 7px 18px;
+      border-radius: var(--border-radius-md);
+      border: 1px solid var(--color-border-secondary);
+      background: var(--color-background-primary);
+      color: var(--color-text-primary);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .ab-btn:hover { background: var(--color-background-secondary); }
+
+    .ab-btn.primary {
+      background: #1e3a5f;
+      color: #fff;
+      border-color: #1e3a5f;
+    }
+
+    .ab-btn.primary:hover { background: #0f2044; }
+
+    .result-banner {
+      display: none;
+      border-radius: var(--border-radius-lg);
+      border: 1px solid var(--color-border-tertiary);
+      padding: 1.25rem 1.5rem;
+      text-align: center;
+      background: var(--color-background-primary);
+      margin-top: 1rem;
+    }
+
+    .result-big {
+      font-family: 'Baloo 2', cursive;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .result-sub {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      margin-bottom: 10px;
+    }
+
+    .star-row {
+      font-size: 22px;
+      margin: 6px 0;
+      letter-spacing: 3px;
+    }
+
+    .xp-badge {
+      display: inline-block;
+      background: #0f1d35;
+      color: #7ec8f0;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 6px 18px;
+      border-radius: 50px;
+      margin-top: 10px;
+    }
+
+    .xp-badge.xp-null { background: #e2e8f0; color: #888; }
+
+    .xp-tabelle {
+      display: inline-block;
+      margin: 12px auto 0;
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      text-align: left;
+    }
+
+    .xp-tabelle td { padding: 2px 10px 2px 0; }
+    .xp-tabelle td:last-child { font-weight: 700; color: #4a9eda; }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+    }
+
+    .back-link:hover { color: var(--color-text-primary); }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+      <a href="/index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
+      <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="navbar-links" id="navbar-links">
+        <li><a href="/index.html#was-ist-neu">Was ist neu?</a></li>
+        <li><a href="/index.html#faecher">Fächer</a></li>
+        <li><a href="/fach-andere.html" class="aktiv">Weitere Fächer</a></li>
+        <li><a href="/index.html#kontakt">Kontakt</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main style="padding: 1.5rem 0 3rem">
+    <div class="ab-wrapper">
+      <div class="sheet">
+
+        <div class="header">
+          <div class="title">Rechenblatt — Zahlenraum bis 1000</div>
+          <div class="subtitle">Klasse 2 &middot; Addition, Subtraktion, Multiplikation, Division</div>
+          <div class="meta-row">
+            <div class="meta-field">Name: <span class="meta-line"></span></div>
+            <div class="meta-field">Datum: <span class="meta-line"></span></div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="ab-btn" onclick="newSheet()">🔄 Neue Aufgaben</button>
+          <button class="ab-btn primary" onclick="checkAll()">✓ Auswerten</button>
+          <button class="ab-btn" onclick="resetAnswers()">✕ Antworten löschen</button>
+        </div>
+
+        <div class="tasks-grid" id="tasks"></div>
+
+        <div class="result-banner" id="result">
+          <div class="result-big" id="result-text"></div>
+          <div class="star-row" id="result-stars"></div>
+          <div class="result-sub" id="result-sub"></div>
+          <div id="result-xp"></div>
+        </div>
+
+        <a href="/fach-andere.html" class="back-link">← Zurück zu Weitere Fächer</a>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <p>© <span id="footer-jahr"></span> Jan Herrmann &nbsp;·&nbsp; Oberschule Spelle</p>
+      <nav class="footer-links" aria-label="Rechtliche Links">
+        <a href="/impressum.html">Impressum</a>
+        <a href="/datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    var el = document.getElementById('footer-jahr');
+    if (el) el.textContent = new Date().getFullYear();
+  })();
+
+  /* ── Hamburger ── */
+  (function () {
+    var btn  = document.getElementById('hamburger');
+    var menu = document.getElementById('navbar-links');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', function () {
+      var open = menu.classList.toggle('offen');
+      btn.setAttribute('aria-expanded', open);
+    });
+    document.addEventListener('click', function (e) {
+      if (!btn.contains(e.target) && !menu.contains(e.target)) {
+        menu.classList.remove('offen');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
+
+  /* ── Rechenblatt ── */
+  var tasks = [];
+
+  function rnd(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function makeTask(type) {
+    var a, b, expr, ans;
+    if (type === '+') {
+      a = rnd(10, 700); b = rnd(10, 999 - a);
+      expr = a + ' + ' + b; ans = a + b;
+    } else if (type === '-') {
+      a = rnd(100, 999); b = rnd(10, a - 1);
+      expr = a + ' − ' + b; ans = a - b;
+    } else if (type === '\xd7') {
+      var tables = [2,3,4,5,6,7,8,9,10];
+      a = tables[rnd(0, tables.length-1)]; b = rnd(2, 10);
+      if (Math.random() < 0.5) { var t=a; a=b; b=t; }
+      expr = a + ' · ' + b; ans = a * b;
+    } else {
+      var tables2 = [2,3,4,5,6,7,8,9,10];
+      b = tables2[rnd(0, tables2.length-1)]; a = b * rnd(2, 10);
+      expr = a + ' : ' + b; ans = a / b;
+    }
+    return { type: type, expr: expr, ans: ans };
+  }
+
+  function buildSheet() {
+    tasks.length = 0;
+    var dist = [['+',8],['-',8],['\xd7',5],['/',4]];
+    dist.forEach(function (d) {
+      for (var j = 0; j < d[1]; j++) tasks.push(makeTask(d[0]));
+    });
+    shuffle(tasks);
+    renderTasks();
+    document.getElementById('result').style.display = 'none';
+  }
+
+  function shuffle(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+    }
+  }
+
+  function typeMeta(t) {
+    if (t === '+')    return ['Plus',   'badge-plus'];
+    if (t === '-')    return ['Minus',  'badge-minus'];
+    if (t === '\xd7') return ['Mal',    'badge-mal'];
+    return                   ['Geteilt','badge-div'];
+  }
+
+  function renderTasks() {
+    var grid = document.getElementById('tasks');
+    grid.innerHTML = '';
+    tasks.forEach(function (t, i) {
+      var meta = typeMeta(t.type);
+      var div = document.createElement('div');
+      div.className = 'task-card';
+      div.innerHTML =
+        '<span class="task-num">' + (i+1) + '.</span>' +
+        '<span class="task-expr">' + t.expr + ' =</span>' +
+        '<input class="answer-box" id="a' + i + '" type="number" inputmode="numeric" autocomplete="off" />' +
+        '<span class="type-badge ' + meta[1] + '">' + meta[0] + '</span>';
+      grid.appendChild(div);
+    });
+  }
+
+  /* Fehler → Kolosseum-XP */
+  function fehlerZuXP(fehler) {
+    if (fehler === 0) return 20;
+    if (fehler === 1) return 10;
+    if (fehler === 2) return 5;
+    if (fehler === 3) return 1;
+    return 0;
+  }
+
+  function checkAll() {
+    var correct = 0, filled = 0;
+    tasks.forEach(function (t, i) {
+      var inp = document.getElementById('a' + i);
+      var val = inp.value.trim();
+      if (val === '') { inp.className = 'answer-box'; return; }
+      filled++;
+      if (parseInt(val, 10) === t.ans) { inp.className = 'answer-box correct'; correct++; }
+      else                             { inp.className = 'answer-box wrong'; }
+    });
+
+    var total   = tasks.length;
+    var wrong   = filled - correct;
+    var skipped = total - filled;
+    var xp      = fehlerZuXP(wrong);
+
+    var stars = '★'.repeat(Math.round(correct/total*5)) + '☆'.repeat(5 - Math.round(correct/total*5));
+    var emoji = correct === total ? '🏆' : correct >= 20 ? '⭐' : correct >= 15 ? '👍' : '💪';
+
+    document.getElementById('result-text').textContent  = correct + ' von ' + total + ' richtig ' + emoji;
+    document.getElementById('result-stars').textContent = stars;
+
+    var sub = 'Fehler: ' + wrong;
+    if (skipped > 0) sub += ' · Offen: ' + skipped;
+    document.getElementById('result-sub').textContent = sub;
+
+    /* XP-Anzeige */
+    var xpEl = document.getElementById('result-xp');
+    if (xp > 0) {
+      xpEl.innerHTML =
+        '<div class="xp-badge">⚔️ +' + xp + ' Kolosseum-XP</div>' +
+        '<table class="xp-tabelle"><tr><td>0 Fehler</td><td>20 XP</td></tr>' +
+        '<tr><td>1 Fehler</td><td>10 XP</td></tr>' +
+        '<tr><td>2 Fehler</td><td>5 XP</td></tr>' +
+        '<tr><td>3 Fehler</td><td>1 XP</td></tr>' +
+        '<tr><td>4+ Fehler</td><td>0 XP</td></tr></table>';
+    } else {
+      xpEl.innerHTML =
+        '<div class="xp-badge xp-null">4+ Fehler – 0 XP</div>' +
+        '<table class="xp-tabelle"><tr><td>0 Fehler</td><td>20 XP</td></tr>' +
+        '<tr><td>1 Fehler</td><td>10 XP</td></tr>' +
+        '<tr><td>2 Fehler</td><td>5 XP</td></tr>' +
+        '<tr><td>3 Fehler</td><td>1 XP</td></tr>' +
+        '<tr><td>4+ Fehler</td><td>0 XP</td></tr></table>';
+    }
+
+    var banner = document.getElementById('result');
+    banner.style.display = 'block';
+    banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    /* Kolosseum-XP einreichen (nur wenn mindestens 1 XP) */
+    if (typeof window.kolosseumReport === 'function') {
+      window.kolosseumReport(xp, 20, 'rechenblatt-1000');
+    }
+  }
+
+  function newSheet() { buildSheet(); }
+
+  function resetAnswers() {
+    tasks.forEach(function (t, i) {
+      var inp = document.getElementById('a' + i);
+      if (inp) { inp.value = ''; inp.className = 'answer-box'; }
+    });
+    document.getElementById('result').style.display = 'none';
+  }
+
+  buildSheet();
+  </script>
+
+  <script src="/js/arena-bar.js"></script>
+  <script src="/js/kolosseum-prompt.js"></script>
+
+</body>
+</html>
