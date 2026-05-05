@@ -19,6 +19,20 @@ function getLevel(xp) {
   return LEVELS[0];
 }
 
+// GET /api/public/letzter-spitzname
+// Gibt den zuletzt registrierten Spitznamen zurück. Öffentlich, kein Login nötig.
+router.get('/letzter-spitzname', (req, res) => {
+  try {
+    const row = db.prepare(
+      `SELECT nick, created_at FROM students ORDER BY created_at DESC LIMIT 1`
+    ).get();
+    if (!row) return res.json(null);
+    res.json({ nick: row.nick, created_at: row.created_at });
+  } catch (e) {
+    res.json(null);
+  }
+});
+
 // GET /api/public/recent-gladiatoren
 // Gibt die 2 zuletzt aktiven Gladiatoren zurück, die bereits einen Rang
 // über Rekrut erreicht haben (xp >= 100). Öffentlich, kein Login nötig.
