@@ -29,7 +29,7 @@ router.get('/recent-gladiatoren', (req, res) => {
        FROM students
        WHERE xp >= 100
        ORDER BY last_active DESC
-       LIMIT 2`
+       LIMIT 3`
     ).all();
     const result = rows.map(r => ({
       nickname:    r.nick,

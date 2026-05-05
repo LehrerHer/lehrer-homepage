@@ -52,7 +52,7 @@
             .then(function (d) {
                 return (d.materialien || []).slice()
                     .sort(function (a, b) { return (b.datum || '').localeCompare(a.datum || ''); })
-                    .slice(0, 2)
+                    .slice(0, 3)
                     .map(function (m) {
                         return {
                             icon: '📥', kat: 'Materialien',
@@ -67,10 +67,10 @@
     }
 
     function ladeBlogbeitraege() {
-        return fetch(API + '/api/blog?limit=2')
+        return fetch(API + '/api/blog?limit=3')
             .then(function (r) { return r.ok ? r.json() : []; })
             .then(function (d) {
-                return d.slice(0, 2).map(function (b) {
+                return d.slice(0, 3).map(function (b) {
                     return {
                         icon: '✍️', kat: 'Blog',
                         titel: b.titel,
@@ -83,10 +83,10 @@
     }
 
     function ladeQuizBestenliste() {
-        return fetch(API + '/api/leaderboard/alle?limit=2')
+        return fetch(API + '/api/leaderboard/alle?limit=3')
             .then(function (r) { return r.ok ? r.json() : []; })
             .then(function (d) {
-                return d.slice(0, 2).map(function (e) {
+                return d.slice(0, 3).map(function (e) {
                     return {
                         icon: '🏆', kat: 'Quiz-Bestleistung',
                         titel: esc(e.name || '???') + ' – ' + e.prozent + ' %',
@@ -122,7 +122,7 @@
             { titel: 'Neue Kolosseum-Unterseite mit Level-System', datum: '2026-04-27T12:00:00', url: 'kolosseum.html' },
             { titel: 'Quizze ohne Login spielbar', datum: '2026-04-25T12:00:00', url: 'stilmittel-quiz.html' },
         ];
-        return Promise.resolve(eintraege.slice(0, 2).map(function (e) {
+        return Promise.resolve(eintraege.slice(0, 3).map(function (e) {
             return {
                 icon: '🛠️', kat: 'Neue Funktion',
                 titel: e.titel, meta: 'Lernkolosseum',
@@ -196,8 +196,12 @@
     }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', laden);
+        document.addEventListener('DOMContentLoaded', function () {
+            laden();
+            setInterval(laden, 60000);
+        });
     } else {
         laden();
+        setInterval(laden, 60000);
     }
 })();
