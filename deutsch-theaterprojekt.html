@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/auth-guard.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Theaterprojekt Jahrgang 9 – Materialien und Informationen. Jan Herrmann, Oberschule Spelle.">
+    <title>Theaterprojekt Jahrgang 9 – Deutsch | Jan Herrmann</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .info-karte {
+            background: var(--farbe-weiss);
+            border-radius: var(--radius);
+            padding: 22px 24px;
+            box-shadow: var(--schatten);
+        }
+
+        .info-karte h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--farbe-primaer);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-karte ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-karte ul li {
+            font-size: 0.9rem;
+            color: var(--farbe-text);
+            padding: 5px 0;
+            border-bottom: 1px solid var(--farbe-rahmen);
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .info-karte ul li:last-child {
+            border-bottom: none;
+        }
+
+        .info-karte ul li::before {
+            content: "▸";
+            color: var(--farbe-primaer-hell);
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .thema-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 20px;
+            margin-top: 28px;
+        }
+
+        .xp-hinweis {
+            background: #fff8e1;
+            border-left: 4px solid #f0a500;
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #6b4c00;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+        <div class="container navbar-inner">
+            <a href="index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
+
+            <button
+                class="hamburger"
+                id="hamburger"
+                aria-label="Menü öffnen"
+                aria-expanded="false"
+                aria-controls="navbar-links"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="navbar-links" id="navbar-links">
+                <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
+                <li><a href="index.html#startseite">Startseite</a></li>
+                <li><a href="index.html#faecher" class="aktiv">Fächer</a></li>
+                <li><a href="index.html#materialien">Materialien</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="index.html#kontakt">Kontakt</a></li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <header class="abgabe-header">
+        <div class="container">
+            <h1>🎭 Theaterprojekt Jahrgang 9</h1>
+            <p>Deutsch &nbsp;·&nbsp; Jan Herrmann &nbsp;·&nbsp; Oberschule Spelle</p>
+        </div>
+    </header>
+
+
+    <main class="abgabe-bereich">
+        <div class="container">
+
+            <p class="fach-beschreibung">
+                Theater verbindet Sprache, Körper und Zusammenarbeit. In diesem Projekt erarbeitet
+                der Jahrgang 9 gemeinsam eine Bühnenproduktion – von der Textarbeit über das Proben
+                bis hin zur Aufführung. Hier findet ihr alle Materialien, Aufgaben und
+                Informationen rund um das Projekt.
+            </p>
+
+
+            <h2 class="section-titel" style="margin-top: 40px;">📌 Projektbereiche</h2>
+            <div class="thema-grid">
+
+                <div class="info-karte">
+                    <h3>✍️ Textarbeit</h3>
+                    <ul>
+                        <li>Stück lesen und verstehen</li>
+                        <li>Figurenanalyse und Charakterisierung</li>
+                        <li>Szeneninterpretation</li>
+                        <li>Regieanweisungen verstehen</li>
+                    </ul>
+                </div>
+
+                <div class="info-karte">
+                    <h3>🎤 Spiel &amp; Auftritt</h3>
+                    <ul>
+                        <li>Rollenarbeit und Sprechübungen</li>
+                        <li>Körpersprache und Mimik</li>
+                        <li>Probenplan und Aufgabenverteilung</li>
+                        <li>Bühnentechnik und Requisiten</li>
+                    </ul>
+                </div>
+
+                <div class="info-karte">
+                    <h3>📋 Organisation</h3>
+                    <ul>
+                        <li>Aufführungstermine und Probenzeiten</li>
+                        <li>Besetzungsliste</li>
+                        <li>Kostüme und Bühnengestaltung</li>
+                        <li>Feedbackrunden</li>
+                    </ul>
+                </div>
+
+            </div>
+
+
+            <h2 class="section-titel" style="margin-top: 48px;">📂 Materialien</h2>
+            <p class="section-untertitel">Arbeitsblätter, Texte und Informationen zum Theaterprojekt.</p>
+
+            <div class="dynamic-inhalte" data-seite="theaterprojekt-9"></div>
+
+            <div class="xp-hinweis" style="margin-top: 32px;">
+                ⚔️ <strong>Kampferfahrung:</strong> Zu den Materialien auf dieser Seite können interaktive
+                Aufgaben erscheinen, mit denen du XP für das Lernkolosseum verdienen kannst.
+                Schau regelmäßig vorbei!
+            </div>
+
+
+            <p style="text-align: center; margin-top: 40px;">
+                <a href="fach-deutsch.html">← Zurück zu Deutsch</a>
+            </p>
+
+        </div>
+    </main>
+
+
+    <footer>
+        <div class="container footer-inner">
+            <p>© <span id="footer-jahr">2025</span> Jan Herrmann &nbsp;·&nbsp; Oberschule Spelle</p>
+            <nav class="footer-links" aria-label="Rechtliche Links">
+                <a href="index.html#impressum">Impressum</a>
+                <a href="index.html#datenschutz">Datenschutz</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/dynamic-content.js"></script>
+    <script src="js/arena-bar.js"></script>
+</body>
+</html>
