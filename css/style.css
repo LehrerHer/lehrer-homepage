@@ -1493,7 +1493,7 @@ footer {
 
 .win-grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     gap: .75rem;
 }
 
@@ -1560,7 +1560,7 @@ footer {
     margin-top: 2px;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1100px) {
     .win-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (max-width: 560px) {

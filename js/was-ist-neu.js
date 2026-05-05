@@ -47,7 +47,7 @@
     /* ---- Datenquellen (max. 2 pro Kategorie) ---- */
 
     function ladeMaterialien() {
-        return fetch('inhalte.json')
+        return fetch('inhalte.json?t=' + Date.now())
             .then(function (r) { return r.ok ? r.json() : { materialien: [] }; })
             .then(function (d) {
                 return (d.materialien || []).slice()
@@ -115,6 +115,22 @@
             .catch(function () { return []; });
     }
 
+    function ladeLetzterSpitzname() {
+        return fetch(API + '/api/public/letzter-spitzname')
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (d) {
+                if (!d || !d.nick) return [];
+                return [{
+                    icon: '🪖', kat: 'Neuer Gladiator',
+                    titel: esc(d.nick),
+                    meta: 'Neu registriert',
+                    datum: d.created_at,
+                    url: 'https://kolosseum.lehrer-herrmann.de/rangliste.html'
+                }];
+            })
+            .catch(function () { return []; });
+    }
+
     function ladeEntwicklungen() {
         var eintraege = [
             { titel: 'Kolosseum: Fächer & Materialien + Fortschritt', datum: '2026-04-29T12:00:00', url: 'kolosseum.html' },
@@ -143,7 +159,7 @@
             return;
         }
 
-        var reihenfolge = ['Neue Funktion', 'Quiz-Bestleistung', 'Avatar-Aufstieg', 'Materialien', 'Blog'];
+        var reihenfolge = ['Neue Funktion', 'Quiz-Bestleistung', 'Avatar-Aufstieg', 'Neuer Gladiator', 'Materialien', 'Blog'];
 
         var cols = reihenfolge.map(function (kat) {
             var items = gruppen[kat] || [];
@@ -187,6 +203,7 @@
             ladeEntwicklungen(),
             ladeQuizBestenliste(),
             ladeAvataraufstiege(),
+            ladeLetzterSpitzname(),
             ladeMaterialien(),
             ladeBlogbeitraege()
         ]).then(function (ergebnisse) {
