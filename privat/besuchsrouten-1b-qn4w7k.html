@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Besuchsrouten Klasse 1b – Grundschule Hellern</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Serif+Display&display=swap');
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #f4f1eb;
+  color: #1a1a1a;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: #1c3a2f;
+  color: #f4f1eb;
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+header h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.25rem;
+}
+header .subtitle {
+  font-size: 0.8rem;
+  opacity: 0.65;
+  margin-left: auto;
+}
+
+.layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+#sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  background: #fff;
+  overflow-y: auto;
+  border-right: 1px solid #e0dbd0;
+  display: flex;
+  flex-direction: column;
+}
+
+.route-tab-bar {
+  display: flex;
+  border-bottom: 2px solid #e0dbd0;
+  flex-shrink: 0;
+}
+
+.route-tab {
+  flex: 1;
+  padding: 10px 4px;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  transition: all 0.2s;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: -2px;
+}
+.route-tab:hover { background: #f8f6f2; }
+.route-tab.active {
+  color: #fff;
+  border-bottom-color: transparent;
+}
+
+.route-panel {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+}
+.route-panel.active { display: flex; }
+
+.route-info {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0ece4;
+  font-size: 0.78rem;
+  color: #555;
+  background: #fafaf7;
+}
+.route-info strong { color: #1a1a1a; font-size: 0.85rem; display: block; margin-bottom: 3px; }
+
+.stop-item {
+  padding: 10px 16px;
+  border-bottom: 1px solid #f0ece4;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.stop-item:hover { background: #f4f1eb; }
+.stop-item.active { background: #e8f2ec; }
+
+.stop-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.stop-school {
+  background: #1c3a2f !important;
+  font-size: 0.6rem;
+}
+
+.stop-text { flex: 1; }
+.stop-name { font-weight: 600; font-size: 0.85rem; }
+.stop-addr { font-size: 0.73rem; color: #888; margin-top: 1px; }
+
+#map { flex: 1; }
+
+.leaflet-popup-content-wrapper {
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+.popup-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 3px; }
+.popup-addr { font-size: 0.8rem; color: #555; }
+.popup-route { font-size: 0.72rem; margin-top: 4px; font-weight: 600; }
+
+.legend {
+  position: absolute;
+  bottom: 24px;
+  right: 10px;
+  background: white;
+  border-radius: 8px;
+  padding: 10px 14px;
+  z-index: 999;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+  font-size: 0.75rem;
+  font-family: 'DM Sans', sans-serif;
+}
+.legend-title { font-weight: 700; margin-bottom: 6px; font-size: 0.78rem; }
+.legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.legend-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.legend-line { width: 20px; height: 3px; border-radius: 2px; flex-shrink: 0; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Besuchsrouten · Klasse 1b 2025</h1>
+  <span class="subtitle">Start &amp; Ziel: Grundschule Hellern · 4 Routen · 19 Kinder</span>
+</header>
+
+<div class="layout">
+  <div id="sidebar">
+    <div class="route-tab-bar" id="tabBar"></div>
+    <div id="panels"></div>
+  </div>
+  <div id="map"></div>
+</div>
+
+<div class="legend" id="legend"></div>
+
+<script>
+const SCHOOL = { lat: 52.262528, lng: 7.985080, name: "Grundschule Hellern", addr: "Große Schulstraße 83" };
+
+const ROUTES = [
+  {
+    id: 0,
+    label: "Route 1",
+    name: "Nord",
+    color: "#2563EB",
+    desc: "Große Schulstraße · Maiweg · Lünsenbrink",
+    stops: [
+      { name: "Pylypaka, Artem",     addr: "Große Schulstraße 68",   lat: 52.267670, lng: 7.982061 },
+      { name: "Mohamed, Maryam",     addr: "Am Lünsenbrink 17",      lat: 52.267886, lng: 7.983999 },
+      { name: "Ossovski, Gabriela",  addr: "An der Lauburg 2",       lat: 52.265311, lng: 7.983478 },
+      { name: "Funke, Linda",        addr: "Maiweg 11",              lat: 52.266587, lng: 7.983648 },
+    ]
+  },
+  {
+    id: 1,
+    label: "Route 2",
+    name: "Nordost",
+    color: "#16a34a",
+    desc: "Grieseling · Töpferhof · Töpferstraße",
+    stops: [
+      { name: "Büter, Amelie",   addr: "Grieseling 14",   lat: 52.262154, lng: 7.994753 },
+      { name: "Bente, Mila",     addr: "Grieseling 10",   lat: 52.261955, lng: 7.998353 },
+      { name: "Ahmed, Ulfat",    addr: "Am Töpferhof 10", lat: 52.259575, lng: 7.996444 },
+      { name: "Dörjes, Giulio",  addr: "Töpferstraße 7",  lat: 52.260065, lng: 7.995415 },
+    ]
+  },
+  {
+    id: 2,
+    label: "Route 3",
+    name: "Mitte/Ost",
+    color: "#d97706",
+    desc: "Kleine Schulstraße · Friesenhof · Hörner Weg",
+    stops: [
+      { name: "Dietze, Matteo",   addr: "Kleine Schulstraße 1a", lat: 52.257212, lng: 7.994424 },
+      { name: "Herrmann, Lorenz", addr: "Lipper Kamp 2",          lat: 52.255557, lng: 7.993609 },
+      { name: "Tebbe, Louisa",    addr: "Friesenhof 15",          lat: 52.256051, lng: 7.999412 },
+      { name: "Frense, Eva",      addr: "Westfalenhof 14",        lat: 52.255201, lng: 7.999604 },
+      { name: "Baumbach, Max",    addr: "Hörner Weg 72",          lat: 52.252973, lng: 8.007837 },
+    ]
+  },
+  {
+    id: 3,
+    label: "Route 4",
+    name: "Südwest",
+    color: "#dc2626",
+    desc: "Vor dem Wiggert · Lengericher Landstr. · Lobbertkamp",
+    stops: [
+      { name: "Kather, Erik",          addr: "Vor dem Wiggert 14",        lat: 52.255668, lng: 7.985537 },
+      { name: "Frankenberg, Karlsson", addr: "Lengericher Landstraße 38a", lat: 52.253985, lng: 7.987974 },
+      { name: "El Ouahni, Adam",       addr: "Im Grauen Tal 20",           lat: 52.259000, lng: 7.993000 },
+      { name: "Justus, Mia",           addr: "Hasberger Weg 12a",          lat: 52.250226, lng: 7.971700 },
+      { name: "Hehemann, Wilma",       addr: "Lobbertkamp 1a",             lat: 52.244197, lng: 7.986300 },
+    ]
+  }
+];
+
+const map = L.map('map').setView([52.258, 7.988], 14);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  maxZoom: 19
+}).addTo(map);
+
+const schoolIcon = L.divIcon({
+  className: '',
+  html: `<div style="width:18px;height:18px;background:#1c3a2f;border:3px solid #fff;border-radius:4px;box-shadow:0 1px 5px rgba(0,0,0,0.5);transform:rotate(45deg)"></div>`,
+  iconSize: [18,18], iconAnchor: [9,9]
+});
+L.marker([SCHOOL.lat, SCHOOL.lng], { icon: schoolIcon })
+  .addTo(map)
+  .bindPopup(`<div class="popup-title">🏫 ${SCHOOL.name}</div><div class="popup-addr">${SCHOOL.addr}</div><div class="popup-route" style="color:#1c3a2f">Start &amp; Ziel aller Routen</div>`);
+
+const tabBar   = document.getElementById('tabBar');
+const panelsEl = document.getElementById('panels');
+const legend   = document.getElementById('legend');
+
+legend.innerHTML = `<div class="legend-title">Legende</div>
+  <div class="legend-item"><div style="width:14px;height:14px;background:#1c3a2f;border:2px solid #fff;transform:rotate(45deg);border-radius:2px;box-shadow:0 1px 3px rgba(0,0,0,0.3)"></div> Grundschule</div>`;
+
+let routeLayers = [];
+let activeRoute = 0;
+let allMarkers  = [];
+
+function makeStopIcon(color, num) {
+  return L.divIcon({
+    className: '',
+    html: `<div style="width:26px;height:26px;background:${color};border:2px solid #fff;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:11px;font-weight:700;box-shadow:0 1px 5px rgba(0,0,0,0.4);font-family:'DM Sans',sans-serif">${num}</div>`,
+    iconSize: [26,26], iconAnchor: [13,13]
+  });
+}
+
+ROUTES.forEach((route, ri) => {
+  const tab = document.createElement('div');
+  tab.className = 'route-tab' + (ri === 0 ? ' active' : '');
+  tab.textContent = route.label;
+  tab.style.borderBottomColor = ri === 0 ? route.color : 'transparent';
+  tab.style.background = ri === 0 ? route.color : '';
+  tab.addEventListener('click', () => switchRoute(ri));
+  tabBar.appendChild(tab);
+
+  const panel = document.createElement('div');
+  panel.className = 'route-panel' + (ri === 0 ? ' active' : '');
+
+  const info = document.createElement('div');
+  info.className = 'route-info';
+  info.innerHTML = `<strong style="color:${route.color}">Route ${ri+1} – ${route.name}</strong>${route.desc}<br><span style="margin-top:4px;display:inline-block">${route.stops.length} Besuche · Start &amp; Ziel: Grundschule Hellern</span>`;
+  panel.appendChild(info);
+
+  const schoolStartEl = document.createElement('div');
+  schoolStartEl.className = 'stop-item';
+  schoolStartEl.innerHTML = `<div class="stop-num stop-school">🏫</div><div class="stop-text"><div class="stop-name">Grundschule Hellern</div><div class="stop-addr">Große Schulstraße 83 · Start</div></div>`;
+  schoolStartEl.addEventListener('click', () => map.setView([SCHOOL.lat, SCHOOL.lng], 15));
+  panel.appendChild(schoolStartEl);
+
+  const routeMarkers = [];
+
+  route.stops.forEach((stop, si) => {
+    const marker = L.marker([stop.lat, stop.lng], { icon: makeStopIcon(route.color, si+1) })
+      .bindPopup(`<div class="popup-title">${stop.name}</div><div class="popup-addr">${stop.addr}</div><div class="popup-route" style="color:${route.color}">Route ${ri+1} – ${route.name} · Stopp ${si+1}</div>`);
+
+    const item = document.createElement('div');
+    item.className = 'stop-item';
+    item.innerHTML = `<div class="stop-num" style="background:${route.color}">${si+1}</div><div class="stop-text"><div class="stop-name">${stop.name}</div><div class="stop-addr">${stop.addr}</div></div>`;
+
+    item.addEventListener('click', () => {
+      map.setView([stop.lat, stop.lng], 16);
+      marker.openPopup();
+      panel.querySelectorAll('.stop-item').forEach(el => el.classList.remove('active'));
+      item.classList.add('active');
+    });
+    marker.on('click', () => {
+      switchRoute(ri);
+      panel.querySelectorAll('.stop-item').forEach(el => el.classList.remove('active'));
+      item.classList.add('active');
+      item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    panel.appendChild(item);
+    routeMarkers.push({ marker, item });
+    allMarkers.push({ routeId: ri, marker, item });
+  });
+
+  const schoolEndEl = document.createElement('div');
+  schoolEndEl.className = 'stop-item';
+  schoolEndEl.innerHTML = `<div class="stop-num stop-school">🏫</div><div class="stop-text"><div class="stop-name">Grundschule Hellern</div><div class="stop-addr">Große Schulstraße 83 · Ziel</div></div>`;
+  schoolEndEl.addEventListener('click', () => map.setView([SCHOOL.lat, SCHOOL.lng], 15));
+  panel.appendChild(schoolEndEl);
+
+  panelsEl.appendChild(panel);
+  routeLayers.push({ markers: routeMarkers, polyline: null, panel, tab, route });
+
+  legend.innerHTML += `<div class="legend-item"><div class="legend-line" style="background:${route.color}"></div>Route ${ri+1} – ${route.name}</div>`;
+});
+
+async function fetchRoute(coords) {
+  const coordStr = coords.map(c => `${c.lng},${c.lat}`).join(';');
+  const url = `https://router.project-osrm.org/route/v1/foot/${coordStr}?overview=full&geometries=geojson`;
+  try {
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data.routes && data.routes[0]) return data.routes[0];
+  } catch(e) {}
+  return null;
+}
+
+async function drawRoute(ri) {
+  const route = ROUTES[ri];
+  const coords = [SCHOOL, ...route.stops, SCHOOL];
+  const result = await fetchRoute(coords);
+
+  if (routeLayers[ri].polyline) map.removeLayer(routeLayers[ri].polyline);
+
+  if (result) {
+    const latlngs = result.geometry.coordinates.map(c => [c[1], c[0]]);
+    const poly = L.polyline(latlngs, { color: route.color, weight: 4, opacity: 0.8 }).addTo(map);
+    routeLayers[ri].polyline = poly;
+    const dist = (result.distance / 1000).toFixed(1);
+    const mins = Math.round(result.duration / 60);
+    routeLayers[ri].panel.querySelector('.route-info span').textContent =
+      `${route.stops.length} Besuche · ca. ${dist} km · ca. ${mins} Min. · Start & Ziel: GS Hellern`;
+  } else {
+    const latlngs = [SCHOOL, ...route.stops, SCHOOL].map(s => [s.lat, s.lng]);
+    const poly = L.polyline(latlngs, { color: route.color, weight: 3, opacity: 0.6, dashArray: '6,6' }).addTo(map);
+    routeLayers[ri].polyline = poly;
+  }
+}
+
+function switchRoute(ri) {
+  activeRoute = ri;
+  routeLayers.forEach((rl, i) => {
+    rl.tab.classList.toggle('active', i === ri);
+    rl.tab.style.background = i === ri ? ROUTES[i].color : '';
+    rl.tab.style.color = i === ri ? '#fff' : '';
+    rl.panel.classList.toggle('active', i === ri);
+  });
+  allMarkers.forEach(({ routeId, marker }) => {
+    if (routeId === ri) { if (!map.hasLayer(marker)) marker.addTo(map); }
+    else                { if (map.hasLayer(marker))  map.removeLayer(marker); }
+  });
+  const bounds = [[SCHOOL.lat, SCHOOL.lng], ...ROUTES[ri].stops.map(s => [s.lat, s.lng])];
+  map.fitBounds(bounds, { padding: [40, 40] });
+}
+
+(async () => {
+  for (let i = 0; i < ROUTES.length; i++) {
+    await drawRoute(i);
+    routeLayers[i].markers.forEach(({ marker }) => { if (i === 0) marker.addTo(map); });
+    if (i !== 0 && routeLayers[i].polyline) map.removeLayer(routeLayers[i].polyline);
+  }
+  if (routeLayers[0].polyline) routeLayers[0].polyline.addTo(map);
+  switchRoute(0);
+})();
+</script>
+
+</body>
+</html>
