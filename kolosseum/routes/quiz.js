@@ -89,8 +89,11 @@ router.post('/:id/submit', requireStudent, (req, res) => {
 
   // XP nur beim ersten Mal gutschreiben – Wiederholungen bringen keine XP
   const xpToAdd = prevAttempts === 0 ? xpEarned : 0;
+  // last_active bei jedem Spielen aktualisieren (auch bei Wiederholungen)
+  db.prepare('UPDATE students SET last_active = CURRENT_TIMESTAMP WHERE id = ?')
+    .run(studentId);
   if (xpToAdd > 0) {
-    db.prepare('UPDATE students SET xp = xp + ?, last_active = CURRENT_TIMESTAMP WHERE id = ?')
+    db.prepare('UPDATE students SET xp = xp + ? WHERE id = ?')
       .run(xpToAdd, studentId);
     db.prepare(
       'INSERT INTO xp_log (student_id, amount, reason, quiz_id) VALUES (?, ?, ?, ?)'

@@ -67,8 +67,11 @@ router.post('/submit', requireStudent, (req, res) => {
     'INSERT INTO external_quiz_results (student_id, quiz_slug, score, total, xp_earned, attempt_number) VALUES (?, ?, ?, ?, ?, ?)'
   ).run(studentId, quizSlug, score, total, xpEarned, prevAttempts + 1);
 
+  // last_active bei jedem Einreichen aktualisieren (auch ohne XP-Verbesserung)
+  db.prepare('UPDATE students SET last_active = CURRENT_TIMESTAMP WHERE id = ?')
+    .run(studentId);
   if (xpToAdd > 0) {
-    db.prepare('UPDATE students SET xp = xp + ?, last_active = CURRENT_TIMESTAMP WHERE id = ?')
+    db.prepare('UPDATE students SET xp = xp + ? WHERE id = ?')
       .run(xpToAdd, studentId);
     db.prepare(
       'INSERT INTO xp_log (student_id, amount, reason) VALUES (?, ?, ?)'
