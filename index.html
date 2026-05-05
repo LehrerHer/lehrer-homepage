@@ -19,8 +19,97 @@
     <style>
         #lernkolosseum, #digitale-materialien, #blog-teaser { display: none; }
     </style>
+
+    <!-- Ladebildschirm: Zeitleisten-Animation von 3000 v.Chr. bis 2026 -->
+    <style>
+        #ladebildschirm {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: #f5f4f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.7s ease, visibility 0.7s ease;
+        }
+        #ladebildschirm.ausblenden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        .lb-scene {
+            position: relative;
+            width: 380px;
+            height: 380px;
+            animation: lb-float 3.2s ease-in-out infinite;
+        }
+        @keyframes lb-float {
+            0%   { transform: translateY(0); }
+            50%  { transform: translateY(-14px); }
+            100% { transform: translateY(0); }
+        }
+        .lb-scene::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 12px;
+            background: radial-gradient(ellipse, rgba(0,0,0,0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: lb-shadow 3.2s ease-in-out infinite;
+        }
+        @keyframes lb-shadow {
+            0%   { opacity: 1;   transform: translateX(-50%) scaleX(1); }
+            50%  { opacity: 0.3; transform: translateX(-50%) scaleX(0.5); }
+            100% { opacity: 1;   transform: translateX(-50%) scaleX(1); }
+        }
+        .lb-ring-track    { fill: none; stroke: #ccc9c0; stroke-width: 2; }
+        .lb-ring-progress { fill: none; stroke: #1a1814; stroke-width: 2.5; stroke-linecap: round;
+                            transform-origin: center; transform: rotate(-90deg); }
+        .lb-tick          { stroke: #1a1814; stroke-linecap: round; }
+        .lb-tick-minor    { stroke-width: 0.6; opacity: 0.25; }
+        .lb-tick-major    { stroke-width: 1.1; opacity: 0.55; }
+        .lb-tick-label    { fill: #1a1814; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                            font-size: 5.5px; font-weight: 500; letter-spacing: 0.02em; opacity: 0.45; }
+        .lb-year-display  { fill: #1a1814; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                            font-size: 30px; font-weight: 300; letter-spacing: -0.03em;
+                            dominant-baseline: middle; text-anchor: middle; }
+        .lb-year-era      { fill: #1a1814; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                            font-size: 8px; font-weight: 500; letter-spacing: 0.15em;
+                            dominant-baseline: middle; text-anchor: middle; opacity: 0.35; }
+        .lb-dot           { fill: #1a1814; }
+        .lb-picto         { fill: none; stroke: #1a1814; stroke-width: 1.4;
+                            stroke-linecap: round; stroke-linejoin: round; opacity: 0.18;
+                            transition: opacity 0.5s, stroke-width 0.3s; }
+        .lb-picto.erreicht { opacity: 0.65; }
+        .lb-picto.aktiv    { opacity: 1; stroke-width: 1.8; }
+        @media (max-width: 480px) {
+            .lb-scene { width: 260px; height: 260px; }
+            .lb-scene svg { width: 260px; height: 260px; }
+        }
+    </style>
 </head>
 <body>
+
+    <!-- ========================================================
+         LADEBILDSCHIRM – Zeitleisten-Animation (3000 v.Chr. → 2026)
+         Wird automatisch ausgeblendet, sobald die Seite geladen ist.
+         ======================================================== -->
+    <div id="ladebildschirm" role="status" aria-label="Seite wird geladen">
+        <div class="lb-scene">
+            <svg viewBox="0 0 380 380" id="lb-svg" style="width:380px;height:380px;overflow:visible">
+                <circle class="lb-ring-track" cx="190" cy="190" r="118"/>
+                <g id="lb-ticks"></g>
+                <circle class="lb-ring-progress" cx="190" cy="190" r="118" id="lb-bogen"/>
+                <circle class="lb-dot" cx="190" cy="72" r="4.5" id="lb-punkt"/>
+                <g id="lb-piktogramme"></g>
+                <text class="lb-year-display" x="190" y="182" id="lb-jahr">3000</text>
+                <text class="lb-year-era"     x="190" y="206" id="lb-era">v.Chr.</text>
+            </svg>
+        </div>
+    </div>
+
 
     <!-- ========================================================
          NAVIGATION
@@ -483,6 +572,247 @@
     <!-- Konto anlegen auf goatcounter.com und DEIN-CODE durch deinen Code ersetzen -->
     <script data-goatcounter="https://lehrer-herrmann.goatcounter.com/count"
             async src="//gc.zgo.at/count.js"></script>
+
+    <!-- Ladebildschirm-Animation: Zeitleiste 3000 v.Chr. → 2026 mit Epochen-Piktogrammen -->
+    <script>
+    (function () {
+        'use strict';
+
+        const START = -3000, ENDE = 2026, SPANNE = ENDE - START;
+        const CX = 190, CY = 190, R = 118;
+        const UMFANG = 2 * Math.PI * R;
+        const ZYKLUS_MS = 6000;
+        const PICTO_R = 158;
+        const NS = 'http://www.w3.org/2000/svg';
+
+        function svg(tag, attr, kinder) {
+            const e = document.createElementNS(NS, tag);
+            for (const [k, v] of Object.entries(attr || {})) e.setAttribute(k, v);
+            (kinder || []).forEach(c => e.appendChild(c));
+            return e;
+        }
+        function jahrZuWinkel(j) { return ((j - START) / SPANNE) * 360 - 90; }
+        function polar(grad, r) {
+            const rad = grad * Math.PI / 180;
+            return { x: CX + r * Math.cos(rad), y: CY + r * Math.sin(rad) };
+        }
+        function easeInOut(t) { return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; }
+
+        // Tick-Striche
+        const ticksG = document.getElementById('lb-ticks');
+        if (!ticksG) return;
+
+        for (let y = -3000; y <= 2026; y += 200) {
+            const a = jahrZuWinkel(y), i = polar(a, R - 4), o = polar(a, R + 4);
+            ticksG.appendChild(svg('line', { x1: i.x, y1: i.y, x2: o.x, y2: o.y, class: 'lb-tick lb-tick-minor' }));
+        }
+        [
+            { y: -3000, l: '3000 v.Chr.' }, { y: -2000, l: '2000 v.Chr.' },
+            { y: -1000, l: '1000 v.Chr.' }, { y: 0, l: 'n.Chr. 1' },
+            { y: 500, l: '500' }, { y: 1000, l: '1000' },
+            { y: 1500, l: '1500' }, { y: 1800, l: '1800' }, { y: 2000, l: '2000' }
+        ].forEach(({ y, l }) => {
+            const a = jahrZuWinkel(y), i = polar(a, R - 8), o = polar(a, R + 8);
+            ticksG.appendChild(svg('line', { x1: i.x, y1: i.y, x2: o.x, y2: o.y, class: 'lb-tick lb-tick-major' }));
+            const lp = polar(a, R + 19);
+            const t = svg('text', {
+                x: lp.x, y: lp.y, class: 'lb-tick-label',
+                'text-anchor': 'middle', 'dominant-baseline': 'middle',
+                transform: `rotate(${a + 90},${lp.x},${lp.y})`
+            });
+            t.textContent = l;
+            ticksG.appendChild(t);
+        });
+
+        // Piktogramm-Zeichenfunktionen
+        function zeichnePyramiden(g, cx, cy) {
+            const s = 11;
+            g.appendChild(svg('polyline', { points: `${cx-s},${cy+s*.6} ${cx},${cy-s*.8} ${cx+s},${cy+s*.6}` }));
+            g.appendChild(svg('line', { x1: cx, y1: cy - s * .8, x2: cx, y2: cy + s * .6 }));
+            g.appendChild(svg('polyline', { points: `${cx-s},${cy+s*.6} ${cx-s*1.5},${cy+s*.05} ${cx-s*2},${cy+s*.6}` }));
+            g.appendChild(svg('polyline', { points: `${cx+s},${cy+s*.6} ${cx+s*1.5},${cy+s*.05} ${cx+s*2},${cy+s*.6}` }));
+            g.appendChild(svg('line', { x1: cx - s * 2.2, y1: cy + s * .6, x2: cx + s * 2.2, y2: cy + s * .6 }));
+        }
+        function zeichneTheatermaske(g, cx, cy) {
+            const s = 10;
+            g.appendChild(svg('ellipse', { cx, cy: cy - s * .05, rx: s * .7, ry: s * .85 }));
+            g.appendChild(svg('path', { d: `M${cx-s*.4},${cy+s*.3} Q${cx},${cy+s*.75} ${cx+s*.4},${cy+s*.3}` }));
+            g.appendChild(svg('ellipse', { cx: cx - s * .28, cy: cy - s * .18, rx: s * .14, ry: s * .18 }));
+            g.appendChild(svg('ellipse', { cx: cx + s * .28, cy: cy - s * .18, rx: s * .14, ry: s * .18 }));
+            g.appendChild(svg('path', { d: `M${cx-s*.45},${cy-s*.48} Q${cx-s*.28},${cy-s*.62} ${cx-s*.1},${cy-s*.48}` }));
+            g.appendChild(svg('path', { d: `M${cx+s*.1},${cy-s*.48} Q${cx+s*.28},${cy-s*.62} ${cx+s*.45},${cy-s*.48}` }));
+        }
+        function zeichneKolosseum(g, cx, cy) {
+            const s = 11;
+            g.appendChild(svg('line', { x1: cx - s * 1.3, y1: cy + s * .55, x2: cx + s * 1.3, y2: cy + s * .55 }));
+            g.appendChild(svg('path', { d: `M${cx-s*1.3},${cy+s*.55} L${cx-s*1.3},${cy-s*.1} A${s*1.3},${s*.7} 0 0 1 ${cx+s*1.3},${cy-s*.1} L${cx+s*1.3},${cy+s*.55}` }));
+            g.appendChild(svg('path', { d: `M${cx-s*.95},${cy+s*.55} L${cx-s*.95},${cy+s*.05} A${s*.95},${s*.52} 0 0 1 ${cx+s*.95},${cy+s*.05} L${cx+s*.95},${cy+s*.55}` }));
+            const bW = s * .42;
+            for (let i = -1.5; i <= 1.5; i++) {
+                const ax = cx + i * bW * 1.4;
+                g.appendChild(svg('path', { d: `M${ax-bW*.36},${cy+s*.55} L${ax-bW*.36},${cy+s*.12} A${bW*.36},${bW*.4} 0 0 1 ${ax+bW*.36},${cy+s*.12} L${ax+bW*.36},${cy+s*.55}` }));
+            }
+        }
+        function zeichneBurg(g, cx, cy) {
+            const s = 10;
+            g.appendChild(svg('rect', { x: cx - s * 1.1, y: cy - s * .8, width: s * .65, height: s * 1.35 }));
+            g.appendChild(svg('rect', { x: cx + s * .45, y: cy - s * .8, width: s * .65, height: s * 1.35 }));
+            g.appendChild(svg('rect', { x: cx - s * .45, y: cy - s * .35, width: s * .9, height: s * .9 }));
+            [-0.9, -0.6, -0.3].forEach(dx => g.appendChild(svg('rect', { x: cx + dx * s * .9 - s * .11, y: cy - s * 1.15, width: s * .22, height: s * .35 })));
+            [0.3, 0.6, 0.9].forEach(dx => g.appendChild(svg('rect', { x: cx + dx * s * .9 - s * .11, y: cy - s * 1.15, width: s * .22, height: s * .35 })));
+            g.appendChild(svg('path', { d: `M${cx-s*.28},${cy+s*.55} L${cx-s*.28},${cy+s*.1} A${s*.28},${s*.3} 0 0 1 ${cx+s*.28},${cy+s*.1} L${cx+s*.28},${cy+s*.55}` }));
+            g.appendChild(svg('line', { x1: cx - s * 1.4, y1: cy + s * .55, x2: cx + s * 1.4, y2: cy + s * .55 }));
+        }
+        function zeichneKirche(g, cx, cy) {
+            const s = 10;
+            g.appendChild(svg('rect', { x: cx - s * .45, y: cy - s * .55, width: s * .9, height: s * 1.1 }));
+            g.appendChild(svg('polyline', { points: `${cx-s*.45},${cy-s*.55} ${cx},${cy-s*1.15} ${cx+s*.45},${cy-s*.55}` }));
+            g.appendChild(svg('line', { x1: cx, y1: cy - s * 1.15, x2: cx, y2: cy - s * 1.55 }));
+            g.appendChild(svg('line', { x1: cx - s * .18, y1: cy - s * 1.4, x2: cx + s * .18, y2: cy - s * 1.4 }));
+            g.appendChild(svg('path', { d: `M${cx-s*.2},${cy-s*.25} L${cx-s*.2},${cy-s*.5} A${s*.2},${s*.22} 0 0 1 ${cx+s*.2},${cy-s*.5} L${cx+s*.2},${cy-s*.25}` }));
+            g.appendChild(svg('path', { d: `M${cx-s*.2},${cy+s*.55} L${cx-s*.2},${cy+s*.2} A${s*.2},${s*.22} 0 0 1 ${cx+s*.2},${cy+s*.2} L${cx+s*.2},${cy+s*.55}` }));
+            g.appendChild(svg('line', { x1: cx - s * .7, y1: cy + s * .55, x2: cx + s * .7, y2: cy + s * .55 }));
+        }
+        function zeichneDaVinci(g, cx, cy) {
+            const s = 11;
+            g.appendChild(svg('line', { x1: cx, y1: cy - s * .9, x2: cx, y2: cy + s * .9 }));
+            g.appendChild(svg('line', { x1: cx - s * 1.1, y1: cy - s * .55, x2: cx + s * 1.1, y2: cy - s * .55 }));
+            g.appendChild(svg('ellipse', { cx, cy: cy - s * .55, rx: s * 1.1, ry: s * .28 }));
+            g.appendChild(svg('path', { d: `M${cx-s*1.1},${cy-s*.55} Q${cx-s*.5},${cy-s*.82} ${cx},${cy-s*.55} Q${cx+s*.5},${cy-s*.28} ${cx+s*1.1},${cy-s*.55}` }));
+            g.appendChild(svg('line', { x1: cx - s * .5, y1: cy + s * .9, x2: cx + s * .5, y2: cy + s * .9 }));
+            g.appendChild(svg('line', { x1: cx, y1: cy + s * .5, x2: cx - s * .5, y2: cy + s * .9 }));
+            g.appendChild(svg('line', { x1: cx, y1: cy + s * .5, x2: cx + s * .5, y2: cy + s * .9 }));
+        }
+        function zeichneFabrik(g, cx, cy) {
+            const s = 10;
+            g.appendChild(svg('rect', { x: cx - s * 1.1, y: cy - s * .35, width: s * 2.2, height: s * .9 }));
+            g.appendChild(svg('polyline', { points: `${cx-s*1.1},${cy-s*.35} ${cx-s*.7},${cy-s*.75} ${cx-s*.3},${cy-s*.35} ${cx+s*.1},${cy-s*.75} ${cx+s*.5},${cy-s*.35} ${cx+s*.9},${cy-s*.75} ${cx+s*1.1},${cy-s*.45}` }));
+            g.appendChild(svg('rect', { x: cx - s * .8, y: cy - s * 1.25, width: s * .28, height: s * .9 }));
+            g.appendChild(svg('rect', { x: cx - s * .2, y: cy - s * 1.05, width: s * .28, height: s * .7 }));
+            g.appendChild(svg('circle', { cx: cx - s * .66, cy: cy - s * 1.38, r: s * .13 }));
+            g.appendChild(svg('circle', { cx: cx - s * .52, cy: cy - s * 1.48, r: s * .1 }));
+            g.appendChild(svg('circle', { cx: cx - s * .06, cy: cy - s * 1.18, r: s * .12 }));
+            g.appendChild(svg('rect', { x: cx + s * .55, y: cy + s * .2, width: s * .3, height: s * .35 }));
+            g.appendChild(svg('line', { x1: cx - s * 1.3, y1: cy + s * .55, x2: cx + s * 1.3, y2: cy + s * .55 }));
+        }
+        function zeichnePanzer(g, cx, cy) {
+            const s = 10;
+            g.appendChild(svg('polygon', { points: `${cx-s*1.3},${cy+s*.55} ${cx-s},${cy-s*.45} ${cx+s},${cy-s*.45} ${cx+s*1.3},${cy+s*.55}` }));
+            g.appendChild(svg('rect', { x: cx - s * .38, y: cy - s * .82, width: s * .76, height: s * .37 }));
+            g.appendChild(svg('line', { x1: cx + s * .38, y1: cy - s * .64, x2: cx + s * 1.45, y2: cy - s * .64 }));
+            g.appendChild(svg('rect', { x: cx - s * 1.2, y: cy + s * .38, width: s * 2.4, height: s * .28, rx: s * .14 }));
+            [-0.75, -0.25, 0.25, 0.75].forEach(dx =>
+                g.appendChild(svg('circle', { cx: cx + dx * s * 1.1, cy: cy + s * .52, r: s * .18 }))
+            );
+        }
+
+        const PIKTOGRAMME = [
+            { jahr: -2560, id: 'pyramiden',    zeichne: zeichnePyramiden    },
+            { jahr:  -450, id: 'maske',        zeichne: zeichneTheatermaske },
+            { jahr:   -70, id: 'kolosseum',    zeichne: zeichneKolosseum    },
+            { jahr:  1100, id: 'burg',         zeichne: zeichneBurg         },
+            { jahr:  1250, id: 'kirche',       zeichne: zeichneKirche       },
+            { jahr:  1490, id: 'davinci',      zeichne: zeichneDaVinci      },
+            { jahr:  1850, id: 'fabrik',       zeichne: zeichneFabrik       },
+            { jahr:  1916, id: 'panzer',       zeichne: zeichnePanzer       },
+        ];
+
+        const pictoG = document.getElementById('lb-piktogramme');
+        const pictoEls = {};
+        PIKTOGRAMME.forEach(p => {
+            const winkel = jahrZuWinkel(p.jahr);
+            const pos = polar(winkel, PICTO_R);
+            const g = svg('g', { id: `lb-p-${p.id}`, class: 'lb-picto' });
+            p.zeichne(g, pos.x, pos.y);
+            pictoG.appendChild(g);
+            pictoEls[p.id] = { el: g, jahr: p.jahr };
+        });
+
+        const bogen  = document.getElementById('lb-bogen');
+        const jahrTx = document.getElementById('lb-jahr');
+        const eraTx  = document.getElementById('lb-era');
+        const punkt  = document.getElementById('lb-punkt');
+        bogen.style.strokeDasharray = `0 ${UMFANG}`;
+
+        let startZeit = null;
+        let animID = null;
+
+        function schritt(ts) {
+            if (!startZeit) startZeit = ts;
+            const vergangen = (ts - startZeit) % ZYKLUS_MS;
+            const fort = vergangen / ZYKLUS_MS;
+
+            const SWEEP_ENDE = 0.72, HALT_ENDE = 0.86;
+            let bogenFrac;
+            if (fort <= SWEEP_ENDE)     bogenFrac = easeInOut(fort / SWEEP_ENDE);
+            else if (fort <= HALT_ENDE) bogenFrac = 1;
+            else                        bogenFrac = 0;
+
+            const strich = bogenFrac * UMFANG;
+            bogen.style.strokeDasharray = `${strich} ${UMFANG - strich}`;
+
+            let alpha = 1;
+            if (fort > HALT_ENDE) alpha = 1 - (fort - HALT_ENDE) / (1 - HALT_ENDE);
+            bogen.style.opacity = alpha;
+            punkt.style.opacity = alpha;
+
+            const aktJahr = START + bogenFrac * SPANNE;
+            const absJahr = Math.round(Math.abs(aktJahr));
+
+            if (aktJahr <= -1) {
+                jahrTx.textContent = absJahr.toString();
+                eraTx.textContent  = 'v.Chr.';
+            } else if (aktJahr < 1000) {
+                jahrTx.textContent = Math.round(aktJahr).toString();
+                eraTx.textContent  = 'n.Chr.';
+            } else {
+                jahrTx.textContent = Math.round(aktJahr).toString();
+                eraTx.textContent  = '';
+            }
+
+            const punktWinkel = jahrZuWinkel(aktJahr);
+            const punktPos = polar(punktWinkel, R);
+            punkt.setAttribute('cx', punktPos.x);
+            punkt.setAttribute('cy', punktPos.y);
+
+            const FLASH = SPANNE * 0.08;
+            PIKTOGRAMME.forEach(p => {
+                const g = pictoEls[p.id].el;
+                const delta = aktJahr - p.jahr;
+                if (delta < 0)          g.setAttribute('class', 'lb-picto');
+                else if (delta <= FLASH) g.setAttribute('class', 'lb-picto aktiv');
+                else                     g.setAttribute('class', 'lb-picto erreicht');
+            });
+
+            animID = requestAnimationFrame(schritt);
+        }
+
+        animID = requestAnimationFrame(schritt);
+
+        // Ladebildschirm ausblenden sobald Seite fertig geladen
+        const MINDEST_MS = 1200;
+        const ladeStart = Date.now();
+
+        function ausblenden() {
+            const verzoegerung = Math.max(0, MINDEST_MS - (Date.now() - ladeStart));
+            setTimeout(() => {
+                const lb = document.getElementById('ladebildschirm');
+                if (!lb) return;
+                lb.classList.add('ausblenden');
+                setTimeout(() => {
+                    cancelAnimationFrame(animID);
+                    lb.remove();
+                }, 750);
+            }, verzoegerung);
+        }
+
+        if (document.readyState === 'complete') {
+            ausblenden();
+        } else {
+            window.addEventListener('load', ausblenden);
+        }
+    })();
+    </script>
 </body>
 </html>
 
