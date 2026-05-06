@@ -25,6 +25,7 @@ lehrer-homepage/
 ├── js/
 │   └── main.js          # All site JavaScript
 ├── materialien/         # Generated interactive worksheets (HTML)
+├── Material manuell von mir/  # Source files uploaded manually by Jan Herrmann (PPTX, images, etc.)
 ├── upload/              # Drop folder for raw worksheet files
 │   └── _erledigt/       # Processed originals (moved here after conversion)
 └── tools/
@@ -33,6 +34,12 @@ lehrer-homepage/
 ```
 
 There are no build tools, transpilation steps, or generated output folders beyond `materialien/`.
+
+### Manuell bereitgestellte Quelldateien (`Material manuell von mir/`)
+
+Dieser Ordner enthält Dateien, die Jan Herrmann direkt hochgeladen hat (z. B. PowerPoint-Präsentationen, Bilder, HTML-Entwürfe). Er liegt im GitHub-Repository unter dem Pfad `Material manuell von mir/`.
+
+**WICHTIG für Claude:** Bevor du bei einem Auftrag wie „Erstelle ein Arbeitsblatt / eine Präsentation / ein Lernmaterial zu Thema X" Inhalte aus dem Nichts generierst, **durchsuche zuerst diesen Ordner auf GitHub** (`mcp__github__get_file_contents` mit `path: "Material manuell von mir"`). Dort liegende Quelldateien (z. B. `.pptx`, `.pdf`, `.jpg`) sind als Vorlage zu verwenden und in das Zielformat (interaktives HTML in `materialien/`) zu überführen. Erst wenn dort nichts Passendes liegt, darfst du Inhalte eigenständig generieren.
 
 ---
 

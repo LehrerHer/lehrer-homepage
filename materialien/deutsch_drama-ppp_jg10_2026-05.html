@@ -1,0 +1,770 @@
+<!--
+  Titel: Das Drama – Gattung, Struktur, Analyse, Aufführung
+  Fach: Deutsch
+  Klasse/Niveau: Jahrgangsstufe 10, Gymnasium
+  AB-Typ: Präsentation (PPP, interaktiv)
+  Erstellt: 2026-05
+  Quelle: Drama Jg10 Gymnasium.pptx (Material manuell von mir)
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Das Drama – PPP Jg. 10 | Jan Herrmann</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #1e3a5f;
+      --accent:  #4a9eda;
+      --bg:      #f4f6f7;
+      --white:   #ffffff;
+      --green:   #2ecc71;
+      --red:     #e74c3c;
+      --yellow:  #f0a500;
+      --radius:  8px;
+    }
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0f1f35;
+      height: 100vh;
+      overflow: hidden;
+      color: #222;
+    }
+
+    /* === FORTSCHRITTSLEISTE === */
+    .ppp-progress {
+      position: fixed; top: 0; left: 0;
+      height: 4px; width: 100%;
+      background: rgba(255,255,255,.12);
+      z-index: 100;
+    }
+    .ppp-progress-bar {
+      height: 100%;
+      background: var(--accent);
+      transition: width .3s ease;
+    }
+
+    /* === FOLIENBEREICH === */
+    .ppp-slides {
+      width: 100%;
+      height: calc(100vh - 56px);
+      position: relative;
+    }
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      padding: 36px 56px;
+      opacity: 0; pointer-events: none;
+      transition: opacity .22s ease;
+      overflow-y: auto;
+    }
+    .slide.active { opacity: 1; pointer-events: all; }
+
+    /* === FOLIEN-TYPEN === */
+    .slide--title  { background: var(--primary); text-align: center; }
+    .slide--quote  { background: linear-gradient(135deg,#1a2f4e,#2c4a7a); text-align: center; }
+    .slide--section { background: linear-gradient(135deg,#2c4a7a,var(--accent)); text-align: center; }
+    .slide--content { background: var(--bg); align-items: flex-start; justify-content: flex-start; padding-top: 28px; }
+    .slide--tasks   { background: #fff8e1; align-items: flex-start; justify-content: flex-start; padding-top: 28px; }
+
+    /* === TYPOGRAFIE === */
+    .slide-title-main { font-size: clamp(2.2rem,5vw,3.8rem); font-weight: 800; color: var(--white); line-height: 1.1; margin-bottom: 14px; }
+    .slide-title-sub  { font-size: clamp(.95rem,2.2vw,1.3rem); color: rgba(255,255,255,.8); margin-bottom: 6px; }
+    .slide-emoji      { font-size: 2.8rem; margin-bottom: 20px; }
+    .section-number   { font-size: 4.5rem; font-weight: 900; color: rgba(255,255,255,.18); line-height: 1; margin-bottom: 6px; }
+    .section-title    { font-size: clamp(1.7rem,4vw,2.6rem); font-weight: 800; color: var(--white); }
+
+    /* === INHALTS-ELEMENTE === */
+    .slide-heading {
+      font-size: clamp(1.2rem,2.8vw,1.7rem); font-weight: 700;
+      color: var(--primary); margin-bottom: 20px; width: 100%;
+      border-bottom: 3px solid var(--accent); padding-bottom: 8px;
+    }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
+    .card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,.07);
+    }
+    .card-title { font-size: .95rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
+    .card-list  { list-style: none; padding: 0; }
+    .card-list li {
+      font-size: .85rem; padding: 4px 0;
+      border-bottom: 1px solid #eee;
+      display: flex; gap: 6px; color: #333;
+    }
+    .card-list li:last-child { border-bottom: none; }
+    .card-list li::before   { content:"▸"; color: var(--accent); flex-shrink: 0; }
+
+    .info-box {
+      background: var(--white); border-left: 4px solid var(--accent);
+      padding: 11px 15px; border-radius: 0 var(--radius) var(--radius) 0;
+      margin-bottom: 10px; width: 100%;
+    }
+    .info-box-title { font-size: .9rem; font-weight: 700; color: var(--primary); margin-bottom: 5px; }
+    .info-box p     { font-size: .82rem; color: #444; line-height: 1.5; }
+
+    .note-box {
+      background: #fff8e1; border-left: 4px solid var(--yellow);
+      padding: 11px 15px; border-radius: 0 var(--radius) var(--radius) 0;
+      width: 100%; font-size: .83rem; color: #6b4c00; margin-top: 14px;
+    }
+
+    /* === DEFINITION-TABELLE === */
+    .def-table { width: 100%; border-collapse: collapse; }
+    .def-table td { padding: 9px 13px; border-bottom: 1px solid #e0e0e0; font-size: .85rem; vertical-align: top; }
+    .def-table td:first-child { font-weight: 700; color: var(--primary); width: 120px; background: #f0f4f8; }
+
+    /* === ZITAT === */
+    .quote-text   { font-size: clamp(.95rem,2.3vw,1.3rem); color: var(--white); font-style: italic; line-height: 1.6; max-width: 680px; margin-bottom: 18px; }
+    .quote-author { font-size: .9rem; color: rgba(255,255,255,.6); }
+
+    /* === AUFGABEN === */
+    .task-item {
+      background: var(--white); border-radius: var(--radius);
+      padding: 12px 16px; margin-bottom: 9px;
+      display: flex; gap: 13px; align-items: flex-start;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06); width: 100%;
+    }
+    .task-number {
+      background: var(--primary); color: var(--white);
+      border-radius: 50%; width: 26px; height: 26px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .78rem; font-weight: 700; flex-shrink: 0;
+    }
+    .task-label { font-size: .7rem; color: var(--accent); font-weight: 600; margin-bottom: 2px; }
+    .task-text  { font-size: .85rem; color: #333; line-height: 1.5; }
+
+    /* === CHECK-UP === */
+    .checkup-item {
+      background: var(--white); border-radius: var(--radius);
+      padding: 12px 16px; margin-bottom: 8px;
+      display: flex; gap: 11px; align-items: flex-start;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06); width: 100%;
+      border-left: 4px solid var(--accent);
+    }
+    .checkup-num { font-weight: 700; color: var(--primary); min-width: 22px; font-size: .88rem; }
+
+    /* === DIALOG-BOX === */
+    .dialog-box {
+      background: #f8f9fa; border: 1px solid #ddd;
+      border-radius: var(--radius); padding: 13px 16px;
+      margin-bottom: 11px; font-family: 'Courier New', monospace;
+      font-size: .82rem; line-height: 1.7; color: #333; width: 100%;
+    }
+
+    /* === ANALYSE-GRID === */
+    .analysis-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(190px,1fr)); gap: 11px; width: 100%; }
+    .analysis-card { background: var(--white); border-radius: var(--radius); padding: 11px 13px; box-shadow: 0 1px 4px rgba(0,0,0,.06); border-top: 3px solid var(--accent); }
+    .analysis-card-title { font-size: .78rem; font-weight: 700; color: var(--primary); margin-bottom: 5px; }
+    .analysis-card-text  { font-size: .8rem; color: #444; line-height: 1.4; }
+
+    /* === FIGUREN-KONSTELLATION === */
+    .figur-box {
+      background: var(--primary); color: var(--white);
+      border-radius: var(--radius); padding: 9px 14px;
+      text-align: center; font-size: .82rem; font-weight: 600; min-width: 96px;
+    }
+    .figur-box small { display: block; font-size: .68rem; opacity: .7; font-weight: 400; margin-top: 2px; }
+
+    /* === AKT-TABELLE === */
+    .akt-table { width: 100%; border-collapse: collapse; }
+    .akt-table th, .akt-table td { padding: 9px 11px; text-align: left; font-size: .83rem; border-bottom: 1px solid #e0e0e0; vertical-align: top; }
+    .akt-table th { background: var(--primary); color: var(--white); font-weight: 600; }
+    .akt-table tr:nth-child(even) td { background: #f8f9fa; }
+
+    /* === NAVIGATIONSLEISTE === */
+    .ppp-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; height: 56px;
+      background: rgba(15,31,53,.96); display: flex; align-items: center;
+      justify-content: space-between; padding: 0 14px;
+      border-top: 1px solid rgba(255,255,255,.1); z-index: 50; gap: 10px;
+    }
+    .nav-btn {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+      color: var(--white); padding: 7px 18px; border-radius: 6px;
+      font-size: .88rem; cursor: pointer; transition: background .2s; flex-shrink: 0;
+    }
+    .nav-btn:hover:not(:disabled) { background: rgba(255,255,255,.2); }
+    .nav-btn:disabled { opacity: .3; cursor: default; }
+    .nav-counter    { color: rgba(255,255,255,.7); font-size: .83rem; white-space: nowrap; }
+    .nav-slide-title { color: rgba(255,255,255,.5); font-size: .78rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; text-align: center; }
+    .nav-home       { text-decoration: none; color: rgba(255,255,255,.5); font-size: .74rem; white-space: nowrap; }
+    .nav-home:hover { color: rgba(255,255,255,.8); }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .slide       { padding: 18px; }
+      .two-col     { grid-template-columns: 1fr; gap: 11px; }
+      .slide-title-main { font-size: 1.9rem; }
+      .analysis-grid    { grid-template-columns: 1fr; }
+      .slide--content, .slide--tasks { overflow-y: auto; }
+    }
+    @media (max-width: 480px) {
+      .slide   { padding: 12px; }
+      .ppp-nav { padding: 0 7px; gap: 5px; }
+      .nav-btn { padding: 6px 10px; font-size: .78rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ppp-progress">
+    <div class="ppp-progress-bar" id="progressBar"></div>
+  </div>
+
+  <div class="ppp-slides" id="slides">
+
+    <!-- ===== FOLIE 1: Titelfolie ===== -->
+    <div class="slide slide--title active" data-title="Das Drama">
+      <div class="slide-emoji">🎭</div>
+      <h1 class="slide-title-main">Das Drama</h1>
+      <p class="slide-title-sub">Gattung · Struktur · Analyse · Aufführung</p>
+      <p class="slide-title-sub" style="opacity:.6;font-size:.95rem;margin-top:8px;">Jahrgangsstufe 10 · Gymnasium · Deutschunterricht</p>
+    </div>
+
+    <!-- ===== FOLIE 2: Zwei Drama-Typen ===== -->
+    <div class="slide slide--content" data-title="Spannungsaufbau: Zwei Drama-Typen">
+      <h2 class="slide-heading">Spannungsaufbau: Zwei Drama-Typen</h2>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">🔍 Analytisches Drama (Enthüllungsdrama)</div>
+          <ul class="card-list">
+            <li>Vor Beginn der Bühnenhandlung liegt ein wichtiges Geschehen (oft ein Verbrechen)</li>
+            <li>Im Verlauf wird dieses Geschehen enthüllt</li>
+            <li>Wirkung der Vergangenheit auf die Gegenwart der Figuren</li>
+          </ul>
+          <p style="font-size:.8rem;color:#666;margin-top:9px;"><strong>Beispiele:</strong> Sophokles: <em>König Ödipus</em> (ca. 425 v.Chr.) · Kleist: <em>Der zerbrochene Krug</em> (1808)</p>
+        </div>
+        <div class="card">
+          <div class="card-title">🎯 Synthetisches Drama (Zieldrama)</div>
+          <ul class="card-list">
+            <li>Spannung entsteht in der Entwicklung der Handlung auf ein entscheidendes Geschehen hin</li>
+            <li>Der Zuschauer wartet auf das unausweichliche Ereignis</li>
+          </ul>
+          <p style="font-size:.8rem;color:#666;margin-top:9px;"><strong>Beispiele:</strong> Sophokles: <em>Antigone</em> (442 v.Chr.) · Schiller: <em>Kabale und Liebe</em> (1784)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 3: Figuren(konstellation) ===== -->
+    <div class="slide slide--content" data-title="Figuren(konstellation)">
+      <h2 class="slide-heading">Figuren(konstellation)</h2>
+      <table class="def-table">
+        <tbody>
+          <tr><td>Figur</td><td>Vom Dramenautor konzipierte Bühnenfigur.</td></tr>
+          <tr><td>Person</td><td>Lat. <em>Maske</em>. Die Liste der Personen steht häufig vor dem Dramentext.</td></tr>
+          <tr><td>Rolle</td><td>Die Figur aus Sicht des Schauspielers – dieser schlüpft in eine Rolle.</td></tr>
+          <tr><td>Charakter</td><td>Gesamtheit aller Merkmale, die eine Figur ausmachen.</td></tr>
+        </tbody>
+      </table>
+      <div class="note-box" style="margin-top:18px;">
+        <strong>Figurenkonstellation:</strong> Haupt- und Nebenfiguren · Verhältnis zwischen Figuren (gesellschaftliche Position, Beziehungen)
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 4: Dialog und Monolog ===== -->
+    <div class="slide slide--content" data-title="Dialog und Monolog">
+      <h2 class="slide-heading">Dialog und Monolog</h2>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">💬 Dialog</div>
+          <ul class="card-list">
+            <li><strong>Dramatischer Dialog:</strong> Auseinandersetzung &amp; Konfliktaustragung · zielgerichtet, argumentativ, emotional · beschleunigender Wechsel der Repliken</li>
+            <li><strong>Konversationsdialog:</strong> Allgemeines Gespräch, sozialer Kontakt · gesellige Unterhaltung, Aneinander-vorbeireden</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">💭 Monolog</div>
+          <ul class="card-list">
+            <li><strong>Affektmonolog:</strong> Selbstgespräch einer Figur im Affekt</li>
+            <li><strong>Entschlussmonolog:</strong> Abwägen von Für und Wider mit Entschlussfassung</li>
+            <li><strong>Reflexionsmonolog:</strong> Durchdenken und Kommentieren von Geschehen</li>
+            <li><strong>Selbstcharakt.-monolog:</strong> Selbsterforschung der eigenen Persönlichkeit</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 5: Abschnitt Bühneninszenierung ===== -->
+    <div class="slide slide--section" data-title="Bühneninszenierung">
+      <div class="section-number">3</div>
+      <h2 class="section-title">Bühneninszenierung</h2>
+    </div>
+
+    <!-- ===== FOLIE 6: Ausdrucksträger auf der Bühne ===== -->
+    <div class="slide slide--content" data-title="Ausdrucksträger auf der Bühne">
+      <h2 class="slide-heading">Ausdrucksträger auf der Bühne</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;width:100%;">
+        <div class="card">
+          <div class="card-title">🎭 Spieler als Ausdrucksträger</div>
+          <ul class="card-list">
+            <li>Gestik</li><li>Mimik</li>
+            <li>Proxemik (Körperposition/-abstand)</li>
+            <li>Stimme &amp; Sprache</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">🎵 Akustische Ausdrucksträger</div>
+          <ul class="card-list">
+            <li>Maske &amp; Kostüm</li><li>Musik</li>
+            <li>Klang</li><li>Geräusche</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-title">🏛️ Bühnenspezifische Ausdrucksträger</div>
+          <ul class="card-list">
+            <li>Requisit</li><li>Kulisse</li>
+            <li>Raum</li><li>Licht</li>
+          </ul>
+        </div>
+      </div>
+      <div class="note-box">
+        Das Drama ist nicht für den Leser, sondern für den Zuschauer bestimmt → bei der Analyse immer die mögliche Inszenierung mitdenken!
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 7: Zeit und Ort im Drama ===== -->
+    <div class="slide slide--content" data-title="Zeit und Ort im Drama">
+      <h2 class="slide-heading">Zeit und Ort im Drama</h2>
+      <div class="card" style="margin-bottom:14px;width:100%;border-left:4px solid var(--accent);padding:18px;">
+        <p style="font-style:italic;font-size:.93rem;color:#333;line-height:1.6;">„Die Tragödie versucht so weit wie möglich, sich in einem einzigen Sonnendurchlauf oder doch nur wenig darüber hinaus zu entwickeln."</p>
+        <p style="font-size:.78rem;color:#888;margin-top:7px;">Aristoteles · <em>Drei Einheiten: Zeit, Ort, Handlung</em></p>
+      </div>
+      <div class="info-box">
+        <div class="info-box-title">Zeitliche Einheit</div>
+        <p>Sollte das Nachverfolgen der Handlung vereinfachen und Unmittelbarkeit stärken.</p>
+      </div>
+      <div class="info-box">
+        <div class="info-box-title">Wahrnehmbarkeit von Zeit und Ort</div>
+        <p>Zeit und Ort werden im Drama selten explizit beschrieben – sie werden durch Bühnenbild, Requisiten und den Dialog wahrnehmbar.</p>
+      </div>
+      <div class="note-box">Spätestens bei Lessing (Aufklärung) wird das strenge Einheitsprinzip aufgegeben.</div>
+    </div>
+
+    <!-- ===== FOLIE 8: Geschlossenes vs. Offenes Drama ===== -->
+    <div class="slide slide--content" data-title="Geschlossenes vs. Offenes Drama">
+      <h2 class="slide-heading">Geschlossenes vs. Offenes Drama</h2>
+      <div class="two-col">
+        <div class="card" style="border-top:4px solid var(--primary);">
+          <div class="card-title">Geschlossenes Drama (klassisch)</div>
+          <ul class="card-list">
+            <li>Einheit von Zeit, Ort und Handlung</li>
+            <li>Strenge Fünfakt-Struktur (Freytag'sches Dreieck)</li>
+            <li>Kausalität: jede Szene folgt logisch auf die vorherige</li>
+            <li>Sprache: gebundene Rede (Vers, Jambus)</li>
+          </ul>
+          <p style="font-size:.76rem;color:#888;margin-top:7px;">Tragödie der Antike · Klassik · Sturm &amp; Drang</p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--accent);">
+          <div class="card-title">Offenes Drama (modern)</div>
+          <ul class="card-list">
+            <li>Keine Einheitenregel – freie Struktur</li>
+            <li>Episodische Szenenfolge möglich</li>
+            <li>Verfremdungseffekte (Brecht)</li>
+            <li>Prosa statt Vers</li>
+          </ul>
+          <p style="font-size:.76rem;color:#888;margin-top:7px;">Soziales Drama · Episches Theater · Absurdes Theater</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 9: Check-up ===== -->
+    <div class="slide slide--content" data-title="Check-up">
+      <h2 class="slide-heading" style="border-color:var(--yellow);color:#7a4f00;">✅ Check-up: Was habe ich gelernt?</h2>
+      <div style="width:100%;">
+        <div class="checkup-item"><span class="checkup-num">1.</span><span style="font-size:.86rem;">Was unterscheidet Tragödie und Komödie?</span></div>
+        <div class="checkup-item"><span class="checkup-num">2.</span><span style="font-size:.86rem;">Erkläre den Begriff <em>Katharsis</em>.</span></div>
+        <div class="checkup-item"><span class="checkup-num">3.</span><span style="font-size:.86rem;">Welche Funktion hat das retardierende Moment?</span></div>
+        <div class="checkup-item"><span class="checkup-num">4.</span><span style="font-size:.86rem;">Was ist der Unterschied zwischen Figur, Person und Rolle?</span></div>
+        <div class="checkup-item"><span class="checkup-num">5.</span><span style="font-size:.86rem;">Was versteht man unter dem <em>Verfremdungseffekt</em> (Brecht)?</span></div>
+        <div class="checkup-item"><span class="checkup-num">6.</span><span style="font-size:.86rem;">Erkläre den Unterschied zwischen analytischem und synthetischem Drama.</span></div>
+        <div class="checkup-item"><span class="checkup-num">7.</span><span style="font-size:.86rem;">Nenne drei akustische Ausdrucksträger auf der Bühne.</span></div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 10: Schiller-Zitat ===== -->
+    <div class="slide slide--quote" data-title="Das Drama">
+      <div class="slide-emoji">🎭</div>
+      <h2 class="slide-title-main">Das Drama</h2>
+      <blockquote class="quote-text" style="margin-top:22px;">
+        „Das Theater ist die mächtigste Anstalt der Welt."
+      </blockquote>
+      <p class="quote-author">Friedrich Schiller</p>
+      <p style="font-size:.82rem;color:rgba(255,255,255,.45);margin-top:14px;">Jahrgangsstufe 10 · Gymnasium · Propädeutische Literaturwissenschaft</p>
+    </div>
+
+    <!-- ===== FOLIE 11: Textbeispiel-Titelfolie ===== -->
+    <div class="slide slide--section" style="background:linear-gradient(135deg,#1a3a5f,#2d6a9f);" data-title="Textbeispiel: Auf hoher See">
+      <div class="slide-emoji" style="font-size:2.4rem;">📖</div>
+      <h2 class="section-title">Textbeispiel</h2>
+      <p style="color:rgba(255,255,255,.9);font-size:1.15rem;margin-top:8px;font-weight:600;">Auf hoher See</p>
+      <p style="color:rgba(255,255,255,.7);font-size:.92rem;margin-top:4px;">Slawomir Mrozek (UA 1961)</p>
+      <p style="color:rgba(255,255,255,.45);font-size:.82rem;margin-top:11px;">Absurdes Theater · Politische Satire · Jahrgang 10 Gymnasium</p>
+    </div>
+
+    <!-- ===== FOLIE 12: Was ist Drama? ===== -->
+    <div class="slide slide--content" data-title="Was ist Drama?">
+      <h2 class="slide-heading">Was ist Drama?</h2>
+      <div class="card" style="margin-bottom:18px;width:100%;border-left:4px solid var(--accent);padding:18px;">
+        <p style="font-style:italic;font-size:.97rem;color:#333;line-height:1.6;margin-bottom:9px;">„Nachahmung einer edlen und abgeschlossenen Handlung von einer bestimmten Größe in gewählter Rede."</p>
+        <p style="font-size:.78rem;color:#888;">Aristoteles, Poetik (335 v.Chr.)</p>
+      </div>
+      <div class="info-box">
+        <div class="info-box-title">Drama (griech.): Handlung</div>
+        <p>Das Publikum erlebt die Handlung unmittelbar – kein Erzähler vermittelt das Geschehen.</p>
+      </div>
+      <div class="info-box">
+        <div class="info-box-title">Gattungsmerkmale</div>
+        <p>Dialog · szenische Texte · Inszenierung auf der Bühne · Handlung wird durch Konflikt zwischen Figuren bestimmt – Reden und Gegenreden.</p>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 13: Einordnung "Auf hoher See" ===== -->
+    <div class="slide slide--content" data-title="Einordnung: Auf hoher See">
+      <h2 class="slide-heading">Einordnung: Was ist das für ein Stück?</h2>
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">📋 Steckbrief</div>
+          <table style="width:100%;font-size:.82rem;">
+            <tbody>
+              <tr><td style="font-weight:600;color:var(--primary);padding:3px 0;width:65px;">Autor:</td><td style="padding:3px 0;">Slawomir Mrozek (Polen, 1930–2013)</td></tr>
+              <tr><td style="font-weight:600;color:var(--primary);padding:3px 0;">UA:</td><td style="padding:3px 0;">1961 in Lublin</td></tr>
+              <tr><td style="font-weight:600;color:var(--primary);padding:3px 0;">Gattung:</td><td style="padding:3px 0;">Absurdes Theater</td></tr>
+              <tr><td style="font-weight:600;color:var(--primary);padding:3px 0;">Umfang:</td><td style="padding:3px 0;">1 Akt, gleichbleibende Dekoration</td></tr>
+              <tr><td style="font-weight:600;color:var(--primary);padding:3px 0;">Ort:</td><td style="padding:3px 0;">Ein Floß auf hoher See</td></tr>
+              <tr><td style="font-weight:600;color:var(--primary);padding:3px 0;">Figuren:</td><td style="padding:3px 0;">Der Dicke, Der Mittlere, Der Schmächtige, Briefträger, Lakai</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card">
+          <div class="card-title">🔍 Merkmale: Absurdes Theater</div>
+          <ul class="card-list">
+            <li><strong>Keine logische Handlung</strong> → Kannibalismus als absurde Grundsituation</li>
+            <li><strong>Groteske Komik</strong> → Demokratische Wahl, wer gegessen wird</li>
+            <li><strong>Figuren = Typen</strong> → Nur Adjektive als Namen: Der Dicke etc.</li>
+            <li><strong>Aneinander-vorbeireden</strong> → Reden wirken nicht aufeinander bezogen</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 14: Textauszug 1 ===== -->
+    <div class="slide slide--content" data-title="Textauszug 1: Absurde Ausgangssituation">
+      <h2 class="slide-heading">Textauszug (1): Die absurde Ausgangssituation <span style="font-size:.73rem;font-weight:400;color:#888;">S. 9–10</span></h2>
+      <div class="dialog-box">
+        DER DICKE &nbsp;&nbsp; Ich habe Hunger.<br>
+        DER MITTLERE &nbsp;&nbsp; Ich würde gern etwas essen.<br>
+        DER SCHMÄCHTIGE &nbsp;&nbsp; Sind die Vorräte zu Ende?<br>
+        DER DICKE &nbsp;&nbsp; Die Vorräte sind völlig erschöpft. [...]<br>
+        DER DICKE &nbsp;&nbsp; Wir müssen essen, aber nicht etwas, sondern jemanden.<br>
+        DER MITTLERE &nbsp;&nbsp; <em>schaut nach rechts, nach links und hinter sich.</em> Ich sehe keinen.<br>
+        DER DICKE &nbsp;&nbsp; Wir müssen einen von uns essen.
+      </div>
+      <div class="analysis-grid">
+        <div class="analysis-card"><div class="analysis-card-title">Exposition</div><div class="analysis-card-text">Ort, Figuren und Grundkonflikt (Hunger) werden im Eröffnungsdialog eingerichtet.</div></div>
+        <div class="analysis-card"><div class="analysis-card-title">Absurde Logik</div><div class="analysis-card-text">Kannibalismus wird sachlich als Konsequenz präsentiert – ohne Entsetzen, fast bürokratisch.</div></div>
+        <div class="analysis-card"><div class="analysis-card-title">Figurentypen</div><div class="analysis-card-text">Namenlose Typen statt Charaktere: Merkmal des absurden Theaters.</div></div>
+        <div class="analysis-card"><div class="analysis-card-title">Konversationsdialog</div><div class="analysis-card-text">Der Dialog klingt höflich und normal – trotz des grotesken Inhalts. Komik entsteht durch Kontrast.</div></div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 15: Textauszug 2 ===== -->
+    <div class="slide slide--content" data-title="Textauszug 2: Die demokratische Wahl">
+      <h2 class="slide-heading">Textauszug (2): Die demokratische „Wahl" <span style="font-size:.73rem;font-weight:400;color:#888;">S. 11–12</span></h2>
+      <div class="dialog-box">
+        DER DICKE &nbsp;&nbsp; Gut, führen wir also freie und allgemeine Wahlen durch!<br>
+        DER MITTLERE &nbsp;&nbsp; Keine schlechte Idee! [...] Wenn es Ihnen recht ist, bilden wir beide eine Wählergemeinschaft, einen Block.<br>
+        DER SCHMÄCHTIGE &nbsp;&nbsp; Der Parlamentarismus hat sich überlebt.<br>
+        DER DICKE &nbsp;&nbsp; Aber es bleibt kein anderer Weg. Oder wollen Sie eine Diktatur? Ich würde mich bereit erklären, die Macht zu ergreifen.<br>
+        DER SCHMÄCHTIGE &nbsp;&nbsp; Nein, nein! Nieder mit der Tyrannei!<br>
+        DER DICKE &nbsp;&nbsp; Also, freie Wahlen!<br>
+        DER MITTLERE &nbsp;&nbsp; Geheime!
+      </div>
+      <div class="analysis-grid">
+        <div class="analysis-card"><div class="analysis-card-title">Politische Satire</div><div class="analysis-card-text">Demokratie, Diktatur, Parlamentarismus werden als Methoden verhandelt, um jemanden zu essen.</div></div>
+        <div class="analysis-card"><div class="analysis-card-title">Komisches Muster</div><div class="analysis-card-text">Der Wahlkampf folgt echten Ritualen – der Zweck ist jedoch grotesk.</div></div>
+        <div class="analysis-card"><div class="analysis-card-title">Figurenkonstellation</div><div class="analysis-card-text">Dicke + Mittlere = Koalition gegen Schmächtigen. Machtallianz zeigt Druck auf das Opfer.</div></div>
+        <div class="analysis-card"><div class="analysis-card-title">Sprache</div><div class="analysis-card-text">Hochpolitische Vokabeln in absurdem Kontext – Komik durch Register-Kontrast.</div></div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 16: Textauszug 3 ===== -->
+    <div class="slide slide--content" data-title="Textauszug 3: Drei Wahlkampf-Reden">
+      <h2 class="slide-heading">Textauszug (3): Die drei Wahlkampf-Reden</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:13px;width:100%;">
+        <div class="card" style="border-top:4px solid var(--red);">
+          <div class="card-title">Der Schmächtige (S. 13–14)</div>
+          <p style="font-size:.8rem;font-style:italic;color:#555;margin-bottom:7px;line-height:1.5;">„Ich habe Frau und Kinder. Mehr als einmal saß ich bei Sonnenuntergang im Garten und schaukelte meine Kinder [...]"</p>
+          <p style="font-size:.78rem;color:#666;">Appell an Mitleid – wird sofort zerpflückt. Schwache Position: private Argumente retten ihn nicht.</p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--yellow);">
+          <div class="card-title">Der Mittlere (S. 14–15)</div>
+          <p style="font-size:.8rem;font-style:italic;color:#555;margin-bottom:7px;line-height:1.5;">„Dagegen ist das Zubereiten leckerer Speisen mein Steckenpferd geworden. Für den guten Koch gibt es nichts Schöneres [...]"</p>
+          <p style="font-size:.78rem;color:#666;">Stellt sich als Koch dar – macht sich durch Kompetenz unentbehrlich. Zynische Strategie.</p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--green);">
+          <div class="card-title">Der Dicke (S. 15–16)</div>
+          <p style="font-size:.8rem;font-style:italic;color:#555;margin-bottom:7px;line-height:1.5;">„Ich bin unverdaulich. Zeitlebens war ich zäh und knochig [...] möglicherweise habe ich Trichinen."</p>
+          <p style="font-size:.78rem;color:#666;">Macht sich durch physische Mängel unappetitlich. Kurz, klar, einschüchternd – gewinnt die Wahl.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 17: Dramenstruktur im Text nachweisen ===== -->
+    <div class="slide slide--content" data-title="Dramenstruktur im Text nachweisen">
+      <h2 class="slide-heading">Dramenstruktur im Text nachweisen</h2>
+      <div class="two-col">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+          <div class="figur-box">Der Dicke<small>Anführer, Demagoge</small></div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:2px;height:24px;background:var(--accent);"></div>
+            <span style="font-size:.72rem;color:var(--accent);font-weight:600;white-space:nowrap;">Koalition</span>
+            <div style="width:2px;height:24px;background:var(--accent);"></div>
+          </div>
+          <div class="figur-box" style="background:var(--accent);">Der Mittlere<small>opportunistischer Verbündeter</small></div>
+          <div style="font-size:.76rem;color:var(--red);font-weight:600;">↓ Druck auf Opfer ↓</div>
+          <div class="figur-box" style="background:var(--red);">Der Schmächtige<small>Opfer</small></div>
+        </div>
+        <div>
+          <div class="card-title" style="margin-bottom:9px;">Strukturelemente nachweisen</div>
+          <ul class="card-list">
+            <li><strong>Exposition:</strong> Erster Dialog: Floß, Hunger, Erschöpfung der Vorräte (S. 9)</li>
+            <li><strong>Konflikt:</strong> Wer wird gegessen? Entscheidung: Los, Wahl oder Diktatur</li>
+            <li><strong>Dramatischer Dialog:</strong> Zielgerichtet, argumentativ – jeder verteidigt seine Haut</li>
+            <li><strong>Absurder Monolog:</strong> Schmächtige: sentimentale Selbstverteidigung (S. 13–14)</li>
+            <li><strong>1 Akt / offenes Drama:</strong> Keine Akt-Einteilung, kein fixer Ort</li>
+            <li><strong>Sprachliche Mittel:</strong> Bürokratische Sprache + grotesker Inhalt</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 18: Aufgaben ===== -->
+    <div class="slide slide--tasks" data-title="Aufgaben: Auf hoher See">
+      <h2 class="slide-heading" style="border-color:var(--yellow);color:#7a4f00;">📝 Aufgaben zu „Auf hoher See"</h2>
+      <div style="width:100%;">
+        <div class="task-item"><div class="task-number">1</div><div><div class="task-label">[Verstehen]</div><div class="task-text">Fasse den Inhalt des vorliegenden Textauszugs in eigenen Worten zusammen.</div></div></div>
+        <div class="task-item"><div class="task-number">2</div><div><div class="task-label">[Analysieren]</div><div class="task-text">Erkläre, welche Merkmale des absurden Theaters im Text nachweisbar sind. Belege mit konkreten Zitaten.</div></div></div>
+        <div class="task-item"><div class="task-number">3</div><div><div class="task-label">[Analysieren]</div><div class="task-text">Untersuche die Figurenkonstellation: Welche Machtverhältnisse bestehen zwischen den drei Schiffbrüchigen?</div></div></div>
+        <div class="task-item"><div class="task-number">4</div><div><div class="task-label">[Interpretieren]</div><div class="task-text">Welche politischen Systeme werden in der „Wahl"-Szene parodiert? Was kritisiert Mrozek damit?</div></div></div>
+        <div class="task-item"><div class="task-number">5</div><div><div class="task-label">[Gestalten]</div><div class="task-text">Schreibe eine weitere Szene: Die Schiffbrüchigen diskutieren, wie das Ergebnis der Abstimmung umgesetzt werden soll – im Stil Mrozeks.</div></div></div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 19: Abschnitt Untergattungen ===== -->
+    <div class="slide slide--section" data-title="Untergattungen des Dramas">
+      <div class="section-number">1</div>
+      <h2 class="section-title">Untergattungen des Dramas</h2>
+    </div>
+
+    <!-- ===== FOLIE 20: Klassische Gattungen ===== -->
+    <div class="slide slide--content" data-title="Klassische Gattungen">
+      <h2 class="slide-heading">Klassische Gattungen</h2>
+      <div class="two-col">
+        <div class="card" style="border-top:4px solid var(--red);">
+          <div class="card-title">⚔️ Tragödie / Schauspiel</div>
+          <ul class="card-list">
+            <li>Untergang der Hauptfigur – Tod oder Scheitern</li>
+            <li>Unlösbarer Konflikt – ausweglose Situation</li>
+            <li>Hauptfigur in der Antike immer aus dem Adel (Fallhöhe)</li>
+            <li>Soll Mitleid und Furcht erzeugen → <strong>Katharsis</strong></li>
+          </ul>
+          <p style="font-size:.76rem;color:#666;margin-top:7px;">Sophokles: <em>König Ödipus</em> · Shakespeare: <em>Hamlet</em> · Schiller: <em>Maria Stuart</em></p>
+          <div class="note-box" style="margin-top:8px;font-size:.78rem;">Bürgerliches Trauerspiel überwindet Ständeklausel (Aufklärung): Lessing: <em>Emilia Galotti</em></div>
+        </div>
+        <div class="card" style="border-top:4px solid var(--green);">
+          <div class="card-title">😂 Komödie</div>
+          <ul class="card-list">
+            <li>Figuren in einem lösbaren Konflikt</li>
+            <li>Konflikt wird aufgelöst – heiteres Ende</li>
+            <li>Oft stereotype Abläufe</li>
+            <li>Protagonisten: einfache Leute</li>
+          </ul>
+          <p style="font-size:.76rem;color:#666;margin-top:7px;">Lessing: <em>Minna von Barnhelm</em> · Kleist: <em>Der zerbrochene Krug</em></p>
+          <div class="note-box" style="margin-top:8px;font-size:.78rem;"><strong>Tragikomödie:</strong> Mischung tragischer und komischer Elemente · Dürrenmatt: <em>Besuch der alten Dame</em> (1956), <em>Die Physiker</em> (1961)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 21: Moderne Gattungen ===== -->
+    <div class="slide slide--content" data-title="Moderne &amp; jüngere Gattungen">
+      <h2 class="slide-heading">Moderne &amp; jüngere Gattungen</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:13px;width:100%;">
+        <div class="card" style="border-top:4px solid #8e44ad;">
+          <div class="card-title">Soziales Drama</div>
+          <p style="font-size:.83rem;color:#555;margin-bottom:7px;">Realistische Darstellung von Elend und Ausbeutung.</p>
+          <p style="font-size:.78rem;color:#888;">Büchner: <em>Woyzeck</em> (1836) · Hauptmann: <em>Die Weber</em> (1893)</p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--primary);">
+          <div class="card-title">Episches Theater (Brecht)</div>
+          <ul class="card-list">
+            <li>„Stück" statt „Drama" · 4. Wand wird aufgelöst</li>
+            <li>Verfremdungseffekte: Schauspieler sprechen Publikum an, Lieder unterbrechen Geschehen</li>
+          </ul>
+          <p style="font-size:.78rem;color:#888;margin-top:7px;"><em>Mutter Courage</em> (1941)</p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--accent);">
+          <div class="card-title">Absurdes Theater</div>
+          <ul class="card-list">
+            <li>Keine logische Handlung · Groteske Komik</li>
+            <li>Keine Charaktere – eher Marionetten</li>
+          </ul>
+          <p style="font-size:.78rem;color:#888;margin-top:7px;">Beckett: <em>Warten auf Godot</em> (1952)</p>
+        </div>
+        <div class="card" style="border-top:4px solid var(--green);">
+          <div class="card-title">Dokumentartheater</div>
+          <p style="font-size:.83rem;color:#555;margin-bottom:7px;">Politische Aufklärung durch authentische Quellen: Zitate, Dokumente, Interviews.</p>
+          <p style="font-size:.78rem;color:#888;">Kipphardt: <em>In der Sache J. R. Oppenheimer</em> (1963)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 22: Abschnitt Dramenstruktur ===== -->
+    <div class="slide slide--section" data-title="Aspekte der Dramenstruktur">
+      <div class="section-number">2</div>
+      <h2 class="section-title">Aspekte der Dramenstruktur</h2>
+    </div>
+
+    <!-- ===== FOLIE 23: Handlung im Drama ===== -->
+    <div class="slide slide--content" data-title="Handlung im Drama">
+      <h2 class="slide-heading">Handlung im Drama</h2>
+      <div class="two-col">
+        <div class="card" style="border-left:4px solid var(--accent);">
+          <div class="card-title">Direkte Handlung</div>
+          <p style="font-size:.86rem;color:#444;line-height:1.5;">Aktionen und Dialoge, die der Zuschauer unmittelbar miterlebt.</p>
+        </div>
+        <div class="card" style="border-left:4px solid var(--primary);">
+          <div class="card-title">Berichtete Handlung</div>
+          <p style="font-size:.86rem;color:#444;line-height:1.5;margin-bottom:11px;">Zuschauer erfährt Ereignisse nur durch Berichte von Figuren.</p>
+          <ul class="card-list">
+            <li><strong>Botenbericht:</strong> Eine Figur informiert über Ereignisse abseits der Bühne</li>
+            <li><strong>Teichoskopie (Mauerschau):</strong> Figur blickt von der Bühne und schildert simultane Ereignisse, die das Publikum nicht sehen kann</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 24: Freytag-Dreieck ===== -->
+    <div class="slide slide--content" data-title="Das Dreieck nach Gustav Freytag">
+      <h2 class="slide-heading">Aufbau: Das Dreieck nach Gustav Freytag</h2>
+      <div style="width:100%;overflow-x:auto;">
+        <svg viewBox="0 0 620 210" xmlns="http://www.w3.org/2000/svg"
+             style="max-width:600px;width:100%;margin:0 auto;display:block;">
+          <polyline points="30,175 210,30 390,175"
+                    fill="none" stroke="#1e3a5f" stroke-width="3" stroke-linejoin="round"/>
+          <line x1="390" y1="175" x2="590" y2="175"
+                stroke="#e74c3c" stroke-width="3" stroke-dasharray="7,4"/>
+          <circle cx="30"  cy="175" r="6" fill="#1e3a5f"/>
+          <circle cx="210" cy="30"  r="8" fill="#4a9eda"/>
+          <circle cx="390" cy="175" r="6" fill="#1e3a5f"/>
+          <circle cx="590" cy="175" r="6" fill="#e74c3c"/>
+          <!-- Akt-Labels -->
+          <text x="30"  y="194" font-size="11" fill="#1e3a5f" font-family="system-ui" text-anchor="middle" font-weight="600">1. Akt</text>
+          <text x="30"  y="206" font-size="9"  fill="#666"    font-family="system-ui" text-anchor="middle">Exposition</text>
+          <text x="120" y="104" font-size="11" fill="#1e3a5f" font-family="system-ui" text-anchor="middle" font-weight="600">2. Akt</text>
+          <text x="120" y="116" font-size="9"  fill="#666"    font-family="system-ui" text-anchor="middle">Err. Moment</text>
+          <text x="210" y="22"  font-size="11" fill="#4a9eda" font-family="system-ui" text-anchor="middle" font-weight="700">3. Akt</text>
+          <text x="210" y="11"  font-size="9"  fill="#4a9eda" font-family="system-ui" text-anchor="middle">Peripetie</text>
+          <text x="300" y="104" font-size="11" fill="#1e3a5f" font-family="system-ui" text-anchor="middle" font-weight="600">4. Akt</text>
+          <text x="300" y="116" font-size="9"  fill="#666"    font-family="system-ui" text-anchor="middle">Ret. Moment</text>
+          <text x="390" y="194" font-size="11" fill="#1e3a5f" font-family="system-ui" text-anchor="middle" font-weight="600">5. Akt</text>
+          <text x="390" y="206" font-size="9"  fill="#666"    font-family="system-ui" text-anchor="middle">Katastrophe</text>
+          <text x="590" y="194" font-size="10" fill="#e74c3c" font-family="system-ui" text-anchor="middle">Lösung</text>
+          <text x="590" y="206" font-size="9"  fill="#e74c3c" font-family="system-ui" text-anchor="middle">(Komödie)</text>
+        </svg>
+      </div>
+      <div class="note-box">
+        ⚠️ Das Dreieck ist keine Spannungskurve! Es zeigt die <strong>Struktur der Handlung</strong>, nicht den Spannungsverlauf.
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 25: Die fünf Akte ===== -->
+    <div class="slide slide--content" data-title="Die fünf Akte im Überblick">
+      <h2 class="slide-heading">Die fünf Akte im Überblick</h2>
+      <table class="akt-table">
+        <thead>
+          <tr>
+            <th style="width:75px;">Akt</th>
+            <th style="width:165px;">Bezeichnung</th>
+            <th>Inhalt &amp; Funktion</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1. Akt</td><td>Exposition</td><td>Zeit, Ort, Atmosphäre · Hauptfiguren · Vorgeschichte · Konflikt wird eingeführt</td></tr>
+          <tr><td>2. Akt</td><td>Erregendes Moment</td><td>Konflikt bricht aus · Figuren geraten in Auseinandersetzungen · Spannung steigt</td></tr>
+          <tr><td>3. Akt</td><td>Peripetie</td><td>Höhepunkt des Konflikts · Held: Sieg oder Niederlage, Erhöhung oder Absturz</td></tr>
+          <tr><td>4. Akt</td><td>Retardierendes Moment</td><td>Mehrere mögliche Ausgänge · Auflösung wird verzögert · Spannung steigt weiter</td></tr>
+          <tr><td>5. Akt</td><td>Katastrophe / Lösung</td><td>Tragödie: tragisches Ende · Komödie: Auflösung, glückliche Lösung des Konflikts</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /ppp-slides -->
+
+  <!-- === NAVIGATIONSLEISTE === -->
+  <nav class="ppp-nav" aria-label="Folien-Navigation">
+    <a href="../deutsch-theaterprojekt.html" class="nav-home">← Theaterprojekt</a>
+    <button class="nav-btn" id="btnPrev" aria-label="Vorherige Folie" disabled>◀ Zurück</button>
+    <span class="nav-slide-title" id="slideTitle"></span>
+    <span class="nav-counter" id="slideCounter">1 / 25</span>
+    <button class="nav-btn" id="btnNext" aria-label="Nächste Folie">Weiter ▶</button>
+  </nav>
+
+  <script>
+  (function () {
+    var slides  = document.querySelectorAll('.slide');
+    var total   = slides.length;
+    var current = 0;
+    var btnPrev     = document.getElementById('btnPrev');
+    var btnNext     = document.getElementById('btnNext');
+    var counter     = document.getElementById('slideCounter');
+    var titleEl     = document.getElementById('slideTitle');
+    var progressBar = document.getElementById('progressBar');
+
+    function goTo(index) {
+      if (index < 0 || index >= total) return;
+      slides[current].classList.remove('active');
+      current = index;
+      slides[current].classList.add('active');
+      slides[current].scrollTop = 0;
+      update();
+    }
+
+    function update() {
+      counter.textContent      = (current + 1) + ' / ' + total;
+      titleEl.textContent      = slides[current].dataset.title || '';
+      btnPrev.disabled         = current === 0;
+      btnNext.disabled         = current === total - 1;
+      progressBar.style.width  = ((current + 1) / total * 100) + '%';
+    }
+
+    btnPrev.addEventListener('click', function () { goTo(current - 1); });
+    btnNext.addEventListener('click', function () { goTo(current + 1); });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+        e.preventDefault(); goTo(current + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault(); goTo(current - 1);
+      }
+    });
+
+    var touchX = null;
+    document.addEventListener('touchstart', function (e) {
+      touchX = e.touches[0].clientX;
+    }, { passive: true });
+    document.addEventListener('touchend', function (e) {
+      if (touchX === null) return;
+      var diff = touchX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+      touchX = null;
+    }, { passive: true });
+
+    update();
+  })();
+  </script>
+
+</body>
+</html>
