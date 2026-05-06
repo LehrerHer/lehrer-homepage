@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<!-- saved from url=(0075)file:///C:/Users/janhe/Downloads/AB_Narratologische_Analyse_Feedback_2.html -->
+<html lang="de"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AB: Techniken des Erzählens – Narratologische Analyse</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #faf9f7;
+    --surface: #ffffff;
+    --surface2: #f4f2ee;
+    --border: #dddbd5;
+    --border2: #c8c5be;
+    --text: #1a1917;
+    --text2: #5c5952;
+    --text3: #9c9890;
+    --accent: #2d5a8e;
+    --accent-light: #e8f0f8;
+
+    --ok: #1a6b38;
+    --ok-bg: #eaf5ef;
+    --ok-border: #a3d4b5;
+
+    --warn: #7a5200;
+    --warn-bg: #fff8e6;
+    --warn-border: #f0c84a;
+
+    --err: #8b1a1a;
+    --err-bg: #fdf0f0;
+    --err-border: #e8a0a0;
+
+    --neu: #444;
+    --neu-bg: #f4f2ee;
+    --neu-border: #dddbd5;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 15px;
+    line-height: 1.5;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .page { max-width: 800px; margin: 0 auto; }
+
+  /* Werkauswahl */
+  .werk-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .werk-bar label {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+    white-space: nowrap;
+  }
+  .werk-bar select {
+    flex: 1;
+    min-width: 200px;
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    border-radius: 3px;
+    padding: 5px 8px;
+    cursor: pointer;
+  }
+
+  /* Header */
+  .doc-header {
+    border-top: 3px solid var(--text);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+  .doc-label {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .doc-title {
+    font-size: 22px;
+    font-weight: normal;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+  .doc-subtitle {
+    font-size: 13px;
+    color: var(--text2);
+    font-style: italic;
+  }
+  #werkname-display {
+    font-size: 13px;
+    color: var(--accent);
+    margin-top: 4px;
+    font-style: normal;
+  }
+
+  /* Savebar */
+  .savebar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .save-status {
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+    color: var(--text3);
+  }
+
+  /* Feedback-Banner */
+  .feedback-banner {
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin-bottom: 1.25rem;
+    font-size: 13px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.04em;
+    display: none;
+  }
+  .feedback-banner.visible { display: block; }
+  .feedback-banner.ok { background: var(--ok-bg); border: 1px solid var(--ok-border); color: var(--ok); }
+  .feedback-banner.warn { background: var(--warn-bg); border: 1px solid var(--warn-border); color: var(--warn); }
+  .feedback-banner.err { background: var(--err-bg); border: 1px solid var(--err-border); color: var(--err); }
+
+  /* Section */
+  .section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    margin-bottom: 0.75rem;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .section-head {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 6px 14px;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text2);
+  }
+
+  .col-header {
+    display: grid;
+    grid-template-columns: 220px 1fr 28px;
+    gap: 8px;
+    padding: 4px 14px 3px;
+    border-bottom: 1px solid var(--border);
+  }
+  .col-header span {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--text3);
+    text-transform: uppercase;
+  }
+
+  /* Row */
+  .row {
+    display: grid;
+    grid-template-columns: 220px 1fr 28px;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 14px;
+    border-bottom: 1px solid var(--border);
+    min-height: 38px;
+    transition: background 0.2s;
+  }
+  .row:last-child { border-bottom: none; }
+
+  .row.state-ok   { background: var(--ok-bg); }
+  .row.state-warn { background: var(--warn-bg); }
+  .row.state-err  { background: var(--err-bg); }
+
+  .row-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .row-label input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    margin-top: 3px;
+    flex-shrink: 0;
+    cursor: pointer;
+    accent-color: var(--accent);
+  }
+  .row-label label {
+    font-size: 14px;
+    color: var(--text);
+    cursor: pointer;
+    line-height: 1.4;
+  }
+  .sublabel {
+    font-size: 12px;
+    color: var(--text3);
+    font-style: italic;
+  }
+
+  /* Indent */
+  .row.indent {
+    background: #fdfcfb;
+    padding-left: 32px;
+    grid-template-columns: 204px 1fr 28px;
+  }
+  .row.indent.state-ok   { background: var(--ok-bg); }
+  .row.indent.state-warn { background: var(--warn-bg); }
+  .row.indent.state-err  { background: var(--err-bg); }
+
+  .subgroup-label {
+    padding: 4px 14px 3px 32px;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    color: var(--text3);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    background: #fdfcfb;
+  }
+
+  /* Feedback-Icon */
+  .fb-icon {
+    font-size: 16px;
+    text-align: center;
+    line-height: 1;
+  }
+
+  /* Text input */
+  .row input[type="text"] {
+    width: 100%;
+    border: none;
+    border-bottom: 1px dashed var(--border2);
+    background: transparent;
+    font-family: 'Georgia', serif;
+    font-size: 13px;
+    color: var(--text);
+    padding: 2px 4px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .row input[type="text"]:focus {
+    border-bottom-color: var(--accent);
+    border-bottom-style: solid;
+  }
+  .row input[type="text"]::placeholder {
+    color: var(--text3);
+    font-style: italic;
+    font-size: 12px;
+  }
+
+  /* Textarea sections */
+  .text-section { padding: 10px 14px 12px; }
+  .text-section label {
+    display: block;
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 0.06em;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .text-section textarea {
+    width: 100%;
+    min-height: 80px;
+    border: 1px dashed var(--border2);
+    background: transparent;
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    color: var(--text);
+    padding: 8px;
+    resize: vertical;
+    outline: none;
+    border-radius: 2px;
+    transition: border-color 0.2s;
+    line-height: 1.6;
+  }
+  .text-section textarea:focus {
+    border-color: var(--accent);
+    border-style: solid;
+  }
+  .text-section textarea::placeholder {
+    color: var(--text3);
+    font-style: italic;
+    font-size: 13px;
+  }
+
+  /* Textarea feedback */
+  .textarea-feedback {
+    margin-top: 6px;
+    font-size: 12px;
+    font-family: 'Courier New', monospace;
+    padding: 6px 10px;
+    border-radius: 3px;
+    display: none;
+  }
+  .textarea-feedback.visible { display: block; }
+  .textarea-feedback.ok  { background: var(--ok-bg);   color: var(--ok);   border: 1px solid var(--ok-border); }
+  .textarea-feedback.err { background: var(--err-bg);  color: var(--err);  border: 1px solid var(--err-border); }
+
+  /* Musterlösung anzeigen */
+  .muster-block {
+    display: none;
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: #f0f4fa;
+    border: 1px solid #b8d0e8;
+    border-radius: 3px;
+    font-size: 13px;
+    color: var(--accent);
+    font-style: italic;
+  }
+  .muster-block.visible { display: block; }
+
+  /* Aufgaben */
+  .aufgaben {
+    background: var(--accent-light);
+    border: 1px solid #b8d0e8;
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+  .aufgaben-title {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .aufgaben ol { padding-left: 1.2rem; }
+  .aufgaben li {
+    font-size: 14px;
+    color: var(--text2);
+    margin-bottom: 3px;
+    font-style: italic;
+  }
+
+  /* Score */
+  .score-bar {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 12px 16px;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .score-label {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text3);
+  }
+  .score-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--accent);
+  }
+  .score-bar progress {
+    flex: 1;
+    min-width: 100px;
+    height: 8px;
+    border-radius: 4px;
+    border: none;
+    background: var(--surface2);
+  }
+  .score-bar progress::-webkit-progress-bar { background: var(--surface2); border-radius: 4px; }
+  .score-bar progress::-webkit-progress-value { background: var(--accent); border-radius: 4px; }
+
+  /* Buttons */
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 0.5rem; }
+  button {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 6px 16px;
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    color: var(--text2);
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.15s, color 0.15s;
+  }
+  button:hover { background: var(--surface2); color: var(--text); }
+  button.primary { border-color: var(--accent); color: var(--accent); }
+  button.primary:hover { background: var(--accent-light); }
+  button.danger:hover { background: #fdecea; color: #a03030; border-color: #d09090; }
+  button.green { border-color: var(--ok); color: var(--ok); }
+  button.green:hover { background: var(--ok-bg); }
+
+  /* Kein Werk gewählt */
+  .no-werk {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text3);
+    font-style: italic;
+    font-size: 14px;
+    border: 1px dashed var(--border);
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+
+  @media print {
+    body { background: white; padding: 0.5rem; font-size: 13px; }
+    .savebar, .btn-row, .werk-bar, .score-bar, .fb-icon, .feedback-banner, .textarea-feedback, .muster-block { display: none !important; }
+    .section { border: 1px solid #ccc; }
+    .row { background: white !important; }
+    .row input[type="text"] { border-bottom: 1px solid #aaa; }
+    .text-section textarea { border: 1px solid #aaa; min-height: 60px; }
+  }
+
+  /* ---- Tab-Navigation ---- */
+  .tab-nav {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border);
+  }
+  .tab-btn {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 8px 20px;
+    border: none;
+    border-bottom: 3px solid transparent;
+    background: transparent;
+    color: var(--text3);
+    cursor: pointer;
+    margin-bottom: -2px;
+    border-radius: 0;
+  }
+  .tab-btn:hover { color: var(--text2); background: transparent; }
+  .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: bold; }
+
+  /* ---- Passwort-Overlay ---- */
+  .pw-overlay {
+    text-align: center;
+    padding: 3rem 1rem;
+    border: 1px dashed var(--border2);
+    border-radius: 4px;
+  }
+  .pw-overlay h2 { font-size: 16px; font-weight: normal; color: var(--text2); margin-bottom: 1rem; }
+  .pw-overlay input {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    padding: 6px 10px;
+    border: 1px solid var(--border2);
+    border-radius: 3px;
+    margin-right: 8px;
+    width: 180px;
+  }
+  .pw-err { color: var(--err); font-size: 13px; margin-top: 8px; font-family: 'Courier New', monospace; }
+
+  /* ---- Lehrermodus ---- */
+  .lm-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+  .lm-head {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 6px 14px;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text2);
+  }
+  .lm-grid {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 0;
+  }
+  .lm-row {
+    display: contents;
+  }
+  .lm-label {
+    padding: 7px 14px;
+    font-size: 14px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .lm-label input[type="checkbox"] {
+    width: 15px; height: 15px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .lm-label label { cursor: pointer; font-size: 14px; }
+  .lm-label .sublabel { font-size: 12px; color: var(--text3); font-style: italic; }
+  .lm-cell {
+    padding: 4px 14px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+  }
+  .lm-cell:last-child, .lm-label:last-child { border-bottom: none; }
+  .lm-hint {
+    font-size: 12px;
+    color: var(--text3);
+    font-style: italic;
+  }
+  .lm-subhead {
+    padding: 4px 14px 3px 28px;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    color: var(--text3);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    background: #fdfcfb;
+    grid-column: 1 / -1;
+  }
+  .lm-textarea {
+    width: 100%;
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    border: 1px dashed var(--border2);
+    border-radius: 2px;
+    padding: 8px;
+    min-height: 70px;
+    resize: vertical;
+    outline: none;
+    color: var(--text);
+    line-height: 1.6;
+  }
+  .lm-textarea:focus { border-color: var(--accent); border-style: solid; }
+  .lm-textarea::placeholder { color: var(--text3); font-style: italic; font-size: 13px; }
+  .lm-input {
+    width: 100%;
+    font-family: 'Georgia', serif;
+    font-size: 14px;
+    border: none;
+    border-bottom: 1px dashed var(--border2);
+    background: transparent;
+    padding: 4px 4px;
+    outline: none;
+    color: var(--text);
+  }
+  .lm-input:focus { border-bottom-color: var(--accent); border-bottom-style: solid; }
+  .lm-input::placeholder { color: var(--text3); font-style: italic; font-size: 13px; }
+
+  /* Werkliste */
+  .werk-list-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+  .werk-list-item:last-child { border-bottom: none; }
+  .werk-list-item span { flex: 1; }
+  .werk-list-item button { padding: 3px 10px; font-size: 11px; }
+  .werk-badge {
+    font-size: 10px;
+    font-family: 'Courier New', monospace;
+    padding: 2px 6px;
+    border-radius: 2px;
+    background: var(--accent-light);
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .werk-badge.builtin { background: var(--surface2); color: var(--text3); }
+
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Tab Navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" id="tabBtnSuS" onclick="switchTab(&#39;sus&#39;)">Schüler/-innen</button>
+    <button class="tab-btn" id="tabBtnLehrer" onclick="switchTab(&#39;lehrer&#39;)">Lehrermodus</button>
+  </div>
+
+  <!-- SuS-Tab -->
+  <div id="tabSuS">
+
+  <div class="doc-header">
+    <div class="doc-label">Arbeitsblatt · Jahrgang 9/10</div>
+    <h1 class="doc-title">Techniken des Erzählens</h1>
+    <div class="doc-subtitle">Narratologische Analyse — Mehrfachankreuzungen möglich</div>
+    <div id="werkname-display"></div>
+  </div>
+
+  <!-- Werkauswahl -->
+  <div class="werk-bar">
+    <label for="werkSelect">Werk auswählen:</label>
+    <select id="werkSelect" onchange="onWerkChange()">
+      <option value="">— bitte wählen —</option>
+      <option value="kaminer_schoenhauser">Kaminer: „Schönhauser Allee im Regen" (2001)</option>
+    </select>
+  </div>
+
+  <div id="noWerkMsg" class="no-werk">Wähle zunächst ein Werk aus, um mit der Analyse zu beginnen.</div>
+
+  <div id="mainContent" style="display:none">
+
+    <!-- Score -->
+    <div class="score-bar">
+      <span class="score-label">Fortschritt</span>
+      <progress id="scoreProgress" max="100" value="0"></progress>
+      <span class="score-value" id="scoreText">0 %</span>
+      <button class="green" onclick="showMuster()">💡 Musterlösung anzeigen</button>
+    </div>
+
+    <div class="savebar">
+      <button class="primary" onclick="saveNow()">💾 Speichern</button>
+      <button onclick="window.print()">🖨 Drucken</button>
+      <button class="danger" onclick="clearAll()">Zurücksetzen</button>
+      <span class="save-status" id="saveStatus">Automatisch gespeichert bei jeder Eingabe.</span>
+    </div>
+
+    <div id="globalFeedback" class="feedback-banner"></div>
+
+    <!-- Aufgaben -->
+    <div class="aufgaben">
+      <div class="aufgaben-title">Aufgaben</div>
+      <ol>
+        <li>Kreuze an und fülle aus!</li>
+        <li>Gib Textstellenbelege an!</li>
+        <li>Erläutere die Wirkung des Erzählers!</li>
+      </ol>
+    </div>
+
+    <!-- Erzählerstandort -->
+    <div class="section">
+      <div class="section-head">Erzählerstandort</div>
+      <div class="col-header"><span>Merkmal</span><span>Textstellenbeleg</span><span></span></div>
+      <div class="row" id="row_homo">
+        <div class="row-label">
+          <input type="checkbox" id="homo" data-key="homo" onchange="evaluate()">
+          <label for="homo">homodiegetisch</label>
+        </div>
+        <input type="text" data-key="homo_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_homo"></span>
+      </div>
+      <div class="row indent" id="row_auto">
+        <div class="row-label">
+          <input type="checkbox" id="auto" data-key="auto" onchange="evaluate()">
+          <label for="auto">autodiegetisch <span class="sublabel">(Sonderfall)</span></label>
+        </div>
+        <input type="text" data-key="auto_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_auto"></span>
+      </div>
+      <div class="row" id="row_hetero">
+        <div class="row-label">
+          <input type="checkbox" id="hetero" data-key="hetero" onchange="evaluate()">
+          <label for="hetero">heterodiegetisch</label>
+        </div>
+        <input type="text" data-key="hetero_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_hetero"></span>
+      </div>
+    </div>
+
+    <!-- Erzählform -->
+    <div class="section">
+      <div class="section-head">Erzählform</div>
+      <div class="col-header"><span>Merkmal</span><span>Textstellenbeleg</span><span></span></div>
+      <div class="row" id="row_ich">
+        <div class="row-label">
+          <input type="checkbox" id="ich" data-key="ich" onchange="evaluate()">
+          <label for="ich">Ich-Erzählung</label>
+        </div>
+        <input type="text" data-key="ich_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_ich"></span>
+      </div>
+      <div class="row" id="row_erer">
+        <div class="row-label">
+          <input type="checkbox" id="erer" data-key="erer" onchange="evaluate()">
+          <label for="erer">Er-/Sie-Erzählung</label>
+        </div>
+        <input type="text" data-key="erer_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_erer"></span>
+      </div>
+    </div>
+
+    <!-- Fokalisierung -->
+    <div class="section">
+      <div class="section-head">Fokalisierung</div>
+      <div class="col-header"><span>Merkmal</span><span>Textstellenbeleg</span><span></span></div>
+      <div class="row" id="row_null">
+        <div class="row-label">
+          <input type="checkbox" id="null" data-key="null" onchange="evaluate()">
+          <label for="null">Nullfokalisierung</label>
+        </div>
+        <input type="text" data-key="null_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_null"></span>
+      </div>
+      <div class="row" id="row_intern">
+        <div class="row-label">
+          <input type="checkbox" id="intern" data-key="intern" onchange="evaluate()">
+          <label for="intern">interne Fokalisierung</label>
+        </div>
+        <input type="text" data-key="intern_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_intern"></span>
+      </div>
+      <div class="row" id="row_extern">
+        <div class="row-label">
+          <input type="checkbox" id="extern" data-key="extern" onchange="evaluate()">
+          <label for="extern">externe Fokalisierung</label>
+        </div>
+        <input type="text" data-key="extern_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_extern"></span>
+      </div>
+    </div>
+
+    <!-- Zeitdauer -->
+    <div class="section">
+      <div class="section-head">Zeitdauer</div>
+      <div class="col-header"><span>Merkmal</span><span>Textstellenbeleg</span><span></span></div>
+      <div class="row" id="row_dehnung">
+        <div class="row-label">
+          <input type="checkbox" id="dehnung" data-key="dehnung" onchange="evaluate()">
+          <label for="dehnung">Zeitdehnung</label>
+        </div>
+        <input type="text" data-key="dehnung_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_dehnung"></span>
+      </div>
+      <div class="row" id="row_raffung">
+        <div class="row-label">
+          <input type="checkbox" id="raffung" data-key="raffung" onchange="evaluate()">
+          <label for="raffung">Zeitraffung</label>
+        </div>
+        <input type="text" data-key="raffung_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_raffung"></span>
+      </div>
+      <div class="row" id="row_deckung">
+        <div class="row-label">
+          <input type="checkbox" id="deckung" data-key="deckung" onchange="evaluate()">
+          <label for="deckung">Zeitdeckung</label>
+        </div>
+        <input type="text" data-key="deckung_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_deckung"></span>
+      </div>
+    </div>
+
+    <!-- Zeitordnung -->
+    <div class="section">
+      <div class="section-head">Zeitordnung</div>
+      <div class="col-header"><span>Merkmal</span><span>Textstellenbeleg</span><span></span></div>
+      <div class="row" id="row_analepse">
+        <div class="row-label">
+          <input type="checkbox" id="analepse" data-key="analepse" onchange="evaluate()">
+          <label for="analepse">Analepse <span class="sublabel">(Anachronie)</span></label>
+        </div>
+        <input type="text" data-key="analepse_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_analepse"></span>
+      </div>
+      <div class="row" id="row_prolepse">
+        <div class="row-label">
+          <input type="checkbox" id="prolepse" data-key="prolepse" onchange="evaluate()">
+          <label for="prolepse">Prolepse <span class="sublabel">(Anachronie)</span></label>
+        </div>
+        <input type="text" data-key="prolepse_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_prolepse"></span>
+      </div>
+      <div class="row" id="row_chrono">
+        <div class="row-label">
+          <input type="checkbox" id="chrono" data-key="chrono" onchange="evaluate()">
+          <label for="chrono">Chronologie</label>
+        </div>
+        <input type="text" data-key="chrono_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_chrono"></span>
+      </div>
+    </div>
+
+    <!-- Frequenz -->
+    <div class="section">
+      <div class="section-head">Frequenz</div>
+      <div class="col-header"><span>Merkmal</span><span>Textstellenbeleg</span><span></span></div>
+      <div class="row" id="row_sing">
+        <div class="row-label">
+          <input type="checkbox" id="sing" data-key="sing" onchange="evaluate()">
+          <label for="sing">singulativ</label>
+        </div>
+        <input type="text" data-key="sing_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_sing"></span>
+      </div>
+      <div class="row" id="row_repet">
+        <div class="row-label">
+          <input type="checkbox" id="repet" data-key="repet" onchange="evaluate()">
+          <label for="repet">repetitiv</label>
+        </div>
+        <input type="text" data-key="repet_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_repet"></span>
+      </div>
+      <div class="row" id="row_iter">
+        <div class="row-label">
+          <input type="checkbox" id="iter" data-key="iter" onchange="evaluate()">
+          <label for="iter">iterativ</label>
+        </div>
+        <input type="text" data-key="iter_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_iter"></span>
+      </div>
+    </div>
+
+    <!-- Zeit der Narration -->
+    <div class="section">
+      <div class="section-head">Zeit der Narration</div>
+      <div class="col-header"><span>Merkmal</span><span>Textstellenbeleg</span><span></span></div>
+      <div class="row" id="row_spaeter">
+        <div class="row-label">
+          <input type="checkbox" id="spaeter" data-key="spaeter" onchange="evaluate()">
+          <label for="spaeter">später</label>
+        </div>
+        <input type="text" data-key="spaeter_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_spaeter"></span>
+      </div>
+      <div class="row" id="row_frueher">
+        <div class="row-label">
+          <input type="checkbox" id="frueher" data-key="frueher" onchange="evaluate()">
+          <label for="frueher">früher</label>
+        </div>
+        <input type="text" data-key="frueher_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_frueher"></span>
+      </div>
+      <div class="row" id="row_gleich">
+        <div class="row-label">
+          <input type="checkbox" id="gleich" data-key="gleich" onchange="evaluate()">
+          <label for="gleich">gleichzeitig</label>
+        </div>
+        <input type="text" data-key="gleich_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_gleich"></span>
+      </div>
+      <div class="row" id="row_einge">
+        <div class="row-label">
+          <input type="checkbox" id="einge" data-key="einge" onchange="evaluate()">
+          <label for="einge">eingeschoben</label>
+        </div>
+        <input type="text" data-key="einge_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_einge"></span>
+      </div>
+    </div>
+
+    <!-- Figurenrede -->
+    <div class="section">
+      <div class="section-head">Figurenrede</div>
+      <div class="col-header"><span>Merkmal</span><span>Textstellenbeleg</span><span></span></div>
+      <div class="subgroup-label">Gesprochene Rede</div>
+      <div class="row indent" id="row_direkt">
+        <div class="row-label">
+          <input type="checkbox" id="direkt" data-key="direkt" onchange="evaluate()">
+          <label for="direkt">direkte Rede</label>
+        </div>
+        <input type="text" data-key="direkt_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_direkt"></span>
+      </div>
+      <div class="row indent" id="row_indirekt">
+        <div class="row-label">
+          <input type="checkbox" id="indirekt" data-key="indirekt" onchange="evaluate()">
+          <label for="indirekt">indirekte Rede</label>
+        </div>
+        <input type="text" data-key="indirekt_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_indirekt"></span>
+      </div>
+      <div class="row indent" id="row_erlebt">
+        <div class="row-label">
+          <input type="checkbox" id="erlebt" data-key="erlebt" onchange="evaluate()">
+          <label for="erlebt">erlebte Rede</label>
+        </div>
+        <input type="text" data-key="erlebt_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_erlebt"></span>
+      </div>
+      <div class="subgroup-label">Stumme Rede</div>
+      <div class="row indent" id="row_monolog">
+        <div class="row-label">
+          <input type="checkbox" id="monolog" data-key="monolog" onchange="evaluate()">
+          <label for="monolog">innerer Monolog</label>
+        </div>
+        <input type="text" data-key="monolog_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_monolog"></span>
+      </div>
+      <div class="row indent" id="row_bewusstsein">
+        <div class="row-label">
+          <input type="checkbox" id="bewusstsein" data-key="bewusstsein" onchange="evaluate()">
+          <label for="bewusstsein">Bewusstseinsstrom</label>
+        </div>
+        <input type="text" data-key="bewusstsein_text" placeholder="„Textstelle …" ,="" s.="" "="" oninput="evaluate()">
+        <span class="fb-icon" id="fb_bewusstsein"></span>
+      </div>
+    </div>
+
+    <!-- Erzählhaltung -->
+    <div class="section">
+      <div class="section-head">Erzählhaltung</div>
+      <div class="text-section">
+        <label for="haltung">Beschreibung (z. B. humoristisch, distanziert, ironisch …)</label>
+        <textarea id="haltung" data-key="haltung" placeholder="Erzählhaltung beschreiben …" oninput="evaluate()"></textarea>
+        <div class="textarea-feedback" id="fb_haltung_text"></div>
+        <div class="muster-block" id="muster_haltung"></div>
+      </div>
+    </div>
+
+    <!-- Wirkung -->
+    <div class="section">
+      <div class="section-head">Wirkung des Erzählers</div>
+      <div class="text-section">
+        <label for="wirkung">Erläutere die Wirkung, die durch die gewählten Erzähltechniken erzielt wird.</label>
+        <textarea id="wirkung" data-key="wirkung" style="min-height: 120px" placeholder="Durch die Wahl von … wirkt der Erzähler … Dies erzeugt beim Leser …" oninput="evaluate()"></textarea>
+        <div class="textarea-feedback" id="fb_wirkung_text"></div>
+        <div class="muster-block" id="muster_wirkung"></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="primary" onclick="saveNow()">💾 Speichern</button>
+      <button onclick="window.print()">🖨 Drucken</button>
+      <button class="danger" onclick="clearAll()">Zurücksetzen</button>
+    </div>
+
+  </div><!-- /mainContent -->
+</div>
+
+<script>
+// ============================================================
+// MUSTERLÖSUNGEN — hier neue Werke ergänzen
+// ============================================================
+const LOESUNGEN = {
+
+  kaminer_schoenhauser: {
+    titel: 'Kaminer: „Schönhauser Allee im Regen" (2001)',
+
+    // Checkboxen: true = ankreuzen, false = nicht ankreuzen
+    checks: {
+      homo:        true,   // Erzählerstandort: homodiegetisch ✓
+      auto:        true,   // autodiegetisch (Sonderfall) ✓  — Ich-Erzähler = Protagonist
+      hetero:      false,
+      ich:         true,   // Erzählform: Ich-Erzählung ✓
+      erer:        false,
+      null:        false,  // Fokalisierung
+      intern:      true,   // interne Fokalisierung ✓
+      extern:      false,
+      dehnung:     true,   // Zeitdauer: Zeitdehnung ✓ (Dialogszenen in Echtzeit)
+      raffung:     true,   // Zeitraffung ✓ (Zusammenfassung der Gewohnheit am Anfang)
+      deckung:     false,
+      analepse:    false,  // Zeitordnung
+      prolepse:    false,
+      chrono:      true,   // Chronologie ✓
+      sing:        true,   // Frequenz: singulativ ✓ (der konkrete Spaziergang)
+      repet:       false,
+      iter:        true,   // iterativ ✓ (»Das Mädchen macht ihn jedes Mal…«)
+      spaeter:     true,   // Zeit der Narration: später ✓ (nachträglich erzählt)
+      frueher:     false,
+      gleich:      false,
+      einge:       false,
+      direkt:      true,   // Figurenrede: direkte Rede ✓
+      indirekt:    false,
+      erlebt:      false,
+      monolog:     false,
+      bewusstsein: false,
+    },
+
+    // Musterlösung Erzählhaltung (Freitext)
+    haltung: 'humoristisch-ironisch; distanziert-beobachtend; leicht lakonisch; der Erzähler kommentiert kaum, sondern lässt die Szenen für sich sprechen.',
+
+    // Musterlösung Wirkung (Freitext)
+    wirkung: 'Durch die autodiegetische Erzählsituation und die interne Fokalisierung entsteht eine vertraute, persönliche Erzählatmosphäre: Der Leser erlebt die Schönhauser Allee durch die Augen eines eingewanderten Berliner Vaters. Die humoristische Distanz (z. B. Nicoles naive Fragen, der Witz des vietnamesischen Mädchens) erzeugt einen milden, sympathischen Blick auf das Miteinander der Kulturen. Der Wechsel zwischen iterativem Erzählen (Gewohnheiten im Kiez) und singulativem Erzählen (der konkrete Spaziergang) verleiht dem Text seine typische Kaminer-Struktur: alltäglich und doch überraschend.',
+
+    // Hinweise für einzelne Parameter (erscheinen im Tooltip / Feedback)
+    hinweise: {
+      homo:    'Der Erzähler ist Teil der erzählten Welt: Er geht mit seiner Tochter Nicole spazieren.',
+      auto:    'Er ist sogar die Hauptfigur (Protagonist), die von sich selbst erzählt — das ist der Sonderfall autodiegetisch.',
+      ich:     'Sprachlicher Beleg: „Meine Tochter Nicole und ich gehen oft …" (Z. 7)',
+      intern:  'Wir erfahren nur, was der Erzähler selbst wahrnimmt und denkt — kein allwissender Überblick.',
+      dehnung: 'Die Dialogszenen (Z. 9–41) werden in Echtzeit wiedergegeben: Zeitdehnung.',
+      raffung:  'Der Anfang (Z. 1–7) fasst das allgemeine Verhalten bei Regen zusammen — Zeitraffung.',
+      chrono:  'Die Ereignisse folgen der zeitlichen Reihenfolge ohne Rückblenden oder Vorgriffe.',
+      sing:    'Der konkrete Spaziergang ist ein einmaliges Ereignis.',
+      iter:    '„Das Mädchen macht ihn jedes Mal …" (Z. 41–42) — etwas Wiederholtes wird einmalig erzählt.',
+      spaeter: 'Der Erzähler berichtet von vergangenen Ereignissen (narratives Präteritum).',
+      direkt:  'z. B. „Kuck mal", zeigt Nicole … „Eine Frau mit Bart!" (Z. 9)',
+    }
+  }
+
+  // Weitere Werke hier ergänzen:
+  // ,weitere_kurzgeschichte: { titel: '…', checks: {…}, haltung: '…', wirkung: '…', hinweise: {…} }
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let currentWerk = null;
+let musterVisible = false;
+const KEYS_CB = ['homo','auto','hetero','ich','erer','null','intern','extern',
+                 'dehnung','raffung','deckung','analepse','prolepse','chrono',
+                 'sing','repet','iter','spaeter','frueher','gleich','einge',
+                 'direkt','indirekt','erlebt','monolog','bewusstsein'];
+
+function getStorageKey() { return 'narratologie_' + currentWerk; }
+
+// ============================================================
+// WERKWECHSEL
+// ============================================================
+function onWerkChange() {
+  const sel = document.getElementById('werkSelect').value;
+  currentWerk = sel || null;
+  musterVisible = false;
+  document.getElementById('noWerkMsg').style.display = currentWerk ? 'none' : 'block';
+  document.getElementById('mainContent').style.display = currentWerk ? 'block' : 'none';
+  hideMuster();
+  if (currentWerk) {
+    clearFields();
+    loadSaved();
+    updateWerkname();
+    evaluate();
+  }
+}
+
+function updateWerkname() {
+  const l = LOESUNGEN[currentWerk];
+  document.getElementById('werkname-display').textContent = l ? l.titel : '';
+}
+
+// ============================================================
+// EVALUATE — Kernfunktion
+// ============================================================
+function evaluate() {
+  if (!currentWerk) return;
+  const L = LOESUNGEN[currentWerk];
+  if (!L) return;
+
+  let checkedTotal = 0, correct = 0;
+
+  KEYS_CB.forEach(k => {
+    const cb = document.getElementById(k);
+    if (!cb) return;
+    const row = document.getElementById('row_' + k);
+    const fbEl = document.getElementById('fb_' + k);
+    if (!row || !fbEl) return;
+
+    const expected = !!L.checks[k];
+    const actual   = cb.checked;
+    const hasText  = (document.querySelector('[data-key="' + k + '_text"]') || {}).value || '';
+
+    row.classList.remove('state-ok','state-warn','state-err');
+    fbEl.textContent = '';
+
+    // Nur Feedback wenn angekreuzt — nicht angekreuzt bleibt immer neutral
+    if (!actual) return;
+
+    checkedTotal++;
+
+    if (expected) {
+      // angekreuzt und richtig
+      if (hasText.trim().length > 3) {
+        row.classList.add('state-ok');
+        fbEl.textContent = '✓';
+        correct++;
+      } else {
+        row.classList.add('state-warn');
+        fbEl.textContent = '◑';
+        correct += 0.5;
+      }
+    } else {
+      // angekreuzt, aber falsch
+      row.classList.add('state-err');
+      fbEl.textContent = '✗';
+    }
+  });
+
+  // Freitexte — nur Längencheck (keine inhaltliche KI-Prüfung)
+  evaluateTextarea('haltung', 30, 'Zu kurz – beschreibe die Erzählhaltung genauer.');
+  evaluateTextarea('wirkung', 60, 'Zu kurz – erläutere die Wirkung ausführlicher.');
+
+  // Score: nur angekreuzte Zeilen zaehlen
+  const pct = checkedTotal === 0 ? 0 : Math.round((correct / checkedTotal) * 100);
+  document.getElementById('scoreProgress').value = pct;
+  document.getElementById('scoreText').textContent = checkedTotal === 0 ? '–' : pct + ' %';
+
+  // Globales Feedback — nur anzeigen wenn mindestens eine Checkbox angekreuzt
+  const gf = document.getElementById('globalFeedback');
+  if (checkedTotal === 0) {
+    gf.className = 'feedback-banner';
+    saveNow();
+    return;
+  }
+  gf.className = 'feedback-banner visible';
+  if (pct >= 85) {
+    gf.classList.add('ok');
+    gf.textContent = '✓ Sehr gut! Deine angekreuzten Parameter sind größtenteils korrekt.';
+  } else if (pct >= 50) {
+    gf.classList.add('warn');
+    gf.textContent = '◑ Gut – überprüfe die rot markierten Zeilen und ergänze fehlende Textbelege.';
+  } else {
+    gf.classList.add('err');
+    gf.textContent = '✗ Einige Ankreuzungen sind nicht korrekt – schau dir die roten Zeilen genau an.';
+  }
+
+  saveNow();
+}
+
+function evaluateTextarea(key, minLen, warnMsg) {
+  const el = document.getElementById(key);
+  const fb = document.getElementById('fb_' + key + '_text');
+  if (!el || !fb) return;
+  const val = el.value.trim();
+  fb.className = 'textarea-feedback';
+  if (val.length === 0) { return; }
+  fb.classList.add('visible');
+  if (val.length < minLen) {
+    fb.classList.add('err');
+    fb.textContent = warnMsg;
+  } else {
+    fb.classList.add('ok');
+    fb.textContent = '✓ Gut – Länge ausreichend.';
+  }
+}
+
+// ============================================================
+// MUSTERLÖSUNG
+// ============================================================
+function showMuster() {
+  if (!currentWerk) return;
+  const L = LOESUNGEN[currentWerk];
+  musterVisible = true;
+
+  // Hinweise in Zeilen einblenden
+  KEYS_CB.forEach(k => {
+    const hint = L.hinweise && L.hinweise[k];
+    // wir zeigen Hinweise nur für korrekte Parameter als Bestätigung
+    // und für falsche als Erklärung
+  });
+
+  // Freitexte
+  const mH = document.getElementById('muster_haltung');
+  mH.classList.add('visible');
+  mH.textContent = '💡 Musterlösung: ' + L.haltung;
+
+  const mW = document.getElementById('muster_wirkung');
+  mW.classList.add('visible');
+  mW.textContent = '💡 Musterlösung: ' + L.wirkung;
+
+  // Hinweis in globalFeedback
+  const gf = document.getElementById('globalFeedback');
+  gf.className = 'feedback-banner visible ok';
+  gf.textContent = '💡 Musterlösung eingeblendet. Vergleiche deine Antworten und korrigiere ggf.';
+}
+
+function hideMuster() {
+  musterVisible = false;
+  ['muster_haltung','muster_wirkung'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('visible');
+  });
+}
+
+// ============================================================
+// SPEICHERN / LADEN
+// ============================================================
+function getAllData() {
+  const data = {};
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const k = el.dataset.key;
+    if (el.type === 'checkbox') data[k] = el.checked;
+    else data[k] = el.value;
+  });
+  return data;
+}
+
+function applyData(data) {
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const k = el.dataset.key;
+    if (data[k] === undefined) return;
+    if (el.type === 'checkbox') el.checked = data[k];
+    else el.value = data[k];
+  });
+}
+
+function saveNow() {
+  if (!currentWerk) return;
+  try {
+    localStorage.setItem(getStorageKey(), JSON.stringify(getAllData()));
+    const s = document.getElementById('saveStatus');
+    s.textContent = '✓ Gespeichert – ' + new Date().toLocaleTimeString('de-DE');
+    setTimeout(() => { s.textContent = 'Automatisch gespeichert bei jeder Eingabe.'; }, 3000);
+  } catch(e) {}
+}
+
+function loadSaved() {
+  try {
+    const saved = localStorage.getItem(getStorageKey());
+    if (saved) applyData(JSON.parse(saved));
+  } catch(e) {}
+}
+
+function clearFields() {
+  document.querySelectorAll('[data-key]').forEach(el => {
+    if (el.type === 'checkbox') el.checked = false;
+    else el.value = '';
+  });
+  // Clear all states
+  document.querySelectorAll('.row').forEach(r => r.classList.remove('state-ok','state-warn','state-err'));
+  document.querySelectorAll('.fb-icon').forEach(f => f.textContent = '');
+  ['fb_haltung_text','fb_wirkung_text'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.className = 'textarea-feedback'; el.textContent = ''; }
+  });
+  hideMuster();
+  const gf = document.getElementById('globalFeedback');
+  gf.className = 'feedback-banner';
+}
+
+function clearAll() {
+  if (!confirm('Alle Eingaben löschen und zurücksetzen?')) return;
+  clearFields();
+  if (currentWerk) localStorage.removeItem(getStorageKey());
+  document.getElementById('scoreProgress').value = 0;
+  document.getElementById('scoreText').textContent = '0 %';
+  document.getElementById('saveStatus').textContent = 'Zurückgesetzt.';
+}
+
+
+// ============================================================
+// TEACHER MODE
+// ============================================================
+const LM_PW = 'herrmann';
+const LM_STORE = 'narratologie_lehrer_werke';
+const LM_KEYS = ['homo','auto','hetero','ich','erer','null','intern','extern',
+                 'dehnung','raffung','deckung','analepse','prolepse','chrono',
+                 'sing','repet','iter','spaeter','frueher','gleich','einge',
+                 'direkt','indirekt','erlebt','monolog','bewusstsein'];
+let lmUnlocked = false;
+
+function switchTab(tab) {
+  document.getElementById('tabSuS').style.display = tab === 'sus' ? 'block' : 'none';
+  document.getElementById('tabLehrer').style.display = tab === 'lehrer' ? 'block' : 'none';
+  document.getElementById('tabBtnSuS').classList.toggle('active', tab === 'sus');
+  document.getElementById('tabBtnLehrer').classList.toggle('active', tab === 'lehrer');
+  if (tab === 'lehrer' && lmUnlocked) renderWerkListe();
+}
+
+function checkPw() {
+  const v = document.getElementById('pwInput').value;
+  if (v === LM_PW) {
+    lmUnlocked = true;
+    document.getElementById('pwOverlay').style.display = 'none';
+    document.getElementById('lmContent').style.display = 'block';
+    renderWerkListe();
+  } else {
+    document.getElementById('pwErr').textContent = 'Falsches Passwort.';
+    document.getElementById('pwInput').value = '';
+  }
+}
+
+function lmGetCustomWerke() {
+  try { return JSON.parse(localStorage.getItem(LM_STORE) || '{}'); } catch(e) { return {}; }
+}
+function lmSaveCustomWerke(obj) {
+  localStorage.setItem(LM_STORE, JSON.stringify(obj));
+}
+
+function lmSaveWerk() {
+  const autor = document.getElementById('lm_autor').value.trim();
+  const titel = document.getElementById('lm_titel').value.trim();
+  if (!autor || !titel) {
+    alert('Bitte Autor und Titel eingeben.');
+    return;
+  }
+  const key = (autor + '_' + titel)
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_|_$/g, '')
+    .substring(0, 40);
+  const checks = {};
+  LM_KEYS.forEach(k => { checks[k] = document.getElementById('lm_' + k).checked; });
+  const hinweise = {};
+  LM_KEYS.forEach(k => {
+    const h = (document.getElementById('lm_' + k + '_h') || {}).value || '';
+    if (h.trim()) hinweise[k] = h.trim();
+  });
+  const entry = {
+    titel: autor + ': \u201e' + titel + '\u201c',
+    checks,
+    haltung: document.getElementById('lm_haltung').value.trim(),
+    wirkung: document.getElementById('lm_wirkung').value.trim(),
+    hinweise,
+    custom: true
+  };
+  const alle = lmGetCustomWerke();
+  alle[key] = entry;
+  lmSaveCustomWerke(alle);
+  // Auch in LOESUNGEN laden
+  LOESUNGEN[key] = entry;
+  // Dropdown aktualisieren
+  addToDropdown(key, entry.titel);
+  renderWerkListe();
+  document.getElementById('lmSaveMsg').textContent = '\u2713 Eingetragen: ' + entry.titel;
+  setTimeout(() => { document.getElementById('lmSaveMsg').textContent = ''; }, 4000);
+  lmClearForm();
+}
+
+function addToDropdown(key, label) {
+  const sel = document.getElementById('werkSelect');
+  // Remove if already exists
+  const existing = sel.querySelector('option[value="' + key + '"]');
+  if (existing) existing.remove();
+  const opt = document.createElement('option');
+  opt.value = key;
+  opt.textContent = label;
+  sel.appendChild(opt);
+}
+
+function lmDeleteWerk(key) {
+  if (!confirm('Werk wirklich l\u00f6schen?')) return;
+  const alle = lmGetCustomWerke();
+  delete alle[key];
+  lmSaveCustomWerke(alle);
+  delete LOESUNGEN[key];
+  const sel = document.getElementById('werkSelect');
+  const opt = sel.querySelector('option[value="' + key + '"]');
+  if (opt) opt.remove();
+  renderWerkListe();
+}
+
+function renderWerkListe() {
+  const container = document.getElementById('werkListeContainer');
+  const custom = lmGetCustomWerke();
+  let html = '';
+  // Built-in
+  Object.keys(LOESUNGEN).forEach(k => {
+    if (!LOESUNGEN[k].custom) {
+      html += '<div class="werk-list-item"><span class="werk-badge builtin">eingebaut</span><span>' + LOESUNGEN[k].titel + '</span></div>';
+    }
+  });
+  // Custom
+  Object.keys(custom).forEach(k => {
+    html += '<div class="werk-list-item"><span class="werk-badge">eigenes</span><span>' + custom[k].titel + '</span><button class="danger" onclick="lmDeleteWerk(\'' + k + '\')">\u00d7 L\u00f6schen</button></div>';
+  });
+  if (!html) html = '<div style="padding:12px 14px;color:var(--text3);font-size:13px;font-style:italic;">Noch keine eigenen Werke eingetragen.</div>';
+  container.innerHTML = html;
+}
+
+function lmClearForm() {
+  document.getElementById('lm_autor').value = '';
+  document.getElementById('lm_titel').value = '';
+  LM_KEYS.forEach(k => {
+    document.getElementById('lm_' + k).checked = false;
+    const h = document.getElementById('lm_' + k + '_h');
+    if (h) h.value = '';
+  });
+  document.getElementById('lm_haltung').value = '';
+  document.getElementById('lm_wirkung').value = '';
+}
+
+// Beim Start: custom Werke aus localStorage in LOESUNGEN laden und ins Dropdown
+(function loadCustomOnStart() {
+  const custom = lmGetCustomWerke();
+  Object.keys(custom).forEach(k => {
+    LOESUNGEN[k] = custom[k];
+    addToDropdown(k, custom[k].titel);
+  });
+})();
+
+</script>
+
+
+</div></body></html>
