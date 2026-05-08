@@ -263,3 +263,184 @@ input:focus, select:focus, textarea:focus {
   .card { padding: 1.25rem; }
   .nav-links { gap: 0.75rem; }
 }
+
+/* ================================================================
+   SITE-NAVBAR – Corporate Identity (entspricht der Homepage)
+   ================================================================ */
+.site-navbar {
+  background-color: #1e3a5f;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+.site-nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+}
+.site-nav-logo {
+  color: #fff;
+  font-family: 'Nunito', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+.site-nav-logo span { color: #4a9eda; }
+
+.site-nav-links {
+  display: flex;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+.site-nav-links a {
+  color: rgba(255,255,255,0.82);
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
+  white-space: nowrap;
+}
+.site-nav-links a:hover,
+.site-nav-links a.aktiv {
+  background-color: rgba(255,255,255,0.15);
+  color: #fff;
+}
+
+/* Hamburger – nur auf Mobilgeräten */
+.site-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+}
+.site-hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: #fff;
+  border-radius: 2px;
+  transition: transform 0.25s, opacity 0.25s;
+}
+.site-hamburger.offen span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.site-hamburger.offen span:nth-child(2) { opacity: 0; }
+.site-hamburger.offen span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* === KOLOSSEUM-SUBNAV === */
+.kolosseum-subnav {
+  background: #12122a;
+  border-bottom: 2px solid rgba(255,230,109,0.25);
+}
+.kolosseum-subnav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0.45rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.subnav-brand {
+  font-family: 'Fredoka One', sans-serif;
+  font-size: 1.05rem;
+  color: #FFE66D;
+  text-decoration: none;
+}
+.subnav-links {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.subnav-links a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 0.88rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+.subnav-links a:hover,
+.subnav-links a.active { color: #fff; background: rgba(255,255,255,0.1); }
+.subnav-logout {
+  background: transparent !important;
+  color: rgba(255,255,255,0.6) !important;
+  border: 1.5px solid rgba(255,255,255,0.3) !important;
+  font-size: 0.82rem !important;
+  padding: 4px 10px !important;
+  border-radius: 6px !important;
+  cursor: pointer;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  transition: color 0.2s, border-color 0.2s;
+}
+.subnav-logout:hover {
+  color: #fff !important;
+  border-color: rgba(255,255,255,0.6) !important;
+}
+
+/* === SITE-FOOTER === */
+.site-footer {
+  background-color: #1e3a5f;
+  color: rgba(255,255,255,0.65);
+  padding: 28px 0;
+  font-size: 0.88rem;
+  margin-top: 2rem;
+}
+.site-footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.site-footer-links {
+  display: flex;
+  gap: 20px;
+}
+.site-footer-links a {
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.site-footer-links a:hover { color: #fff; }
+
+/* === RESPONSIVE SITE-NAV === */
+@media (max-width: 760px) {
+  .site-hamburger { display: flex; }
+  .site-nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: #1e3a5f;
+    padding: 0.75rem 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 199;
+    gap: 2px;
+  }
+  .site-nav-links.offen { display: flex; }
+  .site-nav-links a { padding: 10px 14px; width: 100%; }
+  .kolosseum-subnav-inner { flex-direction: column; align-items: flex-start; }
+}
