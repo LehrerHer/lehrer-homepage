@@ -172,14 +172,31 @@
 </head>
 <body>
 
-  <nav class="nav">
-    <a href="/profil.html" class="nav-brand">🏛️ Lernkolosseum</a>
-    <div class="nav-links">
-      <a href="/profil.html">Profil</a>
-      <a href="/rangliste.html">Rangliste</a>
-      <a href="/quiz.html" class="active">Quizze</a>
-      <a href="/charakter.html">Charakter</a>
-      <a href="https://lehrer-herrmann.de" style="color:rgba(255,255,255,0.45);font-size:0.82rem;text-decoration:none;margin-left:0.5rem" title="Zurück zur Lehrerhomepage">🏠</a>
+  <nav class="site-navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="site-nav-inner">
+      <a href="https://lehrer-herrmann.de" class="site-nav-logo">Jan <span>Herrmann</span></a>
+      <button class="site-hamburger" id="site-hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="site-nav-links" id="site-nav-links" role="list">
+        <li><a href="https://lehrer-herrmann.de/#faecher">Fächer</a></li>
+        <li><a href="https://lehrer-herrmann.de/portal.html">Materialien &amp; Quizze</a></li>
+        <li><a href="/profil.html" class="aktiv">🏛️ Arena</a></li>
+        <li><a href="https://lehrer-herrmann.de/blog.html">Blog</a></li>
+        <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <nav class="kolosseum-subnav" aria-label="Arena-Navigation">
+    <div class="kolosseum-subnav-inner">
+      <span class="subnav-brand">🏛️ Lernkolosseum</span>
+      <div class="subnav-links">
+        <a href="/profil.html">Profil</a>
+        <a href="/rangliste.html">Rangliste</a>
+        <a href="/quiz.html" class="active">Quizze</a>
+        <a href="/charakter.html">Charakter</a>
+      </div>
     </div>
   </nav>
 
@@ -416,5 +433,16 @@
     })();
   </script>
   <script src="/js/arena-bar.js"></script>
+  <script src="/js/site-nav.js"></script>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+      <nav class="site-footer-links" aria-label="Rechtliche Links">
+        <a href="https://lehrer-herrmann.de/impressum.html">Impressum</a>
+        <a href="https://lehrer-herrmann.de/datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
 </body>
 </html>

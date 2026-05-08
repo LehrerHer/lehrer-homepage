@@ -8,16 +8,22 @@
   <style>
     body {
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
       min-height: 100vh;
       background: linear-gradient(135deg, var(--ink) 0%, #2d2d5e 100%);
+    }
+
+    .register-outer {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
     }
 
     .wrap {
       width: 100%;
       max-width: 440px;
-      padding: 1rem;
     }
 
     .logo {
@@ -92,6 +98,23 @@
 </head>
 <body>
 
+  <nav class="site-navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="site-nav-inner">
+      <a href="https://lehrer-herrmann.de" class="site-nav-logo">Jan <span>Herrmann</span></a>
+      <button class="site-hamburger" id="site-hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="site-nav-links" id="site-nav-links" role="list">
+        <li><a href="https://lehrer-herrmann.de/#faecher">Fächer</a></li>
+        <li><a href="https://lehrer-herrmann.de/portal.html">Materialien &amp; Quizze</a></li>
+        <li><a href="/profil.html" class="aktiv">🏛️ Arena</a></li>
+        <li><a href="https://lehrer-herrmann.de/blog.html">Blog</a></li>
+        <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div class="register-outer">
   <div class="wrap">
     <div class="logo">
       <span class="icon">🏛️</span>
@@ -187,6 +210,7 @@
 
     <a href="/login.html" class="bottom-link">← Schon registriert? Hier anmelden</a>
   </div>
+  </div><!-- /.register-outer -->
 
   <script>
   (function () {
@@ -347,5 +371,16 @@
   })();
   </script>
   <script src="/js/arena-bar.js"></script>
+  <script src="/js/site-nav.js"></script>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+      <nav class="site-footer-links" aria-label="Rechtliche Links">
+        <a href="https://lehrer-herrmann.de/impressum.html">Impressum</a>
+        <a href="https://lehrer-herrmann.de/datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
 </body>
 </html>
