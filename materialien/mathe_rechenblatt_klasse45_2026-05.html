@@ -1,0 +1,736 @@
+<!--
+  Titel: Rechenblatt – Klasse 4/5
+  Fach: Mathematik
+  Klasse/Niveau: Klasse 4/5
+  AB-Typ: Interaktiv (Kopfrechnen + schriftliche Grundrechenarten)
+  Erstellt: 2026-05-09
+  Quelle: HTML (manuell bereitgestellt, rechenblatt_klasse45_ios.html)
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <script src="/js/auth-guard.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rechenblatt Klasse 4/5 – Schriftliche Grundrechenarten</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    :root {
+      --color-background-primary:   #ffffff;
+      --color-background-secondary: #f4f6f7;
+      --color-text-primary:         #1e3a5f;
+      --color-text-secondary:       #555;
+      --color-text-tertiary:        #888;
+      --color-border-primary:       #1e3a5f;
+      --color-border-secondary:     #c8d5e8;
+      --color-border-tertiary:      #e2e8f0;
+      --border-radius-md:           8px;
+      --border-radius-lg:           12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Nunito', sans-serif; background: var(--color-background-secondary); }
+
+    .ab-wrapper {
+      max-width: 760px;
+      margin: 2rem auto 2rem;
+      padding: 0 1rem;
+    }
+
+    .sheet {
+      background: var(--color-background-primary);
+      border-radius: 14px;
+      box-shadow: 0 2px 16px rgba(30,58,95,.10);
+      padding: 2rem 2rem 1.5rem;
+    }
+
+    .hdr {
+      text-align: center;
+      margin-bottom: 1.25rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 2px solid var(--color-border-tertiary);
+    }
+
+    .hdr-title {
+      font-family: 'Baloo 2', cursive;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 3px;
+    }
+
+    .hdr-sub {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .meta-f {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .meta-line {
+      display: inline-block;
+      width: 90px;
+      border-bottom: 1.5px solid var(--color-border-primary);
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 1.1rem;
+    }
+
+    .ab-btn {
+      font-family: 'Nunito', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 7px 16px;
+      border-radius: var(--border-radius-md);
+      border: 1px solid var(--color-border-secondary);
+      background: var(--color-background-primary);
+      color: var(--color-text-primary);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .ab-btn:hover { background: var(--color-background-secondary); }
+
+    .ab-btn.primary {
+      background: #1e3a5f;
+      color: #fff;
+      border-color: #1e3a5f;
+    }
+
+    .ab-btn.primary:hover { background: #0f2044; }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--color-text-tertiary);
+      margin: 1rem 0 0.5rem;
+      padding-left: 2px;
+    }
+
+    .tasks-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: .5rem;
+    }
+
+    @media (max-width: 480px) {
+      .tasks-grid { grid-template-columns: 1fr; }
+    }
+
+    .task-card {
+      background: var(--color-background-secondary);
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--border-radius-md);
+      padding: 9px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+    }
+
+    .task-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--color-text-tertiary);
+      min-width: 18px;
+    }
+
+    .task-expr {
+      font-family: 'Baloo 2', cursive;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      flex: 1;
+      letter-spacing: .02em;
+    }
+
+    .ans-box {
+      width: 72px;
+      height: 30px;
+      border: none;
+      border-bottom: 2px solid var(--color-border-primary);
+      background: transparent;
+      font-family: 'Baloo 2', cursive;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      text-align: center;
+      outline: none;
+      border-radius: 0;
+    }
+
+    .ans-box:focus { border-bottom-color: #4a9eda; }
+    .ans-box.ok  { border-bottom-color: #2ecc71; color: #2ecc71; }
+    .ans-box.err { border-bottom-color: #e74c3c; color: #e74c3c; }
+
+    .badge {
+      position: absolute;
+      top: 4px;
+      right: 7px;
+      font-size: 9px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    .bp { background: #EAF3DE; color: #3B6D11; }
+    .bm { background: #FAECE7; color: #993C1D; }
+    .bx { background: #E6F1FB; color: #185FA5; }
+    .bd { background: #FAEEDA; color: #854F0B; }
+
+    .written-section { margin: 0.75rem 0 0.5rem; }
+
+    .written-card {
+      background: var(--color-background-primary);
+      border: 0.5px solid var(--color-border-tertiary);
+      border-radius: var(--border-radius-lg);
+      padding: 12px 14px;
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .written-head {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--color-text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      margin-bottom: 8px;
+    }
+
+    .algo-grid { display: grid; gap: 6px; }
+
+    .algo-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      font-family: 'Baloo 2', cursive;
+      font-size: 15px;
+    }
+
+    .algo-cell {
+      width: 36px;
+      height: 30px;
+      text-align: center;
+      border: none;
+      border-bottom: 1.5px solid var(--color-border-tertiary);
+      background: transparent;
+      font-family: 'Baloo 2', cursive;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+      outline: none;
+      border-radius: 0;
+    }
+
+    .algo-cell:focus   { border-bottom-color: #4a9eda; }
+    .algo-cell.ok  { color: #2ecc71; border-bottom-color: #2ecc71; }
+    .algo-cell.err { color: #e74c3c; border-bottom-color: #e74c3c; }
+
+    .algo-op {
+      width: 20px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-text-secondary);
+      user-select: none;
+    }
+
+    .algo-div-line {
+      height: 0;
+      border-top: 1.5px solid var(--color-border-primary);
+      margin: 4px 0;
+    }
+
+    .result-banner {
+      display: none;
+      border-radius: var(--border-radius-lg);
+      border: 1px solid var(--color-border-tertiary);
+      padding: 1.25rem 1.5rem;
+      text-align: center;
+      background: var(--color-background-primary);
+      margin-top: 1rem;
+    }
+
+    .res-big {
+      font-family: 'Baloo 2', cursive;
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 2px;
+    }
+
+    .res-stars { font-size: 20px; letter-spacing: 3px; margin: 4px 0; }
+
+    .stat-row {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-top: 8px;
+      flex-wrap: wrap;
+    }
+
+    .stat {
+      background: var(--color-background-secondary);
+      border-radius: var(--border-radius-md);
+      padding: 6px 14px;
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      text-align: center;
+    }
+
+    .stat b {
+      display: block;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+    }
+
+    .res-sub {
+      font-size: 13px;
+      color: var(--color-text-secondary);
+      margin-top: 6px;
+    }
+
+    .xp-badge {
+      display: inline-block;
+      background: #0f1d35;
+      color: #7ec8f0;
+      font-family: 'Nunito', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 6px 18px;
+      border-radius: 50px;
+      margin-top: 10px;
+    }
+
+    .xp-badge.xp-null { background: #e2e8f0; color: #888; }
+
+    .xp-tabelle {
+      display: inline-block;
+      margin: 10px auto 0;
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      text-align: left;
+    }
+
+    .xp-tabelle td { padding: 2px 10px 2px 0; }
+    .xp-tabelle td:last-child { font-weight: 700; color: #4a9eda; }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: var(--color-text-secondary);
+      text-decoration: none;
+    }
+
+    .back-link:hover { color: var(--color-text-primary); }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+      <a href="/index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
+      <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="navbar-links" id="navbar-links">
+        <li><a href="/index.html#was-ist-neu">Was ist neu?</a></li>
+        <li><a href="/index.html#faecher">Fächer</a></li>
+        <li><a href="/fach-andere.html" class="aktiv">Weitere Fächer</a></li>
+        <li><a href="/index.html#kontakt">Kontakt</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main style="padding: 1.5rem 0 3rem">
+    <div class="ab-wrapper">
+      <div class="sheet">
+
+        <div class="hdr">
+          <div class="hdr-title">Rechenblatt &mdash; Klasse 4/5</div>
+          <div class="hdr-sub">Kopfrechnen &middot; schriftliche Addition &middot; schriftliche Subtraktion &middot; schriftliche Multiplikation &middot; schriftliche Division</div>
+          <div class="meta-row">
+            <div class="meta-f">Name:&nbsp;<span class="meta-line"></span></div>
+            <div class="meta-f">Datum:&nbsp;<span class="meta-line"></span></div>
+            <div class="meta-f">Klasse:&nbsp;<span class="meta-line" style="width:50px"></span></div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="ab-btn" onclick="buildAll()">🔄 Neue Aufgaben</button>
+          <button class="ab-btn primary" onclick="checkAll()">✓ Auswerten</button>
+          <button class="ab-btn" onclick="resetAll()">✕ Antworten löschen</button>
+        </div>
+
+        <div class="section-label">A &mdash; Kopfrechnen (15 Aufgaben)</div>
+        <div class="tasks-grid" id="head-tasks"></div>
+
+        <div class="section-label">B &mdash; Schriftliche Addition (2 Aufgaben)</div>
+        <div class="written-section" id="written-add"></div>
+
+        <div class="section-label">C &mdash; Schriftliche Subtraktion (2 Aufgaben)</div>
+        <div class="written-section" id="written-sub"></div>
+
+        <div class="section-label">D &mdash; Schriftliche Multiplikation (2 Aufgaben)</div>
+        <div class="written-section" id="written-mul"></div>
+
+        <div class="section-label">E &mdash; Schriftliche Division (2 Aufgaben)</div>
+        <div class="written-section" id="written-div"></div>
+
+        <div class="result-banner" id="result">
+          <div class="res-big" id="res-text"></div>
+          <div class="res-stars" id="res-stars"></div>
+          <div class="stat-row" id="res-stats"></div>
+          <div class="res-sub" id="res-sub"></div>
+          <div id="result-xp"></div>
+        </div>
+
+        <a href="/fach-andere.html" class="back-link">← Zurück zu Weitere Fächer</a>
+
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <p>© <span id="footer-jahr"></span> Jan Herrmann &nbsp;·&nbsp; Oberschule Spelle</p>
+      <nav class="footer-links" aria-label="Rechtliche Links">
+        <a href="/impressum.html">Impressum</a>
+        <a href="/datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+  (function () {
+    var el = document.getElementById('footer-jahr');
+    if (el) el.textContent = new Date().getFullYear();
+  })();
+
+  /* ── Hamburger ── */
+  (function () {
+    var btn  = document.getElementById('hamburger');
+    var menu = document.getElementById('navbar-links');
+    if (!btn || !menu) return;
+    btn.addEventListener('click', function () {
+      var open = menu.classList.toggle('offen');
+      btn.setAttribute('aria-expanded', open);
+    });
+    document.addEventListener('click', function (e) {
+      if (!btn.contains(e.target) && !menu.contains(e.target)) {
+        menu.classList.remove('offen');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  })();
+
+  /* ── Rechenblatt Klasse 4/5 ── */
+  var headTasks = [];
+  var writtenTasks = [];
+
+  function rnd(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; }
+
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = rnd(0, i);
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function makeHead() {
+    var tasks = [];
+    var config = [['+', 4], ['-', 4], ['x', 4], [':', 3]];
+    config.forEach(function (tc) {
+      var type = tc[0], count = tc[1];
+      for (var i = 0; i < count; i++) {
+        var a, b, expr, ans;
+        if (type === '+') {
+          var mode = rnd(0, 2);
+          if (mode === 0)      { a = rnd(100, 9000);  b = rnd(100, 9999 - a); }
+          else if (mode === 1) { a = rnd(1000, 50000); b = rnd(1000, 99999 - a); }
+          else                 { a = rnd(10, 990);    b = rnd(10, 1000 - a); }
+          expr = a + ' + ' + b; ans = a + b;
+        } else if (type === '-') {
+          var mode2 = rnd(0, 2);
+          if (mode2 === 0)      { a = rnd(500, 9999);  b = rnd(100, a - 1); }
+          else if (mode2 === 1) { a = rnd(5000, 99999); b = rnd(1000, a - 1); }
+          else                  { a = rnd(200, 1000);  b = rnd(50, a - 1); }
+          expr = a + ' &minus; ' + b; ans = a - b;
+        } else if (type === 'x') {
+          var mode3 = rnd(0, 1);
+          if (mode3 === 0) { a = rnd(12, 99);  b = rnd(2, 9); }
+          else             { a = rnd(100, 999); b = rnd(2, 9); }
+          expr = a + ' &middot; ' + b; ans = a * b;
+        } else {
+          var mode4 = rnd(0, 1);
+          if (mode4 === 0) { b = rnd(2, 9); a = b * rnd(10, 99); }
+          else             { b = rnd(2, 9); a = b * rnd(11, 111); }
+          expr = a + ' : ' + b; ans = a / b;
+        }
+        tasks.push({ t: type, expr: expr, ans: ans });
+      }
+    });
+    return shuffle(tasks);
+  }
+
+  function badgeCls(t) { return t === '+' ? 'bp' : t === '-' ? 'bm' : t === 'x' ? 'bx' : 'bd'; }
+  function badgeTxt(t) { return t === '+' ? 'Plus' : t === '-' ? 'Minus' : t === 'x' ? 'Mal' : 'Geteilt'; }
+
+  function renderHead() {
+    var el = document.getElementById('head-tasks');
+    el.innerHTML = '';
+    headTasks.forEach(function (tk, i) {
+      var d = document.createElement('div');
+      d.className = 'task-card';
+      d.innerHTML =
+        '<span class="task-num">' + (i + 1) + '.</span>' +
+        '<span class="task-expr">' + tk.expr + ' =</span>' +
+        '<input class="ans-box" id="h' + i + '" type="number" inputmode="numeric" autocomplete="off">' +
+        '<span class="badge ' + badgeCls(tk.t) + '">' + badgeTxt(tk.t) + '</span>';
+      el.appendChild(d);
+    });
+  }
+
+  function digits(n) { return String(n).split('').map(Number); }
+  function padLeft(arr, len) { while (arr.length < len) arr.unshift(null); return arr; }
+
+  function makeAddCard(idx) {
+    var a = rnd(10000, 99999), b = rnd(10000, 99999);
+    var ans = a + b;
+    var dA = padLeft(digits(a), 6), dB = padLeft(digits(b), 6), dAns = padLeft(digits(ans), 6);
+    var id = 'wa' + idx;
+    var c1 = '', c2 = '', c3 = '';
+    for (var c = 0; c < 6; c++) {
+      c1 += '<div class="algo-cell" style="border-bottom-color:transparent;pointer-events:none">' + (dA[c] !== null ? dA[c] : '') + '</div>';
+      c2 += '<div class="algo-cell" style="border-bottom-color:transparent;pointer-events:none">' + (dB[c] !== null ? dB[c] : '') + '</div>';
+      c3 += '<input class="algo-cell" id="' + id + '_' + c + '" type="number" inputmode="numeric" min="0" max="9" data-ans="' + (dAns[c] !== null ? dAns[c] : 0) + '" autocomplete="off">';
+    }
+    return {
+      ans: ans, id: id, cells: 6,
+      html: '<div class="written-card"><div class="written-head">Aufgabe: ' + a + ' + ' + b + '</div>' +
+        '<div class="algo-grid">' +
+        '<div class="algo-row"><span class="algo-op"></span>' + c1 + '</div>' +
+        '<div class="algo-row"><span class="algo-op">+</span>' + c2 + '</div>' +
+        '<div class="algo-div-line" style="margin-left:20px"></div>' +
+        '<div class="algo-row"><span class="algo-op"></span>' + c3 + '</div>' +
+        '</div></div>'
+    };
+  }
+
+  function makeSubCard(idx) {
+    var a = rnd(10000, 99999), b = rnd(1000, a - 100);
+    var ans = a - b;
+    var dA = padLeft(digits(a), 6), dB = padLeft(digits(b), 6), dAns = padLeft(digits(ans), 6);
+    var id = 'ws' + idx;
+    var c1 = '', c2 = '', c3 = '';
+    for (var c = 0; c < 6; c++) {
+      c1 += '<div class="algo-cell" style="border-bottom-color:transparent;pointer-events:none">' + (dA[c] !== null ? dA[c] : '') + '</div>';
+      c2 += '<div class="algo-cell" style="border-bottom-color:transparent;pointer-events:none">' + (dB[c] !== null ? dB[c] : '') + '</div>';
+      c3 += '<input class="algo-cell" id="' + id + '_' + c + '" type="number" inputmode="numeric" min="0" max="9" data-ans="' + (dAns[c] !== null ? dAns[c] : 0) + '" autocomplete="off">';
+    }
+    return {
+      ans: ans, id: id, cells: 6,
+      html: '<div class="written-card"><div class="written-head">Aufgabe: ' + a + ' &minus; ' + b + '</div>' +
+        '<div class="algo-grid">' +
+        '<div class="algo-row"><span class="algo-op"></span>' + c1 + '</div>' +
+        '<div class="algo-row"><span class="algo-op">&minus;</span>' + c2 + '</div>' +
+        '<div class="algo-div-line" style="margin-left:20px"></div>' +
+        '<div class="algo-row"><span class="algo-op"></span>' + c3 + '</div>' +
+        '</div></div>'
+    };
+  }
+
+  function makeMulCard(idx) {
+    var a = rnd(1000, 9999), b = rnd(12, 99);
+    var ans = a * b;
+    var dA = padLeft(digits(a), 4), dB = digits(b), dAns = padLeft(digits(ans), 7);
+    var id = 'wm' + idx;
+    var c1 = '', c2 = '', c3 = '';
+    for (var c = 0; c < 4; c++)
+      c1 += '<div class="algo-cell" style="border-bottom-color:transparent;pointer-events:none">' + (dA[c] !== null ? dA[c] : '') + '</div>';
+    for (var c2i = 0; c2i < dB.length; c2i++)
+      c2 += '<div class="algo-cell" style="border-bottom-color:transparent;pointer-events:none">' + dB[c2i] + '</div>';
+    for (var c3i = 0; c3i < 7; c3i++)
+      c3 += '<input class="algo-cell" id="' + id + '_' + c3i + '" type="number" inputmode="numeric" min="0" max="9" data-ans="' + (dAns[c3i] !== null ? dAns[c3i] : 0) + '" autocomplete="off">';
+    return {
+      ans: ans, id: id, cells: 7,
+      html: '<div class="written-card"><div class="written-head">Aufgabe: ' + a + ' &middot; ' + b + '</div>' +
+        '<div class="algo-grid">' +
+        '<div class="algo-row"><span class="algo-op"></span>' + c1 + '</div>' +
+        '<div class="algo-row"><span class="algo-op">&middot;</span>' + c2 + '</div>' +
+        '<div class="algo-div-line" style="margin-left:20px"></div>' +
+        '<div class="algo-row"><span class="algo-op"></span>' + c3 + '</div>' +
+        '</div></div>'
+    };
+  }
+
+  function makeDivCard(idx) {
+    var b = rnd(3, 9), q = rnd(100, 999);
+    var a = b * q;
+    var dA = digits(a), dAns = padLeft(digits(q), 4);
+    var id = 'wd' + idx;
+    var cA = '', cQ = '';
+    for (var c = 0; c < dA.length; c++)
+      cA += '<div class="algo-cell" style="border-bottom-color:transparent;pointer-events:none">' + dA[c] + '</div>';
+    for (var c2 = 0; c2 < 4; c2++)
+      cQ += '<input class="algo-cell" id="' + id + '_' + c2 + '" type="number" inputmode="numeric" min="0" max="9" data-ans="' + (dAns[c2] !== null ? dAns[c2] : 0) + '" autocomplete="off">';
+    return {
+      ans: q, id: id, cells: 4,
+      html: '<div class="written-card"><div class="written-head">Aufgabe: ' + a + ' : ' + b + '</div>' +
+        '<div class="algo-grid">' +
+        '<div class="algo-row" style="align-items:center;gap:8px">' +
+        '<div style="display:flex;align-items:center;border-right:1.5px solid var(--color-border-primary);padding-right:6px;margin-right:2px">' + cA +
+        '<span style="font-family:\'Baloo 2\',cursive;font-size:15px;font-weight:600;margin-left:4px;color:var(--color-text-secondary)">: ' + b + '</span></div>' +
+        '<span style="font-size:15px;font-weight:600;color:var(--color-text-secondary)">=</span>' +
+        '<div style="display:flex">' + cQ + '</div>' +
+        '</div></div></div>'
+    };
+  }
+
+  function buildAll() {
+    headTasks = makeHead();
+    renderHead();
+    writtenTasks = [];
+    var aH = '', sH = '', mH = '', dH = '';
+    for (var i = 0; i < 2; i++) { var c = makeAddCard(i); writtenTasks.push(c); aH += c.html; }
+    for (var i = 0; i < 2; i++) { var c = makeSubCard(i); writtenTasks.push(c); sH += c.html; }
+    for (var i = 0; i < 2; i++) { var c = makeMulCard(i); writtenTasks.push(c); mH += c.html; }
+    for (var i = 0; i < 2; i++) { var c = makeDivCard(i); writtenTasks.push(c); dH += c.html; }
+    document.getElementById('written-add').innerHTML = aH;
+    document.getElementById('written-sub').innerHTML = sH;
+    document.getElementById('written-mul').innerHTML = mH;
+    document.getElementById('written-div').innerHTML = dH;
+    document.getElementById('result').style.display = 'none';
+  }
+
+  function pctZuXP(pct) {
+    if (pct >= 95) return 20;
+    if (pct >= 80) return 15;
+    if (pct >= 60) return 10;
+    if (pct >= 40) return 5;
+    if (pct >= 20) return 1;
+    return 0;
+  }
+
+  function checkAll() {
+    var hC = 0, hF = 0;
+    headTasks.forEach(function (tk, i) {
+      var inp = document.getElementById('h' + i);
+      if (!inp.value.trim()) { inp.className = 'ans-box'; return; }
+      hF++;
+      if (parseInt(inp.value, 10) === tk.ans) { inp.className = 'ans-box ok'; hC++; }
+      else inp.className = 'ans-box err';
+    });
+
+    var wC = 0, wT = 0;
+    writtenTasks.forEach(function (tk) {
+      for (var c = 0; c < tk.cells; c++) {
+        var inp = document.getElementById(tk.id + '_' + c);
+        if (!inp) continue;
+        wT++;
+        if (!inp.value.trim()) { inp.className = 'algo-cell'; continue; }
+        if (parseInt(inp.value, 10) === parseInt(inp.dataset.ans, 10)) { inp.className = 'algo-cell ok'; wC++; }
+        else inp.className = 'algo-cell err';
+      }
+    });
+
+    var total   = headTasks.length + wT;
+    var correct = hC + wC;
+    var pct     = Math.round(correct / total * 100);
+    var xp      = pctZuXP(pct);
+    var stars   = '★'.repeat(Math.round(pct / 20)) + '☆'.repeat(5 - Math.round(pct / 20));
+    var emoji   = pct === 100 ? '🏆' : pct >= 80 ? '⭐' : pct >= 60 ? '👍' : '💪';
+
+    document.getElementById('res-text').textContent  = correct + ' von ' + total + ' Feldern richtig ' + emoji;
+    document.getElementById('res-stars').textContent = stars;
+    document.getElementById('res-stats').innerHTML   =
+      '<div class="stat"><b>' + hC + '/' + headTasks.length + '</b>Kopfrechnen</div>' +
+      '<div class="stat"><b>' + wC + '/' + wT + '</b>Schriftlich</div>' +
+      '<div class="stat"><b>' + pct + '&nbsp;%</b>Gesamt</div>';
+    document.getElementById('res-sub').textContent = 'Fehler: ' + (total - correct);
+
+    var xpEl = document.getElementById('result-xp');
+    if (xp > 0) {
+      xpEl.innerHTML =
+        '<div class="xp-badge">⚔️ +' + xp + ' Kolosseum-XP</div>' +
+        '<table class="xp-tabelle">' +
+        '<tr><td>95–100 %</td><td>20 XP</td></tr>' +
+        '<tr><td>80–94 %</td><td>15 XP</td></tr>' +
+        '<tr><td>60–79 %</td><td>10 XP</td></tr>' +
+        '<tr><td>40–59 %</td><td>5 XP</td></tr>' +
+        '<tr><td>20–39 %</td><td>1 XP</td></tr>' +
+        '<tr><td>&lt; 20 %</td><td>0 XP</td></tr></table>';
+    } else {
+      xpEl.innerHTML =
+        '<div class="xp-badge xp-null">Unter 20 % – 0 XP</div>' +
+        '<table class="xp-tabelle">' +
+        '<tr><td>95–100 %</td><td>20 XP</td></tr>' +
+        '<tr><td>80–94 %</td><td>15 XP</td></tr>' +
+        '<tr><td>60–79 %</td><td>10 XP</td></tr>' +
+        '<tr><td>40–59 %</td><td>5 XP</td></tr>' +
+        '<tr><td>20–39 %</td><td>1 XP</td></tr>' +
+        '<tr><td>&lt; 20 %</td><td>0 XP</td></tr></table>';
+    }
+
+    var banner = document.getElementById('result');
+    banner.style.display = 'block';
+    banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    if (typeof window.kolosseumReport === 'function') {
+      window.kolosseumReport(xp, 20, 'rechenblatt-klasse45');
+    }
+  }
+
+  function resetAll() {
+    headTasks.forEach(function (tk, i) {
+      var e = document.getElementById('h' + i);
+      if (e) { e.value = ''; e.className = 'ans-box'; }
+    });
+    writtenTasks.forEach(function (tk) {
+      for (var c = 0; c < tk.cells; c++) {
+        var e = document.getElementById(tk.id + '_' + c);
+        if (e) { e.value = ''; e.className = 'algo-cell'; }
+      }
+    });
+    document.getElementById('result').style.display = 'none';
+  }
+
+  buildAll();
+  </script>
+
+  <script src="/js/arena-bar.js"></script>
+  <script src="/js/kolosseum-prompt.js"></script>
+
+</body>
+</html>
