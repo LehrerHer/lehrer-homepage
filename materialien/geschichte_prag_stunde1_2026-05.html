@@ -1,0 +1,641 @@
+<!--
+  Titel: Geschichte Prags – Stunde 1: Ursprünge und Aufstieg
+  Fach: Geschichte
+  Klasse/Niveau: nicht angegeben (Sekundarstufe I/II)
+  AB-Typ: Präsentation (PPP, interaktiv)
+  Erstellt: 2026-05
+  Quelle: PPP Stunde1 Geschichte Prags.pptx (Material manuell von mir)
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geschichte Prags – Stunde 1 | Jan Herrmann</title>
+  <script src="../js/auth-guard.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #1e3a5f;
+      --accent:  #4a9eda;
+      --bg:      #f4f6f7;
+      --white:   #ffffff;
+      --green:   #2ecc71;
+      --red:     #e74c3c;
+      --yellow:  #f0a500;
+      --gold:    #c9a84c;
+      --radius:  8px;
+    }
+    body {
+      font-family: system-ui, sans-serif;
+      background: #0f1f35;
+      height: 100vh;
+      overflow: hidden;
+      color: #222;
+    }
+
+    /* === FORTSCHRITTSLEISTE === */
+    .ppp-progress {
+      position: fixed; top: 0; left: 0;
+      height: 4px; width: 100%;
+      background: rgba(255,255,255,.12);
+      z-index: 100;
+    }
+    .ppp-progress-bar {
+      height: 100%;
+      background: var(--gold);
+      transition: width .3s ease;
+    }
+
+    /* === FOLIENBEREICH === */
+    .ppp-slides {
+      width: 100%;
+      height: calc(100vh - 56px);
+      position: relative;
+    }
+    .slide {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      padding: 36px 56px;
+      opacity: 0; pointer-events: none;
+      transition: opacity .22s ease;
+      overflow-y: auto;
+    }
+    .slide.active { opacity: 1; pointer-events: all; }
+
+    /* === FOLIEN-TYPEN === */
+    .slide--title   { background: linear-gradient(135deg, #1a2a45, #2c4a7a); text-align: center; }
+    .slide--quote   { background: linear-gradient(135deg, #2a1a0e, #6b3a1f); text-align: center; }
+    .slide--section { background: linear-gradient(135deg, #1e3a5f, var(--gold)); text-align: center; }
+    .slide--content { background: var(--bg); align-items: flex-start; justify-content: flex-start; padding-top: 28px; }
+    .slide--tasks   { background: #fff8e1; align-items: flex-start; justify-content: flex-start; padding-top: 28px; }
+    .slide--map     { background: #e8f0f8; align-items: flex-start; justify-content: flex-start; padding-top: 28px; }
+    .slide--timeline { background: #1a2a45; align-items: flex-start; justify-content: flex-start; padding-top: 28px; }
+
+    /* === TYPOGRAFIE === */
+    .slide-title-main { font-size: clamp(2.2rem,5vw,3.8rem); font-weight: 800; color: var(--white); line-height: 1.1; margin-bottom: 14px; }
+    .slide-title-sub  { font-size: clamp(.95rem,2.2vw,1.3rem); color: rgba(255,255,255,.8); margin-bottom: 6px; }
+    .slide-emoji      { font-size: 2.8rem; margin-bottom: 20px; }
+    .section-number   { font-size: 4.5rem; font-weight: 900; color: rgba(255,255,255,.18); line-height: 1; margin-bottom: 6px; }
+    .section-title    { font-size: clamp(1.7rem,4vw,2.6rem); font-weight: 800; color: var(--white); }
+
+    /* === INHALTS-ELEMENTE === */
+    .slide-heading {
+      font-size: clamp(1.2rem,2.8vw,1.7rem); font-weight: 700;
+      color: var(--primary); margin-bottom: 20px; width: 100%;
+      border-bottom: 3px solid var(--gold); padding-bottom: 8px;
+    }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; width: 100%; }
+    .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; width: 100%; }
+    .card {
+      background: var(--white); border-radius: var(--radius);
+      padding: 18px; box-shadow: 0 2px 8px rgba(0,0,0,.07);
+    }
+    .card-title { font-size: .95rem; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
+    .card-list  { list-style: none; padding: 0; }
+    .card-list li {
+      font-size: .85rem; padding: 4px 0;
+      border-bottom: 1px solid #eee;
+      display: flex; gap: 6px; color: #333;
+    }
+    .card-list li:last-child { border-bottom: none; }
+    .card-list li::before   { content:"▸"; color: var(--gold); flex-shrink: 0; }
+
+    .info-box {
+      background: var(--white); border-left: 4px solid var(--gold);
+      padding: 11px 15px; border-radius: 0 var(--radius) var(--radius) 0;
+      margin-bottom: 10px; width: 100%;
+    }
+    .info-box-title { font-size: .9rem; font-weight: 700; color: var(--primary); margin-bottom: 5px; }
+    .info-box p     { font-size: .82rem; color: #444; line-height: 1.5; }
+
+    .note-box {
+      background: #fff8e1; border-left: 4px solid var(--yellow);
+      padding: 11px 15px; border-radius: 0 var(--radius) var(--radius) 0;
+      width: 100%; font-size: .83rem; color: #6b4c00; margin-top: 14px;
+    }
+
+    /* === ZEITLEISTE === */
+    .timeline { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+    .tl-item {
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+    .tl-year {
+      background: var(--gold); color: #fff;
+      border-radius: var(--radius); padding: 4px 10px;
+      font-size: .8rem; font-weight: 700; min-width: 82px;
+      text-align: center; flex-shrink: 0; margin-top: 2px;
+    }
+    .tl-content { background: rgba(255,255,255,.1); border-radius: var(--radius); padding: 8px 12px; flex: 1; }
+    .tl-content strong { display: block; font-size: .87rem; color: var(--white); margin-bottom: 2px; }
+    .tl-content span   { font-size: .78rem; color: rgba(255,255,255,.65); }
+
+    /* === DEFINITION-TABELLE === */
+    .def-table { width: 100%; border-collapse: collapse; }
+    .def-table td { padding: 9px 13px; border-bottom: 1px solid #e0e0e0; font-size: .85rem; vertical-align: top; }
+    .def-table td:first-child { font-weight: 700; color: var(--primary); width: 140px; background: #f0f4f8; }
+
+    /* === GEOGRAFIEKARTE (SVG-Skizze) === */
+    .geo-box {
+      background: var(--white); border-radius: var(--radius);
+      padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.07);
+      width: 100%; margin-bottom: 14px;
+    }
+
+    /* === AUFGABEN === */
+    .task-item {
+      background: var(--white); border-radius: var(--radius);
+      padding: 12px 16px; margin-bottom: 9px;
+      display: flex; gap: 13px; align-items: flex-start;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06); width: 100%;
+    }
+    .task-number {
+      background: var(--primary); color: var(--white);
+      border-radius: 50%; width: 26px; height: 26px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .78rem; font-weight: 700; flex-shrink: 0;
+    }
+    .task-label { font-size: .7rem; color: var(--gold); font-weight: 600; margin-bottom: 2px; }
+    .task-text  { font-size: .85rem; color: #333; line-height: 1.5; }
+
+    /* === CHECK-UP === */
+    .checkup-item {
+      background: var(--white); border-radius: var(--radius);
+      padding: 12px 16px; margin-bottom: 8px;
+      display: flex; gap: 11px; align-items: flex-start;
+      box-shadow: 0 1px 4px rgba(0,0,0,.06); width: 100%;
+      border-left: 4px solid var(--gold);
+    }
+    .checkup-num { font-weight: 700; color: var(--primary); min-width: 22px; font-size: .88rem; }
+
+    /* === ZITAT === */
+    .quote-text   { font-size: clamp(.95rem,2.3vw,1.3rem); color: var(--white); font-style: italic; line-height: 1.6; max-width: 680px; margin-bottom: 18px; }
+    .quote-author { font-size: .9rem; color: rgba(255,255,255,.6); }
+
+    /* === BILD-BESCHRIFTUNG === */
+    .sehenswuerdigkeit {
+      background: var(--white); border-radius: var(--radius);
+      padding: 13px 15px; box-shadow: 0 2px 6px rgba(0,0,0,.07);
+      border-top: 3px solid var(--gold);
+    }
+    .sw-icon { font-size: 1.9rem; margin-bottom: 6px; display: block; }
+    .sw-name { font-size: .88rem; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+    .sw-info { font-size: .78rem; color: #555; line-height: 1.4; }
+
+    /* === NAVIGATIONSLEISTE === */
+    .ppp-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; height: 56px;
+      background: rgba(15,31,53,.96); display: flex; align-items: center;
+      justify-content: space-between; padding: 0 14px;
+      border-top: 1px solid rgba(255,255,255,.1); z-index: 50; gap: 10px;
+    }
+    .nav-btn {
+      background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+      color: var(--white); padding: 7px 18px; border-radius: 6px;
+      font-size: .88rem; cursor: pointer; transition: background .2s; flex-shrink: 0;
+    }
+    .nav-btn:hover:not(:disabled) { background: rgba(255,255,255,.2); }
+    .nav-btn:disabled { opacity: .3; cursor: default; }
+    .nav-counter    { color: rgba(255,255,255,.7); font-size: .83rem; white-space: nowrap; }
+    .nav-slide-title { color: rgba(255,255,255,.5); font-size: .78rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; flex: 1; text-align: center; }
+    .nav-home       { text-decoration: none; color: rgba(255,255,255,.5); font-size: .74rem; white-space: nowrap; }
+    .nav-home:hover { color: rgba(255,255,255,.8); }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .slide       { padding: 18px; }
+      .two-col, .three-col { grid-template-columns: 1fr; gap: 11px; }
+      .slide-title-main { font-size: 1.9rem; }
+      .slide--content, .slide--tasks, .slide--map, .slide--timeline { overflow-y: auto; }
+    }
+    @media (max-width: 480px) {
+      .slide   { padding: 12px; }
+      .ppp-nav { padding: 0 7px; gap: 5px; }
+      .nav-btn { padding: 6px 10px; font-size: .78rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ppp-progress">
+    <div class="ppp-progress-bar" id="progressBar"></div>
+  </div>
+
+  <div class="ppp-slides" id="slides">
+
+    <!-- ===== FOLIE 1: Titelfolie ===== -->
+    <div class="slide slide--title active" data-title="Geschichte Prags – Stunde 1">
+      <div class="slide-emoji">🏰</div>
+      <h1 class="slide-title-main">Geschichte Prags</h1>
+      <p class="slide-title-sub">Stunde 1: Ursprünge und Aufstieg der Goldenen Stadt</p>
+      <p class="slide-title-sub" style="opacity:.6;font-size:.95rem;margin-top:8px;">Fach Geschichte · Jan Herrmann · Oberschule Spelle</p>
+    </div>
+
+    <!-- ===== FOLIE 2: Einstieg – Vorwissen ===== -->
+    <div class="slide slide--content" data-title="Einstieg: Was wisst ihr über Prag?">
+      <h2 class="slide-heading">Einstieg: Was wisst ihr über Prag?</h2>
+      <div class="two-col" style="margin-bottom:16px;">
+        <div class="card" style="border-top:3px solid var(--gold);">
+          <div class="card-title">🗺️ Steckbrief</div>
+          <table style="width:100%;font-size:.83rem;">
+            <tbody>
+              <tr><td style="font-weight:600;color:var(--primary);padding:4px 0;width:100px;">Landesname:</td><td>Tschechische Republik</td></tr>
+              <tr><td style="font-weight:600;color:var(--primary);padding:4px 0;">Hauptstadt:</td><td>Praha / Prag</td></tr>
+              <tr><td style="font-weight:600;color:var(--primary);padding:4px 0;">Fluss:</td><td>Moldau (Vltava)</td></tr>
+              <tr><td style="font-weight:600;color:var(--primary);padding:4px 0;">Einwohner:</td><td>ca. 1,4 Millionen</td></tr>
+              <tr><td style="font-weight:600;color:var(--primary);padding:4px 0;">Beiname:</td><td>„Die Goldene Stadt"</td></tr>
+              <tr><td style="font-weight:600;color:var(--primary);padding:4px 0;">UNESCO:</td><td>Weltkulturerbe seit 1992</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card" style="border-top:3px solid var(--accent);">
+          <div class="card-title">💬 Brainstorming-Auftrag</div>
+          <p style="font-size:.86rem;color:#444;line-height:1.6;margin-bottom:12px;">Notiert in Einzelarbeit (2 Minuten):</p>
+          <ul style="list-style:none;padding:0;">
+            <li style="padding:6px 0;border-bottom:1px solid #eee;font-size:.85rem;display:flex;gap:8px;"><span style="color:var(--gold);font-weight:700;">1.</span> Was habt ihr schon über Prag gehört?</li>
+            <li style="padding:6px 0;border-bottom:1px solid #eee;font-size:.85rem;display:flex;gap:8px;"><span style="color:var(--gold);font-weight:700;">2.</span> Welche historischen Ereignisse verbindet ihr mit Prag oder Böhmen?</li>
+            <li style="padding:6px 0;font-size:.85rem;display:flex;gap:8px;"><span style="color:var(--gold);font-weight:700;">3.</span> Was möchtet ihr über die Geschichte der Stadt herausfinden?</li>
+          </ul>
+          <div class="note-box" style="margin-top:12px;">→ Sammelt eure Antworten anschließend an der Tafel.</div>
+        </div>
+      </div>
+      <div class="info-box">
+        <div class="info-box-title">Lernziel dieser Stunde</div>
+        <p>Ihr könnt die geografische Lage Prags beschreiben, die Gründungsgeschichte der Stadt erläutern und die Bedeutung Prags im Mittelalter einordnen.</p>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 3: Geografische Lage ===== -->
+    <div class="slide slide--map" data-title="Geografische Lage Prags">
+      <h2 class="slide-heading" style="border-color:var(--accent);">Geografische Lage Prags</h2>
+      <div class="two-col">
+        <div>
+          <div class="info-box" style="border-color:var(--accent);">
+            <div class="info-box-title">Lage in Europa</div>
+            <p>Prag liegt im <strong>Herzen Mitteleuropas</strong>, im Böhmischen Becken, das von Mittelgebirgen umgeben ist (Böhmerwald, Erzgebirge, Riesengebirge).</p>
+          </div>
+          <div class="info-box" style="border-color:var(--accent);">
+            <div class="info-box-title">Die Moldau</div>
+            <p>Die <strong>Moldau (Vltava)</strong> durchfließt Prag von Süd nach Nord und war Lebensader und Handelsweg der Stadt. An ihren Ufern entstand der historische Stadtkern.</p>
+          </div>
+          <div class="info-box" style="border-color:var(--accent);">
+            <div class="info-box-title">Nachbarländer (heute)</div>
+            <p>Deutschland · Österreich · Slowakei · Polen</p>
+          </div>
+          <div class="note-box">
+            Prags zentrale Lage machte die Stadt zum Kreuzungspunkt wichtiger Handelswege zwischen West- und Osteuropa.
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="card" style="border-top:3px solid var(--accent);">
+            <div class="card-title">🌐 Koordinaten &amp; Fakten</div>
+            <table style="width:100%;font-size:.82rem;">
+              <tbody>
+                <tr><td style="font-weight:600;color:var(--primary);padding:3px 0;width:90px;">Breite:</td><td>50° 05' N</td></tr>
+                <tr><td style="font-weight:600;color:var(--primary);padding:3px 0;">Länge:</td><td>14° 25' O</td></tr>
+                <tr><td style="font-weight:600;color:var(--primary);padding:3px 0;">Höhe:</td><td>177–399 m ü. NN</td></tr>
+                <tr><td style="font-weight:600;color:var(--primary);padding:3px 0;">Fläche:</td><td>496 km²</td></tr>
+                <tr><td style="font-weight:600;color:var(--primary);padding:3px 0;">Fluss:</td><td>Moldau (Vltava)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card" style="border-top:3px solid var(--gold);">
+            <div class="card-title">🏔️ Böhmisches Becken</div>
+            <p style="font-size:.83rem;color:#444;line-height:1.5;">Böhmen ist eine natürliche geografische Einheit: ein von Gebirgen umrahmtes Hochland. Diese natürliche Abgrenzung gab dem Gebiet schon früh eine eigene politische Identität.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 4: Abschnitt Anfänge Prags ===== -->
+    <div class="slide slide--section" data-title="Die Anfänge Prags">
+      <div class="section-number">1</div>
+      <h2 class="section-title">Die Anfänge Prags</h2>
+      <p style="color:rgba(255,255,255,.75);font-size:1.05rem;margin-top:10px;">6.–10. Jahrhundert</p>
+    </div>
+
+    <!-- ===== FOLIE 5: Frühe Besiedlung und Přemysliden ===== -->
+    <div class="slide slide--content" data-title="Frühe Besiedlung und die Přemysliden">
+      <h2 class="slide-heading">Frühe Besiedlung und die Přemysliden</h2>
+      <div class="two-col">
+        <div class="card" style="border-top:3px solid var(--gold);">
+          <div class="card-title">👥 Erste Siedler</div>
+          <ul class="card-list">
+            <li>Keltische Stämme (Boier) besiedelten Böhmen ab ca. 5. Jhd. v.Chr. → Name „Boiohaemum" → Böhmen</li>
+            <li>Germanische Markomannen verdrängten die Kelten (ca. 1. Jhd. n.Chr.)</li>
+            <li>Ab dem 6. Jhd. n.Chr.: Einwanderung <strong>slawischer Stämme</strong> ins Böhmische Becken</li>
+            <li>Erste befestigte Siedlungen an der Moldau entstehen</li>
+          </ul>
+        </div>
+        <div class="card" style="border-top:3px solid var(--primary);">
+          <div class="card-title">👑 Die Přemysliden-Dynastie</div>
+          <ul class="card-list">
+            <li>Slawische Herrscherfamilie, ab ca. <strong>870 n.Chr.</strong> nachweisbar</li>
+            <li>Gründung der <strong>Prager Burg (Hradschin)</strong> ca. 870–885</li>
+            <li>Přemysl Otakar I. (1198–1230): erster <strong>König von Böhmen</strong></li>
+            <li>Herrschten bis 1306 über Böhmen</li>
+          </ul>
+          <div class="note-box" style="margin-top:10px;">
+            Die Přemysliden prägten Prag über 400 Jahre und legten das Fundament der späteren Kaiserstadt.
+          </div>
+        </div>
+      </div>
+      <div class="info-box" style="margin-top:14px;">
+        <div class="info-box-title">Erste schriftliche Erwähnung Prags</div>
+        <p>965 n.Chr.: Der arabische Kaufmann Ibrahim ibn Jakub beschreibt Prag als eine <em>„aus Stein und Kalk erbaute Stadt"</em> – und als wichtigsten Handelsplatz der Region.</p>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 6: Herzog Wenzel – Böhmens Schutzpatron ===== -->
+    <div class="slide slide--content" data-title="Herzog Wenzel – Böhmens Schutzpatron">
+      <h2 class="slide-heading">Herzog Wenzel – Böhmens Schutzpatron</h2>
+      <div class="two-col">
+        <div>
+          <div class="info-box">
+            <div class="info-box-title">Wenzel I. (907–935)</div>
+            <p>Herzog von Böhmen aus dem Haus der Přemysliden. Förderte das Christentum im Land, baute eine Kirche auf der Prager Burg und pflegte enge Beziehungen zum Ostfränkischen Reich.</p>
+          </div>
+          <div class="info-box">
+            <div class="info-box-title">Märtyrertod und Heiligenverehrung</div>
+            <p>935 wurde Wenzel von seinem Bruder Boleslav ermordet. Bald darauf wurde er zum <strong>Heiligen und Schutzpatron Böhmens</strong> erhoben. Der Veitsdom auf der Prager Burg beherbergt heute sein Grab.</p>
+          </div>
+          <div class="note-box">
+            Der Wenzelskult stärkte die Identität Böhmens als eigenständiges christliches Fürstentum.
+          </div>
+        </div>
+        <div class="card" style="border-top:3px solid var(--gold);">
+          <div class="card-title">⛪ Die Prager Burg (Hradschin)</div>
+          <ul class="card-list">
+            <li>Gegründet ca. 870 auf einem Felsen über der Moldau</li>
+            <li>Zunächst aus Holz, dann aus Stein ausgebaut</li>
+            <li>Sitz der böhmischen Herzöge und später Könige</li>
+            <li>Unter Karl IV. zur Residenz des römisch-deutschen Kaisers ausgebaut</li>
+            <li>Heute: größtes zusammenhängendes Burgensemble der Welt</li>
+          </ul>
+          <p style="font-size:.78rem;color:#888;margin-top:10px;">📐 Ausdehnung: ca. 70.000 m²</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 7: Zeitleiste ===== -->
+    <div class="slide slide--timeline" data-title="Zeitleiste: Geschichte Prags im Überblick">
+      <h2 class="slide-heading" style="color:var(--white);border-color:var(--gold);">Zeitleiste: Geschichte Prags im Überblick</h2>
+      <div class="timeline">
+        <div class="tl-item">
+          <div class="tl-year">~870</div>
+          <div class="tl-content"><strong>Gründung der Prager Burg</strong><span>Přemysliden errichten die Hradschin als Herrschaftssitz</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">965</div>
+          <div class="tl-content"><strong>Erste schriftliche Erwähnung</strong><span>Ibrahim ibn Jakub beschreibt Prag als bedeutenden Handelsplatz</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1085</div>
+          <div class="tl-content"><strong>Böhmen wird Königreich</strong><span>Vratislaus II. erhält den Königstitel vom deutschen Kaiser</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1344</div>
+          <div class="tl-content"><strong>Erzbistum Prag gegründet</strong><span>Prag wird zum kirchlichen Zentrum Mitteleuropas erhoben</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1346–1378</div>
+          <div class="tl-content"><strong>Karl IV. – Blütezeit Prags</strong><span>Prag wird Hauptstadt des Heiligen Römischen Reiches</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1618</div>
+          <div class="tl-content"><strong>Prager Fenstersturz</strong><span>Auslöser des Dreißigjährigen Krieges</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1918</div>
+          <div class="tl-content"><strong>Hauptstadt der Tschechoslowakei</strong><span>Nach dem Ende der Habsburger-Monarchie</span></div>
+        </div>
+        <div class="tl-item">
+          <div class="tl-year">1993</div>
+          <div class="tl-content"><strong>Hauptstadt der Tschechischen Republik</strong><span>Nach der „Samtenen Scheidung" von der Slowakei</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 8: Abschnitt Das goldene Prag ===== -->
+    <div class="slide slide--section" data-title="Das goldene Prag – Karl IV.">
+      <div class="section-number">2</div>
+      <h2 class="section-title">Das goldene Prag</h2>
+      <p style="color:rgba(255,255,255,.75);font-size:1.05rem;margin-top:10px;">Karl IV. und die Blütezeit (14. Jahrhundert)</p>
+    </div>
+
+    <!-- ===== FOLIE 9: Karl IV. – König und Kaiser ===== -->
+    <div class="slide slide--content" data-title="Karl IV. – König und Kaiser">
+      <h2 class="slide-heading">Karl IV. – König und Kaiser</h2>
+      <div class="two-col">
+        <div class="card" style="border-top:3px solid var(--gold);">
+          <div class="card-title">👑 Steckbrief</div>
+          <table style="width:100%;font-size:.83rem;">
+            <tbody>
+              <tr><td style="font-weight:600;color:var(--primary);padding:4px 0;width:115px;">Geb./Gest.:</td><td>1316 – 1378</td></tr>
+              <tr><td style="font-weight:600;color:var(--primary);padding:4px 0;">König v. Böhmen:</td><td>ab 1346</td></tr>
+              <tr><td style="font-weight:600;color:var(--primary);padding:4px 0;">Röm.-dt. Kaiser:</td><td>ab 1355</td></tr>
+              <tr><td style="font-weight:600;color:var(--primary);padding:4px 0;">Residenz:</td><td>Prag (Prager Burg)</td></tr>
+              <tr><td style="font-weight:600;color:var(--primary);padding:4px 0;">Sprachen:</td><td>5 (Latein, Deutsch, Tschechisch, Französisch, Italienisch)</td></tr>
+              <tr><td style="font-weight:600;color:var(--primary);padding:4px 0;">Beiname:</td><td>„Vater des Vaterlandes"</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div class="info-box">
+            <div class="info-box-title">Bedeutung für Prag</div>
+            <p>Karl IV. machte Prag zur <strong>Hauptstadt des Heiligen Römischen Reiches</strong>. Unter seiner Herrschaft erlebte die Stadt ihre größte Blütezeit: Sie war politisches, kulturelles und wirtschaftliches Zentrum Europas.</p>
+          </div>
+          <div class="info-box">
+            <div class="info-box-title">Goldene Bulle (1356)</div>
+            <p>Karls wichtigstes Reichsgesetz regelte die Wahl des deutschen Königs durch sieben Kurfürsten – ein Grundgesetz des Heiligen Römischen Reiches, das bis 1806 gültig blieb.</p>
+          </div>
+          <div class="note-box">
+            Karl IV. gilt bis heute als bedeutendster Herrscher in der Geschichte Böhmens.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 10: Karls Bauprojekte in Prag ===== -->
+    <div class="slide slide--content" data-title="Karls Bauprojekte in Prag">
+      <h2 class="slide-heading">Karls Bauprojekte in Prag</h2>
+      <div class="three-col">
+        <div class="sehenswuerdigkeit">
+          <span class="sw-icon">🏛️</span>
+          <div class="sw-name">Karls-Universität (1348)</div>
+          <div class="sw-info">Erste Universität in Mitteleuropa nördlich der Alpen. Zog Gelehrte aus dem gesamten Reich nach Prag.</div>
+        </div>
+        <div class="sehenswuerdigkeit">
+          <span class="sw-icon">🌉</span>
+          <div class="sw-name">Karlsbrücke (ab 1357)</div>
+          <div class="sw-info">Steinbrücke über die Moldau, ersetzt eine ältere Holzbrücke. Mit 33 Heiligenstatuen geschmückt – bis heute Wahrzeichen Prags.</div>
+        </div>
+        <div class="sehenswuerdigkeit">
+          <span class="sw-icon">⛪</span>
+          <div class="sw-name">Veitsdom (Ausbau ab 1344)</div>
+          <div class="sw-info">Gotische Kathedrale auf der Prager Burg. Krönungskirche der böhmischen Könige, Grablege Karls IV.</div>
+        </div>
+        <div class="sehenswuerdigkeit">
+          <span class="sw-icon">🏙️</span>
+          <div class="sw-name">Prager Neustadt (1348)</div>
+          <div class="sw-info">Karl ließ eine geplante Neustadt anlegen – einer der ersten stadtplanerischen Großentwürfe des Mittelalters.</div>
+        </div>
+        <div class="sehenswuerdigkeit">
+          <span class="sw-icon">🏰</span>
+          <div class="sw-name">Burg Karlštejn (1348)</div>
+          <div class="sw-info">Außerhalb Prags gelegene Reichsburg zur Aufbewahrung der Reichskleinodien und Heiligen Reliquien.</div>
+        </div>
+        <div class="sehenswuerdigkeit">
+          <span class="sw-icon">🔱</span>
+          <div class="sw-name">Erzbistum Prag (1344)</div>
+          <div class="sw-info">Karl erwirkte die Erhebung Prags zum Erzbistum – Prag wurde kirchliches Zentrum Mitteleuropas.</div>
+        </div>
+      </div>
+      <div class="note-box" style="margin-top:14px;">
+        Prag wuchs unter Karl IV. zur viertgrößten Stadt Europas heran (nach Konstantinopel, Paris und London).
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 11: Prag nach Karl IV. – ein Überblick ===== -->
+    <div class="slide slide--content" data-title="Prag nach Karl IV.">
+      <h2 class="slide-heading">Prag nach Karl IV. – Krise und Wandel</h2>
+      <div class="two-col">
+        <div class="card" style="border-top:3px solid var(--red);">
+          <div class="card-title">🔥 Hussitische Revolution (1419–1434)</div>
+          <ul class="card-list">
+            <li><strong>Jan Hus</strong> (1369–1415): Theologe und Kirchenkritiker an der Prager Universität</li>
+            <li>Kritik an Korruption der Kirche und Papst → Verbrennung auf dem Konzil von Konstanz (1415)</li>
+            <li>Erste Prager Fenstersturz (1419): Hussitenaufstand gegen den König</li>
+            <li>Jahrzehnte religiöser Kriegsführung in Böhmen</li>
+          </ul>
+        </div>
+        <div class="card" style="border-top:3px solid var(--accent);">
+          <div class="card-title">👑 Habsburg und Reformation (ab 1526)</div>
+          <ul class="card-list">
+            <li>Böhmen fällt 1526 an die <strong>Habsburger</strong> (bis 1918)</li>
+            <li>Prag bleibt zeitweilig Residenzstadt</li>
+            <li><strong>Prager Fenstersturz (1618)</strong>: Böhmischer Aufstand gegen die Habsburger → Auslöser des Dreißigjährigen Krieges</li>
+            <li>Niederlage der Böhmen (Weißer Berg 1620): Prag verliert an Bedeutung</li>
+          </ul>
+        </div>
+      </div>
+      <div class="note-box" style="margin-top:14px;">
+        Merkt euch: Prag war wiederholt Schauplatz großer europäischer Konflikte – religiöser, politischer und nationaler Natur.
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 12: Check-up ===== -->
+    <div class="slide slide--content" data-title="Check-up">
+      <h2 class="slide-heading" style="border-color:var(--yellow);color:#7a4f00;">✅ Check-up: Was habe ich gelernt?</h2>
+      <div style="width:100%;">
+        <div class="checkup-item"><span class="checkup-num">1.</span><span style="font-size:.86rem;">Wo liegt Prag? Beschreibe die geografische Lage in eigenen Worten.</span></div>
+        <div class="checkup-item"><span class="checkup-num">2.</span><span style="font-size:.86rem;">Welches Herrschergeschlecht gründete die Prager Burg und regierte Böhmen bis 1306?</span></div>
+        <div class="checkup-item"><span class="checkup-num">3.</span><span style="font-size:.86rem;">Warum wurde Wenzel I. zum Heiligen? Welche Bedeutung hat er für Böhmen?</span></div>
+        <div class="checkup-item"><span class="checkup-num">4.</span><span style="font-size:.86rem;">Nenne zwei Bauwerke, die auf Karl IV. zurückgehen, und erkläre ihre Bedeutung.</span></div>
+        <div class="checkup-item"><span class="checkup-num">5.</span><span style="font-size:.86rem;">Warum gilt Karl IV. als „Vater des Vaterlandes"?</span></div>
+        <div class="checkup-item"><span class="checkup-num">6.</span><span style="font-size:.86rem;">Was war der Prager Fenstersturz von 1618 und welche Folgen hatte er?</span></div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 13: Aufgaben ===== -->
+    <div class="slide slide--tasks" data-title="Aufgaben zu Stunde 1">
+      <h2 class="slide-heading" style="border-color:var(--yellow);color:#7a4f00;">📝 Aufgaben zu Stunde 1</h2>
+      <div style="width:100%;">
+        <div class="task-item">
+          <div class="task-number">1</div>
+          <div><div class="task-label">[Beschreiben]</div><div class="task-text">Beschreibe die geografische Lage Prags anhand der Folie. Gehe auf die Lage an der Moldau, die Einbettung im Böhmischen Becken und die Bedeutung dieser Lage für den Handel ein.</div></div>
+        </div>
+        <div class="task-item">
+          <div class="task-number">2</div>
+          <div><div class="task-label">[Erläutern]</div><div class="task-text">Erkläre, welche Rolle die Přemysliden bei der Entstehung Prags spielten. Warum war die Prager Burg ein wichtiges Herrschaftssymbol?</div></div>
+        </div>
+        <div class="task-item">
+          <div class="task-number">3</div>
+          <div><div class="task-label">[Analysieren]</div><div class="task-text">Ordne Karl IV. in die Zeitleiste ein: In welche Epochenphase fällt seine Herrschaft? Was machte seine Regierungszeit für Prag so bedeutsam?</div></div>
+        </div>
+        <div class="task-item">
+          <div class="task-number">4</div>
+          <div><div class="task-label">[Kreativ]</div><div class="task-text">Stell dir vor, du lebst 1360 in Prag. Schreibe einen kurzen Brief (ca. 5 Sätze) an einen Freund in Köln und beschreibe, was in deiner Stadt gerade gebaut wird und wie das Leben dort ist.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== FOLIE 14: Zitat / Abschluss ===== -->
+    <div class="slide slide--quote" data-title="Prag – Die Goldene Stadt">
+      <div class="slide-emoji">🏰</div>
+      <h2 class="slide-title-main" style="font-size:clamp(1.6rem,4vw,2.8rem);">„Prag – die Goldene Stadt"</h2>
+      <blockquote class="quote-text" style="margin-top:22px;">
+        „Prag lässt nicht los … diese Mutter hat Krallen."
+      </blockquote>
+      <p class="quote-author">Franz Kafka (1883–1924), Schriftsteller aus Prag</p>
+      <p style="font-size:.82rem;color:rgba(255,255,255,.45);margin-top:18px;">Geschichte · Stunde 1 · Oberschule Spelle</p>
+    </div>
+
+  </div><!-- /ppp-slides -->
+
+  <!-- === NAVIGATIONSLEISTE === -->
+  <nav class="ppp-nav" aria-label="Folien-Navigation">
+    <a href="../fach-geschichte.html" class="nav-home">← Geschichte</a>
+    <button class="nav-btn" id="btnPrev" aria-label="Vorherige Folie" disabled>◀ Zurück</button>
+    <span class="nav-slide-title" id="slideTitle"></span>
+    <span class="nav-counter" id="slideCounter">1 / 14</span>
+    <button class="nav-btn" id="btnNext" aria-label="Nächste Folie">Weiter ▶</button>
+  </nav>
+
+  <script>
+  (function () {
+    var slides  = document.querySelectorAll('.slide');
+    var total   = slides.length;
+    var current = 0;
+    var btnPrev     = document.getElementById('btnPrev');
+    var btnNext     = document.getElementById('btnNext');
+    var counter     = document.getElementById('slideCounter');
+    var titleEl     = document.getElementById('slideTitle');
+    var progressBar = document.getElementById('progressBar');
+
+    function goTo(index) {
+      if (index < 0 || index >= total) return;
+      slides[current].classList.remove('active');
+      current = index;
+      slides[current].classList.add('active');
+      slides[current].scrollTop = 0;
+      update();
+    }
+
+    function update() {
+      counter.textContent      = (current + 1) + ' / ' + total;
+      titleEl.textContent      = slides[current].dataset.title || '';
+      btnPrev.disabled         = current === 0;
+      btnNext.disabled         = current === total - 1;
+      progressBar.style.width  = ((current + 1) / total * 100) + '%';
+    }
+
+    btnPrev.addEventListener('click', function () { goTo(current - 1); });
+    btnNext.addEventListener('click', function () { goTo(current + 1); });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+        e.preventDefault(); goTo(current + 1);
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        e.preventDefault(); goTo(current - 1);
+      }
+    });
+
+    var touchX = null;
+    document.addEventListener('touchstart', function (e) {
+      touchX = e.touches[0].clientX;
+    }, { passive: true });
+    document.addEventListener('touchend', function (e) {
+      if (touchX === null) return;
+      var diff = touchX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+      touchX = null;
+    }, { passive: true });
+
+    update();
+  })();
+  </script>
+
+</body>
+</html>
