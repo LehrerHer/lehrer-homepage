@@ -96,6 +96,20 @@ router.post('/students/:id/badges', (req, res) => {
   res.json({ ok: true, isNew });
 });
 
+// PATCH /api/admin/students/:id/pin
+router.patch('/students/:id/pin', async (req, res) => {
+  const id  = Number(req.params.id);
+  const pin = String(req.body.pin ?? '');
+  if (!/^\d{4}$/.test(pin)) return res.status(400).json({ error: 'PIN muss genau 4 Ziffern haben.' });
+
+  const student = db.prepare('SELECT id FROM students WHERE id = ?').get(id);
+  if (!student) return res.status(404).json({ error: 'Schüler nicht gefunden.' });
+
+  const pin_hash = await bcrypt.hash(pin, 10);
+  db.prepare('UPDATE students SET pin_hash = ? WHERE id = ?').run(pin_hash, id);
+  res.json({ ok: true });
+});
+
 // DELETE /api/admin/students/:id
 router.delete('/students/:id', (req, res) => {
   db.prepare('DELETE FROM students WHERE id = ?').run(Number(req.params.id));

@@ -25,6 +25,7 @@
     .btn-sm { padding: 0.35rem 0.75rem; font-size: 0.82rem; border-radius: 50px; border: none; cursor: pointer; font-family: 'Nunito', sans-serif; font-weight: 700; transition: opacity 0.2s; }
     .btn-sm:hover { opacity: 0.8; }
     .btn-xp  { background: var(--c3); color: #fff; }
+    .btn-pw  { background: var(--c4); color: #fff; }
     .btn-del { background: var(--c1); color: #fff; }
 
     /* Modal */
@@ -58,7 +59,7 @@
     </div>
   </nav>
 
-  <main class="container" style="padding-bottom:3rem">
+  <main class="container" style="padding-bottom:3rem;max-width:1300px">
     <div class="toolbar">
       <h1>Schülerinnen & Schüler</h1>
       <button class="btn btn-primary" id="new-btn">+ Neu anlegen</button>
@@ -110,6 +111,25 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-sm btn-cancel" id="new-cancel">Abbrechen</button>
           <button type="submit" class="btn btn-primary btn-sm">Anlegen</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: PIN setzen -->
+  <div class="modal-bg" id="pin-modal">
+    <div class="modal">
+      <h2 id="pin-modal-title">PIN setzen</h2>
+      <form id="pin-form" novalidate>
+        <input type="hidden" id="pin-student-id">
+        <div class="form-group">
+          <label>Neue PIN (4 Ziffern) *</label>
+          <input type="text" id="pin-new" placeholder="z. B. 4782" maxlength="4" inputmode="numeric" required autocomplete="off">
+        </div>
+        <div class="form-error" id="pin-error"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-cancel" id="pin-cancel">Abbrechen</button>
+          <button type="submit" class="btn btn-primary btn-sm">Speichern</button>
         </div>
       </form>
     </div>
@@ -168,6 +188,7 @@
           <td>
             <div class="actions">
               <button class="btn-sm btn-xp"  onclick="openXP(${s.id}, '${s.nick}')">XP</button>
+              <button class="btn-sm btn-pw"  onclick="openPIN(${s.id}, '${s.nick}')">PIN</button>
               <button class="btn-sm btn-del" onclick="deleteStudent(${s.id}, '${s.nick}')">Löschen</button>
             </div>
           </td>
@@ -188,6 +209,7 @@
     document.getElementById('new-btn').addEventListener('click', () => openModal('new-modal'));
     document.getElementById('new-cancel').addEventListener('click', () => closeModal('new-modal'));
     document.getElementById('xp-cancel').addEventListener('click',  () => closeModal('xp-modal'));
+    document.getElementById('pin-cancel').addEventListener('click', () => closeModal('pin-modal'));
 
     // Neuen Schüler anlegen
     document.getElementById('new-form').addEventListener('submit', async e => {
@@ -239,6 +261,38 @@
 
       closeModal('xp-modal');
       await loadStudents();
+    });
+
+    // PIN setzen
+    function openPIN(id, nick) {
+      document.getElementById('pin-student-id').value = id;
+      document.getElementById('pin-modal-title').textContent = `PIN setzen – ${nick}`;
+      document.getElementById('pin-error').textContent = '';
+      document.getElementById('pin-form').reset();
+      document.getElementById('pin-student-id').value = id;
+      openModal('pin-modal');
+    }
+
+    document.getElementById('pin-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const errEl = document.getElementById('pin-error');
+      const id    = document.getElementById('pin-student-id').value;
+      const pin   = document.getElementById('pin-new').value.trim();
+
+      const res  = await fetch(`/api/admin/students/${id}/pin`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pin }),
+      });
+      const data = await res.json();
+      if (!res.ok) { errEl.textContent = data.error; return; }
+
+      closeModal('pin-modal');
+    });
+
+    // PIN: nur Ziffern (PIN-Modal)
+    document.getElementById('pin-new').addEventListener('input', e => {
+      e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
     });
 
     // Schüler löschen
