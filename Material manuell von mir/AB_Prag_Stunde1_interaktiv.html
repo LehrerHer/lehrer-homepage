@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prag – Geschichte und Lage · Klasse 10 · OBS Spelle</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Serif+4:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #B8860B;
+    --gold-light: #D4A017;
+    --gold-pale: #FDF6E3;
+    --dark: #1C1A14;
+    --stone: #4A4035;
+    --stone-mid: #7A6E5F;
+    --stone-light: #C8BEB0;
+    --parchment: #F5EDD8;
+    --parchment-dark: #EAD9B8;
+    --cream: #FDFAF3;
+    --red-accent: #8B1A1A;
+    --blue-accent: #1A3A5C;
+    --green-check: #2D6A4F;
+    --shadow: rgba(28,26,20,0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--cream);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--dark);
+    color: var(--parchment);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 32px 36px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .header-kicker {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 12px;
+    font-weight: 300;
+  }
+
+  .header-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(28px, 5vw, 46px);
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 8px;
+  }
+
+  .header-subtitle {
+    font-size: 15px;
+    color: var(--stone-light);
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+
+  .header-meta {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--stone-light);
+    letter-spacing: 0.5px;
+  }
+
+  .header-meta span::before {
+    content: '· ';
+    color: var(--gold);
+  }
+  .header-meta span:first-child::before { content: ''; }
+
+  .header-decoration {
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    width: 280px;
+    height: 280px;
+    opacity: 0.06;
+    font-size: 240px;
+    line-height: 1;
+    pointer-events: none;
+    z-index: 1;
+    user-select: none;
+  }
+
+  .gold-bar {
+    height: 4px;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 50%, transparent 100%);
+  }
+
+  /* ── INTRO BOX ── */
+  .intro-section {
+    max-width: 900px;
+    margin: 36px auto 0;
+    padding: 0 24px;
+  }
+
+  .intro-box {
+    background: var(--parchment);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 20px 24px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--stone);
+  }
+
+  .intro-box strong { color: var(--dark); }
+
+  /* ── SECTIONS ── */
+  .section-block {
+    max-width: 900px;
+    margin: 40px auto 0;
+    padding: 0 24px;
+  }
+
+  .section-heading {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 22px;
+    color: var(--dark);
+    border-bottom: 2px solid var(--parchment-dark);
+    padding-bottom: 10px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-badge {
+    background: var(--dark);
+    color: var(--gold-light);
+    font-family: 'Source Serif 4', serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 3px;
+  }
+
+  /* ── IMAGE STRIP ── */
+  .image-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .img-card {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px var(--shadow);
+    position: relative;
+  }
+
+  .img-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .img-card:hover img { transform: scale(1.04); }
+
+  .img-caption {
+    background: var(--dark);
+    color: var(--stone-light);
+    font-size: 11px;
+    padding: 7px 12px;
+    letter-spacing: 0.3px;
+  }
+
+  /* ── MAP EMBED ── */
+  .map-wrapper {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px var(--shadow);
+    margin-bottom: 28px;
+    border: 2px solid var(--parchment-dark);
+  }
+
+  .map-wrapper iframe {
+    width: 100%;
+    height: 340px;
+    border: none;
+    display: block;
+  }
+
+  .map-label {
+    background: var(--parchment);
+    border-top: 1px solid var(--parchment-dark);
+    font-size: 12px;
+    color: var(--stone-mid);
+    padding: 8px 16px;
+    font-style: italic;
+  }
+
+  /* ── METHOD BOX ── */
+  .method-box {
+    background: var(--blue-accent);
+    color: #e8f0f8;
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    font-size: 13.5px;
+    line-height: 1.6;
+  }
+
+  .method-box h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: #fff;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .method-steps {
+    list-style: none;
+    display: grid;
+    gap: 6px;
+  }
+
+  .method-steps li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .method-steps li::before {
+    content: attr(data-step);
+    background: var(--gold);
+    color: var(--dark);
+    font-weight: 700;
+    font-size: 11px;
+    padding: 2px 7px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ── TASK CARDS ── */
+  .task-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px var(--shadow);
+    margin-bottom: 20px;
+    overflow: hidden;
+    border: 1px solid var(--parchment-dark);
+    transition: box-shadow 0.2s;
+  }
+
+  .task-card:hover { box-shadow: 0 4px 20px var(--shadow); }
+
+  .task-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+  }
+
+  .task-num {
+    background: var(--dark);
+    color: var(--gold-light);
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 16px 20px;
+    min-width: 58px;
+    text-align: center;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .task-body {
+    padding: 16px 20px;
+    flex: 1;
+  }
+
+  .task-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--dark);
+    margin-bottom: 6px;
+  }
+
+  .task-hint {
+    font-size: 12.5px;
+    color: var(--stone-mid);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .task-star {
+    background: var(--gold-pale);
+    border-top: 1px solid var(--parchment-dark);
+    padding: 8px 20px 8px 78px;
+    font-size: 12px;
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  /* ── SOLUTION TOGGLE ── */
+  .solution-toggle {
+    border-top: 1px dashed var(--parchment-dark);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    background: var(--parchment);
+    user-select: none;
+    transition: background 0.2s;
+  }
+
+  .solution-toggle:hover { background: var(--parchment-dark); }
+
+  .toggle-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--stone);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .toggle-label::before {
+    content: '🔑';
+    font-size: 14px;
+  }
+
+  .toggle-arrow {
+    font-size: 13px;
+    color: var(--stone-mid);
+    transition: transform 0.3s ease;
+  }
+
+  .task-card.open .toggle-arrow { transform: rotate(180deg); }
+  .task-card.open .solution-toggle { background: var(--green-check); }
+  .task-card.open .toggle-label { color: #e0f0e8; }
+  .task-card.open .toggle-arrow { color: #e0f0e8; }
+
+  .solution-body {
+    display: none;
+    background: #f0f8f4;
+    border-top: 2px solid var(--green-check);
+    padding: 20px 20px 20px 78px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--dark);
+    animation: slideDown 0.25s ease;
+  }
+
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .task-card.open .solution-body { display: block; }
+
+  .solution-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green-check);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .solution-label::before { content: '✓'; }
+
+  .solution-text p { margin-bottom: 8px; }
+  .solution-text p:last-child { margin-bottom: 0; }
+  .solution-text ul {
+    padding-left: 18px;
+    margin: 6px 0;
+    display: grid;
+    gap: 4px;
+  }
+  .solution-text strong { color: var(--red-accent); }
+
+  /* ── SOURCE TEXT BOXES ── */
+  .source-box {
+    background: var(--parchment);
+    border: 1px solid var(--parchment-dark);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    line-height: 1.75;
+    color: var(--dark);
+  }
+
+  .source-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    color: var(--red-accent);
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+
+  .source-meta {
+    font-size: 11px;
+    color: var(--stone-mid);
+    margin-top: 12px;
+    font-style: italic;
+    border-top: 1px solid var(--parchment-dark);
+    padding-top: 8px;
+  }
+
+  /* ── TIMELINE STRIP ── */
+  .timeline {
+    display: flex;
+    overflow-x: auto;
+    gap: 0;
+    margin-bottom: 28px;
+    padding-bottom: 4px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .tl-item {
+    flex-shrink: 0;
+    width: 130px;
+    scroll-snap-align: start;
+    text-align: center;
+    padding: 12px 8px;
+    position: relative;
+  }
+
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    top: 22px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--parchment-dark);
+    z-index: 0;
+  }
+  .tl-item:first-child::before { left: 50%; }
+  .tl-item:last-child::before  { right: 50%; }
+
+  .tl-dot {
+    width: 14px;
+    height: 14px;
+    background: var(--gold);
+    border-radius: 50%;
+    margin: 0 auto 8px;
+    position: relative;
+    z-index: 1;
+    border: 2px solid var(--dark);
+  }
+
+  .tl-year {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .tl-event {
+    font-size: 11px;
+    color: var(--stone);
+    line-height: 1.4;
+  }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    margin-top: 64px;
+    background: var(--dark);
+    color: var(--stone-mid);
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+  }
+
+  .site-footer span { color: var(--gold); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .header-inner { padding: 32px 18px 24px; }
+    .section-block { padding: 0 14px; }
+    .intro-section { padding: 0 14px; }
+    .solution-body { padding-left: 20px; }
+    .image-strip { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
+<header class="site-header">
+  <div class="header-decoration">🏰</div>
+  <div class="header-inner">
+    <div class="header-kicker">Geschichte · Klasse 10 · Gymnasium · OBS Spelle</div>
+    <h1 class="header-title">Böhmen &amp; Prag –<br>Geschichte und Lage</h1>
+    <p class="header-subtitle">Vorbereitung zur Abschlussfahrt Prag · Stunde 1</p>
+    <div class="header-meta">
+      <span>AB 1: Karte auswerten</span>
+      <span>AB 2: Lesetext Karl IV. &amp; Tschechoslowakei 1918</span>
+      <span>Mit Musterlösungen</span>
+    </div>
+  </div>
+  <div class="gold-bar"></div>
+</header>
+
+<!-- ═══════════════════════════════ INTRO ═══════════════════════════════ -->
+<div class="intro-section">
+  <div class="intro-box">
+    <strong>So arbeitest du mit diesen Aufgaben:</strong> Bearbeite jede Aufgabe zunächst vollständig in deinem Heft oder auf dem Ausdruck. Klicke danach auf <em>„Musterlösung anzeigen"</em>, um deine Antwort mit dem Erwartungshorizont zu vergleichen. Die Musterlösungen zeigen mögliche Antworten – deine Formulierungen dürfen abweichen, solange der Inhalt stimmt.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ TIMELINE ═══════════════════════════════ -->
+<div class="section-block" style="margin-top:40px;">
+  <div class="section-heading">
+    <span class="section-badge">ÜBERBLICK</span>
+    Prag auf einen Blick – Zeitstrahl
+  </div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">~880</div><div class="tl-event">Prager Burg gegründet</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1085</div><div class="tl-event">Böhmen wird Königreich</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1212</div><div class="tl-event">Goldene Bulle von Sizilien</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1348</div><div class="tl-event">Karl IV.: Uni &amp; Neustadt</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1356</div><div class="tl-event">Goldene Bulle – HRR-Verfassung</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1357</div><div class="tl-event">Karlsbrücke begonnen</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1415</div><div class="tl-event">Jan Hus verbrannt</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1526</div><div class="tl-event">Habsburger übernehmen Böhmen</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1618</div><div class="tl-event">2. Prager Fenstersturz → 30j. Krieg</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1848</div><div class="tl-event">Revolution in Prag</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-year">1918</div><div class="tl-event">Ausrufung der Tschechoslowakei</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ AB 1: KARTE ═══════════════════════════════ -->
+<div class="section-block" style="margin-top:44px;">
+  <div class="section-heading">
+    <span class="section-badge">AB 1</span>
+    Böhmen und Prag auf der Karte einordnen
+  </div>
+
+  <!-- Bilder -->
+  <div class="image-strip">
+    <div class="img-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Czech_Republic_in_Europe_%28zoomed%29.svg/600px-Czech_Republic_in_Europe_%28zoomed%29.svg.png" alt="Tschechien in Europa" loading="lazy">
+      <div class="img-caption">Tschechien in Europa – geografische Lage</div>
+    </div>
+    <div class="img-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/Bohemia_area.png/600px-Bohemia_area.png" alt="Böhmen als Landschaft" loading="lazy">
+      <div class="img-caption">Böhmen – historische Region im Westen Tschechiens</div>
+    </div>
+    <div class="img-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Vltava_u_Prahy.jpg/600px-Vltava_u_Prahy.jpg" alt="Moldau in Prag" loading="lazy">
+      <div class="img-caption">Die Moldau (Vltava) in Prag – Lebensader der Stadt</div>
+    </div>
+  </div>
+
+  <!-- Karte -->
+  <div class="map-wrapper">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1300000!2d14.4!3d50.08!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sde!2sde!4v1700000000000!5m2!1sde!2sde"
+      allowfullscreen="" loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      title="Prag und Böhmen auf der Karte">
+    </iframe>
+    <div class="map-label">📍 Interaktive Karte: Prag, Böhmen und Mitteleuropa. Du kannst hinein- und herauszoomen.</div>
+  </div>
+
+  <!-- Methodenhinweis -->
+  <div class="method-box">
+    <h4>📌 Methodenhinweis: Wie arbeite ich mit einer (historischen) Karte?</h4>
+    <ul class="method-steps">
+      <li data-step="1"><strong>Orientierung</strong> – Was zeigt die Karte? (Titel, Legende, Zeitangabe)</li>
+      <li data-step="2"><strong>Beschreiben</strong> – Was sehe ich? (Lage, Grenzen, Flüsse, Städte)</li>
+      <li data-step="3"><strong>Erklären</strong> – Was bedeutet das? (historische Zusammenhänge herstellen)</li>
+      <li data-step="4"><strong>Urteilen</strong> – Was lässt sich aus der Karte über Geschichte schlussfolgern?</li>
+    </ul>
+    <p style="margin-top:10px; font-size:12.5px; color:#acd4f0;"><strong>Wichtig:</strong> Karten können Quelle ODER Darstellung sein – was ist diese Karte? Begründe kurz.</p>
+  </div>
+
+  <!-- Aufgabe 1 -->
+  <div class="task-card" id="t1">
+    <div class="task-header">
+      <div class="task-num">1</div>
+      <div class="task-body">
+        <p class="task-text">Beschreibe die geografische Lage Böhmens in Europa. Nenne mindestens drei Nachbarregionen oder Nachbarländer, die auf der Karte sichtbar sind.</p>
+        <p class="task-hint">Tipp: Nutze Himmelsrichtungen (nördlich, südlich, östlich, westlich).</p>
+      </div>
+    </div>
+    <div class="solution-toggle" onclick="toggleSolution('t1')">
+      <span class="toggle-label">Musterlösung anzeigen</span>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="solution-body">
+      <div class="solution-label">Musterlösung</div>
+      <div class="solution-text">
+        <p>Böhmen liegt im <strong>Herzen Mitteleuropas</strong> und bildet den westlichen Teil des heutigen Tschechiens. Es ist von Gebirgen umgeben, die natürliche Grenzen bilden.</p>
+        <ul>
+          <li><strong>Nördlich</strong> grenzt Böhmen an Deutschland (Sachsen, Brandenburg).</li>
+          <li><strong>Westlich</strong> liegt ebenfalls Deutschland (Bayern).</li>
+          <li><strong>Südlich</strong> grenzt Böhmen an Österreich.</li>
+          <li><strong>Östlich</strong> schließt sich Mähren an, das ebenfalls zu Tschechien gehört.</li>
+        </ul>
+        <p>Böhmen ist eine <strong>Beckenlandschaft</strong>, die von Mittelgebirgen (z.B. Böhmerwald, Erzgebirge, Riesengebirge) umgeben wird. Die Moldau durchfließt das Zentrum des Landes und mündet nördlich von Prag in die Elbe.</p>
+        <p style="margin-top:8px; font-size:12.5px; color: #2D6A4F;"><em>Karte oder Quelle? Diese moderne Karte ist eine <strong>Darstellung</strong> – sie wurde nicht zur beschriebenen Zeit, sondern von Kartografen für ein heutiges Publikum erstellt.</em></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aufgabe 2 -->
+  <div class="task-card" id="t2">
+    <div class="task-header">
+      <div class="task-num">2</div>
+      <div class="task-body">
+        <p class="task-text">Prag liegt an einem wichtigen Fluss. Nenne den Flussnamen und erkläre, welche Bedeutung dieser Fluss für die Entstehung und das Wachstum der Stadt gehabt haben könnte.</p>
+        <p class="task-hint">Denke an: Trinkwasser, Handel, Verteidigung, Transport.</p>
+      </div>
+    </div>
+    <div class="solution-toggle" onclick="toggleSolution('t2')">
+      <span class="toggle-label">Musterlösung anzeigen</span>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="solution-body">
+      <div class="solution-label">Musterlösung</div>
+      <div class="solution-text">
+        <p>Prag liegt an der <strong>Moldau</strong> (tschechisch: <em>Vltava</em>), dem längsten Fluss Tschechiens.</p>
+        <p>Der Fluss hatte mehrere entscheidende Bedeutungen für die Entstehung und das Wachstum der Stadt:</p>
+        <ul>
+          <li><strong>Trinkwasser:</strong> Die Moldau sicherte die Trinkwasserversorgung für Mensch und Tier – eine Grundvoraussetzung für jede Besiedlung.</li>
+          <li><strong>Handel:</strong> Flüsse waren im Mittelalter die wichtigsten Handelsrouten. Waren konnten per Schiff transportiert werden. Prag lag an einem wichtigen Handelsknoten.</li>
+          <li><strong>Transport:</strong> Güter wie Getreide, Holz und Waren wurden über die Moldau transportiert, was den wirtschaftlichen Aufschwung Prags begünstigte.</li>
+          <li><strong>Verteidigung:</strong> Der Fluss bildete eine natürliche Barriere auf der Westseite der Altstadt. In Kombination mit dem Hradschin-Felsen (Burgberg) ergab sich eine strategisch günstige, leicht zu verteidigende Lage.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aufgabe 3 -->
+  <div class="task-card" id="t3">
+    <div class="task-header">
+      <div class="task-num">3</div>
+      <div class="task-body">
+        <p class="task-text">Böhmen liegt im „Herzen Mitteleuropas". Erkläre, warum diese Lage in der Geschichte sowohl ein Vorteil als auch ein Nachteil für Böhmen war.</p>
+        <p class="task-hint">Überlege: Was bedeutet eine zentrale Lage für Handel, Kriege, Herrschaft?</p>
+      </div>
+    </div>
+    <div class="solution-toggle" onclick="toggleSolution('t3')">
+      <span class="toggle-label">Musterlösung anzeigen</span>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="solution-body">
+      <div class="solution-label">Musterlösung</div>
+      <div class="solution-text">
+        <p><strong>Vorteile der zentralen Lage:</strong></p>
+        <ul>
+          <li>Böhmen lag an wichtigen <strong>Handelsrouten</strong>, die West- und Osteuropa verbanden. Kaufleute aus vielen Regionen trafen in Prag zusammen – das förderte Reichtum und kulturellen Austausch.</li>
+          <li>Die zentrale Lage machte Prag für mächtige Herrscher attraktiv: Kaiser Karl IV. wählte Prag als <strong>Kaiserresidenz</strong> und Hauptstadt des Heiligen Römischen Reiches.</li>
+          <li>Böhmen konnte als Vermittler zwischen verschiedenen Kulturen und Mächten fungieren.</li>
+        </ul>
+        <p><strong>Nachteile der zentralen Lage:</strong></p>
+        <ul>
+          <li>Böhmen war ständig <strong>Angriffs- und Durchmarschwege</strong> ausgesetzt. Im Dreißigjährigen Krieg (1618–1648) etwa wurde Böhmen zum zentralen Kriegsschauplatz.</li>
+          <li>Große Mächte (Habsburger, HRR) wollten Böhmen <strong>kontrollieren</strong> – die Böhmen verloren immer wieder an Selbständigkeit.</li>
+          <li>Die Lage zwischen verschiedenen Völkern und Nationen schuf dauerhaften <strong>Konflikt um Identität und Zugehörigkeit</strong> (z.B. Sudetendeutsche vs. Tschechen).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aufgabe 4 -->
+  <div class="task-card" id="t4">
+    <div class="task-header">
+      <div class="task-num">4</div>
+      <div class="task-body">
+        <p class="task-text">Verknüpfe Karte und Vortrag: Nenne zwei Ereignisse aus dem Lehrervortrag, die mit der geografischen Lage Böhmens oder Prags zusammenhängen. Erkläre den Zusammenhang jeweils in einem Satz.</p>
+        <p class="task-hint">Schaue auf den Zeitstrahl oben und denke an das, was im Vortrag besprochen wurde.</p>
+      </div>
+    </div>
+    <div class="solution-toggle" onclick="toggleSolution('t4')">
+      <span class="toggle-label">Musterlösung anzeigen</span>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="solution-body">
+      <div class="solution-label">Musterlösung (Beispielantworten)</div>
+      <div class="solution-text">
+        <p>Es gibt viele mögliche Antworten – hier zwei gut begründete Beispiele:</p>
+        <ul>
+          <li><strong>Ereignis 1 – Karl IV. macht Prag zur Kaiserresidenz (1348):</strong> Die zentrale Lage Böhmens im Herzen Europas machte Prag zur idealen Hauptstadt für das gesamte Heilige Römische Reich, da es von hier aus alle Teile des Reiches gut erreichbar waren.</li>
+          <li><strong>Ereignis 2 – Der 2. Prager Fenstersturz und der Dreißigjährige Krieg (1618):</strong> Weil Böhmen eine Grenzlage zwischen protestantischen und katholischen Mächten hatte, wurde der Konflikt in Prag zum Ausgangspunkt eines gesamteuropäischen Krieges, der das Land besonders stark verwüstete.</li>
+        </ul>
+        <p style="font-size:12.5px; color: var(--stone-mid); margin-top:8px;"><em>Auch andere Ereignisse (z.B. Hussiten, Gründung der Tschechoslowakei) sind möglich, wenn der Zusammenhang mit der Lage überzeugend erklärt wird.</em></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ AB 2: LESETEXT ═══════════════════════════════ -->
+<div class="section-block" style="margin-top:56px;">
+  <div class="section-heading">
+    <span class="section-badge">AB 2</span>
+    Lesetext analysieren – Karl IV. und die Gründung der Tschechoslowakei
+  </div>
+
+  <!-- Methodenhinweis Quelle/Darstellung -->
+  <div class="method-box" style="background: var(--red-accent);">
+    <h4>📌 Methodenhinweis: Quelle oder Darstellung?</h4>
+    <ul class="method-steps">
+      <li data-step="Q"><strong>Quelle</strong> – Ein Text, Bild oder Gegenstand aus der beschriebenen historischen Zeit. <em>Beispiel: Eine Rede von Masaryk aus dem Jahr 1918 ist eine Quelle.</em></li>
+      <li data-step="D"><strong>Darstellung</strong> – Ein Text, der von Historikern NACH der beschriebenen Zeit verfasst wurde. <em>Beispiel: Ein Schulbuchtext über 1918 ist eine Darstellung.</em></li>
+    </ul>
+    <p style="margin-top:10px; font-size:12.5px; color:#f8d0c8;">Beide Textgattungen müssen kritisch gelesen werden – Quellen zeigen eine Perspektive, Darstellungen treffen Auswahl und Wertungen.</p>
+  </div>
+
+  <!-- Bilder AB 2 -->
+  <div class="image-strip">
+    <div class="img-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Karl_IV_-_Lucca_-_around_1355.jpg/400px-Karl_IV_-_Lucca_-_around_1355.jpg" alt="Karl IV." loading="lazy">
+      <div class="img-caption">Kaiser Karl IV. (~1355) – Darstellung aus seiner Regierungszeit</div>
+    </div>
+    <div class="img-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Charles_bridge_and_Hradcany.jpg/600px-Charles_bridge_and_Hradcany.jpg" alt="Karlsbrücke und Hradschin" loading="lazy">
+      <div class="img-caption">Karlsbrücke (1357 begonnen) und Hradschin – ihr werdet sie auf der Fahrt sehen</div>
+    </div>
+    <div class="img-card">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Tomas_Garrigue_Masaryk.jpg/400px-Tomas_Garrigue_Masaryk.jpg" alt="Tomáš Masaryk" loading="lazy">
+      <div class="img-caption">Tomáš G. Masaryk – erster Präsident der Tschechoslowakei (1918)</div>
+    </div>
+  </div>
+
+  <!-- Text A -->
+  <div class="source-box">
+    <div class="source-title">Text A: Karl IV. und das „Goldene Prag" (14. Jahrhundert)</div>
+    <p>Karl IV. (1316–1378) gilt als der bedeutendste Herrscher Böhmens. Als Kaiser des Heiligen Römischen Reiches und König von Böhmen machte er Prag zur Kaiserresidenz und damit zur bedeutendsten Stadt nördlich der Alpen.</p>
+    <p style="margin-top:8px;">Im Jahr 1348 gründete Karl IV. die erste Universität Mitteleuropas in Prag – die Karlsuniversität, die bis heute existiert. Im selben Jahr ließ er die Prager Neustadt planmäßig anlegen und begann mit dem Bau der berühmten Karlsbrücke (fertiggestellt 1402). Den Veitsdom auf dem Hradschin ließ er zur gotischen Kathedrale ausbauen – sie sollte die Grablege der böhmischen Könige werden.</p>
+    <p style="margin-top:8px;">Mit der Goldenen Bulle von 1356 schuf Karl IV. eine Art Grundgesetz für das Heilige Römische Reich: Sie regelte die Wahl des Kaisers durch sieben Kurfürsten und wurde von Prag aus verkündet. Prag war damit nicht nur geografisch, sondern auch rechtlich und politisch das Zentrum Europas.</p>
+    <p style="margin-top:8px;">Historiker bezeichnen Karls Regierungszeit als das „Goldene Zeitalter" Böhmens. Die Bevölkerung Prags wuchs auf über 40.000 Einwohner – sie war damit eine der größten Städte Europas.</p>
+    <div class="source-meta">Darstellung – verfasst für ein modernes Schulpublikum, nicht aus der beschriebenen Zeit.</div>
+  </div>
+
+  <!-- Aufgaben zu Text A -->
+  <div class="task-card" id="t5">
+    <div class="task-header">
+      <div class="task-num">1</div>
+      <div class="task-body">
+        <p class="task-text">Nenne drei konkrete Bauwerke oder Einrichtungen, die Karl IV. in Prag gründete oder ausbaute. Erkläre kurz, welche dieser Bauten ihr auf der Abschlussfahrt besuchen werdet.</p>
+      </div>
+    </div>
+    <div class="solution-toggle" onclick="toggleSolution('t5')">
+      <span class="toggle-label">Musterlösung anzeigen</span>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="solution-body">
+      <div class="solution-label">Musterlösung</div>
+      <div class="solution-text">
+        <p>Karl IV. gründete oder baute folgende Werke aus:</p>
+        <ul>
+          <li><strong>Karlsuniversität (1348)</strong> – erste Universität Mitteleuropas, bis heute eine der bedeutendsten Prags.</li>
+          <li><strong>Karlsbrücke (1357 begonnen, fertiggestellt 1402)</strong> – steinerne Brücke über die Moldau, die Kleinseite mit der Altstadt verbindet.</li>
+          <li><strong>Veitsdom auf dem Hradschin</strong> – gotische Kathedrale, Grablege der böhmischen Könige und bis heute Wahrzeichen der Stadt.</li>
+        </ul>
+        <p style="margin-top:6px;"><em>Auf der Abschlussfahrt werdet ihr voraussichtlich die <strong>Karlsbrücke</strong> (zu Fuß überqueren) und den <strong>Veitsdom / Hradschin</strong> besuchen.</em></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-card" id="t6">
+    <div class="task-header">
+      <div class="task-num">2</div>
+      <div class="task-body">
+        <p class="task-text">Erkläre in eigenen Worten, warum Historiker Karls Regierungszeit als „Goldenes Zeitalter" Böhmens bezeichnen. Nenne mindestens zwei Gründe.</p>
+        <p class="task-hint">Tipp: Denke an Politik, Kultur und die Bedeutung Prags für ganz Europa.</p>
+      </div>
+    </div>
+    <div class="solution-toggle" onclick="toggleSolution('t6')">
+      <span class="toggle-label">Musterlösung anzeigen</span>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="solution-body">
+      <div class="solution-label">Musterlösung</div>
+      <div class="solution-text">
+        <p>Historiker sprechen von einem „Goldenen Zeitalter", weil Böhmen und Prag unter Karl IV. in mehrfacher Hinsicht eine Blütezeit erlebten:</p>
+        <ul>
+          <li><strong>Politischer Bedeutungsgewinn:</strong> Prag wurde zur Kaiserresidenz des Heiligen Römischen Reiches – damit war die Stadt das politische Zentrum Mitteleuropas. Mit der Goldenen Bulle schuf Karl sogar eine Art Verfassung für das gesamte Reich.</li>
+          <li><strong>Kultureller Aufschwung:</strong> Zahlreiche bedeutende Bauwerke entstanden (Karlsbrücke, Veitsdom, Neustadt, Karlsuniversität). Prag wurde zur prunkvollen Metropole und zog Gelehrte, Künstler und Kaufleute an.</li>
+          <li><strong>Bevölkerungswachstum:</strong> Die Stadt wuchs auf über 40.000 Einwohner – eine für das Mittelalter außergewöhnliche Größe – was die wirtschaftliche und kulturelle Dynamik der Epoche belegt.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-card" id="t7">
+    <div class="task-header">
+      <div class="task-num">3</div>
+      <div class="task-body">
+        <p class="task-text">Handelt es sich bei Text A um eine Quelle oder eine Darstellung? Begründe deine Antwort mit einem konkreten Merkmal des Textes.</p>
+        <p class="task-hint">Erinnerung: Eine Quelle stammt aus der beschriebenen Zeit. Eine Darstellung wurde später von Historikern verfasst.</p>
+      </div>
+    </div>
+    <div class="solution-toggle" onclick="toggleSolution('t7')">
+      <span class="toggle-label">Musterlösung anzeigen</span>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="solution-body">
+      <div class="solution-label">Musterlösung</div>
+      <div class="solution-text">
+        <p>Text A ist eine <strong>Darstellung</strong>.</p>
+        <p>Begründung: Der Text wurde nicht im 14. Jahrhundert, sondern von Historikern für ein heutiges Publikum verfasst. Das erkennt man an mehreren Merkmalen:</p>
+        <ul>
+          <li>Der Text spricht in der <strong>dritten Person über Karl IV.</strong> aus einer späteren Perspektive heraus – jemand, der zu Karls Zeit lebte, hätte so nicht geschrieben.</li>
+          <li>Er verwendet <strong>Wertungen</strong> wie „Historiker bezeichnen Karls Regierungszeit als Goldenes Zeitalter" – das setzt voraus, dass man auf die gesamte Epoche zurückblickt.</li>
+          <li>Die Aussage, die Karlsuniversität „existiert bis heute", belegt, dass der Text aus einer späteren Gegenwart heraus geschrieben wurde.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Text B -->
+  <div class="source-box" style="margin-top: 36px; border-left-color: var(--blue-accent);">
+    <div class="source-title" style="color: var(--blue-accent);">Text B: Die Gründung der Tschechoslowakei 1918</div>
+    <p>Am 28. Oktober 1918 riefen die tschechischen Nationalräte in Prag die Tschechoslowakische Republik (ČSR) aus. Der Erste Weltkrieg hatte das Habsburger Kaiserreich zerstört, und auf seinen Trümmern entstanden neue Nationalstaaten.</p>
+    <p style="margin-top:8px;">Erster Staatspräsident wurde Tomáš Garrigue Masaryk (1850–1937), Philosoph, Politiker und Kämpfer für die Unabhängigkeit seines Volkes. Masaryk hatte während des Krieges im Exil für einen eigenen tschechoslowakischen Staat geworben und die Großmächte von der Idee überzeugt.</p>
+    <p style="margin-top:8px;">Die neue Republik war ein demokratischer Rechtsstaat mit Verfassung, Parlamentswahlen und Pressefreiheit. Sie war die einzige stabile Demokratie in Ostmitteleuropa der Zwischenkriegszeit. Wirtschaftlich gehörte die ČSR zu den fortgeschrittenen Industriestaaten Europas.</p>
+    <p style="margin-top:8px;">Doch die neue Republik stand vor schwierigen Herausforderungen: Sie umfasste nicht nur Tschechen und Slowaken, sondern auch rund 3 Millionen Deutsche (die sogenannten Sudetendeutschen), Ungarn, Polen und andere Minderheiten. Das Zusammenleben dieser Gruppen sollte in den 1930er Jahren zur entscheidenden Schwäche des jungen Staates werden.</p>
+    <div class="source-meta">[Darstellung nach: Glettler, Monika. Böhmisches Wien. Wien 2003, S. 12–19; vgl. auch Geschichte und Geschehen Jg. 9/10, Klett 2018, S. 93.]</div>
+  </div>
+
+  <div class="task-card" id="t8">
+    <div class="task-header">
+      <div class="task-num">4</div>
+      <div class="task-body">
+        <p class="task-text">Erkläre, warum die Tschechoslowakei 1918 als Erfolgsgeschichte, aber gleichzeitig auch als fragiles Gebilde bezeichnet werden kann. Beziehe dich dabei auf konkrete Aussagen aus dem Text.</p>
+        <p class="task-hint">Tipp: Suche nach Stärken UND Schwächen der neuen Republik.</p>
+      </div>
+    </div>
+    <div class="solution-toggle" onclick="toggleSolution('t8')">
+      <span class="toggle-label">Musterlösung anzeigen</span>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="solution-body">
+      <div class="solution-label">Musterlösung</div>
+      <div class="solution-text">
+        <p><strong>Erfolgsgeschichte:</strong> Die ČSR war ein <strong>demokratischer Rechtsstaat</strong> mit Verfassung, Parlamentswahlen und Pressefreiheit – in einer Zeit, in der viele europäische Länder zu Diktaturen wurden. Sie war laut Text „die einzige stabile Demokratie in Ostmitteleuropa der Zwischenkriegszeit" und wirtschaftlich fortgeschritten. Das macht sie zu einem bemerkenswerten Beispiel staatlicher Konsolidierung nach dem Ersten Weltkrieg.</p>
+        <p><strong>Fragiles Gebilde:</strong> Gleichzeitig war die Republik <strong>multiethnisch</strong> – neben Tschechen und Slowaken lebten rund 3 Millionen Deutsche (Sudetendeutsche), Ungarn, Polen und andere Minderheiten im Staat. Der Text deutet an, dass „das Zusammenleben dieser Gruppen in den 1930er Jahren zur entscheidenden Schwäche des jungen Staates" wurde. Damit kündigt sich an, dass die ethnischen Spannungen die Demokratie letztlich gefährdeten.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="task-card" id="t9">
+    <div class="task-header">
+      <div class="task-num">5</div>
+      <div class="task-body">
+        <p class="task-text">Im letzten Absatz des Textes heißt es, das Zusammenleben der Bevölkerungsgruppen sei „zur entscheidenden Schwäche des jungen Staates" geworden. Stelle eine Vermutung an: Was könnte damit gemeint sein? Was könnte daraus folgen?</p>
+        <p class="task-hint">Diese Frage bereitet euch auf die nächste Stunde vor.</p>
+      </div>
+    </div>
+    <div class="solution-toggle" onclick="toggleSolution('t9')">
+      <span class="toggle-label">Musterlösung anzeigen</span>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="solution-body">
+      <div class="solution-label">Musterlösung</div>
+      <div class="solution-text">
+        <p>Der Text spielt auf das <strong>Sudetendeutsche Problem</strong> an: Die rund 3 Millionen Deutschen im Randgebiet der Tschechoslowakei (Sudetenland) fühlten sich als Minderheit im neuen Staat benachteiligt. In den 1930er Jahren nutzte das nationalsozialistische Deutschland unter Hitler diese ethnischen Spannungen aus.</p>
+        <p>Mögliche Folgen, die sich daraus ergaben:</p>
+        <ul>
+          <li>Hitler forderte mit dem Verweis auf die Sudetendeutschen die Eingliederung dieser Gebiete ins Deutsche Reich.</li>
+          <li>Im <strong>Münchner Abkommen 1938</strong> gaben die europäischen Großmächte (Großbritannien, Frankreich, Italien) nach und stimmten der Abtretung des Sudetenlandes zu – ohne die Tschechoslowakei selbst zu fragen.</li>
+          <li>1939 besetzte Deutschland die restliche Tschechoslowakei – das Ende der Demokratie, die Karl IV. einst als Zentrum Europas geprägt hatte.</li>
+        </ul>
+        <p style="font-size:12.5px; color: var(--stone-mid); margin-top:6px;"><em>Das ist das Thema eurer nächsten Geschichtsstunde!</em></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aufgabe 6 – Vertiefung -->
+  <div class="task-card" id="t10">
+    <div class="task-header">
+      <div class="task-num">6</div>
+      <div class="task-body">
+        <p class="task-text">Verbinde beide Texte: Welcher Zusammenhang besteht zwischen dem „Goldenen Prag" Karls IV. und der Tschechoslowakei von 1918? Was verbindet diese beiden Epochen – und was trennt sie?</p>
+      </div>
+    </div>
+    <div class="task-star">✦ Vertiefungsaufgabe – Schreibe 3–5 Sätze in zusammenhängender Form.</div>
+    <div class="solution-toggle" onclick="toggleSolution('t10')">
+      <span class="toggle-label">Musterlösung anzeigen</span>
+      <span class="toggle-arrow">▼</span>
+    </div>
+    <div class="solution-body">
+      <div class="solution-label">Musterlösung (Beispiel)</div>
+      <div class="solution-text">
+        <p>Beide Epochen verbindet, dass Prag jeweils zum politischen und kulturellen Mittelpunkt eines bedeutenden europäischen Staatsgebildes wurde: im 14. Jahrhundert als Residenz des Heiligen Römischen Reiches unter Karl IV., im 20. Jahrhundert als Hauptstadt der Tschechoslowakischen Republik. In beiden Fällen stand Böhmen im Schnittpunkt verschiedener Völker und Kulturen – damals Deutschen, Böhmen und anderen Gruppen im Reich, 1918 Tschechen, Slowaken, Sudetendeutschen und weiteren Minderheiten.</p>
+        <p style="margin-top:8px;">Was die Epochen jedoch trennt, ist das politische System: Während Karl IV. als Monarch über ein ständisch gegliedertes Reich herrschte, gründete die ČSR 1918 auf dem Prinzip der Demokratie und nationalen Selbstbestimmung. Außerdem war das „Goldene Prag" eine Zeit innerer Stabilität, während die ČSR von Anfang an mit dem ungelösten Minderheitenproblem kämpfte, das sie letztlich zerstörte.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════════════════════════════ FOOTER ═══════════════════════════════ -->
+<footer class="site-footer" style="margin-top:64px;">
+  OBS Spelle · Geschichte Klasse 10 · Vorbereitung Abschlussfahrt Prag<br>
+  <span>Stunde 1 · AB 1 &amp; AB 2 · Mit Musterlösungen</span>
+</footer>
+
+<script>
+  function toggleSolution(id) {
+    const card = document.getElementById(id);
+    card.classList.toggle('open');
+  }
+</script>
+
+</body>
+</html>
