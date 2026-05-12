@@ -60,6 +60,24 @@
 
     .empty { text-align: center; padding: 3rem; color: var(--ink-soft); }
 
+    /* Herausfordern-Button */
+    .btn-challenge {
+      padding: .3rem .85rem;
+      border-radius: 50px;
+      font-family: 'Nunito', sans-serif;
+      font-size: .78rem;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      background: var(--c1);
+      color: #fff;
+      transition: transform .2s, opacity .2s;
+      white-space: nowrap;
+    }
+    .btn-challenge:hover  { transform: translateY(-1px); }
+    .btn-challenge:disabled { opacity: .45; cursor: default; transform: none; }
+    .btn-challenge.gesendet { background: var(--c3); }
+
     @media (max-width: 600px) {
       .rangliste-table th:nth-child(3),
       .rangliste-table td:nth-child(3) { display: none; }
@@ -92,6 +110,7 @@
         <a href="/rangliste.html" class="active">Rangliste</a>
         <a href="/quiz.html">Quizze</a>
         <a href="/charakter.html">Charakter</a>
+        <a href="/shop.html">🏪 Shop</a>
         <button id="logout-btn" class="subnav-logout">Ausloggen</button>
       </div>
     </div>
@@ -113,6 +132,7 @@
             <th>Level</th>
             <th>Abzeichen</th>
             <th>XP</th>
+            <th style="width:120px"></th>
           </tr>
         </thead>
         <tbody id="rangliste-body">
@@ -127,6 +147,18 @@
   <script>
     (function () {
       const MEDALS = ['🥇', '🥈', '🥉'];
+
+      // Itemdefinitionen (Titel-Emojis) direkt im Frontend
+      var TITEL_ITEMS = {
+        titel_blut:     { emoji: '🩸', name: 'Blutgladiator'    },
+        titel_loewe:    { emoji: '🦁', name: 'Löwenherz'        },
+        titel_blitz:    { emoji: '⚡', name: 'Blitzkrieger'     },
+        titel_sturm:    { emoji: '🌪️', name: 'Sturmreiter'      },
+        titel_schatten: { emoji: '🌑', name: 'Schattenläufer'   },
+        titel_drache:   { emoji: '🐉', name: 'Drachentöter'     },
+        titel_koenig:   { emoji: '👑', name: 'König der Arena'  },
+        titel_legende:  { emoji: '⭐', name: 'Legendärer Krieger'},
+      };
 
       async function init() {
         const meRes = await fetch('/api/auth/me');
@@ -148,16 +180,49 @@
           const rankEl = rank <= 3 ? `<span class="rank-medal">${MEDALS[rank - 1]}</span>` : `<span class="rank-num">${rank}</span>`;
           const info   = getLevelInfo(s.xp);
           const isMe   = s.id === me.id;
+
+          // Titel-Badge
+          var titelBadge = '';
+          if (s.equip_titel && TITEL_ITEMS[s.equip_titel]) {
+            var t = TITEL_ITEMS[s.equip_titel];
+            titelBadge = ` <span title="${escHtml(t.name)}" style="font-size:.95em">${t.emoji}</span>`;
+          }
+
+          const challengeBtn = isMe
+            ? '<td></td>'
+            : `<td style="text-align:right"><button class="btn-challenge" data-id="${s.id}" data-nick="${escHtml(s.nick)}">⚔️ Herausfordern</button></td>`;
           return `
             <tr>
               <td>${rankEl}</td>
-              <td><span class="nick-cell${isMe ? ' me' : ''}">${escHtml(s.nick)}</span></td>
+              <td><span class="nick-cell${isMe ? ' me' : ''}">${escHtml(s.nick)}${titelBadge}</span></td>
               <td><span class="level-chip">${info.level.name}</span></td>
               <td style="text-align:center">${'🏅'.repeat(Math.min(s.badge_count, 5))}${s.badge_count > 5 ? ` +${s.badge_count - 5}` : s.badge_count === 0 ? '–' : ''}</td>
               <td class="xp-cell">${s.xp} XP</td>
+              ${challengeBtn}
             </tr>
           `;
         }).join('');
+
+        // Challenge-Buttons verknüpfen
+        tbody.querySelectorAll('.btn-challenge').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            btn.disabled = true;
+            btn.textContent = '⏳';
+            const r = await fetch('/api/arena/herausforderung', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ gegnerId: Number(btn.dataset.id) }),
+            });
+            if (r.ok) {
+              btn.textContent = '✅ Gesendet!';
+              btn.classList.add('gesendet');
+            } else {
+              const err = await r.json().catch(() => ({}));
+              btn.textContent = '⚠️ ' + (err.error || 'Fehler');
+              btn.disabled = false;
+            }
+          });
+        });
       }
 
       function escHtml(s) {

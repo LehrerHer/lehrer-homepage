@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gladiatorkampf – Lernkolosseum</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* === ARENA STAGE === */
+    .arena-stage {
+      position: relative;
+      background: linear-gradient(
+        180deg,
+        #1a0a00 0%, #3d1a00 18%,
+        #7a3d00 35%, #a85c1a 50%,
+        #c4882d 62%, #d4a04a 72%,
+        #c49040 80%, #a87030 88%,
+        #6b4010 100%
+      );
+      border-radius: var(--radius);
+      overflow: hidden;
+      padding: 2rem 1.5rem 2.5rem;
+      box-shadow: var(--shadow-lg), 0 0 60px rgba(200,120,0,.25);
+      margin-top: 1.5rem;
+    }
+
+    /* Colosseum-Bogen-Overlay oben */
+    .arena-stage::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 80px;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent 0px, transparent 38px,
+        rgba(0,0,0,.25) 38px, rgba(0,0,0,.25) 42px
+      );
+      opacity: .5;
+    }
+    /* Sand-Boden */
+    .arena-stage::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 40px;
+      background: linear-gradient(180deg, transparent 0%, rgba(0,0,0,.35) 100%);
+    }
+
+    .arena-title {
+      text-align: center;
+      color: #ffe0a0;
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: .06em;
+      text-shadow: 0 2px 8px rgba(0,0,0,.6);
+      position: relative;
+      z-index: 2;
+      margin-bottom: 1.2rem;
+    }
+
+    /* === KÄMPFER-ZEILE === */
+    .fighter-row {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      position: relative;
+      z-index: 2;
+      min-height: 220px;
+    }
+
+    .fighter {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      flex: 1;
+      max-width: 180px;
+      position: relative;
+    }
+    .fighter.right { align-items: center; }
+
+    .fighter-name {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.1rem;
+      color: #ffe0a0;
+      text-shadow: 0 1px 6px rgba(0,0,0,.7);
+      text-align: center;
+      line-height: 1.2;
+    }
+    .fighter-level {
+      font-size: .75rem;
+      font-weight: 700;
+      color: rgba(255,224,160,.7);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+
+    /* HP-Balken */
+    .hp-wrap {
+      width: 100%;
+      max-width: 160px;
+    }
+    .hp-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: .72rem;
+      font-weight: 700;
+      color: rgba(255,224,160,.8);
+      margin-bottom: 3px;
+    }
+    .hp-track {
+      height: 14px;
+      background: rgba(0,0,0,.4);
+      border-radius: 7px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.1);
+    }
+    .hp-fill {
+      height: 100%;
+      border-radius: 7px;
+      background: linear-gradient(90deg, #2ecc71, #27ae60);
+      transition: width .6s cubic-bezier(.4,0,.2,1), background .4s;
+    }
+    .hp-fill.danger  { background: linear-gradient(90deg, #e67e22, #d35400); }
+    .hp-fill.critical{ background: linear-gradient(90deg, #e74c3c, #c0392b); }
+
+    /* Avatar-Wrapper */
+    .avatar-stage {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      height: 160px;
+      width: 160px;
+    }
+    .fighter-svg-wrap {
+      position: relative;
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+    }
+    .fighter.right .fighter-svg-wrap {
+      transform: scaleX(-1);
+    }
+    .fighter-svg-wrap.attacking-right {
+      animation: atk-right .35s ease forwards;
+    }
+    .fighter-svg-wrap.attacking-left {
+      animation: atk-left .35s ease forwards;
+    }
+    .fighter-svg-wrap.hit-flash {
+      animation: hit-flash .4s ease forwards;
+    }
+    .fighter-svg-wrap.defeated {
+      animation: collapse .6s ease forwards;
+      transform-origin: bottom center;
+    }
+    .fighter-svg-wrap.victorious {
+      animation: victory-bounce .5s ease infinite alternate;
+    }
+
+    @keyframes atk-right {
+      0%   { transform: translateX(0); }
+      45%  { transform: translateX(32px); }
+      100% { transform: translateX(0); }
+    }
+    @keyframes atk-left {
+      0%   { transform: scaleX(-1) translateX(0); }
+      45%  { transform: scaleX(-1) translateX(32px); }
+      100% { transform: scaleX(-1) translateX(0); }
+    }
+    @keyframes hit-flash {
+      0%   { filter: brightness(1); }
+      30%  { filter: brightness(4) saturate(0.2); }
+      100% { filter: brightness(1); }
+    }
+    @keyframes collapse {
+      0%   { transform: scaleX(-1) rotate(0deg) translateY(0); opacity: 1; }
+      100% { transform: scaleX(-1) rotate(-90deg) translateY(20px); opacity: .35; }
+    }
+    @keyframes victory-bounce {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-10px); }
+    }
+
+    /* Schaden-Zahlen */
+    .dmg-number {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.6rem;
+      color: #ff4444;
+      text-shadow: 0 2px 6px rgba(0,0,0,.8);
+      pointer-events: none;
+      z-index: 20;
+      animation: float-up 1.2s ease forwards;
+    }
+    .dmg-number.dmg-small { font-size: 1.2rem; color: #ff8c00; }
+    @keyframes float-up {
+      0%   { opacity: 1;   transform: translateX(-50%) translateY(0); }
+      100% { opacity: 0;   transform: translateX(-50%) translateY(-55px); }
+    }
+
+    /* VS-Mitte */
+    .vs-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .4rem;
+      padding-bottom: 1rem;
+    }
+    .vs-icon {
+      font-size: 2.5rem;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,.6));
+      animation: vs-pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes vs-pulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.2); }
+    }
+    .round-counter {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: .9rem;
+      color: rgba(255,224,160,.8);
+      text-shadow: 0 1px 4px rgba(0,0,0,.6);
+    }
+
+    /* === KAMPF-LOG === */
+    .kampf-log-wrap {
+      margin-top: 1.5rem;
+      max-height: 200px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+    .kampf-log-inner {
+      display: flex;
+      flex-direction: column;
+      gap: .35rem;
+    }
+    .log-entry {
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 8px;
+      padding: .45rem .9rem;
+      font-size: .82rem;
+      color: rgba(255,224,160,.85);
+      display: flex;
+      gap: .6rem;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(6px);
+      animation: log-appear .3s ease forwards;
+    }
+    @keyframes log-appear {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .log-runde {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: .8rem;
+      color: rgba(255,224,160,.5);
+      min-width: 20px;
+    }
+    .log-hit-a { color: #ff7c7c; font-weight: 700; }
+    .log-hit-b { color: #7cbaff; font-weight: 700; }
+
+    /* === ERGEBNIS-OVERLAY === */
+    .result-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(10,5,0,.82);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 30;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .5s;
+      border-radius: var(--radius);
+    }
+    .result-overlay.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .result-box {
+      text-align: center;
+      padding: 2.5rem 2rem;
+      max-width: 340px;
+    }
+    .result-trophy { font-size: 4.5rem; display: block; margin-bottom: .5rem;
+      animation: trophy-spin 1s cubic-bezier(.34,1.56,.64,1) both; }
+    @keyframes trophy-spin {
+      from { transform: scale(0) rotate(-20deg); }
+      to   { transform: scale(1) rotate(0deg); }
+    }
+    .result-headline {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 2rem;
+      color: #ffe0a0;
+      text-shadow: 0 2px 12px rgba(0,0,0,.6);
+      line-height: 1.2;
+    }
+    .result-sub {
+      color: rgba(255,224,160,.7);
+      font-size: .95rem;
+      margin-top: .5rem;
+    }
+    .result-xp {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.6rem;
+      color: #ffe066;
+      margin: 1rem 0 .5rem;
+      text-shadow: 0 0 20px rgba(255,220,80,.5);
+    }
+    .result-btn-row {
+      display: flex;
+      gap: .75rem;
+      justify-content: center;
+      margin-top: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    /* === EINZUGSEFFEKTE === */
+    .effekt-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .effekt-overlay.aktiv { opacity: 1; }
+
+    /* Feuer */
+    .effekt-feuer {
+      background: radial-gradient(ellipse at bottom, rgba(255,80,0,.65) 0%, transparent 70%);
+      animation: flicker-fire 1.2s ease-in-out infinite alternate;
+    }
+    @keyframes flicker-fire {
+      0%   { box-shadow: inset 0 0 30px rgba(255,120,0,.5); }
+      100% { box-shadow: inset 0 0 60px rgba(255,50,0,.8);  }
+    }
+
+    /* Frost */
+    .effekt-frost {
+      background: radial-gradient(ellipse at top, rgba(100,180,255,.55) 0%, transparent 70%);
+      animation: pulse-frost 1.4s ease-in-out infinite alternate;
+    }
+    @keyframes pulse-frost {
+      0%   { box-shadow: inset 0 0 20px rgba(100,200,255,.4); }
+      100% { box-shadow: inset 0 0 50px rgba(150,220,255,.7); }
+    }
+
+    /* Blitz */
+    .effekt-blitz {
+      background: radial-gradient(ellipse at center, rgba(255,255,100,.5) 0%, transparent 70%);
+      animation: flash-blitz .6s ease-in-out 3;
+    }
+    @keyframes flash-blitz {
+      0%, 100% { opacity: 0; }
+      50%       { opacity: 1; }
+    }
+
+    /* Titel-Badge unter dem Avatar */
+    .fighter-titel {
+      font-size: .78rem; font-weight: 700;
+      color: rgba(255,224,160,.85);
+      text-shadow: 0 1px 4px rgba(0,0,0,.6);
+      min-height: 1.1em;
+    }
+
+    /* === LADE-ZUSTAND === */
+    .kampf-loading {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--ink-soft);
+    }
+    .kampf-error {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--c1);
+    }
+
+    /* Responsive */
+    @media (max-width: 520px) {
+      .fighter { max-width: 130px; }
+      .avatar-stage { width: 120px; height: 130px; }
+      .arena-title { font-size: 1.2rem; }
+      .result-headline { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="site-nav-inner">
+      <a href="https://lehrer-herrmann.de" class="site-nav-logo">Jan <span>Herrmann</span></a>
+      <button class="site-hamburger" id="site-hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="site-nav-links" id="site-nav-links" role="list">
+        <li><a href="https://lehrer-herrmann.de/#faecher">Fächer</a></li>
+        <li><a href="https://lehrer-herrmann.de/portal.html">Materialien &amp; Quizze</a></li>
+        <li><a href="/profil.html" class="aktiv">🏛️ Arena</a></li>
+        <li><a href="https://lehrer-herrmann.de/blog.html">Blog</a></li>
+        <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <nav class="kolosseum-subnav" aria-label="Arena-Navigation">
+    <div class="kolosseum-subnav-inner">
+      <span class="subnav-brand">🏛️ Lernkolosseum</span>
+      <div class="subnav-links">
+        <a href="/profil.html">Profil</a>
+        <a href="/rangliste.html">Rangliste</a>
+        <a href="/quiz.html">Quizze</a>
+        <a href="/charakter.html">Charakter</a>
+        <a href="/shop.html">🏪 Shop</a>
+        <button id="logout-btn" class="subnav-logout">Ausloggen</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-bottom: 3rem;">
+
+    <div id="kampf-root">
+      <div class="kampf-loading">
+        <div style="font-size:2rem;margin-bottom:.75rem">⚔️</div>
+        <div>Arena wird vorbereitet…</div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="/js/avatar.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    // ── Hilfsfunktionen ───────────────────────────────────────────────────────
+
+    function esc(s) {
+      return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function sleep(ms) {
+      return new Promise(r => setTimeout(r, ms));
+    }
+
+    function hpPercent(hp, maxHp) {
+      return Math.max(0, Math.min(100, Math.round((hp / maxHp) * 100)));
+    }
+
+    function hpClass(pct) {
+      if (pct <= 20) return 'critical';
+      if (pct <= 45) return 'danger';
+      return '';
+    }
+
+    // ── Item-Definitionen (Titel + Effekte) ───────────────────────────────────
+    const TITEL_MAP = {
+      titel_blut:     { emoji: '🩸', name: 'Blutgladiator'     },
+      titel_loewe:    { emoji: '🦁', name: 'Löwenherz'         },
+      titel_blitz:    { emoji: '⚡', name: 'Blitzkrieger'      },
+      titel_sturm:    { emoji: '🌪️', name: 'Sturmreiter'       },
+      titel_schatten: { emoji: '🌑', name: 'Schattenläufer'    },
+      titel_drache:   { emoji: '🐉', name: 'Drachentöter'      },
+      titel_koenig:   { emoji: '👑', name: 'König der Arena'   },
+      titel_legende:  { emoji: '⭐', name: 'Legendärer Krieger' },
+    };
+    const EFFEKT_CSS = {
+      effekt_feuer:  'effekt-feuer',
+      effekt_frost:  'effekt-frost',
+      effekt_blitz:  'effekt-blitz',
+    };
+
+    function getTitel(items) {
+      const t = (items || []).find(id => id.startsWith('titel_'));
+      return t && TITEL_MAP[t] ? TITEL_MAP[t] : null;
+    }
+    function getEffekt(items) {
+      return (items || []).find(id => id.startsWith('effekt_')) || null;
+    }
+
+    // ── DOM-Aufbau ────────────────────────────────────────────────────────────
+
+    function buildArena(data) {
+      const { log, h_nick, g_nick, h_id, g_id, winner_id, meinId,
+              h_items = [], g_items = [] } = data;
+      const { startHpA, startHpB, atkA, atkB, runden,
+              herausfordererGewinnt, muenzenGewinner, muenzenVerlierer } = log;
+
+      const hTitel  = getTitel(h_items);
+      const gTitel  = getTitel(g_items);
+      const hEffekt = getEffekt(h_items);
+      const gEffekt = getEffekt(g_items);
+
+      const istGewinner = winner_id === meinId;
+      const meinNick    = meinId === h_id ? h_nick : g_nick;
+      const gegnerNick  = meinId === h_id ? g_nick : h_nick;
+
+      const hXp = log.h_xp || 0;
+      const gXp = log.g_xp || 0;
+      const hLevel = window.getLevelInfo ? getLevelInfo(hXp).level.name : '';
+      const gLevel = window.getLevelInfo ? getLevelInfo(gXp).level.name : '';
+
+      const root = document.getElementById('kampf-root');
+      root.innerHTML = `
+        <div class="arena-stage" id="arena-stage">
+          <div class="arena-title" id="arena-title">⚔️ Gladiatorkampf ⚔️</div>
+
+          <div class="fighter-row">
+            <!-- Herausforderer (links) -->
+            <div class="fighter left" id="fighter-a">
+              <div class="hp-wrap">
+                <div class="hp-label">
+                  <span>❤️ HP</span>
+                  <span id="hp-num-a">${startHpA}/${startHpA}</span>
+                </div>
+                <div class="hp-track">
+                  <div class="hp-fill" id="hp-fill-a" style="width:100%"></div>
+                </div>
+              </div>
+              <div class="avatar-stage" id="avatar-stage-a">
+                <div class="fighter-svg-wrap" id="svg-wrap-a">
+                  <!-- SVG wird per JS eingefügt -->
+                </div>
+              </div>
+              <div class="fighter-name">${esc(h_nick)}</div>
+              <div class="fighter-level">${esc(hLevel)}</div>
+              <div class="fighter-titel">${hTitel ? hTitel.emoji + ' ' + esc(hTitel.name) : ''}</div>
+            </div>
+
+            <!-- Mitte -->
+            <div class="vs-center">
+              <span class="vs-icon">⚔️</span>
+              <div class="round-counter" id="round-counter">Los!</div>
+            </div>
+
+            <!-- Gegner (rechts) -->
+            <div class="fighter right" id="fighter-b">
+              <div class="hp-wrap">
+                <div class="hp-label">
+                  <span id="hp-num-b">${startHpB}/${startHpB}</span>
+                  <span>HP ❤️</span>
+                </div>
+                <div class="hp-track">
+                  <div class="hp-fill" id="hp-fill-b" style="width:100%"></div>
+                </div>
+              </div>
+              <div class="avatar-stage" id="avatar-stage-b">
+                <div class="fighter-svg-wrap" id="svg-wrap-b">
+                  <!-- SVG wird per JS eingefügt -->
+                </div>
+              </div>
+              <div class="fighter-name">${esc(g_nick)}</div>
+              <div class="fighter-level">${esc(gLevel)}</div>
+              <div class="fighter-titel">${gTitel ? gTitel.emoji + ' ' + esc(gTitel.name) : ''}</div>
+            </div>
+          </div>
+
+          <!-- Kampf-Log -->
+          <div class="kampf-log-wrap" id="kampf-log-wrap" aria-live="polite" aria-label="Kampf-Chronik">
+            <div class="kampf-log-inner" id="kampf-log"></div>
+          </div>
+
+          <!-- Ergebnis-Overlay -->
+          <div class="result-overlay" id="result-overlay" role="dialog" aria-modal="true" aria-label="Kampfergebnis">
+            <div class="result-box">
+              <span class="result-trophy" id="result-trophy">🏆</span>
+              <div class="result-headline" id="result-headline">Sieg!</div>
+              <div class="result-sub"    id="result-sub"></div>
+              <div class="result-xp"    id="result-xp"></div>
+              <div class="result-btn-row">
+                <a href="/profil.html"    class="btn btn-secondary">📜 Profil</a>
+                <a href="/rangliste.html" class="btn btn-primary">🏆 Rangliste</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:1.5rem;padding:1.25rem 1.5rem">
+          <h2 style="font-size:1.1rem;margin-bottom:.75rem">📊 Kampfstatistiken</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+            <div>
+              <div style="font-weight:700;font-size:.85rem;margin-bottom:.25rem">${esc(h_nick)}</div>
+              <div style="font-size:.82rem;color:var(--ink-soft)">⚔️ Angriff: ${atkA} | ❤️ Max-HP: ${startHpA}</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-weight:700;font-size:.85rem;margin-bottom:.25rem">${esc(g_nick)}</div>
+              <div style="font-size:.82rem;color:var(--ink-soft)">⚔️ Angriff: ${atkB} | ❤️ Max-HP: ${startHpB}</div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Avatare einfügen
+      const svgA = document.getElementById('svg-wrap-a');
+      const svgB = document.getElementById('svg-wrap-b');
+      if (window.drawAvatar) {
+        svgA.innerHTML = drawAvatar(hXp);
+        svgB.innerHTML = drawAvatar(gXp);
+      } else {
+        svgA.innerHTML = '<div style="font-size:3.5rem">⚔️</div>';
+        svgB.innerHTML = '<div style="font-size:3.5rem">⚔️</div>';
+      }
+
+      return { startHpA, startHpB, atkA, atkB, runden,
+               herausfordererGewinnt, muenzenGewinner, muenzenVerlierer,
+               h_nick, g_nick, winner_id, meinId, istGewinner,
+               hEffekt, gEffekt };
+    }
+
+    // ── Schaden-Zahl anzeigen ─────────────────────────────────────────────────
+
+    function zeigeDmg(stageId, dmg) {
+      const stage = document.getElementById(stageId);
+      if (!stage) return;
+      const el = document.createElement('div');
+      el.className = 'dmg-number' + (dmg < 10 ? ' dmg-small' : '');
+      el.textContent = '-' + dmg;
+      stage.appendChild(el);
+      el.addEventListener('animationend', () => el.remove());
+    }
+
+    // ── HP-Balken aktualisieren ───────────────────────────────────────────────
+
+    function updateHp(side, hp, maxHp) {
+      const pct     = hpPercent(hp, maxHp);
+      const fill    = document.getElementById(`hp-fill-${side}`);
+      const numEl   = document.getElementById(`hp-num-${side}`);
+      if (!fill || !numEl) return;
+      fill.style.width = pct + '%';
+      fill.className   = 'hp-fill ' + hpClass(pct);
+      numEl.textContent = `${Math.max(0, hp)}/${maxHp}`;
+    }
+
+    // ── Log-Eintrag hinzufügen ────────────────────────────────────────────────
+
+    function addLog(runde, dmgA, dmgB, hpA, hpB, h_nick, g_nick) {
+      const log = document.getElementById('kampf-log');
+      if (!log) return;
+      const el = document.createElement('div');
+      el.className = 'log-entry';
+      el.innerHTML =
+        `<span class="log-runde">${runde}.</span>` +
+        `<span>${esc(h_nick)} trifft für <span class="log-hit-a">${dmgA}</span> – ` +
+        `${esc(g_nick)} trifft für <span class="log-hit-b">${dmgB}</span>` +
+        ` (❤️ ${Math.max(0,hpA)} / ${Math.max(0,hpB)})</span>`;
+      log.appendChild(el);
+      const wrap = document.getElementById('kampf-log-wrap');
+      if (wrap) wrap.scrollTop = wrap.scrollHeight;
+    }
+
+    // ── Rundenanimation ───────────────────────────────────────────────────────
+
+    async function spieleRunde(runde, startHpA, startHpB, h_nick, g_nick) {
+      const { runde: nr, dmgA, dmgB, hpA, hpB } = runde;
+
+      const counter = document.getElementById('round-counter');
+      if (counter) counter.textContent = `Runde ${nr}`;
+
+      const wrapA = document.getElementById('svg-wrap-a');
+      const wrapB = document.getElementById('svg-wrap-b');
+
+      // Beide angreifen gleichzeitig
+      if (wrapA) wrapA.classList.add('attacking-right');
+      if (wrapB) wrapB.classList.add('attacking-left');
+
+      await sleep(350);
+
+      if (wrapA) wrapA.classList.remove('attacking-right');
+      if (wrapB) wrapB.classList.remove('attacking-left');
+
+      // Treffer-Effekte
+      if (wrapA) wrapA.classList.add('hit-flash');
+      if (wrapB) wrapB.classList.add('hit-flash');
+
+      zeigeDmg('avatar-stage-b', dmgA);
+      zeigeDmg('avatar-stage-a', dmgB);
+
+      // HP aktualisieren
+      updateHp('a', hpA, startHpA);
+      updateHp('b', hpB, startHpB);
+
+      await sleep(400);
+      if (wrapA) wrapA.classList.remove('hit-flash');
+      if (wrapB) wrapB.classList.remove('hit-flash');
+
+      addLog(nr, dmgA, dmgB, hpA, hpB, h_nick, g_nick);
+
+      await sleep(800);
+    }
+
+    // ── Ergebnis anzeigen ─────────────────────────────────────────────────────
+
+    function zeigeErgebnis(herausfordererGewinnt, h_nick, g_nick, istGewinner, muenzenGewinner, muenzenVerlierer) {
+      const overlay   = document.getElementById('result-overlay');
+      const trophy    = document.getElementById('result-trophy');
+      const headline  = document.getElementById('result-headline');
+      const sub       = document.getElementById('result-sub');
+      const xpEl      = document.getElementById('result-xp');
+      const wrapA     = document.getElementById('svg-wrap-a');
+      const wrapB     = document.getElementById('svg-wrap-b');
+
+      const gewinnerNick = herausfordererGewinnt ? h_nick : g_nick;
+
+      if (herausfordererGewinnt) {
+        if (wrapA) { wrapA.className = 'fighter-svg-wrap victorious'; }
+        if (wrapB) { wrapB.className = 'fighter-svg-wrap defeated'; }
+      } else {
+        if (wrapB) { wrapB.className = 'fighter-svg-wrap victorious'; }
+        if (wrapA) { wrapA.className = 'fighter-svg-wrap defeated'; }
+      }
+
+      const verliererNick = herausfordererGewinnt
+        ? (gewinnerNick === h_nick ? g_nick : h_nick)
+        : (gewinnerNick === g_nick ? h_nick : g_nick);
+
+      if (istGewinner) {
+        trophy.textContent   = '🏆';
+        headline.textContent = 'Sieg!';
+        sub.textContent      = `Du hast ${verliererNick} besiegt!`;
+        xpEl.textContent     = `+${muenzenGewinner} 🪙 Münzen`;
+      } else {
+        trophy.textContent   = '😔';
+        headline.textContent = 'Niederlage';
+        sub.textContent      = `${gewinnerNick} ist diesmal stärker – kämpfe weiter!`;
+        xpEl.textContent     = `+${muenzenVerlierer} 🪙 Münzen für deinen Mut`;
+      }
+
+      const counter = document.getElementById('round-counter');
+      if (counter) counter.textContent = istGewinner ? '🏆 Sieg!' : '💀 Niederlage';
+
+      overlay.classList.add('visible');
+    }
+
+    // ── Einzugseffekt anzeigen ────────────────────────────────────────────────
+
+    function zeigeEinzugseffekt(stageId, effektId) {
+      if (!effektId || !EFFEKT_CSS[effektId]) return;
+      const stage = document.getElementById(stageId);
+      if (!stage) return;
+      const el = document.createElement('div');
+      el.className = 'effekt-overlay ' + EFFEKT_CSS[effektId];
+      stage.appendChild(el);
+      requestAnimationFrame(() => el.classList.add('aktiv'));
+      setTimeout(() => {
+        el.classList.remove('aktiv');
+        setTimeout(() => el.remove(), 400);
+      }, 2000);
+    }
+
+    // ── Intro-Animation ───────────────────────────────────────────────────────
+
+    async function intro(h_nick, g_nick, hEffekt, gEffekt) {
+      const title = document.getElementById('arena-title');
+      if (!title) return;
+      title.textContent = `⚔️ ${h_nick}  vs.  ${g_nick} ⚔️`;
+
+      // Einzugseffekte kurz nach dem Aufbau zeigen
+      await sleep(400);
+      zeigeEinzugseffekt('avatar-stage-a', hEffekt);
+      await sleep(200);
+      zeigeEinzugseffekt('avatar-stage-b', gEffekt);
+
+      await sleep(1400);
+    }
+
+    // ── Hauptfunktion ─────────────────────────────────────────────────────────
+
+    async function init() {
+      const params     = new URLSearchParams(window.location.search);
+      const kampfId    = params.get('id');
+
+      if (!kampfId) {
+        document.getElementById('kampf-root').innerHTML =
+          '<div class="kampf-error card" style="margin-top:1.5rem">Kein Kampf ausgewählt. <a href="/profil.html">→ Zurück zum Profil</a></div>';
+        return;
+      }
+
+      const meRes = await fetch('/api/auth/me');
+      if (!meRes.ok) { window.location.href = '/login.html'; return; }
+
+      const dataRes = await fetch(`/api/arena/kampf/${kampfId}`);
+      if (!dataRes.ok) {
+        document.getElementById('kampf-root').innerHTML =
+          '<div class="kampf-error card" style="margin-top:1.5rem">Kampf nicht gefunden oder kein Zugriff. <a href="/profil.html">→ Zurück zum Profil</a></div>';
+        return;
+      }
+
+      const data = await dataRes.json();
+      if (!data.log) {
+        document.getElementById('kampf-root').innerHTML =
+          '<div class="kampf-error card" style="margin-top:1.5rem">Keine Kampfdaten vorhanden.</div>';
+        return;
+      }
+
+      const arena = buildArena(data);
+
+      await intro(data.h_nick, data.g_nick, arena.hEffekt, arena.gEffekt);
+
+      const { startHpA, startHpB, runden, herausfordererGewinnt,
+              muenzenGewinner, muenzenVerlierer, h_nick, g_nick,
+              winner_id, meinId, istGewinner } = arena;
+
+      for (const runde of runden) {
+        await spieleRunde(runde, startHpA, startHpB, h_nick, g_nick);
+      }
+
+      await sleep(600);
+      zeigeErgebnis(herausfordererGewinnt, h_nick, g_nick, istGewinner, muenzenGewinner, muenzenVerlierer);
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      window.location.href = '/login.html';
+    });
+
+    init().catch(err => {
+      console.error(err);
+      document.getElementById('kampf-root').innerHTML =
+        '<div class="kampf-error card" style="margin-top:1.5rem">⚠️ Fehler beim Laden des Kampfes.</div>';
+    });
+  })();
+  </script>
+  <script src="/js/arena-bar.js"></script>
+  <script src="/js/site-nav.js"></script>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+      <nav class="site-footer-links" aria-label="Rechtliche Links">
+        <a href="https://lehrer-herrmann.de/impressum.html">Impressum</a>
+        <a href="https://lehrer-herrmann.de/datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

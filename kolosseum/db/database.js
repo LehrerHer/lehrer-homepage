@@ -30,6 +30,40 @@ if (!cols.includes('avatar_config')) {
 // aber der Index muss separat sichergestellt werden)
 db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_invite_tokens_token ON invite_tokens(token)');
 
+// Migration: battle_log-Spalte für Kampf-Replay-Daten
+const challengeCols = db.prepare('PRAGMA table_info(challenges)').all().map(c => c.name);
+if (!challengeCols.includes('battle_log')) {
+  db.exec('ALTER TABLE challenges ADD COLUMN battle_log TEXT');
+}
+
+// Migration: Münzsystem
+const studentCols = db.prepare('PRAGMA table_info(students)').all().map(c => c.name);
+if (!studentCols.includes('coins')) {
+  db.exec('ALTER TABLE students ADD COLUMN coins INTEGER DEFAULT 0');
+}
+
+// Münz-Log und Shop-Inventar (per CREATE IF NOT EXISTS in schema.sql angelegt,
+// aber hier nochmals abgesichert)
+db.exec(`
+  CREATE TABLE IF NOT EXISTS coins_log (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id INTEGER NOT NULL,
+    amount     INTEGER NOT NULL,
+    reason     TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+  );
+  CREATE TABLE IF NOT EXISTS student_items (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id   INTEGER NOT NULL,
+    item_id      TEXT    NOT NULL,
+    equipped     INTEGER DEFAULT 0,
+    purchased_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(student_id, item_id),
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+  );
+`);
+
 // Session-Store für express-session auf Basis von better-sqlite3
 class SQLiteSessionStore {
   constructor(session) {
