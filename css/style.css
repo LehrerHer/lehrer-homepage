@@ -1654,6 +1654,122 @@ footer {
     box-shadow: none;
 }
 
+/* === GLADIATOREN-KAMPF TEASER === */
+.gladiatoren-teaser {
+    position: relative;
+    overflow: hidden;
+    background: #0d1b2a;
+    padding: 3.5rem 0;
+}
+
+.gladiatoren-teaser-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('../img/arena-gladiatoren.png');
+    background-size: cover;
+    background-position: center 30%;
+    opacity: .22;
+    filter: saturate(.7);
+}
+
+.gladiatoren-teaser-content {
+    position: relative;
+    z-index: 1;
+}
+
+.gladiatoren-teaser-inner {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+
+.gladiatoren-teaser-text {
+    flex: 1;
+    min-width: 260px;
+    color: #fff;
+}
+
+.gladiatoren-eyebrow {
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #f6ad55;
+    margin-bottom: .6rem;
+}
+
+.gladiatoren-headline {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: .75rem;
+}
+
+.gladiatoren-beschr {
+    font-size: 1rem;
+    color: rgba(255,255,255,.78);
+    line-height: 1.65;
+    max-width: 480px;
+    margin-bottom: 1.25rem;
+}
+
+.gladiatoren-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.gladiatoren-stat {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .88rem;
+    color: rgba(255,255,255,.7);
+    font-weight: 600;
+}
+.gs-icon { font-size: 1rem; }
+
+.gladiatoren-btn {
+    display: inline-block;
+    padding: .9rem 2.2rem;
+    background: linear-gradient(135deg, #c0392b, #e74c3c);
+    color: #fff;
+    border-radius: 50px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(231,76,60,.4);
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+.gladiatoren-btn:hover {
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 28px rgba(231,76,60,.5);
+}
+
+.gladiatoren-teaser-bild {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gladiatoren-img {
+    width: clamp(200px, 28vw, 320px);
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,.5);
+    display: block;
+}
+
+@media (max-width: 680px) {
+    .gladiatoren-teaser { padding: 2.5rem 0; }
+    .gladiatoren-teaser-bild { display: none; }
+}
+
+
 /* === KOLOSSEUM TEASER (kompakter Startseiten-Block) === */
 .kolosseum-teaser {
     display: flex;

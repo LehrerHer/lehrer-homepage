@@ -30,6 +30,12 @@ if (!cols.includes('avatar_config')) {
 // aber der Index muss separat sichergestellt werden)
 db.exec('CREATE UNIQUE INDEX IF NOT EXISTS idx_invite_tokens_token ON invite_tokens(token)');
 
+// Migration: battle_log-Spalte für Kampf-Replay-Daten
+const challengeCols = db.prepare('PRAGMA table_info(challenges)').all().map(c => c.name);
+if (!challengeCols.includes('battle_log')) {
+  db.exec('ALTER TABLE challenges ADD COLUMN battle_log TEXT');
+}
+
 // Session-Store für express-session auf Basis von better-sqlite3
 class SQLiteSessionStore {
   constructor(session) {
