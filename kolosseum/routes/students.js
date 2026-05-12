@@ -69,8 +69,12 @@ router.patch('/avatar', requireStudent, (req, res) => {
 // GET /api/students/rangliste – Top-Schüler nach XP
 router.get('/rangliste', requireStudent, (req, res) => {
   const students = db.prepare(`
-    SELECT s.id, s.nick, s.xp,
-           COUNT(sb.badge_id) AS badge_count
+    SELECT s.id, s.nick, s.xp, COALESCE(s.coins, 0) AS coins,
+           COUNT(sb.badge_id) AS badge_count,
+           (SELECT si.item_id FROM student_items si
+            WHERE si.student_id = s.id AND si.equipped = 1
+              AND si.item_id LIKE 'titel%'
+            LIMIT 1) AS equip_titel
     FROM students s
     LEFT JOIN student_badges sb ON sb.student_id = s.id
     GROUP BY s.id

@@ -124,8 +124,8 @@ router.post('/herausforderung/:id/annehmen', requireStudent, (req, res) => {
   const gewinnerNick  = sim.herausfordererGewinnt ? c.h_nick : c.g_nick;
   const verliererNick = sim.herausfordererGewinnt ? c.g_nick : c.h_nick;
 
-  const xpG = 25 + Math.floor(Math.sqrt(Math.max(sim.herausfordererGewinnt ? c.g_xp : c.h_xp, 0)));
-  const xpV = 8;
+  const muenzenG = 15;
+  const muenzenV = 3;
 
   const log = JSON.stringify({
     runden:      sim.runden,
@@ -134,18 +134,19 @@ router.post('/herausforderung/:id/annehmen', requireStudent, (req, res) => {
     herausfordererGewinnt: sim.herausfordererGewinnt,
     h_nick: c.h_nick, g_nick: c.g_nick,
     h_xp:   c.h_xp,   g_xp:   c.g_xp,
-    xpGewinner: xpG,  xpVerlierer: xpV,
+    muenzenGewinner: muenzenG, muenzenVerlierer: muenzenV,
   });
 
   db.transaction(() => {
     db.prepare("UPDATE challenges SET status='completed', winner_id=?, battle_log=? WHERE id=?")
       .run(gewinnerId, log, cId);
-    db.prepare('UPDATE students SET xp = xp + ? WHERE id = ?').run(xpG, gewinnerId);
-    db.prepare('UPDATE students SET xp = xp + ? WHERE id = ?').run(xpV, verliererId);
-    db.prepare('INSERT INTO xp_log (student_id, amount, reason) VALUES (?,?,?)')
-      .run(gewinnerId, xpG,  `⚔️ Kampf gewonnen gegen ${verliererNick}`);
-    db.prepare('INSERT INTO xp_log (student_id, amount, reason) VALUES (?,?,?)')
-      .run(verliererId, xpV, `⚔️ Tapfer gekämpft gegen ${gewinnerNick}`);
+    // Münzen vergeben statt XP
+    db.prepare('UPDATE students SET coins = COALESCE(coins, 0) + ? WHERE id = ?').run(muenzenG, gewinnerId);
+    db.prepare('UPDATE students SET coins = COALESCE(coins, 0) + ? WHERE id = ?').run(muenzenV, verliererId);
+    db.prepare('INSERT INTO coins_log (student_id, amount, reason) VALUES (?,?,?)')
+      .run(gewinnerId, muenzenG, `⚔️ Kampf gewonnen gegen ${verliererNick}`);
+    db.prepare('INSERT INTO coins_log (student_id, amount, reason) VALUES (?,?,?)')
+      .run(verliererId, muenzenV, `⚔️ Tapfer gekämpft gegen ${gewinnerNick}`);
   })();
 
   res.json({ ok: true, kampfId: cId });
@@ -183,12 +184,23 @@ router.get('/kampf/:id', requireStudent, (req, res) => {
   if (!c) return res.status(404).json({ error: 'Kampf nicht gefunden.' });
 
   const log = c.battle_log ? JSON.parse(c.battle_log) : null;
+
+  // Ausgerüstete Items beider Kämpfer
+  function equippedItems(sid) {
+    return db.prepare(
+      "SELECT item_id FROM student_items WHERE student_id = ? AND equipped = 1"
+    ).all(sid).map(r => r.item_id);
+  }
+  const h_items = equippedItems(c.h_id);
+  const g_items = equippedItems(c.g_id);
+
   res.json({
     id:        c.id,
     winner_id: c.winner_id,
     created_at: c.created_at,
     h_nick: c.h_nick, h_id: c.h_id, h_xp: c.h_xp_aktuell,
     g_nick: c.g_nick, g_id: c.g_id, g_xp: c.g_xp_aktuell,
+    h_items, g_items,
     log,
     meinId,
   });

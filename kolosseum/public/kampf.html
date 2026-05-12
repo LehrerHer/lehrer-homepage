@@ -321,6 +321,56 @@
       flex-wrap: wrap;
     }
 
+    /* === EINZUGSEFFEKTE === */
+    .effekt-overlay {
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0;
+      transition: opacity .3s;
+    }
+    .effekt-overlay.aktiv { opacity: 1; }
+
+    /* Feuer */
+    .effekt-feuer {
+      background: radial-gradient(ellipse at bottom, rgba(255,80,0,.65) 0%, transparent 70%);
+      animation: flicker-fire 1.2s ease-in-out infinite alternate;
+    }
+    @keyframes flicker-fire {
+      0%   { box-shadow: inset 0 0 30px rgba(255,120,0,.5); }
+      100% { box-shadow: inset 0 0 60px rgba(255,50,0,.8);  }
+    }
+
+    /* Frost */
+    .effekt-frost {
+      background: radial-gradient(ellipse at top, rgba(100,180,255,.55) 0%, transparent 70%);
+      animation: pulse-frost 1.4s ease-in-out infinite alternate;
+    }
+    @keyframes pulse-frost {
+      0%   { box-shadow: inset 0 0 20px rgba(100,200,255,.4); }
+      100% { box-shadow: inset 0 0 50px rgba(150,220,255,.7); }
+    }
+
+    /* Blitz */
+    .effekt-blitz {
+      background: radial-gradient(ellipse at center, rgba(255,255,100,.5) 0%, transparent 70%);
+      animation: flash-blitz .6s ease-in-out 3;
+    }
+    @keyframes flash-blitz {
+      0%, 100% { opacity: 0; }
+      50%       { opacity: 1; }
+    }
+
+    /* Titel-Badge unter dem Avatar */
+    .fighter-titel {
+      font-size: .78rem; font-weight: 700;
+      color: rgba(255,224,160,.85);
+      text-shadow: 0 1px 4px rgba(0,0,0,.6);
+      min-height: 1.1em;
+    }
+
     /* === LADE-ZUSTAND === */
     .kampf-loading {
       text-align: center;
@@ -368,6 +418,7 @@
         <a href="/rangliste.html">Rangliste</a>
         <a href="/quiz.html">Quizze</a>
         <a href="/charakter.html">Charakter</a>
+        <a href="/shop.html">🏪 Shop</a>
         <button id="logout-btn" class="subnav-logout">Ausloggen</button>
       </div>
     </div>
@@ -409,12 +460,43 @@
       return '';
     }
 
+    // ── Item-Definitionen (Titel + Effekte) ───────────────────────────────────
+    const TITEL_MAP = {
+      titel_blut:     { emoji: '🩸', name: 'Blutgladiator'     },
+      titel_loewe:    { emoji: '🦁', name: 'Löwenherz'         },
+      titel_blitz:    { emoji: '⚡', name: 'Blitzkrieger'      },
+      titel_sturm:    { emoji: '🌪️', name: 'Sturmreiter'       },
+      titel_schatten: { emoji: '🌑', name: 'Schattenläufer'    },
+      titel_drache:   { emoji: '🐉', name: 'Drachentöter'      },
+      titel_koenig:   { emoji: '👑', name: 'König der Arena'   },
+      titel_legende:  { emoji: '⭐', name: 'Legendärer Krieger' },
+    };
+    const EFFEKT_CSS = {
+      effekt_feuer:  'effekt-feuer',
+      effekt_frost:  'effekt-frost',
+      effekt_blitz:  'effekt-blitz',
+    };
+
+    function getTitel(items) {
+      const t = (items || []).find(id => id.startsWith('titel_'));
+      return t && TITEL_MAP[t] ? TITEL_MAP[t] : null;
+    }
+    function getEffekt(items) {
+      return (items || []).find(id => id.startsWith('effekt_')) || null;
+    }
+
     // ── DOM-Aufbau ────────────────────────────────────────────────────────────
 
     function buildArena(data) {
-      const { log, h_nick, g_nick, h_id, g_id, winner_id, meinId } = data;
+      const { log, h_nick, g_nick, h_id, g_id, winner_id, meinId,
+              h_items = [], g_items = [] } = data;
       const { startHpA, startHpB, atkA, atkB, runden,
-              herausfordererGewinnt, xpGewinner, xpVerlierer } = log;
+              herausfordererGewinnt, muenzenGewinner, muenzenVerlierer } = log;
+
+      const hTitel  = getTitel(h_items);
+      const gTitel  = getTitel(g_items);
+      const hEffekt = getEffekt(h_items);
+      const gEffekt = getEffekt(g_items);
 
       const istGewinner = winner_id === meinId;
       const meinNick    = meinId === h_id ? h_nick : g_nick;
@@ -449,6 +531,7 @@
               </div>
               <div class="fighter-name">${esc(h_nick)}</div>
               <div class="fighter-level">${esc(hLevel)}</div>
+              <div class="fighter-titel">${hTitel ? hTitel.emoji + ' ' + esc(hTitel.name) : ''}</div>
             </div>
 
             <!-- Mitte -->
@@ -475,6 +558,7 @@
               </div>
               <div class="fighter-name">${esc(g_nick)}</div>
               <div class="fighter-level">${esc(gLevel)}</div>
+              <div class="fighter-titel">${gTitel ? gTitel.emoji + ' ' + esc(gTitel.name) : ''}</div>
             </div>
           </div>
 
@@ -525,8 +609,9 @@
       }
 
       return { startHpA, startHpB, atkA, atkB, runden,
-               herausfordererGewinnt, xpGewinner, xpVerlierer,
-               h_nick, g_nick, winner_id, meinId, istGewinner };
+               herausfordererGewinnt, muenzenGewinner, muenzenVerlierer,
+               h_nick, g_nick, winner_id, meinId, istGewinner,
+               hEffekt, gEffekt };
     }
 
     // ── Schaden-Zahl anzeigen ─────────────────────────────────────────────────
@@ -612,7 +697,7 @@
 
     // ── Ergebnis anzeigen ─────────────────────────────────────────────────────
 
-    function zeigeErgebnis(herausfordererGewinnt, h_nick, g_nick, istGewinner, xpGewinner, xpVerlierer) {
+    function zeigeErgebnis(herausfordererGewinnt, h_nick, g_nick, istGewinner, muenzenGewinner, muenzenVerlierer) {
       const overlay   = document.getElementById('result-overlay');
       const trophy    = document.getElementById('result-trophy');
       const headline  = document.getElementById('result-headline');
@@ -631,16 +716,20 @@
         if (wrapA) { wrapA.className = 'fighter-svg-wrap defeated'; }
       }
 
+      const verliererNick = herausfordererGewinnt
+        ? (gewinnerNick === h_nick ? g_nick : h_nick)
+        : (gewinnerNick === g_nick ? h_nick : g_nick);
+
       if (istGewinner) {
         trophy.textContent   = '🏆';
         headline.textContent = 'Sieg!';
-        sub.textContent      = `Du hast ${gewinnerNick === (istGewinner ? (herausfordererGewinnt ? g_nick : h_nick) : gewinnerNick) ? (herausfordererGewinnt ? g_nick : h_nick) : gewinnerNick} besiegt!`;
-        xpEl.textContent     = `+${xpGewinner} XP`;
+        sub.textContent      = `Du hast ${verliererNick} besiegt!`;
+        xpEl.textContent     = `+${muenzenGewinner} 🪙 Münzen`;
       } else {
         trophy.textContent   = '😔';
         headline.textContent = 'Niederlage';
-        sub.textContent      = `${gewinnerNick} ist stärker – kämpfe weiter!`;
-        xpEl.textContent     = `+${xpVerlierer} XP für deinen Mut`;
+        sub.textContent      = `${gewinnerNick} ist diesmal stärker – kämpfe weiter!`;
+        xpEl.textContent     = `+${muenzenVerlierer} 🪙 Münzen für deinen Mut`;
       }
 
       const counter = document.getElementById('round-counter');
@@ -649,13 +738,36 @@
       overlay.classList.add('visible');
     }
 
+    // ── Einzugseffekt anzeigen ────────────────────────────────────────────────
+
+    function zeigeEinzugseffekt(stageId, effektId) {
+      if (!effektId || !EFFEKT_CSS[effektId]) return;
+      const stage = document.getElementById(stageId);
+      if (!stage) return;
+      const el = document.createElement('div');
+      el.className = 'effekt-overlay ' + EFFEKT_CSS[effektId];
+      stage.appendChild(el);
+      requestAnimationFrame(() => el.classList.add('aktiv'));
+      setTimeout(() => {
+        el.classList.remove('aktiv');
+        setTimeout(() => el.remove(), 400);
+      }, 2000);
+    }
+
     // ── Intro-Animation ───────────────────────────────────────────────────────
 
-    async function intro(h_nick, g_nick) {
+    async function intro(h_nick, g_nick, hEffekt, gEffekt) {
       const title = document.getElementById('arena-title');
       if (!title) return;
       title.textContent = `⚔️ ${h_nick}  vs.  ${g_nick} ⚔️`;
-      await sleep(1200);
+
+      // Einzugseffekte kurz nach dem Aufbau zeigen
+      await sleep(400);
+      zeigeEinzugseffekt('avatar-stage-a', hEffekt);
+      await sleep(200);
+      zeigeEinzugseffekt('avatar-stage-b', gEffekt);
+
+      await sleep(1400);
     }
 
     // ── Hauptfunktion ─────────────────────────────────────────────────────────
@@ -689,10 +801,10 @@
 
       const arena = buildArena(data);
 
-      await intro(data.h_nick, data.g_nick);
+      await intro(data.h_nick, data.g_nick, arena.hEffekt, arena.gEffekt);
 
       const { startHpA, startHpB, runden, herausfordererGewinnt,
-              xpGewinner, xpVerlierer, h_nick, g_nick,
+              muenzenGewinner, muenzenVerlierer, h_nick, g_nick,
               winner_id, meinId, istGewinner } = arena;
 
       for (const runde of runden) {
@@ -700,7 +812,7 @@
       }
 
       await sleep(600);
-      zeigeErgebnis(herausfordererGewinnt, h_nick, g_nick, istGewinner, xpGewinner, xpVerlierer);
+      zeigeErgebnis(herausfordererGewinnt, h_nick, g_nick, istGewinner, muenzenGewinner, muenzenVerlierer);
     }
 
     document.getElementById('logout-btn').addEventListener('click', async () => {

@@ -211,6 +211,7 @@
         <a href="/rangliste.html">Rangliste</a>
         <a href="/quiz.html">Quizze</a>
         <a href="/charakter.html">Charakter</a>
+        <a href="/shop.html">🏪 Shop</a>
         <button id="logout-btn" class="subnav-logout">Ausloggen</button>
       </div>
     </div>
@@ -232,6 +233,14 @@
         <a href="/charakter.html" id="charakter-link"
            style="font-size:.8rem;color:var(--ink-soft);text-decoration:none;opacity:.7;margin-top:-.25rem"
            title="Charakter anpassen">✏️ Charakter bearbeiten</a>
+
+        <!-- Münzen -->
+        <div style="display:flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,#ffe066,#f6a800);
+                    color:#5a3800;border-radius:50px;padding:.35rem 1rem;
+                    font-family:'Fredoka One',sans-serif;font-size:1.1rem;
+                    box-shadow:0 2px 8px rgba(246,168,0,.3);margin-top:.25rem">
+          🪙 <span id="profil-coins">…</span> Münzen
+        </div>
 
         <div class="xp-section">
           <div class="xp-total" id="xp-total">0 XP</div>
@@ -529,9 +538,10 @@
       if (!meRes.ok) { window.location.href = '/login.html'; return; }
       const me = await meRes.json();
 
-      const [profileRes, avatarRes] = await Promise.all([
+      const [profileRes, avatarRes, shopRes] = await Promise.all([
         fetch('/api/students/profile'),
         fetch('/api/students/avatar'),
+        fetch('/api/shop/items'),
       ]);
       if (!profileRes.ok) { window.location.href = '/login.html'; return; }
 
@@ -541,6 +551,13 @@
         data.avatarConfig = av.avatarConfig;
       }
       renderProfile(data);
+
+      if (shopRes.ok) {
+        const { coins } = await shopRes.json();
+        const coinsEl = document.getElementById('profil-coins');
+        if (coinsEl) coinsEl.textContent = coins;
+      }
+
       ladeHerausforderungen(me.id);
     }
 

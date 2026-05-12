@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arena-Shop – Lernkolosseum</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    /* === SHOP-KOPFZEILE === */
+    .shop-header {
+      text-align: center;
+      padding: 2.5rem 0 1.5rem;
+    }
+    .shop-header h1 { font-size: 2.2rem; color: var(--ink); }
+    .shop-header p  { color: var(--ink-soft); margin-top: .4rem; }
+
+    .muenzen-display {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      background: linear-gradient(135deg, #ffe066, #f6a800);
+      color: #5a3800;
+      border-radius: 50px;
+      padding: .5rem 1.4rem;
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.3rem;
+      box-shadow: 0 3px 12px rgba(246,168,0,.35);
+      margin-top: .75rem;
+    }
+    .muenzen-display .coin-icon { font-size: 1.4rem; }
+
+    /* === FILTER-TABS === */
+    .shop-tabs {
+      display: flex;
+      gap: .5rem;
+      margin: 1.5rem 0 1rem;
+      flex-wrap: wrap;
+    }
+    .shop-tab {
+      padding: .45rem 1.1rem;
+      border-radius: 50px;
+      border: 2px solid transparent;
+      font-family: 'Nunito', sans-serif;
+      font-size: .88rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--card);
+      color: var(--ink-soft);
+      transition: all var(--transition);
+    }
+    .shop-tab.active, .shop-tab:hover {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+
+    /* === ITEM-GRID === */
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-top: .5rem;
+    }
+
+    .item-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: .5rem;
+      position: relative;
+      transition: transform var(--transition), box-shadow var(--transition);
+      border: 2px solid transparent;
+    }
+    .item-card:hover           { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .item-card.ausgerüstet     { border-color: var(--c3); background: #f0fffe; }
+    .item-card.gekauft:not(.ausgerüstet) { border-color: rgba(0,0,0,.08); }
+
+    .item-emoji    { font-size: 3.2rem; line-height: 1; }
+    .item-name     { font-family: 'Fredoka One', sans-serif; font-size: 1.15rem; color: var(--ink); }
+    .item-type-chip {
+      font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+      padding: .15rem .55rem; border-radius: 50px;
+      background: var(--bg); color: var(--ink-soft);
+    }
+    .item-beschr   { font-size: .82rem; color: var(--ink-soft); line-height: 1.45; flex: 1; }
+    .item-preis {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.1rem;
+      color: #b07700;
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+    }
+
+    .item-badge {
+      position: absolute;
+      top: .75rem; right: .75rem;
+      font-size: .7rem; font-weight: 800; text-transform: uppercase;
+      padding: .2rem .55rem; border-radius: 50px;
+    }
+    .item-badge.besessen  { background: rgba(74,205,196,.2); color: #0d9488; }
+    .item-badge.angelegt  { background: var(--c3);           color: #fff;    }
+
+    /* Kauf-/Ausrüst-Button */
+    .item-btn {
+      width: 100%;
+      padding: .55rem 0;
+      border-radius: 50px;
+      border: none;
+      font-family: 'Nunito', sans-serif;
+      font-size: .9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform .2s, opacity .2s;
+      margin-top: .25rem;
+    }
+    .item-btn:hover    { transform: translateY(-2px); }
+    .item-btn:disabled { opacity: .45; cursor: default; transform: none; }
+    .item-btn.kaufen       { background: var(--c1); color: #fff; }
+    .item-btn.ausrüsten    { background: var(--c3); color: #fff; }
+    .item-btn.ablegen      { background: var(--bg); color: var(--ink-soft); border: 2px solid var(--ink-soft); }
+    .item-btn.zu-teuer     { background: var(--bg); color: var(--ink-soft); }
+
+    /* Münz-Log */
+    .coins-log-list { display: flex; flex-direction: column; gap: .4rem; margin-top: .75rem; }
+    .coins-log-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: .5rem .9rem; background: var(--bg);
+      border-radius: var(--radius-sm); font-size: .85rem;
+    }
+    .coins-log-amount {
+      font-family: 'Fredoka One', sans-serif; font-size: 1rem;
+    }
+    .coins-log-amount.positiv { color: #d4a017; }
+    .coins-log-amount.negativ { color: var(--c1); }
+
+    @media (max-width: 520px) {
+      .shop-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 360px) {
+      .shop-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="site-nav-inner">
+      <a href="https://lehrer-herrmann.de" class="site-nav-logo">Jan <span>Herrmann</span></a>
+      <button class="site-hamburger" id="site-hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="site-nav-links" id="site-nav-links" role="list">
+        <li><a href="https://lehrer-herrmann.de/#faecher">Fächer</a></li>
+        <li><a href="https://lehrer-herrmann.de/portal.html">Materialien &amp; Quizze</a></li>
+        <li><a href="/profil.html">🏛️ Arena</a></li>
+        <li><a href="https://lehrer-herrmann.de/blog.html">Blog</a></li>
+        <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <nav class="kolosseum-subnav" aria-label="Arena-Navigation">
+    <div class="kolosseum-subnav-inner">
+      <span class="subnav-brand">🏛️ Lernkolosseum</span>
+      <div class="subnav-links">
+        <a href="/profil.html">Profil</a>
+        <a href="/rangliste.html">Rangliste</a>
+        <a href="/quiz.html">Quizze</a>
+        <a href="/charakter.html">Charakter</a>
+        <a href="/shop.html" class="active">🏪 Shop</a>
+        <button id="logout-btn" class="subnav-logout">Ausloggen</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-bottom: 3rem;">
+
+    <div class="shop-header">
+      <h1>🏪 Arena-Shop</h1>
+      <p>Gib deine Kampf-Münzen für Titel und Einzugseffekte aus.</p>
+      <div class="muenzen-display" id="muenzen-display">
+        <span class="coin-icon">🪙</span>
+        <span id="muenzen-zahl">…</span> Münzen
+      </div>
+    </div>
+
+    <div class="shop-tabs" role="tablist" aria-label="Shop-Kategorien">
+      <button class="shop-tab active" data-filter="alle"   role="tab" aria-selected="true">Alle</button>
+      <button class="shop-tab"        data-filter="titel"  role="tab" aria-selected="false">🏷️ Titel</button>
+      <button class="shop-tab"        data-filter="effekt" role="tab" aria-selected="false">✨ Effekte</button>
+      <button class="shop-tab"        data-filter="mein"   role="tab" aria-selected="false">🎒 Meine Items</button>
+    </div>
+
+    <div class="shop-grid" id="shop-grid" aria-live="polite">
+      <div style="color:var(--ink-soft);text-align:center;padding:3rem;grid-column:1/-1">Wird geladen…</div>
+    </div>
+
+    <!-- Münz-Verlauf -->
+    <div class="card" style="margin-top:2rem">
+      <h2 style="font-size:1.2rem;margin-bottom:.75rem">🪙 Münz-Verlauf</h2>
+      <div class="coins-log-list" id="coins-log-list">
+        <div style="color:var(--ink-soft);font-size:.9rem;text-align:center;padding:.75rem">Wird geladen…</div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+  (function () {
+    'use strict';
+
+    const TYPE_LABEL = { titel: 'Titel', effekt: 'Einzugseffekt' };
+    let allItems  = [];
+    let myCoins   = 0;
+    let aktFilter = 'alle';
+
+    function esc(s) {
+      return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function datumKurz(iso) {
+      if (!iso) return '';
+      return new Date(iso).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    // ── Shop-Grid rendern ─────────────────────────────────────────────────────
+
+    function renderShop() {
+      const grid = document.getElementById('shop-grid');
+      let items = allItems;
+
+      if      (aktFilter === 'titel')  items = allItems.filter(i => i.type === 'titel');
+      else if (aktFilter === 'effekt') items = allItems.filter(i => i.type === 'effekt');
+      else if (aktFilter === 'mein')   items = allItems.filter(i => i.gekauft);
+
+      if (!items.length) {
+        grid.innerHTML = '<div style="color:var(--ink-soft);text-align:center;padding:3rem;grid-column:1/-1">Keine Items in dieser Kategorie.</div>';
+        return;
+      }
+
+      grid.innerHTML = items.map(item => {
+        const kannKaufen  = !item.gekauft && myCoins >= item.preis;
+        const zuTeuer     = !item.gekauft && myCoins < item.preis;
+        const typeLabel   = TYPE_LABEL[item.type] || item.type;
+
+        let badge = '';
+        if (item['ausgerüstet']) badge = '<span class="item-badge angelegt">✓ angelegt</span>';
+        else if (item.gekauft)   badge = '<span class="item-badge besessen">besessen</span>';
+
+        let btn = '';
+        if (!item.gekauft && kannKaufen) {
+          btn = `<button class="item-btn kaufen" data-id="${esc(item.id)}">🪙 Kaufen</button>`;
+        } else if (!item.gekauft && zuTeuer) {
+          btn = `<button class="item-btn zu-teuer" disabled>Zu wenig Münzen</button>`;
+        } else if (item.gekauft && item['ausgerüstet']) {
+          btn = `<button class="item-btn ablegen" data-id="${esc(item.id)}">Ablegen</button>`;
+        } else if (item.gekauft) {
+          btn = `<button class="item-btn ausrüsten" data-id="${esc(item.id)}">✓ Anlegen</button>`;
+        }
+
+        return `
+          <div class="item-card${item['ausgerüstet'] ? ' ausgerüstet' : item.gekauft ? ' gekauft' : ''}" data-id="${esc(item.id)}">
+            ${badge}
+            <div class="item-emoji">${item.emoji}</div>
+            <div class="item-name">${esc(item.name)}</div>
+            <div class="item-type-chip">${esc(typeLabel)}</div>
+            <div class="item-beschr">${esc(item.beschreibung)}</div>
+            ${!item.gekauft ? `<div class="item-preis">🪙 ${item.preis}</div>` : ''}
+            ${btn}
+          </div>
+        `;
+      }).join('');
+
+      // Buttons verknüpfen
+      grid.querySelectorAll('.item-btn.kaufen').forEach(btn => {
+        btn.addEventListener('click', () => kaufen(btn.dataset.id, btn));
+      });
+      grid.querySelectorAll('.item-btn.ausrüsten, .item-btn.ablegen').forEach(btn => {
+        btn.addEventListener('click', () => ausrüsten(btn.dataset.id, btn));
+      });
+    }
+
+    // ── Münzen-Anzeige ────────────────────────────────────────────────────────
+
+    function updateMuenzen(coins) {
+      myCoins = coins;
+      document.getElementById('muenzen-zahl').textContent = coins;
+    }
+
+    // ── API-Aktionen ──────────────────────────────────────────────────────────
+
+    async function kaufen(itemId, btn) {
+      btn.disabled = true;
+      btn.textContent = '⏳';
+      const r = await fetch('/api/shop/kaufen', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ itemId }),
+      });
+      if (r.ok) {
+        const { coins } = await r.json();
+        updateMuenzen(coins);
+        const item = allItems.find(i => i.id === itemId);
+        if (item) item.gekauft = true;
+        renderShop();
+        ladeMuenzLog();
+      } else {
+        const err = await r.json().catch(() => ({}));
+        btn.textContent = '⚠️ ' + (err.error || 'Fehler');
+        btn.disabled = false;
+      }
+    }
+
+    async function ausrüsten(itemId, btn) {
+      btn.disabled = true;
+      const r = await fetch('/api/shop/ausrüsten', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ itemId }),
+      });
+      if (r.ok) {
+        const { ausgerüstet } = await r.json();
+        const item = allItems.find(i => i.id === itemId);
+        if (item) {
+          // Anderen Item desselben Typs ablegen
+          if (ausgerüstet) {
+            allItems.filter(i => i.type === item.type && i.id !== itemId)
+              .forEach(i => { i['ausgerüstet'] = false; });
+          }
+          item['ausgerüstet'] = ausgerüstet;
+        }
+        renderShop();
+      } else {
+        btn.disabled = false;
+      }
+    }
+
+    // ── Münz-Log ─────────────────────────────────────────────────────────────
+
+    async function ladeMuenzLog() {
+      const r = await fetch('/api/shop/coins-log');
+      if (!r.ok) return;
+      const { log } = await r.json();
+      const el = document.getElementById('coins-log-list');
+      if (!log.length) {
+        el.innerHTML = '<div style="color:var(--ink-soft);font-size:.9rem;text-align:center;padding:.75rem">Noch keine Transaktionen.</div>';
+        return;
+      }
+      el.innerHTML = log.map(e => `
+        <div class="coins-log-item">
+          <span>${esc(e.reason || 'Transaktion')}</span>
+          <div style="display:flex;gap:.75rem;align-items:center">
+            <span style="font-size:.78rem;color:var(--ink-soft)">${datumKurz(e.created_at)}</span>
+            <span class="coins-log-amount ${e.amount > 0 ? 'positiv' : 'negativ'}">
+              ${e.amount > 0 ? '+' : ''}${e.amount} 🪙
+            </span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // ── Filter-Tabs ───────────────────────────────────────────────────────────
+
+    document.querySelectorAll('.shop-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.shop-tab').forEach(t => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+        aktFilter = tab.dataset.filter;
+        renderShop();
+      });
+    });
+
+    // ── Initialisierung ───────────────────────────────────────────────────────
+
+    async function init() {
+      const meRes = await fetch('/api/auth/me');
+      if (!meRes.ok) { window.location.href = '/login.html'; return; }
+
+      const [shopRes] = await Promise.all([
+        fetch('/api/shop/items'),
+        ladeMuenzLog(),
+      ]);
+      if (!shopRes.ok) return;
+
+      const { items, coins } = await shopRes.json();
+      allItems = items;
+      updateMuenzen(coins);
+      renderShop();
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await fetch('/api/auth/logout', { method: 'POST' });
+      window.location.href = '/login.html';
+    });
+
+    init().catch(console.error);
+  })();
+  </script>
+  <script src="/js/arena-bar.js"></script>
+  <script src="/js/site-nav.js"></script>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+      <nav class="site-footer-links" aria-label="Rechtliche Links">
+        <a href="https://lehrer-herrmann.de/impressum.html">Impressum</a>
+        <a href="https://lehrer-herrmann.de/datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

@@ -110,6 +110,7 @@
         <a href="/rangliste.html" class="active">Rangliste</a>
         <a href="/quiz.html">Quizze</a>
         <a href="/charakter.html">Charakter</a>
+        <a href="/shop.html">🏪 Shop</a>
         <button id="logout-btn" class="subnav-logout">Ausloggen</button>
       </div>
     </div>
@@ -147,6 +148,18 @@
     (function () {
       const MEDALS = ['🥇', '🥈', '🥉'];
 
+      // Itemdefinitionen (Titel-Emojis) direkt im Frontend
+      var TITEL_ITEMS = {
+        titel_blut:     { emoji: '🩸', name: 'Blutgladiator'    },
+        titel_loewe:    { emoji: '🦁', name: 'Löwenherz'        },
+        titel_blitz:    { emoji: '⚡', name: 'Blitzkrieger'     },
+        titel_sturm:    { emoji: '🌪️', name: 'Sturmreiter'      },
+        titel_schatten: { emoji: '🌑', name: 'Schattenläufer'   },
+        titel_drache:   { emoji: '🐉', name: 'Drachentöter'     },
+        titel_koenig:   { emoji: '👑', name: 'König der Arena'  },
+        titel_legende:  { emoji: '⭐', name: 'Legendärer Krieger'},
+      };
+
       async function init() {
         const meRes = await fetch('/api/auth/me');
         if (!meRes.ok) { window.location.href = '/login.html'; return; }
@@ -167,13 +180,21 @@
           const rankEl = rank <= 3 ? `<span class="rank-medal">${MEDALS[rank - 1]}</span>` : `<span class="rank-num">${rank}</span>`;
           const info   = getLevelInfo(s.xp);
           const isMe   = s.id === me.id;
+
+          // Titel-Badge
+          var titelBadge = '';
+          if (s.equip_titel && TITEL_ITEMS[s.equip_titel]) {
+            var t = TITEL_ITEMS[s.equip_titel];
+            titelBadge = ` <span title="${escHtml(t.name)}" style="font-size:.95em">${t.emoji}</span>`;
+          }
+
           const challengeBtn = isMe
             ? '<td></td>'
             : `<td style="text-align:right"><button class="btn-challenge" data-id="${s.id}" data-nick="${escHtml(s.nick)}">⚔️ Herausfordern</button></td>`;
           return `
             <tr>
               <td>${rankEl}</td>
-              <td><span class="nick-cell${isMe ? ' me' : ''}">${escHtml(s.nick)}</span></td>
+              <td><span class="nick-cell${isMe ? ' me' : ''}">${escHtml(s.nick)}${titelBadge}</span></td>
               <td><span class="level-chip">${info.level.name}</span></td>
               <td style="text-align:center">${'🏅'.repeat(Math.min(s.badge_count, 5))}${s.badge_count > 5 ? ` +${s.badge_count - 5}` : s.badge_count === 0 ? '–' : ''}</td>
               <td class="xp-cell">${s.xp} XP</td>

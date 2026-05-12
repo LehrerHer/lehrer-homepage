@@ -77,10 +77,22 @@
             + '<span>⚔️</span>'
             + '<span class="ab-nick">' + esc(d.nick) + '</span>'
             + '<span class="ab-chip">' + esc(lvl) + ' &middot; ' + (d.xp || 0) + ' XP</span>'
+            + '<span class="ab-chip" id="ab-coins-chip" style="color:#f6a800;background:rgba(246,168,0,.15)">🪙 …</span>'
             + '</div>'
             + '<div class="ab-right">'
+            + '<a href="/shop.html"   class="ab-btn-sm ab-btn-sm-ghost">🏪</a>'
             + '<a href="/profil.html" class="ab-btn-sm ab-btn-sm-ghost" id="ab-profil-link">Profil</a>'
             + '</div>';
+
+          // Münzstand nachladen
+          fetch('/api/shop/items')
+            .then(function (sr) { return sr.ok ? sr.json() : null; })
+            .then(function (sd) {
+              if (!sd) return;
+              var chip = document.getElementById('ab-coins-chip');
+              if (chip) chip.textContent = '🪙 ' + (sd.coins || 0);
+            })
+            .catch(function () {});
 
           // Offene Herausforderungen prüfen
           fetch('/api/arena/herausforderungen')
