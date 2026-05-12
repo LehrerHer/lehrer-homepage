@@ -1,0 +1,1287 @@
+<!--
+  Titel: Stunde 2 – Die Erste Tschechoslowakische Republik (1918–1938)
+  Fach: Geschichte
+  Klasse/Niveau: Klasse 10
+  AB-Typ: Gemischt (Lesen, Aufgaben, Quiz, Lückentext, Selbstkontrolle)
+  Erstellt: 2026-05-12
+  Quelle: HTML (Stunde2_Prag_Selbstlernseite.html, manuell bereitgestellt)
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Stunde 2 – Die Erste Tschechoslowakische Republik</title>
+<style>
+  /* ── Google Fonts ── */
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+  /* ── Design-Token ── */
+  :root {
+    --dunkel:   #1a2b4a;
+    --mittel:   #2e5fa3;
+    --gold:     #c9a84c;
+    --hellblau: #daeaf7;
+    --gruen:    #1b5e20;
+    --hellgruen:#e8f5e9;
+    --rot:      #7b1c1c;
+    --hellrot:  #fdecea;
+    --grau:     #f5f6f8;
+    --text:     #1c1c1c;
+    --muted:    #6b7280;
+    --weiss:    #ffffff;
+    --radius:   12px;
+    --shadow:   0 2px 12px rgba(0,0,0,.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: #eef2f8;
+    color: var(--text);
+    font-size: 17px;
+    line-height: 1.7;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--dunkel);
+    padding: 40px 28px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 6px;
+    background: var(--gold);
+  }
+  .hero-label {
+    font-family: 'Source Serif 4', serif;
+    font-size: 12px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 6vw, 38px);
+    color: var(--weiss);
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .hero-sub {
+    font-size: 15px;
+    color: #9dbadc;
+    font-style: italic;
+  }
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 20px;
+  }
+  .hero-badge {
+    background: rgba(201,168,76,.15);
+    border: 1px solid rgba(201,168,76,.4);
+    color: var(--gold);
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: .5px;
+  }
+
+  /* ── FORTSCHRITTSLEISTE ── */
+  .progress-wrap {
+    background: var(--dunkel);
+    padding: 0 28px 18px;
+  }
+  .progress-track {
+    background: rgba(255,255,255,.12);
+    border-radius: 4px;
+    height: 6px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold), #e8c96a);
+    border-radius: 4px;
+    transition: width .5s ease;
+    width: 0%;
+  }
+  .progress-label {
+    font-size: 11px;
+    color: #9dbadc;
+    margin-top: 5px;
+    text-align: right;
+  }
+
+  /* ── CONTAINER ── */
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 20px 60px;
+  }
+
+  /* ── NAVIGATIONSLEISTE ── */
+  .nav-tabs {
+    display: flex;
+    gap: 6px;
+    padding: 18px 0 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    flex-shrink: 0;
+    background: var(--weiss);
+    border: 2px solid #dde3ed;
+    border-radius: 8px;
+    padding: 7px 14px;
+    font-size: 13px;
+    font-family: 'Source Serif 4', serif;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .nav-tab.active {
+    background: var(--mittel);
+    border-color: var(--mittel);
+    color: var(--weiss);
+    font-weight: 600;
+  }
+  .nav-tab.done {
+    border-color: var(--gruen);
+    color: var(--gruen);
+  }
+  .nav-tab.done::before { content: '✓ '; }
+
+  /* ── ABSCHNITTE ── */
+  .section { display: none; padding-top: 20px; animation: fadeIn .35s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    background: var(--weiss);
+    border-radius: var(--radius);
+    padding: 22px 22px 18px;
+    margin-bottom: 18px;
+    border-left: 5px solid var(--mittel);
+    box-shadow: var(--shadow);
+  }
+  .section-header.gold  { border-left-color: var(--gold); }
+  .section-header.gruen { border-left-color: var(--gruen); }
+  .section-header.rot   { border-left-color: var(--rot); }
+
+  .section-kicker {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(19px, 4vw, 26px);
+    color: var(--dunkel);
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+  .section-header .leitfrage {
+    font-style: italic;
+    color: var(--mittel);
+    font-size: 15px;
+    border-top: 1px dashed #c8d5e8;
+    padding-top: 10px;
+    margin-top: 10px;
+  }
+
+  /* ── INFOBOXEN ── */
+  .info-box {
+    background: var(--weiss);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow);
+  }
+  .info-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--dunkel);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .info-box p { font-size: 15.5px; color: var(--text); margin-bottom: 8px; }
+  .info-box p:last-child { margin-bottom: 0; }
+
+  .tag {
+    display: inline-block;
+    font-size: 10.5px;
+    font-family: 'Source Serif 4', serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 9px;
+    border-radius: 4px;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .tag-blau  { background: var(--hellblau); color: var(--mittel); }
+  .tag-gold  { background: #fdf3dc; color: #7d5a0a; }
+  .tag-gruen { background: var(--hellgruen); color: var(--gruen); }
+  .tag-rot   { background: var(--hellrot); color: var(--rot); }
+
+  /* ── LESETEXT ── */
+  .lesetext {
+    background: #f9f5ee;
+    border: 1px solid #e2d9c9;
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    font-size: 15.5px;
+    line-height: 1.8;
+  }
+  .lesetext-titel {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    font-style: normal;
+  }
+  .lesetext p { margin-bottom: 12px; }
+  .lesetext p:last-child { margin-bottom: 0; }
+  .lesetext .quellenangabe {
+    font-size: 12px;
+    color: var(--muted);
+    border-top: 1px solid #d9ceb9;
+    margin-top: 14px;
+    padding-top: 10px;
+    font-style: italic;
+  }
+
+  /* ── ZEITLEISTE ── */
+  .timeline { margin: 8px 0 18px; }
+  .timeline-item {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 12px;
+    align-items: flex-start;
+  }
+  .timeline-year {
+    flex-shrink: 0;
+    background: var(--mittel);
+    color: var(--weiss);
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    font-weight: 700;
+    width: 60px;
+    text-align: center;
+    padding: 4px 6px;
+    border-radius: 6px;
+    margin-top: 2px;
+  }
+  .timeline-text { font-size: 15px; line-height: 1.55; }
+  .timeline-text strong { color: var(--dunkel); }
+
+  /* ── AUFGABEN ── */
+  .aufgaben-block {
+    background: var(--weiss);
+    border-radius: var(--radius);
+    padding: 20px 20px;
+    margin-bottom: 18px;
+    box-shadow: var(--shadow);
+  }
+  .aufgaben-block h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: var(--dunkel);
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--hellblau);
+  }
+
+  .aufgabe {
+    margin-bottom: 22px;
+    padding-bottom: 22px;
+    border-bottom: 1px dashed #dde3ed;
+  }
+  .aufgabe:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+  .aufgabe-nr-zeile {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+  .aufgabe-nr {
+    flex-shrink: 0;
+    background: var(--mittel);
+    color: var(--weiss);
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    margin-top: 1px;
+  }
+  .aufgabe-nr.gold  { background: var(--gold); }
+  .aufgabe-nr.gruen { background: var(--gruen); }
+  .aufgabe-nr.rot   { background: var(--rot); }
+
+  .aufgabe-text { font-size: 15.5px; line-height: 1.65; color: var(--text); }
+  .aufgabe-hinweis {
+    font-size: 13px;
+    font-style: italic;
+    color: var(--muted);
+    margin-top: 6px;
+    padding: 7px 11px;
+    background: var(--grau);
+    border-radius: 6px;
+    border-left: 3px solid var(--gold);
+  }
+
+  /* ── TEXTEINGABE ── */
+  .antwort-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: block;
+  }
+  textarea {
+    width: 100%;
+    border: 1.5px solid #c8d5e8;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text);
+    background: #fafcff;
+    resize: vertical;
+    min-height: 110px;
+    transition: border-color .2s, box-shadow .2s;
+    -webkit-appearance: none;
+  }
+  textarea:focus {
+    outline: none;
+    border-color: var(--mittel);
+    box-shadow: 0 0 0 3px rgba(46,95,163,.12);
+  }
+  textarea::placeholder { color: #b0b8c6; font-style: italic; }
+
+  /* ── QUIZ / SELBSTKONTROLLE ── */
+  .quiz-frage {
+    background: var(--weiss);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+    border-left: 4px solid var(--mittel);
+  }
+  .quiz-frage h4 {
+    font-size: 15.5px;
+    font-family: 'Source Serif 4', serif;
+    color: var(--dunkel);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .quiz-optionen { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 14px;
+    border: 1.5px solid #dde3ed;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: all .2s;
+    background: var(--grau);
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .quiz-option:active { transform: scale(.98); }
+  .quiz-option.richtig {
+    background: var(--hellgruen);
+    border-color: var(--gruen);
+    color: var(--gruen);
+  }
+  .quiz-option.falsch {
+    background: var(--hellrot);
+    border-color: var(--rot);
+    color: var(--rot);
+    text-decoration: line-through;
+  }
+  .quiz-option.neutral-richtig {
+    background: var(--hellgruen);
+    border-color: var(--gruen);
+    color: var(--gruen);
+  }
+  .quiz-option .option-kreis {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid #c8d5e8;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+  }
+  .quiz-feedback {
+    margin-top: 10px;
+    font-size: 14px;
+    padding: 9px 13px;
+    border-radius: 7px;
+    display: none;
+    font-style: italic;
+  }
+  .quiz-feedback.richtig { background: var(--hellgruen); color: #1b5e20; display: block; }
+  .quiz-feedback.falsch  { background: var(--hellrot);   color: var(--rot); display: block; }
+
+  /* ── LÜCKENTEXT ── */
+  .luecke {
+    display: inline-block;
+    border-bottom: 2px solid var(--mittel);
+    min-width: 90px;
+    padding: 0 4px;
+    margin: 0 2px;
+    font-style: italic;
+    color: var(--mittel);
+    background: var(--hellblau);
+    border-radius: 3px;
+    font-size: 15px;
+    text-align: center;
+  }
+  .luecken-input {
+    border: none;
+    border-bottom: 2px solid var(--mittel);
+    background: var(--hellblau);
+    border-radius: 3px 3px 0 0;
+    font-family: 'Source Serif 4', serif;
+    font-size: 15px;
+    color: var(--mittel);
+    padding: 2px 6px;
+    width: 130px;
+    text-align: center;
+    -webkit-appearance: none;
+    vertical-align: bottom;
+  }
+  .luecken-input:focus { outline: none; border-bottom-color: var(--dunkel); }
+  .luecken-input.korrekt  { background: var(--hellgruen); border-color: var(--gruen); color: var(--gruen); }
+  .luecken-input.falsch   { background: var(--hellrot);   border-color: var(--rot);   color: var(--rot);   }
+
+  /* ── VERGLEICHSTABELLE ── */
+  .vergleich-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    margin-bottom: 16px;
+    font-size: 14.5px;
+  }
+  .vergleich-table th {
+    background: var(--dunkel);
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    padding: 11px 14px;
+    text-align: left;
+    font-size: 14px;
+  }
+  .vergleich-table td {
+    padding: 11px 14px;
+    border-bottom: 1px solid #e2e8f0;
+    background: var(--weiss);
+    vertical-align: top;
+  }
+  .vergleich-table tr:last-child td { border-bottom: none; }
+  .vergleich-table tr:nth-child(even) td { background: var(--grau); }
+  .vergleich-table .kategorie { font-weight: 600; color: var(--dunkel); }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-family: 'Source Serif 4', serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all .2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn-primary {
+    background: var(--mittel);
+    color: var(--weiss);
+    box-shadow: 0 2px 8px rgba(46,95,163,.25);
+  }
+  .btn-primary:active { transform: scale(.97); background: var(--dunkel); }
+  .btn-gold {
+    background: var(--gold);
+    color: var(--dunkel);
+    box-shadow: 0 2px 8px rgba(201,168,76,.3);
+  }
+  .btn-gold:active { transform: scale(.97); }
+  .btn-outline {
+    background: transparent;
+    color: var(--mittel);
+    border: 2px solid var(--mittel);
+  }
+
+  .nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #dde3ed;
+    gap: 10px;
+  }
+
+  /* ── MUSTERLÖSUNG ── */
+  .muster-toggle {
+    background: #f0f4fa;
+    border: 1.5px dashed var(--mittel);
+    border-radius: 8px;
+    padding: 10px 15px;
+    font-size: 14px;
+    color: var(--mittel);
+    cursor: pointer;
+    margin-top: 10px;
+    font-family: 'Source Serif 4', serif;
+    width: 100%;
+    text-align: left;
+    transition: background .2s;
+  }
+  .muster-toggle:active { background: var(--hellblau); }
+  .muster-content {
+    display: none;
+    margin-top: 8px;
+    padding: 14px;
+    background: #eef4fb;
+    border-radius: 8px;
+    font-size: 14.5px;
+    color: #1a3a5c;
+    line-height: 1.65;
+    border-left: 3px solid var(--mittel);
+  }
+  .muster-content.visible { display: block; animation: fadeIn .25s ease; }
+
+  /* ── ABSCHLUSS-CARD ── */
+  .abschluss-card {
+    background: var(--dunkel);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+    text-align: center;
+    margin-top: 10px;
+  }
+  .abschluss-card h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold);
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  .abschluss-card p { color: #9dbadc; font-size: 15px; margin-bottom: 16px; }
+  .sterne { font-size: 30px; margin-bottom: 10px; letter-spacing: 4px; }
+
+  /* ── METHODEN-BOX ── */
+  .methoden-box {
+    background: #fdf8ee;
+    border: 1.5px solid #e8d9b0;
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-bottom: 16px;
+  }
+  .methoden-box h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: #7d5a0a;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .methoden-box ol, .methoden-box ul {
+    padding-left: 20px;
+    font-size: 14.5px;
+    color: var(--text);
+  }
+  .methoden-box li { margin-bottom: 5px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 500px) {
+    .hero { padding: 32px 20px 26px; }
+    .container { padding: 0 14px 60px; }
+    textarea { min-height: 90px; }
+    .nav-buttons { flex-direction: column; }
+    .btn { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-label">Geschichte · Klasse 10 · Stunde 2 von 8</div>
+  <h1>Die Erste Tschechoslowakische Republik (1918–1938)</h1>
+  <p class="hero-sub">Selbstlerneinheit zur Vorbereitung der Abschlussfahrt nach Prag</p>
+  <div class="hero-meta">
+    <span class="hero-badge">📖 Selbstarbeit</span>
+    <span class="hero-badge">⏱ ca. 45 Min.</span>
+    <span class="hero-badge">💻 iPad-optimiert</span>
+    <span class="hero-badge">✓ Selbstkontrolle</span>
+  </div>
+</div>
+
+<!-- FORTSCHRITT -->
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">Abschnitt 0 von 5</div>
+</div>
+
+<div class="container">
+
+  <!-- NAVIGATION -->
+  <div class="nav-tabs" id="navTabs">
+    <button class="nav-tab active" onclick="zeigeAbschnitt(0)">Einstieg</button>
+    <button class="nav-tab" onclick="zeigeAbschnitt(1)">Masaryk &amp; Gründung</button>
+    <button class="nav-tab" onclick="zeigeAbschnitt(2)">Demokratie-Insel?</button>
+    <button class="nav-tab" onclick="zeigeAbschnitt(3)">Minderheiten &amp; Krise</button>
+    <button class="nav-tab" onclick="zeigeAbschnitt(4)">Aufgaben &amp; Quiz</button>
+    <button class="nav-tab" onclick="zeigeAbschnitt(5)">Abschluss</button>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       ABSCHNITT 0 – EINSTIEG
+  ════════════════════════════════════════ -->
+  <div class="section active" id="section-0">
+
+    <div class="section-header">
+      <div class="section-kicker">Einstieg · 5 Minuten</div>
+      <h2>Was weißt du schon?</h2>
+      <div class="leitfrage">💭 Überlege kurz: Was verbindest du mit dem Jahr 1918 in Mitteleuropa?</div>
+    </div>
+
+    <div class="info-box">
+      <h3>📌 Wo stehen wir?</h3>
+      <p>In der letzten Stunde hast du die Geschichte Prags von der Antike bis zur Gründung der Tschechoslowakei kennengelernt. Du weißt nun: Am <strong>28. Oktober 1918</strong> wurde die Tschechoslowakische Republik ausgerufen.</p>
+      <p>Diese Stunde vertieft genau diese Zeit: Was war das für ein Staat? Wer regierte? Warum gilt er als Besonderheit – und warum scheiterte er trotzdem?</p>
+    </div>
+
+    <div class="aufgaben-block">
+      <h3>🖊 Vorwissen aktivieren</h3>
+      <div class="aufgabe">
+        <div class="aufgabe-nr-zeile">
+          <div class="aufgabe-nr">V</div>
+          <div class="aufgabe-text">
+            Notiere in 2–3 Sätzen, was du aus Stunde 1 noch weißt: Was war die Tschechoslowakei, wer gründete sie, und vor welchen Herausforderungen stand sie?
+          </div>
+        </div>
+        <div class="aufgabe-hinweis">💡 Kein Blick in deine Notizen – schreibe aus dem Gedächtnis. Das hilft beim Lernen!</div>
+        <span class="antwort-label">Meine Antwort:</span>
+        <textarea placeholder="Schreibe hier dein Vorwissen auf …" rows="4"></textarea>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <div></div>
+      <button class="btn btn-primary" onclick="weiter(0)">Weiter: Masaryk &amp; Gründung →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       ABSCHNITT 1 – MASARYK & GRÜNDUNG
+  ════════════════════════════════════════ -->
+  <div class="section" id="section-1">
+
+    <div class="section-header gold">
+      <div class="section-kicker">Lesen &amp; Verstehen · 10 Minuten</div>
+      <h2>Tomáš G. Masaryk und die Gründung der ČSR</h2>
+      <div class="leitfrage">🔍 Leitfrage: Wer war Masaryk – und was machte ihn zum „Vater der Nation"?</div>
+    </div>
+
+    <div class="methoden-box">
+      <h4>📚 Methode: Darstellung lesen</h4>
+      <ol>
+        <li>Lies den Text in Ruhe durch – markiere gedanklich, was du nicht verstehst.</li>
+        <li>Achte auf: Wer? Was? Wann? Warum? Was war die Folge?</li>
+        <li>Der Text ist eine <strong>Darstellung</strong> – er wurde von Historikern nach der beschriebenen Zeit verfasst.</li>
+      </ol>
+    </div>
+
+    <div class="lesetext">
+      <div class="lesetext-titel">📄 Darstellung A: Tomáš G. Masaryk und die Gründung der Tschechoslowakei</div>
+      <p>Tomáš Garrigue Masaryk (1850–1937) war Philosoph, Universitätsprofessor und leidenschaftlicher Demokrat. Er lehrte an der Karlsuniversität in Prag und war einer der schärfsten Kritiker der habsburgischen Herrschaft. Schon vor dem Ersten Weltkrieg setzte er sich öffentlich für Meinungsfreiheit und nationale Selbstbestimmung ein.</p>
+      <p>Als der Erste Weltkrieg ausbrach, floh Masaryk ins Exil. Von London, Paris und Washington aus warb er bei den Regierungen der Entente für einen eigenständigen tschechoslowakischen Staat. Er überzeugte die USA, Großbritannien und Frankreich: Die Tschechoslowakei, so argumentierte er, solle ein demokratischer Staat sein – ein verlässlicher Partner im künftigen Europa.</p>
+      <p>Am <strong>28. Oktober 1918</strong> riefen die tschechischen Nationalräte in Prag die Tschechoslowakische Republik (ČSR) aus. Das Habsburger Kaiserreich war kurz vor dem Zusammenbruch; die Ausrufung erfolgte fast ohne Gewalt. Masaryk wurde im November 1918 zum ersten Staatspräsidenten gewählt – aus dem Exil, noch ohne zurückgekehrt zu sein.</p>
+      <p>Masaryk prägte die neue Republik entscheidend. Er stand für Demokratie, Rechtsstaatlichkeit und humanistische Werte. Sein Bild hing in unzähligen tschechoslowakischen Schulen. Er blieb bis 1935 Präsident und gilt bis heute als Nationalheld – in Tschechien führt die wichtigste internationale Auszeichnung des Landes seinen Namen.</p>
+      <div class="quellenangabe">Darstellung nach: Heimann, Mary. Czechoslovakia. The State That Failed. Yale 2009; vgl. auch Geschichte und Geschehen Jg. 9/10, Klett 2018, S. 93–94.</div>
+    </div>
+
+    <div class="info-box">
+      <h3>📅 Schlüsseldaten 1918–1920</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year">1918</div>
+          <div class="timeline-text"><strong>28. Oktober:</strong> Ausrufung der Tschechoslowakischen Republik (ČSR) in Prag</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">1918</div>
+          <div class="timeline-text"><strong>November:</strong> Masaryk wird erster Staatspräsident. Edvard Beneš wird Außenminister.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">1919</div>
+          <div class="timeline-text"><strong>Friedensvertrag von Saint-Germain:</strong> Grenzen der ČSR völkerrechtlich anerkannt. Die Slowakei und die Karpato-Ukraine werden Teil des neuen Staates.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">1920</div>
+          <div class="timeline-text"><strong>Verfassung:</strong> Die ČSR gibt sich eine demokratische Verfassung mit Parlament, allgemeinem Wahlrecht und Grundrechten.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="aufgaben-block">
+      <h3>🖊 Aufgaben zu Darstellung A</h3>
+
+      <div class="aufgabe">
+        <div class="aufgabe-nr-zeile">
+          <div class="aufgabe-nr gold">1</div>
+          <div class="aufgabe-text">Beschreibe in eigenen Worten: Wie gelang es Masaryk, einen eigenständigen tschechoslowakischen Staat zu gründen? Welche Schritte unternahm er?</div>
+        </div>
+        <span class="antwort-label">Meine Antwort:</span>
+        <textarea placeholder="Beschreibe Masaryks Weg zur Staatsgründung …" rows="5"></textarea>
+        <button class="muster-toggle" onclick="toggleMuster(this)">🔍 Musterlösung anzeigen</button>
+        <div class="muster-content">Masaryk floh im Ersten Weltkrieg ins Exil und warb von dort aus bei den Entente-Mächten (USA, GB, Frankreich) für einen tschechoslowakischen Staat. Er argumentierte mit der Demokratiefähigkeit des neuen Staates. Nach dem Zusammenbruch Österreich-Ungarns riefen die tschechischen Nationalräte am 28. Oktober 1918 die Republik aus – fast gewaltlos. Masaryk wurde noch im Exil zum ersten Präsidenten gewählt.</div>
+      </div>
+
+      <div class="aufgabe">
+        <div class="aufgabe-nr-zeile">
+          <div class="aufgabe-nr gold">2</div>
+          <div class="aufgabe-text">Erkläre, warum Masaryk bis heute als „Vater der Nation" gilt. Nutze mindestens zwei konkrete Belege aus dem Text.</div>
+        </div>
+        <span class="antwort-label">Meine Antwort:</span>
+        <textarea placeholder="Nenne konkrete Gründe mit Belegen aus dem Text …" rows="5"></textarea>
+        <button class="muster-toggle" onclick="toggleMuster(this)">🔍 Musterlösung anzeigen</button>
+        <div class="muster-content">Masaryk gilt als Vater der Nation, weil er die Staatsgründung von Anfang an betrieb (Exil-Tätigkeit 1914–1918) und die neuen demokratischen Werte verkörperte. Belege: (1) Sein Bild hing in unzähligen Schulen, was zeigt, wie sehr er Vorbild war. (2) Die wichtigste tschechische Auszeichnung trägt noch heute seinen Namen. Beides zeigt, dass er weit über seine Amtszeit hinaus als Gründerfigur verehrt wurde.</div>
+      </div>
+
+      <div class="aufgabe">
+        <div class="aufgabe-nr-zeile">
+          <div class="aufgabe-nr gold">3</div>
+          <div class="aufgabe-text">Ist Darstellung A eine Quelle oder eine Darstellung? Begründe anhand eines konkreten Merkmals des Textes.</div>
+        </div>
+        <div class="aufgabe-hinweis">💡 Erinnerung: Eine Quelle stammt aus der beschriebenen Zeit. Eine Darstellung wurde später von Historikern verfasst.</div>
+        <span class="antwort-label">Meine Antwort:</span>
+        <textarea placeholder="Quelle oder Darstellung? Begründe …" rows="3"></textarea>
+        <button class="muster-toggle" onclick="toggleMuster(this)">🔍 Musterlösung anzeigen</button>
+        <div class="muster-content">Es ist eine <strong>Darstellung</strong>. Merkmale: Der Text wurde 2009 von Mary Heimann verfasst (weit nach 1918) und stützt sich auf historische Forschung. Er bewertet Masaryk retrospektiv (z.B. „gilt bis heute als Nationalheld") – das ist nur möglich, wenn der Autor zeitlichen Abstand hatte.</div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-outline" onclick="zurueck(1)">← Zurück</button>
+      <button class="btn btn-primary" onclick="weiter(1)">Weiter: Demokratie-Insel? →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       ABSCHNITT 2 – DEMOKRATIE-INSEL
+  ════════════════════════════════════════ -->
+  <div class="section" id="section-2">
+
+    <div class="section-header gruen">
+      <div class="section-kicker">Analysieren &amp; Vergleichen · 10 Minuten</div>
+      <h2>Die ČSR – eine „Demokratie-Insel" in Ostmitteleuropa</h2>
+      <div class="leitfrage">🔍 Leitfrage: Warum war die ČSR so besonders – und was machte ihre Demokratie aus?</div>
+    </div>
+
+    <div class="lesetext">
+      <div class="lesetext-titel">📄 Darstellung B: Die Erste Republik – Stärken und Errungenschaften</div>
+      <p>Die Tschechoslowakei der Zwischenkriegszeit (1918–1938) wird von Historikern als „Demokratie-Insel" in Ostmitteleuropa bezeichnet. Während ringsherum autoritäre Regime entstanden – in Polen, Ungarn, Österreich, Rumänien – blieb die ČSR ein demokratischer Rechtsstaat mit funktionierendem Parlament und regelmäßigen Wahlen.</p>
+      <p>Die Verfassung von 1920 garantierte ein allgemeines Wahlrecht für Männer und Frauen, Presse- und Meinungsfreiheit, Religionsfreiheit und den Schutz von Minderheiten. Das Bildungssystem war gut ausgebaut; die Karlsuniversität Prag gehörte zu den renommierten Hochschulen Europas.</p>
+      <p>Wirtschaftlich war die ČSR eine der am stärksten industrialisierten Regionen Europas – das Böhmische Becken mit seinen Industriezentren rund um Pilsen, Brünn und im Sudetenland produzierte Maschinen, Textilien und Waffen von Weltrang. Die Škoda-Werke wurden weltbekannt. Der Lebensstandard lag deutlich über dem vieler Nachbarstaaten.</p>
+      <p>Prag blühte als kulturelle Metropole. Kafka schrieb auf Deutsch in Prag; tschechische, deutsche und jüdische Kulturschaffende wirkten Seite an Seite. Das Prager Kaffeehaus war ein Ort europäischen Geisteslebens.</p>
+      <div class="quellenangabe">Darstellung nach: Kural, Václav / Radvanovský, Zdeněk. Sudetenland. Praha 2002; vgl. Geschichte und Geschehen Jg. 9/10, Klett 2018.</div>
+    </div>
+
+    <div class="info-box">
+      <h3>🗺️ Vergleich: Ostmitteleuropa in den 1920er Jahren</h3>
+      <table class="vergleich-table">
+        <tr>
+          <th>Land</th>
+          <th>Regierungsform 1920er Jahre</th>
+          <th>Besonderheit</th>
+        </tr>
+        <tr>
+          <td class="kategorie">Tschechoslowakei</td>
+          <td><span class="tag tag-gruen">Demokratie</span></td>
+          <td>Stabiles parlamentarisches System, Verfassung 1920</td>
+        </tr>
+        <tr>
+          <td class="kategorie">Polen</td>
+          <td><span class="tag tag-rot">Autoritär ab 1926</span></td>
+          <td>Militärputsch Piłsudski 1926, Einschränkung der Demokratie</td>
+        </tr>
+        <tr>
+          <td class="kategorie">Ungarn</td>
+          <td><span class="tag tag-rot">Autoritär</span></td>
+          <td>Horthy-Regime ab 1920, konservativ-autoritär</td>
+        </tr>
+        <tr>
+          <td class="kategorie">Österreich</td>
+          <td><span class="tag tag-rot">Autoritär ab 1933</span></td>
+          <td>Dollfuß-Diktatur ab 1933, Ausschaltung des Parlaments</td>
+        </tr>
+        <tr>
+          <td class="kategorie">Deutschland</td>
+          <td><span class="tag tag-rot">NS-Diktatur ab 1933</span></td>
+          <td>Weimarer Republik scheitert; Hitler Reichskanzler ab 1933</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="aufgaben-block">
+      <h3>🖊 Aufgaben zur Demokratie-Insel</h3>
+
+      <div class="aufgabe">
+        <div class="aufgabe-nr-zeile">
+          <div class="aufgabe-nr gruen">1</div>
+          <div class="aufgabe-text">Erkläre in eigenen Worten, warum die ČSR als „Demokratie-Insel" bezeichnet wird. Nutze die Vergleichstabelle und den Lesetext.</div>
+        </div>
+        <span class="antwort-label">Meine Antwort:</span>
+        <textarea placeholder="Erkläre den Begriff 'Demokratie-Insel' …" rows="5"></textarea>
+        <button class="muster-toggle" onclick="toggleMuster(this)">🔍 Musterlösung anzeigen</button>
+        <div class="muster-content">Der Begriff beschreibt, dass die ČSR die einzige stabile Demokratie in Ostmitteleuropa der Zwischenkriegszeit war. Ringsherum entstanden autoritäre Regime (Polen, Ungarn, Österreich) oder Diktaturen (Deutschland). Die ČSR blieb dagegen ein demokratischer Rechtsstaat mit Wahlen, Verfassung und Grundrechten – wie eine Insel der Demokratie in einem „Meer" des Autoritarismus.</div>
+      </div>
+
+      <div class="aufgabe">
+        <div class="aufgabe-nr-zeile">
+          <div class="aufgabe-nr gruen">2</div>
+          <div class="aufgabe-text">Nenne drei Stärken der Ersten Tschechoslowakischen Republik. Unterscheide dabei zwischen politischen, wirtschaftlichen und kulturellen Stärken.</div>
+        </div>
+        <span class="antwort-label">Meine Antwort:</span>
+        <textarea placeholder="Politisch: …&#10;Wirtschaftlich: …&#10;Kulturell: …" rows="5"></textarea>
+      </div>
+
+      <div class="aufgabe">
+        <div class="aufgabe-nr-zeile">
+          <div class="aufgabe-nr gruen">3</div>
+          <div class="aufgabe-text">Franz Kafka lebte und schrieb in Prag auf Deutsch. Was zeigt das über die ČSR – und was könnte das auch schon ankündigen?</div>
+        </div>
+        <div class="aufgabe-hinweis">💡 Denke an den Begriff „Minderheiten" – den werdet ihr im nächsten Abschnitt vertiefen.</div>
+        <span class="antwort-label">Meine Antwort:</span>
+        <textarea placeholder="Deine Einschätzung zu Kafka und der Mehrsprachigkeit in Prag …" rows="4"></textarea>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-outline" onclick="zurueck(2)">← Zurück</button>
+      <button class="btn btn-primary" onclick="weiter(2)">Weiter: Minderheiten &amp; Krise →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       ABSCHNITT 3 – MINDERHEITEN & KRISE
+  ════════════════════════════════════════ -->
+  <div class="section" id="section-3">
+
+    <div class="section-header rot">
+      <div class="section-kicker">Quellenarbeit · 10 Minuten</div>
+      <h2>Das Minderheitenproblem – die Achillesferse der ČSR</h2>
+      <div class="leitfrage">🔍 Leitfrage: Wie wurde das Zusammenleben der Völker zur Schwäche des Staates?</div>
+    </div>
+
+    <div class="lesetext">
+      <div class="lesetext-titel">📄 Darstellung C: Die Sudetendeutschen und das Minderheitenproblem</div>
+      <p>Die ČSR war ein Vielvölkerstaat: Neben Tschechen (ca. 51 %) und Slowaken (ca. 16 %) lebten etwa <strong>3,2 Millionen Sudetendeutsche</strong> (ca. 23 %) im Land, dazu Ungarn, Polen, Ruthenen und weitere Gruppen. Die Verfassung schützte Minderheitenrechte – Schulen, Zeitungen und Behörden in der Minderheitensprache waren möglich.</p>
+      <p>In der Praxis gab es jedoch Spannungen: Sudetendeutsche Parteien beklagten, dass Tschechen bei Staatsanstellungen bevorzugt wurden. Die Weltwirtschaftskrise ab 1929 traf die sudetendeutschen Industrieregionen besonders hart – die Arbeitslosigkeit war hoch.</p>
+      <p>1933 nutzte Konrad Henlein die Unzufriedenheit: Er gründete die <strong>Sudetendeutsche Partei (SdP)</strong>, die sich mehr und mehr an Hitlers NSDAP orientierte. Bei den Wahlen 1935 wurde die SdP mit fast 68 % der deutsch-böhmischen Stimmen stärkste Partei der Sudetendeutschen.</p>
+      <p>Hitler instrumentalisierte das „Sudetenproblem" für seine Expansionspolitik. Er forderte zunächst Autonomie, dann den Anschluss der sudetendeutschen Gebiete ans Deutsche Reich. Die westlichen Demokratien gaben dem Druck nach: Im <strong>Münchner Abkommen vom 29. September 1938</strong> zwangen Großbritannien, Frankreich und Italien die ČSR, das Sudetenland abzutreten – ohne die Tschechoslowakei selbst an den Verhandlungen zu beteiligen.</p>
+      <div class="quellenangabe">Darstellung nach: Brandes, Detlef. Die Sudetendeutschen im Krisenjahr 1938. München 2008; Geschichte und Geschehen Jg. 9/10, Klett 2018.</div>
+    </div>
+
+    <div class="lesetext">
+      <div class="lesetext-titel">📜 Quelle: Rede Henleins auf dem Parteitag der SdP, April 1938 (Auszug, vereinfacht)</div>
+      <p style="font-style:italic; color:#5a3a3a;">"Wir wollen heim ins Reich! Jahrelang haben wir gekämpft, jahrelang haben wir gewartet. Unsere Sprache, unsere Kultur, unser Volkstum wird nicht länger unterdrückt werden. Das sudetendeutsche Volk steht zu seinem Führer – und sein Führer steht zu uns."</p>
+      <div class="quellenangabe">Quelle: Rede Konrad Henleins auf dem SdP-Parteitag in Aussig, April 1938 (paraphrasiert nach Zeitzeugenberichten; vgl. Brandes 2008).</div>
+    </div>
+
+    <div class="aufgaben-block">
+      <h3>🖊 Aufgaben zu Minderheiten und Krise</h3>
+
+      <div class="aufgabe">
+        <div class="aufgabe-nr-zeile">
+          <div class="aufgabe-nr rot">1</div>
+          <div class="aufgabe-text">Erkläre in eigenen Worten: Was war das „Sudetenproblem"? Welche historischen Ursachen hatte es?</div>
+        </div>
+        <span class="antwort-label">Meine Antwort:</span>
+        <textarea placeholder="Erkläre das 'Sudetenproblem' und seine Ursachen …" rows="5"></textarea>
+        <button class="muster-toggle" onclick="toggleMuster(this)">🔍 Musterlösung anzeigen</button>
+        <div class="muster-content">Das „Sudetenproblem" entstand, weil in der ČSR rund 3,2 Millionen Sudetendeutsche lebten, die sich vom tschechischen Staat benachteiligt fühlten (z.B. bei Staatsanstellungen). Die Weltwirtschaftskrise ab 1929 verschärfte die Unzufriedenheit. Hitler und Henlein nutzten diese Stimmung politisch – sie forderten zuerst Autonomie, dann den Anschluss an Deutschland.</div>
+      </div>
+
+      <div class="aufgabe">
+        <div class="aufgabe-nr-zeile">
+          <div class="aufgabe-nr rot">2</div>
+          <div class="aufgabe-text">Analysiere die Quelle (Henlein-Rede): Welche Argumente nutzt Henlein, um die Sudetendeutschen zu mobilisieren? Welche Sprachmittel fallen dir auf?</div>
+        </div>
+        <div class="aufgabe-hinweis">💡 Achte auf: Wir-Gefühl, Feindbilder, historische Anspielungen, Wiederholungen.</div>
+        <span class="antwort-label">Meine Antwort:</span>
+        <textarea placeholder="Argumente: …&#10;Sprachmittel: …" rows="6"></textarea>
+        <button class="muster-toggle" onclick="toggleMuster(this)">🔍 Musterlösung anzeigen</button>
+        <div class="muster-content">Argumente: Henlein behauptet, die Sudetendeutschen seien „unterdrückt" worden – das schafft ein Opferbild. Er verspricht Zugehörigkeit zum „Reich". Die Losung „Heim ins Reich" setzt voraus, dass Deutschland die eigentliche Heimat der Sudetendeutschen sei. Sprachmittel: Wiederholung („jahrelang … jahrelang"), Wir-Gefühl (wir/uns), Bezug auf Hitler als „Führer" – erkennbar nationalsozialistische Rhetorik.</div>
+      </div>
+
+      <div class="aufgabe">
+        <div class="aufgabe-nr-zeile">
+          <div class="aufgabe-nr rot">3</div>
+          <div class="aufgabe-text">Ist die Henlein-Rede eine Quelle oder eine Darstellung? Welche Besonderheiten musst du bei der Nutzung dieser Quelle beachten?</div>
+        </div>
+        <span class="antwort-label">Meine Antwort:</span>
+        <textarea placeholder="Quelle oder Darstellung? Besonderheiten beim kritischen Umgang …" rows="4"></textarea>
+        <button class="muster-toggle" onclick="toggleMuster(this)">🔍 Musterlösung anzeigen</button>
+        <div class="muster-content">Die Rede ist eine <strong>Quelle</strong> – sie stammt aus der beschriebenen Zeit (1938). Besonderheiten: Es handelt sich um Propaganda; Henlein verfolgt ein politisches Ziel (Mobilisierung, Anschluss). Die Quelle zeigt, wie die SdP ihre Anhänger ansprach, sagt aber nichts Objektives über die tatsächliche Lage der Sudetendeutschen aus. Sie muss mit anderen Quellen und Darstellungen verglichen werden.</div>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-outline" onclick="zurueck(3)">← Zurück</button>
+      <button class="btn btn-primary" onclick="weiter(3)">Weiter: Aufgaben &amp; Quiz →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       ABSCHNITT 4 – AUFGABEN & QUIZ
+  ════════════════════════════════════════ -->
+  <div class="section" id="section-4">
+
+    <div class="section-header">
+      <div class="section-kicker">Überprüfen &amp; Sichern · 10 Minuten</div>
+      <h2>Selbstkontrolle – Wissensquiz &amp; Lückentext</h2>
+      <div class="leitfrage">🧠 Teste dich selbst: Was hast du behalten?</div>
+    </div>
+
+    <!-- LÜCKENTEXT -->
+    <div class="aufgaben-block">
+      <h3>📝 Lückentext: Fülle die Lücken aus</h3>
+      <p style="font-size:15px; margin-bottom:16px; color:var(--muted);">Schreibe die passenden Begriffe in die Eingabefelder. Dann klicke auf „Überprüfen".</p>
+      <div id="lueckentext" style="font-size:15.5px; line-height:2.2; background:var(--weiss); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow);">
+        <p>Die Tschechoslowakische Republik wurde am <input class="luecken-input" data-answer="28. Oktober 1918" placeholder="Datum"> ausgerufen. Erster Staatspräsident wurde <input class="luecken-input" data-answer="Masaryk" placeholder="Name">. Die ČSR gilt als besonders, weil sie die einzige stabile <input class="luecken-input" data-answer="Demokratie" placeholder="Begriff"> in Ostmitteleuropa war. Die <input class="luecken-input" data-answer="Verfassung" placeholder="Dokument"> von 1920 garantierte allgemeines Wahlrecht und Grundrechte. Die größte Minderheit in der ČSR waren die <input class="luecken-input" data-answer="Sudetendeutschen" placeholder="Gruppe"> mit ca. 3,2 Millionen Menschen. Im Jahr 1938 zwangen die Westmächte die ČSR im <input class="luecken-input" data-answer="Münchner Abkommen" placeholder="Ereignis">, das Sudetenland abzutreten.</p>
+      </div>
+      <br>
+      <button class="btn btn-gold" onclick="pruefeLuecken()" style="margin-top:8px;">✓ Lücken überprüfen</button>
+      <div id="luecken-ergebnis" style="margin-top:10px; font-size:14px; display:none;"></div>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="aufgaben-block">
+      <h3>🎯 Wissensquiz – Klicke auf die richtige Antwort</h3>
+
+      <div class="quiz-frage" id="q1">
+        <h4>1. Wann wurde die Tschechoslowakische Republik ausgerufen?</h4>
+        <div class="quiz-optionen">
+          <div class="quiz-option" onclick="quizAuswahl(this,'q1',false)"><span class="option-kreis">A</span> 11. November 1918 (Waffenstillstand)</div>
+          <div class="quiz-option" onclick="quizAuswahl(this,'q1',true)"><span class="option-kreis">B</span> 28. Oktober 1918</div>
+          <div class="quiz-option" onclick="quizAuswahl(this,'q1',false)"><span class="option-kreis">C</span> 1. Januar 1919</div>
+          <div class="quiz-option" onclick="quizAuswahl(this,'q1',false)"><span class="option-kreis">D</span> 28. Juni 1919 (Versailler Vertrag)</div>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <div class="quiz-frage" id="q2">
+        <h4>2. Was ist die „Breschnew-Doktrin"? (Vorausschau auf Stunde 5/6 – rate!)</h4>
+        <div class="quiz-optionen">
+          <div class="quiz-option" onclick="quizAuswahl(this,'q2',false)"><span class="option-kreis">A</span> Das Recht der USA, in Lateinamerika einzugreifen</div>
+          <div class="quiz-option" onclick="quizAuswahl(this,'q2',false)"><span class="option-kreis">B</span> Die Politik der wirtschaftlichen Öffnung in der UdSSR</div>
+          <div class="quiz-option" onclick="quizAuswahl(this,'q2',true)"><span class="option-kreis">C</span> Das sowjetische Recht, in sozialistischen Bruderstaaten militärisch einzugreifen</div>
+          <div class="quiz-option" onclick="quizAuswahl(this,'q2',false)"><span class="option-kreis">D</span> Der Vertrag zur Gründung des Warschauer Paktes</div>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <div class="quiz-frage" id="q3">
+        <h4>3. Welchen Begriff verwendeten Historiker für die ČSR in der Zwischenkriegszeit?</h4>
+        <div class="quiz-optionen">
+          <div class="quiz-option" onclick="quizAuswahl(this,'q3',false)"><span class="option-kreis">A</span> „Bollwerk des Westens"</div>
+          <div class="quiz-option" onclick="quizAuswahl(this,'q3',true)"><span class="option-kreis">B</span> „Demokratie-Insel"</div>
+          <div class="quiz-option" onclick="quizAuswahl(this,'q3',false)"><span class="option-kreis">C</span> „Kleines Frankreich"</div>
+          <div class="quiz-option" onclick="quizAuswahl(this,'q3',false)"><span class="option-kreis">D</span> „Musterstaat des Ostens"</div>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <div class="quiz-frage" id="q4">
+        <h4>4. Was war das Münchner Abkommen (1938)?</h4>
+        <div class="quiz-optionen">
+          <div class="quiz-option" onclick="quizAuswahl(this,'q4',false)"><span class="option-kreis">A</span> Ein Friedensvertrag zwischen der ČSR und Deutschland</div>
+          <div class="quiz-option" onclick="quizAuswahl(this,'q4',false)"><span class="option-kreis">B</span> Ein Handelsabkommen zwischen Großbritannien und der ČSR</div>
+          <div class="quiz-option" onclick="quizAuswahl(this,'q4',true)"><span class="option-kreis">C</span> Eine Vereinbarung der Westmächte, durch die die ČSR das Sudetenland an Deutschland abtreten musste</div>
+          <div class="quiz-option" onclick="quizAuswahl(this,'q4',false)"><span class="option-kreis">D</span> Eine Erklärung der ČSR, freiwillig dem Deutschen Reich beizutreten</div>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+
+      <div class="quiz-frage" id="q5">
+        <h4>5. Wie lautete die Losung der Sudetendeutschen Partei (SdP)?</h4>
+        <div class="quiz-optionen">
+          <div class="quiz-option" onclick="quizAuswahl(this,'q5',false)"><span class="option-kreis">A</span> „Freiheit für Böhmen!"</div>
+          <div class="quiz-option" onclick="quizAuswahl(this,'q5',false)"><span class="option-kreis">B</span> „Ein Volk, ein Reich, ein Führer!"</div>
+          <div class="quiz-option" onclick="quizAuswahl(this,'q5',true)"><span class="option-kreis">C</span> „Heim ins Reich!"</div>
+          <div class="quiz-option" onclick="quizAuswahl(this,'q5',false)"><span class="option-kreis">D</span> „Autonomie jetzt!"</div>
+        </div>
+        <div class="quiz-feedback"></div>
+      </div>
+    </div>
+
+    <!-- TRANSFERAUFGABE -->
+    <div class="aufgaben-block">
+      <h3>🔭 Transferaufgabe: Verbindung zu heute</h3>
+      <div class="aufgabe">
+        <div class="aufgabe-nr-zeile">
+          <div class="aufgabe-nr">T</div>
+          <div class="aufgabe-text">Ihr werdet in Prag den Wenzelsplatz besuchen – genau dort, wo 1918 die Republik ausgerufen wurde und wo 1989 die Samtene Revolution stattfand. Formuliere in 3–5 Sätzen: Welche historische Bedeutung hat dieser Ort – und was würdest du dir dort ansehen oder denken wollen?</div>
+        </div>
+        <div class="aufgabe-hinweis">💡 Diese Aufgabe bereitet euch direkt auf die Fahrt vor. Es gibt keine „falsche" Antwort.</div>
+        <span class="antwort-label">Meine Gedanken:</span>
+        <textarea placeholder="Der Wenzelsplatz bedeutet mir / zeigt mir …" rows="6"></textarea>
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-outline" onclick="zurueck(4)">← Zurück</button>
+      <button class="btn btn-primary" onclick="weiter(4)">Weiter: Abschluss →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       ABSCHNITT 5 – ABSCHLUSS
+  ════════════════════════════════════════ -->
+  <div class="section" id="section-5">
+
+    <div class="abschluss-card">
+      <div class="sterne">⭐⭐⭐</div>
+      <h2>Gut gemacht!</h2>
+      <p>Du hast die Selbstlerneinheit zur Ersten Tschechoslowakischen Republik abgeschlossen.</p>
+    </div>
+
+    <div class="info-box" style="margin-top:18px;">
+      <h3>📋 Das hast du in dieser Stunde gelernt</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year" style="font-size:12px; width:70px;">Wissen</div>
+          <div class="timeline-text">Masaryk gründete die ČSR 1918 durch Exil-Diplomatie; sie war die einzige stabile Demokratie Ostmitteleuropas der Zwischenkriegszeit.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year" style="font-size:12px; width:70px;">Analyse</div>
+          <div class="timeline-text">Du hast Quellen (Henlein-Rede) und Darstellungen unterschieden und analysiert.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year" style="font-size:12px; width:70px;">Urteil</div>
+          <div class="timeline-text">Das Minderheitenproblem und das Münchner Abkommen 1938 machten die ČSR trotz ihrer Stärken verletzlich.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year" style="font-size:12px; width:70px;">Transfer</div>
+          <div class="timeline-text">Du hast den Wenzelsplatz als historischen Erinnerungsort reflektiert – gut vorbereitet für die Fahrt.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <h3>🔭 Vorschau: Was kommt in den nächsten Stunden?</h3>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-year" style="width:70px; font-size:11px;">Std. 3</div>
+          <div class="timeline-text"><strong>NS-Herrschaft in der Tschechoslowakei (1938–1945)</strong> – Münchner Abkommen, Protektorat, Terezín</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year" style="width:70px; font-size:11px;">Std. 4</div>
+          <div class="timeline-text"><strong>Kommunismus (1945–1967)</strong> – „Siegreicher Februar", Schauprozesse, Alltag unter der Diktatur</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year" style="width:70px; font-size:11px;">Std. 5–6</div>
+          <div class="timeline-text"><strong>Der Prager Frühling 1968</strong> – Reformkommunismus, Niederschlagung, Breschnew-Doktrin</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="methoden-box">
+      <h4>📌 Merkkarte: Quelle vs. Darstellung</h4>
+      <ul>
+        <li><strong>Quelle:</strong> Stammt aus der beschriebenen Zeit (z.B. Henlein-Rede 1938)</li>
+        <li><strong>Darstellung:</strong> Wurde nach der Zeit verfasst (z.B. Schulbuchtext, Geschichtsbuch)</li>
+        <li>Beide brauchen kritische Analyse: Wer schreibt? Mit welchem Ziel? Aus welcher Perspektive?</li>
+        <li>Eine Darstellung trifft immer eine Auswahl – sie ist nie „neutral".</li>
+      </ul>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="btn btn-outline" onclick="zurueck(5)">← Zurück</button>
+      <button class="btn btn-gold" onclick="neustart()">↩ Von vorne beginnen</button>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+// ── Zustand ──────────────────────────────────────────────────────────────
+let aktuellerAbschnitt = 0;
+const GESAMT = 6;
+const abgeschlossen = new Set();
+
+// ── Navigation ────────────────────────────────────────────────────────────
+function zeigeAbschnitt(nr) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('section-' + nr).classList.add('active');
+
+  document.querySelectorAll('.nav-tab').forEach((t, i) => {
+    t.classList.remove('active');
+    if (abgeschlossen.has(i) && i !== nr) {
+      t.classList.add('done');
+    } else {
+      t.classList.remove('done');
+    }
+  });
+  document.querySelectorAll('.nav-tab')[nr].classList.add('active');
+  document.querySelectorAll('.nav-tab')[nr].classList.remove('done');
+
+  aktuellerAbschnitt = nr;
+  aktualisiereProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function weiter(von) {
+  abgeschlossen.add(von);
+  zeigeAbschnitt(von + 1);
+}
+
+function zurueck(von) {
+  zeigeAbschnitt(von - 1);
+}
+
+function neustart() {
+  abgeschlossen.clear();
+  zeigeAbschnitt(0);
+}
+
+function aktualisiereProgress() {
+  const pct = Math.round((abgeschlossen.size / (GESAMT - 1)) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent =
+    'Abschnitt ' + abgeschlossen.size + ' von ' + (GESAMT - 1) + ' abgeschlossen';
+}
+
+// ── Quiz ──────────────────────────────────────────────────────────────────
+function quizAuswahl(el, frageId, korrekt) {
+  const frage = document.getElementById(frageId);
+  if (frage.dataset.beantwortet) return;
+  frage.dataset.beantwortet = '1';
+
+  const optionen = frage.querySelectorAll('.quiz-option');
+  optionen.forEach(o => {
+    o.style.cursor = 'default';
+    o.onclick = null;
+  });
+
+  const feedback = frage.querySelector('.quiz-feedback');
+
+  if (korrekt) {
+    el.classList.add('richtig');
+    el.querySelector('.option-kreis').textContent = '✓';
+    feedback.className = 'quiz-feedback richtig';
+    feedback.textContent = '✓ Richtig! Gut gemacht.';
+  } else {
+    el.classList.add('falsch');
+    el.querySelector('.option-kreis').textContent = '✗';
+    feedback.className = 'quiz-feedback falsch';
+    feedback.textContent = '✗ Leider nicht richtig. Lies den Text noch einmal und merke dir die korrekte Antwort.';
+
+    optionen.forEach(o => {
+      if (o !== el && o.dataset.korrekt === 'true') {
+        o.classList.add('neutral-richtig');
+      }
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.quiz-option').forEach(o => {
+    const onclick = o.getAttribute('onclick') || '';
+    o.dataset.korrekt = onclick.includes(',true)') ? 'true' : 'false';
+    const match = onclick.match(/quizAuswahl\(this,'([^']+)',(true|false)\)/);
+    if (match) {
+      const id = match[1];
+      const isK = match[2] === 'true';
+      o.onclick = function() { quizAuswahl(this, id, isK); };
+    }
+  });
+});
+
+// ── Lückentext ────────────────────────────────────────────────────────────
+function pruefeLuecken() {
+  const inputs = document.querySelectorAll('.luecken-input');
+  let richtig = 0;
+  inputs.forEach(inp => {
+    const antwort = inp.value.trim().toLowerCase();
+    const erwartet = inp.dataset.answer.toLowerCase();
+    const kern = erwartet.replace(/[.\s]/g, '');
+    const eingabe = antwort.replace(/[.\s]/g, '');
+    if (eingabe.length > 0 && (erwartet.includes(antwort) || antwort.includes(kern.substring(0, 5)) || eingabe === kern)) {
+      inp.classList.remove('falsch');
+      inp.classList.add('korrekt');
+      richtig++;
+    } else if (antwort.length === 0) {
+      inp.classList.remove('korrekt', 'falsch');
+    } else {
+      inp.classList.remove('korrekt');
+      inp.classList.add('falsch');
+    }
+  });
+
+  const ergebnis = document.getElementById('luecken-ergebnis');
+  ergebnis.style.display = 'block';
+  if (richtig === inputs.length) {
+    ergebnis.style.cssText = 'display:block; padding:12px; background:var(--hellgruen); border-radius:8px; color:var(--gruen); font-size:14px;';
+    ergebnis.textContent = '✓ Alle ' + inputs.length + ' Lücken korrekt ausgefüllt! Sehr gut.';
+  } else {
+    ergebnis.style.cssText = 'display:block; padding:12px; background:var(--hellrot); border-radius:8px; color:var(--rot); font-size:14px;';
+    ergebnis.textContent = richtig + ' von ' + inputs.length + ' Lücken korrekt. Rot markierte Felder bitte noch einmal überprüfen.';
+  }
+}
+
+// ── Musterlösungen ────────────────────────────────────────────────────────
+function toggleMuster(btn) {
+  const content = btn.nextElementSibling;
+  if (content.classList.contains('visible')) {
+    content.classList.remove('visible');
+    btn.textContent = '🔍 Musterlösung anzeigen';
+  } else {
+    content.classList.add('visible');
+    btn.textContent = '🔼 Musterlösung ausblenden';
+  }
+}
+
+// ── Initial ───────────────────────────────────────────────────────────────
+aktualisiereProgress();
+</script>
+</body>
+</html>
