@@ -1,0 +1,594 @@
+<!--
+  Titel: Burg Bentheim – Aufgabe 3: Museumsführung (Rollenspiel)
+  Fach: Geschichte
+  Klasse/Niveau: 7 (Realschulzweig, Oberschule)
+  AB-Typ: Offen / Schreibaufgabe + Musterlösung
+  Erstellt: 2026-05-13
+  Quelle: Schulbuch S. 44 (Nachgefragt A3) + Wikipedia Burg Bentheim + Q1-Abbildung
+-->
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Burg Bentheim – Museumsführung – lehrer-herrmann.de</title>
+  <style>
+    :root {
+      --primary:   #1e3a5f;
+      --accent:    #4a9eda;
+      --correct:   #2ecc71;
+      --error:     #e74c3c;
+      --bg:        #f4f6f7;
+      --card:      #ffffff;
+      --text:      #1a1a2e;
+      --text-muted:#5a6a7a;
+      --border:    #d0dbe8;
+      --radius:    8px;
+      --shadow:    0 2px 8px rgba(30,58,95,.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 1rem;
+    }
+
+    .ab-container {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* ── HEADER ── */
+    .ab-header {
+      background: var(--primary);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 1.5rem 1.75rem 1.25rem;
+    }
+    .ab-header .fach-label {
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      opacity: .7;
+      margin-bottom: .35rem;
+    }
+    .ab-header h1 {
+      font-size: clamp(1.2rem, 4vw, 1.65rem);
+      font-weight: 700;
+      margin-bottom: .4rem;
+    }
+    .ab-meta {
+      font-size: .8rem;
+      opacity: .65;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem 1.75rem;
+    }
+
+    /* ── KONTEXT-BOX ── */
+    .kontext-box {
+      background: #eef4fb;
+      border-left: 4px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    .kontext-box .kontext-label {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .35rem;
+    }
+    .kontext-box p {
+      font-size: .95rem;
+      color: var(--text);
+    }
+
+    /* ── AUFGABEN-NUMMER ── */
+    .aufgabe-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.1rem;
+    }
+    .aufgabe-nr {
+      flex-shrink: 0;
+      width: 2.4rem;
+      height: 2.4rem;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.05rem;
+    }
+    .aufgabe-text {
+      flex: 1;
+    }
+    .aufgabe-text h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: .3rem;
+    }
+    .aufgabe-text p {
+      font-size: .95rem;
+    }
+    .aufgabe-text .quellenhinweis {
+      display: inline-block;
+      margin-top: .3rem;
+      font-size: .78rem;
+      color: var(--text-muted);
+      background: #f0f4f8;
+      border-radius: 4px;
+      padding: .15rem .5rem;
+    }
+
+    /* ── ROLLEN-CHIPS ── */
+    .rollen-grid {
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+      margin: 1rem 0 .75rem;
+    }
+    .rolle {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      background: #f0f4f8;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: .55rem .9rem;
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .rolle .rolle-icon { font-size: 1.2rem; }
+
+    /* ── HINWEIS-BOX ── */
+    .hinweis {
+      background: #fffbea;
+      border: 1px solid #f0d060;
+      border-radius: var(--radius);
+      padding: .85rem 1.1rem;
+      margin-bottom: 1.1rem;
+      font-size: .88rem;
+      color: #5a4a00;
+    }
+    .hinweis strong { color: #3a3000; }
+
+    /* ── TEXTAREA-BEREICH ── */
+    .textarea-label {
+      font-size: .8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      margin-bottom: .4rem;
+    }
+    textarea {
+      width: 100%;
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--text);
+      background: #f9fbfd;
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: .85rem 1rem;
+      resize: vertical;
+      min-height: 180px;
+      transition: border-color .2s;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      background: #fff;
+    }
+    .zeichenzaehler {
+      text-align: right;
+      font-size: .78rem;
+      color: var(--text-muted);
+      margin-top: .3rem;
+    }
+    .zeichenzaehler.viel { color: var(--correct); }
+
+    /* ── BUTTONS ── */
+    .btn-row {
+      display: flex;
+      gap: .75rem;
+      flex-wrap: wrap;
+      margin-top: 1.1rem;
+    }
+    button {
+      min-height: 44px;
+      padding: .65rem 1.4rem;
+      border: none;
+      border-radius: var(--radius);
+      font-size: .95rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: filter .15s, transform .1s;
+    }
+    button:active { transform: scale(.97); }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover { filter: brightness(1.15); }
+    .btn-secondary {
+      background: #fff;
+      color: var(--primary);
+      border: 1.5px solid var(--border);
+    }
+    .btn-secondary:hover { background: #f0f4f8; }
+    .btn-reset {
+      background: #fff;
+      color: var(--text-muted);
+      border: 1.5px solid var(--border);
+      font-size: .85rem;
+    }
+
+    /* ── MUSTERLÖSUNG ── */
+    details {
+      border-radius: var(--radius);
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+      margin-top: 1.25rem;
+    }
+    summary {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      padding: .9rem 1.1rem;
+      background: #f0f4f8;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: .95rem;
+      color: var(--primary);
+      list-style: none;
+      min-height: 44px;
+      user-select: none;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::before {
+      content: "▶";
+      font-size: .75rem;
+      transition: transform .2s;
+      color: var(--accent);
+    }
+    details[open] summary::before { transform: rotate(90deg); }
+    details[open] summary { border-bottom: 1.5px solid var(--border); }
+
+    .muster-inhalt {
+      padding: 1.25rem 1.5rem;
+      background: var(--card);
+    }
+
+    /* Dialog-Skript */
+    .dialog-box {
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin-bottom: 1.1rem;
+    }
+    .dialog-box .dialog-title {
+      background: var(--primary);
+      color: #fff;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .45rem .85rem;
+    }
+    .dialog-zeile {
+      display: flex;
+      gap: .75rem;
+      padding: .7rem .85rem;
+      font-size: .93rem;
+      line-height: 1.55;
+      border-bottom: 1px solid #eef2f6;
+    }
+    .dialog-zeile:last-child { border-bottom: none; }
+    .dialog-zeile.wärter { background: #f5f9fe; }
+    .dialog-zeile.tourist { background: #fdfbf4; }
+    .dialog-rolle {
+      flex-shrink: 0;
+      min-width: 9rem;
+      font-weight: 700;
+      font-size: .82rem;
+      padding-top: .1rem;
+    }
+    .dialog-zeile.wärter .dialog-rolle { color: var(--primary); }
+    .dialog-zeile.tourist .dialog-rolle { color: #8a6800; }
+    .dialog-text { flex: 1; }
+
+    /* Bewertungstabelle */
+    .bewertung-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .88rem;
+      margin-top: 1rem;
+    }
+    .bewertung-table th {
+      background: var(--primary);
+      color: #fff;
+      padding: .5rem .75rem;
+      text-align: left;
+      font-weight: 600;
+    }
+    .bewertung-table td {
+      padding: .5rem .75rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .bewertung-table tr:nth-child(even) td { background: #f5f8fc; }
+    .badge {
+      display: inline-block;
+      padding: .15rem .5rem;
+      border-radius: 4px;
+      font-size: .75rem;
+      font-weight: 700;
+    }
+    .badge-voll { background: #d4f5e2; color: #1a6e3c; }
+    .badge-gut  { background: #ddeeff; color: #1a3a6e; }
+    .badge-basis{ background: #fff3cc; color: #7a5a00; }
+
+    /* Bauteile-Übersicht */
+    .bauteil-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: .65rem;
+      margin: .75rem 0;
+    }
+    .bauteil-card {
+      background: #f5f8fc;
+      border-radius: 6px;
+      padding: .65rem .85rem;
+      font-size: .87rem;
+      border-left: 3px solid var(--accent);
+    }
+    .bauteil-card strong {
+      display: block;
+      color: var(--primary);
+      margin-bottom: .2rem;
+    }
+
+    /* ── FOOTER ── */
+    .ab-footer {
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: .75rem;
+      flex-wrap: wrap;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .card { padding: 1.1rem 1rem; }
+      .rollen-grid { gap: .5rem; }
+      .rolle { font-size: .82rem; padding: .45rem .7rem; }
+      .dialog-rolle { min-width: 6.5rem; font-size: .75rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="ab-container">
+
+  <!-- HEADER -->
+  <header class="ab-header">
+    <div class="fach-label">Geschichte · Mittelalter</div>
+    <h1>Burg Bentheim – Aufgabe 3: Museumsführung</h1>
+    <p class="ab-meta">Klasse 7 · Rollenspiel &amp; Schreibaufgabe · Mai 2026 · lehrer-herrmann.de</p>
+  </header>
+
+  <!-- KONTEXT -->
+  <div class="card">
+    <div class="kontext-box">
+      <div class="kontext-label">Kontext</div>
+      <p>Im Unterricht habt ihr gelernt, welche Aufgaben eine mittelalterliche Burg hatte und wie sie aufgebaut war. In dieser Aufgabe wendet ihr dieses Wissen in einer realen Situation an.</p>
+    </div>
+
+    <!-- AUFGABE -->
+    <div class="aufgabe-header">
+      <div class="aufgabe-nr">3</div>
+      <div class="aufgabe-text">
+        <h2>Die Museumsführung – Rollenspiel und Skript</h2>
+        <p>Ein Tourist aus dem norddeutschen Flachland besucht zum ersten Mal die Burg Bentheim in Bad Bentheim (Niedersachsen). Der Museumswärter erklärt ihm Anlage und Funktion der einzelnen Bauabschnitte.</p>
+        <span class="quellenhinweis">Bezieht euch auf: V1 (Lehrbuchtext S. 42–43) und Q1 (Luftbild/Abbildung der Burg)</span>
+      </div>
+    </div>
+
+    <!-- ROLLEN -->
+    <div class="rollen-grid">
+      <div class="rolle"><span class="rolle-icon">🏰</span> Museumswärter/in</div>
+      <div class="rolle"><span class="rolle-icon">🧳</span> Tourist/in aus dem Flachland</div>
+    </div>
+
+    <!-- HINWEIS -->
+    <div class="hinweis">
+      <strong>Was euer Rollenspiel-Skript enthalten soll:</strong><br>
+      Der Museumswärter nennt und erklärt mindestens <strong>vier Bauteile</strong> der Burg mit ihrer jeweiligen Funktion. Der Tourist stellt mindestens zwei Fragen. Schreibt das Skript als Dialog (abwechselnd sprechen).
+    </div>
+
+    <!-- EINGABEFELD -->
+    <div class="textarea-label">Euer Rollenspiel-Skript</div>
+    <textarea id="antwort"
+      placeholder="Museumswärter: Willkommen auf Burg Bentheim! Ich zeige Ihnen heute …&#10;Tourist: …&#10;Museumswärter: …"
+      oninput="zaehle(this)"></textarea>
+    <div class="zeichenzaehler" id="zaehler">0 Zeichen</div>
+
+    <div class="btn-row">
+      <button class="btn-primary" onclick="toggleMuster()">📋 Musterlösung anzeigen / verbergen</button>
+    </div>
+
+    <!-- MUSTERLÖSUNG -->
+    <details id="muster-details">
+      <summary>🔑 Musterlösung – Erwartungshorizont &amp; Beispieldialog</summary>
+      <div class="muster-inhalt">
+
+        <p style="font-size:.88rem;color:var(--text-muted);margin-bottom:1rem;">
+          Vergleiche dein Skript mit dem Erwartungshorizont. Deine Formulierungen dürfen abweichen – entscheidend ist, ob die <strong>richtigen Bauteile</strong> mit <strong>korrekter Funktion</strong> genannt werden.
+        </p>
+
+        <h3 style="font-size:.95rem;color:var(--primary);margin-bottom:.6rem;">Welche Bauteile müssen vorkommen?</h3>
+        <div class="bauteil-grid">
+          <div class="bauteil-card">
+            <strong>① Unteres Burgtor</strong>
+            Einziger Zugang zur Anlage; verhinderte feindliches Eindringen; heidnische und christliche Schutzzeichen im Sandstein.
+          </div>
+          <div class="bauteil-card">
+            <strong>② Oberes Burgtor</strong>
+            Zweite Sicherheitsschleuse; Kontrolle des Zugangs zum Kernbereich der Burg.
+          </div>
+          <div class="bauteil-card">
+            <strong>③ Pulverturm (Bergfried)</strong>
+            Mächtigster Turm (30 m hoch, älteste Teile 11./12. Jh.); letzter Rückzugsort; Verlies und Vorratslager im Fels.
+          </div>
+          <div class="bauteil-card">
+            <strong>④ Palas / Kronenburg</strong>
+            Wohngebäude des Adligen; Verwaltung, Gericht, repräsentatives Leben; kronenähnliche Schornsteine.
+          </div>
+          <div class="bauteil-card">
+            <strong>⑤ Batterieturm</strong>
+            Verteidigungsturm für schwere Geschütze (Kanonen); sicherte Süd- und Westmauer; auch Speicher und Verlies.
+          </div>
+          <div class="bauteil-card">
+            <strong>⑥ Katharinenkirche</strong>
+            Kapelle für das religiöse Leben auf der Burg; Andacht und Gottesdienst; heute Museum.
+          </div>
+          <div class="bauteil-card">
+            <strong>⑦ Brunnen</strong>
+            Wasserversorgung der Burgbewohner; lebenswichtig bei Belagerungen.
+          </div>
+          <div class="bauteil-card">
+            <strong>⑧ Burghof</strong>
+            Innenhof als Zentrum des Alltagslebens; Turniere, Werkstätten, Lagerräume, Ställe.
+          </div>
+        </div>
+
+        <h3 style="font-size:.95rem;color:var(--primary);margin:.9rem 0 .6rem;">Beispiel-Dialog (Musterlösung)</h3>
+        <div class="dialog-box">
+          <div class="dialog-title">Rollenspiel: Museumsführung auf Burg Bentheim</div>
+
+          <div class="dialog-zeile wärter">
+            <div class="dialog-rolle">🏰 Museumswärter:</div>
+            <div class="dialog-text">Herzlich willkommen auf Burg Bentheim! Sie stehen gerade am <em>unteren Burgtor</em>, das noch aus dem 13. Jahrhundert stammt. Es war der einzige Zugang zur Burg und machte es Angreifern schwer, einzudringen. Schauen Sie mal – im Sandstein sehen Sie eingemeißelte Symbole, Kreuze und Sonnenräder. Die sollten die Burg vor Bösem schützen.</div>
+          </div>
+          <div class="dialog-zeile tourist">
+            <div class="dialog-rolle">🧳 Tourist:</div>
+            <div class="dialog-text">Oh interessant! Und was ist das für ein riesiger Turm da drüben?</div>
+          </div>
+          <div class="dialog-zeile wärter">
+            <div class="dialog-rolle">🏰 Museumswärter:</div>
+            <div class="dialog-text">Das ist der <em>Pulverturm</em>, auch Bergfried genannt – der mächtigste Turm der ganzen Anlage. Er ist fast 30 Meter hoch und gehört zu den ältesten Teilen der Burg. Im Inneren gibt es ein 12 Meter tief in den Fels gehauenes Verlies, das als Gefängnis, Pulverkammer und Vorratslager diente. Wenn die Feinde die äußeren Mauern überrannten, zog sich die Besatzung hierher zurück.</div>
+          </div>
+          <div class="dialog-zeile tourist">
+            <div class="dialog-rolle">🧳 Tourist:</div>
+            <div class="dialog-text">Und wo hat der Burgherr eigentlich gewohnt? Doch nicht in diesem dunklen Turm?</div>
+          </div>
+          <div class="dialog-zeile wärter">
+            <div class="dialog-rolle">🏰 Museumswärter:</div>
+            <div class="dialog-text">Nein, nein! Das Wohngebäude war die <em>Kronenburg</em>, auch Palas genannt – das große Gebäude mit den kronenähnlichen Schornsteinen. Dort lebte der Adlige mit seiner Familie, hielt Gericht und verwaltete seine Ländereien. Heute sind die historisch eingerichteten Zimmer Teil des Museums.</div>
+          </div>
+          <div class="dialog-zeile wärter">
+            <div class="dialog-rolle">🏰 Museumswärter:</div>
+            <div class="dialog-text">Und sehen Sie den runden Turm links? Das ist der <em>Batterieturm</em>, fast 45 Meter hoch. Er war für schwere Kanonen ausgebaut und sicherte die Süd- und Westseite der Burg. Im Inneren gibt es sogar noch ein Verlies.</div>
+          </div>
+          <div class="dialog-zeile tourist">
+            <div class="dialog-rolle">🧳 Tourist:</div>
+            <div class="dialog-text">Wie haben sich die Menschen auf der Burg eigentlich mit Wasser versorgt?</div>
+          </div>
+          <div class="dialog-zeile wärter">
+            <div class="dialog-rolle">🏰 Museumswärter:</div>
+            <div class="dialog-text">Sehr gute Frage! Der <em>Brunnen</em> an der Nordseite der Mauer war lebensnotwendig – besonders bei einer Belagerung, wenn die Burg von Feinden umzingelt war. Und die kleine Kirche dort, die <em>Katharinenkirche</em>, sorgte für das religiöse Leben auf der Burg. Gottesdienste und Andachten fanden dort statt, heute ist es ein Museum.</div>
+          </div>
+        </div>
+
+        <h3 style="font-size:.95rem;color:var(--primary);margin:.9rem 0 .5rem;">Bewertungshinweise</h3>
+        <table class="bewertung-table">
+          <thead>
+            <tr>
+              <th>Leistung</th>
+              <th>Anforderungen</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-voll">Volle Leistung</span></td>
+              <td>Mind. 4–5 Bauteile mit korrekter Funktion; erkennbarer Dialog mit Fragen des Touristen; Bezug auf Q1 oder V1 erkennbar.</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-gut">Gute Leistung</span></td>
+              <td>3–4 Bauteile mit Funktion; Dialog ansatzweise vorhanden; kleiner inhaltlicher Fehler möglich.</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-basis">Basisleistung</span></td>
+              <td>2–3 Bauteile genannt; Funktion nur teilweise erklärt; kein echter Dialog, sondern eher Aufzählung.</td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </details>
+
+  </div><!-- /card -->
+
+  <!-- FOOTER -->
+  <footer class="ab-footer">
+    <button class="btn-reset" onclick="reset()">↺ Neu starten</button>
+  </footer>
+
+</div><!-- /ab-container -->
+
+<script>
+(function () {
+  function zaehle(ta) {
+    var n = ta.value.length;
+    var el = document.getElementById('zaehler');
+    el.textContent = n + ' Zeichen';
+    el.className = 'zeichenzaehler' + (n >= 200 ? ' viel' : '');
+  }
+
+  window.zaehle = zaehle;
+
+  window.toggleMuster = function () {
+    var d = document.getElementById('muster-details');
+    d.open = !d.open;
+  };
+
+  window.reset = function () {
+    var ta = document.getElementById('antwort');
+    ta.value = '';
+    zaehle(ta);
+    var d = document.getElementById('muster-details');
+    d.open = false;
+    ta.focus();
+  };
+})();
+</script>
+
+</body>
+</html>
