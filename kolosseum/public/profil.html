@@ -179,6 +179,74 @@
       margin-left: .35rem; vertical-align: middle;
     }
 
+    /* === XP-POTENZIAL === */
+    .xpp-filter {
+      display: flex;
+      gap: .4rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+    .xpp-filter-btn {
+      padding: .3rem .85rem;
+      border-radius: 50px;
+      border: 1.5px solid var(--ink-soft);
+      background: transparent;
+      color: var(--ink-soft);
+      font-family: 'Nunito', sans-serif;
+      font-size: .8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .xpp-filter-btn.active {
+      background: var(--c4);
+      border-color: var(--c4);
+      color: #fff;
+    }
+    .xpp-summary {
+      font-size: .88rem;
+      color: var(--ink-soft);
+      margin-bottom: .9rem;
+    }
+    .xpp-summary strong { color: var(--c3); }
+    .xpp-list { display: flex; flex-direction: column; gap: .45rem; }
+    .xpp-item {
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      padding: .6rem .9rem;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      font-size: .88rem;
+      text-decoration: none;
+      color: inherit;
+      transition: background var(--transition);
+    }
+    .xpp-item:hover { background: #e8edf5; }
+    .xpp-item.done { opacity: .55; }
+    .xpp-icon { font-size: 1.1rem; flex-shrink: 0; line-height: 1; }
+    .xpp-name { flex: 1; min-width: 0; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .xpp-badge {
+      flex-shrink: 0;
+      font-size: .72rem;
+      font-weight: 700;
+      padding: .18rem .55rem;
+      border-radius: 50px;
+    }
+    .xpp-badge.offen     { background: rgba(74,158,218,.15); color: #1a6fa0; }
+    .xpp-badge.verbesserbar { background: rgba(246,168,0,.18); color: #a06000; }
+    .xpp-badge.fertig    { background: rgba(46,204,113,.15); color: #1a7a45; }
+    .xpp-xp {
+      flex-shrink: 0;
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1rem;
+      color: var(--c3);
+      min-width: 3.5rem;
+      text-align: right;
+    }
+    .xpp-xp.unknown { color: var(--ink-soft); font-family: 'Nunito', sans-serif; font-size: .8rem; }
+    .xpp-empty { color: var(--ink-soft); font-size: .88rem; text-align: center; padding: .75rem; }
+
     @media (max-width: 640px) {
       .profil-grid { grid-template-columns: 1fr; }
       .avatar-card { flex-direction: column; }
@@ -297,6 +365,24 @@
             <a href="/rangliste.html" class="btn btn-primary" style="font-size:.85rem;padding:.55rem 1.2rem">
               ⚔️ Jetzt herausfordern →
             </a>
+          </div>
+        </div>
+
+        <!-- XP-Potenzial -->
+        <div class="card" id="xpp-card">
+          <h2 style="font-size:1.3rem; margin-bottom:.75rem;">🎯 Noch erreichbare XP</h2>
+
+          <div class="xpp-filter" id="xpp-filter">
+            <button class="xpp-filter-btn active" data-filter="alle">Alle</button>
+            <button class="xpp-filter-btn" data-filter="offen">Noch offen</button>
+            <button class="xpp-filter-btn" data-filter="arbeitsblatt">📄 Arbeitsblätter</button>
+            <button class="xpp-filter-btn" data-filter="quiz-extern">⚡ Quizze</button>
+            <button class="xpp-filter-btn" data-filter="quiz-arena">🏛️ Arena</button>
+          </div>
+
+          <div class="xpp-summary" id="xpp-summary">Wird geladen…</div>
+          <div class="xpp-list" id="xpp-list">
+            <div class="xpp-empty">Wird geladen…</div>
           </div>
         </div>
 
@@ -530,6 +616,128 @@
       }
     }
 
+    // ── XP-Potenzial ─────────────────────────────────────────────────────────
+
+    let xppItems = [];   // flache Liste aller Einträge für das Filtern
+    let xppFilter = 'alle';
+
+    function renderXpp() {
+      const list = document.getElementById('xpp-list');
+      const summary = document.getElementById('xpp-summary');
+      if (!xppItems.length) {
+        list.innerHTML = '<div class="xpp-empty">Keine Daten verfügbar.</div>';
+        return;
+      }
+
+      const visible = xppItems.filter(item => {
+        if (xppFilter === 'offen') return !item.fertig;
+        if (xppFilter === 'arbeitsblatt') return item.kategorie === 'arbeitsblatt';
+        if (xppFilter === 'quiz-extern') return item.kategorie === 'quiz-extern';
+        if (xppFilter === 'quiz-arena') return item.kategorie === 'quiz-arena';
+        return true;
+      });
+
+      // Sortierung: offen → verbesserbar → fertig
+      visible.sort((a, b) => {
+        const rank = e => e.fertig ? 2 : e.verbesserbar ? 1 : 0;
+        return rank(a) - rank(b);
+      });
+
+      const offenXp = xppItems
+        .filter(i => !i.fertig && i.maxXp)
+        .reduce((s, i) => s + (i.verbesserbar ? (i.maxXp - i.besteXp) : i.maxXp), 0);
+
+      summary.innerHTML = offenXp > 0
+        ? `Noch mindestens <strong>+${offenXp} XP</strong> erreichbar`
+        : `Alle bekannten XP bereits verdient – stark! 🏆`;
+
+      if (!visible.length) {
+        list.innerHTML = '<div class="xpp-empty">Keine Einträge in dieser Kategorie.</div>';
+        return;
+      }
+
+      list.innerHTML = visible.map(item => {
+        const tag = item.url ? 'a' : 'div';
+        const href = item.url ? ` href="${escHtml(item.url)}" target="_blank" rel="noopener"` : '';
+        let badgeCls, badgeTxt, xpTxt, xpCls = 'xpp-xp';
+
+        if (item.fertig) {
+          badgeCls = 'fertig'; badgeTxt = '✅ Fertig';
+          xpTxt = '+' + item.verdientXp + ' XP';
+        } else if (item.verbesserbar) {
+          badgeCls = 'verbesserbar'; badgeTxt = '📈 Verbessern';
+          xpTxt = '+' + (item.maxXp - item.besteXp) + ' XP';
+        } else if (item.maxXp) {
+          badgeCls = 'offen'; badgeTxt = '🔓 Offen';
+          xpTxt = 'bis +' + item.maxXp + ' XP';
+        } else {
+          badgeCls = 'offen'; badgeTxt = '🔓 Spielen';
+          xpTxt = '? XP'; xpCls += ' unknown';
+        }
+
+        return `<${tag} class="xpp-item${item.fertig ? ' done' : ''}"${href}>
+          <span class="xpp-icon">${item.icon}</span>
+          <span class="xpp-name" title="${escHtml(item.title)}">${escHtml(item.title)}</span>
+          <span class="xpp-badge ${badgeCls}">${badgeTxt}</span>
+          <span class="${xpCls}">${xpTxt}</span>
+        </${tag}>`;
+      }).join('');
+    }
+
+    async function ladeXppPotenzial() {
+      const res = await fetch('/api/students/xp-potenzial');
+      if (!res.ok) return;
+      const { arbeitsblätter, externeQuizze, arenaQuizze } = await res.json();
+
+      xppItems = [
+        ...arbeitsblätter.map(w => ({
+          kategorie: 'arbeitsblatt',
+          icon: '📄',
+          title: w.title,
+          url: w.url,
+          maxXp: w.maxXp,
+          besteXp: w.verdientXp,
+          verdientXp: w.verdientXp,
+          fertig: w.abgeschlossen,
+          verbesserbar: false,
+        })),
+        ...externeQuizze.map(q => ({
+          kategorie: 'quiz-extern',
+          icon: '⚡',
+          title: q.title,
+          url: q.url,
+          maxXp: q.maxXp,
+          besteXp: q.besteXp,
+          verdientXp: q.besteXp,
+          fertig: q.gespielt && !q.verbesserbar,
+          verbesserbar: q.verbesserbar,
+        })),
+        ...arenaQuizze.map(q => ({
+          kategorie: 'quiz-arena',
+          icon: '🏛️',
+          title: q.title,
+          url: '/quiz.html',
+          maxXp: q.maxXp,
+          besteXp: q.besteXp,
+          verdientXp: q.besteXp,
+          fertig: q.gespielt,
+          verbesserbar: false,
+        })),
+      ];
+
+      renderXpp();
+    }
+
+    // Filter-Buttons
+    document.getElementById('xpp-filter').addEventListener('click', e => {
+      const btn = e.target.closest('.xpp-filter-btn');
+      if (!btn) return;
+      document.querySelectorAll('.xpp-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      xppFilter = btn.dataset.filter;
+      renderXpp();
+    });
+
     // ── Initialisierung ──────────────────────────────────────────────────────
 
     async function init() {
@@ -559,6 +767,7 @@
       }
 
       ladeHerausforderungen(me.id);
+      ladeXppPotenzial();
     }
 
     // Logout
