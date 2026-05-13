@@ -779,6 +779,30 @@
     card.classList.toggle('open');
   }
 </script>
+<script src="/js/worksheet-xp.js"></script>
+<script>
+  (function () {
+    var btn = document.createElement('button');
+    btn.textContent = '⚔️ Arbeitsblatt abschließen & XP sichern';
+    btn.style.cssText = [
+      'display:block;margin:24px auto 0;padding:14px 28px;',
+      'background:#1e3a5f;color:#fff;border:none;border-radius:8px;',
+      'font-size:1rem;font-weight:700;cursor:pointer;',
+      'font-family:system-ui,sans-serif;',
+    ].join('');
+    btn.onmouseenter = function () { btn.style.background = '#2a5080'; };
+    btn.onmouseleave = function () { btn.style.background = '#1e3a5f'; };
+    btn.onclick = function () {
+      btn.disabled = true;
+      btn.textContent = '✓ Abgeschlossen';
+      if (typeof window.worksheetComplete === 'function') {
+        window.worksheetComplete('geschichte-ab1-prag-stunde1', 'Geschichte Prags – AB 1 Stunde 1', 25);
+      }
+    };
+    var footer = document.querySelector('.site-footer') || document.body;
+    footer.parentNode.insertBefore(btn, footer);
+  })();
+</script>
 
 </body>
 </html>

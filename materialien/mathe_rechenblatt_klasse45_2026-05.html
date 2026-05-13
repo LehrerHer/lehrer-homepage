@@ -707,8 +707,8 @@
     banner.style.display = 'block';
     banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-    if (typeof window.kolosseumReport === 'function') {
-      window.kolosseumReport(xp, 20, 'rechenblatt-klasse45');
+    if (typeof window.worksheetComplete === 'function') {
+      window.worksheetComplete('rechenblatt-klasse45', 'Rechenblatt Klasse 4/5', xp);
     }
   }
 
@@ -730,7 +730,7 @@
   </script>
 
   <script src="/js/arena-bar.js"></script>
-  <script src="/js/kolosseum-prompt.js"></script>
+  <script src="/js/worksheet-xp.js"></script>
 
 </body>
 </html>

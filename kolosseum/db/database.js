@@ -36,6 +36,19 @@ if (!challengeCols.includes('battle_log')) {
   db.exec('ALTER TABLE challenges ADD COLUMN battle_log TEXT');
 }
 
+// Migration: worksheet_completions
+db.exec(`
+  CREATE TABLE IF NOT EXISTS worksheet_completions (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id   INTEGER NOT NULL,
+    worksheet_id TEXT    NOT NULL,
+    xp_earned    INTEGER NOT NULL DEFAULT 0,
+    completed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(student_id, worksheet_id),
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+  )
+`);
+
 // Migration: Münzsystem
 const studentCols = db.prepare('PRAGMA table_info(students)').all().map(c => c.name);
 if (!studentCols.includes('coins')) {

@@ -1147,6 +1147,7 @@
 let aktuellerAbschnitt = 0;
 const GESAMT = 6;
 const abgeschlossen = new Set();
+let xpGemeldet = false;
 
 // ── Navigation ────────────────────────────────────────────────────────────
 function zeigeAbschnitt(nr) {
@@ -1188,6 +1189,14 @@ function aktualisiereProgress() {
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('progressLabel').textContent =
     'Abschnitt ' + abgeschlossen.size + ' von ' + (GESAMT - 1) + ' abgeschlossen';
+  if (abgeschlossen.size >= GESAMT - 1 && !xpGemeldet) {
+    xpGemeldet = true;
+    setTimeout(function () {
+      if (typeof window.worksheetComplete === 'function') {
+        window.worksheetComplete('geschichte-prag-stunde2', 'Geschichte Prags – Stunde 2', 25);
+      }
+    }, 700);
+  }
 }
 
 // ── Quiz ──────────────────────────────────────────────────────────────────
@@ -1283,5 +1292,6 @@ function toggleMuster(btn) {
 // ── Initial ───────────────────────────────────────────────────────────────
 aktualisiereProgress();
 </script>
+<script src="/js/worksheet-xp.js"></script>
 </body>
 </html>
