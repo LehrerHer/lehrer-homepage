@@ -733,12 +733,21 @@
       update();
     }
 
+    var xpGemeldet = false;
     function update() {
       counter.textContent      = (current + 1) + ' / ' + total;
       titleEl.textContent      = slides[current].dataset.title || '';
       btnPrev.disabled         = current === 0;
       btnNext.disabled         = current === total - 1;
       progressBar.style.width  = ((current + 1) / total * 100) + '%';
+      if (current === total - 1 && !xpGemeldet) {
+        xpGemeldet = true;
+        setTimeout(function () {
+          if (typeof window.worksheetComplete === 'function') {
+            window.worksheetComplete('deutsch-drama-ppp-jg10', 'Drama – Einführung Jahrgang 10', 25);
+          }
+        }, 700);
+      }
     }
 
     btnPrev.addEventListener('click', function () { goTo(current - 1); });
@@ -767,5 +776,6 @@
   })();
   </script>
 
+  <script src="/js/worksheet-xp.js"></script>
 </body>
 </html>

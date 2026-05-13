@@ -16,6 +16,7 @@ const aiFeedbackRoutes  = require('./routes/ai-feedback');
 const deployRoutes      = require('./routes/deploy');
 const arenaRoutes       = require('./routes/arena');
 const shopRoutes        = require('./routes/shop');
+const worksheetRoutes   = require('./routes/worksheets');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -73,6 +74,7 @@ app.use('/api/blog',        blogRoutes);
 app.use('/api/ai-feedback', aiFeedbackRoutes);
 app.use('/api/arena',       arenaRoutes);
 app.use('/api/shop',        shopRoutes);
+app.use('/api/worksheets',  worksheetRoutes);
 
 // SPA-Catch: alle nicht-API-Routen geben die jeweilige HTML-Datei zurück
 // (oder leiten zu login weiter)

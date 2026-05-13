@@ -473,9 +473,8 @@
     banner.style.display = 'block';
     banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 
-    /* Kolosseum-XP einreichen (nur wenn mindestens 1 XP) */
-    if (typeof window.kolosseumReport === 'function') {
-      window.kolosseumReport(xp, 20, 'rechenblatt-1000');
+    if (typeof window.worksheetComplete === 'function') {
+      window.worksheetComplete('rechenblatt-1000', 'Rechenblatt bis 1000', xp);
     }
   }
 
@@ -493,7 +492,7 @@
   </script>
 
   <script src="/js/arena-bar.js"></script>
-  <script src="/js/kolosseum-prompt.js"></script>
+  <script src="/js/worksheet-xp.js"></script>
 
 </body>
 </html>
