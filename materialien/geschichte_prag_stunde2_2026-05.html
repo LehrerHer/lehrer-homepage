@@ -637,8 +637,24 @@
     .btn { width: 100%; justify-content: center; }
   }
 </style>
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+
+<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+  <div class="container navbar-inner">
+    <a href="/index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
+    <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="navbar-links" id="navbar-links">
+      <li><a href="/index.html#was-ist-neu">Was ist neu?</a></li>
+      <li><a href="/index.html#faecher">Fächer</a></li>
+      <li><a href="/fach-geschichte.html" class="aktiv">Geschichte</a></li>
+      <li><a href="/index.html#kontakt">Kontakt</a></li>
+    </ul>
+  </div>
+</nav>
 
 <!-- HERO -->
 <div class="hero">
@@ -1293,5 +1309,22 @@ function toggleMuster(btn) {
 aktualisiereProgress();
 </script>
 <script src="/js/worksheet-xp.js"></script>
+<script>
+(function () {
+  var btn  = document.getElementById('hamburger');
+  var menu = document.getElementById('navbar-links');
+  if (!btn || !menu) return;
+  btn.addEventListener('click', function () {
+    var open = menu.classList.toggle('offen');
+    btn.setAttribute('aria-expanded', open);
+  });
+  document.addEventListener('click', function (e) {
+    if (!btn.contains(e.target) && !menu.contains(e.target)) {
+      menu.classList.remove('offen');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
+</script>
 </body>
 </html>
