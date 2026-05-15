@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Leseabenteuer – Buchempfehlungen, Lesetipps und spannende Lektüren von Jan Herrmann.">
+    <title>Leseabenteuer – Jan Herrmann</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- NAVIGATION -->
+    <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+        <div class="container navbar-inner">
+            <a href="index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
+            <button
+                class="hamburger"
+                id="hamburger"
+                aria-label="Menü öffnen"
+                aria-expanded="false"
+                aria-controls="navbar-links"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul class="navbar-links" id="navbar-links">
+                <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
+                <li><a href="index.html#faecher">Fächer</a></li>
+                <li><a href="portal.html">Materialien &amp; Quizze</a></li>
+                <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html">🏛️ Arena</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="kontakt.html">Kontakt</a></li>
+            </ul>
+            <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+        </div>
+    </nav>
+
+
+    <!-- HEADER -->
+    <section class="hero" style="min-height: 40vh; padding: 4rem 0 3rem;">
+        <div class="hero-inhalt">
+            <div class="hero-avatar" aria-hidden="true">🔖</div>
+            <h1>Leseabenteuer</h1>
+            <p class="hero-text">
+                Buchempfehlungen, Lesetipps und spannende Lektüren –<br>
+                für alle, die Lesen lieben oder neu entdecken möchten.
+            </p>
+        </div>
+    </section>
+
+
+    <!-- INHALT -->
+    <main id="hauptinhalt">
+        <div class="container" style="padding: 3rem 1rem; max-width: 860px; margin: 0 auto;">
+
+            <div style="
+                background: #fff;
+                border: 1px solid #d6e4f0;
+                border-radius: 16px;
+                padding: 2.5rem 2rem;
+                text-align: center;
+                box-shadow: 0 2px 16px rgba(30,58,95,.08);
+            ">
+                <div style="font-size: 3rem; margin-bottom: 1rem;">📚</div>
+                <h2 style="color: var(--primary-color, #1e3a5f); margin: 0 0 1rem;">
+                    Bald gibt es hier Leseempfehlungen!
+                </h2>
+                <p style="color: #555; font-size: 1rem; line-height: 1.7; max-width: 520px; margin: 0 auto 1.5rem;">
+                    Diese Seite wird gerade mit Buchempfehlungen, Lesetipps und
+                    spannenden Lektüren für verschiedene Altersgruppen und Interessen
+                    gefüllt. Schaut bald wieder vorbei!
+                </p>
+                <a href="index.html" style="
+                    display: inline-block;
+                    padding: .75rem 1.75rem;
+                    background: var(--accent-color, #4a9eda);
+                    color: #fff;
+                    border-radius: 8px;
+                    font-size: .95rem;
+                    font-weight: 600;
+                    text-decoration: none;
+                ">← Zurück zur Startseite</a>
+            </div>
+
+        </div>
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container footer-inner">
+            <p>© <span id="footer-jahr">2025</span> Jan Herrmann</p>
+            <nav class="footer-links" aria-label="Rechtliche Links">
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+            </nav>
+        </div>
+        <a href="https://kolosseum.lehrer-herrmann.de/admin/" target="_blank" rel="noopener noreferrer" class="admin-footer-link" aria-label="Lerngladiatoren Admin">⚙</a>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/kolosseum-login-widget.js"></script>
+    <script data-goatcounter="https://lehrer-herrmann.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
