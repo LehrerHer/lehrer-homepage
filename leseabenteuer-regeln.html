@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Regeln &amp; Anleitung – Leseabenteuer</title>
+<script src="js/auth-guard.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1208;
+    --parchment: #f5edd6;
+    --parchment-dark: #e8d9b0;
+    --parchment-mid: #efe3c0;
+    --accent: #8b1a1a;
+    --gold: #c9a227;
+    --gold-dark: #9a7a1a;
+    --border: #7a5c2a;
+    --muted: #5c4a2a;
+    --green: #1d6b3a;
+    --red-dark: #7a1515;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #2a1f0e;
+    background-image:
+      repeating-linear-gradient(0deg,   transparent, transparent 40px, rgba(0,0,0,.04) 40px, rgba(0,0,0,.04) 41px),
+      repeating-linear-gradient(90deg,  transparent, transparent 40px, rgba(0,0,0,.04) 40px, rgba(0,0,0,.04) 41px);
+    min-height: 100vh;
+    font-family: 'Crimson Text', Georgia, serif;
+    color: var(--ink);
+    padding: 1rem 1rem 4rem;
+  }
+
+  /* ── NAV ── */
+  .top-bar {
+    max-width: 860px;
+    margin: 0 auto .5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .5rem;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    color: var(--parchment-dark);
+    font-family: 'Cinzel', serif;
+    font-size: .72rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    opacity: .6;
+    transition: opacity .15s;
+  }
+  .back-link:hover { opacity: 1; }
+
+  /* ── PAGE HEADER ── */
+  .page-eyebrow {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    margin-bottom: .25rem;
+    opacity: .85;
+  }
+  .page-subtitle {
+    text-align: center;
+    font-family: 'Crimson Text', serif;
+    font-size: .95rem;
+    color: var(--parchment-dark);
+    opacity: .6;
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  /* ── OUTER SCROLL CONTAINER ── */
+  .scroll-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* ── SECTION PANEL ── */
+  .panel {
+    background: var(--parchment);
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem 1.75rem;
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+  .panel::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1px solid rgba(122,92,42,.3);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  /* ── HEADINGS ── */
+  .section-head {
+    font-family: 'Cinzel', serif;
+    font-size: .72rem;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: .4rem;
+    margin-bottom: 1rem;
+  }
+  .section-icon { margin-right: .35rem; }
+
+  h2.rule-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: .6rem;
+  }
+
+  /* ── PROSE ── */
+  .prose p, .prose li { font-size: 1rem; line-height: 1.7; color: var(--ink); }
+  .prose p + p { margin-top: .65rem; }
+  .prose ul { margin: .5rem 0 .5rem 1.25rem; }
+  .prose li { margin-bottom: .25rem; }
+  .prose strong { font-weight: 600; color: var(--ink); }
+  .prose em { font-style: italic; color: var(--muted); }
+  .prose code {
+    font-family: 'Cinzel', serif;
+    font-size: .85rem;
+    background: rgba(122,92,42,.12);
+    padding: .1rem .35rem;
+    border-radius: 3px;
+    color: var(--accent);
+  }
+
+  /* ── EXAMPLE BOX ── */
+  .example-box {
+    background: rgba(122,92,42,.08);
+    border-left: 3px solid var(--border);
+    padding: .6rem .9rem;
+    margin: .75rem 0;
+    font-style: italic;
+    font-size: .92rem;
+    color: var(--muted);
+    border-radius: 0 3px 3px 0;
+  }
+
+  /* ── MATERIALS LIST ── */
+  .need-list { list-style: none; margin: 0; }
+  .need-list li {
+    display: flex;
+    align-items: baseline;
+    gap: .6rem;
+    padding: .35rem 0;
+    border-bottom: 1px dotted rgba(122,92,42,.25);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+  .need-list li:last-child { border-bottom: none; }
+  .need-icon { flex-shrink: 0; font-size: 1.1rem; }
+
+  /* ── CLASS CARDS ── */
+  .class-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-top: .75rem;
+  }
+  .class-card {
+    background: var(--parchment-mid);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: .9rem 1rem;
+  }
+  .class-card-head {
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+    margin-bottom: .35rem;
+  }
+  .class-card-name {
+    font-family: 'Cinzel', serif;
+    font-size: .82rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .class-card-lp {
+    font-family: 'Cinzel', serif;
+    font-size: .7rem;
+    color: var(--gold-dark);
+    margin-left: auto;
+  }
+  .class-card-tagline {
+    font-style: italic;
+    font-size: .78rem;
+    color: var(--muted);
+    margin-bottom: .6rem;
+  }
+  .pro-con-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+  .pro-con-head {
+    font-family: 'Cinzel', serif;
+    font-size: .58rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    margin-bottom: .3rem;
+  }
+  .pro-con-head.pro { color: var(--green); }
+  .pro-con-head.con { color: var(--red-dark); }
+  .pro-con-list { list-style: none; margin: 0; }
+  .pro-con-list li {
+    font-size: .78rem;
+    line-height: 1.45;
+    padding: .15rem 0;
+    border-bottom: 1px dotted rgba(122,92,42,.2);
+    display: flex;
+    gap: .3rem;
+  }
+  .pro-con-list li:last-child { border-bottom: none; }
+  .sign { flex-shrink: 0; font-weight: 700; }
+  .sign.plus  { color: var(--green); }
+  .sign.minus { color: var(--red-dark); }
+
+  /* ── TABLES ── */
+  .rule-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .88rem;
+    margin-top: .6rem;
+  }
+  .rule-table th {
+    font-family: 'Cinzel', serif;
+    font-size: .62rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: rgba(122,92,42,.1);
+    padding: .45rem .6rem;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+  }
+  .rule-table td {
+    padding: .4rem .6rem;
+    border-bottom: 1px dotted rgba(122,92,42,.2);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .rule-table tr:last-child td { border-bottom: none; }
+  .rule-table tr:nth-child(even) td { background: rgba(122,92,42,.04); }
+  .num-cell { font-family: 'Cinzel', serif; font-weight: 600; color: var(--accent); text-align: center; }
+  .bonus-pos { color: var(--green); font-weight: 700; text-align: center; }
+  .bonus-neg { color: var(--red-dark); font-weight: 700; text-align: center; }
+  .bonus-neu { color: var(--muted); text-align: center; }
+
+  /* ── LEVEL TABLE special ── */
+  .level-badge {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: .7rem;
+    background: var(--accent);
+    color: var(--parchment);
+    padding: 1px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  /* ── TIP BOX ── */
+  .tip-box {
+    background: rgba(201,162,39,.12);
+    border: 1px solid var(--gold);
+    border-radius: 3px;
+    padding: .65rem .9rem;
+    margin: .75rem 0;
+    font-size: .9rem;
+    color: var(--muted);
+  }
+  .tip-box strong { color: var(--gold-dark); }
+
+  /* ── FAQ ── */
+  .faq-item { margin-bottom: 1rem; }
+  .faq-q {
+    font-family: 'Cinzel', serif;
+    font-size: .82rem;
+    color: var(--accent);
+    margin-bottom: .2rem;
+  }
+  .faq-a { font-size: .92rem; line-height: 1.6; color: var(--ink); }
+
+  /* ── GOLDEN TIPS ── */
+  .tip-list { list-style: none; margin: 0; }
+  .tip-list li {
+    display: flex;
+    gap: .6rem;
+    padding: .45rem 0;
+    border-bottom: 1px dotted rgba(122,92,42,.25);
+    font-size: .95rem;
+    line-height: 1.5;
+  }
+  .tip-list li:last-child { border-bottom: none; }
+  .tip-bullet { color: var(--gold); flex-shrink: 0; }
+
+  /* ── TOC ── */
+  .toc {
+    list-style: none;
+    margin: .5rem 0 0;
+    columns: 2;
+    column-gap: 1.5rem;
+  }
+  .toc li { break-inside: avoid; }
+  .toc a {
+    display: flex;
+    align-items: baseline;
+    gap: .4rem;
+    font-size: .88rem;
+    color: var(--accent);
+    text-decoration: none;
+    padding: .25rem 0;
+    border-bottom: 1px dotted rgba(122,92,42,.2);
+    transition: color .15s;
+  }
+  .toc a:hover { color: var(--gold-dark); }
+  .toc-num { font-family: 'Cinzel', serif; font-size: .72rem; color: var(--muted); flex-shrink: 0; }
+
+  @media (max-width: 600px) {
+    .class-grid { grid-template-columns: 1fr; }
+    .pro-con-grid { grid-template-columns: 1fr; }
+    .toc { columns: 1; }
+    .panel { padding: 1.1rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="leseabenteuer.html" class="back-link">← Leseabenteuer</a>
+</div>
+
+<div class="page-eyebrow">Leseabenteuer</div>
+<div class="page-subtitle">Regeln &amp; Anleitung</div>
+
+<div class="scroll-wrap">
+
+  <!-- INHALTSVERZEICHNIS -->
+  <div class="panel">
+    <div class="section-head"><span class="section-icon">📜</span>Inhalt</div>
+    <ul class="toc">
+      <li><a href="#was-ist"><span class="toc-num">1.</span>Was ist ein Leseabenteuer?</a></li>
+      <li><a href="#benoetigt"><span class="toc-num">2.</span>Das brauchst du</a></li>
+      <li><a href="#spielablauf"><span class="toc-num">3.</span>Wie funktioniert das Spiel?</a></li>
+      <li><a href="#lp"><span class="toc-num">4.</span>Lebenspunkte (LP)</a></li>
+      <li><a href="#heldenbogen"><span class="toc-num">5.</span>Dein Heldenbogen</a></li>
+      <li><a href="#wuerfelregeln"><span class="toc-num">6.</span>Würfelregeln</a></li>
+      <li><a href="#kampf"><span class="toc-num">7.</span>Kampf</a></li>
+      <li><a href="#glueckswurf"><span class="toc-num">8.</span>Glückswurf</a></li>
+      <li><a href="#heilung"><span class="toc-num">9.</span>Heilung</a></li>
+      <li><a href="#ep"><span class="toc-num">10.</span>Erfahrungspunkte</a></li>
+      <li><a href="#tipps"><span class="toc-num">11.</span>Goldene Tipps</a></li>
+      <li><a href="#faq"><span class="toc-num">12.</span>Häufige Fragen</a></li>
+    </ul>
+  </div>
+
+
+  <!-- 1 WAS IST EIN LESEABENTEUER -->
+  <div class="panel" id="was-ist">
+    <div class="section-head"><span class="section-icon">🗺️</span>1 · Was ist ein Leseabenteuer?</div>
+    <div class="prose">
+      <p>Ein Leseabenteuer ist eine Geschichte, bei der <strong>du entscheidest</strong>, wie sie weitergeht. Du liest einen Abschnitt, triffst eine Wahl — und springst dann zu dem Abschnitt, der deiner Entscheidung entspricht. Manchmal würfelst du, manchmal brauchst du Köpfchen, manchmal Mut.</p>
+      <p>Du spielst <strong>alleine</strong> — mit deinem Heldenbogen, einem W20-Würfel und dem Abenteuer-Heft.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.1rem">
+      <div style="background:rgba(122,92,42,.07);border:1px solid rgba(122,92,42,.3);border-radius:3px;padding:.85rem">
+        <div class="section-head" style="font-size:.6rem;margin-bottom:.5rem">📜 Heldenbogen</div>
+        <p style="font-size:.88rem;line-height:1.55;color:var(--muted)">Dein dauerhafter Ausweis als Held. Einmal erstellt — bleibt er bei dir!</p>
+      </div>
+      <div style="background:rgba(122,92,42,.07);border:1px solid rgba(122,92,42,.3);border-radius:3px;padding:.85rem">
+        <div class="section-head" style="font-size:.6rem;margin-bottom:.5rem">🗺️ Abenteuer</div>
+        <p style="font-size:.88rem;line-height:1.55;color:var(--muted)">Jedes Abenteuer ist eine neue Geschichte — du entscheidest, was passiert!</p>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 2 DAS BRAUCHST DU -->
+  <div class="panel" id="benoetigt">
+    <div class="section-head"><span class="section-icon">💡</span>2 · Das brauchst du</div>
+    <ul class="need-list">
+      <li><span class="need-icon">🎲</span><span><strong>W20-Würfel</strong> – zwanzigseitiger Würfel mit den Zahlen 1–20</span></li>
+      <li><span class="need-icon">📜</span><span><strong>Heldenbogen</strong> – einmal ausfüllen, dann für alle Abenteuer verwenden</span></li>
+      <li><span class="need-icon">✏️</span><span><strong>Bleistift</strong> – um LP und EP auf dem Bogen einzutragen</span></li>
+      <li><span class="need-icon">📖</span><span><strong>Das Abenteuer-Heft</strong> – jeden Abschnitt nur lesen, wenn du dorthin gesprungen bist!</span></li>
+    </ul>
+  </div>
+
+
+  <!-- 3 SPIELABLAUF -->
+  <div class="panel" id="spielablauf">
+    <div class="section-head"><span class="section-icon">⚙️</span>3 · Wie funktioniert das Spiel?</div>
+    <div class="prose">
+      <p>Jedes Abenteuer besteht aus <strong>nummerierten Abschnitten</strong>. Du startest immer bei <strong>Abschnitt 1</strong>. Am Ende eines Abschnitts stehen deine Möglichkeiten:</p>
+    </div>
+    <div class="example-box">
+      „Willst du durch die Tür gehen?<br>
+      → Ja: Weiter mit Abschnitt 14<br>
+      → Nein: Weiter mit Abschnitt 7"
+    </div>
+    <div class="example-box">
+      „Würfle auf dein GES-Attribut (W20 ≤ GES).<br>
+      Erfolg: Weiter mit Abschnitt 22 &nbsp;·&nbsp; Misserfolg: Weiter mit Abschnitt 9"
+    </div>
+    <div class="tip-box">
+      <strong>Wichtig:</strong> Blättere nie einfach vor! Lies nur die Abschnitte, zu denen du auch wirklich gesprungen bist. Sonst wird das Abenteuer für dich vermasselt.
+    </div>
+  </div>
+
+
+  <!-- 4 LEBENSPUNKTE -->
+  <div class="panel" id="lp">
+    <div class="section-head"><span class="section-icon">❤️</span>4 · Lebenspunkte (LP)</div>
+    <div class="prose">
+      <p>Jeder Held hat <strong>Lebenspunkte (LP)</strong>. Sie zeigen, wie fit du noch bist. Verlierst du im Kampf oder durch Fallen alle LP, ist das Abenteuer vorbei — lies dann den Abschnitt weiter, zu dem du geschickt wirst. Heilung gibt es nur durch besondere Gegenstände oder Ereignisse im Spiel.</p>
+      <div class="tip-box" style="margin-top:.75rem">
+        <strong>Tipp:</strong> Kreuz auf deinem Heldenbogen die LP-Kästchen durch, wenn du LP verlierst. Beim nächsten Abenteuer fängst du wieder mit vollen LP an.
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 5 HELDENBOGEN -->
+  <div class="panel" id="heldenbogen">
+    <div class="section-head"><span class="section-icon">📜</span>5 · Dein Heldenbogen</div>
+    <div class="prose">
+      <p>Den Heldenbogen erstellst du <strong>einmal</strong> — er gehört dann dauerhaft dir und begleitet dich durch alle Abenteuer. Du nimmst ihn mit, wenn du ein neues Abenteuer anfängst.</p>
+    </div>
+
+    <!-- Schritt 1 -->
+    <h2 class="rule-title" style="margin-top:1.25rem">Schritt 1 · Name und Klasse wählen</h2>
+    <div class="prose"><p>Suche dir einen Heldennamen aus. Wähle dann eine der fünf Heldenklassen – jede hat andere Stärken und Schwächen:</p></div>
+
+    <div class="class-grid">
+
+      <div class="class-card">
+        <div class="class-card-head">
+          <span style="font-size:1.1rem">⚔️</span>
+          <span class="class-card-name">Krieger / Kriegerin</span>
+          <span class="class-card-lp">23 LP</span>
+        </div>
+        <div class="class-card-tagline">Stark · Ausdauernd · Furchtlos</div>
+        <div class="pro-con-grid">
+          <div>
+            <div class="pro-con-head pro">✅ Stärken</div>
+            <ul class="pro-con-list">
+              <li><span class="sign plus">+</span>Kampfproben mit +2</li>
+              <li><span class="sign plus">+</span>Einmal pro Abenteuer selbst heilen (+4 LP)</li>
+              <li><span class="sign plus">+</span>Schwere Rüstung ohne Nachteil</li>
+              <li><span class="sign plus">+</span>Startet mit +3 LP extra</li>
+              <li><span class="sign plus">+</span>Einschüchterung immer erfolgreich</li>
+            </ul>
+          </div>
+          <div>
+            <div class="pro-con-head con">⚠️ Schwächen</div>
+            <ul class="pro-con-list">
+              <li><span class="sign minus">−</span>Klugheitsproben mit −2</li>
+              <li><span class="sign minus">−</span>Schleichproben mit −3</li>
+              <li><span class="sign minus">−</span>Keine Magie möglich</li>
+              <li><span class="sign minus">−</span>Verhandlungen −1</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="class-card">
+        <div class="class-card-head">
+          <span style="font-size:1.1rem">🧙</span>
+          <span class="class-card-name">Magier / Magierin</span>
+          <span class="class-card-lp">15 LP</span>
+        </div>
+        <div class="class-card-tagline">Klug · Geheimnisvoll · Mächtig</div>
+        <div class="pro-con-grid">
+          <div>
+            <div class="pro-con-head pro">✅ Stärken</div>
+            <ul class="pro-con-list">
+              <li><span class="sign plus">+</span>Einmal pro Abenteuer Würfelwurf wiederholen</li>
+              <li><span class="sign plus">+</span>Klugheitsproben mit +3</li>
+              <li><span class="sign plus">+</span>Fallen &amp; Rätsel: W20 ≤ 5</li>
+              <li><span class="sign plus">+</span>Magische Gegenstände aktivieren</li>
+              <li><span class="sign plus">+</span>Spricht alle Sprachen</li>
+            </ul>
+          </div>
+          <div>
+            <div class="pro-con-head con">⚠️ Schwächen</div>
+            <ul class="pro-con-list">
+              <li><span class="sign minus">−</span>Nur 15 LP</li>
+              <li><span class="sign minus">−</span>Kampfproben mit −3</li>
+              <li><span class="sign minus">−</span>Schwere Rüstung nicht möglich</li>
+              <li><span class="sign minus">−</span>Körperliche Proben mit −2</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="class-card">
+        <div class="class-card-head">
+          <span style="font-size:1.1rem">🗡️</span>
+          <span class="class-card-name">Schurke / Schurkin</span>
+          <span class="class-card-lp">18 LP</span>
+        </div>
+        <div class="class-card-tagline">Wendig · Listig · Anpassungsfähig</div>
+        <div class="pro-con-grid">
+          <div>
+            <div class="pro-con-head pro">✅ Stärken</div>
+            <ul class="pro-con-list">
+              <li><span class="sign plus">+</span>Einmal pro Abenteuer automatischer Erfolg</li>
+              <li><span class="sign plus">+</span>Schleichproben mit +4</li>
+              <li><span class="sign plus">+</span>Taschendiebstahl ohne Probe</li>
+              <li><span class="sign plus">+</span>Schlösser knacken: W20 ≤ 14</li>
+              <li><span class="sign plus">+</span>Entkommen aus Fallen: +3</li>
+            </ul>
+          </div>
+          <div>
+            <div class="pro-con-head con">⚠️ Schwächen</div>
+            <ul class="pro-con-list">
+              <li><span class="sign minus">−</span>Kein Kampfbonus</li>
+              <li><span class="sign minus">−</span>Offizielle Situationen: −1</li>
+              <li><span class="sign minus">−</span>Kein schweres Gerät</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="class-card">
+        <div class="class-card-head">
+          <span style="font-size:1.1rem">📖</span>
+          <span class="class-card-name">Gelehrte / Gelehrter</span>
+          <span class="class-card-lp">16 LP</span>
+        </div>
+        <div class="class-card-tagline">Wissend · Strategisch · Beobachtend</div>
+        <div class="pro-con-grid">
+          <div>
+            <div class="pro-con-head pro">✅ Stärken</div>
+            <ul class="pro-con-list">
+              <li><span class="sign plus">+</span>+5 Bonus-EP nach jedem Abenteuer</li>
+              <li><span class="sign plus">+</span>Rätsel &amp; Fakten: W20 ≤ 16</li>
+              <li><span class="sign plus">+</span>Gibt anderen Helden +2 auf nächste Probe</li>
+              <li><span class="sign plus">+</span>Erkennt Lügen (Probe ≤ KLU)</li>
+              <li><span class="sign plus">+</span>Findet immer mind. einen Hinweis</li>
+            </ul>
+          </div>
+          <div>
+            <div class="pro-con-head con">⚠️ Schwächen</div>
+            <ul class="pro-con-list">
+              <li><span class="sign minus">−</span>Kampfproben mit −3</li>
+              <li><span class="sign minus">−</span>Körperliche Proben mit −2</li>
+              <li><span class="sign minus">−</span>Einschüchtern nicht möglich</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="class-card">
+        <div class="class-card-head">
+          <span style="font-size:1.1rem">🌿</span>
+          <span class="class-card-name">Waldläufer / Waldläuferin</span>
+          <span class="class-card-lp">20 LP</span>
+        </div>
+        <div class="class-card-tagline">Zäh · Naturverbunden · Überlebenstüchtig</div>
+        <div class="pro-con-grid">
+          <div>
+            <div class="pro-con-head pro">✅ Stärken</div>
+            <ul class="pro-con-list">
+              <li><span class="sign plus">+</span>Überlebt einmal tödliches Ende (bleibt bei 1 LP)</li>
+              <li><span class="sign plus">+</span>Naturproben mit +4</li>
+              <li><span class="sign plus">+</span>Spurensuche automatisch erfolgreich</li>
+              <li><span class="sign plus">+</span>Tierkommunikation möglich</li>
+              <li><span class="sign plus">+</span>Orientierung in der Natur ohne Probe</li>
+            </ul>
+          </div>
+          <div>
+            <div class="pro-con-head con">⚠️ Schwächen</div>
+            <ul class="pro-con-list">
+              <li><span class="sign minus">−</span>Stadtabenteuer: KLU-Proben −2</li>
+              <li><span class="sign minus">−</span>Soziale Verhandlungen −1</li>
+              <li><span class="sign minus">−</span>Magischer Schaden wirkt doppelt</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /class-grid -->
+
+    <!-- Schritt 2 -->
+    <h2 class="rule-title" style="margin-top:1.75rem">Schritt 2 · Attribute würfeln</h2>
+    <div class="prose"><p>Jede Klasse hat fünf Attribute: <strong>STR</strong> (Stärke), <strong>KLU</strong> (Klugheit), <strong>MUT</strong> (Mut), <strong>AUS</strong> (Ausdauer), <strong>GES</strong> (Geschick). Würfle jeden Wert einmal mit dem W20 und addiere den Klassenbonus:</p></div>
+
+    <table class="rule-table" style="margin-top:.75rem">
+      <thead>
+        <tr>
+          <th>Klasse</th>
+          <th style="text-align:center">STR</th>
+          <th style="text-align:center">KLU</th>
+          <th style="text-align:center">MUT</th>
+          <th style="text-align:center">AUS</th>
+          <th style="text-align:center">GES</th>
+          <th style="text-align:center">LP</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>⚔️ Krieger/in</td>
+          <td class="bonus-pos">+4</td><td class="bonus-neu">+0</td><td class="bonus-pos">+3</td><td class="bonus-pos">+3</td><td class="bonus-pos">+1</td>
+          <td class="num-cell">23</td>
+        </tr>
+        <tr>
+          <td>🧙 Magier/in</td>
+          <td class="bonus-neu">+0</td><td class="bonus-pos">+5</td><td class="bonus-pos">+1</td><td class="bonus-pos">+1</td><td class="bonus-pos">+2</td>
+          <td class="num-cell">15</td>
+        </tr>
+        <tr>
+          <td>🗡️ Schurke/in</td>
+          <td class="bonus-pos">+2</td><td class="bonus-pos">+2</td><td class="bonus-pos">+2</td><td class="bonus-pos">+2</td><td class="bonus-pos">+4</td>
+          <td class="num-cell">18</td>
+        </tr>
+        <tr>
+          <td>📖 Gelehrte/r</td>
+          <td class="bonus-neu">+0</td><td class="bonus-pos">+5</td><td class="bonus-pos">+1</td><td class="bonus-pos">+1</td><td class="bonus-pos">+1</td>
+          <td class="num-cell">16</td>
+        </tr>
+        <tr>
+          <td>🌿 Waldläufer/in</td>
+          <td class="bonus-pos">+2</td><td class="bonus-pos">+1</td><td class="bonus-pos">+3</td><td class="bonus-pos">+4</td><td class="bonus-pos">+2</td>
+          <td class="num-cell">20</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="example-box" style="margin-top:.75rem">Beispiel: Du spielst eine Kriegerin. Für STR würfelst du eine 11, plus Bonus +4 = <strong>STR 15</strong>. Das trägst du auf deinem Bogen ein.</div>
+
+    <!-- Schritt 3 -->
+    <h2 class="rule-title" style="margin-top:1.75rem">Schritt 3 · Besonderer Gegenstand</h2>
+    <div class="prose"><p>Beim ersten Abenteuer darfst du dir einen besonderen Gegenstand aussuchen, den dein Held zu Beginn besitzt. Was das für ein Gegenstand ist und was er kann, steht im Abenteuer selbst.</p></div>
+
+    <!-- Schritt 4 -->
+    <h2 class="rule-title" style="margin-top:1.75rem">Schritt 4 · EP sammeln &amp; aufsteigen</h2>
+    <div class="prose"><p>Nach jedem Abenteuer bekommst du Erfahrungspunkte (EP). Mit genug EP steigst du auf — und wirst dauerhaft mächtiger:</p></div>
+
+    <table class="rule-table" style="margin-top:.75rem">
+      <thead>
+        <tr><th>Stufe</th><th>EP</th><th>Titel</th><th>Belohnung</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="num-cell">1</td><td>0 – 49</td><td><span class="level-badge">Neuling</span></td><td>–</td></tr>
+        <tr><td class="num-cell">2</td><td>50 – 149</td><td><span class="level-badge">Abenteurer</span></td><td>–</td></tr>
+        <tr><td class="num-cell">3</td><td>150 – 299</td><td><span class="level-badge">Erfahrener Held</span></td><td>Zweiter besonderer Gegenstand</td></tr>
+        <tr><td class="num-cell">4</td><td>300 – 499</td><td><span class="level-badge">Legende</span></td><td>Ein Attribut dauerhaft +2</td></tr>
+        <tr><td class="num-cell">5</td><td>500 +</td><td><span class="level-badge">Meisterheld</span></td><td>Alle Nachteile halbieren sich</td></tr>
+      </tbody>
+    </table>
+    <div class="tip-box" style="margin-top:.75rem"><strong>Tipp:</strong> Der Gelehrte bekommt immer +5 Bonus-EP obendrauf — das lohnt sich auf lange Sicht!</div>
+  </div>
+
+
+  <!-- 6 WÜRFELREGELN -->
+  <div class="panel" id="wuerfelregeln">
+    <div class="section-head"><span class="section-icon">🎲</span>6 · Würfelregeln</div>
+    <div class="prose"><p>Das Leseabenteuer nutzt nur einen einzigen Würfel: den <strong>W20</strong> (zwanzigseitig, Zahlen 1–20). Alles funktioniert mit diesen einfachen Regeln:</p></div>
+
+    <table class="rule-table" style="margin-top:.75rem">
+      <thead><tr><th>Würfelart</th><th>Regel</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Standardprobe</strong></td><td>W20 würfeln, Ergebnis ≤ Attributwert → Erfolg</td></tr>
+        <tr><td><strong>Automatischer Erfolg</strong></td><td>Ergebnis = <strong>1</strong> → immer Erfolg (egal welches Attribut)</td></tr>
+        <tr><td><strong>Automatischer Misserfolg</strong></td><td>Ergebnis = <strong>20</strong> → immer Misserfolg</td></tr>
+        <tr><td><strong>Glückswurf</strong></td><td>W20 ≤ 5 → Glück &nbsp;|&nbsp; W20 &gt; 5 → Pech</td></tr>
+        <tr><td><strong>Kampf</strong></td><td>W20 ≤ 10 → du triffst &nbsp;|&nbsp; W20 &gt; 10 → Gegner trifft</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box" style="margin-top:.9rem">
+      <strong>📌 Klassenvor- und -nachteile:</strong><br>
+      Wenn deine Klasse einen Bonus auf eine Probe hat (z. B. Schleichen +4), addiere den Bonus zu deinem Attributwert und würfle dann gegen diesen erhöhten Wert. Bei einem Malus (z. B. Kampf −3) ziehst du den Wert vom Attribut ab.<br><br>
+      <em>Beispiel: Du hast GES 12 und willst schleichen. Als Schurke hast du +4 → du würfelst gegen GES 16. Würfelst du eine 16 oder weniger → Erfolg!</em>
+    </div>
+  </div>
+
+
+  <!-- 7 KAMPF -->
+  <div class="panel" id="kampf">
+    <div class="section-head"><span class="section-icon">⚔️</span>7 · Kampf</div>
+    <div class="prose">
+      <p>Wenn du kämpfst, würfelst du für jede Kampfrunde:</p>
+      <ul>
+        <li><strong>W20 ≤ 10</strong> → du triffst den Gegner (er verliert LP, laut Abenteuertext)</li>
+        <li><strong>W20 &gt; 10</strong> → der Gegner trifft dich (du verlierst LP, laut Abenteuertext)</li>
+        <li>Klassenbonus/malus auf Kämpfe gilt zusätzlich (Krieger/in +2, Magier/in −3 usw.)</li>
+        <li>Besondere Manöver (z. B. Entwaffnen): Würfle zusätzlich auf STR</li>
+      </ul>
+      <p style="margin-top:.65rem">Kämpfe dauern so lange, bis jemand 0 LP hat. Sinkt dein Held auf 0 LP, lies den Abschnitt, auf den das Abenteuer dich schickt (meistens ein schlechtes Ende).</p>
+    </div>
+  </div>
+
+
+  <!-- 8 GLÜCKSWURF -->
+  <div class="panel" id="glueckswurf">
+    <div class="section-head"><span class="section-icon">🍀</span>8 · Glückswurf</div>
+    <div class="prose">
+      <p>Manchmal verlangt das Abenteuer einen <strong>Glückswurf</strong>: Würfle W20.</p>
+      <ul>
+        <li><strong>1–5</strong> → Glück! Das Beste passiert.</li>
+        <li><strong>6–20</strong> → Pech. Das war nicht dein Tag.</li>
+      </ul>
+    </div>
+  </div>
+
+
+  <!-- 9 HEILUNG -->
+  <div class="panel" id="heilung">
+    <div class="section-head"><span class="section-icon">💊</span>9 · Heilung</div>
+    <div class="prose">
+      <p>Du heilst <strong>nicht automatisch</strong> zwischen Abschnitten. LP bekommst du nur durch:</p>
+      <ul>
+        <li>Besondere Gegenstände (Heiltrank, Kräuter …)</li>
+        <li>Bestimmte Ereignisse im Abenteuer</li>
+        <li>Den Klassenbonus der <strong>Kriegerin</strong> (einmal pro Abenteuer: +4 LP)</li>
+        <li>Den Klassenvorteil des <strong>Waldläufers</strong> (einmal pro Abenteuer: überlebt tödliches Ende mit 1 LP)</li>
+      </ul>
+    </div>
+  </div>
+
+
+  <!-- 10 EP -->
+  <div class="panel" id="ep">
+    <div class="section-head"><span class="section-icon">⭐</span>10 · Erfahrungspunkte</div>
+    <div class="prose"><p>Am Ende jedes Abenteuers findest du eine EP-Tabelle. Schau nach, was du erreicht hast, und addiere deine Punkte:</p></div>
+
+    <table class="rule-table" style="margin-top:.75rem">
+      <thead><tr><th>Bedingung</th><th style="text-align:center">EP</th></tr></thead>
+      <tbody>
+        <tr><td>Abenteuer abgeschlossen</td><td class="num-cell">+20</td></tr>
+        <tr><td>Gutes Ende erreicht</td><td class="num-cell">+15</td></tr>
+        <tr><td>Bestes Ende erreicht</td><td class="num-cell">+10</td></tr>
+        <tr><td>Alle Rätsel gelöst</td><td class="num-cell">+5</td></tr>
+        <tr><td>Kein LP-Verlust erlitten</td><td class="num-cell">+5</td></tr>
+        <tr><td>Besonderes Geheimnis entdeckt</td><td class="num-cell">+5</td></tr>
+      </tbody>
+    </table>
+    <div class="prose" style="margin-top:.65rem">
+      <p><strong>Minimum:</strong> 20 EP (Abenteuer nur abgeschlossen) &nbsp;·&nbsp; <strong>Maximum:</strong> 60 EP (alles erreicht, keine LP verloren)</p>
+    </div>
+  </div>
+
+
+  <!-- 11 TIPPS -->
+  <div class="panel" id="tipps">
+    <div class="section-head"><span class="section-icon">🏆</span>11 · Goldene Tipps</div>
+    <ul class="tip-list">
+      <li><span class="tip-bullet">◆</span><span>Lies immer nur den Abschnitt, zu dem du auch wirklich gesprungen bist — nicht vorblättern!</span></li>
+      <li><span class="tip-bullet">◆</span><span>Denk nach, bevor du entscheidest. Schlechte Entscheidungen können gefährlich sein.</span></li>
+      <li><span class="tip-bullet">◆</span><span>Wenn du LP verlierst — nicht schummeln! Nur so macht das Spiel wirklich Spaß.</span></li>
+      <li><span class="tip-bullet">◆</span><span>Hast du ein schlechtes Ende? Kein Problem — beim nächsten Versuch weißt du mehr.</span></li>
+      <li><span class="tip-bullet">◆</span><span>Klassen mit Klassenboni nutzen: Als Schurke erst schleichen, als Magier erst rätseln!</span></li>
+      <li><span class="tip-bullet">◆</span><span>Trage nach jedem Abenteuer deine EP ein — du willst Legende werden, oder?</span></li>
+    </ul>
+  </div>
+
+
+  <!-- 12 FAQ -->
+  <div class="panel" id="faq">
+    <div class="section-head"><span class="section-icon">❓</span>12 · Häufige Fragen</div>
+
+    <div class="faq-item">
+      <div class="faq-q">Kann ich meinen Heldenbogen verlieren?</div>
+      <div class="faq-a">Nein — er gehört dir dauerhaft. Bring ihn einfach zum nächsten Abenteuer mit.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Darf ich einen Abschnitt nochmal lesen?</div>
+      <div class="faq-a">Ja — wenn du gerade dort bist. Nicht aber andere Abschnitte vorab.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Was, wenn ich auf 0 LP sinke?</div>
+      <div class="faq-a">Lies den Abschnitt weiter, auf den das Abenteuer dich schickt. Beim nächsten Mal schlägt sich dein Held besser!</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Kann ich eine neue Klasse wählen?</div>
+      <div class="faq-a">Nein — dein Held behält seine Klasse. Aber du kannst einen zweiten Heldenbogen für eine andere Klasse anlegen.</div>
+    </div>
+    <div class="faq-item" style="margin-bottom:0">
+      <div class="faq-q">Was bedeutet „einmal pro Abenteuer"?</div>
+      <div class="faq-a">Jeder Klassenvorteil, der so gekennzeichnet ist, kann nur genau einmal in einem Abenteuer eingesetzt werden. Streiche ihn auf dem Bogen durch und setze ihn beim nächsten Abenteuer zurück.</div>
+    </div>
+  </div>
+
+
+  <!-- ABSCHLUSS -->
+  <div style="text-align:center;padding:1rem 0 .5rem;font-family:'Cinzel',serif;font-size:.9rem;color:var(--gold);opacity:.8;letter-spacing:.15em">
+    Viel Erfolg, Held! Die Geschichte wartet auf dich. ⚔️
+  </div>
+  <div style="text-align:center;margin-top:1rem">
+    <a href="leseabenteuer-heldenbogen.html" style="
+      display:inline-block;padding:.7rem 1.6rem;
+      background:var(--accent);color:var(--parchment);
+      border-radius:3px;font-family:'Cinzel',serif;
+      font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;
+      text-decoration:none;transition:background .2s;
+    ">⚔ Heldenbogen erstellen →</a>
+  </div>
+
+</div><!-- /scroll-wrap -->
+</body>
+</html>
