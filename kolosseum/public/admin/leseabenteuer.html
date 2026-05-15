@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leseabenteuer – Admin</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .admin-nav { background: #12122a; }
+
+    .upload-card { max-width: 640px; }
+
+    .drop-zone {
+      border: 2px dashed var(--c2, #4a9eda);
+      border-radius: 12px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: background .15s, border-color .15s;
+      background: #f8fbff;
+      margin-bottom: 1rem;
+    }
+    .drop-zone:hover, .drop-zone.drag-over { background: #eaf4ff; border-color: #1e3a5f; }
+    .drop-zone input[type=file] { display: none; }
+    .drop-zone-icon { font-size: 2.5rem; display: block; margin-bottom: .5rem; }
+    .drop-zone-text { color: #555; font-size: .9rem; }
+    .drop-zone-text strong { color: #1e3a5f; }
+    .drop-zone-filename { margin-top: .5rem; font-size: .85rem; color: #1a7a40; font-weight: 600; min-height: 1.2rem; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+
+    .mat-liste { margin-top: 2rem; }
+    .mat-zeile {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: .9rem 1rem;
+      border-bottom: 1px solid #e8edf5;
+    }
+    .mat-zeile:last-child { border-bottom: none; }
+    .mat-zeile-info { flex: 1; min-width: 0; }
+    .mat-zeile-info strong { display: block; font-size: .95rem; color: #1e3a5f; word-break: break-word; }
+    .mat-zeile-info span  { font-size: .8rem; color: #888; }
+    .mat-zeile-actions { display: flex; gap: .5rem; flex-shrink: 0; }
+    .badge-kat {
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      padding: 1px 7px;
+      border-radius: 4px;
+      background: #e8f4fd;
+      color: #1e3a5f;
+      margin-bottom: 3px;
+    }
+    .badge-kat.text        { background: #fff3e0; color: #8b4a00; }
+    .badge-kat.arbeitsblatt{ background: #e8f8ee; color: #1a6b3a; }
+
+    .upload-progress {
+      display: none;
+      height: 6px;
+      background: #e0e8f0;
+      border-radius: 3px;
+      margin: .75rem 0 .25rem;
+      overflow: hidden;
+    }
+    .upload-progress-bar {
+      height: 100%;
+      background: var(--c2, #4a9eda);
+      width: 0%;
+      transition: width .2s;
+      border-radius: 3px;
+    }
+    .upload-msg { font-size: .85rem; min-height: 1.2rem; margin-top: .25rem; }
+    .upload-msg.ok    { color: #1a7a40; }
+    .upload-msg.error { color: #c0392b; }
+  </style>
+</head>
+<body>
+  <nav class="nav admin-nav">
+    <a href="/admin/dashboard.html" class="nav-brand">⚙️ Admin</a>
+    <div class="nav-links">
+      <a href="/admin/dashboard.html">Dashboard</a>
+      <a href="/admin/schueler.html">Schüler</a>
+      <a href="/admin/quiz.html">Quizze</a>
+      <a href="/admin/leseabenteuer.html" class="active">Leseabenteuer</a>
+      <button id="logout-btn" class="btn btn-ghost nav-action" style="font-size:.85rem">Ausloggen</button>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-bottom:3rem">
+    <h1 style="margin-top:2rem;font-size:1.8rem">📖 Leseabenteuer – Materialien</h1>
+    <p style="color:var(--ink-soft);margin:.5rem 0 2rem">Abenteuer, Texte und Arbeitsblätter als PDF hochladen. Schülerinnen und Schüler können diese nach dem Login herunterladen.</p>
+
+    <!-- UPLOAD-FORMULAR -->
+    <div class="card upload-card">
+      <h2 style="font-size:1.2rem;margin-bottom:1.25rem">+ Neues Material hochladen</h2>
+
+      <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-label="PDF auswählen oder hierher ziehen">
+        <input type="file" id="dateiInput" accept="application/pdf">
+        <span class="drop-zone-icon">📄</span>
+        <div class="drop-zone-text"><strong>PDF auswählen</strong> oder hierher ziehen<br><small style="color:#aaa">Max. 20 MB · nur PDF</small></div>
+        <div class="drop-zone-filename" id="dateiName"></div>
+      </div>
+
+      <div class="form-row" style="margin-bottom:.85rem">
+        <div class="form-group" style="margin:0">
+          <label for="titel">Titel <span style="color:#c0392b">*</span></label>
+          <input type="text" id="titel" placeholder="z. B. Abenteuer im Dunkelwald" maxlength="120">
+        </div>
+        <div class="form-group" style="margin:0">
+          <label for="kategorie">Kategorie</label>
+          <select id="kategorie">
+            <option value="abenteuer">⚔️ Abenteuer</option>
+            <option value="text">📖 Lesetext</option>
+            <option value="arbeitsblatt">📝 Arbeitsblatt</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="beschreibung">Beschreibung <span style="color:#aaa;font-weight:400">(optional)</span></label>
+        <input type="text" id="beschreibung" placeholder="Kurze Beschreibung des Inhalts" maxlength="200">
+      </div>
+
+      <div class="upload-progress" id="uploadProgress">
+        <div class="upload-progress-bar" id="uploadBar"></div>
+      </div>
+      <div class="upload-msg" id="uploadMsg"></div>
+
+      <button class="btn btn-primary" id="uploadBtn" style="margin-top:.75rem" disabled>
+        ⬆ Hochladen
+      </button>
+    </div>
+
+
+    <!-- LISTE VORHANDENER MATERIALIEN -->
+    <div class="card mat-liste" style="margin-top:2rem">
+      <h2 style="font-size:1.2rem;margin-bottom:1rem">Vorhandene Materialien</h2>
+      <div id="matListe"><div class="text-soft" style="padding:.5rem 0">Wird geladen …</div></div>
+    </div>
+  </main>
+
+  <script>
+    const BASE = location.origin;
+
+    // ── Auth-Check ────────────────────────────────────────────────────
+    async function init() {
+      const chk = await fetch('/api/auth/admin/check');
+      if (!chk.ok) { window.location.href = '/admin/index.html'; return; }
+      ladeListe();
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await fetch('/api/auth/admin/logout', { method: 'POST' });
+      window.location.href = '/admin/index.html';
+    });
+
+
+    // ── Drag & Drop / Datei-Auswahl ───────────────────────────────────
+    const dropZone  = document.getElementById('dropZone');
+    const dateiInput = document.getElementById('dateiInput');
+    const dateiName  = document.getElementById('dateiName');
+    const uploadBtn  = document.getElementById('uploadBtn');
+    let selectedFile = null;
+
+    dropZone.addEventListener('click', () => dateiInput.click());
+    dropZone.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') dateiInput.click(); });
+
+    dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropZone.classList.remove('drag-over');
+      const f = e.dataTransfer.files[0];
+      if (f) setDatei(f);
+    });
+
+    dateiInput.addEventListener('change', () => {
+      if (dateiInput.files[0]) setDatei(dateiInput.files[0]);
+    });
+
+    function setDatei(f) {
+      if (f.type !== 'application/pdf') { setMsg('Nur PDF-Dateien erlaubt.', 'error'); return; }
+      if (f.size > 20 * 1024 * 1024)   { setMsg('Datei zu groß (max. 20 MB).', 'error'); return; }
+      selectedFile = f;
+      dateiName.textContent = '✓ ' + f.name;
+      uploadBtn.disabled = false;
+      setMsg('');
+    }
+
+    function setMsg(text, typ = '') {
+      const el = document.getElementById('uploadMsg');
+      el.textContent = text;
+      el.className = 'upload-msg' + (typ ? ' ' + typ : '');
+    }
+
+
+    // ── Upload ────────────────────────────────────────────────────────
+    uploadBtn.addEventListener('click', async () => {
+      if (!selectedFile) return;
+      const titel = document.getElementById('titel').value.trim();
+      if (!titel) { setMsg('Bitte einen Titel eingeben.', 'error'); return; }
+
+      uploadBtn.disabled = true;
+      document.getElementById('uploadProgress').style.display = 'block';
+      document.getElementById('uploadBar').style.width = '30%';
+      setMsg('Wird hochgeladen …');
+
+      const fd = new FormData();
+      fd.append('datei', selectedFile);
+      fd.append('titel', titel);
+      fd.append('beschreibung', document.getElementById('beschreibung').value.trim());
+      fd.append('kategorie', document.getElementById('kategorie').value);
+
+      try {
+        document.getElementById('uploadBar').style.width = '60%';
+        const res  = await fetch('/api/leseabenteuer/materialien', { method: 'POST', body: fd });
+        const data = await res.json();
+        document.getElementById('uploadBar').style.width = '100%';
+
+        if (!res.ok) { setMsg(data.error || 'Fehler beim Hochladen.', 'error'); }
+        else {
+          setMsg('✓ Material erfolgreich hochgeladen!', 'ok');
+          document.getElementById('titel').value = '';
+          document.getElementById('beschreibung').value = '';
+          dateiName.textContent = '';
+          selectedFile = null;
+          uploadBtn.disabled = true;
+          dateiInput.value = '';
+          ladeListe();
+        }
+      } catch {
+        setMsg('Verbindungsfehler. Bitte erneut versuchen.', 'error');
+      } finally {
+        setTimeout(() => {
+          document.getElementById('uploadProgress').style.display = 'none';
+          document.getElementById('uploadBar').style.width = '0%';
+        }, 800);
+        uploadBtn.disabled = false;
+      }
+    });
+
+
+    // ── Liste laden ───────────────────────────────────────────────────
+    async function ladeListe() {
+      const el = document.getElementById('matListe');
+      try {
+        const res  = await fetch('/api/leseabenteuer/materialien');
+        const list = await res.json();
+
+        if (!list.length) {
+          el.innerHTML = '<div class="text-soft" style="padding:.5rem 0">Noch keine Materialien vorhanden.</div>';
+          return;
+        }
+
+        el.innerHTML = list.map(m => `
+          <div class="mat-zeile" id="mz-${m.id}">
+            <div class="mat-zeile-info">
+              <span class="badge-kat ${esc(m.kategorie)}">${kategorieBadge(m.kategorie)}</span>
+              <strong>${esc(m.titel)}</strong>
+              ${m.beschreibung ? `<span>${esc(m.beschreibung)}</span>` : ''}
+              <span>📅 ${fmtDate(m.erstellt_am)} &nbsp;·&nbsp;
+                <a href="${esc(BASE + m.datei_url)}" target="_blank" rel="noopener" style="color:#4a9eda">PDF ansehen ↗</a>
+              </span>
+            </div>
+            <div class="mat-zeile-actions">
+              <button class="btn btn-danger" style="font-size:.8rem;padding:4px 12px"
+                      onclick="loeschen(${m.id}, this)">Löschen</button>
+            </div>
+          </div>
+        `).join('');
+      } catch {
+        el.innerHTML = '<div class="text-soft">Fehler beim Laden der Liste.</div>';
+      }
+    }
+
+    async function loeschen(id, btn) {
+      if (!confirm('Material wirklich löschen? Die PDF wird dauerhaft entfernt.')) return;
+      btn.disabled = true;
+      const res = await fetch('/api/leseabenteuer/materialien/' + id, { method: 'DELETE' });
+      if (res.ok) {
+        document.getElementById('mz-' + id)?.remove();
+      } else {
+        btn.disabled = false;
+        alert('Fehler beim Löschen.');
+      }
+    }
+
+    function kategorieBadge(k) {
+      if (k === 'text')         return '📖 Lesetext';
+      if (k === 'arbeitsblatt') return '📝 Arbeitsblatt';
+      return '⚔️ Abenteuer';
+    }
+
+    function fmtDate(iso) {
+      if (!iso) return '';
+      return new Date(iso).toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
+    }
+
+    function esc(s) {
+      return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    init().catch(console.error);
+  </script>
+
+  <footer class="site-footer" style="margin-top:3rem">
+    <div class="site-footer-inner">
+      <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+      <nav class="site-footer-links" aria-label="Rechtliche Links">
+        <a href="https://lehrer-herrmann.de/impressum.html">Impressum</a>
+        <a href="https://lehrer-herrmann.de/datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="/js/site-nav.js"></script>
+</body>
+</html>

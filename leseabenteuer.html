@@ -3,29 +3,114 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Leseabenteuer – Buchempfehlungen, Lesetipps und spannende Lektüren von Jan Herrmann.">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Leseabenteuer – Bücher, Texte und der Heldenbogen-Generator für Schülerinnen und Schüler.">
     <title>Leseabenteuer – Jan Herrmann</title>
+    <!-- Auth-Guard: Seite sofort sperren, bis Login bestätigt -->
+    <script src="js/auth-guard.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .la-hero {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2a5a3f 100%);
+            color: #fff;
+            padding: 4rem 0 3rem;
+            text-align: center;
+        }
+        .la-hero h1 { font-size: 2.2rem; margin: .5rem 0; }
+        .la-hero p  { opacity: .85; max-width: 560px; margin: .5rem auto 0; line-height: 1.65; }
+
+        .la-kacheln {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.25rem;
+            margin-top: 2.5rem;
+        }
+        .la-kachel {
+            background: #fff;
+            border: 1px solid #d6e4f0;
+            border-radius: 14px;
+            padding: 1.75rem 1.5rem;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+            box-shadow: 0 2px 12px rgba(30,58,95,.07);
+            transition: transform .18s, box-shadow .18s;
+        }
+        .la-kachel:hover { transform: translateY(-3px); box-shadow: 0 6px 22px rgba(30,58,95,.13); }
+        .la-kachel-icon { font-size: 2.2rem; }
+        .la-kachel h3   { font-size: 1.1rem; color: var(--primary-color,#1e3a5f); margin: 0; }
+        .la-kachel p    { font-size: .88rem; color: #555; line-height: 1.55; margin: 0; flex: 1; }
+        .la-kachel-pfeil{ font-size: .9rem; color: var(--accent-color,#4a9eda); font-weight: 600; margin-top: .25rem; }
+
+        /* Materialien-Liste */
+        .mat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .mat-karte {
+            background: #fff;
+            border: 1px solid #d6e4f0;
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: .5rem;
+            box-shadow: 0 1px 8px rgba(30,58,95,.06);
+        }
+        .mat-kategorie {
+            display: inline-block;
+            font-size: .72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: #e8f4fd;
+            color: #1e3a5f;
+            width: fit-content;
+        }
+        .mat-kategorie.text        { background: #fff3e0; color: #8b4a00; }
+        .mat-kategorie.arbeitsblatt{ background: #e8f8ee; color: #1a6b3a; }
+        .mat-karte h4 { font-size: 1rem; color: #1e3a5f; margin: 0; }
+        .mat-karte p  { font-size: .84rem; color: #666; line-height: 1.5; margin: 0; flex: 1; }
+        .mat-download {
+            display: inline-flex;
+            align-items: center;
+            gap: .35rem;
+            font-size: .85rem;
+            font-weight: 600;
+            color: var(--accent-color,#4a9eda);
+            text-decoration: none;
+            margin-top: .25rem;
+        }
+        .mat-download:hover { text-decoration: underline; }
+        .mat-datum { font-size: .76rem; color: #999; }
+        .mat-leer {
+            text-align: center;
+            padding: 2.5rem;
+            color: #888;
+            background: #fafafa;
+            border: 1px dashed #ddd;
+            border-radius: 12px;
+            margin-top: 1.5rem;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- NAVIGATION -->
     <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
         <div class="container navbar-inner">
             <a href="index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
-            <button
-                class="hamburger"
-                id="hamburger"
-                aria-label="Menü öffnen"
-                aria-expanded="false"
-                aria-controls="navbar-links"
-            >
-                <span></span>
-                <span></span>
-                <span></span>
+            <button class="hamburger" id="hamburger" aria-label="Menü öffnen"
+                    aria-expanded="false" aria-controls="navbar-links">
+                <span></span><span></span><span></span>
             </button>
             <ul class="navbar-links" id="navbar-links">
                 <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
@@ -40,57 +125,49 @@
     </nav>
 
 
-    <!-- HEADER -->
-    <section class="hero" style="min-height: 40vh; padding: 4rem 0 3rem;">
-        <div class="hero-inhalt">
-            <div class="hero-avatar" aria-hidden="true">🔖</div>
+    <!-- HERO -->
+    <div class="la-hero">
+        <div class="container">
+            <div style="font-size:3rem">🔖</div>
             <h1>Leseabenteuer</h1>
-            <p class="hero-text">
-                Buchempfehlungen, Lesetipps und spannende Lektüren –<br>
-                für alle, die Lesen lieben oder neu entdecken möchten.
-            </p>
+            <p>Bücher erleben, Helden erschaffen, Abenteuer bestehen –<br>
+               Texte, Materialien und der Heldenbogen-Generator für Schülerinnen und Schüler.</p>
         </div>
-    </section>
+    </div>
 
 
-    <!-- INHALT -->
-    <main id="hauptinhalt">
-        <div class="container" style="padding: 3rem 1rem; max-width: 860px; margin: 0 auto;">
+    <main class="container" style="padding: 3rem 1rem;">
 
-            <div style="
-                background: #fff;
-                border: 1px solid #d6e4f0;
-                border-radius: 16px;
-                padding: 2.5rem 2rem;
-                text-align: center;
-                box-shadow: 0 2px 16px rgba(30,58,95,.08);
-            ">
-                <div style="font-size: 3rem; margin-bottom: 1rem;">📚</div>
-                <h2 style="color: var(--primary-color, #1e3a5f); margin: 0 0 1rem;">
-                    Bald gibt es hier Leseempfehlungen!
-                </h2>
-                <p style="color: #555; font-size: 1rem; line-height: 1.7; max-width: 520px; margin: 0 auto 1.5rem;">
-                    Diese Seite wird gerade mit Buchempfehlungen, Lesetipps und
-                    spannenden Lektüren für verschiedene Altersgruppen und Interessen
-                    gefüllt. Schaut bald wieder vorbei!
-                </p>
-                <a href="index.html" style="
-                    display: inline-block;
-                    padding: .75rem 1.75rem;
-                    background: var(--accent-color, #4a9eda);
-                    color: #fff;
-                    border-radius: 8px;
-                    font-size: .95rem;
-                    font-weight: 600;
-                    text-decoration: none;
-                ">← Zurück zur Startseite</a>
+        <!-- EINSTIEGSKACHELN -->
+        <div class="la-kacheln">
+            <a href="leseabenteuer-heldenbogen.html" class="la-kachel">
+                <div class="la-kachel-icon">⚔️</div>
+                <h3>Heldenbogen-Generator</h3>
+                <p>Erstelle deinen eigenen Leseabenteuer-Helden: Klasse wählen, Attribute würfeln, Heldenbogen als PDF exportieren.</p>
+                <span class="la-kachel-pfeil">→ Generator öffnen</span>
+            </a>
+            <div class="la-kachel" style="cursor:default">
+                <div class="la-kachel-icon">📜</div>
+                <h3>Abenteuer &amp; Texte</h3>
+                <p>Interaktive Abenteuer und Lesetexte – direkt als PDF herunterladen und loslesen. Neue Inhalte folgen laufend.</p>
+                <span class="la-kachel-pfeil" style="color:#888">↓ Unten verfügbar</span>
             </div>
-
         </div>
+
+
+        <!-- MATERIALIEN-LISTE -->
+        <section style="margin-top: 3.5rem">
+            <h2 class="section-titel" style="text-align:left;font-size:1.4rem">Abenteuer &amp; Lesetexte</h2>
+            <p style="color:#666;margin-top:.25rem">Von Herrn Herrmann bereitgestellte PDFs – zum Herunterladen und Lesen.</p>
+
+            <div id="mat-container">
+                <div class="mat-leer">⏳ Lade Materialien …</div>
+            </div>
+        </section>
+
     </main>
 
 
-    <!-- FOOTER -->
     <footer>
         <div class="container footer-inner">
             <p>© <span id="footer-jahr">2025</span> Jan Herrmann</p>
@@ -99,12 +176,70 @@
                 <a href="datenschutz.html">Datenschutz</a>
             </nav>
         </div>
-        <a href="https://kolosseum.lehrer-herrmann.de/admin/" target="_blank" rel="noopener noreferrer" class="admin-footer-link" aria-label="Lerngladiatoren Admin">⚙</a>
+        <a href="https://kolosseum.lehrer-herrmann.de/admin/" target="_blank" rel="noopener noreferrer"
+           class="admin-footer-link" aria-label="Lerngladiatoren Admin">⚙</a>
     </footer>
 
     <script src="js/main.js"></script>
     <script src="js/kolosseum-login-widget.js"></script>
     <script data-goatcounter="https://lehrer-herrmann.goatcounter.com/count"
             async src="//gc.zgo.at/count.js"></script>
+
+    <script>
+    (function () {
+        'use strict';
+
+        const API = 'https://kolosseum.lehrer-herrmann.de';
+
+        function fmtDatum(iso) {
+            if (!iso) return '';
+            return new Date(iso).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        }
+
+        function esc(s) {
+            return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        async function ladeMaterialien() {
+            const container = document.getElementById('mat-container');
+            try {
+                const res = await fetch(API + '/api/leseabenteuer/materialien', { credentials: 'include' });
+                if (!res.ok) throw new Error('Nicht eingeloggt');
+                const materialien = await res.json();
+
+                if (!materialien.length) {
+                    container.innerHTML = '<div class="mat-leer">📭 Noch keine Materialien hochgeladen.<br><small>Herr Herrmann fügt bald Abenteuer und Texte hinzu!</small></div>';
+                    return;
+                }
+
+                const grid = document.createElement('div');
+                grid.className = 'mat-grid';
+                grid.innerHTML = materialien.map(m => `
+                    <div class="mat-karte">
+                        <span class="mat-kategorie ${esc(m.kategorie)}">${kategorieLabel(m.kategorie)}</span>
+                        <h4>${esc(m.titel)}</h4>
+                        ${m.beschreibung ? `<p>${esc(m.beschreibung)}</p>` : ''}
+                        <a href="${esc(API + m.datei_url)}" class="mat-download" target="_blank" rel="noopener">
+                            📄 PDF herunterladen
+                        </a>
+                        <span class="mat-datum">Hochgeladen: ${fmtDatum(m.erstellt_am)}</span>
+                    </div>
+                `).join('');
+                container.innerHTML = '';
+                container.appendChild(grid);
+            } catch (e) {
+                container.innerHTML = '<div class="mat-leer">Materialien konnten nicht geladen werden.</div>';
+            }
+        }
+
+        function kategorieLabel(k) {
+            if (k === 'text')         return '📖 Lesetext';
+            if (k === 'arbeitsblatt') return '📝 Arbeitsblatt';
+            return '⚔️ Abenteuer';
+        }
+
+        ladeMaterialien();
+    })();
+    </script>
 </body>
 </html>

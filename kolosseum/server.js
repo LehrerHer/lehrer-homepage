@@ -16,7 +16,8 @@ const aiFeedbackRoutes  = require('./routes/ai-feedback');
 const deployRoutes      = require('./routes/deploy');
 const arenaRoutes       = require('./routes/arena');
 const shopRoutes        = require('./routes/shop');
-const worksheetRoutes   = require('./routes/worksheets');
+const worksheetRoutes        = require('./routes/worksheets');
+const leseabenteuerRoutes    = require('./routes/leseabenteuer');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -44,7 +45,7 @@ app.use('/api/deploy',     deployRoutes);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-// Hochgeladene Blog-Dateien statisch ausliefern
+// Hochgeladene Dateien statisch ausliefern
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 const store = new SQLiteSessionStore(session);
@@ -74,7 +75,8 @@ app.use('/api/blog',        blogRoutes);
 app.use('/api/ai-feedback', aiFeedbackRoutes);
 app.use('/api/arena',       arenaRoutes);
 app.use('/api/shop',        shopRoutes);
-app.use('/api/worksheets',  worksheetRoutes);
+app.use('/api/worksheets',     worksheetRoutes);
+app.use('/api/leseabenteuer', leseabenteuerRoutes);
 
 // SPA-Catch: alle nicht-API-Routen geben die jeweilige HTML-Datei zurück
 // (oder leiten zu login weiter)
