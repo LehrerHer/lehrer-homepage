@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leseabenteuer – Heldenbogen-Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root {
+    --ink: #1a1208;
+    --parchment: #f5edd6;
+    --parchment-dark: #e8d9b0;
+    --parchment-mid: #efe3c0;
+    --accent: #8b1a1a;
+    --accent-light: #b02020;
+    --gold: #c9a227;
+    --gold-dark: #9a7a1a;
+    --border: #7a5c2a;
+    --muted: #5c4a2a;
+    --green: #1d6b3a;
+    --red-dark: #7a1515;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #2a1f0e;
+    background-image:
+      repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(0,0,0,0.04) 40px, rgba(0,0,0,0.04) 41px),
+      repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(0,0,0,0.04) 40px, rgba(0,0,0,0.04) 41px);
+    min-height: 100vh;
+    font-family: 'Crimson Text', Georgia, serif;
+    color: var(--ink);
+    padding: 2rem 1rem;
+  }
+
+  .page-title {
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    color: var(--gold);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 0.3rem;
+    opacity: 0.85;
+  }
+
+  .page-subtitle {
+    text-align: center;
+    font-family: 'Crimson Text', serif;
+    font-size: 0.95rem;
+    color: var(--parchment-dark);
+    opacity: 0.6;
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  /* LEFT PANEL */
+  .panel {
+    background: var(--parchment);
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 1.25rem;
+    position: relative;
+  }
+
+  .panel::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1px solid rgba(122,92,42,0.3);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  .panel-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Name input */
+  .field-group { margin-bottom: 1rem; }
+  .field-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+  .field-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    font-family: 'Crimson Text', serif;
+    font-size: 1.1rem;
+    color: var(--ink);
+    padding: 0.2rem 0.1rem;
+    outline: none;
+  }
+  .field-input:focus { border-bottom-color: var(--accent); }
+  .field-input::placeholder { color: rgba(90,65,30,0.35); font-style: italic; }
+
+  /* Class cards */
+  .class-grid { display: flex; flex-direction: column; gap: 0.5rem; }
+
+  .class-card {
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 0.6rem 0.8rem;
+    cursor: pointer;
+    transition: all 0.18s ease;
+    background: var(--parchment-mid);
+    position: relative;
+  }
+  .class-card:hover { background: var(--parchment-dark); border-color: var(--gold-dark); }
+  .class-card.selected {
+    background: var(--parchment-dark);
+    border: 2px solid var(--accent);
+    box-shadow: inset 0 0 0 1px rgba(139,26,26,0.15);
+  }
+  .class-card-header { display: flex; align-items: baseline; gap: 0.5rem; }
+  .class-icon { font-size: 1rem; }
+  .class-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .class-tagline {
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--muted);
+    margin-top: 0.1rem;
+  }
+
+  /* RIGHT PANEL – preview */
+  .preview-panel {
+    background: var(--parchment);
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    padding: 1.5rem;
+    position: relative;
+    min-height: 600px;
+  }
+  .preview-panel::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1px solid rgba(122,92,42,0.3);
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  .preview-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 400px;
+    gap: 1rem;
+    opacity: 0.4;
+  }
+  .preview-empty-icon { font-size: 3rem; }
+  .preview-empty-text {
+    font-family: 'Cinzel', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* SHEET layout */
+  .sheet { display: none; }
+  .sheet.visible { display: block; }
+
+  .sheet-header {
+    text-align: center;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .sheet-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+  .sheet-subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+  .sheet-hero-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0.5rem 0 0.15rem;
+  }
+  .sheet-class-name {
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--muted);
+  }
+
+  .sheet-body { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  .sheet-section {
+    background: rgba(0,0,0,0.03);
+    border: 1px solid rgba(122,92,42,0.3);
+    border-radius: 3px;
+    padding: 0.75rem;
+  }
+  .sheet-section.full { grid-column: 1 / -1; }
+
+  .section-head {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border-bottom: 1px solid rgba(122,92,42,0.25);
+    padding-bottom: 0.3rem;
+    margin-bottom: 0.6rem;
+  }
+
+  /* Attributes */
+  .attr-table { width: 100%; border-collapse: collapse; }
+  .attr-table td { padding: 0.25rem 0.3rem; font-size: 0.9rem; vertical-align: middle; }
+  .attr-name { color: var(--muted); font-size: 0.82rem; }
+  .attr-formula { color: var(--muted); font-size: 0.75rem; font-style: italic; text-align: right; }
+  .attr-val {
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+    text-align: center;
+    width: 2.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .lp-val {
+    font-family: 'Cinzel', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-align: center;
+    margin: 0.3rem 0;
+  }
+
+  .reroll-btn {
+    display: block;
+    width: 100%;
+    margin-top: 0.6rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 0.3rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .reroll-btn:hover { background: var(--parchment-dark); color: var(--accent); border-color: var(--accent); }
+
+  /* LP boxes */
+  .lp-boxes { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 0.4rem; }
+  .lp-box {
+    width: 14px; height: 14px;
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    background: transparent;
+  }
+
+  /* Skills */
+  .skill-list { list-style: none; }
+  .skill-list li {
+    font-size: 0.82rem;
+    padding: 0.2rem 0;
+    border-bottom: 1px dotted rgba(122,92,42,0.2);
+    display: flex;
+    gap: 0.4rem;
+    align-items: baseline;
+  }
+  .skill-list li:last-child { border-bottom: none; }
+  .skill-plus { color: var(--green); font-weight: 600; flex-shrink: 0; }
+  .skill-minus { color: var(--red-dark); font-weight: 600; flex-shrink: 0; }
+
+  /* EP / XP section */
+  .xp-track-wrap { margin-top: 0.6rem; }
+  .xp-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+  }
+  .xp-label-item { text-align: center; }
+  .xp-label-num {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    color: var(--accent);
+    display: block;
+  }
+  .xp-label-name {
+    font-size: 0.62rem;
+    color: var(--muted);
+    font-style: italic;
+    display: block;
+  }
+  .xp-bar-outer {
+    height: 18px;
+    background: rgba(0,0,0,0.07);
+    border: 1px solid var(--border);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+  .xp-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 100%);
+    transition: width 0.5s ease;
+    min-width: 3px;
+  }
+  .xp-arrow {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .xp-milestones {
+    display: flex;
+    gap: 3px;
+    margin-top: 3px;
+  }
+  .xp-ms-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.12);
+    border: 1px solid var(--border);
+    transition: background 0.3s;
+  }
+  .xp-ms-dot.reached { background: var(--gold); border-color: var(--gold-dark); }
+
+  .xp-input-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+  }
+  .xp-input {
+    width: 70px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    color: var(--ink);
+    text-align: center;
+    outline: none;
+  }
+  .xp-input:focus { border-bottom-color: var(--accent); }
+  .xp-stufe {
+    font-family: 'Cinzel', serif;
+    font-size: 0.72rem;
+    color: var(--gold-dark);
+    font-style: italic;
+  }
+
+  /* Adventure log */
+  .adventure-log { margin-top: 0.5rem; }
+  .adv-row {
+    display: grid;
+    grid-template-columns: 1.5rem 3rem 1fr;
+    gap: 0.3rem;
+    align-items: center;
+    margin-bottom: 0.25rem;
+    font-size: 0.82rem;
+  }
+  .adv-num { color: var(--muted); font-family: 'Cinzel', serif; font-size: 0.7rem; }
+  .adv-ep-line { border-bottom: 1px solid var(--border); height: 1px; }
+
+  /* Export button */
+  .export-btn {
+    width: 100%;
+    margin-top: 1.25rem;
+    padding: 0.7rem 1rem;
+    background: var(--accent);
+    color: var(--parchment);
+    border: none;
+    border-radius: 3px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+  .export-btn:hover { background: var(--accent-light); }
+  .export-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .gegenstand-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    font-family: 'Crimson Text', serif;
+    font-size: 0.9rem;
+    color: var(--ink);
+    padding: 0.2rem 0;
+    outline: none;
+    font-style: italic;
+  }
+  .gegenstand-input:focus { border-bottom-color: var(--accent); }
+  .gegenstand-input::placeholder { color: rgba(90,65,30,0.35); }
+
+  @media (max-width: 700px) {
+    .container { grid-template-columns: 1fr; }
+    .sheet-body { grid-template-columns: 1fr; }
+    .sheet-section.full { grid-column: 1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-title">Leseabenteuer</div>
+<div class="page-subtitle">Heldenbogen-Generator · Oberschule Spelle</div>
+
+<div class="container">
+
+  <!-- LEFT: Controls -->
+  <div class="panel">
+    <div class="panel-title">Helden erschaffen</div>
+
+    <div class="field-group">
+      <label class="field-label">Name des Helden</label>
+      <input class="field-input" id="heroName" type="text" placeholder="Wie heißt du, Held?" oninput="updateSheet()">
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" style="margin-bottom:0.5rem">Klasse wählen</label>
+      <div class="class-grid" id="classGrid"></div>
+    </div>
+
+    <div class="field-group" id="gegenstandGroup" style="display:none; margin-top:1rem;">
+      <label class="field-label">Besonderer Gegenstand</label>
+      <input class="gegenstand-input" id="gegenstand" type="text" placeholder="z. B. Altes Schwert, Zauberstab, Wurfmesser …" oninput="updateSheet()">
+    </div>
+
+    <button class="export-btn" id="exportBtn" onclick="exportPDF()" disabled>
+      ⬇ Heldenbogen als PDF exportieren
+    </button>
+  </div>
+
+  <!-- RIGHT: Live preview -->
+  <div class="preview-panel">
+
+    <div class="preview-empty" id="emptyState">
+      <div class="preview-empty-icon">⚔</div>
+      <div class="preview-empty-text">Wähle eine Klasse,<br>um deinen Heldenbogen zu sehen</div>
+    </div>
+
+    <div class="sheet" id="sheet">
+      <div class="sheet-header">
+        <div class="sheet-title">⚔ LESEABENTEUER ⚔</div>
+        <div class="sheet-subtitle">Heldenbogen · Oberschule Spelle</div>
+        <div class="sheet-hero-name" id="sheetName">—</div>
+        <div class="sheet-class-name" id="sheetClass">Klasse wählen</div>
+      </div>
+
+      <div class="sheet-body">
+
+        <!-- Attribute -->
+        <div class="sheet-section">
+          <div class="section-head">Attribute</div>
+          <table class="attr-table">
+            <tr>
+              <td class="attr-name">Stärke</td>
+              <td class="attr-val" id="vSTR">—</td>
+              <td class="attr-formula" id="fSTR"></td>
+            </tr>
+            <tr>
+              <td class="attr-name">Klugheit</td>
+              <td class="attr-val" id="vKLU">—</td>
+              <td class="attr-formula" id="fKLU"></td>
+            </tr>
+            <tr>
+              <td class="attr-name">Mut</td>
+              <td class="attr-val" id="vMUT">—</td>
+              <td class="attr-formula" id="fMUT"></td>
+            </tr>
+            <tr>
+              <td class="attr-name">Ausdauer</td>
+              <td class="attr-val" id="vAUS">—</td>
+              <td class="attr-formula" id="fAUS"></td>
+            </tr>
+            <tr>
+              <td class="attr-name">Geschick</td>
+              <td class="attr-val" id="vGES">—</td>
+              <td class="attr-formula" id="fGES"></td>
+            </tr>
+          </table>
+          <button class="reroll-btn" onclick="rollAll()">↻ Neu würfeln (W20)</button>
+        </div>
+
+        <!-- LP -->
+        <div class="sheet-section">
+          <div class="section-head">Lebens-LP</div>
+          <div class="lp-val" id="vLP">—</div>
+          <div style="font-size:0.75rem;color:var(--muted);margin-bottom:0.4rem">Start-LP (aus Klasse)</div>
+          <div class="lp-boxes" id="lpBoxes"></div>
+          <div style="margin-top:0.75rem">
+            <div class="section-head">Besonderer Gegenstand</div>
+            <div id="sheetGegenstand" style="font-style:italic;font-size:0.85rem;color:var(--muted);min-height:1.2rem;">—</div>
+          </div>
+        </div>
+
+        <!-- Vorteile -->
+        <div class="sheet-section">
+          <div class="section-head" style="color:var(--green)">Vorteile</div>
+          <ul class="skill-list" id="skillPos"></ul>
+        </div>
+
+        <!-- Nachteile -->
+        <div class="sheet-section">
+          <div class="section-head" style="color:var(--red-dark)">Nachteile</div>
+          <ul class="skill-list" id="skillNeg"></ul>
+        </div>
+
+        <!-- EP -->
+        <div class="sheet-section full">
+          <div class="section-head">Erfahrungspunkte</div>
+          <div class="xp-input-row">
+            <input class="xp-input" id="xpInput" type="number" min="0" max="999" value="0" oninput="updateXP()">
+            <span style="font-size:0.85rem;color:var(--muted)">EP gesamt</span>
+            <span class="xp-stufe" id="xpStufe">Stufe 1 · Neuling</span>
+          </div>
+          <div class="xp-track-wrap">
+            <div class="xp-labels">
+              <div class="xp-label-item"><span class="xp-label-num">0</span><span class="xp-label-name">Neuling</span></div>
+              <div class="xp-label-item"><span class="xp-label-num">50</span><span class="xp-label-name">Abenteurer</span></div>
+              <div class="xp-label-item"><span class="xp-label-num">150</span><span class="xp-label-name">Erfahren</span></div>
+              <div class="xp-label-item"><span class="xp-label-num">300</span><span class="xp-label-name">Legende</span></div>
+              <div class="xp-label-item"><span class="xp-label-num">500</span><span class="xp-label-name">Meisterheld</span></div>
+            </div>
+            <div class="xp-bar-outer">
+              <div class="xp-bar-inner" id="xpBar" style="width:0%"></div>
+              <span class="xp-arrow" id="xpArrow">► 0 EP</span>
+            </div>
+          </div>
+          <div class="adventure-log" id="advLog"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CLASSES = [
+  {
+    id:'krieger', icon:'⚔', name:'Krieger / Kriegerin', tagline:'Stark, ausdauernd, furchtlos',
+    attrs:{STR:4,KLU:0,MUT:3,AUS:3,GES:1}, lp:23,
+    pos:['Beginnt jedes Abenteuer mit +3 LP extra','Kampfproben mit +2','Einschüchterungsversuche immer erfolgreich','Trägt schwere Rüstung ohne Malus','Einmal pro Abenteuer selbst heilen (+4 LP)'],
+    neg:['Klugheitsproben mit −2','Schleichproben mit −3','Kann keine Magie nutzen','Verhandlungen: −1 auf alle Proben']
+  },
+  {
+    id:'magier', icon:'✦', name:'Magier / Magierin', tagline:'Klug, geheimnisvoll, mächtig',
+    attrs:{STR:0,KLU:5,MUT:1,AUS:1,GES:2}, lp:15,
+    pos:['Einmal pro Abenteuer Würfelwurf wiederholen','Klugheitsproben mit +3','Fallen & Rätsel: Erfolg bei W20 ≤ 5','Kann magische Gegenstände aktivieren','Spricht alle Sprachen (Probe entfällt)'],
+    neg:['Startet nur mit 15 LP','Kampfproben mit −3','Schwere Rüstung nicht tragbar','Körperliche Proben mit −2']
+  },
+  {
+    id:'schurke', icon:'◆', name:'Schurke / Schurkin', tagline:'Wendig, listig, anpassungsfähig',
+    attrs:{STR:2,KLU:2,MUT:2,AUS:2,GES:4}, lp:18,
+    pos:['Einmal pro Abenteuer automatischer Erfolg','Schleichproben mit +4','Taschendiebstahl ohne Probe','Schlösser knacken: W20 ≤ 14','Entkommen aus Fallen: +3 auf alle Proben'],
+    neg:['Keine besonderen Kampfboni','In offiziellen Situationen: −1 auf alle Proben','Kann kein schweres Gerät tragen']
+  },
+  {
+    id:'gelehrter', icon:'☽', name:'Gelehrte / Gelehrter', tagline:'Wissend, strategisch, beobachtend',
+    attrs:{STR:0,KLU:5,MUT:1,AUS:1,GES:1}, lp:16,
+    pos:['Erhält +5 Bonus-EP am Ende jedes Abenteuers','Rätsel & Fakten: Erfolg bei Probe ≤ 16','Gibt anderen Helden +2 auf ihre nächste Probe','Erkennt Lügen bei Probe ≤ KLU','Findet immer mindestens einen Hinweis'],
+    neg:['Kampfproben mit −3','Körperliche Proben mit −2','Startet mit nur 16 LP','Einschüchtern nicht möglich']
+  },
+  {
+    id:'waldlaeufer', icon:'✿', name:'Waldläufer / Waldläuferin', tagline:'Zäh, naturverbunden, überlebenstüchtig',
+    attrs:{STR:2,KLU:1,MUT:3,AUS:4,GES:2}, lp:20,
+    pos:['Überlebt einmal ein tödliches Ende mit 1 LP','Naturproben mit +4','Spurensuche immer erfolgreich','Tierkommunikation möglich','Orientierung in der Natur ohne Probe'],
+    neg:['Stadtabenteuer: Klugheitsproben −2','Soziale Verhandlungen: −1','Magie wirkt doppelt (doppelter LP-Verlust)']
+  }
+];
+
+const STUFEN = [
+  {min:0,max:49,name:'Neuling',bonus:''},
+  {min:50,max:149,name:'Abenteurer',bonus:'Zweite Klasse erreicht!'},
+  {min:150,max:299,name:'Erfahrener Held',bonus:'Zweiten Gegenstand wählen'},
+  {min:300,max:499,name:'Legende',bonus:'Ein Attribut dauerhaft +2'},
+  {min:500,max:9999,name:'Meisterheld',bonus:'Alle Nachteile halbiert'}
+];
+
+let selectedClass = null;
+let rolls = {STR:0,KLU:0,MUT:0,AUS:0,GES:0};
+
+function w20(bonus) {
+  return Math.min(20, Math.max(1, Math.floor(Math.random()*20)+1+bonus));
+}
+
+function buildClassGrid() {
+  const g = document.getElementById('classGrid');
+  CLASSES.forEach(c => {
+    const d = document.createElement('div');
+    d.className = 'class-card';
+    d.id = 'cc_'+c.id;
+    d.innerHTML = `<div class="class-card-header"><span class="class-icon">${c.icon}</span><span class="class-name">${c.name}</span></div><div class="class-tagline">${c.tagline}</div>`;
+    d.onclick = () => selectClass(c.id);
+    g.appendChild(d);
+  });
+}
+
+function selectClass(id) {
+  selectedClass = id;
+  document.querySelectorAll('.class-card').forEach(x => x.classList.remove('selected'));
+  document.getElementById('cc_'+id).classList.add('selected');
+  document.getElementById('gegenstandGroup').style.display = '';
+  document.getElementById('exportBtn').disabled = false;
+  rollAll();
+  updateSheet();
+}
+
+function rollAll() {
+  if (!selectedClass) return;
+  const c = CLASSES.find(x => x.id === selectedClass);
+  ['STR','KLU','MUT','AUS','GES'].forEach(a => {
+    rolls[a] = w20(c.attrs[a]);
+  });
+  updateSheet();
+}
+
+function updateSheet() {
+  if (!selectedClass) return;
+  const c = CLASSES.find(x => x.id === selectedClass);
+  const name = document.getElementById('heroName').value || '—';
+  const gegenstand = document.getElementById('gegenstand').value || '—';
+
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('sheet').classList.add('visible');
+
+  document.getElementById('sheetName').textContent = name;
+  document.getElementById('sheetClass').textContent = c.icon + ' ' + c.name;
+  document.getElementById('sheetGegenstand').textContent = gegenstand;
+  document.getElementById('vLP').textContent = c.lp + ' LP';
+
+  ['STR','KLU','MUT','AUS','GES'].forEach(a => {
+    const b = c.attrs[a];
+    document.getElementById('v'+a).textContent = rolls[a];
+    document.getElementById('f'+a).textContent = 'W20'+(b>=0?'+':'')+b;
+  });
+
+  // LP boxes
+  const lpEl = document.getElementById('lpBoxes');
+  lpEl.innerHTML = '';
+  for (let i=0; i<c.lp; i++) {
+    const box = document.createElement('div');
+    box.className = 'lp-box';
+    lpEl.appendChild(box);
+  }
+
+  // Skills
+  const pos = document.getElementById('skillPos');
+  pos.innerHTML = c.pos.map(s => `<li><span class="skill-plus">+</span>${s}</li>`).join('');
+  const neg = document.getElementById('skillNeg');
+  neg.innerHTML = c.neg.map(s => `<li><span class="skill-minus">−</span>${s}</li>`).join('');
+
+  updateXP();
+  buildAdvLog();
+}
+
+function updateXP() {
+  const xp = Math.max(0, parseInt(document.getElementById('xpInput').value)||0);
+  const MAX = 500;
+  const pct = Math.min(100, (xp/MAX)*100);
+  document.getElementById('xpBar').style.width = pct+'%';
+  document.getElementById('xpArrow').textContent = '► '+xp+' EP';
+
+  let stufeIdx = 0;
+  STUFEN.forEach((s,i) => { if(xp >= s.min) stufeIdx = i; });
+  const st = STUFEN[stufeIdx];
+  document.getElementById('xpStufe').textContent = 'Stufe '+(stufeIdx+1)+' · '+st.name+(st.bonus?' · '+st.bonus:'');
+}
+
+function buildAdvLog() {
+  const log = document.getElementById('advLog');
+  log.innerHTML = '<div style="margin-top:0.75rem"><div class="section-head" style="margin-bottom:0.5rem">Abenteuer-Protokoll</div></div>';
+  for (let i=1; i<=8; i++) {
+    const row = document.createElement('div');
+    row.className = 'adv-row';
+    row.innerHTML = `<span class="adv-num">${i}.</span><div class="adv-ep-line"></div><div class="adv-ep-line"></div>`;
+    log.appendChild(row);
+  }
+}
+
+// ─── PDF EXPORT ───────────────────────────────────────────────────────────────
+function exportPDF() {
+  if (!selectedClass) return;
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation:'portrait', unit:'mm', format:'a4' });
+  const c = CLASSES.find(x => x.id === selectedClass);
+  const name = document.getElementById('heroName').value || '(Kein Name)';
+  const gegenstand = document.getElementById('gegenstand').value || '—';
+  const xp = parseInt(document.getElementById('xpInput').value)||0;
+  let stufeIdx=0;
+  STUFEN.forEach((s,i)=>{ if(xp>=s.min) stufeIdx=i; });
+  const stufeName = 'Stufe '+(stufeIdx+1)+' · '+STUFEN[stufeIdx].name;
+
+  const W=210, M=14;
+  let y = 14;
+
+  // --- Farben ---
+  const PARCHMENT = [245,237,214];
+  const ACCENT    = [139,26,26];
+  const BORDER    = [122,92,42];
+  const MUTED     = [92,74,42];
+  const GREEN_C   = [29,107,58];
+  const RED_C     = [122,21,21];
+  const GOLD_C    = [201,162,39];
+  const INK       = [26,18,8];
+
+  // Hintergrund
+  doc.setFillColor(...PARCHMENT);
+  doc.rect(0,0,210,297,'F');
+
+  // Äußerer Rahmen
+  doc.setDrawColor(...BORDER);
+  doc.setLineWidth(0.8);
+  doc.rect(M,M,W-2*M,297-2*M);
+  doc.setLineWidth(0.3);
+  doc.rect(M+2,M+2,W-2*M-4,297-2*M-4);
+
+  // ── HEADER ──
+  y = 22;
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(18);
+  doc.setTextColor(...ACCENT);
+  doc.text('⚔  LESEABENTEUER  ⚔', W/2, y, {align:'center'});
+  y += 5;
+  doc.setFontSize(7);
+  doc.setFont('helvetica','normal');
+  doc.setTextColor(...MUTED);
+  doc.text('HELDENBOGEN · OBERSCHULE SPELLE', W/2, y, {align:'center'});
+  y += 5;
+  doc.setDrawColor(...BORDER);
+  doc.setLineWidth(0.5);
+  doc.line(M+4, y, W-M-4, y);
+  y += 6;
+
+  // Name & Klasse
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(16);
+  doc.setTextColor(...INK);
+  doc.text(name, W/2, y, {align:'center'});
+  y += 5;
+  doc.setFont('helvetica','italic');
+  doc.setFontSize(10);
+  doc.setTextColor(...MUTED);
+  doc.text(c.icon+' '+c.name+' · '+c.tagline, W/2, y, {align:'center'});
+  y += 7;
+
+  // ── TWO COLUMN LAYOUT ──
+  const colL = M+4;
+  const colR = W/2+2;
+  const colW = (W-2*M-8)/2 - 2;
+  let yL = y, yR = y;
+
+  function sectionBox(x, startY, w, title, color=ACCENT) {
+    doc.setFillColor(245,237,210);
+    doc.setDrawColor(...BORDER);
+    doc.setLineWidth(0.3);
+    // title
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(6.5);
+    doc.setTextColor(...color);
+    doc.text(title.toUpperCase(), x+2, startY+4);
+    doc.setDrawColor(...BORDER);
+    doc.setLineWidth(0.2);
+    doc.line(x+2, startY+5.5, x+w-2, startY+5.5);
+    return startY+8;
+  }
+
+  // ── ATTRIBUTE (links) ──
+  yL = sectionBox(colL, yL, colW, 'Attribute');
+  const attrs = ['STR','KLU','MUT','AUS','GES'];
+  const attrNames = ['Stärke','Klugheit','Mut','Ausdauer','Geschick'];
+  attrs.forEach((a,i) => {
+    const b = c.attrs[a];
+    const formula = 'W20'+(b>=0?'+':'')+b;
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(9);
+    doc.setTextColor(...MUTED);
+    doc.text(attrNames[i], colL+2, yL);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(11);
+    doc.setTextColor(...INK);
+    doc.text(String(rolls[a]), colL+colW/2, yL, {align:'center'});
+    doc.setFont('helvetica','italic');
+    doc.setFontSize(7);
+    doc.setTextColor(...MUTED);
+    doc.text(formula, colL+colW-2, yL, {align:'right'});
+    doc.setDrawColor(200,185,155);
+    doc.setLineWidth(0.15);
+    doc.line(colL+2, yL+1.5, colL+colW-2, yL+1.5);
+    yL += 7;
+  });
+
+  // Neu-Würfeln Hinweis
+  doc.setFont('helvetica','italic');
+  doc.setFontSize(6.5);
+  doc.setTextColor(...MUTED);
+  doc.text('Einmalig mit W20 + Klassenbonus gewürfelt', colL+2, yL);
+  yL += 6;
+
+  // ── LP (rechts oben) ──
+  yR = sectionBox(colR, yR, colW, 'Lebens-LP', ACCENT);
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(22);
+  doc.setTextColor(...ACCENT);
+  doc.text(String(c.lp), colR+colW/2, yR+7, {align:'center'});
+  doc.setFont('helvetica','normal');
+  doc.setFontSize(7);
+  doc.setTextColor(...MUTED);
+  doc.text('Start-LP (Klasse)', colR+colW/2, yR+12, {align:'center'});
+  yR += 16;
+
+  // LP Boxen
+  const boxSize = 4.5;
+  const boxGap = 1.5;
+  const perRow = Math.floor((colW-4)/(boxSize+boxGap));
+  let bx = colR+2, by = yR;
+  for(let i=0;i<c.lp;i++){
+    doc.setDrawColor(...BORDER);
+    doc.setLineWidth(0.3);
+    doc.setFillColor(255,255,255);
+    doc.rect(bx, by, boxSize, boxSize);
+    bx += boxSize+boxGap;
+    if((i+1)%perRow===0){bx=colR+2; by+=boxSize+boxGap;}
+  }
+  const lpRows = Math.ceil(c.lp/perRow);
+  yR += lpRows*(boxSize+boxGap)+4;
+
+  // Besonderer Gegenstand
+  yR = sectionBox(colR, yR, colW, 'Besonderer Gegenstand');
+  doc.setFont('helvetica','italic');
+  doc.setFontSize(9);
+  doc.setTextColor(...INK);
+  doc.text(gegenstand, colR+2, yR+1, {maxWidth: colW-4});
+  doc.setDrawColor(200,185,155);
+  doc.setLineWidth(0.2);
+  doc.line(colR+2, yR+4, colR+colW-2, yR+4);
+  yR += 10;
+
+  // ── Synchronisieren ──
+  y = Math.max(yL, yR) + 2;
+
+  // ── VORTEILE & NACHTEILE (nebeneinander) ──
+  let yVL = y, yVR = y;
+
+  yVL = sectionBox(colL, yVL, colW, 'Vorteile', GREEN_C);
+  c.pos.forEach(skill => {
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...GREEN_C);
+    doc.text('+', colL+2, yVL);
+    doc.setFont('helvetica','normal');
+    doc.setTextColor(...INK);
+    const lines = doc.splitTextToSize(skill, colW-10);
+    doc.text(lines, colL+6, yVL);
+    doc.setDrawColor(210,230,215);
+    doc.setLineWidth(0.15);
+    doc.line(colL+2, yVL+1.5, colL+colW-2, yVL+1.5);
+    yVL += lines.length*3.5 + 2;
+  });
+
+  yVR = sectionBox(colR, yVR, colW, 'Nachteile', RED_C);
+  c.neg.forEach(skill => {
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(7.5);
+    doc.setTextColor(...RED_C);
+    doc.text('−', colR+2, yVR);
+    doc.setFont('helvetica','normal');
+    doc.setTextColor(...INK);
+    const lines = doc.splitTextToSize(skill, colW-10);
+    doc.text(lines, colR+6, yVR);
+    doc.setDrawColor(235,210,210);
+    doc.setLineWidth(0.15);
+    doc.line(colR+2, yVR+1.5, colR+colW-2, yVR+1.5);
+    yVR += lines.length*3.5 + 2;
+  });
+
+  y = Math.max(yVL, yVR) + 4;
+
+  // ── EP / XP SECTION (volle Breite) ──
+  const fullW = W-2*M-8;
+  y = sectionBox(colL, y, fullW, 'Erfahrungspunkte');
+
+  // Aktueller Stand
+  doc.setFont('helvetica','bold');
+  doc.setFontSize(9);
+  doc.setTextColor(...INK);
+  doc.text('Gesamt-EP:', colL+2, y);
+  doc.setFontSize(13);
+  doc.setTextColor(...ACCENT);
+  doc.text(String(xp)+' EP', colL+28, y);
+  doc.setFontSize(8);
+  doc.setTextColor(...GOLD_C);
+  doc.text(stufeName, colR+colW/2, y, {align:'center'});
+  y += 6;
+
+  // Leiste
+  const barX = colL+2;
+  const barW = fullW-4;
+  const barH = 6;
+  doc.setFillColor(225,215,195);
+  doc.setDrawColor(...BORDER);
+  doc.setLineWidth(0.3);
+  doc.rect(barX, y, barW, barH, 'FD');
+
+  const MAX_XP = 500;
+  const fillW = Math.min(barW, (xp/MAX_XP)*barW);
+  if(fillW > 0){
+    doc.setFillColor(...ACCENT);
+    doc.rect(barX, y, fillW, barH, 'F');
+    // Pfeilspitze
+    const ax = barX+fillW;
+    doc.setFillColor(...GOLD_C);
+    doc.triangle(ax, y, ax, y+barH, ax+3, y+barH/2, 'F');
+  }
+
+  // Milestones
+  const milestones = [{v:0,n:'Neuling'},{v:50,n:'Abenteurer'},{v:150,n:'Erfahren'},{v:300,n:'Legende'},{v:500,n:'Meisterheld'}];
+  milestones.forEach(ms => {
+    const mx = barX + (ms.v/MAX_XP)*barW;
+    doc.setDrawColor(...BORDER);
+    doc.setLineWidth(0.3);
+    doc.line(mx, y, mx, y+barH);
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(5.5);
+    doc.setTextColor(...MUTED);
+    doc.text(ms.n, mx, y+barH+3, {align:'center'});
+  });
+  y += barH + 8;
+
+  // ── ABENTEUER-PROTOKOLL ──
+  y = sectionBox(colL, y, fullW, 'Abenteuer-Protokoll');
+  for(let i=1;i<=8;i++){
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(7);
+    doc.setTextColor(...MUTED);
+    doc.text(i+'.', colL+2, y);
+    doc.setDrawColor(200,185,155);
+    doc.setLineWidth(0.2);
+    doc.line(colL+8, y+0.5, colL+fullW/2-2, y+0.5);
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(7);
+    doc.setTextColor(180,165,135);
+    doc.text('EP: ____', colL+fullW/2+2, y);
+    doc.line(colL+fullW/2+18, y+0.5, colL+fullW-4, y+0.5);
+    y += 5.5;
+  }
+
+  // Unten: Klassenregeln-Reminder
+  y += 3;
+  doc.setFont('helvetica','italic');
+  doc.setFontSize(6.5);
+  doc.setTextColor(...MUTED);
+  doc.text('W20-System: Probe ≤ Attribut = Erfolg · Ergebnis 1 = automatischer Erfolg · Ergebnis 20 = automatischer Misserfolg', W/2, y, {align:'center'});
+
+  // Speichern
+  const safeName = (document.getElementById('heroName').value || 'Held').replace(/[^a-zA-ZäöüÄÖÜß0-9_-]/g,'_');
+  doc.save('Heldenbogen_'+safeName+'.pdf');
+}
+
+buildClassGrid();
+</script>
+</body>
+</html>
