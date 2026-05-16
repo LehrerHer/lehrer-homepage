@@ -108,7 +108,7 @@
                         titel: esc(g.nickname) + ' → ' + esc(g.level_name),
                         meta:  g.xp + ' XP',
                         datum: g.last_active,
-                        url:   'https://kolosseum.lehrer-herrmann.de/rangliste.html'
+                        url:   'kolosseum/public/rangliste.html'
                     };
                 });
             })
@@ -125,7 +125,7 @@
                     titel: esc(d.nick),
                     meta: 'Neu registriert',
                     datum: d.created_at,
-                    url: 'https://kolosseum.lehrer-herrmann.de/rangliste.html'
+                    url: 'kolosseum/public/rangliste.html'
                 }];
             })
             .catch(function () { return []; });
