@@ -44,6 +44,28 @@ router.get('/:id', (req, res) => {
   });
 });
 
+// GET /api/quizzes/:id/topscores – Top-5-Ergebnisse für ein Quiz
+router.get('/:id/topscores', (req, res) => {
+  const quizId = Number(req.params.id);
+  try {
+    const rows = db.prepare(`
+      SELECT s.nick,
+             MAX(qr.score) AS best_score,
+             MAX(qr.total) AS total
+      FROM quiz_results qr
+      JOIN students s ON s.id = qr.student_id
+      WHERE qr.quiz_id = ?
+      GROUP BY qr.student_id
+      ORDER BY best_score DESC, MIN(qr.completed_at) ASC
+      LIMIT 5
+    `).all(quizId);
+    res.json(rows);
+  } catch (e) {
+    console.error('Topscores Fehler:', e);
+    res.status(500).json({ error: 'Datenbankfehler' });
+  }
+});
+
 // POST /api/quizzes/:id/submit – Antworten einreichen (nur eingeloggte SuS)
 router.post('/:id/submit', requireStudent, (req, res) => {
   const quizId = Number(req.params.id);
