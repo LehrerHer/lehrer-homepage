@@ -11,7 +11,7 @@ const SHOP_ITEMS = [
     type:        'titel',
     emoji:       '🩸',
     preis:       25,
-    beschreibung: 'Für Gladiatoren, die ihren ersten Sieg errungen haben.',
+    beschreibung: 'Für Gladiatoren, die ihren ersten Sieg errungen haben. ⚔️ +3 % Angriff im Kampf.',
   },
   {
     id:          'titel_loewe',
@@ -19,7 +19,7 @@ const SHOP_ITEMS = [
     type:        'titel',
     emoji:       '🦁',
     preis:       60,
-    beschreibung: 'Du trägst den Mut des Königs der Savanne.',
+    beschreibung: 'Du trägst den Mut des Königs der Savanne. ❤️ +8 % Max-HP im Kampf.',
   },
   {
     id:          'titel_blitz',
@@ -27,7 +27,7 @@ const SHOP_ITEMS = [
     type:        'titel',
     emoji:       '⚡',
     preis:       90,
-    beschreibung: 'Schneller als jedes Auge, gefürchtet von jedem Gegner.',
+    beschreibung: 'Schneller als jedes Auge, gefürchtet von jedem Gegner. ⚔️ +8 % Angriff im Kampf.',
   },
   {
     id:          'titel_sturm',
@@ -35,7 +35,7 @@ const SHOP_ITEMS = [
     type:        'titel',
     emoji:       '🌪️',
     preis:       110,
-    beschreibung: 'Unaufhaltsam wie ein Tornado durch die Arena.',
+    beschreibung: 'Unaufhaltsam wie ein Tornado durch die Arena. 🛡️ +8 % Ausweich-Chance im Kampf.',
   },
   {
     id:          'titel_schatten',
@@ -43,7 +43,7 @@ const SHOP_ITEMS = [
     type:        'titel',
     emoji:       '🌑',
     preis:       140,
-    beschreibung: 'Aus den Schatten – unvorhersehbar und gefährlich.',
+    beschreibung: 'Aus den Schatten – unvorhersehbar und gefährlich. 🛡️ +10 % Ausweich-Chance im Kampf.',
   },
   {
     id:          'titel_drache',
@@ -51,7 +51,7 @@ const SHOP_ITEMS = [
     type:        'titel',
     emoji:       '🐉',
     preis:       180,
-    beschreibung: 'Kein Feind ist zu mächtig, kein Drache zu groß.',
+    beschreibung: 'Kein Feind ist zu mächtig, kein Drache zu groß. ⚔️ +10 % Angriff im Kampf.',
   },
   {
     id:          'titel_koenig',
@@ -59,7 +59,7 @@ const SHOP_ITEMS = [
     type:        'titel',
     emoji:       '👑',
     preis:       350,
-    beschreibung: 'Nur die Allerklärsten tragen diese Krone.',
+    beschreibung: 'Nur die Allerklärsten tragen diese Krone. ❤️ +10 % HP & ⚔️ +5 % Angriff im Kampf.',
   },
   {
     id:          'titel_legende',
@@ -67,7 +67,7 @@ const SHOP_ITEMS = [
     type:        'titel',
     emoji:       '⭐',
     preis:       600,
-    beschreibung: 'Der höchste Ehrentitel des Kolosseums.',
+    beschreibung: 'Der höchste Ehrentitel des Kolosseums. ❤️ +12 % HP & ⚔️ +8 % Angriff im Kampf.',
   },
 
   // ── Einzugseffekte ─────────────────────────────────────────────────────────
@@ -77,7 +77,7 @@ const SHOP_ITEMS = [
     type:        'effekt',
     emoji:       '🔥',
     preis:       200,
-    beschreibung: 'Dein Gladiator betritt die Arena umhüllt von lodernden Flammen.',
+    beschreibung: 'Dein Gladiator betritt die Arena umhüllt von lodernden Flammen. ⚔️ +12 % Angriff im Kampf.',
   },
   {
     id:          'effekt_frost',
@@ -85,7 +85,7 @@ const SHOP_ITEMS = [
     type:        'effekt',
     emoji:       '❄️',
     preis:       200,
-    beschreibung: 'Eisige Aura – dein Gegner erfriert schon beim Anblick.',
+    beschreibung: 'Eisige Aura – dein Gegner erfriert schon beim Anblick. ❤️ +15 % Max-HP im Kampf.',
   },
   {
     id:          'effekt_blitz',
@@ -93,7 +93,7 @@ const SHOP_ITEMS = [
     type:        'effekt',
     emoji:       '⚡',
     preis:       250,
-    beschreibung: 'Donnernder Blitzeinschlag kündigt deinen Einzug an.',
+    beschreibung: 'Donnernder Blitzeinschlag kündigt deinen Einzug an. ⚡ +15 % Kritisch-Treffer-Chance im Kampf.',
   },
 ];
 
