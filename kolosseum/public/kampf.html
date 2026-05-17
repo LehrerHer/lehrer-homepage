@@ -196,7 +196,9 @@
       z-index: 20;
       animation: float-up 1.2s ease forwards;
     }
-    .dmg-number.dmg-small { font-size: 1.2rem; color: #ff8c00; }
+    .dmg-number.dmg-small  { font-size: 1.2rem; color: #ff8c00; }
+    .dmg-number.dmg-crit   { font-size: 2.0rem; color: #ffe000; text-shadow: 0 0 12px rgba(255,200,0,.9), 0 2px 6px rgba(0,0,0,.8); }
+    .dmg-number.dmg-dodge  { font-size: 1.1rem; color: #7cd4ff; font-style: italic; }
     @keyframes float-up {
       0%   { opacity: 1;   transform: translateX(-50%) translateY(0); }
       100% { opacity: 0;   transform: translateX(-50%) translateY(-55px); }
@@ -491,6 +493,8 @@
       const { log, h_nick, g_nick, h_id, g_id, winner_id, meinId,
               h_items = [], g_items = [] } = data;
       const { startHpA, startHpB, atkA, atkB, runden,
+              critChanceA = 0.20, dodgeChanceA = 0.12,
+              critChanceB = 0.20, dodgeChanceB = 0.12,
               herausfordererGewinnt, muenzenGewinner, muenzenVerlierer } = log;
 
       const hTitel  = getTitel(h_items);
@@ -587,11 +591,13 @@
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
             <div>
               <div style="font-weight:700;font-size:.85rem;margin-bottom:.25rem">${esc(h_nick)}</div>
-              <div style="font-size:.82rem;color:var(--ink-soft)">⚔️ Angriff: ${atkA} | ❤️ Max-HP: ${startHpA}</div>
+              <div style="font-size:.82rem;color:var(--ink-soft)">⚔️ ${atkA} | ❤️ ${startHpA} HP</div>
+              <div style="font-size:.78rem;color:var(--ink-soft);margin-top:.15rem">⚡ Krit: ${Math.round(critChanceA*100)} % | 🛡️ Ausw.: ${Math.round(dodgeChanceA*100)} %</div>
             </div>
             <div style="text-align:right">
               <div style="font-weight:700;font-size:.85rem;margin-bottom:.25rem">${esc(g_nick)}</div>
-              <div style="font-size:.82rem;color:var(--ink-soft)">⚔️ Angriff: ${atkB} | ❤️ Max-HP: ${startHpB}</div>
+              <div style="font-size:.82rem;color:var(--ink-soft)">⚔️ ${atkB} | ❤️ ${startHpB} HP</div>
+              <div style="font-size:.78rem;color:var(--ink-soft);margin-top:.15rem">⚡ Krit: ${Math.round(critChanceB*100)} % | 🛡️ Ausw.: ${Math.round(dodgeChanceB*100)} %</div>
             </div>
           </div>
         </div>
@@ -609,6 +615,7 @@
       }
 
       return { startHpA, startHpB, atkA, atkB, runden,
+               critChanceA, dodgeChanceA, critChanceB, dodgeChanceB,
                herausfordererGewinnt, muenzenGewinner, muenzenVerlierer,
                h_nick, g_nick, winner_id, meinId, istGewinner,
                hEffekt, gEffekt };
@@ -616,12 +623,20 @@
 
     // ── Schaden-Zahl anzeigen ─────────────────────────────────────────────────
 
-    function zeigeDmg(stageId, dmg) {
+    function zeigeDmg(stageId, dmg, { crit = false, dodge = false } = {}) {
       const stage = document.getElementById(stageId);
       if (!stage) return;
       const el = document.createElement('div');
-      el.className = 'dmg-number' + (dmg < 10 ? ' dmg-small' : '');
-      el.textContent = '-' + dmg;
+      if (dodge) {
+        el.className = 'dmg-number dmg-dodge';
+        el.textContent = 'Ausgewichen!';
+      } else if (crit) {
+        el.className = 'dmg-number dmg-crit';
+        el.textContent = '⚡ -' + dmg + ' KRIT!';
+      } else {
+        el.className = 'dmg-number' + (dmg < 10 ? ' dmg-small' : '');
+        el.textContent = '-' + dmg;
+      }
       stage.appendChild(el);
       el.addEventListener('animationend', () => el.remove());
     }
@@ -640,15 +655,22 @@
 
     // ── Log-Eintrag hinzufügen ────────────────────────────────────────────────
 
-    function addLog(runde, dmgA, dmgB, hpA, hpB, h_nick, g_nick) {
+    function addLog(runde, dmgA, dmgB, hpA, hpB, h_nick, g_nick, critA, critB, dodgedA, dodgedB) {
       const log = document.getElementById('kampf-log');
       if (!log) return;
       const el = document.createElement('div');
       el.className = 'log-entry';
+
+      const hitA = dodgedB
+        ? `<span class="log-hit-b" style="color:#7cd4ff">ausgewichen!</span>`
+        : `trifft für <span class="log-hit-a">${dmgA}${critA ? ' ⚡KRIT' : ''}</span>`;
+      const hitB = dodgedA
+        ? `<span class="log-hit-b" style="color:#7cd4ff">ausgewichen!</span>`
+        : `trifft für <span class="log-hit-b">${dmgB}${critB ? ' ⚡KRIT' : ''}</span>`;
+
       el.innerHTML =
         `<span class="log-runde">${runde}.</span>` +
-        `<span>${esc(h_nick)} trifft für <span class="log-hit-a">${dmgA}</span> – ` +
-        `${esc(g_nick)} trifft für <span class="log-hit-b">${dmgB}</span>` +
+        `<span>${esc(h_nick)} ${hitA} – ${esc(g_nick)} ${hitB}` +
         ` (❤️ ${Math.max(0,hpA)} / ${Math.max(0,hpB)})</span>`;
       log.appendChild(el);
       const wrap = document.getElementById('kampf-log-wrap');
@@ -658,7 +680,9 @@
     // ── Rundenanimation ───────────────────────────────────────────────────────
 
     async function spieleRunde(runde, startHpA, startHpB, h_nick, g_nick) {
-      const { runde: nr, dmgA, dmgB, hpA, hpB } = runde;
+      const { runde: nr, dmgA, dmgB, hpA, hpB,
+              critA = false, critB = false,
+              dodgedA = false, dodgedB = false } = runde;
 
       const counter = document.getElementById('round-counter');
       if (counter) counter.textContent = `Runde ${nr}`;
@@ -675,12 +699,12 @@
       if (wrapA) wrapA.classList.remove('attacking-right');
       if (wrapB) wrapB.classList.remove('attacking-left');
 
-      // Treffer-Effekte
-      if (wrapA) wrapA.classList.add('hit-flash');
-      if (wrapB) wrapB.classList.add('hit-flash');
+      // Treffer-Effekte (kein Flash bei Ausweichen)
+      if (!dodgedA) { if (wrapA) wrapA.classList.add('hit-flash'); }
+      if (!dodgedB) { if (wrapB) wrapB.classList.add('hit-flash'); }
 
-      zeigeDmg('avatar-stage-b', dmgA);
-      zeigeDmg('avatar-stage-a', dmgB);
+      zeigeDmg('avatar-stage-b', dmgA, { crit: critA, dodge: dodgedB });
+      zeigeDmg('avatar-stage-a', dmgB, { crit: critB, dodge: dodgedA });
 
       // HP aktualisieren
       updateHp('a', hpA, startHpA);
@@ -690,7 +714,7 @@
       if (wrapA) wrapA.classList.remove('hit-flash');
       if (wrapB) wrapB.classList.remove('hit-flash');
 
-      addLog(nr, dmgA, dmgB, hpA, hpB, h_nick, g_nick);
+      addLog(nr, dmgA, dmgB, hpA, hpB, h_nick, g_nick, critA, critB, dodgedA, dodgedB);
 
       await sleep(800);
     }
@@ -805,6 +829,7 @@
 
       const { startHpA, startHpB, runden, herausfordererGewinnt,
               muenzenGewinner, muenzenVerlierer, h_nick, g_nick,
+              critChanceA, dodgeChanceA, critChanceB, dodgeChanceB,
               winner_id, meinId, istGewinner } = arena;
 
       for (const runde of runden) {

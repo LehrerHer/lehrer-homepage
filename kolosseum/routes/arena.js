@@ -4,27 +4,72 @@ const { requireStudent } = require('../middleware/auth');
 
 const router = express.Router();
 
-function kampfStats(xp) {
-  const w = Math.sqrt(Math.max(xp, 0));
-  return {
-    hp:  Math.round(100 + w * 3),
-    atk: Math.round(8   + w * 0.8),
+// Kampfboni pro Item (werden auf Basis-Stats addiert/multipliziert)
+const ITEM_BONI = {
+  titel_blut:     { atkBonus: 0.03 },
+  titel_loewe:    { hpBonus:  0.08 },
+  titel_blitz:    { atkBonus: 0.08 },
+  titel_sturm:    { dodgeBonus: 0.08 },
+  titel_schatten: { dodgeBonus: 0.10 },
+  titel_drache:   { atkBonus: 0.10 },
+  titel_koenig:   { hpBonus: 0.10, atkBonus: 0.05 },
+  titel_legende:  { hpBonus: 0.12, atkBonus: 0.08 },
+  effekt_feuer:   { atkBonus: 0.12 },
+  effekt_frost:   { hpBonus:  0.15 },
+  effekt_blitz:   { critBonus: 0.15 },
+};
+
+function kampfStats(xp, items = []) {
+  // Logarithmische Skalierung: kleinerer Gap zwischen schwachen und starken S
+  const w = Math.pow(Math.max(xp, 0), 0.35);
+  const stats = {
+    hp:          Math.round(100 + w * 8),
+    atk:         Math.round(7   + w * 1.8),
+    critChance:  0.20,
+    dodgeChance: 0.12,
   };
+
+  for (const itemId of items) {
+    const bonus = ITEM_BONI[itemId];
+    if (!bonus) continue;
+    if (bonus.hpBonus)    stats.hp          = Math.round(stats.hp  * (1 + bonus.hpBonus));
+    if (bonus.atkBonus)   stats.atk         = Math.round(stats.atk * (1 + bonus.atkBonus));
+    if (bonus.critBonus)  stats.critChance  = Math.min(0.60, stats.critChance  + bonus.critBonus);
+    if (bonus.dodgeBonus) stats.dodgeChance = Math.min(0.40, stats.dodgeChance + bonus.dodgeBonus);
+  }
+
+  return stats;
 }
 
-function kampfSimulieren(xpA, xpB) {
-  const statA = kampfStats(xpA);
-  const statB = kampfStats(xpB);
+function equippedItems(sid) {
+  return db.prepare(
+    "SELECT item_id FROM student_items WHERE student_id = ? AND equipped = 1"
+  ).all(sid).map(r => r.item_id);
+}
+
+function kampfSimulieren(xpA, xpB, itemsA = [], itemsB = []) {
+  const statA = kampfStats(xpA, itemsA);
+  const statB = kampfStats(xpB, itemsB);
   let hpA = statA.hp;
   let hpB = statB.hp;
   const runden = [];
 
   for (let i = 0; i < 15 && hpA > 0 && hpB > 0; i++) {
-    const dmgA = Math.max(1, Math.round(statA.atk * (0.5 + Math.random())));
-    const dmgB = Math.max(1, Math.round(statB.atk * (0.5 + Math.random())));
+    // A greift B an – B kann ausweichen
+    const dodgedB = Math.random() < statB.dodgeChance;
+    const critA   = !dodgedB && Math.random() < statA.critChance;
+    const baseDmgA = Math.max(1, Math.round(statA.atk * (0.7 + Math.random() * 0.6)));
+    const dmgA = dodgedB ? 0 : Math.round(baseDmgA * (critA ? 1.8 : 1));
+
+    // B greift A an – A kann ausweichen
+    const dodgedA = Math.random() < statA.dodgeChance;
+    const critB   = !dodgedA && Math.random() < statB.critChance;
+    const baseDmgB = Math.max(1, Math.round(statB.atk * (0.7 + Math.random() * 0.6)));
+    const dmgB = dodgedA ? 0 : Math.round(baseDmgB * (critB ? 1.8 : 1));
+
     hpA = Math.max(0, hpA - dmgB);
     hpB = Math.max(0, hpB - dmgA);
-    runden.push({ runde: i + 1, dmgA, dmgB, hpA, hpB });
+    runden.push({ runde: i + 1, dmgA, dmgB, hpA, hpB, critA, critB, dodgedA, dodgedB });
     if (hpA <= 0 || hpB <= 0) break;
   }
 
@@ -32,7 +77,9 @@ function kampfSimulieren(xpA, xpB) {
     runden,
     herausfordererGewinnt: hpA >= hpB,
     startHpA: statA.hp, atkA: statA.atk,
+    critChanceA: statA.critChance, dodgeChanceA: statA.dodgeChance,
     startHpB: statB.hp, atkB: statB.atk,
+    critChanceB: statB.critChance, dodgeChanceB: statB.dodgeChance,
   };
 }
 
@@ -117,7 +164,9 @@ router.post('/herausforderung/:id/annehmen', requireStudent, (req, res) => {
 
   if (!c) return res.status(404).json({ error: 'Herausforderung nicht gefunden.' });
 
-  const sim = kampfSimulieren(c.h_xp, c.g_xp);
+  const h_items = equippedItems(c.challenger_id);
+  const g_items = equippedItems(c.opponent_id);
+  const sim = kampfSimulieren(c.h_xp, c.g_xp, h_items, g_items);
 
   const gewinnerId  = sim.herausfordererGewinnt ? c.challenger_id : c.opponent_id;
   const verliererId = sim.herausfordererGewinnt ? c.opponent_id   : c.challenger_id;
@@ -130,7 +179,9 @@ router.post('/herausforderung/:id/annehmen', requireStudent, (req, res) => {
   const log = JSON.stringify({
     runden:      sim.runden,
     startHpA:    sim.startHpA, atkA: sim.atkA,
+    critChanceA: sim.critChanceA, dodgeChanceA: sim.dodgeChanceA,
     startHpB:    sim.startHpB, atkB: sim.atkB,
+    critChanceB: sim.critChanceB, dodgeChanceB: sim.dodgeChanceB,
     herausfordererGewinnt: sim.herausfordererGewinnt,
     h_nick: c.h_nick, g_nick: c.g_nick,
     h_xp:   c.h_xp,   g_xp:   c.g_xp,
@@ -185,12 +236,6 @@ router.get('/kampf/:id', requireStudent, (req, res) => {
 
   const log = c.battle_log ? JSON.parse(c.battle_log) : null;
 
-  // Ausgerüstete Items beider Kämpfer
-  function equippedItems(sid) {
-    return db.prepare(
-      "SELECT item_id FROM student_items WHERE student_id = ? AND equipped = 1"
-    ).all(sid).map(r => r.item_id);
-  }
   const h_items = equippedItems(c.h_id);
   const g_items = equippedItems(c.g_id);
 
