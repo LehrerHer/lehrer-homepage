@@ -138,7 +138,7 @@
             <!-- Navigationslinks – Anker-Links zu den Sektionen der Seite -->
             <ul class="navbar-links" id="navbar-links">
                 <li><a href="#was-ist-neu">Was ist neu?</a></li>
-                <li><a href="#faecher">Fächer</a></li>
+                <li><a href="#bereiche-uebersicht">Fächer</a></li>
                 <li><a href="portal.html">Materialien &amp; Quizze</a></li>
                 <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html">🏛️ Arena</a></li>
                 <li><a href="blog.html">Blog</a></li>
@@ -168,28 +168,12 @@
 
             <h1>Jan Herrmann</h1>
 
-            <p class="hero-text">
-                Herzlich willkommen auf meiner Lehrerhomepage!<br>
-                Hier finden Schülerinnen, Schüler und Eltern wichtige Informationen
-                zu meinen Unterrichtsfächern, Lernmaterialien und Kontaktmöglichkeiten.
-            </p>
+            <p class="hero-schule">Lehrer an der Oberschule Spelle</p>
 
-            <!-- Fächer-Badges (kleine Kennzeichnungen) -->
-            <div class="hero-faecher" role="list" aria-label="Unterrichtsfächer" id="faecher">
-                <!-- Erste Reihe: Hauptfächer -->
-                <div class="hero-faecher-reihe">
-                    <a href="fach-deutsch.html" class="fach-badge" role="listitem">📖 Deutsch</a>
-                    <a href="fach-geschichte.html" class="fach-badge" role="listitem">🏛️ Geschichte</a>
-                </div>
-                <!-- Zweite Reihe: weitere Fächer -->
-                <div class="hero-faecher-reihe">
-                    <a href="fach-wipo.html" class="fach-badge" role="listitem">🌍 Wirtschaft/Politik</a>
-                    <a href="fach-informatik.html" class="fach-badge" role="listitem">💻 Informatik</a>
-                    <a href="fach-werte-normen.html" class="fach-badge" role="listitem">⚖️ Werte &amp; Normen</a>
-                    <a href="fach-andere.html" class="fach-badge" role="listitem">📂 Andere Fächer</a>
-                    <a href="fach-ag-projekte.html" class="fach-badge" role="listitem">🎭 AGs &amp; Projekte</a>
-                </div>
-            </div>
+            <p class="hero-text">
+                Diese Homepage richtet sich an Schülerinnen und Schüler sowie Eltern der Oberschule Spelle.<br>
+                Hier finden Sie Unterrichtsmaterialien, interaktive Quizze und Informationen zu meinen Unterrichtsfächern.
+            </p>
 
         </div>
     </section>
@@ -338,12 +322,27 @@
                     </a>
                 </div>
                 <div class="gladiatoren-teaser-bild" aria-hidden="true">
-                    <img
-                        src="img/arena-gladiatoren.png"
-                        alt="Schüler-Gladiatoren Leo, Victoria, Max und Luna kämpfen in der Arena"
-                        class="gladiatoren-img"
-                        loading="lazy"
-                    >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 180" fill="none"
+                         class="gladiatoren-svg-icon" role="img" aria-label="Schild und Schwert">
+                        <!-- Schild -->
+                        <path d="M18 24 L142 24 L142 110 C142 144 80 168 80 168 C80 168 18 144 18 110 Z"
+                              fill="rgba(74,158,218,0.10)" stroke="#4a9eda" stroke-width="3.5" stroke-linejoin="round"/>
+                        <!-- Schild innere Linie -->
+                        <path d="M30 36 L130 36 L130 108 C130 136 80 156 80 156 C80 156 30 136 30 108 Z"
+                              fill="none" stroke="rgba(74,158,218,0.35)" stroke-width="1.5" stroke-linejoin="round"/>
+                        <!-- Schild-Boss (Mittelbuckel) -->
+                        <circle cx="80" cy="96" r="18" fill="rgba(74,158,218,0.07)" stroke="rgba(74,158,218,0.45)" stroke-width="1.5"/>
+                        <!-- Schwert-Spitze -->
+                        <polygon points="80,8 73,26 87,26" fill="rgba(255,255,255,0.92)"/>
+                        <!-- Schwert-Klinge -->
+                        <rect x="77" y="24" width="6" height="78" rx="1" fill="rgba(255,255,255,0.92)"/>
+                        <!-- Parierstange -->
+                        <rect x="62" y="100" width="36" height="6" rx="3" fill="rgba(255,255,255,0.88)"/>
+                        <!-- Griff -->
+                        <rect x="77" y="106" width="6" height="17" rx="2.5" fill="rgba(255,255,255,0.68)"/>
+                        <!-- Knauf -->
+                        <circle cx="80" cy="130" r="6.5" fill="rgba(255,255,255,0.85)" stroke="rgba(255,255,255,0.5)" stroke-width="1"/>
+                    </svg>
                 </div>
             </div>
         </div>
@@ -384,7 +383,8 @@
                 </a>
                 <p style="font-size:.82rem;color:#888;margin:.5rem 0 0">
                     Noch kein Account?
-                    <a href="#kontakt" style="color:var(--accent-color,#4a9eda)">Herrn Herrmann um einen Einladungslink bitten →</a>
+                    <a href="#kontakt" style="color:var(--accent-color,#4a9eda)">Herrn Herrmann um einen Einladungslink bitten →</a><br>
+                    <span style="display:block;margin-top:.4rem;color:#aaa;line-height:1.5">Zugang erhalten nur angemeldete Schülerinnen und Schüler meiner aktuellen Klassen auf persönliche Anfrage.</span>
                 </p>
             </div>
         </div>
@@ -417,11 +417,27 @@
                 </div>
                 <div class="kolosseum-teaser-right">
                     <a href="https://kolosseum.lehrer-herrmann.de/profil.html" aria-label="Zur Arena">
-                        <img
-                            src="img/arena-gladiatoren.png"
-                            alt="Schüler-Gladiatoren in der Arena – Leo, Victoria, Max und Luna kämpfen vor jubelndem Publikum"
-                            style="width:260px;max-width:100%;border-radius:12px;box-shadow:0 4px 20px rgba(30,58,95,.18);display:block"
-                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 180" fill="none"
+                             style="width:140px;max-width:100%;display:block" role="img" aria-label="Schild und Schwert">
+                            <!-- Schild -->
+                            <path d="M18 24 L142 24 L142 110 C142 144 80 168 80 168 C80 168 18 144 18 110 Z"
+                                  fill="rgba(30,58,95,0.07)" stroke="#1e3a5f" stroke-width="3.5" stroke-linejoin="round"/>
+                            <!-- Schild innere Linie -->
+                            <path d="M30 36 L130 36 L130 108 C130 136 80 156 80 156 C80 156 30 136 30 108 Z"
+                                  fill="none" stroke="rgba(30,58,95,0.28)" stroke-width="1.5" stroke-linejoin="round"/>
+                            <!-- Schild-Boss -->
+                            <circle cx="80" cy="96" r="18" fill="rgba(74,158,218,0.09)" stroke="#4a9eda" stroke-width="1.5"/>
+                            <!-- Schwert-Spitze -->
+                            <polygon points="80,8 73,26 87,26" fill="#1e3a5f"/>
+                            <!-- Schwert-Klinge -->
+                            <rect x="77" y="24" width="6" height="78" rx="1" fill="#1e3a5f"/>
+                            <!-- Parierstange -->
+                            <rect x="62" y="100" width="36" height="6" rx="3" fill="#1e3a5f"/>
+                            <!-- Griff -->
+                            <rect x="77" y="106" width="6" height="17" rx="2.5" fill="#4a9eda"/>
+                            <!-- Knauf -->
+                            <circle cx="80" cy="130" r="6.5" fill="#1e3a5f"/>
+                        </svg>
                     </a>
                 </div>
             </div>
@@ -438,10 +454,18 @@
             <h2 class="section-titel">Digitale Arbeitsblätter, Quizze und Materialien</h2>
             <p class="section-untertitel">Interaktiv und direkt im Browser – Arbeitsblätter, Quizze und hochgeladene Unterrichtsmaterialien.</p>
 
+            <!-- Jahrgangs-Filter -->
+            <div class="dm-filter-leiste" role="group" aria-label="Nach Jahrgang filtern">
+                <button class="dm-filter-btn aktiv" data-filter="alle">Alle</button>
+                <button class="dm-filter-btn" data-filter="5-6">Klasse 5–6</button>
+                <button class="dm-filter-btn" data-filter="7-9">Klasse 7–9</button>
+                <button class="dm-filter-btn" data-filter="oberstufe">Oberstufe</button>
+            </div>
+
             <div class="dm-grid">
 
                 <!-- Narratologische Analyse -->
-                <a href="narratologische-analyse.html" class="dm-karte">
+                <a href="narratologische-analyse.html" class="dm-karte" data-jahrgang="oberstufe">
                     <div class="dm-karte-badges">
                         <span class="dm-typ dm-typ-ab">Arbeitsblatt</span>
                         <span class="dm-fach">📖 Deutsch</span>
@@ -453,7 +477,7 @@
                 </a>
 
                 <!-- Dialektische Erörterung -->
-                <a href="deutsch-dialektische-eroerterung.html" class="dm-karte">
+                <a href="deutsch-dialektische-eroerterung.html" class="dm-karte" data-jahrgang="oberstufe">
                     <div class="dm-karte-badges">
                         <span class="dm-typ dm-typ-ab">Arbeitsblatt</span>
                         <span class="dm-fach">📖 Deutsch</span>
@@ -465,7 +489,7 @@
                 </a>
 
                 <!-- Fünf-Schritt-Lesemethode -->
-                <a href="fuenfschrittlesemethode.html" class="dm-karte">
+                <a href="fuenfschrittlesemethode.html" class="dm-karte" data-jahrgang="5-6">
                     <div class="dm-karte-badges">
                         <span class="dm-typ dm-typ-ab">Arbeitsblatt</span>
                         <span class="dm-fach">📖 Deutsch</span>
@@ -477,7 +501,7 @@
                 </a>
 
                 <!-- Herrschaft im Mittelalter -->
-                <a href="ab-herrschaft-mittelalter.html" class="dm-karte">
+                <a href="ab-herrschaft-mittelalter.html" class="dm-karte" data-jahrgang="5-6">
                     <div class="dm-karte-badges">
                         <span class="dm-typ dm-typ-ab">Arbeitsblatt</span>
                         <span class="dm-fach">🏛️ Geschichte</span>
@@ -489,7 +513,7 @@
                 </a>
 
                 <!-- Burg Bentheim – Museumsführung (Rollenspiel) -->
-                <a href="materialien/geschichte_burg-bentheim_museumsführung_7r_2026-05.html" class="dm-karte">
+                <a href="materialien/geschichte_burg-bentheim_museumsführung_7r_2026-05.html" class="dm-karte" data-jahrgang="7-9">
                     <div class="dm-karte-badges">
                         <span class="dm-typ dm-typ-ab">Arbeitsblatt</span>
                         <span class="dm-fach">🏛️ Geschichte</span>
@@ -501,7 +525,7 @@
                 </a>
 
                 <!-- Stilmittel-Quiz -->
-                <a href="stilmittel-quiz.html" class="dm-karte">
+                <a href="stilmittel-quiz.html" class="dm-karte" data-jahrgang="7-9">
                     <div class="dm-karte-badges">
                         <span class="dm-typ dm-typ-quiz">⚔️ Quiz</span>
                         <span class="dm-fach">📖 Deutsch</span>
@@ -513,7 +537,7 @@
                 </a>
 
                 <!-- Literaturwissenschaft-Quiz -->
-                <a href="literaturwissenschaft_quiz_v2.html" class="dm-karte">
+                <a href="literaturwissenschaft_quiz_v2.html" class="dm-karte" data-jahrgang="oberstufe">
                     <div class="dm-karte-badges">
                         <span class="dm-typ dm-typ-quiz">⚔️ Quiz</span>
                         <span class="dm-fach">📖 Deutsch</span>
@@ -525,7 +549,7 @@
                 </a>
 
                 <!-- Rechtschreib-Quiz -->
-                <a href="rechtschreibquiz.html" class="dm-karte">
+                <a href="rechtschreibquiz.html" class="dm-karte" data-jahrgang="7-9">
                     <div class="dm-karte-badges">
                         <span class="dm-typ dm-typ-quiz">⚔️ Quiz</span>
                         <span class="dm-fach">📖 Deutsch</span>
@@ -645,6 +669,35 @@
     <script src="js/arena-bar.js"></script>
     <script src="js/kolosseum-login-widget.js"></script>
     <script src="js/homepage-gate.js"></script>
+    <!-- Jahrgangs-Filter für digitale Materialien -->
+    <script>
+    (function () {
+        'use strict';
+        const buttons      = document.querySelectorAll('.dm-filter-btn');
+        const karten       = document.querySelectorAll('.dm-karte[data-jahrgang]');
+        const dynamisch    = document.querySelector('.dynamic-inhalte');
+
+        if (!buttons.length) return;
+
+        buttons.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                const filter = this.dataset.filter;
+
+                buttons.forEach(function (b) { b.classList.remove('aktiv'); });
+                this.classList.add('aktiv');
+
+                karten.forEach(function (karte) {
+                    karte.style.display = (filter === 'alle' || karte.dataset.jahrgang === filter) ? '' : 'none';
+                });
+
+                if (dynamisch) {
+                    dynamisch.style.display = filter === 'alle' ? '' : 'none';
+                }
+            });
+        });
+    }());
+    </script>
+
     <!-- GoatCounter Analytics – cookiefrei, DSGVO-konform -->
     <!-- Konto anlegen auf goatcounter.com und DEIN-CODE durch deinen Code ersetzen -->
     <script data-goatcounter="https://lehrer-herrmann.goatcounter.com/count"
