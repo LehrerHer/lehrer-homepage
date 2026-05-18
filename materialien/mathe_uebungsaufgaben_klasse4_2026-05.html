@@ -1,0 +1,1388 @@
+<!--
+  Titel: Übungsaufgaben zur Mathematikarbeit – Jahrgang 4
+  Fach: Mathematik
+  Klasse/Niveau: 4 (Grundschule)
+  AB-Typ: Gemischt
+  Erstellt: 2026-05-18
+  Quelle: Eigenerstellung nach mündlicher Beschreibung
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mathe Klasse 4 – Übungsaufgaben – lehrer-herrmann.de</title>
+  <style>
+    :root {
+      --primary:   #1e3a5f;
+      --accent:    #4a9eda;
+      --correct:   #2ecc71;
+      --error:     #e74c3c;
+      --bg:        #f4f6f7;
+      --card:      #ffffff;
+      --radius:    8px;
+      --font:      system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: #1a1a2e;
+      padding: 16px;
+    }
+
+    .ab-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* ── Header ── */
+    .ab-header {
+      background: var(--primary);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 24px;
+    }
+    .ab-header h1 { font-size: 1.4rem; margin-bottom: 6px; }
+    .ab-meta { font-size: 0.85rem; opacity: 0.8; }
+
+    /* ── Sektionskarten ── */
+    .section-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 20px;
+      border-top: 4px solid var(--accent);
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+    }
+    .section-card h2 {
+      color: var(--primary);
+      font-size: 1.1rem;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-card h2 .icon { font-size: 1.3rem; }
+
+    /* ── Aufgaben ── */
+    .task { margin-bottom: 20px; }
+    .task-label {
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: block;
+      color: var(--primary);
+    }
+
+    /* ── Inputs ── */
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      font-family: var(--font);
+      font-size: 1rem;
+      border: 2px solid #ccd;
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      width: 100%;
+      background: #fafafa;
+      transition: border-color .2s;
+    }
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent);
+      outline: none;
+      background: #fff;
+    }
+    input.narrow { width: 90px; }
+    input.medium { width: 150px; }
+
+    /* ── Schriftliche Addition ── */
+    .addition-grid {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .addbox {
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      background: #f8faff;
+      border: 1px solid #dde;
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      min-width: 200px;
+    }
+    .addbox .number-row { text-align: right; }
+    .addbox .plus-row { border-bottom: 2px solid #333; text-align: right; padding-bottom: 4px; margin-bottom: 6px;}
+    .addbox input[type="number"] {
+      width: 80px;
+      padding: 4px 6px;
+      font-family: 'Courier New', monospace;
+      font-size: 1.1rem;
+      text-align: right;
+      border: 2px dashed #aac;
+      background: #fff;
+    }
+
+    /* ── Einmaleins-Gitter ── */
+    .times-table-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+    .times-cell {
+      background: #f8faff;
+      border-radius: 6px;
+      padding: 8px;
+      text-align: center;
+      border: 1px solid #dde;
+    }
+    .times-cell span { display: block; font-size: 0.8rem; color: #667; margin-bottom: 4px; }
+    .times-cell input[type="number"] {
+      width: 100%;
+      text-align: center;
+      padding: 6px 4px;
+      font-size: 1rem;
+      border: 2px dashed #aac;
+    }
+
+    /* ── Wahrscheinlichkeitsstreifen ── */
+    .prob-strip-container { margin: 12px 0; }
+    .prob-strip {
+      display: flex;
+      height: 44px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 2px solid var(--primary);
+      margin-bottom: 8px;
+    }
+    .prob-segment {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,.4);
+      transition: flex .3s;
+      cursor: default;
+    }
+    .prob-labels {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: #556;
+      margin-top: 4px;
+    }
+    .prob-input-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+    .prob-input-row label { font-size: 0.9rem; }
+    .prob-input-row input[type="number"] { width: 80px; }
+
+    /* ── Chancenstreifen ── */
+    .chance-strip {
+      display: flex;
+      height: 52px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 2px solid var(--primary);
+      margin: 10px 0;
+    }
+    .chance-field {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      flex: 1;
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,.4);
+      border-right: 1px solid rgba(255,255,255,.3);
+      cursor: pointer;
+      transition: opacity .15s;
+      user-select: none;
+    }
+    .chance-field:last-child { border-right: none; }
+    .chance-field.selected { outline: 3px solid #fff; outline-offset: -4px; }
+
+    /* ── Baumdiagramm ── */
+    .tree-container {
+      overflow-x: auto;
+      padding: 8px 0;
+    }
+    .tree {
+      display: flex;
+      align-items: center;
+      min-width: 520px;
+      gap: 0;
+    }
+    .tree-root {
+      background: var(--primary);
+      color: #fff;
+      border-radius: 50%;
+      width: 52px; height: 52px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.8rem;
+      flex-shrink: 0;
+    }
+    .tree-level {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-left: 0;
+    }
+    .tree-branch-group {
+      display: flex;
+      align-items: center;
+    }
+    .tree-line-h {
+      width: 40px;
+      height: 2px;
+      background: #99b;
+      flex-shrink: 0;
+    }
+    .tree-line-v-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .tree-node {
+      display: flex;
+      align-items: center;
+      margin: 6px 0;
+    }
+    .tree-node-circle {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+    .tree-edge-label {
+      font-size: 0.75rem;
+      color: #667;
+      margin: 0 6px;
+      min-width: 40px;
+      text-align: center;
+    }
+    .tree-prob-input {
+      width: 70px !important;
+      padding: 4px 6px !important;
+      font-size: 0.85rem !important;
+      text-align: center;
+    }
+
+    /* ── Umfang / Fläche ── */
+    .shape-row {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .shape-card {
+      flex: 1;
+      min-width: 180px;
+      background: #f8faff;
+      border: 1px solid #dde;
+      border-radius: var(--radius);
+      padding: 14px;
+      text-align: center;
+    }
+    .shape-card svg { display: block; margin: 0 auto 10px; }
+    .shape-card p { font-size: 0.85rem; color: #556; margin-bottom: 8px; }
+    .shape-inputs { display: flex; flex-direction: column; gap: 6px; }
+    .shape-inputs label { font-size: 0.8rem; color: #667; text-align: left; }
+
+    /* ── Sachaufgaben ── */
+    .sachaufgabe {
+      background: #f0f7ff;
+      border-left: 4px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+    .sachaufgabe p { margin-bottom: 10px; line-height: 1.5; }
+    .rechenschritte { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+    .rechenschritte label { font-size: 0.85rem; color: #556; }
+
+    /* ── Kombinatorik ── */
+    .kombi-options {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 10px 0;
+    }
+    .kombi-option {
+      background: #f0f7ff;
+      border: 2px solid #ccd;
+      border-radius: var(--radius);
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: background .15s, border-color .15s;
+      min-height: 44px;
+    }
+    .kombi-option.selected {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font);
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 12px 22px;
+      min-height: 44px;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: opacity .15s, transform .1s;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { opacity: .87; }
+    .btn-accent  { background: var(--accent);  color: #fff; }
+    .btn-accent:hover  { opacity: .87; }
+    .btn-reset   { background: #eee; color: #444; }
+    .btn-reset:hover { background: #ddd; }
+
+    /* ── Feedback ── */
+    .feedback {
+      margin-top: 10px;
+      padding: 10px 14px;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      line-height: 1.4;
+      display: none;
+    }
+    .feedback.correct  { background: #d4f5e4; border: 1px solid var(--correct); color: #1a6e3f; display: block; }
+    .feedback.wrong    { background: #fde8e6; border: 1px solid var(--error);   color: #8b1a10; display: block; }
+    .feedback.partial  { background: #fff8e1; border: 1px solid #f0c040; color: #7a5500; display: block; }
+    .feedback.info     { background: #e8f4fd; border: 1px solid var(--accent); color: #0d4a7a; display: block; }
+
+    input.input-correct { border-color: var(--correct) !important; background: #f0fff6 !important; }
+    input.input-wrong   { border-color: var(--error)   !important; background: #fff5f5 !important; }
+
+    /* ── Gesamtauswertung ── */
+    #gesamtergebnis {
+      background: var(--primary);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 24px;
+      text-align: center;
+      margin: 24px 0;
+      display: none;
+    }
+    #gesamtergebnis h2 { font-size: 1.3rem; margin-bottom: 8px; }
+    #gesamtergebnis .score { font-size: 2.5rem; font-weight: 700; color: var(--accent); }
+    #gesamtergebnis p { margin-top: 10px; font-size: 1rem; opacity: .9; }
+
+    /* ── Details / Musterlösung ── */
+    details {
+      margin-top: 10px;
+      border: 1px solid #ccd;
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    summary {
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--primary);
+      background: #f4f6f7;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+    summary:hover { background: #e8eef5; }
+    .musterlosung {
+      padding: 12px 16px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      background: #fff;
+    }
+    .musterlosung code {
+      font-family: 'Courier New', monospace;
+      background: #f0f4fa;
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    /* ── Footer ── */
+    .ab-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 20px 0 32px;
+    }
+    .ab-footer small { color: #889; font-size: 0.8rem; }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .section-card { padding: 16px; }
+      .addition-grid { gap: 16px; }
+      .times-table-grid { grid-template-columns: repeat(3, 1fr); }
+      .shape-card { min-width: 140px; }
+    }
+  </style>
+</head>
+<body>
+<div class="ab-container">
+
+  <header class="ab-header">
+    <h1>📐 Mathematik – Übungsaufgaben zur Arbeit</h1>
+    <p class="ab-meta">Fach: Mathematik · Klasse: 4 · Mai 2026 · lehrer-herrmann.de</p>
+  </header>
+
+  <main>
+
+    <!-- ═══════════════════════════════════════════════
+         1. SCHRIFTLICHE ADDITION
+    ═══════════════════════════════════════════════ -->
+    <section class="section-card" id="sec-addition">
+      <h2><span class="icon">➕</span> Aufgabe 1 – Schriftliche Addition</h2>
+
+      <p class="task-label">Berechne schriftlich. Schreibe das Ergebnis in das Kästchen.</p>
+
+      <div class="addition-grid">
+        <div class="addbox" id="add1">
+          <div class="number-row">3&thinsp;456</div>
+          <div class="number-row">2&thinsp;789</div>
+          <div class="plus-row">+&nbsp;1&thinsp;345</div>
+          <div class="number-row">
+            <input type="number" id="add1-ans" placeholder="?" min="0">
+          </div>
+        </div>
+        <div class="addbox" id="add2">
+          <div class="number-row">12&thinsp;473</div>
+          <div class="number-row">8&thinsp;658</div>
+          <div class="plus-row">+&nbsp;&nbsp;&nbsp;&thinsp;907</div>
+          <div class="number-row">
+            <input type="number" id="add2-ans" placeholder="?" min="0">
+          </div>
+        </div>
+        <div class="addbox" id="add3">
+          <div class="number-row">24&thinsp;099</div>
+          <div class="number-row">15&thinsp;863</div>
+          <div class="plus-row">+&nbsp;37&thinsp;542</div>
+          <div class="number-row">
+            <input type="number" id="add3-ans" placeholder="?" min="0">
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="pruefeAddition()" style="margin-top:14px;">✔ Prüfen</button>
+      <div class="feedback" id="fb-addition"></div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════
+         2. EINMALEINS & DIVISION (kleiner ZR)
+    ═══════════════════════════════════════════════ -->
+    <section class="section-card" id="sec-eins">
+      <h2><span class="icon">✖️</span> Aufgabe 2 – Einmaleins und Division</h2>
+      <p class="task-label">Ergänze das Ergebnis.</p>
+
+      <div class="times-table-grid" id="eins-grid"></div>
+
+      <button class="btn btn-primary" onclick="pruefeEins()" style="margin-top:16px;">✔ Prüfen</button>
+      <div class="feedback" id="fb-eins"></div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════
+         3. HALBSCHRIFTLICHE DIVISION
+    ═══════════════════════════════════════════════ -->
+    <section class="section-card" id="sec-division">
+      <h2><span class="icon">➗</span> Aufgabe 3 – Halbschriftliche Division</h2>
+
+      <p class="task-label">Löse die Aufgaben halbschriftlich. Schreibe nur das Ergebnis ein.</p>
+
+      <div class="task">
+        <p>a) &nbsp; 84 ÷ 4 = <input type="number" id="div1" class="narrow" placeholder="?"></p>
+      </div>
+      <div class="task">
+        <p>b) &nbsp; 156 ÷ 6 = <input type="number" id="div2" class="narrow" placeholder="?"></p>
+      </div>
+      <div class="task">
+        <p>c) &nbsp; 345 ÷ 5 = <input type="number" id="div3" class="narrow" placeholder="?"></p>
+      </div>
+      <div class="task">
+        <p>d) &nbsp; 488 ÷ 8 = <input type="number" id="div4" class="narrow" placeholder="?"> &nbsp;(Rest: <input type="number" id="div4r" class="narrow" placeholder="R?">)</p>
+      </div>
+      <div class="task">
+        <p>e) &nbsp; 575 ÷ 7 = <input type="number" id="div5" class="narrow" placeholder="?"> &nbsp;(Rest: <input type="number" id="div5r" class="narrow" placeholder="R?">)</p>
+      </div>
+
+      <button class="btn btn-primary" onclick="pruefeDivision()" style="margin-top:8px;">✔ Prüfen</button>
+      <div class="feedback" id="fb-division"></div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════
+         4. DIVISION IM GROSSEN ZAHLENRAUM
+    ═══════════════════════════════════════════════ -->
+    <section class="section-card" id="sec-grossdiv">
+      <h2><span class="icon">🔢</span> Aufgabe 4 – Division im großen Zahlenraum</h2>
+      <p class="task-label">Berechne. Schreibe das Ergebnis (und ggf. den Rest) ein.</p>
+
+      <div class="task">
+        <p>a) &nbsp; 4 800 ÷ 6 = <input type="number" id="gd1" class="medium" placeholder="?"></p>
+      </div>
+      <div class="task">
+        <p>b) &nbsp; 3 600 ÷ 9 = <input type="number" id="gd2" class="medium" placeholder="?"></p>
+      </div>
+      <div class="task">
+        <p>c) &nbsp; 72 000 ÷ 8 = <input type="number" id="gd3" class="medium" placeholder="?"></p>
+      </div>
+      <div class="task">
+        <p>d) &nbsp; 5 460 ÷ 7 = <input type="number" id="gd4" class="medium" placeholder="?"> &nbsp;Rest: <input type="number" id="gd4r" class="narrow" placeholder="R?"></p>
+      </div>
+
+      <button class="btn btn-primary" onclick="pruefeGrossdiv()" style="margin-top:8px;">✔ Prüfen</button>
+      <div class="feedback" id="fb-grossdiv"></div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════
+         5. WAHRSCHEINLICHKEITSSTREIFEN
+    ═══════════════════════════════════════════════ -->
+    <section class="section-card" id="sec-wstreifen">
+      <h2><span class="icon">🎲</span> Aufgabe 5 – Wahrscheinlichkeitsstreifen</h2>
+
+      <p style="margin-bottom:12px; line-height:1.5;">
+        Ein Glücksrad hat <strong>8 gleichgroße Felder</strong>: <strong>3 rote</strong>, <strong>2 blaue</strong>,
+        <strong>2 grüne</strong> und <strong>1 gelbes</strong> Feld.
+      </p>
+
+      <p class="task-label">a) Zeichne den Wahrscheinlichkeitsstreifen. Klicke auf die richtige Aufteilung:</p>
+
+      <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:14px;">
+        <!-- Wahl A -->
+        <div>
+          <label style="font-size:.85rem; color:#556; margin-bottom:4px; display:block;">Streifen A (3 – 2 – 2 – 1)</label>
+          <div class="prob-strip" id="ps-a" style="cursor:pointer;" onclick="waehleStreifen('a')">
+            <div class="prob-segment" style="flex:3; background:#e74c3c;">3/8</div>
+            <div class="prob-segment" style="flex:2; background:#4a9eda;">2/8</div>
+            <div class="prob-segment" style="flex:2; background:#2ecc71;">2/8</div>
+            <div class="prob-segment" style="flex:1; background:#f0c040; color:#333;">1/8</div>
+          </div>
+        </div>
+        <!-- Wahl B -->
+        <div>
+          <label style="font-size:.85rem; color:#556; margin-bottom:4px; display:block;">Streifen B (2 – 2 – 2 – 2)</label>
+          <div class="prob-strip" id="ps-b" style="cursor:pointer;" onclick="waehleStreifen('b')">
+            <div class="prob-segment" style="flex:2; background:#e74c3c;">2/8</div>
+            <div class="prob-segment" style="flex:2; background:#4a9eda;">2/8</div>
+            <div class="prob-segment" style="flex:2; background:#2ecc71;">2/8</div>
+            <div class="prob-segment" style="flex:2; background:#f0c040; color:#333;">2/8</div>
+          </div>
+        </div>
+        <!-- Wahl C -->
+        <div>
+          <label style="font-size:.85rem; color:#556; margin-bottom:4px; display:block;">Streifen C (4 – 2 – 1 – 1)</label>
+          <div class="prob-strip" id="ps-c" style="cursor:pointer;" onclick="waehleStreifen('c')">
+            <div class="prob-segment" style="flex:4; background:#e74c3c;">4/8</div>
+            <div class="prob-segment" style="flex:2; background:#4a9eda;">2/8</div>
+            <div class="prob-segment" style="flex:1; background:#2ecc71;">1/8</div>
+            <div class="prob-segment" style="flex:1; background:#f0c040; color:#333;">1/8</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="task-label" style="margin-top:16px;">b) Beantworte die Fragen:</p>
+      <div class="task">
+        <p>Wie wahrscheinlich ist Rot? &nbsp; <input type="text" id="ws-rot" placeholder="z. B. 3/8" style="width:100px;"></p>
+      </div>
+      <div class="task">
+        <p>Wie wahrscheinlich ist Blau oder Grün? &nbsp; <input type="text" id="ws-blaugruen" placeholder="z. B. 4/8" style="width:100px;"></p>
+      </div>
+      <div class="task">
+        <p>Wie wahrscheinlich ist <em>nicht</em> Gelb? &nbsp; <input type="text" id="ws-nichtgelb" placeholder="z. B. 7/8" style="width:100px;"></p>
+      </div>
+
+      <button class="btn btn-primary" onclick="pruefeWStreifen()" style="margin-top:8px;">✔ Prüfen</button>
+      <div class="feedback" id="fb-wstreifen"></div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════
+         6. CHANCENSTREIFEN
+    ═══════════════════════════════════════════════ -->
+    <section class="section-card" id="sec-chancen">
+      <h2><span class="icon">⭐</span> Aufgabe 6 – Chancenstreifen</h2>
+
+      <p style="margin-bottom:12px; line-height:1.5;">
+        In einem Beutel liegen <strong>10 Kugeln</strong>: 4 rote, 3 blaue, 2 grüne und 1 gelbe.
+        Ordne die Ereignisse auf dem Chancenstreifen ein.
+      </p>
+
+      <p class="task-label">Klicke auf den richtigen Abschnitt des Streifens für jedes Ereignis:</p>
+
+      <div class="chance-strip" id="cstrip">
+        <div class="chance-field" style="background:#e74c3c;" data-val="0" onclick="selectChanceField(this)">unmöglich</div>
+        <div class="chance-field" style="background:#e07b2a;" data-val="1" onclick="selectChanceField(this)">unwahrscheinlich</div>
+        <div class="chance-field" style="background:#d4b800; color:#222;" data-val="2" onclick="selectChanceField(this)">halb–halb</div>
+        <div class="chance-field" style="background:#4a9eda;" data-val="3" onclick="selectChanceField(this)">wahrscheinlich</div>
+        <div class="chance-field" style="background:#2ecc71;" data-val="4" onclick="selectChanceField(this)">sicher</div>
+      </div>
+
+      <div id="chance-tasks" style="margin-top:12px; display:flex; flex-direction:column; gap:10px;"></div>
+
+      <button class="btn btn-primary" onclick="pruefeChancen()" style="margin-top:14px;">✔ Prüfen</button>
+      <div class="feedback" id="fb-chancen"></div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════
+         7. KOMBINATORIK
+    ═══════════════════════════════════════════════ -->
+    <section class="section-card" id="sec-kombi">
+      <h2><span class="icon">🔀</span> Aufgabe 7 – Kombinatorik</h2>
+
+      <div class="sachaufgabe">
+        <p>Mia kann aus <strong>3 Hosen</strong> (blau, schwarz, grau) und <strong>2 Hemden</strong> (weiß, gestreift)
+        wählen. Wie viele verschiedene Outfits kann sie zusammenstellen?</p>
+      </div>
+
+      <p class="task-label">a) Wie viele Kombinationen gibt es?</p>
+      <div class="kombi-options" id="kombi-mc">
+        <button class="kombi-option" onclick="waehleKombi(this,5)">5 Kombinationen</button>
+        <button class="kombi-option" onclick="waehleKombi(this,6)">6 Kombinationen</button>
+        <button class="kombi-option" onclick="waehleKombi(this,8)">8 Kombinationen</button>
+        <button class="kombi-option" onclick="waehleKombi(this,9)">9 Kombinationen</button>
+      </div>
+
+      <p class="task-label" style="margin-top:16px;">b) Notiere alle Kombinationen (z. B. blau–weiß):</p>
+      <textarea id="kombi-text" rows="4" placeholder="Schreibe hier alle Kombinationen auf …" style="width:100%; resize:vertical;"></textarea>
+
+      <button class="btn btn-primary" onclick="pruefeKombi()" style="margin-top:10px;">✔ Prüfen</button>
+      <div class="feedback" id="fb-kombi"></div>
+
+      <details>
+        <summary>💡 Musterlösung anzeigen</summary>
+        <div class="musterlosung">
+          <strong>Rechnung:</strong> 3 Hosen × 2 Hemden = <strong>6 Kombinationen</strong><br><br>
+          <strong>Alle Kombinationen:</strong><br>
+          blau–weiß · blau–gestreift<br>
+          schwarz–weiß · schwarz–gestreift<br>
+          grau–weiß · grau–gestreift
+        </div>
+      </details>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════
+         8. BAUMDIAGRAMM
+    ═══════════════════════════════════════════════ -->
+    <section class="section-card" id="sec-baum">
+      <h2><span class="icon">🌳</span> Aufgabe 8 – Baumdiagramm</h2>
+
+      <p style="margin-bottom:12px; line-height:1.5;">
+        Eine Münze wird <strong>zweimal geworfen</strong>.
+        Es gibt die Ergebnisse Kopf (K) und Zahl (Z).
+      </p>
+
+      <p class="task-label">a) Ergänze die fehlenden Beschriftungen im Baumdiagramm:</p>
+
+      <div class="tree-container">
+        <div style="display:flex; align-items:center; gap:0;">
+          <!-- Wurzel -->
+          <div class="tree-root">Start</div>
+          <!-- Linie zur 1. Ebene -->
+          <div style="display:flex; flex-direction:column; gap:32px; margin-left:0;">
+            <!-- Oben: K -->
+            <div style="display:flex; align-items:center;">
+              <div style="width:50px; height:2px; background:#99b;"></div>
+              <span style="font-size:.75rem; color:#667; margin:0 4px;">½</span>
+              <div class="tree-node-circle" style="background:#e74c3c;">K</div>
+              <!-- 2. Ebene von K -->
+              <div style="display:flex; flex-direction:column; gap:10px; margin-left:0;">
+                <div style="display:flex; align-items:center;">
+                  <div style="width:40px; height:2px; background:#99b;"></div>
+                  <span style="font-size:.75rem; color:#667; margin:0 4px;">½</span>
+                  <div class="tree-node-circle" style="background:#e74c3c; width:36px; height:36px; font-size:.75rem;">K</div>
+                  <span style="margin-left:8px; font-size:.85rem; color:#334;">→ K·K</span>
+                  <input type="text" id="b-kk" class="tree-prob-input" style="margin-left:8px;" placeholder="P=?">
+                </div>
+                <div style="display:flex; align-items:center;">
+                  <div style="width:40px; height:2px; background:#99b;"></div>
+                  <span style="font-size:.75rem; color:#667; margin:0 4px;">½</span>
+                  <div class="tree-node-circle" style="background:#4a9eda; width:36px; height:36px; font-size:.75rem;">Z</div>
+                  <span style="margin-left:8px; font-size:.85rem; color:#334;">→ K·Z</span>
+                  <input type="text" id="b-kz" class="tree-prob-input" style="margin-left:8px;" placeholder="P=?">
+                </div>
+              </div>
+            </div>
+            <!-- Unten: Z -->
+            <div style="display:flex; align-items:center;">
+              <div style="width:50px; height:2px; background:#99b;"></div>
+              <span style="font-size:.75rem; color:#667; margin:0 4px;">½</span>
+              <div class="tree-node-circle" style="background:#4a9eda;">Z</div>
+              <!-- 2. Ebene von Z -->
+              <div style="display:flex; flex-direction:column; gap:10px; margin-left:0;">
+                <div style="display:flex; align-items:center;">
+                  <div style="width:40px; height:2px; background:#99b;"></div>
+                  <span style="font-size:.75rem; color:#667; margin:0 4px;">½</span>
+                  <div class="tree-node-circle" style="background:#e74c3c; width:36px; height:36px; font-size:.75rem;">K</div>
+                  <span style="margin-left:8px; font-size:.85rem; color:#334;">→ Z·K</span>
+                  <input type="text" id="b-zk" class="tree-prob-input" style="margin-left:8px;" placeholder="P=?">
+                </div>
+                <div style="display:flex; align-items:center;">
+                  <div style="width:40px; height:2px; background:#99b;"></div>
+                  <span style="font-size:.75rem; color:#667; margin:0 4px;">½</span>
+                  <div class="tree-node-circle" style="background:#4a9eda; width:36px; height:36px; font-size:.75rem;">Z</div>
+                  <span style="margin-left:8px; font-size:.85rem; color:#334;">→ Z·Z</span>
+                  <input type="text" id="b-zz" class="tree-prob-input" style="margin-left:8px;" placeholder="P=?">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="task-label" style="margin-top:20px;">b) Beantworte die Fragen:</p>
+      <div class="task">
+        <p>Wie viele mögliche Ergebnisse gibt es insgesamt? <input type="number" id="b-anz" class="narrow" placeholder="?"></p>
+      </div>
+      <div class="task">
+        <p>Wie wahrscheinlich ist es, genau einmal Kopf zu bekommen? <input type="text" id="b-einmal-k" placeholder="z. B. 2/4" style="width:100px;"></p>
+      </div>
+
+      <button class="btn btn-primary" onclick="pruefeBaum()" style="margin-top:10px;">✔ Prüfen</button>
+      <div class="feedback" id="fb-baum"></div>
+
+      <details>
+        <summary>💡 Musterlösung anzeigen</summary>
+        <div class="musterlosung">
+          Jeder Pfad hat die Wahrscheinlichkeit ½ × ½ = <strong>1/4</strong>.<br>
+          Es gibt <strong>4 mögliche Ergebnisse</strong>: K·K, K·Z, Z·K, Z·Z.<br>
+          Genau einmal Kopf: K·Z und Z·K → P = <strong>2/4</strong> (= ½).
+        </div>
+      </details>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════
+         9. UMFANG
+    ═══════════════════════════════════════════════ -->
+    <section class="section-card" id="sec-umfang">
+      <h2><span class="icon">📏</span> Aufgabe 9 – Umfang</h2>
+      <p class="task-label">Berechne den Umfang der Figuren. (Alle Angaben in cm)</p>
+
+      <div class="shape-row">
+        <!-- Rechteck -->
+        <div class="shape-card">
+          <svg width="120" height="80" viewBox="0 0 120 80">
+            <rect x="10" y="10" width="100" height="60" fill="#e8f4fd" stroke="#1e3a5f" stroke-width="2"/>
+            <text x="60" y="72" text-anchor="middle" font-size="11" fill="#334">8 cm</text>
+            <text x="5" y="42" text-anchor="middle" font-size="11" fill="#334" transform="rotate(-90,5,42)">5 cm</text>
+          </svg>
+          <p>Rechteck (8 cm × 5 cm)</p>
+          <div class="shape-inputs">
+            <label>Formel: U = 2 × (a + b)</label>
+            <input type="number" id="uf-rect" placeholder="U = ? cm">
+          </div>
+        </div>
+        <!-- Quadrat -->
+        <div class="shape-card">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <rect x="10" y="10" width="80" height="80" fill="#f0fff6" stroke="#1e3a5f" stroke-width="2"/>
+            <text x="50" y="98" text-anchor="middle" font-size="11" fill="#334">7 cm</text>
+          </svg>
+          <p>Quadrat (7 cm)</p>
+          <div class="shape-inputs">
+            <label>Formel: U = 4 × a</label>
+            <input type="number" id="uf-sq" placeholder="U = ? cm">
+          </div>
+        </div>
+        <!-- Dreieck -->
+        <div class="shape-card">
+          <svg width="120" height="100" viewBox="0 0 120 100">
+            <polygon points="60,10 10,90 110,90" fill="#fff8e1" stroke="#1e3a5f" stroke-width="2"/>
+            <text x="60" y="98" text-anchor="middle" font-size="11" fill="#334">10 cm</text>
+            <text x="22" y="50" font-size="10" fill="#334">8 cm</text>
+            <text x="88" y="50" font-size="10" fill="#334">8 cm</text>
+          </svg>
+          <p>Dreieck (8 cm / 8 cm / 10 cm)</p>
+          <div class="shape-inputs">
+            <label>Formel: U = a + b + c</label>
+            <input type="number" id="uf-tri" placeholder="U = ? cm">
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="pruefeUmfang()" style="margin-top:16px;">✔ Prüfen</button>
+      <div class="feedback" id="fb-umfang"></div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════
+         10. FLÄCHENINHALT
+    ═══════════════════════════════════════════════ -->
+    <section class="section-card" id="sec-flaeche">
+      <h2><span class="icon">📐</span> Aufgabe 10 – Flächeninhalt</h2>
+      <p class="task-label">Berechne den Flächeninhalt. (Alle Angaben in cm)</p>
+
+      <div class="shape-row">
+        <div class="shape-card">
+          <svg width="120" height="80" viewBox="0 0 120 80">
+            <rect x="10" y="10" width="100" height="60" fill="#e8f4fd" stroke="#1e3a5f" stroke-width="2"/>
+            <text x="60" y="72" text-anchor="middle" font-size="11" fill="#334">9 cm</text>
+            <text x="5" y="42" text-anchor="middle" font-size="11" fill="#334" transform="rotate(-90,5,42)">4 cm</text>
+          </svg>
+          <p>Rechteck (9 cm × 4 cm)</p>
+          <div class="shape-inputs">
+            <label>Formel: A = a × b</label>
+            <input type="number" id="fl-rect" placeholder="A = ? cm²">
+          </div>
+        </div>
+        <div class="shape-card">
+          <svg width="100" height="100" viewBox="0 0 100 100">
+            <rect x="10" y="10" width="80" height="80" fill="#f0fff6" stroke="#1e3a5f" stroke-width="2"/>
+            <text x="50" y="98" text-anchor="middle" font-size="11" fill="#334">6 cm</text>
+          </svg>
+          <p>Quadrat (6 cm)</p>
+          <div class="shape-inputs">
+            <label>Formel: A = a × a</label>
+            <input type="number" id="fl-sq" placeholder="A = ? cm²">
+          </div>
+        </div>
+      </div>
+
+      <p class="task-label" style="margin-top:16px;">Zusammengesetzte Figur:</p>
+      <div class="sachaufgabe">
+        <p>Ein L-förmiges Grundstück besteht aus zwei Rechtecken:<br>
+        Rechteck 1: 6 m × 4 m &nbsp;|&nbsp; Rechteck 2: 3 m × 2 m<br>
+        Berechne den gesamten Flächeninhalt.</p>
+        <input type="number" id="fl-l" placeholder="A gesamt = ? m²" style="width:180px; margin-top:8px;">
+      </div>
+
+      <button class="btn btn-primary" onclick="pruefeFlaeche()" style="margin-top:8px;">✔ Prüfen</button>
+      <div class="feedback" id="fb-flaeche"></div>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════
+         11. KOMPLEXE SACHAUFGABEN
+    ═══════════════════════════════════════════════ -->
+    <section class="section-card" id="sec-sach">
+      <h2><span class="icon">🧩</span> Aufgabe 11 – Sachaufgaben</h2>
+
+      <!-- Sachaufgabe A -->
+      <div class="sachaufgabe">
+        <p><strong>A)</strong> Eine Schulklasse hat <strong>28 Schülerinnen und Schüler</strong>.
+        Sie wollen Gruppen bilden. Jede Gruppe soll genau <strong>4 Personen</strong> haben.
+        Wie viele Gruppen können gebildet werden, und wie viele Personen bleiben übrig?</p>
+        <div class="rechenschritte">
+          <label>Rechnung:</label>
+          <input type="text" id="sa-a-rechnung" placeholder="z. B. 28 ÷ 4 = …">
+          <label>Antwort:</label>
+          <input type="text" id="sa-a-antwort" placeholder="Es können … Gruppen gebildet werden, … Person(en) bleiben übrig.">
+        </div>
+      </div>
+
+      <!-- Sachaufgabe B -->
+      <div class="sachaufgabe">
+        <p><strong>B)</strong> Ein Freibad hat ein rechteckiges Schwimmbecken.
+        Es ist <strong>25 m lang</strong> und <strong>12 m breit</strong>.
+        Der Beckenrand soll mit Fliesen belegt werden (nur der Rand, <strong>1 m breit</strong> rund ums Becken).
+        Wie groß ist die Fläche des Randes in m²?</p>
+        <div class="rechenschritte">
+          <label>Rechnung:</label>
+          <input type="text" id="sa-b-rechnung" placeholder="z. B. Gesamtfläche − Beckenfläche">
+          <label>Ergebnis:</label>
+          <input type="number" id="sa-b-erg" placeholder="? m²">
+        </div>
+      </div>
+
+      <!-- Sachaufgabe C -->
+      <div class="sachaufgabe">
+        <p><strong>C)</strong> Ein Bäcker backt täglich <strong>360 Brötchen</strong> und verpackt sie in Tüten zu je <strong>6 Stück</strong>.
+        Er liefert an <strong>5 Supermärkte</strong> gleich viele Tüten. Wie viele Tüten bekommt jeder Supermarkt?</p>
+        <div class="rechenschritte">
+          <label>Schritt 1 – Anzahl Tüten gesamt:</label>
+          <input type="number" id="sa-c-s1" placeholder="360 ÷ 6 = ?">
+          <label>Schritt 2 – Tüten pro Supermarkt:</label>
+          <input type="number" id="sa-c-s2" placeholder="? ÷ 5 = ?">
+          <label>Antwort:</label>
+          <input type="text" id="sa-c-antwort" placeholder="Jeder Supermarkt bekommt … Tüten.">
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="pruefeSach()" style="margin-top:8px;">✔ Prüfen</button>
+      <div class="feedback" id="fb-sach"></div>
+
+      <details>
+        <summary>💡 Musterlösung anzeigen</summary>
+        <div class="musterlosung">
+          <strong>A)</strong> 28 ÷ 4 = <code>7 Gruppen</code>, Rest 0 – es bleiben keine Personen übrig.<br><br>
+          <strong>B)</strong> Außenrechteck: 27 m × 14 m = 378 m² &nbsp;|&nbsp; Becken: 25 m × 12 m = 300 m²<br>
+          Randbreite: 378 − 300 = <code>78 m²</code><br><br>
+          <strong>C)</strong> 360 ÷ 6 = 60 Tüten gesamt &nbsp;|&nbsp; 60 ÷ 5 = <code>12 Tüten</code> pro Supermarkt.
+        </div>
+      </details>
+    </section>
+
+
+    <!-- ═══════════════════════════════════════════════
+         GESAMTERGEBNIS
+    ═══════════════════════════════════════════════ -->
+    <div id="gesamtergebnis">
+      <h2>🏆 Gesamtergebnis</h2>
+      <div class="score" id="score-display">–</div>
+      <p id="score-msg"></p>
+    </div>
+
+    <div style="text-align:center; margin-bottom:16px;">
+      <button class="btn btn-accent" onclick="zeigeGesamtergebnis()">📊 Gesamtergebnis anzeigen</button>
+    </div>
+
+  </main>
+
+  <footer class="ab-footer">
+    <button class="btn btn-reset" id="reset-btn" onclick="neuStarten()">↺ Neu starten</button>
+    <small>lehrer-herrmann.de · Mathe Klasse 4 · Mai 2026</small>
+  </footer>
+
+</div><!-- .ab-container -->
+
+
+<script>
+(function() {
+  'use strict';
+
+  /* ── Punkte-Tracker ── */
+  const maxPunkte = { addition:3, eins:10, division:5, grossdiv:4,
+                      wstreifen:4, chancen:4, kombi:2, baum:3,
+                      umfang:3, flaeche:3, sach:3 };
+  const erreicht = {};
+  Object.keys(maxPunkte).forEach(k => erreicht[k] = null);
+
+  function setFeedback(id, typ, text) {
+    const el = document.getElementById('fb-' + id);
+    el.className = 'feedback ' + typ;
+    el.innerHTML = text;
+  }
+  function markInput(el, ok) {
+    el.classList.remove('input-correct','input-wrong');
+    el.classList.add(ok ? 'input-correct' : 'input-wrong');
+  }
+  function clearInput(el) {
+    el.classList.remove('input-correct','input-wrong');
+  }
+
+  /* ═══════════════════════════════════════
+     1. SCHRIFTLICHE ADDITION
+  ═══════════════════════════════════════ */
+  const addLoesungen = [7590, 22038, 77504];
+  window.pruefeAddition = function() {
+    let richtig = 0;
+    const ids = ['add1-ans','add2-ans','add3-ans'];
+    ids.forEach((id,i) => {
+      const el = document.getElementById(id);
+      const val = parseInt(el.value, 10);
+      const ok = val === addLoesungen[i];
+      markInput(el, ok);
+      if (ok) richtig++;
+    });
+    erreicht.addition = richtig;
+    if (richtig === 3) {
+      setFeedback('addition','correct','✓ Alle drei Aufgaben richtig! Prima schriftliche Addition.');
+    } else {
+      const falsch = addLoesungen.map((l,i) => {
+        const v = parseInt(document.getElementById(ids[i]).value,10);
+        return v !== l ? `Aufgabe ${i+1}: ${addLoesungen[i]}` : null;
+      }).filter(Boolean).join(' | ');
+      setFeedback('addition','partial',`✗ ${richtig} von 3 richtig. Richtige Ergebnisse: ${falsch}`);
+    }
+  };
+
+  /* ═══════════════════════════════════════
+     2. EINMALEINS
+  ═══════════════════════════════════════ */
+  const einsTasks = [
+    {a:6,b:7,op:'×'},{a:8,b:9,op:'×'},{a:7,b:8,op:'×'},{a:9,b:6,op:'×'},{a:4,b:7,op:'×'},
+    {a:56,b:8,op:'÷'},{a:63,b:9,op:'÷'},{a:48,b:6,op:'÷'},{a:72,b:9,op:'÷'},{a:35,b:7,op:'÷'}
+  ];
+  (function buildEinsGrid(){
+    const grid = document.getElementById('eins-grid');
+    einsTasks.forEach((t,i) => {
+      const cell = document.createElement('div');
+      cell.className = 'times-cell';
+      cell.innerHTML = `<span>${t.a} ${t.op} ${t.b} =</span>
+        <input type="number" id="eins-${i}" placeholder="?" min="0">`;
+      grid.appendChild(cell);
+    });
+  })();
+
+  window.pruefeEins = function() {
+    let richtig = 0;
+    einsTasks.forEach((t,i) => {
+      const el = document.getElementById('eins-'+i);
+      const ans = t.op === '×' ? t.a * t.b : t.a / t.b;
+      const ok = parseInt(el.value,10) === ans;
+      markInput(el, ok);
+      if (ok) richtig++;
+    });
+    erreicht.eins = richtig;
+    if (richtig === einsTasks.length) {
+      setFeedback('eins','correct','✓ Alle Einmaleins-Aufgaben richtig!');
+    } else {
+      setFeedback('eins','partial',`✗ ${richtig} von ${einsTasks.length} richtig. Falsch markierte Felder bitte noch einmal üben.`);
+    }
+  };
+
+  /* ═══════════════════════════════════════
+     3. HALBSCHRIFTLICHE DIVISION
+  ═══════════════════════════════════════ */
+  window.pruefeDivision = function() {
+    const checks = [
+      {id:'div1', exp:21, rid:null, rexp:0},
+      {id:'div2', exp:26, rid:null, rexp:0},
+      {id:'div3', exp:69, rid:null, rexp:0},
+      {id:'div4', exp:61, rid:'div4r', rexp:0},
+      {id:'div5', exp:82, rid:'div5r', rexp:1}
+    ];
+    let richtig = 0;
+    let fehler = [];
+    checks.forEach((c,i) => {
+      const el = document.getElementById(c.id);
+      const ok = parseInt(el.value,10) === c.exp;
+      markInput(el, ok);
+      let rOk = true;
+      if (c.rid) {
+        const rel = document.getElementById(c.rid);
+        rOk = parseInt(rel.value,10) === c.rexp;
+        markInput(rel, rOk);
+      }
+      if (ok && rOk) richtig++;
+      else fehler.push(`${String.fromCharCode(96+i+1)}) = ${c.exp}${c.rid ? ` R${c.rexp}` : ''}`);
+    });
+    erreicht.division = richtig;
+    if (!fehler.length) setFeedback('division','correct','✓ Alle Divisionsaufgaben richtig!');
+    else setFeedback('division','partial',`✗ ${richtig} von 5 richtig. Lösungen: ${fehler.join(' | ')}`);
+  };
+
+  /* ═══════════════════════════════════════
+     4. DIVISION GROSSER ZAHLENRAUM
+  ═══════════════════════════════════════ */
+  window.pruefeGrossdiv = function() {
+    const checks = [
+      {id:'gd1',exp:800},{id:'gd2',exp:400},{id:'gd3',exp:9000},
+      {id:'gd4',exp:780,rid:'gd4r',rexp:0}
+    ];
+    let richtig=0, fehler=[];
+    checks.forEach((c,i)=>{
+      const el=document.getElementById(c.id);
+      const ok=parseInt(el.value,10)===c.exp;
+      markInput(el,ok);
+      let rOk=true;
+      if(c.rid){const rel=document.getElementById(c.rid);rOk=parseInt(rel.value,10)===c.rexp;markInput(rel,rOk);}
+      if(ok&&rOk)richtig++;
+      else fehler.push(`${String.fromCharCode(96+i+1)}) = ${c.exp}${c.rid?` R${c.rexp}`:''}`);
+    });
+    erreicht.grossdiv=richtig;
+    if(!fehler.length)setFeedback('grossdiv','correct','✓ Alle richtig! Gut mit großen Zahlen gerechnet.');
+    else setFeedback('grossdiv','partial',`✗ ${richtig} von 4 richtig. Lösungen: ${fehler.join(' | ')}`);
+  };
+
+  /* ═══════════════════════════════════════
+     5. WAHRSCHEINLICHKEITSSTREIFEN
+  ═══════════════════════════════════════ */
+  let gewaehltStreifen = null;
+  window.waehleStreifen = function(val) {
+    gewaehltStreifen = val;
+    ['a','b','c'].forEach(x => {
+      document.getElementById('ps-'+x).style.outline = x === val ? '3px solid #1e3a5f' : 'none';
+      document.getElementById('ps-'+x).style.outlineOffset = '2px';
+    });
+  };
+
+  const bgAkzept  = v => ['4/8','1/2','0.5'].includes(v.trim().replace(',','/'));
+  const ngAkzept  = v => ['7/8','0.875'].includes(v.trim().replace(',','/'));
+
+  window.pruefeWStreifen = function() {
+    let richtig = 0, msgs = [];
+    if (gewaehltStreifen === 'a') { richtig++; msgs.push('✓ Streifen A ist korrekt (3–2–2–1).'); }
+    else msgs.push('✗ Streifen A wäre richtig (3 rot, 2 blau, 2 grün, 1 gelb = 3–2–2–1).');
+    const rotEl = document.getElementById('ws-rot');
+    const rotOk = rotEl.value.trim().replace(',','/') === '3/8';
+    markInput(rotEl, rotOk);
+    if(rotOk) { richtig++; msgs.push('✓ Rot: 3/8 richtig.'); }
+    else msgs.push('✗ Rot: 3 von 8 Feldern → P(Rot) = 3/8.');
+    const bgEl = document.getElementById('ws-blaugruen');
+    const bgOk = bgAkzept(bgEl.value);
+    markInput(bgEl, bgOk);
+    if(bgOk) { richtig++; msgs.push('✓ Blau oder Grün: 4/8 richtig.'); }
+    else msgs.push('✗ Blau+Grün: 2+2=4 von 8 → P = 4/8.');
+    const ngEl = document.getElementById('ws-nichtgelb');
+    const ngOk = ngAkzept(ngEl.value);
+    markInput(ngEl, ngOk);
+    if(ngOk) { richtig++; msgs.push('✓ Nicht Gelb: 7/8 richtig.'); }
+    else msgs.push('✗ Nicht Gelb: 8−1=7 von 8 → P = 7/8.');
+    erreicht.wstreifen = richtig;
+    const typ = richtig === 4 ? 'correct' : 'partial';
+    setFeedback('wstreifen', typ, msgs.join('<br>'));
+  };
+
+  /* ═══════════════════════════════════════
+     6. CHANCENSTREIFEN
+  ═══════════════════════════════════════ */
+  const chanceAufgaben = [
+    { text:'Eine rote Kugel zu ziehen', korrekt: 3 },
+    { text:'Eine gelbe Kugel zu ziehen', korrekt: 1 },
+    { text:'Eine schwarze Kugel zu ziehen', korrekt: 0 },
+    { text:'Eine Kugel (egal welche) zu ziehen', korrekt: 4 },
+  ];
+  let chanceSelected = {};
+
+  (function buildChanceTasks(){
+    const container = document.getElementById('chance-tasks');
+    chanceAufgaben.forEach((a, i) => {
+      chanceSelected[i] = null;
+      const div = document.createElement('div');
+      div.style.cssText = 'background:#f8faff;border:1px solid #dde;border-radius:8px;padding:12px;';
+      div.innerHTML = `<p style="font-size:.9rem;margin-bottom:8px;"><strong>${i+1}.</strong> Ereignis: „${a.text}"</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          ${['unmöglich','unwahrscheinlich','halb–halb','wahrscheinlich','sicher'].map((l,v)=>
+            `<button class="kombi-option" data-task="${i}" data-val="${v}" onclick="selectChance(this)">${l}</button>`
+          ).join('')}
+        </div>
+        <div class="feedback" id="fb-chance-${i}"></div>`;
+      container.appendChild(div);
+    });
+  })();
+
+  window.selectChance = function(btn) {
+    const task = parseInt(btn.dataset.task);
+    const val  = parseInt(btn.dataset.val);
+    btn.closest('div[style]').querySelectorAll('.kombi-option').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    chanceSelected[task] = val;
+  };
+
+  window.selectChanceField = function(field) {
+    document.querySelectorAll('.chance-field').forEach(f=>f.classList.remove('selected'));
+    field.classList.add('selected');
+  };
+
+  window.pruefeChancen = function() {
+    let richtig = 0;
+    chanceAufgaben.forEach((a, i) => {
+      const fbEl = document.getElementById('fb-chance-'+i);
+      const sel = chanceSelected[i];
+      if (sel === a.korrekt) {
+        richtig++;
+        fbEl.className='feedback correct';
+        fbEl.textContent='✓ Richtig!';
+      } else if (sel === null) {
+        fbEl.className='feedback wrong';
+        fbEl.textContent='✗ Bitte eine Einschätzung wählen.';
+      } else {
+        const labels=['unmöglich','unwahrscheinlich','halb–halb','wahrscheinlich','sicher'];
+        fbEl.className='feedback wrong';
+        fbEl.textContent=`✗ Falsch. Richtig: „${labels[a.korrekt]}"`;
+      }
+    });
+    erreicht.chancen = richtig;
+    if(richtig===4) setFeedback('chancen','correct','✓ Alle Chancen richtig eingeschätzt!');
+    else setFeedback('chancen','partial',`✗ ${richtig} von 4 richtig. Schau dir die roten Hinweise an.`);
+  };
+
+  /* ═══════════════════════════════════════
+     7. KOMBINATORIK
+  ═══════════════════════════════════════ */
+  let kombiWahl = null;
+  window.waehleKombi = function(btn, val) {
+    document.querySelectorAll('#kombi-mc .kombi-option').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    kombiWahl = val;
+  };
+  window.pruefeKombi = function() {
+    let richtig = 0;
+    if(kombiWahl === 6) { richtig++; }
+    const text = document.getElementById('kombi-text').value;
+    const worte = ['blau–weiß','blau–gestreift','schwarz–weiß','schwarz–gestreift','grau–weiß','grau–gestreift'];
+    const gefunden = worte.filter(w => text.toLowerCase().includes(w.replace('–','-').toLowerCase()) || text.toLowerCase().includes(w.toLowerCase())).length;
+    if(gefunden >= 5) richtig++;
+    erreicht.kombi = richtig;
+    if(richtig===2) setFeedback('kombi','correct','✓ Sowohl Anzahl als auch alle Kombinationen korrekt!');
+    else if(kombiWahl!==6) setFeedback('kombi','wrong','✗ Die Anzahl ist falsch. Tipp: Hosen × Hemden.');
+    else setFeedback('kombi','partial','✓ Anzahl richtig! Schreibe alle 6 Kombinationen vollständig auf.');
+  };
+
+  /* ═══════════════════════════════════════
+     8. BAUMDIAGRAMM
+  ═══════════════════════════════════════ */
+  const probAkzeptBaum = v => ['1/4','0.25'].includes(v.trim().replace(',','.'));
+  window.pruefeBaum = function() {
+    let richtig = 0, msgs = [];
+    ['b-kk','b-kz','b-zk','b-zz'].forEach(id => {
+      const el=document.getElementById(id);
+      const ok=probAkzeptBaum(el.value);
+      markInput(el,ok);
+      if(ok) richtig++;
+    });
+    if(richtig===4) msgs.push('✓ Alle Pfadwahrscheinlichkeiten (1/4) korrekt.');
+    else msgs.push(`✗ ${richtig}/4 Pfade richtig. Jeder Pfad: ½ × ½ = 1/4.`);
+    const anzEl=document.getElementById('b-anz');
+    const anzOk=parseInt(anzEl.value,10)===4;
+    markInput(anzEl,anzOk);
+    if(anzOk){richtig++;msgs.push('✓ 4 mögliche Ergebnisse – richtig!');}
+    else msgs.push('✗ Es gibt 4 mögliche Ergebnisse: KK, KZ, ZK, ZZ.');
+    const ekEl=document.getElementById('b-einmal-k');
+    const ekVal=ekEl.value.trim().replace(',','/');
+    const ekOk=['2/4','1/2','0.5'].includes(ekVal);
+    markInput(ekEl,ekOk);
+    if(ekOk){richtig++;msgs.push('✓ P(genau 1× Kopf) = 2/4 – richtig!');}
+    else msgs.push('✗ P(genau 1× Kopf) = 2/4, denn KZ und ZK sind günstig.');
+    erreicht.baum=richtig;
+    const typ=richtig===6?'correct':'partial';
+    setFeedback('baum',typ,msgs.join('<br>'));
+  };
+
+  /* ═══════════════════════════════════════
+     9. UMFANG
+  ═══════════════════════════════════════ */
+  window.pruefeUmfang = function() {
+    const checks=[
+      {id:'uf-rect',exp:26},{id:'uf-sq',exp:28},{id:'uf-tri',exp:26}
+    ];
+    let richtig=0,fehler=[];
+    const names=['Rechteck','Quadrat','Dreieck'];
+    checks.forEach((c,i)=>{
+      const el=document.getElementById(c.id);
+      const ok=parseInt(el.value,10)===c.exp;
+      markInput(el,ok);
+      if(ok)richtig++;
+      else fehler.push(`${names[i]}: ${c.exp} cm`);
+    });
+    erreicht.umfang=richtig;
+    if(!fehler.length)setFeedback('umfang','correct','✓ Alle Umfänge richtig berechnet!');
+    else setFeedback('umfang','partial',`✗ ${richtig}/3 richtig. Korrekte Ergebnisse: ${fehler.join(' | ')}`);
+  };
+
+  /* ═══════════════════════════════════════
+     10. FLÄCHENINHALT
+  ═══════════════════════════════════════ */
+  window.pruefeFlaeche = function() {
+    const checks=[
+      {id:'fl-rect',exp:36},{id:'fl-sq',exp:36}
+    ];
+    let richtig=0,fehler=[];
+    const names=['Rechteck (9×4)','Quadrat (6×6)'];
+    checks.forEach((c,i)=>{
+      const el=document.getElementById(c.id);
+      const ok=parseInt(el.value,10)===c.exp;
+      markInput(el,ok);
+      if(ok)richtig++;
+      else fehler.push(`${names[i]}: ${c.exp} cm²`);
+    });
+    const lEl=document.getElementById('fl-l');
+    const lOk=parseInt(lEl.value,10)===30;
+    markInput(lEl,lOk);
+    if(lOk)richtig++;
+    else fehler.push('L-Form: 6×4 + 3×2 = 30 m²');
+    erreicht.flaeche=richtig;
+    if(richtig===3)setFeedback('flaeche','correct','✓ Alle Flächeninhalte korrekt!');
+    else setFeedback('flaeche','partial',`✗ ${richtig}/3 richtig. Hinweise: ${fehler.join(' | ')}`);
+  };
+
+  /* ═══════════════════════════════════════
+     11. SACHAUFGABEN
+  ═══════════════════════════════════════ */
+  window.pruefeSach = function() {
+    let richtig=0, msgs=[];
+    const aAnt=document.getElementById('sa-a-antwort').value.toLowerCase();
+    const aOk=aAnt.includes('7') && (aAnt.includes('kein') || aAnt.includes('0') || aAnt.includes('keine'));
+    if(aOk){richtig++;msgs.push('✓ A: 7 Gruppen, keine Person übrig – richtig!');}
+    else msgs.push('✗ A: 28 ÷ 4 = 7 Gruppen, Rest 0 (keine Person übrig).');
+    const bEl=document.getElementById('sa-b-erg');
+    const bOk=parseInt(bEl.value,10)===78;
+    markInput(bEl,bOk);
+    if(bOk){richtig++;msgs.push('✓ B: 78 m² Randbreite – richtig!');}
+    else msgs.push('✗ B: Außen: 27×14=378 m², Becken: 25×12=300 m², Rand: 378−300=78 m².');
+    const c1=parseInt(document.getElementById('sa-c-s1').value,10);
+    const c2=parseInt(document.getElementById('sa-c-s2').value,10);
+    markInput(document.getElementById('sa-c-s1'),c1===60);
+    markInput(document.getElementById('sa-c-s2'),c2===12);
+    if(c1===60&&c2===12){richtig++;msgs.push('✓ C: 60 Tüten ÷ 5 = 12 Tüten – richtig!');}
+    else msgs.push('✗ C: 360÷6=60 Tüten, 60÷5=12 Tüten pro Supermarkt.');
+    erreicht.sach=richtig;
+    const typ=richtig===3?'correct':'partial';
+    setFeedback('sach',typ,msgs.join('<br>'));
+  };
+
+  /* ═══════════════════════════════════════
+     GESAMTERGEBNIS
+  ═══════════════════════════════════════ */
+  window.zeigeGesamtergebnis = function() {
+    let summe=0, max=0;
+    Object.keys(maxPunkte).forEach(k=>{
+      max += maxPunkte[k];
+      if(erreicht[k]!==null) summe += erreicht[k];
+    });
+    const el=document.getElementById('gesamtergebnis');
+    el.style.display='block';
+    document.getElementById('score-display').textContent=`${summe} / ${max}`;
+    const pct=summe/max;
+    let msg;
+    if(pct>=0.9)msg='🌟 Hervorragend! Du bist bestens vorbereitet.';
+    else if(pct>=0.75)msg='👍 Sehr gut! Noch ein bisschen üben und du bist fit für die Arbeit.';
+    else if(pct>=0.5)msg='💪 Weiter so! Übe die rot markierten Aufgaben noch einmal nach.';
+    else msg='📖 Noch etwas zu tun – aber du schaffst das! Lies die Musterlösungen durch.';
+    document.getElementById('score-msg').textContent=msg;
+    el.scrollIntoView({behavior:'smooth'});
+  };
+
+  /* ═══════════════════════════════════════
+     RESET
+  ═══════════════════════════════════════ */
+  window.neuStarten = function() {
+    if(!confirm('Wirklich neu starten? Alle Eingaben werden gelöscht.')) return;
+    document.querySelectorAll('input, textarea').forEach(el=>{
+      el.value='';
+      clearInput(el);
+    });
+    document.querySelectorAll('select').forEach(el=>el.selectedIndex=0);
+    document.querySelectorAll('.feedback').forEach(el=>{
+      el.className='feedback';
+      el.innerHTML='';
+    });
+    document.querySelectorAll('.kombi-option').forEach(b=>b.classList.remove('selected'));
+    ['a','b','c'].forEach(x=>{
+      const el=document.getElementById('ps-'+x);
+      if(el) el.style.outline='none';
+    });
+    gewaehltStreifen=null;
+    kombiWahl=null;
+    chanceAufgaben.forEach((_,i)=>chanceSelected[i]=null);
+    document.getElementById('gesamtergebnis').style.display='none';
+    Object.keys(erreicht).forEach(k=>erreicht[k]=null);
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+
+})();
+</script>
+</body>
+</html>
