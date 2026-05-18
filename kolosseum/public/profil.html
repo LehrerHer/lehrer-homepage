@@ -351,6 +351,16 @@
             </div>
           </div>
 
+          <!-- Ausgehende (pending) -->
+          <div style="margin-bottom:1rem" id="challenges-ausgehend-wrap">
+            <div style="font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:.5rem">
+              Ausgehend
+            </div>
+            <div class="challenge-list" id="challenges-ausgehend">
+              <div class="ch-leer">Wird geladen…</div>
+            </div>
+          </div>
+
           <!-- Letzte Kämpfe -->
           <div>
             <div style="font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:.5rem">
@@ -538,6 +548,25 @@
         badge.style.display = '';
       } else {
         badge.style.display = 'none';
+      }
+
+      // Ausgehende (pending) Herausforderungen
+      const pendingAusgehend = ausgehend.filter(c => c.status === 'pending');
+      const ausEl = document.getElementById('challenges-ausgehend');
+      const ausWrap = document.getElementById('challenges-ausgehend-wrap');
+      if (!pendingAusgehend.length) {
+        ausWrap.style.display = 'none';
+      } else {
+        ausWrap.style.display = '';
+        ausEl.innerHTML = pendingAusgehend.map(c => `
+          <div class="challenge-item">
+            <div class="ch-info">
+              <div class="ch-nick">⚔️ ${escHtml(c.an_nick)}</div>
+              <div class="ch-xp">Wartet auf Annahme…</div>
+            </div>
+            <span class="ch-status-badge pending">⏳ Ausstehend</span>
+          </div>
+        `).join('');
       }
 
       // Eingehende Herausforderungen
