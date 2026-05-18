@@ -559,14 +559,33 @@
       } else {
         ausWrap.style.display = '';
         ausEl.innerHTML = pendingAusgehend.map(c => `
-          <div class="challenge-item">
+          <div class="challenge-item" id="ch-aus-item-${c.id}">
             <div class="ch-info">
               <div class="ch-nick">⚔️ ${escHtml(c.an_nick)}</div>
               <div class="ch-xp">Wartet auf Annahme…</div>
             </div>
-            <span class="ch-status-badge pending">⏳ Ausstehend</span>
+            <div class="ch-btns">
+              <span class="ch-status-badge pending">⏳ Ausstehend</span>
+              <button class="ch-btn ch-btn-ablehnen" data-id="${c.id}">↩ Zurückziehen</button>
+            </div>
           </div>
         `).join('');
+
+        ausEl.querySelectorAll('.ch-btn-ablehnen').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            btn.disabled = true;
+            const r = await fetch(`/api/arena/herausforderung/${btn.dataset.id}/zurueckziehen`, { method: 'POST' });
+            if (r.ok) {
+              const item = document.getElementById(`ch-aus-item-${btn.dataset.id}`);
+              if (item) item.remove();
+              if (!ausEl.querySelector('.challenge-item')) {
+                ausWrap.style.display = 'none';
+              }
+            } else {
+              btn.disabled = false;
+            }
+          });
+        });
       }
 
       // Eingehende Herausforderungen

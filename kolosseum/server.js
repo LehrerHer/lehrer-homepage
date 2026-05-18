@@ -87,6 +87,16 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Lernkolosseum läuft auf http://localhost:${PORT}`);
+
+  // Abgelaufene Herausforderungen bereinigen (24h-Timeout)
+  function bereinigePendingChallenges() {
+    const r = db.prepare(
+      "DELETE FROM challenges WHERE status = 'pending' AND created_at < datetime('now', '-24 hours')"
+    ).run();
+    if (r.changes > 0) console.log(`[Arena] ${r.changes} abgelaufene Herausforderung(en) gelöscht.`);
+  }
+  bereinigePendingChallenges();
+  setInterval(bereinigePendingChallenges, 60 * 60 * 1000);
 });
 
 module.exports = app;
