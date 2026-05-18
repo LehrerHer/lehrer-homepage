@@ -214,6 +214,43 @@ ul {
     margin-bottom: 32px;
 }
 
+/* Mehrzeiliger Intro-Block im Hero */
+.hero-intro-block {
+    text-align: left;
+    margin-bottom: 28px;
+    max-width: 620px;
+}
+
+.hero-intro-block p {
+    font-size: 1rem;
+    line-height: 1.72;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 10px;
+}
+
+.hero-intro-block p:last-child {
+    margin-bottom: 0;
+}
+
+.hero-intro-block strong {
+    color: var(--farbe-akzent);
+    font-weight: 700;
+}
+
+/* Aufbau-Hinweis im Hero */
+.hero-aufbau {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.10);
+    border: 1px solid rgba(255, 255, 255, 0.22);
+    border-radius: var(--radius);
+    padding: 0.6rem 1.1rem;
+    font-size: 0.86rem;
+    line-height: 1.55;
+    color: rgba(255, 255, 255, 0.72);
+    text-align: left;
+    max-width: 620px;
+}
+
 /* Fach-Badges im Hero */
 .hero-faecher {
     display: flex;
@@ -1260,11 +1297,17 @@ footer {
 
     /* --- Hero --- */
     .hero h1 {
-        font-size: 2rem;
+        font-size: 1.75rem;
     }
 
     .hero {
         padding: 52px 0;
+    }
+
+    .hero-intro-block,
+    .hero-aufbau {
+        text-align: center;
+        max-width: 100%;
     }
 
     /* --- Sections --- */
@@ -1312,7 +1355,7 @@ footer {
 
 @media (max-width: 480px) {
     .hero h1 {
-        font-size: 1.7rem;
+        font-size: 1.45rem;
     }
 
     .hero-avatar {
