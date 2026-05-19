@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/auth-guard.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Geschichte – Materialien &amp; Arbeitsblätter – Jan Herrmann</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .mat-header {
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 100%);
+            color: #fff;
+            padding: 2.5rem 0 2rem;
+        }
+        .mat-header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .mat-header p  { color: rgba(255,255,255,.7); font-size: 0.95rem; }
+
+        .mat-section { padding: 2.5rem 0 0.5rem; }
+        .mat-section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e3a5f;
+            margin-bottom: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .mat-section-title::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: #dde3ea;
+            border-radius: 1px;
+        }
+
+        .mat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .mat-card {
+            background: #fff;
+            border: 1px solid #dde3ea;
+            border-left: 4px solid #4a9eda;
+            border-radius: 0 10px 10px 0;
+            padding: 1.1rem 1.2rem;
+            text-decoration: none;
+            color: #1a1a2e;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            transition: box-shadow 0.18s, border-left-color 0.18s;
+            box-shadow: 0 2px 8px rgba(0,0,0,.05);
+        }
+        .mat-card:hover {
+            box-shadow: 0 5px 18px rgba(30,58,95,.14);
+            border-left-color: #1e3a5f;
+        }
+
+        .mat-card-badges {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+            margin-bottom: 0.15rem;
+        }
+        .badge {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        .badge-ab     { background: #e8f5e9; color: #2e7d32; }
+        .badge-selbst { background: #e8f4fd; color: #1e3a5f; }
+        .badge-quiz   { background: #fff3e0; color: #c07000; }
+        .badge-klasse { background: #f3e8fd; color: #6a1b9a; }
+        .badge-stunde { background: #fce4ec; color: #b71c1c; }
+
+        .mat-card-title { font-weight: 600; font-size: 0.95rem; line-height: 1.3; }
+        .mat-card-desc  { font-size: 0.83rem; color: #556; line-height: 1.45; }
+        .mat-card-arrow { font-size: 0.8rem; color: #4a9eda; margin-top: 0.4rem; }
+
+        .seq-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: #889;
+            margin: 1.6rem 0 0.6rem;
+        }
+        .seq-label:first-child { margin-top: 0; }
+
+        @media (max-width: 600px) {
+            .mat-grid { grid-template-columns: 1fr; }
+            .mat-header h1 { font-size: 1.4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+        <div class="container navbar-inner">
+            <a href="index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
+            <button class="hamburger" id="hamburger"
+                    aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="navbar-links" id="navbar-links">
+                <li><a href="index.html">Startseite</a></li>
+                <li><a href="portal.html">Meine Inhalte</a></li>
+                <li><a href="fach-geschichte.html" class="aktiv">Geschichte</a></li>
+                <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html">🏛️ Mein Profil</a></li>
+            </ul>
+            <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+        </div>
+    </nav>
+
+    <header class="mat-header">
+        <div class="container">
+            <h1>🏛️ Geschichte – Materialien</h1>
+            <p>Interaktive Arbeitsblätter und Selbstlernseiten · Jan Herrmann · Oberschule Spelle</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- ── PRAG-REIHE ── -->
+        <section class="mat-section">
+            <h2 class="mat-section-title">🗺️ Prag &amp; Tschechoslowakei – Unterrichtsreihe (Klasse 10)</h2>
+
+            <p class="seq-label">Stunde 1</p>
+            <div class="mat-grid">
+                <a href="materialien/geschichte_prag_stunde1_2026-05.html" class="mat-card">
+                    <div class="mat-card-badges">
+                        <span class="badge badge-selbst">Selbstlernseite</span>
+                        <span class="badge badge-stunde">Stunde 1</span>
+                        <span class="badge badge-klasse">Klasse 10</span>
+                    </div>
+                    <div class="mat-card-title">Böhmen &amp; Prag – Geschichte und Lage</div>
+                    <div class="mat-card-desc">Geographische Einordnung, historische Entwicklung Böhmens und die Entstehung der Tschechoslowakei 1918.</div>
+                    <div class="mat-card-arrow">→ Zur Selbstlernseite</div>
+                </a>
+                <a href="materialien/geschichte_ab1_prag_stunde1_2026-05.html" class="mat-card">
+                    <div class="mat-card-badges">
+                        <span class="badge badge-ab">Arbeitsblatt</span>
+                        <span class="badge badge-stunde">Stunde 1</span>
+                        <span class="badge badge-klasse">Klasse 10</span>
+                    </div>
+                    <div class="mat-card-title">AB: Karte &amp; Karl IV.</div>
+                    <div class="mat-card-desc">Karte auswerten · Karl IV. &amp; Tschechoslowakei 1918 – interaktiv mit Musterlösungen.</div>
+                    <div class="mat-card-arrow">→ Zum Arbeitsblatt</div>
+                </a>
+            </div>
+
+            <p class="seq-label">Stunde 2</p>
+            <div class="mat-grid">
+                <a href="materialien/geschichte_prag_stunde2_2026-05.html" class="mat-card">
+                    <div class="mat-card-badges">
+                        <span class="badge badge-selbst">Selbstlernseite</span>
+                        <span class="badge badge-stunde">Stunde 2</span>
+                        <span class="badge badge-klasse">Klasse 10</span>
+                    </div>
+                    <div class="mat-card-title">Die Erste Tschechoslowakische Republik (1918–1938)</div>
+                    <div class="mat-card-desc">Masaryk &amp; Gründung · Demokratie-Insel · Minderheiten &amp; Krise – Quiz &amp; Lückentext.</div>
+                    <div class="mat-card-arrow">→ Zur Selbstlernseite</div>
+                </a>
+            </div>
+
+            <p class="seq-label">Stunden 3–4</p>
+            <div class="mat-grid">
+                <a href="materialien/geschichte_prag_stunden3-4_selbstlernseite_2026-05.html" class="mat-card">
+                    <div class="mat-card-badges">
+                        <span class="badge badge-selbst">Selbstlernseite</span>
+                        <span class="badge badge-stunde">Stunden 3–4</span>
+                        <span class="badge badge-klasse">Klasse 10</span>
+                    </div>
+                    <div class="mat-card-title">NS-Herrschaft und Kommunismus in der Tschechoslowakei</div>
+                    <div class="mat-card-desc">Protektorat Böhmen und Mähren · Kommunistische Machtübernahme 1948 · Prager Frühling 1968 – mit interaktiven Aufgaben.</div>
+                    <div class="mat-card-arrow">→ Zur Selbstlernseite</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ── MITTELALTER ── -->
+        <section class="mat-section">
+            <h2 class="mat-section-title">⚔️ Mittelalter</h2>
+            <div class="mat-grid">
+                <a href="ab-herrschaft-mittelalter.html" class="mat-card">
+                    <div class="mat-card-badges">
+                        <span class="badge badge-ab">Arbeitsblatt</span>
+                        <span class="badge badge-klasse">Klasse 6</span>
+                    </div>
+                    <div class="mat-card-title">Herrschaft im Mittelalter</div>
+                    <div class="mat-card-desc">Quelle &amp; Darstellung zur Grundherrschaft analysieren – mit KI-Feedback.</div>
+                    <div class="mat-card-arrow">→ Zum Arbeitsblatt</div>
+                </a>
+                <a href="materialien/geschichte_burg-bentheim_museumsführung_7r_2026-05.html" class="mat-card">
+                    <div class="mat-card-badges">
+                        <span class="badge badge-ab">Arbeitsblatt</span>
+                        <span class="badge badge-klasse">Klasse 7</span>
+                    </div>
+                    <div class="mat-card-title">Burg Bentheim – Museumsführung</div>
+                    <div class="mat-card-desc">Rollenspiel-Skript schreiben: Museumswärter erklärt Bauteile und Funktionen der Burg – mit Musterlösung.</div>
+                    <div class="mat-card-arrow">→ Zum Arbeitsblatt</div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ── DYNAMISCH HOCHGELADEN ── -->
+        <section class="mat-section" style="padding-bottom: 3rem;">
+            <h2 class="mat-section-title">📥 Weitere Materialien</h2>
+            <div class="dynamic-inhalte" data-seite="geschichte"></div>
+        </section>
+
+        <p style="text-align:center; margin-bottom: 2.5rem;">
+            <a href="fach-geschichte.html" style="color:#1e3a5f;">← Zur Fachseite Geschichte</a>
+        </p>
+
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <p>© <span id="footer-jahr"></span> Jan Herrmann &nbsp;·&nbsp; Oberschule Spelle</p>
+            <nav class="footer-links" aria-label="Rechtliche Links">
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/kolosseum-login-widget.js"></script>
+    <script src="js/dynamic-content.js"></script>
+    <script src="js/arena-bar.js"></script>
+</body>
+</html>
