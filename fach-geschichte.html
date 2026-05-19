@@ -2,7 +2,6 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <script src="/js/auth-guard.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Geschichtsunterricht bei Jan Herrmann – Oberschule Spelle. Epochen, Themen und Materialien zum Fach Geschichte.">
     <title>Geschichte – Jan Herrmann | Oberschule Spelle</title>
@@ -33,11 +32,17 @@
 
             <ul class="navbar-links" id="navbar-links">
                 <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
-                <li><a href="index.html#startseite">Startseite</a></li>
-                <li><a href="index.html#faecher" class="aktiv">Fächer</a></li>
-                <li><a href="index.html#materialien">Materialien</a></li>
-                <li><a href="blog.html">Blog</a></li>
                 <li><a href="index.html#kontakt">Kontakt</a></li>
+                <li class="navbar-dropdown">
+                    <button class="navbar-dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        Geschützter Bereich ▾
+                    </button>
+                    <ul class="navbar-dropdown-menu" role="menu">
+                        <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" role="menuitem">🏛️ Arena</a></li>
+                        <li><a href="blog.html" role="menuitem">✍️ Schüler*innenblog</a></li>
+                        <li><a href="portal.html" role="menuitem">📋 Materialien</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </nav>
@@ -114,56 +119,11 @@
 
             </div>
 
-            <h2 class="section-titel" style="margin-top: 48px;">Interaktive Arbeitsblätter &amp; Materialien</h2>
-            <p class="section-untertitel">Direkt im Browser bearbeitbar – mit automatischem Speichern und KI-Feedback.</p>
-
-            <div class="materialien-grid" style="margin-top: 1.5rem;">
-                <a href="ab-herrschaft-mittelalter.html" class="material-karte" style="text-decoration:none;color:inherit">
-                    <span class="material-icon">⚔️</span>
-                    <div class="material-info">
-                        <h4>Herrschaft im Mittelalter</h4>
-                        <p>Quelle &amp; Darstellung zur Grundherrschaft analysieren – mit KI-Feedback. Jahrgang 6.</p>
-                    </div>
-                </a>
-                <a href="materialien/geschichte_ab1_prag_stunde1_2026-05.html" class="material-karte" style="text-decoration:none;color:inherit">
-                    <span class="material-icon">🏰</span>
-                    <div class="material-info">
-                        <h4>Böhmen &amp; Prag – Geschichte und Lage</h4>
-                        <p>AB 1: Karte auswerten · AB 2: Karl IV. &amp; Tschechoslowakei 1918 – mit Musterlösungen. Klasse 10.</p>
-                    </div>
-                </a>
-                <a href="materialien/geschichte_prag_stunde2_2026-05.html" class="material-karte" style="text-decoration:none;color:inherit">
-                    <span class="material-icon">🗺️</span>
-                    <div class="material-info">
-                        <h4>Die Erste Tschechoslowakische Republik (1918–1938)</h4>
-                        <p>Stunde 2: Masaryk &amp; Gründung · Demokratie-Insel · Minderheiten &amp; Krise – Quiz &amp; Lückentext. Klasse 10.</p>
-                    </div>
-                </a>
-                <a href="materialien/geschichte_prag_stunden3-4_selbstlernseite_2026-05.html" class="material-karte" style="text-decoration:none;color:inherit">
-                    <span class="material-icon">🔴</span>
-                    <div class="material-info">
-                        <h4>NS-Herrschaft und Kommunismus in der Tschechoslowakei</h4>
-                        <p>Stunden 3–4: Protektorat · Kommunismus 1948 · Prager Frühling 1968. Klasse 10.</p>
-                    </div>
-                </a>
-                <a href="materialien/geschichte_burg-bentheim_museumsführung_7r_2026-05.html" class="material-karte" style="text-decoration:none;color:inherit">
-                    <span class="material-icon">🏰</span>
-                    <div class="material-info">
-                        <h4>Burg Bentheim – Museumsführung</h4>
-                        <p>Rollenspiel-Skript: Museumswärter erklärt Bauteile und Funktionen der Burg – mit Musterlösung. Klasse 7.</p>
-                    </div>
-                </a>
+            <div style="text-align:center;margin-top:3rem;padding:2rem;background:#fff;border-radius:12px;border:1px solid #d6e4f0;box-shadow:0 2px 12px rgba(30,58,95,.07)">
+                <p style="font-size:1.05rem;font-weight:600;color:var(--farbe-primaer);margin-bottom:.75rem">🔒 Materialien, Arbeitsblätter &amp; Quizze</p>
+                <p style="color:#555;font-size:.93rem;margin-bottom:1.25rem">Arbeitsblätter, Hilfen und Quizze zu diesem Fach findest du im Materialportal – für eingeloggte Schülerinnen und Schüler.</p>
+                <a href="materialien-geschichte.html" style="display:inline-block;padding:.75rem 1.75rem;background:var(--farbe-akzent);color:#fff;border-radius:8px;font-weight:700;font-size:.95rem;text-decoration:none">→ Zu den Materialien</a>
             </div>
-
-            <p style="text-align:center; margin-top: 1.5rem;">
-                <a href="materialien-geschichte.html" style="color:#1e3a5f; font-weight:600;">📋 Alle Geschichte-Materialien in der Übersicht →</a>
-            </p>
-
-            <h2 class="section-titel" style="margin-top: 48px;">Hochgeladene Materialien</h2>
-            <p class="section-untertitel">Unterrichtsmaterialien zum Herunterladen.</p>
-
-            <!-- Dynamisch hochgeladene Materialien (aus inhalte.json) -->
-            <div class="dynamic-inhalte" data-seite="geschichte"></div>
 
             <p style="text-align: center; margin-top: 40px;">
                 <a href="index.html">← Zurück zur Startseite</a>
@@ -175,17 +135,18 @@
 
     <footer>
         <div class="container footer-inner">
-            <p>© <span id="footer-jahr">2025</span> Jan Herrmann &nbsp;·&nbsp; Oberschule Spelle</p>
+            <p>© <span id="footer-jahr">2025</span> Jan Herrmann</p>
             <nav class="footer-links" aria-label="Rechtliche Links">
-                <a href="index.html#impressum">Impressum</a>
-                <a href="index.html#datenschutz">Datenschutz</a>
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
             </nav>
+            <a href="/kolosseum/public/admin/" id="admin-footer-link" class="admin-footer-link" aria-hidden="true" tabindex="-1"></a>
         </div>
     </footer>
 
     <script src="js/main.js"></script>
     <script src="js/dynamic-content.js"></script>
-
+    <script src="js/homepage-gate.js"></script>
 <script src="js/arena-bar.js"></script>
 </body>
 </html>

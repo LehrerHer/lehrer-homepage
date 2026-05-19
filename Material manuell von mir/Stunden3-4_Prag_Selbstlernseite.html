@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Stunden 3–4 – NS-Herrschaft und Kommunismus in der Tschechoslowakei</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Josefin+Sans:wght@400;600;700&display=swap');
+
+:root {
+  --dunkel:    #1c1410;
+  --braun:     #4a2c12;
+  --rostrot:   #8b2e14;
+  --gold:      #c4922a;
+  --hellgold:  #f5e9d0;
+  --blau:      #1a3a5c;
+  --hellblau:  #d4e4f4;
+  --gruen:     #1b4a2a;
+  --hellgruen: #d6eadd;
+  --grau:      #f2f0ec;
+  --text:      #1c1c1c;
+  --muted:     #6b6560;
+  --weiss:     #fdfaf6;
+  --shadow:    0 3px 14px rgba(0,0,0,.12);
+  --radius:    10px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: #e8e2d9;
+  color: var(--text);
+  font-size: 17px;
+  line-height: 1.75;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--dunkel);
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+.hero-stripe {
+  height: 5px;
+  background: repeating-linear-gradient(90deg, var(--rostrot) 0px, var(--rostrot) 20px, var(--gold) 20px, var(--gold) 22px);
+}
+.hero-inner {
+  padding: 36px 28px 30px;
+  position: relative;
+}
+.hero-inner::after {
+  content: '';
+  position: absolute;
+  right: -40px; top: -40px;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(196,146,42,.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-stunden {
+  display: inline-block;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  border: 1px solid rgba(196,146,42,.4);
+  padding: 3px 12px;
+  border-radius: 3px;
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: 'Crimson Pro', serif;
+  font-size: clamp(22px, 5.5vw, 36px);
+  color: var(--weiss);
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.hero h1 span { color: var(--gold); }
+.hero-sub {
+  font-size: 15px;
+  color: #a09080;
+  font-style: italic;
+  margin-bottom: 18px;
+}
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.hero-badge {
+  background: rgba(255,255,255,.07);
+  border: 1px solid rgba(255,255,255,.15);
+  color: #c8bead;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  letter-spacing: .5px;
+  padding: 4px 11px;
+  border-radius: 20px;
+}
+
+/* ── WARNUNG ── */
+.hinweis-sensibel {
+  background: #2a1a0a;
+  border-left: 4px solid var(--gold);
+  padding: 13px 18px;
+  font-size: 14px;
+  color: #c8b89a;
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* ── FORTSCHRITT ── */
+.progress-wrap {
+  background: #141010;
+  padding: 10px 28px 14px;
+}
+.progress-track {
+  background: rgba(255,255,255,.10);
+  border-radius: 3px;
+  height: 5px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--rostrot), var(--gold));
+  border-radius: 3px;
+  transition: width .5s ease;
+  width: 0%;
+}
+.progress-label {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  color: #7a6a5a;
+  margin-top: 5px;
+  text-align: right;
+  letter-spacing: .5px;
+}
+
+/* ── CONTAINER ── */
+.container { max-width: 800px; margin: 0 auto; padding: 0 18px 70px; }
+
+/* ── NAVIGATION ── */
+.nav-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 16px 0 0;
+}
+.nav-scroll::-webkit-scrollbar { display: none; }
+.nav-tabs { display: flex; gap: 6px; width: max-content; }
+.nav-tab {
+  flex-shrink: 0;
+  background: var(--weiss);
+  border: 1.5px solid #c8bead;
+  border-radius: 7px;
+  padding: 7px 15px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px;
+  letter-spacing: .3px;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.nav-tab.active { background: var(--braun); border-color: var(--braun); color: var(--weiss); }
+.nav-tab.done { border-color: var(--gruen); color: var(--gruen); }
+.nav-tab.done::before { content: '✓ '; }
+
+/* ── ABSCHNITTE ── */
+.section { display: none; padding-top: 18px; animation: fadeIn .3s ease; }
+.section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
+
+/* ── STUNDEN-LABEL ── */
+.stunde-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 22px 0 14px;
+}
+.stunde-divider .stunde-pill {
+  flex-shrink: 0;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 20px;
+  color: var(--weiss);
+}
+.pill-rot  { background: var(--rostrot); }
+.pill-blau { background: var(--blau); }
+.stunde-divider hr { flex: 1; border: none; border-top: 1.5px dashed #c8bead; }
+
+/* ── SECTION HEADER ── */
+.section-header {
+  background: var(--weiss);
+  border-radius: var(--radius);
+  padding: 20px 22px 16px;
+  margin-bottom: 16px;
+  border-left: 5px solid var(--rostrot);
+  box-shadow: var(--shadow);
+}
+.section-header.blau  { border-left-color: var(--blau); }
+.section-header.gold  { border-left-color: var(--gold); }
+.section-header.gruen { border-left-color: var(--gruen); }
+
+.section-kicker {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.section-header h2 {
+  font-family: 'Crimson Pro', serif;
+  font-size: clamp(19px, 4vw, 27px);
+  color: var(--dunkel);
+  line-height: 1.2;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.leitfrage {
+  font-style: italic;
+  color: var(--blau);
+  font-size: 15.5px;
+  border-top: 1px dashed #c8bead;
+  padding-top: 10px;
+  margin-top: 8px;
+}
+.section-header.rot-header .leitfrage { color: var(--rostrot); }
+
+/* ── LESETEXT ── */
+.lesetext {
+  background: #faf6ee;
+  border: 1px solid #ddd0b8;
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  margin-bottom: 14px;
+  font-size: 15.5px;
+  line-height: 1.8;
+}
+.lesetext-kopf {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #ddd0b8;
+  flex-wrap: wrap;
+}
+.lesetext-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.lesetext-meta { flex: 1; min-width: 0; }
+.lesetext-typ {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 3px;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+.typ-quelle      { background: #fdecea; color: var(--rostrot); border: 1px solid #e8b0a8; }
+.typ-darstellung { background: var(--hellblau); color: var(--blau); border: 1px solid #aac8e0; }
+.lesetext-titel {
+  font-family: 'Crimson Pro', serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--dunkel);
+  line-height: 1.3;
+}
+.lesetext p { margin-bottom: 10px; }
+.lesetext p:last-child { margin-bottom: 0; }
+.lesetext blockquote {
+  border-left: 3px solid var(--gold);
+  margin: 12px 0;
+  padding: 8px 16px;
+  background: rgba(196,146,42,.06);
+  font-style: italic;
+  color: #3a2a10;
+}
+.quellenangabe {
+  font-size: 12px;
+  color: var(--muted);
+  border-top: 1px solid #ddd0b8;
+  margin-top: 14px;
+  padding-top: 10px;
+  font-style: italic;
+}
+.annotation {
+  display: inline;
+  background: rgba(196,146,42,.15);
+  border-bottom: 1px dashed var(--gold);
+  cursor: help;
+  position: relative;
+}
+
+/* ── INFO-BOX ── */
+.info-box {
+  background: var(--weiss);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+.info-box h3 {
+  font-family: 'Crimson Pro', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--dunkel);
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.info-box p, .info-box li { font-size: 15.5px; color: var(--text); margin-bottom: 6px; }
+.info-box ul { padding-left: 18px; }
+
+/* ── ZEITLEISTE ── */
+.timeline { margin: 8px 0 4px; }
+.tl-item {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 10px;
+  align-items: flex-start;
+}
+.tl-year {
+  flex-shrink: 0;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--weiss);
+  background: var(--braun);
+  width: 65px;
+  text-align: center;
+  padding: 4px 6px;
+  border-radius: 5px;
+  margin-top: 3px;
+  letter-spacing: .3px;
+}
+.tl-year.blau-bg  { background: var(--blau); }
+.tl-year.rot-bg   { background: var(--rostrot); }
+.tl-year.gruen-bg { background: var(--gruen); }
+.tl-text { font-size: 15px; line-height: 1.55; }
+.tl-text strong { color: var(--dunkel); }
+
+/* ── AUFGABEN-BLOCK ── */
+.aufgaben-block {
+  background: var(--weiss);
+  border-radius: var(--radius);
+  padding: 20px 20px;
+  margin-bottom: 16px;
+  box-shadow: var(--shadow);
+}
+.aufgaben-block h3 {
+  font-family: 'Crimson Pro', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dunkel);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--hellgold);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.aufgabe {
+  margin-bottom: 22px;
+  padding-bottom: 22px;
+  border-bottom: 1px dashed #ddd0b8;
+}
+.aufgabe:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+.afb-tag {
+  display: inline-block;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9.5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+.afb1 { background: #e8f5e9; color: #1b5e20; border: 1px solid #a5d6a7; }
+.afb2 { background: #fff8e1; color: #7d5a0a; border: 1px solid #ffd54f; }
+.afb3 { background: #fce4ec; color: #880e4f; border: 1px solid #f48fb1; }
+
+.aufgabe-zeile {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.aufgabe-nr {
+  flex-shrink: 0;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--braun);
+  color: var(--weiss);
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 2px;
+}
+.aufgabe-nr.rot   { background: var(--rostrot); }
+.aufgabe-nr.blau  { background: var(--blau); }
+.aufgabe-nr.gold  { background: var(--gold); }
+.aufgabe-nr.gruen { background: var(--gruen); }
+
+.aufgabe-text { font-size: 15.5px; line-height: 1.65; color: var(--text); flex: 1; }
+.aufgabe-text strong { color: var(--dunkel); }
+
+.hinweis {
+  background: var(--hellgold);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 6px 6px 0;
+  padding: 7px 12px;
+  font-size: 13.5px;
+  color: var(--braun);
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* ── EINGABE ── */
+.antwort-label {
+  display: block;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 10px 0 5px;
+}
+textarea {
+  width: 100%;
+  border: 1.5px solid #c8bead;
+  border-radius: 7px;
+  padding: 11px 13px;
+  font-family: 'Crimson Pro', serif;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text);
+  background: #fdfaf6;
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color .2s, box-shadow .2s;
+  -webkit-appearance: none;
+}
+textarea:focus {
+  outline: none;
+  border-color: var(--blau);
+  box-shadow: 0 0 0 3px rgba(26,58,92,.10);
+}
+textarea::placeholder { color: #b0a898; font-style: italic; }
+
+/* ── MUSTERLÖSUNG ── */
+.muster-btn {
+  width: 100%;
+  text-align: left;
+  background: #f0ece4;
+  border: 1.5px dashed #c8bead;
+  border-radius: 7px;
+  padding: 9px 14px;
+  font-family: 'Crimson Pro', serif;
+  font-size: 14.5px;
+  color: var(--blau);
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background .2s;
+}
+.muster-btn:active { background: var(--hellblau); }
+.muster-content {
+  display: none;
+  margin-top: 8px;
+  padding: 14px 16px;
+  background: #eef4f8;
+  border-radius: 7px;
+  font-size: 14.5px;
+  color: #1a3050;
+  line-height: 1.7;
+  border-left: 3px solid var(--blau);
+}
+.muster-content.open { display: block; animation: fadeIn .2s ease; }
+.muster-content ul { padding-left: 18px; margin-top: 6px; }
+.muster-content li { margin-bottom: 5px; }
+
+/* ── QUIZ ── */
+.quiz-block {
+  background: var(--weiss);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 14px;
+  box-shadow: var(--shadow);
+}
+.quiz-block h3 {
+  font-family: 'Crimson Pro', serif;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--dunkel);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--hellgold);
+}
+.quiz-frage {
+  background: var(--grau);
+  border-radius: 8px;
+  padding: 16px 18px;
+  margin-bottom: 12px;
+  border-left: 4px solid var(--blau);
+}
+.quiz-frage h4 {
+  font-size: 15.5px;
+  font-family: 'Crimson Pro', serif;
+  font-weight: 600;
+  color: var(--dunkel);
+  margin-bottom: 11px;
+}
+.quiz-optionen { display: flex; flex-direction: column; gap: 7px; }
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 13px;
+  border: 1.5px solid #c8bead;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 15px;
+  font-family: 'Crimson Pro', serif;
+  background: var(--weiss);
+  transition: all .18s;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.quiz-option:active { transform: scale(.98); }
+.quiz-option.richtig { background: var(--hellgruen); border-color: var(--gruen); color: var(--gruen); }
+.quiz-option.falsch  { background: #fdecea; border-color: var(--rostrot); color: var(--rostrot); text-decoration: line-through; }
+.opt-kreis {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid #c8bead;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-weight: 700;
+}
+.quiz-feedback {
+  margin-top: 9px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-style: italic;
+  display: none;
+}
+.quiz-feedback.ok  { background: var(--hellgruen); color: var(--gruen); display: block; }
+.quiz-feedback.err { background: #fdecea; color: var(--rostrot); display: block; }
+
+/* ── LÜCKENTEXT ── */
+.luecken-wrap {
+  background: var(--weiss);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+  font-size: 15.5px;
+  line-height: 2.3;
+  margin-bottom: 14px;
+}
+.luecken-input {
+  border: none;
+  border-bottom: 2px solid var(--blau);
+  background: var(--hellblau);
+  border-radius: 3px 3px 0 0;
+  font-family: 'Crimson Pro', serif;
+  font-size: 15.5px;
+  color: var(--blau);
+  padding: 1px 6px;
+  width: 140px;
+  text-align: center;
+  vertical-align: bottom;
+  -webkit-appearance: none;
+}
+.luecken-input:focus { outline: none; border-bottom-color: var(--dunkel); }
+.luecken-input.ok  { background: var(--hellgruen); border-color: var(--gruen); color: var(--gruen); }
+.luecken-input.err { background: #fdecea; border-color: var(--rostrot); color: var(--rostrot); }
+
+/* ── PRO-KONTRA ── */
+.pro-kontra-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 14px 0;
+}
+@media (max-width: 520px) { .pro-kontra-grid { grid-template-columns: 1fr; } }
+
+.pk-karte {
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.pk-karte.pro  { background: var(--hellgruen); border: 1.5px solid #a5d6a7; }
+.pk-karte.kon  { background: #fdecea; border: 1.5px solid #e8b0a8; }
+.pk-karte h4 {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.pk-karte.pro h4 { color: var(--gruen); }
+.pk-karte.kon h4 { color: var(--rostrot); }
+.pk-karte ul { padding-left: 16px; font-size: 14.5px; }
+.pk-karte li { margin-bottom: 5px; }
+
+/* ── PERSONEN-KARTE ── */
+.person-karte {
+  background: var(--weiss);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.person-avatar {
+  flex-shrink: 0;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  background: var(--hellgold);
+}
+.person-info h4 {
+  font-family: 'Crimson Pro', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--dunkel);
+  margin-bottom: 3px;
+}
+.person-info .lebensdaten {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: .5px;
+  margin-bottom: 6px;
+}
+.person-info p { font-size: 14.5px; color: var(--text); line-height: 1.6; }
+
+/* ── VERGLEICHSTABELLE ── */
+.vtab {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+  font-size: 14.5px;
+}
+.vtab th {
+  padding: 11px 14px;
+  text-align: left;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  background: var(--dunkel);
+  color: var(--gold);
+}
+.vtab td {
+  padding: 11px 14px;
+  border-bottom: 1px solid #e0d8cc;
+  background: var(--weiss);
+  vertical-align: top;
+}
+.vtab tr:last-child td { border-bottom: none; }
+.vtab tr:nth-child(even) td { background: var(--grau); }
+.vtab .kat { font-weight: 700; color: var(--dunkel); font-size: 14px; }
+
+/* ── METHODEN-BOX ── */
+.methoden-box {
+  background: var(--hellgold);
+  border: 1.5px solid #d4b870;
+  border-radius: var(--radius);
+  padding: 15px 18px;
+  margin-bottom: 14px;
+}
+.methoden-box h4 {
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 10.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--braun);
+  margin-bottom: 8px;
+}
+.methoden-box ol, .methoden-box ul {
+  padding-left: 18px;
+  font-size: 14.5px;
+  color: var(--text);
+}
+.methoden-box li { margin-bottom: 5px; }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 11px 20px;
+  border-radius: 7px;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 13px;
+  letter-spacing: .5px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all .18s;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-primary { background: var(--braun); color: var(--weiss); box-shadow: 0 2px 8px rgba(74,44,18,.25); }
+.btn-primary:active { transform: scale(.97); background: var(--dunkel); }
+.btn-outline { background: transparent; color: var(--braun); border: 2px solid var(--braun); }
+.btn-gold { background: var(--gold); color: var(--dunkel); box-shadow: 0 2px 8px rgba(196,146,42,.3); }
+.btn-gold:active { transform: scale(.97); }
+.nav-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid #ddd0b8;
+  gap: 10px;
+}
+@media (max-width: 480px) {
+  .nav-buttons { flex-direction: column; }
+  .btn { width: 100%; justify-content: center; }
+  .container { padding: 0 13px 70px; }
+  .pro-kontra-grid { grid-template-columns: 1fr; }
+}
+
+/* ── ABSCHLUSS ── */
+.abschluss-card {
+  background: var(--dunkel);
+  border-radius: var(--radius);
+  padding: 28px 22px;
+  text-align: center;
+  margin-top: 10px;
+}
+.abschluss-card h2 {
+  font-family: 'Crimson Pro', serif;
+  color: var(--gold);
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.abschluss-card p { color: #a09080; font-size: 15px; margin-bottom: 14px; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-stripe"></div>
+  <div class="hero-inner">
+    <div class="hero-stunden">Geschichte · Klasse 10 · Stunden 3–4 von 8</div>
+    <h1>Von der <span>Besatzung</span> zur <span>Diktatur</span></h1>
+    <p class="hero-sub">NS-Herrschaft (1938–1945) und kommunistische Diktatur (1945–1967) in der Tschechoslowakei</p>
+    <div class="hero-badges">
+      <span class="hero-badge">📖 Selbstarbeit</span>
+      <span class="hero-badge">⏱ ca. 90 Min.</span>
+      <span class="hero-badge">💻 iPad-optimiert</span>
+      <span class="hero-badge">✓ Selbstkontrolle</span>
+      <span class="hero-badge">AFB I–III</span>
+    </div>
+  </div>
+  <div class="hinweis-sensibel">⚠ Diese Stunden behandeln Verfolgung, Deportation und politische Unterdrückung. Lies die Quellen und Texte sorgfältig und respektvoll.</div>
+</div>
+
+<!-- FORTSCHRITT -->
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="pFill"></div></div>
+  <div class="progress-label" id="pLabel">Abschnitt 0 von 7</div>
+</div>
+
+<div class="container">
+  <div class="nav-scroll">
+    <div class="nav-tabs" id="navTabs">
+      <button class="nav-tab active"  onclick="go(0)">Einstieg</button>
+      <button class="nav-tab"         onclick="go(1)">Münchner Abkommen</button>
+      <button class="nav-tab"         onclick="go(2)">Protektorat &amp; Alltag</button>
+      <button class="nav-tab"         onclick="go(3)">Terezín</button>
+      <button class="nav-tab"         onclick="go(4)">Kommunismus 1948</button>
+      <button class="nav-tab"         onclick="go(5)">Diktatur &amp; Alltag</button>
+      <button class="nav-tab"         onclick="go(6)">Quiz &amp; Vergleich</button>
+      <button class="nav-tab"         onclick="go(7)">Abschluss</button>
+    </div>
+  </div>
+
+<!-- ════════════════════════════════
+  ABSCHNITT 0 – EINSTIEG
+════════════════════════════════ -->
+<div class="section active" id="s0">
+  <div class="section-header">
+    <div class="section-kicker">Einstieg · 5 Minuten</div>
+    <h2>Was weißt du noch – und was erwartet dich?</h2>
+    <div class="leitfrage">💭 Ausgangsfrage: Wie konnte eine stabile Demokratie wie die ČSR innerhalb weniger Jahre zur Diktatur werden?</div>
+  </div>
+
+  <div class="info-box">
+    <h3>📌 Wo stehen wir?</h3>
+    <p>In Stunde 2 hast du gelernt: Die Tschechoslowakei war die einzige stabile Demokratie Ostmitteleuropas – reich, modern, multikulturell. Doch 1938 endet diese Ära. In diesen beiden Stunden verfolgst du, wie die ČSR erst unter NS-Herrschaft leidet und dann unter kommunistische Diktatur gerät.</p>
+    <p>Du wirst Quellen und Darstellungen analysieren, Perspektiven vergleichen und am Ende ein begründetes Urteil formulieren.</p>
+  </div>
+
+  <div class="aufgaben-block">
+    <h3>🖊 Vorwissen sichern</h3>
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr">V</div>
+        <div class="aufgabe-text">Was weißt du noch aus Stunde 2? Notiere: <strong>(a)</strong> Wer war Masaryk? <strong>(b)</strong> Was war die Sudetendeutsche Partei? <strong>(c)</strong> Was geschah im Münchner Abkommen 1938?</div>
+      </div>
+      <span class="antwort-label">Meine Antworten:</span>
+      <textarea placeholder="(a) Masaryk war …&#10;(b) Die SdP war …&#10;(c) Im Münchner Abkommen wurde …" rows="5"></textarea>
+    </div>
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr">V</div>
+        <div class="aufgabe-text">Stelle eine Vermutung an: Warum war es für Hitler so wichtig, die Tschechoslowakei unter seine Kontrolle zu bringen – auch nachdem er das Sudetenland bereits hatte?</div>
+      </div>
+      <span class="antwort-label">Meine Vermutung:</span>
+      <textarea placeholder="Ich vermute, dass …" rows="3"></textarea>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <div></div>
+    <button class="btn btn-primary" onclick="next(0)">Weiter: Münchner Abkommen →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+  ABSCHNITT 1 – MÜNCHNER ABKOMMEN
+════════════════════════════════ -->
+<div class="section" id="s1">
+
+  <div class="stunde-divider">
+    <span class="stunde-pill pill-rot">Stunde 3</span>
+    <hr>
+    <span style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:1px;color:var(--muted);">NS-Herrschaft 1938–1945</span>
+  </div>
+
+  <div class="section-header rot-header">
+    <div class="section-kicker">Quellenarbeit &amp; Analyse · 15 Minuten</div>
+    <h2>Das Münchner Abkommen 1938 – „Frieden für unsere Zeit"?</h2>
+    <div class="leitfrage">🔍 Leitfrage: War das Münchner Abkommen ein Sieg der Diplomatie oder der Verrat an der Demokratie?</div>
+  </div>
+
+  <div class="methoden-box">
+    <h4>📚 Methode: Quelle analysieren</h4>
+    <ol>
+      <li><strong>Einordnen:</strong> Wer hat die Quelle erstellt? Wann? In welchem Kontext?</li>
+      <li><strong>Beschreiben:</strong> Was sagt die Quelle aus – in eigenen Worten?</li>
+      <li><strong>Analysieren:</strong> Welche Absicht, welche Perspektive steckt dahinter?</li>
+      <li><strong>Beurteilen:</strong> Wie glaubwürdig ist die Quelle? Was verschweigt sie?</li>
+    </ol>
+  </div>
+
+  <div class="lesetext">
+    <div class="lesetext-kopf">
+      <div class="lesetext-icon">📜</div>
+      <div class="lesetext-meta">
+        <span class="lesetext-typ typ-quelle">Quelle</span>
+        <div class="lesetext-titel">Chamberlain nach seiner Rückkehr aus München, 30. September 1938 (Auszug, übersetzt)</div>
+      </div>
+    </div>
+    <blockquote>„Ich glaube, dass dieser Friede für unsere Zeit ist. Gehen Sie nach Hause und schlafen Sie ruhig."</blockquote>
+    <p>Der britische Premierminister Neville Chamberlain hatte gemeinsam mit dem französischen Ministerpräsidenten Daladier, dem italienischen Diktator Mussolini und Adolf Hitler das Münchner Abkommen unterzeichnet. Die Tschechoslowakei wurde nicht zu den Verhandlungen eingeladen.</p>
+    <p>Das Abkommen verpflichtete die ČSR, das Sudetenland – jenes Grenzgebiet mit rund 3 Millionen deutschsprachigen Einwohnern – innerhalb von zehn Tagen an das Deutsche Reich abzutreten. Großbritannien und Frankreich erhofften sich dadurch, Hitlers Expansionsdrang zu befriedigen und einen neuen Weltkrieg zu verhindern. Diese Politik wurde als <strong>Appeasement</strong> bekannt.</p>
+    <div class="quellenangabe">Quelle: Rede Chamberlains vor dem Heston Aerodrome, 30. September 1938 (historisch überliefert); vgl. Geschichte und Geschehen Jg. 9/10, Klett 2018.</div>
+  </div>
+
+  <div class="lesetext">
+    <div class="lesetext-kopf">
+      <div class="lesetext-icon">📄</div>
+      <div class="lesetext-meta">
+        <span class="lesetext-typ typ-darstellung">Darstellung</span>
+        <div class="lesetext-titel">Die Folgen des Münchner Abkommens für die Tschechoslowakei</div>
+      </div>
+    </div>
+    <p>Das Münchner Abkommen war für die Tschechoslowakei eine Katastrophe: Das Sudetenland, das wirtschaftlich und militärisch zentral war, ging verloren. Rund ein Drittel der Industriekapazität und die wichtigsten Grenzbefestigungen fielen an Deutschland.</p>
+    <p>Für Tschechen und demokratische Europäer war es ein Schock. Der tschechische Außenminister Kamil Krofta sprach von einem „Schicksalsschlag" und fügte hinzu: „Wir werden nicht allein sein – wir werden uns rächen." Andere Beobachter beschrieben das Abkommen später als „Verrat von München" (<em>zrada Mnichova</em>).</p>
+    <p>Nur sechs Monate nach dem Abkommen, am <strong>15. März 1939</strong>, marschierten deutsche Truppen in die Rest-Tschechoslowakei ein. Hitler hatte sein Versprechen gebrochen. Chamberlains „Frieden für unsere Zeit" hatte gerade sechs Monate gehalten.</p>
+    <div class="quellenangabe">Darstellung nach: Brandes, Detlef. Die Sudetendeutschen im Krisenjahr 1938. München 2008, S. 214–220.</div>
+  </div>
+
+  <div class="aufgaben-block">
+    <h3>🖊 Aufgaben zum Münchner Abkommen</h3>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr rot">1</div>
+        <div class="aufgabe-text"><span class="afb-tag afb1">AFB I</span> Erkläre in eigenen Worten: Was wurde im Münchner Abkommen festgelegt, und wer war daran beteiligt?</div>
+      </div>
+      <span class="antwort-label">Meine Antwort:</span>
+      <textarea placeholder="Im Münchner Abkommen wurde … beteiligt waren …" rows="4"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content">Im Münchner Abkommen (29. September 1938) vereinbarten Hitler, Mussolini, Chamberlain und Daladier, dass die ČSR das Sudetenland innerhalb von 10 Tagen an Deutschland abtreten muss. Die Tschechoslowakei selbst war nicht eingeladen. Großbritannien und Frankreich hofften, durch das Nachgeben Hitlers Expansionsdrang zu stillen und einen Krieg zu verhindern (Appeasement-Politik).</div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr rot">2</div>
+        <div class="aufgabe-text"><span class="afb-tag afb2">AFB II</span> Analysiere die Quelle (Chamberlain-Aussage): Welche Absicht verfolgt Chamberlain mit diesen Worten? Welche Perspektive nimmt er ein – und welche lässt er aus?</div>
+      </div>
+      <div class="hinweis">💡 Denke an: Für wen sprach Chamberlain? Was konnte er nicht wissen – und was hätte er wissen können?</div>
+      <span class="antwort-label">Meine Analyse:</span>
+      <textarea placeholder="Chamberlain bezweckt mit seinen Worten … Er nimmt die Perspektive … ein … ausgelassen wird …" rows="6"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content">Chamberlain will die britische Öffentlichkeit beruhigen und seine eigene Politik rechtfertigen. Er nimmt die Perspektive eines europäischen Staatsmanns ein, der einen Krieg um jeden Preis vermeiden will. Ausgelassen wird: die Sicht der Tschechoslowakei (die kein Mitspracherecht hatte), die Verlässlichkeit Hitlers (der sein Versprechen nach 6 Monaten brach), und die moralische Dimension des Verrats an einem demokratischen Bündnispartner.</div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr rot">3</div>
+        <div class="aufgabe-text"><span class="afb-tag afb2">AFB II</span> Vergleiche die beiden Texte: Wie unterscheiden sich Quelle und Darstellung in ihrer Sichtweise auf das Münchner Abkommen? Nutze konkrete Textstellen.</div>
+      </div>
+      <span class="antwort-label">Mein Vergleich:</span>
+      <textarea placeholder="Die Quelle (Chamberlain) sieht … Die Darstellung hingegen …" rows="5"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content">Die Quelle (Chamberlain) stellt das Abkommen als Erfolg dar: „Frieden für unsere Zeit" zeigt, dass er es als dauerhafte Lösung sah. Die Darstellung hingegen bewertet das Abkommen als „Katastrophe" für die ČSR: Sie zeigt die konkreten Folgen (Verlust von Industrie, Befestigungen) und den späteren Bruch Hitlers (15. März 1939). Die Darstellung hat den Vorteil des Rückblicks und kann zeigen, dass Chamberlains Hoffnung sich als falsch erwies.</div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr rot">4</div>
+        <div class="aufgabe-text"><span class="afb-tag afb3">AFB III</span> <strong>Urteile:</strong> War die Appeasement-Politik Chamberlains historisch gerechtfertigt? Berücksichtige in deiner Antwort die Situation von 1938 (was war damals bekannt?) und das, was danach geschah.</div>
+      </div>
+      <div class="hinweis">💡 Ein gutes Urteil nennt Argumente auf beiden Seiten und kommt dann zu einer begründeten eigenen Position. Mindestens 5 Sätze.</div>
+      <span class="antwort-label">Mein begründetes Urteil:</span>
+      <textarea placeholder="Einerseits lässt sich argumentieren … Andererseits … Mein Urteil lautet daher …" rows="8"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content"><ul>
+        <li><strong>Argumente für Appeasement:</strong> 1938 war die Erinnerung an den Ersten Weltkrieg (10 Mio. Tote) frisch. Ein neuer Krieg schien unbedingt zu vermeiden. Britisches Militär war 1938 nicht kriegsbereit. Chamberlain konnte nicht wissen, dass Hitler den Vertrag brechen würde.</li>
+        <li><strong>Argumente dagegen:</strong> Hitler hatte bereits mehrfach Versprechen gebrochen (Rheinland 1936, Österreich 1938). Die ČSR wurde ohne Mitsprache geopfert – eine Demokratie wurde einem Diktator ausgeliefert. Das Abkommen stärkte Hitler militärisch (tschechische Rüstung) und politisch (er sah den Westen als schwach).</li>
+        <li><strong>Urteil:</strong> Die Appeasement-Politik war verständlich als kurzfristiger Versuch der Kriegsverhinderung, aber historisch ein Fehler: Sie ermöglichte Hitlers weitere Expansion und beschädigte das Vertrauen in westliche Demokratien als verlässliche Partner.</li>
+      </ul></div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-outline" onclick="prev(1)">← Zurück</button>
+    <button class="btn btn-primary" onclick="next(1)">Weiter: Protektorat &amp; Alltag →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+  ABSCHNITT 2 – PROTEKTORAT & ALLTAG
+════════════════════════════════ -->
+<div class="section" id="s2">
+
+  <div class="section-header rot-header">
+    <div class="section-kicker">Lesen &amp; Analysieren · 15 Minuten</div>
+    <h2>Das Protektorat Böhmen und Mähren (1939–1945)</h2>
+    <div class="leitfrage">🔍 Leitfrage: Was bedeutete das Protektorat für die Menschen in Prag – im Alltag und unter Besatzung?</div>
+  </div>
+
+  <div class="lesetext">
+    <div class="lesetext-kopf">
+      <div class="lesetext-icon">📄</div>
+      <div class="lesetext-meta">
+        <span class="lesetext-typ typ-darstellung">Darstellung</span>
+        <div class="lesetext-titel">Das Protektorat: Herrschaft, Widerstand und Repression</div>
+      </div>
+    </div>
+    <p>Am 15. März 1939 marschierten Wehrmacht-Truppen in Prag ein. Hitler erklärte die böhmischen und mährischen Länder zum „Protektorat Böhmen und Mähren" – formal ein Teil des Deutschen Reiches unter „Schutz". Die Slowakei wurde zum abhängigen Vasallenstaat Hitlers erklärt.</p>
+    <p>An der Spitze des Protektorats stand zunächst der greise Konstantin von Neurath. 1941 schickte Hitler den SS-Obergruppenführer <strong>Reinhard Heydrich</strong> als stellvertretenden Reichsprotektor nach Prag. Heydrich war einer der brutalsten Männer des NS-Regimes und Mitorganisator der Wannsee-Konferenz (1942), auf der die systematische Ermordung der europäischen Juden beschlossen wurde. In Prag setzte er auf eine Mischung aus Terror gegen den Widerstand und taktischen Zugeständnissen an tschechische Arbeiter, um die kriegswichtige Rüstungsproduktion aufrechtzuerhalten.</p>
+    <p>Im Mai 1942 erschossen tschechoslowakische Fallschirmjäger, ausgebildet in England und abgeworfen vom britischen Geheimdienst SOE, Heydrich in Prag. Er starb wenige Tage später an seinen Verletzungen. Die NS-Vergeltung war brutal: Das Dorf <strong>Lidice</strong> wurde vollständig ausgelöscht – alle Männer erschossen, Frauen und Kinder deportiert, die Häuser gesprengt.</p>
+    <p>Gleichzeitig gab es in der tschechischen Bevölkerung ein breites Spektrum an Verhaltensweisen: aktiven Widerstand, passive Resistenz, Kollaboration und schlichte Anpassung, um zu überleben.</p>
+    <div class="quellenangabe">Darstellung nach: Brandes, Detlef. Die Tschechen unter deutschem Protektorat. München 1969; vgl. Geschichte und Geschehen Jg. 9/10, Klett 2018.</div>
+  </div>
+
+  <div class="lesetext">
+    <div class="lesetext-kopf">
+      <div class="lesetext-icon">📜</div>
+      <div class="lesetext-meta">
+        <span class="lesetext-typ typ-quelle">Quelle</span>
+        <div class="lesetext-titel">Zeitzeugin Marie K. über den Alltag in Prag 1941 (Interview 1995, Auszug)</div>
+      </div>
+    </div>
+    <blockquote>„Wir lebten in ständiger Angst. Jede Denunziation konnte das Ende bedeuten. Man sprach nicht mehr offen auf der Straße, man vertraute sich nur noch den engsten Freunden an. Und doch: Das Leben ging irgendwie weiter. Man kaufte ein, man fuhr zur Arbeit – aber man wusste: Wir sind in unserem eigenen Land Fremde geworden."</blockquote>
+    <div class="quellenangabe">Quelle: Interview mit Marie K. (Name geändert), geführt von Jiří Krejčí, Praha 1995. Archiv des Instituts für Zeitgeschichte Prag.</div>
+  </div>
+
+  <div class="person-karte">
+    <div class="person-avatar">🕵️</div>
+    <div class="person-info">
+      <h4>Reinhard Heydrich</h4>
+      <div class="lebensdaten">1904–1942 · SS-Obergruppenführer, „Stellvertretender Reichsprotektor"</div>
+      <p>Einer der mächtigsten Männer des NS-Regimes. Mitorganisator der Wannsee-Konferenz (Januar 1942). In Prag berüchtigt für brutale Repression gegen den Widerstand. Ermordet durch tschechoslowakische Fallschirmjäger im Mai 1942. Die Vergeltungsaktion traf das Dorf Lidice.</p>
+    </div>
+  </div>
+
+  <div class="aufgaben-block">
+    <h3>🖊 Aufgaben zum Protektorat</h3>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr rot">1</div>
+        <div class="aufgabe-text"><span class="afb-tag afb1">AFB I</span> Erkläre den Begriff „Protektorat Böhmen und Mähren". Was bedeutete dieser Status für die tschechische Bevölkerung?</div>
+      </div>
+      <span class="antwort-label">Meine Erklärung:</span>
+      <textarea placeholder="Das Protektorat war … Es bedeutete für die Bevölkerung …" rows="4"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content">Ein Protektorat ist ein abhängiges Gebiet, das formal unter dem „Schutz" einer anderen Macht steht, tatsächlich aber beherrscht wird. Das Protektorat Böhmen und Mähren (ab 15. März 1939) bedeutete: Die ČSR hörte auf zu existieren; tschechische Juden wurden verfolgt und deportiert; die Bevölkerung lebte unter Besatzungsbedingungen mit Zensur, Überwachung und Repression; Widerstand wurde mit dem Tod bestraft.</div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr rot">2</div>
+        <div class="aufgabe-text"><span class="afb-tag afb2">AFB II</span> Analysiere die Zeitzeugenaussage von Marie K.: Was erfährst du über den Alltag unter der Besatzung? Welche Aspekte des Lebens beschreibt sie – und was lässt sie vielleicht aus?</div>
+      </div>
+      <div class="hinweis">💡 Denke an: Welche Einschränkungen der Methode gibt es bei Zeitzeugeninterviews? (Erinnerung, Zeitabstand, Perspektive)</div>
+      <span class="antwort-label">Meine Analyse:</span>
+      <textarea placeholder="Marie K. beschreibt … Sie lässt möglicherweise aus … Methodisch ist zu bedenken …" rows="6"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content">Marie K. beschreibt: Ständige Angst, Selbstzensur im öffentlichen Raum, Vertrauensverlust, Entfremdung im eigenen Land – aber auch die Normalität des Alltags (Einkaufen, Arbeit). Mögliche Auslassungen: eigene Handlungsspielräume, Erfahrungen anderer Gruppen (z.B. Juden, aktiver Widerstand). Methodisch: Das Interview wurde 1995, also 54 Jahre später, geführt. Die Erinnerung kann durch spätere Erfahrungen überformt sein. Das Zeugnis ist eine individuelle Perspektive, kein repräsentatives Bild.</div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr rot">3</div>
+        <div class="aufgabe-text"><span class="afb-tag afb2">AFB II</span> Die Darstellung beschreibt verschiedene Verhaltensweisen der tschechischen Bevölkerung: Widerstand, Resistenz, Kollaboration, Anpassung. Erkläre diese Begriffe und nenne je ein Beispiel, das dir logisch erscheint.</div>
+      </div>
+      <span class="antwort-label">Meine Erklärungen:</span>
+      <textarea placeholder="Widerstand bedeutet … Beispiel: …&#10;Resistenz bedeutet … Beispiel: …&#10;Kollaboration bedeutet … Beispiel: …&#10;Anpassung bedeutet … Beispiel: …" rows="7"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content"><ul>
+        <li><strong>Widerstand:</strong> Aktive Gegenwehr. Beispiel: Tschechoslowakische Fallschirmjäger töten Heydrich.</li>
+        <li><strong>Resistenz:</strong> Passive Verweigerung, z.B. Schlechtarbeiten in der Rüstungsproduktion, Verbergen von Juden.</li>
+        <li><strong>Kollaboration:</strong> Zusammenarbeit mit der Besatzungsmacht zum eigenen Vorteil, z.B. Denunziation von Widerständlern.</li>
+        <li><strong>Anpassung:</strong> Weiterleben nach außen hin normal, ohne aktiv zu widersetzen oder zu kooperieren – schlicht überleben wollen.</li>
+      </ul></div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr rot">4</div>
+        <div class="aufgabe-text"><span class="afb-tag afb3">AFB III</span> <strong>Urteil:</strong> Kannst du Menschen, die unter der Besatzung kollaborierten, moralisch verurteilen? Berücksichtige in deiner Antwort die extremen Bedingungen, unter denen sie lebten.</div>
+      </div>
+      <div class="hinweis">💡 Es gibt keine einfache Antwort. Ein gutes Urteil zeigt, dass du verschiedene Perspektiven und den historischen Kontext berücksichtigst.</div>
+      <span class="antwort-label">Mein Urteil:</span>
+      <textarea placeholder="Einerseits … Andererseits … Ich urteile, dass …" rows="6"></textarea>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-outline" onclick="prev(2)">← Zurück</button>
+    <button class="btn btn-primary" onclick="next(2)">Weiter: Terezín →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+  ABSCHNITT 3 – TEREZÍN
+════════════════════════════════ -->
+<div class="section" id="s3">
+
+  <div class="section-header rot-header">
+    <div class="section-kicker">Quellenarbeit &amp; Urteil · 12 Minuten</div>
+    <h2>Terezín – Lager, Propaganda und Wirklichkeit</h2>
+    <div class="leitfrage">🔍 Leitfrage: Wie nutzten die Nationalsozialisten Terezín als Propagandakulisse – und was war die Realität?</div>
+  </div>
+
+  <div class="lesetext">
+    <div class="lesetext-kopf">
+      <div class="lesetext-icon">📄</div>
+      <div class="lesetext-meta">
+        <span class="lesetext-typ typ-darstellung">Darstellung</span>
+        <div class="lesetext-titel">Terezín (Theresienstadt): Ghetto, Lager und Propagandakulisse</div>
+      </div>
+    </div>
+    <p>Terezín – auf Deutsch: Theresienstadt – liegt rund 60 km nordwestlich von Prag. Die NS-Behörden verwandelten die ehemalige Garnisonsstadt ab 1941 in ein jüdisches Ghetto. Terezín diente als Durchgangslager: Die meisten Gefangenen wurden von hier aus weiter in die Vernichtungslager deportiert, vor allem nach Auschwitz.</p>
+    <p>Insgesamt wurden ca. <strong>155.000 Juden</strong> aus dem Protektorat, aus Deutschland, Österreich und anderen Ländern durch Terezín geschleust. Etwa 35.000 starben direkt in Terezín an Hunger, Krankheit und den Haftbedingungen. Mehr als 80.000 wurden weiterdeportiert – die meisten wurden ermordet.</p>
+    <p>Die NS-Propaganda nutzte Terezín gezielt als „Vorzeigelager". 1944 inszenierte die SS einen Besuch des Internationalen Roten Kreuzes: Das Lager wurde mit Blumenkästen und Scheingeschäften hergerichtet, Gefangene wurden gezwungen, Theater zu spielen und Sport zu treiben – vor den Kameras. Unmittelbar nach dem Besuch wurden Tausende nach Auschwitz deportiert.</p>
+    <p>Trotz der schrecklichen Bedingungen entstand in Terezín ein bemerkenswertes kulturelles Leben: Häftlinge schufen Kunstwerke, schrieben Gedichte, komponierten Musik – oft heimlich. Viele dieser Werke überlebten ihre Schöpfer.</p>
+    <div class="quellenangabe">Darstellung nach: Lagus, Karel / Polák, Josef. Město za mřížemi. Praha 1964; Benz, Wolfgang. Theresienstadt. München 2013.</div>
+  </div>
+
+  <div class="lesetext">
+    <div class="lesetext-kopf">
+      <div class="lesetext-icon">📜</div>
+      <div class="lesetext-meta">
+        <span class="lesetext-typ typ-quelle">Quelle</span>
+        <div class="lesetext-titel">NS-Propagandafilm „Der Führer schenkt den Juden eine Stadt" (1944) – Beschreibung einer Filmszene</div>
+      </div>
+    </div>
+    <p style="font-style:italic; color:#3a2a10;">Der Film zeigt Häftlinge beim Fußballspiel auf einem sorgfältig gemähten Rasen. Kinder spielen lachend im Hintergrund. Eine Frau kauft in einem Ladengeschäft ein, das eigens für den Film eingerichtet wurde. Kommentarstimme: „Hier leben die Juden in Sicherheit und Würde, unter dem Schutz des Reiches – weit weg vom Krieg."</p>
+    <div class="quellenangabe">Quelle: Beschreibung des NS-Propagandafilms „Der Führer schenkt den Juden eine Stadt" (1944); vgl. Hyndráková, Anna. Terezín v „konečném řešení". Praha 1996.</div>
+  </div>
+
+  <div class="aufgaben-block">
+    <h3>🖊 Aufgaben zu Terezín</h3>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr rot">1</div>
+        <div class="aufgabe-text"><span class="afb-tag afb1">AFB I</span> Erkläre in eigenen Worten: Welche Funktion(en) hatte Terezín im NS-Verfolgungssystem?</div>
+      </div>
+      <span class="antwort-label">Meine Antwort:</span>
+      <textarea placeholder="Terezín hatte die Funktion … Es diente als …" rows="4"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content">Terezín hatte mehrere Funktionen: (1) <strong>Ghetto und Sammellager</strong> für Juden aus mehreren Ländern. (2) <strong>Durchgangslager</strong>: Die meisten Häftlinge wurden weiter in Vernichtungslager deportiert. (3) <strong>Propagandakulisse</strong>: Die NS-Behörden nutzten es, um der Weltöffentlichkeit (z.B. dem Roten Kreuz) ein falsches Bild zu präsentieren.</div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr rot">2</div>
+        <div class="aufgabe-text"><span class="afb-tag afb2">AFB II</span> Vergleiche die Filmszene (Quelle) mit den Informationen der Darstellung: Was stimmt, was ist Lüge? Welche Elemente der Szene sind bewusst konstruiert?</div>
+      </div>
+      <div class="hinweis">💡 Propaganda lügt selten plump – oft zeigt sie reale Bilder in einem falschen Zusammenhang. Was könnte an der Szene „echt" sein – und was nicht?</div>
+      <span class="antwort-label">Mein Vergleich:</span>
+      <textarea placeholder="Die Filmszene zeigt … Die Darstellung sagt dazu … Bewusst konstruiert ist …" rows="6"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content">Der Film zeigt Szenen, die möglicherweise real gefilmt wurden – aber gezielt inszeniert: Fußball und Einkaufen gab es tatsächlich in der Vorbereitung des Roten-Kreuz-Besuchs. Doch der Kommentar (Sicherheit, Würde, Schutz des Reiches) ist eine bewusste Lüge: Tatsächlich litten die Häftlinge unter Hunger, Überfüllung und der ständigen Bedrohung der Deportation. Unmittelbar nach dem Besuch wurden Tausende nach Auschwitz deportiert. Konstruiert ist: der Ladengeschäfts-Hintergrund (eigens für den Film), die Kommentarstimme, der Gesamtzusammenhang.</div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr rot">3</div>
+        <div class="aufgabe-text"><span class="afb-tag afb3">AFB III</span> In Terezín entstand trotz allem ein kulturelles Leben. Ein Häftling schrieb: „Wir sangen und malten nicht, weil das Leben schön war – sondern weil wir bewiesen, dass es uns nicht brechen konnte." Beurteile: Welche Bedeutung hatte diese kulturelle Resistenz – für die Häftlinge selbst und für uns heute?</div>
+      </div>
+      <span class="antwort-label">Meine Beurteilung:</span>
+      <textarea placeholder="Für die Häftlinge bedeutete kulturelle Resistenz … Für uns heute ist sie bedeutsam, weil …" rows="6"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content"><ul>
+        <li><strong>Für die Häftlinge:</strong> Kulturelles Leben – Musik, Kunst, Literatur – war ein Akt der Selbstbehauptung gegenüber einem System, das ihre Menschenwürde vernichten wollte. Es gab ihnen Würde, Gemeinschaft und Sinn – auch angesichts der Deportationsgefahr.</li>
+        <li><strong>Für uns heute:</strong> Die überlieferten Kunstwerke, Gedichte und Kompositionen aus Terezín sind historische Zeugnisse – Quellen, die zeigen, wie Menschen unter extremsten Bedingungen ihre Humanität behaupteten. Sie mahnen zur Erinnerung und machen das Schicksal der Häftlinge greifbar.</li>
+      </ul></div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-outline" onclick="prev(3)">← Zurück</button>
+    <button class="btn btn-primary" onclick="next(3)">Weiter: Kommunismus 1948 →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+  ABSCHNITT 4 – KOMMUNISMUS 1948
+════════════════════════════════ -->
+<div class="section" id="s4">
+
+  <div class="stunde-divider">
+    <span class="stunde-pill pill-blau">Stunde 4</span>
+    <hr>
+    <span style="font-family:'Josefin Sans',sans-serif;font-size:11px;letter-spacing:1px;color:var(--muted);">Kommunismus 1945–1967</span>
+  </div>
+
+  <div class="section-header blau">
+    <div class="section-kicker">Lesen &amp; Analysieren · 12 Minuten</div>
+    <h2>Der „Siegreiche Februar" 1948 – Machtübernahme der KPČ</h2>
+    <div class="leitfrage">🔍 Leitfrage: Wie konnten die Kommunisten in der Tschechoslowakei die Macht übernehmen – und warum gab es keinen wirksamen Widerstand?</div>
+  </div>
+
+  <div class="lesetext">
+    <div class="lesetext-kopf">
+      <div class="lesetext-icon">📄</div>
+      <div class="lesetext-meta">
+        <span class="lesetext-typ typ-darstellung">Darstellung</span>
+        <div class="lesetext-titel">Der kommunistische Machtübernahme 1948 – „Vítězný únor"</div>
+      </div>
+    </div>
+    <p>Nach dem Ende des Zweiten Weltkriegs 1945 war die Tschechoslowakei ein zutiefst traumatisiertes Land. Das Münchner Abkommen und die westliche Untätigkeit während der NS-Besatzung hatten das Vertrauen in die westlichen Demokratien erschüttert. Die Rote Armee hatte Prag befreit – das stärkte die Sympathie für die Sowjetunion und die Kommunistische Partei (KPČ) enorm.</p>
+    <p>Bei den ersten freien Wahlen 1946 wurde die KPČ mit <strong>38 % der Stimmen</strong> stärkste Partei. Parteivorsitzender Klement Gottwald wurde Ministerpräsident einer Koalitionsregierung. Die Kommunisten nutzten ihre Ministerien systematisch, um Schlüsselstellen in Polizei, Militär und Verwaltung mit parteitreuen Personen zu besetzen.</p>
+    <p>Im Februar 1948 eskalierte die Lage: Nicht-kommunistische Minister traten zurück, um eine Regierungskrise auszulösen und Neuwahlen zu erzwingen. Sie rechneten damit, dass Präsident Beneš sie unterstützen würde. Doch Beneš, krank und unter massivem Druck, akzeptierte die Rücktritte und ernannte eine kommunistisch dominierte Regierung. Gleichzeitig übernahmen von der KPČ kontrollierte Aktionskomitees in Fabriken, Schulen und Gemeinden die Macht.</p>
+    <p>Die Kommunisten nannten diesen Vorgang „Vítězný únor" – den <strong>„Siegreichen Februar"</strong>. In der Tschechoslowakei begann eine kommunistische Diktatur, die mit kurzen Unterbrechungen bis 1989 dauern sollte.</p>
+    <div class="quellenangabe">Darstellung nach: Kaplan, Karel. Der kurze Marsch. Kommunistische Machtübernahme in der Tschechoslowakei 1945–1948. München 1981.</div>
+  </div>
+
+  <div class="info-box">
+    <h3>📅 Schlüsseldaten 1945–1948</h3>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-year blau-bg">1945</div><div class="tl-text"><strong>Mai:</strong> Befreiung Prags durch die Rote Armee. Rückkehr der Exilregierung unter Beneš aus London.</div></div>
+      <div class="tl-item"><div class="tl-year blau-bg">1945</div><div class="tl-text"><strong>Vertreibung:</strong> Rund 2,5–3 Millionen Sudetendeutsche werden aus der ČSR vertrieben – sogenannte „Beneš-Dekrete".</div></div>
+      <div class="tl-item"><div class="tl-year blau-bg">1946</div><div class="tl-text"><strong>Mai:</strong> Wahlen. KPČ wird mit 38 % stärkste Partei. Klement Gottwald wird Ministerpräsident.</div></div>
+      <div class="tl-item"><div class="tl-year rot-bg">1948</div><div class="tl-text"><strong>Februar:</strong> Kommunistische Machtübernahme – „Vítězný únor". Ende der tschechoslowakischen Demokratie.</div></div>
+      <div class="tl-item"><div class="tl-year rot-bg">1948</div><div class="tl-text"><strong>März:</strong> Außenminister Jan Masaryk (Sohn des Staatsgründers) stirbt unter ungeklärten Umständen – aus dem Fenster des Außenministeriums.</div></div>
+    </div>
+  </div>
+
+  <div class="aufgaben-block">
+    <h3>🖊 Aufgaben zur Machtübernahme 1948</h3>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr blau">1</div>
+        <div class="aufgabe-text"><span class="afb-tag afb1">AFB I</span> Nenne drei Gründe, warum die KPČ bei den Wahlen 1946 so stark abschnitt. Stütze dich auf den Text.</div>
+      </div>
+      <span class="antwort-label">Meine Antwort:</span>
+      <textarea placeholder="Grund 1: … Grund 2: … Grund 3: …" rows="4"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content"><ul>
+        <li>Das Münchner Abkommen hatte das Vertrauen in westliche Demokratien erschüttert.</li>
+        <li>Die Rote Armee hatte Prag befreit – das stärkte die Sympathie für die Sowjetunion und die KPČ.</li>
+        <li>Viele Menschen sahen im Kommunismus nach dem Trauma der NS-Zeit eine radikale Alternative zur bisherigen Politik.</li>
+      </ul></div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr blau">2</div>
+        <div class="aufgabe-text"><span class="afb-tag afb2">AFB II</span> Erkläre, wie die KPČ die Machtübernahme im Februar 1948 vollzog. Warum war das Vorgehen so effektiv?</div>
+      </div>
+      <div class="hinweis">💡 Bedenke: Die Kommunisten hatten seit 1946 bereits Schlüsselpositionen besetzt. Was bedeutete das für Februar 1948?</div>
+      <span class="antwort-label">Meine Erklärung:</span>
+      <textarea placeholder="Die KPČ nutzte … Das war effektiv, weil …" rows="5"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content">Die KPČ hatte seit 1946 Polizei, Militär und Verwaltung mit Parteigetreuen besetzt. Als die nicht-kommunistischen Minister im Februar 1948 zurücktraten, um eine Krise zu provozieren, hatten die Kommunisten bereits die Kontrolle über die Machtapparate. Beneš, krank und unter Druck, gab nach. Gleichzeitig übernahmen Aktionskomitees der KPČ auf lokaler Ebene die Macht – ein klassischer „Griff von unten und oben" gleichzeitig. Die Gegner hatten sich der Machtbasis beraubt, bevor sie reagierten.</div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr blau">3</div>
+        <div class="aufgabe-text"><span class="afb-tag afb2">AFB II</span> Die Kommunisten nannten die Machtübernahme „Vítězný únor" (Siegreicher Februar). Was verrät diese Bezeichnung über ihre Selbstwahrnehmung – und wie würdest du das Ereignis neutraler benennen?</div>
+      </div>
+      <span class="antwort-label">Meine Analyse:</span>
+      <textarea placeholder="Die Bezeichnung verrät … Eine neutrale Benennung wäre …" rows="4"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content">Die Bezeichnung „Siegreicher Februar" zeigt, dass die KPČ die Machtübernahme als demokratische Revolution durch das „arbeitende Volk" darstellte – nicht als Staatsstreich. Das ist Propaganda: Es verschleiert, dass die Machtübernahme gegen den Willen der nicht-kommunistischen Koalitionspartner und mit Hilfe sowjetischen Drucks erfolgte. Neutrale Bezeichnungen: „kommunistische Machtübernahme", „Staatsstreich vom Februar 1948" oder auf Tschechisch: „únorový puč" (Februarputsch).</div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr blau">4</div>
+        <div class="aufgabe-text"><span class="afb-tag afb3">AFB III</span> Jan Masaryk starb im März 1948 unter ungeklärten Umständen. Die kommunistische Regierung sprach von Selbstmord; viele andere vermuteten Mord. Welche Bedeutung hat diese Unklarheit für die historische Einschätzung dieser Zeit?</div>
+      </div>
+      <div class="hinweis">💡 Überlege: Was sagt die Tatsache, dass solche Ereignisse unter einer Regierung möglich waren und ungeklärt blieben, über deren Charakter aus?</div>
+      <span class="antwort-label">Meine Beurteilung:</span>
+      <textarea placeholder="Die Unklarheit zeigt … Sie ist historisch bedeutsam, weil …" rows="5"></textarea>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-outline" onclick="prev(4)">← Zurück</button>
+    <button class="btn btn-primary" onclick="next(4)">Weiter: Diktatur &amp; Alltag →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+  ABSCHNITT 5 – DIKTATUR & ALLTAG
+════════════════════════════════ -->
+<div class="section" id="s5">
+
+  <div class="section-header blau">
+    <div class="section-kicker">Quellenarbeit &amp; Vergleich · 12 Minuten</div>
+    <h2>Alltag in der kommunistischen Diktatur (1948–1967)</h2>
+    <div class="leitfrage">🔍 Leitfrage: Wie veränderte die kommunistische Herrschaft den Alltag der Menschen in der Tschechoslowakei?</div>
+  </div>
+
+  <div class="lesetext">
+    <div class="lesetext-kopf">
+      <div class="lesetext-icon">📄</div>
+      <div class="lesetext-meta">
+        <span class="lesetext-typ typ-darstellung">Darstellung</span>
+        <div class="lesetext-titel">Stalinismus, Schauprozesse und „Normalisierung" (1948–1960er)</div>
+      </div>
+    </div>
+    <p>Nach der Machtübernahme errichtete die KPČ eine stalinistische Diktatur: Die Presse wurde gleichgeschaltet, andere Parteien aufgelöst oder zur Zusammenarbeit gezwungen. Die Wirtschaft wurde verstaatlicht, private Betriebe enteignet, Landwirtschaft kollektiviert. Kirchen wurden überwacht, religiöse Bildung eingeschränkt.</p>
+    <p>Zwischen 1949 und 1952 fanden sogenannte <strong>Schauprozesse</strong> statt – politische Schauprozesse nach sowjetischem Vorbild. Hochrangige Kommunisten, die als „Abweichler" oder „Verräter" galten, wurden unter dem Druck von Folter und psychologischer Manipulation zu falschen Geständnissen gebracht und hingerichtet. Bekanntestes Opfer: Rudolf Slánský, Generalsekretär der KPČ – er gestand unter Zwang, ein „jüdisch-zionistischer Trotzkist" und Verräter zu sein, und wurde 1952 hingerichtet.</p>
+    <p>Im Alltag bedeutete die kommunistische Herrschaft: Zensur aller Medien, staatliche Kontrolle der Bildung, Mangel an Konsumgütern, eingeschränkte Reisefreiheit, permanente Überwachung durch die Staatssicherheit (StB). Wer Karriere machen wollte, musste KPČ-Mitglied sein oder zumindest die Parteilinie befolgen.</p>
+    <p>In den 1960er Jahren begann – zunächst langsam – eine kulturelle Lockerung: tschechoslowakische Filme, Literatur und Musik gewannen internationale Anerkennung. Diese Öffnung war der Nährboden für den Prager Frühling 1968.</p>
+    <div class="quellenangabe">Darstellung nach: Kaplan, Karel. Nebezpečná bezpečnost. Brno 1999; vgl. Geschichte und Geschehen Jg. 9/10, Klett 2018, S. 150.</div>
+  </div>
+
+  <div class="lesetext">
+    <div class="lesetext-kopf">
+      <div class="lesetext-icon">📜</div>
+      <div class="lesetext-meta">
+        <span class="lesetext-typ typ-quelle">Quelle</span>
+        <div class="lesetext-titel">Zeitzeugin Věra N. über den Alltag in den 1950er Jahren (Interview 2001, Auszug)</div>
+      </div>
+    </div>
+    <blockquote>„Mein Vater war Arzt. Er trat nie der Partei bei. Das kostete ihn seine Karriere – er durfte nur noch als einfacher Sanitäter arbeiten. Wir Kinder lernten früh: Zu Hause sagst du eine Meinung, in der Schule eine andere. Das war normal. Man wusste einfach, was man sagen durfte und was nicht. Erst viel später merkte ich, wie sehr das die Menschen verändert hatte."</blockquote>
+    <div class="quellenangabe">Quelle: Interview mit Věra N. (Name geändert), geführt von Pavel Žáček, Praha 2001. Archiv des Instituts für das Studium totalitärer Regime, Praha.</div>
+  </div>
+
+  <div class="aufgaben-block">
+    <h3>🖊 Aufgaben zu Diktatur und Alltag</h3>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr blau">1</div>
+        <div class="aufgabe-text"><span class="afb-tag afb1">AFB I</span> Nenne fünf konkrete Merkmale der kommunistischen Diktatur in der ČSR nach 1948. Nutze ausschließlich die Darstellung.</div>
+      </div>
+      <span class="antwort-label">Meine Antwort:</span>
+      <textarea placeholder="1. …&#10;2. …&#10;3. …&#10;4. …&#10;5. …" rows="5"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content"><ul>
+        <li>Gleichschaltung der Presse (Zensur)</li>
+        <li>Auflösung oder Gleichschaltung anderer Parteien</li>
+        <li>Verstaatlichung der Wirtschaft, Kollektivierung der Landwirtschaft</li>
+        <li>Schauprozesse mit Folter und Hinrichtungen</li>
+        <li>Überwachung durch die Staatssicherheit (StB), eingeschränkte Reisefreiheit</li>
+      </ul></div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr blau">2</div>
+        <div class="aufgabe-text"><span class="afb-tag afb2">AFB II</span> Analysiere die Zeitzeugenaussage von Věra N.: Was zeigt sie über den Alltag unter der Diktatur? Welche psychologischen Folgen beschreibt sie – und welche methodischen Grenzen hat diese Quelle?</div>
+      </div>
+      <span class="antwort-label">Meine Analyse:</span>
+      <textarea placeholder="Věra N. beschreibt … Die psychologischen Folgen sind … Methodische Grenzen: …" rows="6"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content">Věra N. beschreibt: berufliche Konsequenzen für Nichtmitglieder (Vater als Arzt degradiert), erzwungene Doppelmoral (Zuhause/Schule), Verinnerlichung von Selbstzensur als „normal". Psychologische Folgen: Verlust von Authentizität, Spaltung der Persönlichkeit, nachträgliche Erkenntnis der eigenen Veränderung. Methodisch: Das Interview stammt aus 2001, also ca. 50 Jahre nach den beschriebenen Ereignissen. Erinnerungen können überformt sein; die Aussage ist eine individuelle Sicht, keine repräsentative Erhebung. Sie zeigt aber besonders gut die psychologische Dimension des Lebens unter der Diktatur.</div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr blau">3</div>
+        <div class="aufgabe-text"><span class="afb-tag afb2">AFB II</span> Erkläre, was „Schauprozesse" waren und welche Funktion sie für das kommunistische Regime hatten. Warum gestanden die Angeklagten, obwohl sie unschuldig waren?</div>
+      </div>
+      <div class="hinweis">💡 Denke an: Was konnte das Regime tun, um Geständnisse zu erzwingen? Welche Wirkung hatten Geständnisse auf die Öffentlichkeit?</div>
+      <span class="antwort-label">Meine Erklärung:</span>
+      <textarea placeholder="Schauprozesse waren … Sie hatten die Funktion … Die Angeklagten gestanden, weil …" rows="6"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content">Schauprozesse waren inszenierte Gerichtsprozesse, bei denen das Urteil bereits vor der Verhandlung feststand. Funktion: (1) Elimination politischer Konkurrenten innerhalb der Partei, (2) Abschreckung der Bevölkerung, (3) Legitimation der Herrschaft durch „öffentliche Schuldbekenntnisse". Die Angeklagten gestanden, weil sie durch wochenlangen Schlafentzug, Folter, Drohungen gegen Familienangehörige und psychologischen Druck gebrochen wurden. Öffentliche Geständnisse sollten der Bevölkerung zeigen, dass selbst hochrangige Parteifunktionäre „Feinde" sein konnten – das disziplinierte die gesamte Gesellschaft.</div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr blau">4</div>
+        <div class="aufgabe-text"><span class="afb-tag afb3">AFB III</span> Věra N. sagt: „Erst viel später merkte ich, wie sehr das die Menschen verändert hatte." Was meint sie damit – und welche langfristigen gesellschaftlichen Folgen kann eine Diktatur haben, die Menschen zwingt, dauerhaft eine Doppelmoral zu leben?</div>
+      </div>
+      <div class="hinweis">💡 Denke über den Einzelfall hinaus: Was passiert mit einer Gesellschaft, wenn Lügen und Selbstzensur über Jahrzehnte zur Norm werden?</div>
+      <span class="antwort-label">Meine Überlegungen:</span>
+      <textarea placeholder="Věra N. meint damit … Langfristig führt eine solche Doppelmoral dazu, dass …" rows="7"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content">Věra N. meint: Durch jahrzehntelange erzwungene Doppelmoral verändern sich Menschen tief – sie verlieren das Gespür dafür, wann sie wirklich ihre Meinung sagen und wann sie lügen. Das verändert Vertrauen, Authentizität und Selbstachtung. Langfristige gesellschaftliche Folgen: Misstrauen zwischen Menschen (jeder könnte ein Informant sein), Schwächung des zivilen Engagements, Erosion von Wahrheit als gesellschaftlichem Wert, und nach dem Ende der Diktatur: Schwierigkeiten beim Aufbau einer echten demokratischen Kultur. Historiker sprechen vom „Trauma des Totalitarismus" – es reicht weit über die Diktatur selbst hinaus.</div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-outline" onclick="prev(5)">← Zurück</button>
+    <button class="btn btn-primary" onclick="next(5)">Weiter: Quiz &amp; Vergleich →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+  ABSCHNITT 6 – QUIZ & VERGLEICH
+════════════════════════════════ -->
+<div class="section" id="s6">
+
+  <div class="section-header gold">
+    <div class="section-kicker">Sichern &amp; Urteilen · 12 Minuten</div>
+    <h2>Wissensquiz, Lückentext und Systemvergleich</h2>
+    <div class="leitfrage">🧠 Überprüfe dein Wissen – und stelle die beiden Diktaturen gegenüber.</div>
+  </div>
+
+  <!-- LÜCKENTEXT -->
+  <div class="aufgaben-block">
+    <h3>📝 Lückentext – Stunden 3 &amp; 4</h3>
+    <div class="luecken-wrap" id="lt">
+      <p>Am 15. März <input class="luecken-input" data-a="1939" placeholder="Jahr"> marschierten deutsche Truppen in Prag ein. Hitler erklärte die Region zum „<input class="luecken-input" data-a="Protektorat" placeholder="Begriff"> Böhmen und Mähren". Das Lager <input class="luecken-input" data-a="Terezín" placeholder="Name"> diente als Durchgangslager und wurde für einen Besuch des Roten Kreuzes als Propagandakulisse inszeniert. Nach dem Krieg wurde die ČSR durch die <input class="luecken-input" data-a="Rote Armee" placeholder="Gruppe"> befreit. Die KPČ gewann die Wahlen 1946 mit <input class="luecken-input" data-a="38" placeholder="Zahl"> Prozent. Im Februar <input class="luecken-input" data-a="1948" placeholder="Jahr"> übernahmen die Kommunisten die Macht – sie nannten es „Vítězný únor", den <input class="luecken-input" data-a="Siegreichen" placeholder="Adjektiv"> Februar. Die inszenierten <input class="luecken-input" data-a="Schauprozesse" placeholder="Begriff"> zwangen Parteifunktionäre zu falschen Geständnissen.</p>
+    </div>
+    <button class="btn btn-gold" onclick="pruefeLT()" style="margin-bottom:10px;">✓ Lücken überprüfen</button>
+    <div id="lt-erg" style="display:none; font-size:14px; padding:10px; border-radius:7px;"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-block">
+    <h3>🎯 Wissensquiz</h3>
+
+    <div class="quiz-frage" id="q1">
+      <h4>1. Wer lud die Tschechoslowakei zum Münchner Abkommen ein?</h4>
+      <div class="quiz-optionen">
+        <div class="quiz-option" onclick="qa(this,'q1',false)"><span class="opt-kreis">A</span> Sie wurde eingeladen, aber lehnte ab.</div>
+        <div class="quiz-option" onclick="qa(this,'q1',false)"><span class="opt-kreis">B</span> Sie wurde von Frankreich vertreten.</div>
+        <div class="quiz-option" onclick="qa(this,'q1',true)"><span class="opt-kreis">C</span> Sie wurde nicht eingeladen – das Abkommen traf Entscheidungen über sie.</div>
+        <div class="quiz-option" onclick="qa(this,'q1',false)"><span class="opt-kreis">D</span> Masaryk unterzeichnete für die ČSR.</div>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-frage" id="q2">
+      <h4>2. Was war Terezín (Theresienstadt)?</h4>
+      <div class="quiz-optionen">
+        <div class="quiz-option" onclick="qa(this,'q2',false)"><span class="opt-kreis">A</span> Ein Vernichtungslager mit Gaskammern</div>
+        <div class="quiz-option" onclick="qa(this,'q2',true)"><span class="opt-kreis">B</span> Ein Ghetto und Durchgangslager, das auch als Propagandakulisse diente</div>
+        <div class="quiz-option" onclick="qa(this,'q2',false)"><span class="opt-kreis">C</span> Ein Arbeitslager ausschließlich für politische Gefangene</div>
+        <div class="quiz-option" onclick="qa(this,'q2',false)"><span class="opt-kreis">D</span> Ein Kriegsgefangenenlager für sowjetische Soldaten</div>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-frage" id="q3">
+      <h4>3. Was war die „Appeasement-Politik"?</h4>
+      <div class="quiz-optionen">
+        <div class="quiz-option" onclick="qa(this,'q3',false)"><span class="opt-kreis">A</span> Britische Aufrüstungspolitik gegen Hitler</div>
+        <div class="quiz-option" onclick="qa(this,'q3',false)"><span class="opt-kreis">B</span> Französische Bündnispolitik mit der UdSSR</div>
+        <div class="quiz-option" onclick="qa(this,'q3',true)"><span class="opt-kreis">C</span> Politik der Beschwichtigung – Nachgeben gegenüber Hitlers Forderungen zur Kriegsverhinderung</div>
+        <div class="quiz-option" onclick="qa(this,'q3',false)"><span class="opt-kreis">D</span> Tschechoslowakische Verteidigungspolitik 1938</div>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-frage" id="q4">
+      <h4>4. Was waren die stalinistischen „Schauprozesse"?</h4>
+      <div class="quiz-optionen">
+        <div class="quiz-option" onclick="qa(this,'q4',false)"><span class="opt-kreis">A</span> Öffentliche Debatten über kommunistische Politik</div>
+        <div class="quiz-option" onclick="qa(this,'q4',false)"><span class="opt-kreis">B</span> Faire Gerichtsprozesse gegen NS-Täter</div>
+        <div class="quiz-option" onclick="qa(this,'q4',true)"><span class="opt-kreis">C</span> Inszenierte Prozesse mit erpressten Geständnissen, bei denen das Urteil vorher feststand</div>
+        <div class="quiz-option" onclick="qa(this,'q4',false)"><span class="opt-kreis">D</span> Verhöre von Sudetendeutschen nach 1945</div>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-frage" id="q5">
+      <h4>5. Warum hatte die KPČ 1946 so viel Zulauf?</h4>
+      <div class="quiz-optionen">
+        <div class="quiz-option" onclick="qa(this,'q5',false)"><span class="opt-kreis">A</span> Weil Stalin die ČSR militärisch besetzte</div>
+        <div class="quiz-option" onclick="qa(this,'q5',true)"><span class="opt-kreis">B</span> Weil die Rote Armee Prag befreit hatte und das Vertrauen in westliche Demokratien erschüttert war</div>
+        <div class="quiz-option" onclick="qa(this,'q5',false)"><span class="opt-kreis">C</span> Weil die anderen Parteien verboten wurden</div>
+        <div class="quiz-option" onclick="qa(this,'q5',false)"><span class="opt-kreis">D</span> Weil Masaryk die KPČ unterstützte</div>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+
+  <!-- SYSTEMVERGLEICH -->
+  <div class="aufgaben-block">
+    <h3>⚖️ Systemvergleich: NS-Herrschaft vs. kommunistische Diktatur</h3>
+    <p style="font-size:15px; color:var(--muted); margin-bottom:14px;">Beide Systeme herrschten über die Tschechoslowakei – aber auf unterschiedliche Weise. Schau dir die Tabelle an und bearbeite dann die Aufgaben.</p>
+
+    <table class="vtab">
+      <tr>
+        <th>Merkmal</th>
+        <th>NS-Herrschaft (1939–45)</th>
+        <th>Kommunismus (1948–67)</th>
+      </tr>
+      <tr><td class="kat">Legitimation</td><td>Rassenideologie, „Lebensraum"</td><td>Marxismus-Leninismus, „Arbeiterklasse"</td></tr>
+      <tr><td class="kat">Herrschaftsform</td><td>Besatzungsregime von außen</td><td>Einparteienstaat von innen</td></tr>
+      <tr><td class="kat">Verfolgung</td><td>Rassische Verfolgung (Juden, Roma), politischer Widerstand</td><td>Politische Verfolgung, Schauprozesse, Staatsfeinde</td></tr>
+      <tr><td class="kat">Wirtschaft</td><td>Rüstungswirtschaft, Ausbeutung</td><td>Zentralplanung, Kollektivierung, Verstaatlichung</td></tr>
+      <tr><td class="kat">Propaganda</td><td>NS-Rassenpropaganda, Terezín-Inszenierung</td><td>Kommunistische Ideologie, Zensur, Gleichschaltung</td></tr>
+      <tr><td class="kat">Ende</td><td>Militärische Niederlage 1945</td><td>Samtene Revolution 1989</td></tr>
+    </table>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr gold">V</div>
+        <div class="aufgabe-text"><span class="afb-tag afb2">AFB II</span> Vergleiche beide Systeme: Was haben sie gemeinsam – und was unterscheidet sie grundlegend? Nutze die Tabelle und dein Wissen aus den Texten.</div>
+      </div>
+      <span class="antwort-label">Mein Vergleich:</span>
+      <textarea placeholder="Gemeinsamkeiten: …&#10;Unterschiede: …&#10;Wichtigster Unterschied für die Bevölkerung: …" rows="7"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content"><ul>
+        <li><strong>Gemeinsamkeiten:</strong> Beide unterdrückten politische Opposition, überwachten die Bevölkerung, schränkten Presse- und Meinungsfreiheit ein und nutzten Gewalt und Einschüchterung. Beide beanspruchten eine ideologische Legitimation.</li>
+        <li><strong>Unterschiede:</strong> Die NS-Herrschaft war ein Besatzungsregime von außen mit offen rassistischer Vernichtungspolitik. Der Kommunismus war ein interner Einparteienstaat mit dem Anspruch sozialer Gleichheit. NS-Verfolgung zielte auf rassische Gruppen; kommunistische Verfolgung auf politische Gegner (einschließlich eigener Parteimitglieder).</li>
+        <li><strong>Wichtigster Unterschied:</strong> Unter NS-Herrschaft drohte bestimmten Gruppen die physische Vernichtung. Unter dem Kommunismus war physische Vernichtung seltener, aber Millionen lebten unter psychologischem Druck, Karriere-Einschränkungen und der Angst vor Denunziation.</li>
+      </ul></div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-outline" onclick="prev(6)">← Zurück</button>
+    <button class="btn btn-primary" onclick="next(6)">Weiter: Abschluss →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+  ABSCHNITT 7 – ABSCHLUSS
+════════════════════════════════ -->
+<div class="section" id="s7">
+
+  <div class="abschluss-card">
+    <div style="font-size:36px; margin-bottom:10px;">📚</div>
+    <h2>Stunden 3 &amp; 4 abgeschlossen</h2>
+    <p>Du hast NS-Besatzung, Protektorat, Terezín, die kommunistische Machtübernahme und den Alltag unter der Diktatur erarbeitet.</p>
+  </div>
+
+  <div class="info-box" style="margin-top:16px;">
+    <h3>📋 Das hast du gelernt</h3>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-year rot-bg" style="font-size:11px;width:70px;">Wissen</div><div class="tl-text">Münchner Abkommen 1938, Protektorat 1939, Terezín als Propagandakulisse und Lager, kommunistische Machtübernahme 1948, Schauprozesse und Alltag unter der Diktatur.</div></div>
+      <div class="tl-item"><div class="tl-year rot-bg" style="font-size:11px;width:70px;">Methode</div><div class="tl-text">Du hast Quellen (Zeitzeugen, Propagandafilm, Chamberlain-Rede) und Darstellungen analysiert und verglichen – immer mit Blick auf Perspektive, Absicht und Lücken.</div></div>
+      <div class="tl-item"><div class="tl-year rot-bg" style="font-size:11px;width:70px;">Urteil</div><div class="tl-text">Du hast begründete Urteile formuliert: zur Appeasement-Politik, zur Kollaboration unter Besatzung und zu den Folgen der kommunistischen Doppelmoral.</div></div>
+      <div class="tl-item"><div class="tl-year rot-bg" style="font-size:11px;width:70px;">Transfer</div><div class="tl-text">Systemvergleich NS vs. Kommunismus: Du kannst beide Herrschaftsformen benennen, vergleichen und unterscheiden.</div></div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <h3>🗺 Vor Ort in Prag: Was ihr sehen werdet</h3>
+    <ul>
+      <li><strong>Prager Burg (Hradschin):</strong> Hier residierte der NS-Reichsprotektor Heydrich 1941–42.</li>
+      <li><strong>Wenzelsplatz:</strong> Hier fanden 1942 NS-Kundgebungen und 1948 kommunistische Aufmärsche statt – und 1969 verbrannte sich Jan Palach.</li>
+      <li><strong>Josefov (Jüdisches Viertel):</strong> Prager jüdische Gemeinde – die meisten wurden über Terezín deportiert.</li>
+      <li><strong>Terezín:</strong> Ca. 60 km von Prag – oft als Tagesausflug möglich (je nach Fahrtplanung).</li>
+      <li><strong>Museum des Kommunismus:</strong> Direkt in Prag – zeigt Alltag und Propaganda der kommunistischen Zeit.</li>
+    </ul>
+  </div>
+
+  <div class="methoden-box">
+    <h4>📌 Methodenrückblick: Quellen kritisch lesen</h4>
+    <ol>
+      <li>Immer fragen: Wer hat die Quelle erstellt – und mit welchem Ziel?</li>
+      <li>Propaganda (Chamberlain, NS-Film) zeigt, was jemand sehen lassen wollte – nicht die Realität.</li>
+      <li>Zeitzeugenaussagen sind wertvoll, aber subjektiv und zeitlich gefärbt.</li>
+      <li>Darstellungen bieten Überblick – aber auch sie treffen eine Auswahl.</li>
+      <li>Erst mehrere Quellen- und Darstellungstypen zusammen ergeben ein vollständiges Bild.</li>
+    </ol>
+  </div>
+
+  <div class="aufgaben-block">
+    <h3>🔭 Abschlussaufgabe: Blick nach vorn</h3>
+    <div class="aufgabe">
+      <div class="aufgabe-zeile">
+        <div class="aufgabe-nr gold">A</div>
+        <div class="aufgabe-text"><span class="afb-tag afb3">AFB III</span> Du weißt jetzt: Die Tschechoslowakei erlebte innerhalb von 30 Jahren zwei verschiedene Diktaturen. Formuliere in 4–6 Sätzen: Was denkst du – wie hat das die tschechische Gesellschaft geprägt? Und was könnte das für den <em>Prager Frühling 1968</em> bedeuten, den ihr in den nächsten Stunden behandelt?</div>
+      </div>
+      <div class="hinweis">💡 Das ist eine offene Frage – deine eigene, gut begründete Überlegung ist gefragt.</div>
+      <span class="antwort-label">Meine Überlegung:</span>
+      <textarea placeholder="Zwei Jahrzehnte Diktatur prägten die tschechische Gesellschaft, weil … Für den Prager Frühling 1968 bedeutet das möglicherweise …" rows="7"></textarea>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-outline" onclick="prev(7)">← Zurück</button>
+    <button class="btn btn-gold" onclick="restart()">↩ Von vorne beginnen</button>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+// ── Zustand ──────────────────────────────────────────────────────────────
+const GESAMT = 8;
+let done = new Set();
+
+function updateProgress() {
+  const pct = Math.round((done.size / (GESAMT - 1)) * 100);
+  document.getElementById('pFill').style.width = pct + '%';
+  document.getElementById('pLabel').textContent =
+    'Abschnitt ' + done.size + ' von ' + (GESAMT - 1) + ' abgeschlossen';
+}
+
+// ── Navigation ────────────────────────────────────────────────────────────
+function go(nr) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('s' + nr).classList.add('active');
+  const tabs = document.querySelectorAll('.nav-tab');
+  tabs.forEach((t, i) => {
+    t.classList.remove('active');
+    if (done.has(i) && i !== nr) t.classList.add('done');
+    else t.classList.remove('done');
+  });
+  tabs[nr].classList.add('active');
+  tabs[nr].classList.remove('done');
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function next(von) { done.add(von); go(von + 1); }
+function prev(von) { go(von - 1); }
+function restart()  { done.clear(); go(0); }
+
+// ── Musterlösungen ────────────────────────────────────────────────────────
+function toggleM(btn) {
+  const c = btn.nextElementSibling;
+  const open = c.classList.toggle('open');
+  btn.textContent = open ? '🔼 Musterlösung ausblenden' : '🔍 Musterlösung anzeigen';
+}
+
+// ── Quiz ──────────────────────────────────────────────────────────────────
+function qa(el, id, korrekt) {
+  const frage = document.getElementById(id);
+  if (frage.dataset.done) return;
+  frage.dataset.done = '1';
+
+  frage.querySelectorAll('.quiz-option').forEach(o => { o.onclick = null; o.style.cursor = 'default'; });
+  const fb = frage.querySelector('.quiz-feedback');
+
+  if (korrekt) {
+    el.classList.add('richtig');
+    el.querySelector('.opt-kreis').textContent = '✓';
+    fb.className = 'quiz-feedback ok';
+    fb.textContent = '✓ Richtig!';
+  } else {
+    el.classList.add('falsch');
+    el.querySelector('.opt-kreis').textContent = '✗';
+    // Richtige Antwort markieren
+    frage.querySelectorAll('.quiz-option').forEach(o => {
+      if (o.dataset.k === 'true') o.classList.add('richtig');
+    });
+    fb.className = 'quiz-feedback err';
+    fb.textContent = '✗ Leider falsch. Die richtige Antwort ist grün markiert.';
+  }
+}
+
+// data-k für richtige Optionen setzen
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.quiz-option').forEach(o => {
+    const oc = o.getAttribute('onclick') || '';
+    const m = oc.match(/qa\(this,'([^']+)',(true|false)\)/);
+    if (m) {
+      o.dataset.k = m[2];
+      const id = m[1], isK = m[2] === 'true';
+      o.onclick = function() { qa(this, id, isK); };
+    }
+  });
+  updateProgress();
+});
+
+// ── Lückentext ────────────────────────────────────────────────────────────
+function pruefeLT() {
+  const inputs = document.querySelectorAll('#lt .luecken-input');
+  let r = 0;
+  inputs.forEach(inp => {
+    const val = inp.value.trim().toLowerCase().replace(/\s+/g, '');
+    const ans = (inp.dataset.a || '').toLowerCase().replace(/\s+/g, '');
+    const ok = val.length > 0 && (val === ans || ans.startsWith(val.substring(0, Math.max(3, val.length - 1))));
+    inp.classList.toggle('ok',  ok && val.length > 0);
+    inp.classList.toggle('err', !ok && val.length > 0);
+    if (ok && val.length > 0) r++;
+  });
+  const erg = document.getElementById('lt-erg');
+  erg.style.display = 'block';
+  const all = inputs.length;
+  if (r === all) {
+    erg.style.cssText = 'display:block;padding:11px;background:var(--hellgruen);border-radius:7px;color:var(--gruen);font-size:14px;';
+    erg.textContent = '✓ Alle ' + all + ' Lücken korrekt! Sehr gut.';
+  } else {
+    erg.style.cssText = 'display:block;padding:11px;background:#fdecea;border-radius:7px;color:var(--rostrot);font-size:14px;';
+    erg.textContent = r + ' von ' + all + ' korrekt. Rot markierte Felder noch einmal überprüfen.';
+  }
+}
+</script>
+</body>
+</html>

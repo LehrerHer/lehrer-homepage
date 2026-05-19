@@ -135,14 +135,20 @@
                 <span></span>
             </button>
 
-            <!-- Navigationslinks – Anker-Links zu den Sektionen der Seite -->
+            <!-- Navigationslinks -->
             <ul class="navbar-links" id="navbar-links">
-                <li><a href="#was-ist-neu">Was ist neu?</a></li>
-                <li><a href="#bereiche-uebersicht">Fächer</a></li>
-                <li><a href="portal.html">Materialien &amp; Quizze</a></li>
-                <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html">🏛️ Arena</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="kontakt.html">Kontakt</a></li>
+                <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
+                <li><a href="index.html#kontakt">Kontakt</a></li>
+                <li class="navbar-dropdown">
+                    <button class="navbar-dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        Geschützter Bereich ▾
+                    </button>
+                    <ul class="navbar-dropdown-menu" role="menu">
+                        <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" role="menuitem">🏛️ Arena</a></li>
+                        <li><a href="blog.html" role="menuitem">✍️ Schüler*innenblog</a></li>
+                        <li><a href="portal.html" role="menuitem">📋 Materialien</a></li>
+                    </ul>
+                </li>
             </ul>
 
             <!-- Kolosseum-Login-Widget -->
@@ -672,8 +678,8 @@
                 <a href="impressum.html">Impressum</a>
                 <a href="datenschutz.html">Datenschutz</a>
             </nav>
+            <a href="/kolosseum/public/admin/" id="admin-footer-link" class="admin-footer-link" aria-hidden="true" tabindex="-1"></a>
         </div>
-        <a href="https://kolosseum.lehrer-herrmann.de/admin/" target="_blank" rel="noopener noreferrer" class="admin-footer-link" aria-label="Lerngladiatoren Admin">⚙</a>
     </footer>
 
 
