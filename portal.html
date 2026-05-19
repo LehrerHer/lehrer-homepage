@@ -200,6 +200,51 @@
             .material-grid { grid-template-columns: 1fr; }
             .portal-header h1 { font-size: 1.4rem; }
         }
+
+        /* Fach-Sections im Portal */
+        .portal-fach-section {
+            padding: 2.5rem 0 1.5rem;
+            border-bottom: 2px solid var(--farbe-rahmen);
+        }
+        .portal-fach-section:last-of-type {
+            border-bottom: none;
+        }
+        .portal-fach-titel {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--farbe-primaer);
+            margin-bottom: 1.5rem;
+        }
+        .portal-kategorie-titel {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--farbe-text-hell);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin: 1.5rem 0 0.75rem;
+        }
+        .portal-fachnav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 1.5rem 0 0.5rem;
+        }
+        .portal-fachnav a {
+            background: var(--farbe-weiss);
+            border: 1px solid var(--farbe-rahmen);
+            border-radius: 20px;
+            padding: 0.4rem 1rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--farbe-primaer);
+            text-decoration: none;
+            transition: background-color var(--transition), border-color var(--transition);
+        }
+        .portal-fachnav a:hover {
+            background: var(--farbe-akzent);
+            border-color: var(--farbe-akzent);
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -226,6 +271,7 @@
                 </li>
             </ul>
             <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+
         </div>
     </nav>
 
@@ -243,181 +289,216 @@
 
     <main class="container">
 
-        <!-- FÄCHER -->
-        <section class="portal-section">
-            <h2 class="portal-section-title">📚 Fächer</h2>
-            <div class="fach-grid">
-                <a href="fach-deutsch.html" class="fach-card">
-                    <span class="icon">📖</span>
-                    <span class="name">Deutsch</span>
-                </a>
-                <a href="fach-geschichte.html" class="fach-card">
-                    <span class="icon">🏛️</span>
-                    <span class="name">Geschichte</span>
-                </a>
-                <a href="fach-wipo.html" class="fach-card">
-                    <span class="icon">🌍</span>
-                    <span class="name">Wirtschaft/Politik</span>
-                </a>
-                <a href="fach-informatik.html" class="fach-card">
-                    <span class="icon">💻</span>
-                    <span class="name">Informatik</span>
-                </a>
-                <a href="fach-werte-normen.html" class="fach-card">
-                    <span class="icon">⚖️</span>
-                    <span class="name">Werte &amp; Normen</span>
-                </a>
-                <a href="fach-ag-projekte.html" class="fach-card">
-                    <span class="icon">🎭</span>
-                    <span class="name">AGs &amp; Projekte</span>
-                </a>
-            </div>
-        </section>
+        <!-- Schnellnavigation -->
+        <nav class="portal-fachnav" aria-label="Zu einem Fach springen">
+            <a href="#deutsch">📖 Deutsch</a>
+            <a href="#geschichte">🏛️ Geschichte</a>
+            <a href="#wipo">🌍 WiPo</a>
+            <a href="#informatik">💻 Informatik</a>
+            <a href="#werte-normen">⚖️ W&amp;N</a>
+            <a href="#gestaltendes-werken">🎨 Gest. Werken</a>
+            <a href="#ag-projekte">🎭 AGs</a>
+        </nav>
 
-        <!-- INTERAKTIVE ARBEITSBLÄTTER -->
-        <section class="portal-section">
-            <h2 class="portal-section-title">📄 Interaktive Arbeitsblätter</h2>
+        <!-- DEUTSCH -->
+        <section id="deutsch" class="portal-fach-section">
+            <h2 class="portal-fach-titel">📖 Deutsch</h2>
+
+            <h3 class="portal-kategorie-titel">Arbeitsblätter</h3>
             <div class="material-grid">
                 <a href="narratologische-analyse.html" class="material-card">
-                    <div class="mc-badges">
-                        <span class="mc-badge ab">Arbeitsblatt</span>
-                        <span class="mc-badge">📖 Deutsch</span>
-                    </div>
+                    <div class="mc-badges"><span class="mc-badge ab">Arbeitsblatt</span></div>
                     <div class="mc-title">Narratologische Analyse</div>
-                    <div class="mc-desc">Erzählerstandort, Fokalisierung, Zeitstruktur und Figurenrede</div>
+                    <div class="mc-desc">Erzählerstandort, Fokalisierung, Zeitstruktur</div>
                 </a>
                 <a href="deutsch-dialektische-eroerterung.html" class="material-card">
-                    <div class="mc-badges">
-                        <span class="mc-badge ab">Arbeitsblatt</span>
-                        <span class="mc-badge">📖 Deutsch</span>
-                    </div>
+                    <div class="mc-badges"><span class="mc-badge ab">Arbeitsblatt</span></div>
                     <div class="mc-title">Dialektische Erörterung</div>
                     <div class="mc-desc">Aufbau und Schreiben einer dialektischen Erörterung</div>
                 </a>
                 <a href="fuenfschrittlesemethode.html" class="material-card">
-                    <div class="mc-badges">
-                        <span class="mc-badge ab">Arbeitsblatt</span>
-                        <span class="mc-badge">📖 Deutsch</span>
-                    </div>
+                    <div class="mc-badges"><span class="mc-badge ab">Arbeitsblatt</span></div>
                     <div class="mc-title">Fünf-Schritt-Lesemethode</div>
                     <div class="mc-desc">Strategisches Lesen mit der SQ3R-Methode</div>
                 </a>
-                <a href="ab-herrschaft-mittelalter.html" class="material-card">
-                    <div class="mc-badges">
-                        <span class="mc-badge ab">Arbeitsblatt</span>
-                        <span class="mc-badge">🏛️ Geschichte</span>
-                    </div>
-                    <div class="mc-title">Herrschaft im Mittelalter</div>
-                    <div class="mc-desc">König, Adel und Kirche – Strukturen mittelalterlicher Herrschaft</div>
-                </a>
-                <a href="materialien/mathe_uebungsaufgaben_klasse4_2026-05.html" class="material-card">
-                    <div class="mc-badges">
-                        <span class="mc-badge ab">Arbeitsblatt</span>
-                        <span class="mc-badge">📐 Mathematik</span>
-                    </div>
-                    <div class="mc-title">Mathe – Übungsaufgaben zur Arbeit</div>
-                    <div class="mc-desc">Addition, Division, Wahrscheinlichkeit, Umfang &amp; Fläche – Klasse 4</div>
-                </a>
             </div>
-            <!-- Generierte Arbeitsblätter (automatisch befüllt) -->
-            <div id="generated-abs" style="margin-top:0.9rem"></div>
-        </section>
 
-        <!-- QUIZZE -->
-        <section class="portal-section">
-            <h2 class="portal-section-title">🎮 Quizze</h2>
+            <h3 class="portal-kategorie-titel">Materialien</h3>
+            <div class="dynamic-inhalte pdf-list" data-seite="deutsch-materialien">
+                <div class="empty-hint">Noch keine Materialien vorhanden.</div>
+            </div>
+
+            <h3 class="portal-kategorie-titel">Quizze</h3>
             <div class="material-grid">
                 <a href="stilmittel-quiz.html" class="material-card">
-                    <div class="mc-badges">
-                        <span class="mc-badge quiz">⚔️ Quiz</span>
-                        <span class="mc-badge">📖 Deutsch</span>
-                    </div>
+                    <div class="mc-badges"><span class="mc-badge quiz">⚔️ Quiz</span></div>
                     <div class="mc-title">Stilmittel-Quiz</div>
                     <div class="mc-desc">Rhetorische Figuren erkennen und benennen</div>
                 </a>
                 <a href="literaturwissenschaft_quiz_v2.html" class="material-card">
-                    <div class="mc-badges">
-                        <span class="mc-badge quiz">⚔️ Quiz</span>
-                        <span class="mc-badge">📖 Deutsch</span>
-                    </div>
+                    <div class="mc-badges"><span class="mc-badge quiz">⚔️ Quiz</span></div>
                     <div class="mc-title">Literaturwissenschaft</div>
                     <div class="mc-desc">Begriffe und Konzepte der Literaturanalyse</div>
                 </a>
                 <a href="rechtschreibquiz.html" class="material-card">
-                    <div class="mc-badges">
-                        <span class="mc-badge quiz">⚔️ Quiz</span>
-                        <span class="mc-badge">📖 Deutsch</span>
-                    </div>
+                    <div class="mc-badges"><span class="mc-badge quiz">⚔️ Quiz</span></div>
                     <div class="mc-title">Rechtschreib-Quiz</div>
-                    <div class="mc-desc">Häufige Fehler und Regeln der deutschen Rechtschreibung</div>
+                    <div class="mc-desc">Häufige Fehler und Regeln der Rechtschreibung</div>
                 </a>
             </div>
         </section>
 
-        <!-- HERUNTERLADBARE MATERIALIEN -->
-        <section class="portal-section">
-            <h2 class="portal-section-title">📥 Downloadmaterialien</h2>
-            <div class="pdf-list" id="pdf-list">
-                <div class="empty-hint">Wird geladen…</div>
-            </div>
-        </section>
+        <!-- GESCHICHTE -->
+        <section id="geschichte" class="portal-fach-section">
+            <h2 class="portal-fach-titel">🏛️ Geschichte</h2>
 
-        <!-- BLOG -->
-        <section class="portal-section">
-            <h2 class="portal-section-title">✍️ Blog</h2>
+            <h3 class="portal-kategorie-titel">Arbeitsblätter</h3>
             <div class="material-grid">
-                <a href="blog.html" class="material-card">
-                    <div class="mc-badges"><span class="mc-badge">Schüler*innenblog</span></div>
-                    <div class="mc-title">Beiträge lesen</div>
-                    <div class="mc-desc">Texte, Bilder und Projekte von Schülerinnen und Schülern</div>
+                <a href="ab-herrschaft-mittelalter.html" class="material-card">
+                    <div class="mc-badges"><span class="mc-badge ab">Arbeitsblatt</span></div>
+                    <div class="mc-title">Herrschaft im Mittelalter</div>
+                    <div class="mc-desc">König, Adel und Kirche – Strukturen mittelalterlicher Herrschaft</div>
                 </a>
-                <a href="blog-einreichen.html" class="material-card">
-                    <div class="mc-badges"><span class="mc-badge">Einreichen</span></div>
-                    <div class="mc-title">Beitrag einreichen</div>
-                    <div class="mc-desc">Eigenen Text oder Beitrag zur Veröffentlichung einreichen</div>
+                <a href="materialien/geschichte_burg-bentheim_museumsführung_7r_2026-05.html" class="material-card">
+                    <div class="mc-badges"><span class="mc-badge ab">Arbeitsblatt</span></div>
+                    <div class="mc-title">Burg Bentheim – Museumsführung</div>
+                    <div class="mc-desc">Rollenspiel-Skript zur mittelalterlichen Burg. Jahrgang 7.</div>
                 </a>
+            </div>
+
+            <h3 class="portal-kategorie-titel">Materialien</h3>
+            <div class="dynamic-inhalte pdf-list" data-seite="geschichte-materialien">
+                <div class="empty-hint">Noch keine Materialien vorhanden.</div>
+            </div>
+
+            <h3 class="portal-kategorie-titel">Quizze</h3>
+            <div class="material-grid">
+                <div class="material-card" style="opacity:.55;pointer-events:none">
+                    <div class="mc-badges"><span class="mc-badge quiz">⚔️ Quiz</span></div>
+                    <div class="mc-title">Bald verfügbar</div>
+                    <div class="mc-desc">Quizze für Geschichte werden noch ergänzt.</div>
+                </div>
             </div>
         </section>
 
-        <!-- LERNKOLOSSEUM -->
-        <section class="portal-section" style="padding-bottom:0">
-            <h2 class="portal-section-title">🏛️ Lernkolosseum</h2>
+        <!-- WIRTSCHAFT / POLITIK -->
+        <section id="wipo" class="portal-fach-section">
+            <h2 class="portal-fach-titel">🌍 Wirtschaft / Politik</h2>
+
+            <h3 class="portal-kategorie-titel">Arbeitsblätter</h3>
+            <div class="dynamic-inhalte material-grid" data-seite="wipo-ab">
+                <div class="empty-hint">Noch keine Arbeitsblätter vorhanden.</div>
+            </div>
+
+            <h3 class="portal-kategorie-titel">Materialien</h3>
+            <div class="dynamic-inhalte pdf-list" data-seite="wipo-materialien">
+                <div class="empty-hint">Noch keine Materialien vorhanden.</div>
+            </div>
+
+            <h3 class="portal-kategorie-titel">Quizze</h3>
+            <div class="dynamic-inhalte material-grid" data-seite="wipo-quiz">
+                <div class="empty-hint">Noch keine Quizze vorhanden.</div>
+            </div>
         </section>
-        <div class="kolo-banner">
-            <div class="kolo-banner-text">
-                <h3>Dein Gladiator wartet auf dich</h3>
-                <p>XP sammeln, Badges freischalten und auf der Rangliste aufsteigen</p>
+
+        <!-- INFORMATIK -->
+        <section id="informatik" class="portal-fach-section">
+            <h2 class="portal-fach-titel">💻 Informatik</h2>
+
+            <h3 class="portal-kategorie-titel">Arbeitsblätter</h3>
+            <div class="dynamic-inhalte material-grid" data-seite="informatik-ab">
+                <div class="empty-hint">Noch keine Arbeitsblätter vorhanden.</div>
             </div>
-            <div class="kolo-banner-btns">
-                <a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="kolo-btn-primary">
-                    Mein Profil →
-                </a>
-                <a href="https://kolosseum.lehrer-herrmann.de/rangliste.html" class="kolo-btn-secondary">
-                    Rangliste
-                </a>
+
+            <h3 class="portal-kategorie-titel">Materialien</h3>
+            <div class="dynamic-inhalte pdf-list" data-seite="informatik-materialien">
+                <div class="empty-hint">Noch keine Materialien vorhanden.</div>
             </div>
-        </div>
+
+            <h3 class="portal-kategorie-titel">Quizze</h3>
+            <div class="dynamic-inhalte material-grid" data-seite="informatik-quiz">
+                <div class="empty-hint">Noch keine Quizze vorhanden.</div>
+            </div>
+        </section>
+
+        <!-- WERTE UND NORMEN -->
+        <section id="werte-normen" class="portal-fach-section">
+            <h2 class="portal-fach-titel">⚖️ Werte und Normen</h2>
+
+            <h3 class="portal-kategorie-titel">Arbeitsblätter</h3>
+            <div class="dynamic-inhalte material-grid" data-seite="werte-normen-ab">
+                <div class="empty-hint">Noch keine Arbeitsblätter vorhanden.</div>
+            </div>
+
+            <h3 class="portal-kategorie-titel">Materialien</h3>
+            <div class="dynamic-inhalte pdf-list" data-seite="werte-normen-materialien">
+                <div class="empty-hint">Noch keine Materialien vorhanden.</div>
+            </div>
+
+            <h3 class="portal-kategorie-titel">Quizze</h3>
+            <div class="dynamic-inhalte material-grid" data-seite="werte-normen-quiz">
+                <div class="empty-hint">Noch keine Quizze vorhanden.</div>
+            </div>
+        </section>
+
+        <!-- GESTALTENDES WERKEN -->
+        <section id="gestaltendes-werken" class="portal-fach-section">
+            <h2 class="portal-fach-titel">🎨 Gestaltendes Werken</h2>
+
+            <h3 class="portal-kategorie-titel">Arbeitsblätter</h3>
+            <div class="dynamic-inhalte material-grid" data-seite="gestaltendes-werken-ab">
+                <div class="empty-hint">Noch keine Arbeitsblätter vorhanden.</div>
+            </div>
+
+            <h3 class="portal-kategorie-titel">Materialien</h3>
+            <div class="dynamic-inhalte pdf-list" data-seite="gestaltendes-werken-materialien">
+                <div class="empty-hint">Noch keine Materialien vorhanden.</div>
+            </div>
+
+            <h3 class="portal-kategorie-titel">Quizze</h3>
+            <div class="dynamic-inhalte material-grid" data-seite="gestaltendes-werken-quiz">
+                <div class="empty-hint">Noch keine Quizze vorhanden.</div>
+            </div>
+        </section>
+
+        <!-- AGs & PROJEKTE -->
+        <section id="ag-projekte" class="portal-fach-section">
+            <h2 class="portal-fach-titel">🎭 AGs &amp; Projekte</h2>
+
+            <h3 class="portal-kategorie-titel">Arbeitsblätter</h3>
+            <div class="dynamic-inhalte material-grid" data-seite="ag-projekte-ab">
+                <div class="empty-hint">Noch keine Arbeitsblätter vorhanden.</div>
+            </div>
+
+            <h3 class="portal-kategorie-titel">Materialien</h3>
+            <div class="dynamic-inhalte pdf-list" data-seite="ag-projekte-materialien">
+                <div class="empty-hint">Noch keine Materialien vorhanden.</div>
+            </div>
+
+            <h3 class="portal-kategorie-titel">Quizze</h3>
+            <div class="dynamic-inhalte material-grid" data-seite="ag-projekte-quiz">
+                <div class="empty-hint">Noch keine Quizze vorhanden.</div>
+            </div>
+        </section>
 
     </main>
 
     <footer>
         <div class="container footer-inner">
-            <p>© <span id="footer-jahr"></span> Jan Herrmann</p>
+            <p>© <span id="footer-jahr">2025</span> Jan Herrmann</p>
             <nav class="footer-links" aria-label="Rechtliche Links">
                 <a href="impressum.html">Impressum</a>
                 <a href="datenschutz.html">Datenschutz</a>
             </nav>
+            <a href="/kolosseum/public/admin/" id="admin-footer-link" class="admin-footer-link" aria-hidden="true" tabindex="-1"></a>
         </div>
     </footer>
 
     <script src="js/main.js"></script>
+    <script src="js/homepage-gate.js"></script>
     <script src="js/kolosseum-login-widget.js"></script>
     <script>
     (function () {
-        // Footer-Jahr
-        var y = document.getElementById('footer-jahr');
-        if (y) y.textContent = new Date().getFullYear();
-
         var K = 'https://kolosseum.lehrer-herrmann.de';
         var LEVELS = [
             {name:'Rekrut',min:0},{name:'Gladiator',min:100},{name:'Kämpfer',min:250},
@@ -440,36 +521,6 @@
                 document.getElementById('user-greeting').textContent =
                     u.nick + ' · ' + LEVELS[idx].name + ' · ' + (u.xp || 0) + ' XP';
             });
-
-        // PDF-Materialien aus inhalte.json laden
-        fetch('inhalte.json')
-            .then(function(r){ return r.json(); })
-            .then(function(d){
-                var list = document.getElementById('pdf-list');
-                var mats = (d.materialien || []);
-                if (!mats.length) {
-                    list.innerHTML = '<div class="empty-hint">Noch keine Downloadmaterialien vorhanden.</div>';
-                    return;
-                }
-                list.innerHTML = mats.map(function(m){
-                    return '<a href="' + m.url + '" class="pdf-row" target="_blank" rel="noopener">'
-                        + '<span class="pdf-icon">' + (m.icon || '📄') + '</span>'
-                        + '<div class="pdf-info">'
-                        +   '<div class="pdf-title">' + m.titel + '</div>'
-                        +   (m.beschreibung ? '<div class="pdf-desc">' + m.beschreibung + '</div>' : '')
-                        + '</div>'
-                        + '<span class="pdf-arrow">↓</span>'
-                        + '</a>';
-                }).join('');
-            })
-            .catch(function(){
-                document.getElementById('pdf-list').innerHTML =
-                    '<div class="empty-hint">Materialien konnten nicht geladen werden.</div>';
-            });
-    })();
-    </script>
-            // Wird befüllt, sobald ab_generator.py den Eintrag schreibt
-        }
     })();
     </script>
     <script src="js/arena-bar.js"></script>
