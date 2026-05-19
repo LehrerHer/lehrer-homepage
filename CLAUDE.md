@@ -117,24 +117,33 @@ Startseite (index.html)
 
 ÖFFENTLICH
 └── Fächervorstellung
-    ├── fach-deutsch.html
-    ├── fach-geschichte.html
-    ├── fach-wipo.html              (Wirtschaft/Politik)
-    ├── fach-informatik.html
-    ├── fach-werte-normen.html
+    ├── fach-deutsch.html    → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
+    ├── fach-geschichte.html    → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
+    ├── fach-wipo.html              (Wirtschaft/Politik)     → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
+    ├── fach-informatik.html     → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
+    ├── fach-werte-normen.html     → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
+    ├── Gestaltendes Werken    → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
     ├── fach-andere.html            (Mathe, Englisch, Sport, Bio, Chemie, Physik, Musik,
-    │                                Erdkunde, Gestaltendes Werken)
-    └── fach-ag-projekte.html
+    │                                Erdkunde, Gestaltendes Werken) → Erklärung des Faches + Links zur Seite Materialien des jeweiligen Faches
+    └── fach-ag-projekte.html    → Erklärung der Projekte und Arbeitsgemeinschaften + Link zur Seite Materialien des entsprechenden Faches
 
 GESCHLOSSEN (Login via Kolosseum-Account erforderlich)
 ├── Materialien (portal.html)
-│   ├── Deutsch        → Arbeitsblätter · Materialien (Hilfen/Links) · Quizze
+│   ├── Deutsch        → Arbeitsblätter · Materialien · Quizze
 │   ├── Geschichte     → Arbeitsblätter · Materialien · Quizze
-│   ├── Wirtschaft/Politik
-│   ├── Werte und Normen
-│   ├── Informatik
-│   ├── Gestaltendes Werken
-│   └── AGs & Projekte
+│   ├── Wirtschaft/Politik → Arbeitsblätter · Materialien · Quizze
+│   ├── Werte und Normen → Arbeitsblätter · Materialien · Quizze
+│   ├── Informatik → Arbeitsblätter · Materialien · Quizze
+│   ├── Gestaltendes Werken → Arbeitsblätter · Materialien · Quizze
+│   ├── Mathematik     → Arbeitsblätter · Materialien · Quizze
+│   ├── Englisch    → Arbeitsblätter · Materialien · Quizze
+│   ├── Sport    → Arbeitsblätter · Materialien · Quizze
+│   ├── Biologie    → Arbeitsblätter · Materialien · Quizze
+│   ├── Chemie    → Arbeitsblätter · Materialien · Quizze
+│   ├── Physik    → Arbeitsblätter · Materialien · Quizze
+│   ├── Musik    → Arbeitsblätter · Materialien · Quizze
+│   ├── Erdkunde     → Arbeitsblätter · Materialien · Quizze   
+│   └── AGs & Projekte → Arbeitsblätter · Materialien · Quizze
 ├── Schüler*innenblog (blog.html)
 │   └── blog-einreichen.html
 └── Lernkolosseum
