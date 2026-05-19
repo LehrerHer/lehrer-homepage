@@ -124,7 +124,7 @@ Startseite (index.html)
     ├── fach-werte-normen.html     → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
     ├── Gestaltendes Werken    → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
     ├── fach-andere.html            (Mathe, Englisch, Sport, Bio, Chemie, Physik, Musik,
-    │                                Erdkunde, Gestaltendes Werken) → Erklärung des Faches + Links zur Seite Materialien des jeweiligen Faches
+    │                                Erdkunde, Gestaltendes Werken) → Erklärung der Fächer + Links zur Seite Materialien des jeweiligen Faches
     └── fach-ag-projekte.html    → Erklärung der Projekte und Arbeitsgemeinschaften + Link zur Seite Materialien des entsprechenden Faches
 
 GESCHLOSSEN (Login via Kolosseum-Account erforderlich)
