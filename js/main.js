@@ -41,6 +41,33 @@
 
 
 /* ============================================================
+   1b. NAVBAR DROPDOWN (Geschützter Bereich)
+   ============================================================ */
+(function () {
+    'use strict';
+    var toggle = document.querySelector('.navbar-dropdown-toggle');
+    var menu   = document.querySelector('.navbar-dropdown-menu');
+
+    if (!toggle || !menu) return;
+
+    toggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var offen = menu.classList.toggle('offen');
+        toggle.setAttribute('aria-expanded', String(offen));
+    });
+
+    document.addEventListener('click', function () {
+        menu.classList.remove('offen');
+        toggle.setAttribute('aria-expanded', 'false');
+    });
+
+    menu.addEventListener('click', function (e) {
+        e.stopPropagation();
+    });
+}());
+
+
+/* ============================================================
    2. AKTIVEN NAVIGATIONSLINK BEIM SCROLLEN HERVORHEBEN
    Beim Scrollen wird automatisch der Link der aktuell
    sichtbaren Sektion als "aktiv" markiert.

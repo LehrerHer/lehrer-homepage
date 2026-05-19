@@ -24,7 +24,15 @@
   fetch(K + '/api/auth/me', { credentials: 'include' })
     .then(function (r) { return r.ok ? r.json() : null; })
     .then(function (user) {
-      setProtectedVisible(!!(user && user.nick));
+      var eingeloggt = !!(user && user.nick);
+      setProtectedVisible(eingeloggt);
+      if (eingeloggt) {
+        var adminLink = document.getElementById('admin-footer-link');
+        if (adminLink) {
+          adminLink.textContent = 'Eingeloggt als ' + user.nick + ', Rang ' + (user.xp || 0);
+          adminLink.removeAttribute('aria-hidden');
+        }
+      }
     })
     .catch(function () {
       setProtectedVisible(false);
