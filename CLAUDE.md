@@ -94,7 +94,7 @@ Implementierung: Der Header wird als eigenständiges HTML-Partial eingebunden (z
 Der Footer erscheint ebenfalls **auf jeder Seite**. Er enthält:
 
 - **Links:** `© [aktuelles Jahr] Jan Herrmann` | `Impressum` | `Datenschutz`
-- **Rechts (nahezu unsichtbar):** `Eingeloggt als [Avatarname], Rang [XP]` — dieser Text ist ein funktionierender Link zu `/kolosseum/public/admin/`, mit minimalem Kontrast (z. B. `color: rgba(0,0,0,0.15)` auf weißem Grund). Wenn kein Nutzer eingeloggt ist: unsichtbar / leer.
+- **Rechts:** `Eingeloggt als [Avatarname], Rang [XP]` — und ((nahezu unsichtbar) dieser Text ist ein funktionierender Link zu `/kolosseum/public/admin/`, mit minimalem Kontrast (z. B. `color: rgba(0,0,0,0.15)` auf weißem Grund). Wenn kein Nutzer eingeloggt ist: unsichtbar / leer.
 
 Das Copyright-Jahr wird dynamisch via `id="footer-jahr"` gesetzt (bereits implementiert in `js/main.js`).
 
