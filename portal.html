@@ -2,9 +2,10 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <script src="/js/auth-guard.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Meine Inhalte – Jan Herrmann</title>
+    <title>Materialien – Jan Herrmann</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,236 +16,37 @@
             color: #fff;
             padding: 2.5rem 0 2rem;
         }
-        .portal-header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-        .portal-header p {
-            color: rgba(255,255,255,0.7);
-            font-size: 0.95rem;
-        }
-        .welcome-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.25);
-            border-radius: 20px;
-            padding: 0.3rem 0.9rem;
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
-        }
-
-        /* Kategorien */
-        .portal-section {
-            padding: 2.5rem 0 1rem;
-        }
-        .portal-section-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--farbe-primaer);
-            margin-bottom: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .portal-section-title::after {
-            content: '';
-            flex: 1;
-            height: 2px;
-            background: var(--farbe-rahmen);
-            border-radius: 1px;
-        }
-
-        /* Fächer-Grid */
+        .portal-header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .portal-header p { color: rgba(255,255,255,0.7); font-size: 0.95rem; }
         .fach-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 0.9rem;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.1rem;
+            padding: 2rem 0;
         }
-        .fach-card {
+        .fach-karte {
             background: var(--farbe-weiss);
             border: 1px solid var(--farbe-rahmen);
-            border-radius: 10px;
-            padding: 1.25rem 1rem;
+            border-radius: 12px;
+            padding: 1.5rem 1.25rem;
             text-align: center;
             text-decoration: none;
             color: var(--farbe-text);
             transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
             box-shadow: var(--schatten);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
         }
-        .fach-card:hover {
+        .fach-karte:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(30,58,95,0.15);
             border-color: var(--farbe-akzent);
         }
-        .fach-card .icon { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
-        .fach-card .name { font-weight: 600; font-size: 0.92rem; }
-
-        /* Material-Grid */
-        .material-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 0.9rem;
-        }
-        .material-card {
-            background: var(--farbe-weiss);
-            border: 1px solid var(--farbe-rahmen);
-            border-left: 4px solid var(--farbe-primaer-hell);
-            border-radius: 0 10px 10px 0;
-            padding: 1rem 1.1rem;
-            text-decoration: none;
-            color: var(--farbe-text);
-            display: flex;
-            flex-direction: column;
-            gap: 0.3rem;
-            transition: box-shadow 0.18s, border-left-color 0.18s;
-            box-shadow: var(--schatten);
-        }
-        .material-card:hover {
-            box-shadow: 0 4px 16px rgba(30,58,95,0.15);
-            border-left-color: var(--farbe-akzent);
-        }
-        .material-card .mc-badges {
-            display: flex;
-            gap: 0.4rem;
-            flex-wrap: wrap;
-            margin-bottom: 0.2rem;
-        }
-        .mc-badge {
-            font-size: 0.72rem;
-            font-weight: 700;
-            padding: 2px 7px;
-            border-radius: 4px;
-            background: #e8f4fd;
-            color: var(--farbe-primaer);
-        }
-        .mc-badge.quiz   { background: #fff3e0; color: #c07000; }
-        .mc-badge.ab     { background: #e8f5e9; color: #2e7d32; }
-        .mc-badge.pdf    { background: #fce4ec; color: #b71c1c; }
-        .material-card .mc-title { font-weight: 600; font-size: 0.92rem; }
-        .material-card .mc-desc  { font-size: 0.82rem; color: var(--farbe-text-hell); }
-        .material-card .mc-fach  { font-size: 0.78rem; color: var(--farbe-text-hell); margin-top: auto; padding-top: 0.4rem; }
-
-        /* Materialien (PDFs aus inhalte.json) */
-        .pdf-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.6rem;
-        }
-        .pdf-row {
-            background: var(--farbe-weiss);
-            border: 1px solid var(--farbe-rahmen);
-            border-radius: 8px;
-            padding: 0.75rem 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            text-decoration: none;
-            color: var(--farbe-text);
-            transition: box-shadow 0.15s;
-            box-shadow: var(--schatten);
-        }
-        .pdf-row:hover { box-shadow: 0 4px 16px rgba(30,58,95,0.13); }
-        .pdf-row .pdf-icon { font-size: 1.4rem; flex-shrink: 0; }
-        .pdf-row .pdf-info { flex: 1; min-width: 0; }
-        .pdf-row .pdf-title { font-weight: 600; font-size: 0.9rem; }
-        .pdf-row .pdf-desc  { font-size: 0.8rem; color: var(--farbe-text-hell); }
-        .pdf-row .pdf-arrow { color: var(--farbe-akzent); font-size: 1rem; flex-shrink: 0; }
-
-        .empty-hint {
-            color: var(--farbe-text-hell);
-            font-size: 0.9rem;
-            padding: 0.75rem 0;
-        }
-
-        /* Kolosseum-Banner */
-        .kolo-banner {
-            background: linear-gradient(135deg, #0f1d35 0%, #1a2f52 100%);
-            border-radius: 12px;
-            padding: 1.5rem 1.75rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-bottom: 3rem;
-        }
-        .kolo-banner-text h3 {
-            color: #fff;
-            font-size: 1.1rem;
-            margin-bottom: 0.25rem;
-        }
-        .kolo-banner-text p {
-            color: rgba(255,255,255,0.6);
-            font-size: 0.87rem;
-        }
-        .kolo-banner-btns { display: flex; gap: 0.65rem; flex-wrap: wrap; }
-        .kolo-btn-primary {
-            background: #4a9eda; color: #fff;
-            padding: 0.65rem 1.2rem; border-radius: 7px;
-            font-size: 0.9rem; font-weight: 700; text-decoration: none;
-            white-space: nowrap;
-        }
-        .kolo-btn-secondary {
-            background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.85);
-            border: 1px solid rgba(255,255,255,0.2);
-            padding: 0.65rem 1.2rem; border-radius: 7px;
-            font-size: 0.9rem; font-weight: 600; text-decoration: none;
-            white-space: nowrap;
-        }
-
-        @media (max-width: 600px) {
-            .fach-grid { grid-template-columns: repeat(2, 1fr); }
-            .material-grid { grid-template-columns: 1fr; }
-            .portal-header h1 { font-size: 1.4rem; }
-        }
-
-        /* Fach-Sections im Portal */
-        .portal-fach-section {
-            padding: 2.5rem 0 1.5rem;
-            border-bottom: 2px solid var(--farbe-rahmen);
-        }
-        .portal-fach-section:last-of-type {
-            border-bottom: none;
-        }
-        .portal-fach-titel {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--farbe-primaer);
-            margin-bottom: 1.5rem;
-        }
-        .portal-kategorie-titel {
-            font-size: 1rem;
-            font-weight: 700;
-            color: var(--farbe-text-hell);
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin: 1.5rem 0 0.75rem;
-        }
-        .portal-fachnav {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            padding: 1.5rem 0 0.5rem;
-        }
-        .portal-fachnav a {
-            background: var(--farbe-weiss);
-            border: 1px solid var(--farbe-rahmen);
-            border-radius: 20px;
-            padding: 0.4rem 1rem;
-            font-size: 0.88rem;
-            font-weight: 600;
-            color: var(--farbe-primaer);
-            text-decoration: none;
-            transition: background-color var(--transition), border-color var(--transition);
-        }
-        .portal-fachnav a:hover {
-            background: var(--farbe-akzent);
-            border-color: var(--farbe-akzent);
-            color: #fff;
-        }
+        .fach-karte .fk-icon { font-size: 2.2rem; }
+        .fach-karte .fk-name { font-weight: 700; font-size: 1rem; color: var(--farbe-primaer); }
+        .fach-karte .fk-hint { font-size: 0.8rem; color: var(--farbe-text-hell); }
+        @media (max-width: 600px) { .fach-grid { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
 <body>
@@ -252,8 +54,7 @@
     <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
         <div class="container navbar-inner">
             <a href="index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
-            <button class="hamburger" id="hamburger"
-                    aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+            <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
                 <span></span><span></span><span></span>
             </button>
             <ul class="navbar-links" id="navbar-links">
@@ -270,217 +71,62 @@
                     </ul>
                 </li>
             </ul>
-            <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
-
         </div>
     </nav>
 
-    <!-- Portal-Header mit Willkommensgruß -->
     <div class="portal-header">
         <div class="container">
-            <div class="welcome-chip" id="welcome-chip">
-                <span id="user-avatar">🗡️</span>
-                <span id="user-greeting">Wird geladen…</span>
-            </div>
-            <h1>Meine Inhalte</h1>
-            <p>Fächer, Arbeitsblätter, Quizze und Materialien auf einen Blick</p>
+            <h1>📋 Materialien</h1>
+            <p>Arbeitsblätter, Materialien und Quizze – geordnet nach Fächern</p>
         </div>
     </div>
 
     <main class="container">
+        <div class="fach-grid">
 
-        <!-- Schnellnavigation -->
-        <nav class="portal-fachnav" aria-label="Zu einem Fach springen">
-            <a href="#deutsch">📖 Deutsch</a>
-            <a href="#geschichte">🏛️ Geschichte</a>
-            <a href="#wipo">🌍 WiPo</a>
-            <a href="#informatik">💻 Informatik</a>
-            <a href="#werte-normen">⚖️ W&amp;N</a>
-            <a href="#gestaltendes-werken">🎨 Gest. Werken</a>
-            <a href="#ag-projekte">🎭 AGs</a>
-        </nav>
+            <a href="materialien-deutsch.html" class="fach-karte">
+                <span class="fk-icon">📖</span>
+                <span class="fk-name">Deutsch</span>
+                <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+            </a>
 
-        <!-- DEUTSCH -->
-        <section id="deutsch" class="portal-fach-section">
-            <h2 class="portal-fach-titel">📖 Deutsch</h2>
+            <a href="materialien-geschichte.html" class="fach-karte">
+                <span class="fk-icon">🏛️</span>
+                <span class="fk-name">Geschichte</span>
+                <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+            </a>
 
-            <h3 class="portal-kategorie-titel">Arbeitsblätter</h3>
-            <div class="material-grid">
-                <a href="narratologische-analyse.html" class="material-card">
-                    <div class="mc-badges"><span class="mc-badge ab">Arbeitsblatt</span></div>
-                    <div class="mc-title">Narratologische Analyse</div>
-                    <div class="mc-desc">Erzählerstandort, Fokalisierung, Zeitstruktur</div>
-                </a>
-                <a href="deutsch-dialektische-eroerterung.html" class="material-card">
-                    <div class="mc-badges"><span class="mc-badge ab">Arbeitsblatt</span></div>
-                    <div class="mc-title">Dialektische Erörterung</div>
-                    <div class="mc-desc">Aufbau und Schreiben einer dialektischen Erörterung</div>
-                </a>
-                <a href="fuenfschrittlesemethode.html" class="material-card">
-                    <div class="mc-badges"><span class="mc-badge ab">Arbeitsblatt</span></div>
-                    <div class="mc-title">Fünf-Schritt-Lesemethode</div>
-                    <div class="mc-desc">Strategisches Lesen mit der SQ3R-Methode</div>
-                </a>
-            </div>
+            <a href="materialien-wipo.html" class="fach-karte">
+                <span class="fk-icon">🌍</span>
+                <span class="fk-name">Wirtschaft / Politik</span>
+                <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+            </a>
 
-            <h3 class="portal-kategorie-titel">Materialien</h3>
-            <div class="dynamic-inhalte pdf-list" data-seite="deutsch-materialien">
-                <div class="empty-hint">Noch keine Materialien vorhanden.</div>
-            </div>
+            <a href="materialien-informatik.html" class="fach-karte">
+                <span class="fk-icon">💻</span>
+                <span class="fk-name">Informatik</span>
+                <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+            </a>
 
-            <h3 class="portal-kategorie-titel">Quizze</h3>
-            <div class="material-grid">
-                <a href="stilmittel-quiz.html" class="material-card">
-                    <div class="mc-badges"><span class="mc-badge quiz">⚔️ Quiz</span></div>
-                    <div class="mc-title">Stilmittel-Quiz</div>
-                    <div class="mc-desc">Rhetorische Figuren erkennen und benennen</div>
-                </a>
-                <a href="literaturwissenschaft_quiz_v2.html" class="material-card">
-                    <div class="mc-badges"><span class="mc-badge quiz">⚔️ Quiz</span></div>
-                    <div class="mc-title">Literaturwissenschaft</div>
-                    <div class="mc-desc">Begriffe und Konzepte der Literaturanalyse</div>
-                </a>
-                <a href="rechtschreibquiz.html" class="material-card">
-                    <div class="mc-badges"><span class="mc-badge quiz">⚔️ Quiz</span></div>
-                    <div class="mc-title">Rechtschreib-Quiz</div>
-                    <div class="mc-desc">Häufige Fehler und Regeln der Rechtschreibung</div>
-                </a>
-            </div>
-        </section>
+            <a href="materialien-werte-normen.html" class="fach-karte">
+                <span class="fk-icon">⚖️</span>
+                <span class="fk-name">Werte und Normen</span>
+                <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+            </a>
 
-        <!-- GESCHICHTE -->
-        <section id="geschichte" class="portal-fach-section">
-            <h2 class="portal-fach-titel">🏛️ Geschichte</h2>
+            <a href="materialien-andere.html" class="fach-karte">
+                <span class="fk-icon">📂</span>
+                <span class="fk-name">Weitere Fächer</span>
+                <span class="fk-hint">Mathe, Englisch, Sport und mehr</span>
+            </a>
 
-            <h3 class="portal-kategorie-titel">Arbeitsblätter</h3>
-            <div class="material-grid">
-                <a href="ab-herrschaft-mittelalter.html" class="material-card">
-                    <div class="mc-badges"><span class="mc-badge ab">Arbeitsblatt</span></div>
-                    <div class="mc-title">Herrschaft im Mittelalter</div>
-                    <div class="mc-desc">König, Adel und Kirche – Strukturen mittelalterlicher Herrschaft</div>
-                </a>
-                <a href="materialien/geschichte_burg-bentheim_museumsführung_7r_2026-05.html" class="material-card">
-                    <div class="mc-badges"><span class="mc-badge ab">Arbeitsblatt</span></div>
-                    <div class="mc-title">Burg Bentheim – Museumsführung</div>
-                    <div class="mc-desc">Rollenspiel-Skript zur mittelalterlichen Burg. Jahrgang 7.</div>
-                </a>
-            </div>
+            <a href="materialien-ag-projekte.html" class="fach-karte">
+                <span class="fk-icon">🎭</span>
+                <span class="fk-name">AGs &amp; Projekte</span>
+                <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+            </a>
 
-            <h3 class="portal-kategorie-titel">Materialien</h3>
-            <div class="dynamic-inhalte pdf-list" data-seite="geschichte-materialien">
-                <div class="empty-hint">Noch keine Materialien vorhanden.</div>
-            </div>
-
-            <h3 class="portal-kategorie-titel">Quizze</h3>
-            <div class="material-grid">
-                <div class="material-card" style="opacity:.55;pointer-events:none">
-                    <div class="mc-badges"><span class="mc-badge quiz">⚔️ Quiz</span></div>
-                    <div class="mc-title">Bald verfügbar</div>
-                    <div class="mc-desc">Quizze für Geschichte werden noch ergänzt.</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- WIRTSCHAFT / POLITIK -->
-        <section id="wipo" class="portal-fach-section">
-            <h2 class="portal-fach-titel">🌍 Wirtschaft / Politik</h2>
-
-            <h3 class="portal-kategorie-titel">Arbeitsblätter</h3>
-            <div class="dynamic-inhalte material-grid" data-seite="wipo-ab">
-                <div class="empty-hint">Noch keine Arbeitsblätter vorhanden.</div>
-            </div>
-
-            <h3 class="portal-kategorie-titel">Materialien</h3>
-            <div class="dynamic-inhalte pdf-list" data-seite="wipo-materialien">
-                <div class="empty-hint">Noch keine Materialien vorhanden.</div>
-            </div>
-
-            <h3 class="portal-kategorie-titel">Quizze</h3>
-            <div class="dynamic-inhalte material-grid" data-seite="wipo-quiz">
-                <div class="empty-hint">Noch keine Quizze vorhanden.</div>
-            </div>
-        </section>
-
-        <!-- INFORMATIK -->
-        <section id="informatik" class="portal-fach-section">
-            <h2 class="portal-fach-titel">💻 Informatik</h2>
-
-            <h3 class="portal-kategorie-titel">Arbeitsblätter</h3>
-            <div class="dynamic-inhalte material-grid" data-seite="informatik-ab">
-                <div class="empty-hint">Noch keine Arbeitsblätter vorhanden.</div>
-            </div>
-
-            <h3 class="portal-kategorie-titel">Materialien</h3>
-            <div class="dynamic-inhalte pdf-list" data-seite="informatik-materialien">
-                <div class="empty-hint">Noch keine Materialien vorhanden.</div>
-            </div>
-
-            <h3 class="portal-kategorie-titel">Quizze</h3>
-            <div class="dynamic-inhalte material-grid" data-seite="informatik-quiz">
-                <div class="empty-hint">Noch keine Quizze vorhanden.</div>
-            </div>
-        </section>
-
-        <!-- WERTE UND NORMEN -->
-        <section id="werte-normen" class="portal-fach-section">
-            <h2 class="portal-fach-titel">⚖️ Werte und Normen</h2>
-
-            <h3 class="portal-kategorie-titel">Arbeitsblätter</h3>
-            <div class="dynamic-inhalte material-grid" data-seite="werte-normen-ab">
-                <div class="empty-hint">Noch keine Arbeitsblätter vorhanden.</div>
-            </div>
-
-            <h3 class="portal-kategorie-titel">Materialien</h3>
-            <div class="dynamic-inhalte pdf-list" data-seite="werte-normen-materialien">
-                <div class="empty-hint">Noch keine Materialien vorhanden.</div>
-            </div>
-
-            <h3 class="portal-kategorie-titel">Quizze</h3>
-            <div class="dynamic-inhalte material-grid" data-seite="werte-normen-quiz">
-                <div class="empty-hint">Noch keine Quizze vorhanden.</div>
-            </div>
-        </section>
-
-        <!-- GESTALTENDES WERKEN -->
-        <section id="gestaltendes-werken" class="portal-fach-section">
-            <h2 class="portal-fach-titel">🎨 Gestaltendes Werken</h2>
-
-            <h3 class="portal-kategorie-titel">Arbeitsblätter</h3>
-            <div class="dynamic-inhalte material-grid" data-seite="gestaltendes-werken-ab">
-                <div class="empty-hint">Noch keine Arbeitsblätter vorhanden.</div>
-            </div>
-
-            <h3 class="portal-kategorie-titel">Materialien</h3>
-            <div class="dynamic-inhalte pdf-list" data-seite="gestaltendes-werken-materialien">
-                <div class="empty-hint">Noch keine Materialien vorhanden.</div>
-            </div>
-
-            <h3 class="portal-kategorie-titel">Quizze</h3>
-            <div class="dynamic-inhalte material-grid" data-seite="gestaltendes-werken-quiz">
-                <div class="empty-hint">Noch keine Quizze vorhanden.</div>
-            </div>
-        </section>
-
-        <!-- AGs & PROJEKTE -->
-        <section id="ag-projekte" class="portal-fach-section">
-            <h2 class="portal-fach-titel">🎭 AGs &amp; Projekte</h2>
-
-            <h3 class="portal-kategorie-titel">Arbeitsblätter</h3>
-            <div class="dynamic-inhalte material-grid" data-seite="ag-projekte-ab">
-                <div class="empty-hint">Noch keine Arbeitsblätter vorhanden.</div>
-            </div>
-
-            <h3 class="portal-kategorie-titel">Materialien</h3>
-            <div class="dynamic-inhalte pdf-list" data-seite="ag-projekte-materialien">
-                <div class="empty-hint">Noch keine Materialien vorhanden.</div>
-            </div>
-
-            <h3 class="portal-kategorie-titel">Quizze</h3>
-            <div class="dynamic-inhalte material-grid" data-seite="ag-projekte-quiz">
-                <div class="empty-hint">Noch keine Quizze vorhanden.</div>
-            </div>
-        </section>
-
+        </div>
     </main>
 
     <footer>
@@ -496,33 +142,5 @@
 
     <script src="js/main.js"></script>
     <script src="js/homepage-gate.js"></script>
-    <script src="js/kolosseum-login-widget.js"></script>
-    <script>
-    (function () {
-        var K = 'https://kolosseum.lehrer-herrmann.de';
-        var LEVELS = [
-            {name:'Rekrut',min:0},{name:'Gladiator',min:100},{name:'Kämpfer',min:250},
-            {name:'Krieger',min:500},{name:'Veteran',min:900},{name:'Champion',min:1400},
-            {name:'Legende',min:2000}
-        ];
-        var AVATARS = ['🗡️','⚔️','🛡️','🪖','🏆','👑','🌟'];
-        function levelIdx(xp) {
-            for (var i = LEVELS.length-1; i >= 0; i--) if (xp >= LEVELS[i].min) return i;
-            return 0;
-        }
-
-        // Begrüßung mit Avatar
-        fetch(K + '/api/auth/me', { credentials: 'include' })
-            .then(function(r){ return r.ok ? r.json() : null; })
-            .then(function(u){
-                if (!u) return;
-                var idx = levelIdx(u.xp || 0);
-                document.getElementById('user-avatar').textContent   = AVATARS[idx];
-                document.getElementById('user-greeting').textContent =
-                    u.nick + ' · ' + LEVELS[idx].name + ' · ' + (u.xp || 0) + ' XP';
-            });
-    })();
-    </script>
-    <script src="js/arena-bar.js"></script>
 </body>
 </html>
