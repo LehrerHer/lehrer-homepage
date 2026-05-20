@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 const { db } = require('../db/database');
-const { loginLimiter } = require('../middleware/rateLimit');
+const { loginLimiter, registerLimiter, adminLoginLimiter } = require('../middleware/rateLimit');
 const { requireStudent, requireAdmin } = require('../middleware/auth');
 
 const router = express.Router();
@@ -71,7 +71,7 @@ router.get('/validate-token/:token', (req, res) => {
 });
 
 // POST /api/auth/register – Registrierung mit Einladungstoken
-router.post('/register', loginLimiter, async (req, res) => {
+router.post('/register', registerLimiter, async (req, res) => {
   const { token, email, nick, password } = req.body;
 
   if (!token || !email || !nick || !password) {
@@ -142,7 +142,7 @@ router.post('/register', loginLimiter, async (req, res) => {
 });
 
 // POST /api/auth/admin/login
-router.post('/admin/login', loginLimiter, async (req, res) => {
+router.post('/admin/login', adminLoginLimiter, async (req, res) => {
   const { password } = req.body;
   if (!password) return res.status(400).json({ error: 'Passwort erforderlich.' });
 
