@@ -3,7 +3,7 @@ const rateLimit = require('express-rate-limit');
 // Schüler-Login: zählt pro IP + Benutzername, damit eine Klasse nicht alle sperrt
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 20,
+  max: 40,
   standardHeaders: true,
   legacyHeaders: false,
   keyGenerator: (req) => {
@@ -20,7 +20,7 @@ const loginLimiter = rateLimit({
 // Registrierung: pro IP, großzügiger (Klassenraum-Szenario)
 const registerLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 30,
+  max: 60,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Zu viele Registrierungsversuche. Bitte 15 Minuten warten.' },
