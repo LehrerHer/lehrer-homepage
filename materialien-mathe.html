@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <script src="/js/auth-guard.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Arbeitsblätter, Materialien und Quizze für das Fach Mathematik bei Jan Herrmann.">
+    <title>Mathematik – Materialien | Jan Herrmann</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .mat-header {
+            background: linear-gradient(135deg, var(--farbe-primaer) 0%, #2d5a8e 100%);
+            color: #fff;
+            padding: 2.5rem 0 2rem;
+        }
+        .mat-header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .mat-header p { color: rgba(255,255,255,0.7); font-size: 0.95rem; }
+        .mat-section { padding: 2rem 0 1rem; }
+        .mat-kategorie {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--farbe-text-hell);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin: 0 0 0.75rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid var(--farbe-rahmen);
+        }
+        .mat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        .mat-card {
+            background: var(--farbe-weiss);
+            border: 1px solid var(--farbe-rahmen);
+            border-left: 4px solid var(--farbe-primaer-hell);
+            border-radius: 0 10px 10px 0;
+            padding: 1rem 1.1rem;
+            text-decoration: none;
+            color: var(--farbe-text);
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            transition: box-shadow 0.18s, border-left-color 0.18s;
+            box-shadow: var(--schatten);
+        }
+        .mat-card:hover { box-shadow: 0 4px 16px rgba(30,58,95,0.15); border-left-color: var(--farbe-akzent); }
+        .mat-badge {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 4px;
+            margin-bottom: 0.2rem;
+        }
+        .mat-badge.ab    { background: #e8f5e9; color: #2e7d32; }
+        .mat-badge.quiz  { background: #fff3e0; color: #c07000; }
+        .mat-badge.mat   { background: #e8f4fd; color: var(--farbe-primaer); }
+        .mat-title { font-weight: 600; font-size: 0.92rem; }
+        .mat-desc  { font-size: 0.82rem; color: var(--farbe-text-hell); }
+        .mat-leer  { color: var(--farbe-text-hell); font-size: 0.9rem; padding: 0.5rem 0 1rem; }
+        @media (max-width: 600px) { .mat-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+        <div class="container navbar-inner">
+            <a href="index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
+            <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="navbar-links" id="navbar-links">
+                <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
+                <li><a href="index.html#kontakt">Kontakt</a></li>
+                <li class="navbar-dropdown">
+                    <button class="navbar-dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        Geschützter Bereich ▾
+                    </button>
+                    <ul class="navbar-dropdown-menu" role="menu">
+                        <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" role="menuitem">🏛️ Arena</a></li>
+                        <li><a href="blog.html" role="menuitem">✍️ Schüler*innenblog</a></li>
+                        <li><a href="portal.html" role="menuitem">📋 Materialien</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="mat-header">
+        <div class="container">
+            <h1>🔢 Mathematik – Materialien</h1>
+            <p>Arbeitsblätter, Materialien und Quizze für den Unterricht</p>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="mat-section">
+
+            <h2 class="mat-kategorie">Arbeitsblätter</h2>
+            <div class="mat-grid">
+                <a class="mat-card" href="materialien/mathe_uebungsaufgaben_klasse4_2026-05.html">
+                    <span class="mat-badge ab">📄 Arbeitsblatt</span>
+                    <span class="mat-title">Mathe – Übungsaufgaben zur Arbeit</span>
+                    <span class="mat-desc">Addition, Division, Wahrscheinlichkeit, Umfang &amp; Fläche. Klasse 4.</span>
+                </a>
+                <a class="mat-card" href="materialien/rechenblatt_klasse2_bis1000.html">
+                    <span class="mat-badge ab">📄 Arbeitsblatt</span>
+                    <span class="mat-title">Rechenblatt – Zahlenraum bis 1000</span>
+                    <span class="mat-desc">Addition, Subtraktion, Multiplikation, Division · 25 zufällige Aufgaben. Klasse 2.</span>
+                </a>
+                <a class="mat-card" href="materialien/mathe_rechenblatt_klasse45_2026-05.html">
+                    <span class="mat-badge ab">📄 Arbeitsblatt</span>
+                    <span class="mat-title">Rechenblatt – Klasse 4/5</span>
+                    <span class="mat-desc">Kopfrechnen &amp; schriftliche Grundrechenarten · zufällige Aufgaben. Klasse 4/5.</span>
+                </a>
+            </div>
+
+            <h2 class="mat-kategorie">Materialien</h2>
+            <p class="mat-leer">Noch keine Inhalte vorhanden. Schau bald wieder vorbei!</p>
+
+            <h2 class="mat-kategorie">Quizze</h2>
+            <p class="mat-leer">Noch keine Inhalte vorhanden. Schau bald wieder vorbei!</p>
+
+        </div>
+
+        <p style="text-align:center;margin:2rem 0"><a href="portal.html">← Zurück zur Übersicht</a></p>
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <p>© <span id="footer-jahr">2025</span> Jan Herrmann</p>
+            <nav class="footer-links" aria-label="Rechtliche Links">
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+            </nav>
+            <a href="/kolosseum/public/admin/" id="admin-footer-link" class="admin-footer-link" aria-hidden="true" tabindex="-1"></a>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/homepage-gate.js"></script>
+</body>
+</html>
