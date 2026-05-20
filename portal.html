@@ -18,17 +18,28 @@
         }
         .portal-header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.25rem; }
         .portal-header p { color: rgba(255,255,255,0.7); font-size: 0.95rem; }
+        .fach-abschnitt { padding: 1.5rem 0 0.5rem; }
+        .fach-abschnitt-titel {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--farbe-text-hell);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin: 0 0 0.9rem;
+            padding-bottom: 0.4rem;
+            border-bottom: 2px solid var(--farbe-rahmen);
+        }
         .fach-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 1.1rem;
-            padding: 2rem 0;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 0.5rem;
         }
         .fach-karte {
             background: var(--farbe-weiss);
             border: 1px solid var(--farbe-rahmen);
             border-radius: 12px;
-            padding: 1.5rem 1.25rem;
+            padding: 1.25rem 1rem;
             text-align: center;
             text-decoration: none;
             color: var(--farbe-text);
@@ -36,16 +47,16 @@
             box-shadow: var(--schatten);
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.4rem;
         }
         .fach-karte:hover {
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(30,58,95,0.15);
             border-color: var(--farbe-akzent);
         }
-        .fach-karte .fk-icon { font-size: 2.2rem; }
-        .fach-karte .fk-name { font-weight: 700; font-size: 1rem; color: var(--farbe-primaer); }
-        .fach-karte .fk-hint { font-size: 0.8rem; color: var(--farbe-text-hell); }
+        .fach-karte .fk-icon { font-size: 2rem; }
+        .fach-karte .fk-name { font-weight: 700; font-size: 0.95rem; color: var(--farbe-primaer); }
+        .fach-karte .fk-hint { font-size: 0.78rem; color: var(--farbe-text-hell); }
         @media (max-width: 600px) { .fach-grid { grid-template-columns: repeat(2, 1fr); } }
     </style>
 </head>
@@ -82,51 +93,117 @@
     </div>
 
     <main class="container">
-        <div class="fach-grid">
 
-            <a href="materialien-deutsch.html" class="fach-karte">
-                <span class="fk-icon">📖</span>
-                <span class="fk-name">Deutsch</span>
-                <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
-            </a>
+        <div class="fach-abschnitt">
+            <h2 class="fach-abschnitt-titel">Fächer</h2>
+            <div class="fach-grid">
 
-            <a href="materialien-geschichte.html" class="fach-karte">
-                <span class="fk-icon">🏛️</span>
-                <span class="fk-name">Geschichte</span>
-                <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
-            </a>
+                <a href="materialien-deutsch.html" class="fach-karte">
+                    <span class="fk-icon">📖</span>
+                    <span class="fk-name">Deutsch</span>
+                    <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+                </a>
 
-            <a href="materialien-wipo.html" class="fach-karte">
-                <span class="fk-icon">🌍</span>
-                <span class="fk-name">Wirtschaft / Politik</span>
-                <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
-            </a>
+                <a href="materialien-geschichte.html" class="fach-karte">
+                    <span class="fk-icon">🏛️</span>
+                    <span class="fk-name">Geschichte</span>
+                    <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+                </a>
 
-            <a href="materialien-informatik.html" class="fach-karte">
-                <span class="fk-icon">💻</span>
-                <span class="fk-name">Informatik</span>
-                <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
-            </a>
+                <a href="materialien-wipo.html" class="fach-karte">
+                    <span class="fk-icon">🗳️</span>
+                    <span class="fk-name">Wirtschaft / Politik</span>
+                    <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+                </a>
 
-            <a href="materialien-werte-normen.html" class="fach-karte">
-                <span class="fk-icon">⚖️</span>
-                <span class="fk-name">Werte und Normen</span>
-                <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
-            </a>
+                <a href="materialien-informatik.html" class="fach-karte">
+                    <span class="fk-icon">💻</span>
+                    <span class="fk-name">Informatik</span>
+                    <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+                </a>
 
-            <a href="materialien-andere.html" class="fach-karte">
-                <span class="fk-icon">📂</span>
-                <span class="fk-name">Weitere Fächer</span>
-                <span class="fk-hint">Mathe, Englisch, Sport und mehr</span>
-            </a>
+                <a href="materialien-werte-normen.html" class="fach-karte">
+                    <span class="fk-icon">⚖️</span>
+                    <span class="fk-name">Werte und Normen</span>
+                    <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+                </a>
 
-            <a href="materialien-ag-projekte.html" class="fach-karte">
-                <span class="fk-icon">🎭</span>
-                <span class="fk-name">AGs &amp; Projekte</span>
-                <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
-            </a>
+                <a href="materialien-gestaltendes-werken.html" class="fach-karte">
+                    <span class="fk-icon">🎨</span>
+                    <span class="fk-name">Gestaltendes Werken</span>
+                    <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+                </a>
 
+                <a href="materialien-mathe.html" class="fach-karte">
+                    <span class="fk-icon">🔢</span>
+                    <span class="fk-name">Mathematik</span>
+                    <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+                </a>
+
+                <a href="materialien-englisch.html" class="fach-karte">
+                    <span class="fk-icon">🇬🇧</span>
+                    <span class="fk-name">Englisch</span>
+                    <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+                </a>
+
+                <a href="materialien-sport.html" class="fach-karte">
+                    <span class="fk-icon">⚽</span>
+                    <span class="fk-name">Sport</span>
+                    <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+                </a>
+
+                <a href="materialien-biologie.html" class="fach-karte">
+                    <span class="fk-icon">🌱</span>
+                    <span class="fk-name">Biologie</span>
+                    <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+                </a>
+
+                <a href="materialien-chemie.html" class="fach-karte">
+                    <span class="fk-icon">⚗️</span>
+                    <span class="fk-name">Chemie</span>
+                    <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+                </a>
+
+                <a href="materialien-physik.html" class="fach-karte">
+                    <span class="fk-icon">⚡</span>
+                    <span class="fk-name">Physik</span>
+                    <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+                </a>
+
+                <a href="materialien-musik.html" class="fach-karte">
+                    <span class="fk-icon">🎵</span>
+                    <span class="fk-name">Musik</span>
+                    <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+                </a>
+
+                <a href="materialien-erdkunde.html" class="fach-karte">
+                    <span class="fk-icon">🗺️</span>
+                    <span class="fk-name">Erdkunde</span>
+                    <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+                </a>
+
+            </div>
         </div>
+
+        <div class="fach-abschnitt">
+            <h2 class="fach-abschnitt-titel">Übergreifend &amp; Projekte</h2>
+            <div class="fach-grid">
+
+                <a href="materialien-faecheruebergreifend.html" class="fach-karte">
+                    <span class="fk-icon">🔀</span>
+                    <span class="fk-name">Fächerübergreifend</span>
+                    <span class="fk-hint">Quizze &amp; Materialien für alle Fächer</span>
+                </a>
+
+                <a href="materialien-ag-projekte.html" class="fach-karte">
+                    <span class="fk-icon">🎭</span>
+                    <span class="fk-name">AGs &amp; Projekte</span>
+                    <span class="fk-hint">Arbeitsblätter · Materialien · Quizze</span>
+                </a>
+
+            </div>
+        </div>
+
     </main>
 
     <footer>
