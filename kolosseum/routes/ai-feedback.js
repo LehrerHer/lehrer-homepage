@@ -10,9 +10,12 @@ const router = express.Router();
 
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 Minuten
-  max: 6,
+  max: 8,
   standardHeaders: true,
   legacyHeaders: false,
+  // Zählung pro eingeloggtem Avatar, nicht per IP – sonst sperrt Schul-NAT die ganze Klasse
+  keyGenerator: (req) =>
+    req.session?.studentId ? `student:${req.session.studentId}` : req.ip || 'unknown',
   message: { error: 'Zu viele Anfragen. Bitte warte 10 Minuten.' }
 });
 
