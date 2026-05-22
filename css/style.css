@@ -199,6 +199,53 @@ ul {
     color: var(--farbe-primaer);
 }
 
+/* === NAVBAR: GESCHÜTZTER-BEREICH TRENNER & LINKS === */
+.navbar-gb-trenner {
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    margin: 0 4px;
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    height: 28px;
+    align-self: center;
+}
+
+.navbar-gb-label {
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 210, 80, 0.65);
+    white-space: nowrap;
+    padding: 0 6px;
+    user-select: none;
+}
+
+.navbar-gb-link {
+    color: rgba(255, 210, 80, 0.88) !important;
+}
+
+.navbar-gb-link:hover,
+.navbar-gb-link.aktiv {
+    background-color: rgba(255, 210, 80, 0.15) !important;
+    color: #FFD84D !important;
+}
+
+/* Kolosseum-Widget: heller Text auf dunkler Navbar */
+#kolo-widget .kolo-user-chip {
+    color: #FFE66D !important;
+    background: rgba(255, 230, 109, 0.12) !important;
+    border-color: rgba(255, 230, 109, 0.38) !important;
+}
+
+#kolo-widget .kolo-user-chip:hover {
+    background: rgba(255, 230, 109, 0.22) !important;
+}
+
+#kolo-widget .kolo-level {
+    color: rgba(255, 230, 109, 0.6) !important;
+}
+
 /* Hamburger-Button – nur auf mobilen Geräten sichtbar */
 .hamburger {
     display: none;
@@ -1394,6 +1441,25 @@ footer {
     .navbar-dropdown-menu a:hover {
         background-color: rgba(255, 255, 255, 0.12);
         color: var(--farbe-weiss);
+    }
+
+    /* Geschützter-Bereich Trenner: auf Mobile horizontal */
+    .navbar-gb-trenner {
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.18);
+        height: auto;
+        margin: 6px 0 2px;
+        padding: 6px 14px 2px;
+        align-items: flex-start;
+    }
+
+    .navbar-gb-label {
+        font-size: 0.68rem;
+        padding: 0;
+    }
+
+    .navbar-gb-link {
+        padding: 12px 14px;
     }
 
     /* --- Hero --- */
