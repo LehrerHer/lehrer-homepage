@@ -76,18 +76,79 @@ Visit `http://localhost:8000` to view the site.
 
 ## Globale Layout-Komponenten (verbindlich auf JEDER Seite)
 
-### Header
+### Header / Navbar
 
-Der Header ist eine wiederverwendbare Komponente und erscheint **auf jeder einzelnen Seite** – sowohl im öffentlichen als auch im geschlossenen Bereich (Lernkolosseum, Admin). Er enthält immer exakt diese Elemente in dieser Reihenfolge:
+Die Navbar erscheint **auf jeder einzelnen Seite** – sowohl auf der Hauptdomain als auch im Kolosseum (Subdomain). **Keine Seite darf einen abweichenden Header haben.**
 
-| Element | Ziel | Sichtbarkeit |
+#### Navbar-Elemente (von links nach rechts)
+
+| Element | Ziel | CSS-Klasse |
 |---|---|---|
-| **Jan Herrmann** | `/index.html` (Startseite) | immer |
-| **Was ist neu?** | `index.html#was-ist-neu` | immer |
-| **Kontakt** | `index.html#kontakt` | immer |
-| **Geschützter Bereich** ▾ | Dropdown mit: Arena, Schüler\*innenblog, Materialien | immer (mit Login-Redirect falls nicht eingeloggt) |
+| **lehrer-herrmann.de** | `index.html` (Startseite) | `.navbar-logo` |
+| **Was ist neu?** | `index.html#was-ist-neu` | `.navbar-links a` |
+| **Kontakt** | `https://lehrer-herrmann.de/kontakt.html` | `.navbar-links a` |
+| *(Trenner „Geschützter Bereich")* | — | `.navbar-gb-trenner` + `.navbar-gb-label` |
+| **⚔️ Arena** | `https://kolosseum.lehrer-herrmann.de/profil.html` | `.navbar-gb-link` |
+| **✍️ Blog** | `blog.html` | `.navbar-gb-link` |
+| **📚 Fächer** | `faecher.html` | `.navbar-gb-link` |
+| *(Login-Widget)* | — | `#kolosseum-widget` |
 
-Implementierung: Der Header wird als eigenständiges HTML-Partial eingebunden (z. B. per `fetch` + `innerHTML` in `js/main.js` oder als kopiertes Snippet). **Keine Seite darf einen abweichenden Header haben.**
+#### Verbindliches HTML-Snippet (Hauptdomain-Seiten)
+
+```html
+<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+
+        <a href="index.html" class="navbar-logo">lehrer-herrmann.de</a>
+
+        <button
+            class="hamburger"
+            id="hamburger"
+            aria-label="Menü öffnen"
+            aria-expanded="false"
+            aria-controls="navbar-links"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <ul class="navbar-links" id="navbar-links">
+            <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
+            <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+            <li class="navbar-gb-trenner" aria-hidden="true">
+                <span class="navbar-gb-label">Geschützter Bereich</span>
+            </li>
+            <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+            <li><a href="blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+            <li><a href="faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+        </ul>
+
+        <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none">
+            <!-- Wird per js/kolosseum-login-widget.js befüllt -->
+        </div>
+
+    </div>
+</nav>
+```
+
+Für **Unterverzeichnis-Seiten** (`materialien/`): relative Links mit `../` Prefix oder absolute Pfade (`/index.html`, `/blog.html`, `/faecher.html`).
+
+Für **Kolosseum-Seiten** (`kolosseum.lehrer-herrmann.de`): alle Links als vollständige absolute URLs (`https://lehrer-herrmann.de/...`), Arena-Link als Relativ-Pfad (`/profil.html`).
+
+#### CSS-Klassen der Navbar
+
+| Klasse | Beschreibung |
+|---|---|
+| `.navbar-gb-trenner` | Vertikaler Trennstrich (auf Mobile: horizontale Linie) |
+| `.navbar-gb-label` | Kleine Beschriftung „GESCHÜTZTER BEREICH" (amber/gold) |
+| `.navbar-gb-link` | Amber/goldene Linkfarbe für Arena, Blog, Fächer |
+| `#kolo-widget .kolo-user-chip` | CSS-Override: gelber Text auf dunkler Navbar (Widget inject eigene Styles) |
+
+#### Erforderliche Scripts pro Seite
+
+- Alle Seiten: `js/main.js` (Hamburger-Toggle, Footer-Jahr)
+- Seiten mit Login-Widget: `js/kolosseum-login-widget.js`
 
 ### Footer
 
@@ -104,25 +165,25 @@ Das Copyright-Jahr wird dynamisch via `id="footer-jahr"` gesetzt (bereits implem
 
 ```
 Startseite (index.html)
-├── #startseite      → Hero: Vorstellung „Wer bin ich?"
+├── Aufbau-Banner    → (.aufbau-banner) Hinweis zwischen Navbar und Bereiche-Kacheln
+├── #startseite      → Bereiche-Übersicht: 6 Kacheln (Fächer, Arena, Materialien,
+│                      Blog, Leseabenteuer, Jan Herrmann – Wer bin ich?)
 ├── #was-ist-neu     → Aktuelle Funktionen, Quiz-Leistungen, neue Materialien
-├── #bereiche-uebersicht → Links + kurze Erklärung zu allen Bereichen
-│                         (immer öffentlich; geschlossene Bereiche mit 🔒-Hinweis)
 ├── Login-Gate       → sichtbar wenn NICHT eingeloggt
 ├── Lernkolosseum-Teaser → sichtbar wenn eingeloggt
-├── Digitale Materialien → sichtbar wenn eingeloggt
+├── Digitale Materialien → sichtbar wenn eingeloggt (mit Jahrgang-Filterleiste)
 ├── Blog-Teaser      → sichtbar wenn eingeloggt
 ├── #kontakt         → jan.herrmann AT obsspelle.de (E-Mail verschleiert)
 └── Footer           → © Impressum · Datenschutz + versteckter Admin-Link
 
 ÖFFENTLICH
-└── Fächervorstellung
+├── faecher.html             → Fächer-Landingpage (alle Fächer, Link zum Materialportal)
+└── Fächervorstellung (je ein eigener Bereich pro Hauptfach)
     ├── fach-deutsch.html    → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
     ├── fach-geschichte.html    → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
     ├── fach-wipo.html              (Wirtschaft/Politik)     → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
     ├── fach-informatik.html     → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
     ├── fach-werte-normen.html     → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
-    ├── Gestaltendes Werken    → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
     ├── fach-andere.html            (Mathe, Englisch, Sport, Bio, Chemie, Physik, Musik,
     │                                Erdkunde, Gestaltendes Werken) → Erklärung der Fächer + Links zur Seite Materialien des jeweiligen Faches
     └── fach-ag-projekte.html    → Erklärung der Projekte und Arbeitsgemeinschaften + Link zur Seite Materialien des entsprechenden Faches
@@ -202,8 +263,18 @@ XP werden nur bei **Verbesserungen** gutgeschrieben (Differenz zum bisherigen Be
 ## Key Files and Their Roles
 
 ### `index.html`
-- Sections: sticky navbar, hero (`#startseite`), was-ist-neu (`#was-ist-neu`), bereiche-übersicht (`#bereiche-uebersicht`), login-gate, lernkolosseum, digitalematerialien, blog-teaser, kontakt (`#kontakt`), footer
+- **Sektionsreihenfolge:** Navbar → Aufbau-Banner (`.aufbau-banner`) → Bereiche-Übersicht (`#startseite`, `.bereiche-uebersicht-section`) → `#was-ist-neu` → Gladiatoren-Teaser → Login-Gate → `#lernkolosseum` → `#digitale-materialien` → Blog-Teaser → `#kontakt` → Footer
+- Bereiche-Grid: 6 Kacheln (Fächervorstellung, Arena, Materialien, Blog, Leseabenteuer, Jan Herrmann)
+- Digitalematerialien-Sektion: Jahrgang-Filterleiste (`.dm-filter-leiste`) über dem Grid; Karten tragen `data-jahrgang="5-6|7-8|9-10"` Attribute
+- `id="startseite"` sitzt jetzt auf der `<section class="bereiche-uebersicht-section">` (kein Hero mehr)
 - Copyright year dynamisch via `id="footer-jahr"`
+- Scripts: `main.js`, `dynamic-content.js`, `homepage-gate.js`, `kolosseum-login-widget.js`
+
+### `faecher.html`
+- Landingpage für alle Unterrichtsfächer (Navbar-Link „📚 Fächer")
+- Drei Gruppen: Hauptfächer (Deutsch, Geschichte, WiPo, Informatik, W&N), Weitere Fächer (Mathe, Englisch, Sport, Bio, Chemie, Physik, Musik, Erdkunde, Gestaltendes Werken), AGs & Projekte
+- Jede Fachkarte verlinkt auf die entsprechende `fach-*.html`-Seite (Hauptfächer) oder `fach-andere.html` (weitere Fächer)
+- CTA-Box am Ende mit Link zum Materialportal (`portal.html`)
 
 ### `abgabe.html`
 - Student assignment upload form, Formspree-Integration
@@ -216,18 +287,32 @@ Vier eigenständige IIFE-Module:
 
 | Modul | Zweck |
 |-------|-------|
-| Hamburger-Menü | Mobile-Nav-Toggle mit ARIA |
+| Hamburger-Menü | Mobile-Nav-Toggle mit ARIA (`id="hamburger"` ↔ `id="navbar-links"`) |
 | Scroll-Spy-Nav | Aktiven Nav-Link beim Scrollen hervorheben |
-| Footer-Jahr | Aktuelles Jahr in Copyright setzen |
-| Abgabe-Formular | Validierung + Fetch-Submit |
+| Footer-Jahr | Aktuelles Jahr in `id="footer-jahr"` setzen |
+| Abgabe-Formular | Validierung + Fetch-Submit (nur auf `abgabe.html`) |
+
+### `js/kolosseum-login-widget.js`
+- Zeigt Login-Status in `#kolosseum-widget` (wird von `id="kolosseum-widget"` zu `id="kolo-widget"` umbenannt)
+- Eingeloggt → `.kolo-user-chip` mit Avatar-Emoji + Gladiatorenname (Link → Profil)
+- Ausgeloggt → `.kolo-login-btn` „🏛️ Einloggen"
+- Injiziert eigene `<style>` ins `<head>` — wird von `#kolo-widget .kolo-user-chip { color: #FFE66D !important }` in `style.css` überschrieben (Lesbarkeit auf dunkler Navbar)
 
 ### `css/style.css`
 CSS Custom Properties (`:root`):
-- `--primary-color: #1e3a5f` (Dunkelblau)
-- `--accent-color: #4a9eda` (Hellblau)
-- `--transition`, `--border-radius`, `--shadow`
+- `--farbe-primaer: #1e3a5f` (Dunkelblau)
+- `--farbe-primaer-hell: #2d6a9f` (Mittleres Blau)
+- `--farbe-akzent: #4a9eda` (Hellblau)
+- `--farbe-hintergrund: #f4f6f9` (Seitenhintergrund)
+- `--farbe-weiss`, `--farbe-text`, `--farbe-text-hell`, `--farbe-rahmen`, `--farbe-erfolg`
+- `--schatten`, `--radius`, `--transition`
 
 Responsive Breakpoints: `768px` (Tablet), `480px` (Mobil). Layout: CSS Grid + Flexbox.
+
+Wichtige Navbar-spezifische CSS-Klassen (ab 2026-05):
+- `.navbar-gb-trenner` / `.navbar-gb-label` — Trenner + Beschriftung „Geschützter Bereich"
+- `.navbar-gb-link` — amber/goldene Links (Arena, Blog, Fächer)
+- `#kolo-widget .kolo-user-chip` — Farb-Override für eingeloggten Gladiatorennamen
 
 ---
 
@@ -350,6 +435,8 @@ Generierte Dateien → `materialien/`. Verlinkung von `index.html` im Abschnitt 
 ### Ausgabeformat
 
 Jede Datei: vollständige standalone HTML-Datei mit eingebettetem CSS und JS, kein externes Stylesheet, responsiv (funktioniert auf Schüler-Smartphones).
+
+**Ausnahme:** Worksheets, die auf `/css/style.css` referenzieren (ältere Dateien in `materialien/`), bekommen auch die Standard-Navbar (mit `/index.html`-Pfaden) und `main.js` + `kolosseum-login-widget.js` als Scripts.
 
 ### Designsystem für Arbeitsblätter
 
