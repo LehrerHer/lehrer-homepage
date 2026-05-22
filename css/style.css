@@ -2473,7 +2473,8 @@ footer {
    BEREICHE-ÜBERSICHT (Homepage – immer öffentlich sichtbar)
    ================================================================ */
 
-#bereiche-uebersicht {
+#bereiche-uebersicht,
+.bereiche-uebersicht-section {
     background: var(--farbe-hintergrund);
     padding: 4rem 0;
 }
