@@ -135,14 +135,20 @@
                 <span></span>
             </button>
 
-            <!-- Navigationslinks – Anker-Links zu den Sektionen der Seite -->
+            <!-- Navigationslinks -->
             <ul class="navbar-links" id="navbar-links">
-                <li><a href="#was-ist-neu">Was ist neu?</a></li>
-                <li><a href="#bereiche-uebersicht">Fächer</a></li>
-                <li><a href="portal.html">Materialien &amp; Quizze</a></li>
-                <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html">🏛️ Arena</a></li>
-                <li><a href="blog.html">Blog</a></li>
-                <li><a href="kontakt.html">Kontakt</a></li>
+                <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
+                <li><a href="index.html#kontakt">Kontakt</a></li>
+                <li class="navbar-dropdown">
+                    <button class="navbar-dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        Geschützter Bereich ▾
+                    </button>
+                    <ul class="navbar-dropdown-menu" role="menu">
+                        <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" role="menuitem">🏛️ Arena</a></li>
+                        <li><a href="blog.html" role="menuitem">✍️ Schüler*innenblog</a></li>
+                        <li><a href="portal.html" role="menuitem">📋 Materialien</a></li>
+                    </ul>
+                </li>
             </ul>
 
             <!-- Kolosseum-Login-Widget -->
@@ -169,6 +175,18 @@
             <p class="hero-tagline">
                 Materialien, Quizze und Abenteuer – alles für deinen Unterricht.
             </p>
+            
+            <h1>Jan Herrmann</h1>
+            <h1>Lehrer für Deutsch &amp; Geschichte</h1>
+            
+            <p class="hero-schule">und weitere Fächer</p>
+
+            <div class="hero-intro-block">
+                <p>Willkommen auf meiner Seite! Hier findest du Materialien und Quizze für den Unterricht – und Eltern finden alle wichtigen Informationen rund um meine Fächer.</p>
+                <p>Im <strong>Kolosseum</strong> kannst du dein Wissen im Wettkampf testen und Punkte sammeln – schaffst du es in die Rangliste?</p>
+                <p>Das <strong>Leseabenteuer</strong> nimmt dich mit auf eine interaktive Reise durch Geschichten – allein oder gemeinsam mit anderen. Wie in einem Rollenspiel triffst du Entscheidungen, die den Verlauf der Geschichte beeinflussen.</p>
+                <p>Im <strong>Blog</strong> "veröffentlichen" die Schülerinnen und Schüler Arbeitsergebnisse oder teilen diese mit anderen.</p>
+            </div>
 
             <div class="hero-cta-gruppe">
                 <a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="hero-cta-btn hero-cta-primaer">⚔️ Ins Kolosseum</a>
@@ -533,6 +551,18 @@
                     <div class="dm-pfeil">→ Zum Arbeitsblatt</div>
                 </a>
 
+                <!-- Mathe Klasse 4 – Übungsaufgaben -->
+                <a href="materialien/mathe_uebungsaufgaben_klasse4_2026-05.html" class="dm-karte" data-jahrgang="5-6">
+                    <div class="dm-karte-badges">
+                        <span class="dm-typ dm-typ-ab">Arbeitsblatt</span>
+                        <span class="dm-fach">📐 Mathematik</span>
+                    </div>
+                    <div class="dm-icon">🔢</div>
+                    <div class="dm-titel">Mathe – Übungsaufgaben zur Arbeit</div>
+                    <div class="dm-beschr">Addition, Division, Einmaleins, Wahrscheinlichkeit, Umfang &amp; Fläche – 11 interaktive Aufgaben mit sofortigem Feedback. Klasse 4.</div>
+                    <div class="dm-pfeil">→ Zum Arbeitsblatt</div>
+                </a>
+
                 <!-- Stilmittel-Quiz -->
                 <a href="stilmittel-quiz.html" class="dm-karte" data-jahrgang="7-9">
                     <div class="dm-karte-badges">
@@ -662,8 +692,8 @@
                 <a href="impressum.html">Impressum</a>
                 <a href="datenschutz.html">Datenschutz</a>
             </nav>
+            <a href="/kolosseum/public/admin/" id="admin-footer-link" class="admin-footer-link" aria-hidden="true" tabindex="-1"></a>
         </div>
-        <a href="https://kolosseum.lehrer-herrmann.de/admin/" target="_blank" rel="noopener noreferrer" class="admin-footer-link" aria-label="Lerngladiatoren Admin">⚙</a>
     </footer>
 
 

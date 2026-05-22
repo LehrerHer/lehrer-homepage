@@ -6,7 +6,7 @@ This file provides context for AI assistants (e.g., Claude Code) working on this
 
 ## Project Overview
 
-**lehrer-homepage** is a static teacher homepage for Jan Herrmann at Oberschule Spelle (Lower Saxony, Germany). It consists of two HTML pages, one CSS file, and one JavaScript file — no build tools, frameworks, or package managers are used.
+**lehrer-homepage** is a static teacher homepage for Jan Herrmann at Oberschule Spelle (Lower Saxony, Germany). It consists of HTML pages, one CSS file, and JavaScript files — no build tools, frameworks, or package managers are used.
 
 - **Language**: German (UI content and code comments are in German)
 - **Tech stack**: HTML5, CSS3, Vanilla JavaScript (ES6+)
@@ -23,11 +23,23 @@ lehrer-homepage/
 ├── css/
 │   └── style.css        # All site styles
 ├── js/
-│   └── main.js          # All site JavaScript
+│   ├── main.js          # All site JavaScript
+│   └── homepage-gate.js # Auth-Gate: blendet geschützte Sektionen ein/aus
 ├── materialien/         # Generated interactive worksheets (HTML)
 ├── Material manuell von mir/  # Source files uploaded manually by Jan Herrmann (PPTX, images, etc.)
 ├── upload/              # Drop folder for raw worksheet files
 │   └── _erledigt/       # Processed originals (moved here after conversion)
+├── kolosseum/           # Lernkolosseum (geschützter Bereich, Node.js-Backend)
+│   ├── public/
+│   │   ├── profil.html
+│   │   ├── rangliste.html
+│   │   └── admin/
+│   │       ├── index.html
+│   │       ├── link-erstellen.html
+│   │       ├── material-hochladen.html
+│   │       └── xp-vergabe.html
+│   └── routes/
+│       └── external.js  # XP-Berechnung (computeNotenpunkte)
 └── tools/
     ├── ab_generator.py  # Watch-loop: upload/ → Claude API → materialien/ → git push
     └── requirements.txt # Python dependencies (anthropic)
@@ -62,70 +74,107 @@ Visit `http://localhost:8000` to view the site.
 
 ---
 
-## Seitenstruktur (vom Betreiber entworfen)
+## Globale Layout-Komponenten (verbindlich auf JEDER Seite)
 
-Die Homepage ist in zwei Hauptbereiche gegliedert:
+### Header
+
+Der Header ist eine wiederverwendbare Komponente und erscheint **auf jeder einzelnen Seite** – sowohl im öffentlichen als auch im geschlossenen Bereich (Lernkolosseum, Admin). Er enthält immer exakt diese Elemente in dieser Reihenfolge:
+
+| Element | Ziel | Sichtbarkeit |
+|---|---|---|
+| **Jan Herrmann** | `/index.html` (Startseite) | immer |
+| **Was ist neu?** | `index.html#was-ist-neu` | immer |
+| **Kontakt** | `index.html#kontakt` | immer |
+| **Geschützter Bereich** ▾ | Dropdown mit: Arena, Schüler\*innenblog, Materialien | immer (mit Login-Redirect falls nicht eingeloggt) |
+
+Implementierung: Der Header wird als eigenständiges HTML-Partial eingebunden (z. B. per `fetch` + `innerHTML` in `js/main.js` oder als kopiertes Snippet). **Keine Seite darf einen abweichenden Header haben.**
+
+### Footer
+
+Der Footer erscheint ebenfalls **auf jeder Seite**. Er enthält:
+
+- **Links:** `© [aktuelles Jahr] Jan Herrmann` | `Impressum` | `Datenschutz`
+- **Rechts:** `Eingeloggt als [Avatarname], Rang [XP]` — und ((nahezu unsichtbar) dieser Text ist ein funktionierender Link zu `/kolosseum/public/admin/`, mit minimalem Kontrast (z. B. `color: rgba(0,0,0,0.15)` auf weißem Grund). Wenn kein Nutzer eingeloggt ist: unsichtbar / leer.
+
+Das Copyright-Jahr wird dynamisch via `id="footer-jahr"` gesetzt (bereits implementiert in `js/main.js`).
+
+---
+
+## Seitenstruktur (vollständig)
 
 ```
 Startseite (index.html)
-├── Vorstellung „Wer bin ich?" (Hero)
-├── Was ist neu? (Funktionen, Quiz-Leistungen, Materialien)
-├── Bereiche-Übersicht (Links + kurze Erklärung zu allen Bereichen)
-├── Kontakt → kontakt.html (E-Mail verschleiert, kein @ im HTML)
-└── Footer: © Impressum · Datenschutz
-│
-├── ÖFFENTLICH
-│   └── Fächervorstellung
-│       ├── fach-deutsch.html
-│       ├── fach-geschichte.html
-│       ├── fach-wipo.html          (Wirtschaft/Politik)
-│       ├── fach-informatik.html
-│       ├── fach-werte-normen.html
-│       ├── fach-andere.html        (Mathe, Englisch, Sport, Bio, Chemie, Physik, Musik, Erdkunde, Gestaltendes Werken)
-│       └── fach-ag-projekte.html
-│
-└── GESCHLOSSEN (Login nötig – Kolosseum-Account)
-    ├── Materialien & Quizze (portal.html)
-    │   ├── Deutsch        → Arbeitsblätter, Materialien (Hilfen/Links), Quizze
-    │   ├── Geschichte     → Arbeitsblätter, Materialien, Quizze
-    │   ├── andere Fächer
-    │   │   ├── Wirtschaft/Politik
-    │   │   ├── Werte und Normen
-    │   │   ├── Informatik
-    │   │   └── Gestaltendes Werken
-    │   └── AGs & Projekte
-    ├── Schüler*innenblog (blog.html)
-    │   └── blog-einreichen.html
-    └── Lernkolosseum
-        ├── Übersicht/Landing (kolosseum.html) – geschützt via auth-guard.js
-        │   └── Einstiegsseite mit Quizliste und XP-Erklärung (nur für Eingeloggte)
-        ├── Profil (kolosseum/public/profil.html) – primäres Ziel aller Arena-Links
-        │   ├── Rangliste (kolosseum/public/rangliste.html)
-        │   └── Arena / Quiz-Spiel
-        └── Admin-Ebene (kolosseum/public/admin/)
-            ├── Einladungslink erstellen
-            ├── Material hochladen
-            └── Manuelle XP-Vergabe
+├── #startseite      → Hero: Vorstellung „Wer bin ich?"
+├── #was-ist-neu     → Aktuelle Funktionen, Quiz-Leistungen, neue Materialien
+├── #bereiche-uebersicht → Links + kurze Erklärung zu allen Bereichen
+│                         (immer öffentlich; geschlossene Bereiche mit 🔒-Hinweis)
+├── Login-Gate       → sichtbar wenn NICHT eingeloggt
+├── Lernkolosseum-Teaser → sichtbar wenn eingeloggt
+├── Digitale Materialien → sichtbar wenn eingeloggt
+├── Blog-Teaser      → sichtbar wenn eingeloggt
+├── #kontakt         → jan.herrmann AT obsspelle.de (E-Mail verschleiert)
+└── Footer           → © Impressum · Datenschutz + versteckter Admin-Link
+
+ÖFFENTLICH
+└── Fächervorstellung
+    ├── fach-deutsch.html    → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
+    ├── fach-geschichte.html    → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
+    ├── fach-wipo.html              (Wirtschaft/Politik)     → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
+    ├── fach-informatik.html     → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
+    ├── fach-werte-normen.html     → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
+    ├── Gestaltendes Werken    → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
+    ├── fach-andere.html            (Mathe, Englisch, Sport, Bio, Chemie, Physik, Musik,
+    │                                Erdkunde, Gestaltendes Werken) → Erklärung der Fächer + Links zur Seite Materialien des jeweiligen Faches
+    └── fach-ag-projekte.html    → Erklärung der Projekte und Arbeitsgemeinschaften + Link zur Seite Materialien des entsprechenden Faches
+
+GESCHLOSSEN (Login via Kolosseum-Account erforderlich)
+├── Materialien (portal.html)
+│   ├── Deutsch        → Arbeitsblätter · Materialien · Quizze
+│   ├── Geschichte     → Arbeitsblätter · Materialien · Quizze
+│   ├── Wirtschaft/Politik → Arbeitsblätter · Materialien · Quizze
+│   ├── Werte und Normen → Arbeitsblätter · Materialien · Quizze
+│   ├── Informatik → Arbeitsblätter · Materialien · Quizze
+│   ├── Gestaltendes Werken → Arbeitsblätter · Materialien · Quizze
+│   ├── Mathematik     → Arbeitsblätter · Materialien · Quizze
+│   ├── Englisch    → Arbeitsblätter · Materialien · Quizze
+│   ├── Sport    → Arbeitsblätter · Materialien · Quizze
+│   ├── Biologie    → Arbeitsblätter · Materialien · Quizze
+│   ├── Chemie    → Arbeitsblätter · Materialien · Quizze
+│   ├── Physik    → Arbeitsblätter · Materialien · Quizze
+│   ├── Musik    → Arbeitsblätter · Materialien · Quizze
+│   ├── Erdkunde     → Arbeitsblätter · Materialien · Quizze   
+│   └── AGs & Projekte → Arbeitsblätter · Materialien · Quizze
+├── Schüler*innenblog (blog.html)
+│   └── blog-einreichen.html
+└── Lernkolosseum
+    ├── Übersicht/Landing (kolosseum.html) → auth-guard.js
+    ├── Profil (kolosseum/public/profil.html) ← primäres Ziel aller „Zur Arena"-Links
+    ├── Rangliste (kolosseum/public/rangliste.html)
+    ├── Arena / Quiz-Spiel
+    └── Admin-Ebene (kolosseum/public/admin/) ← Zugang nur via verstecktem Footer-Link
+        ├── Einladungslink erstellen
+        ├── Material hochladen
+        └── Manuelle XP-Vergabe
 ```
 
 ### Zugangslogik (`js/homepage-gate.js`)
+
 - Prüft Kolosseum-Session via `GET /api/auth/me`
-- **Eingeloggt**: Lernkolosseum-Teaser, Materialien-Sektion und Blog-Teaser werden eingeblendet; Login-Gate ausgeblendet
-- **Nicht eingeloggt**: Login-Gate sichtbar; geschützte Sektionen ausgeblendet
-- Die Bereiche-Übersicht (`#bereiche-uebersicht`) ist **immer öffentlich** sichtbar, zeigt jedoch alle Bereiche inkl. Lernkolosseum als **„🔒 Login nötig"**
+- **Eingeloggt:** Lernkolosseum-Teaser, Materialien-Sektion und Blog-Teaser werden eingeblendet; Login-Gate ausgeblendet
+- **Nicht eingeloggt:** Login-Gate sichtbar; geschützte Sektionen ausgeblendet
+- `#bereiche-uebersicht` ist **immer öffentlich** sichtbar, zeigt geschlossene Bereiche mit **„🔒 Login nötig"**
 
 ### Link-Ziel für Lernkolosseum
-- Alle „Zur Arena"-Links (Bereiche-Übersicht, Lernkolosseum-Teaser, Navbar) zeigen auf **`kolosseum/public/profil.html`**
-- `kolosseum.html` ist eine sekundäre Übersichtsseite (geschützt via `auth-guard.js`), die Quizze und XP-Info bündelt
-- Öffentlich vorgelagerte Inhalte (z. B. Demo-Quizze ohne Login) werden später bewusst ergänzt – noch nicht vorhanden
+
+- Alle „Zur Arena"-Links (Bereiche-Übersicht, Lernkolosseum-Teaser, Navbar) → **`kolosseum/public/profil.html`**
+- `kolosseum.html` ist sekundäre Übersichtsseite (via `auth-guard.js` geschützt)
+- Öffentlich vorgelagerte Demo-Inhalte ohne Login: noch nicht vorhanden, werden später bewusst ergänzt
 
 ### XP-Berechnung: Externe Quizze (Notenpunkte-System)
 
-Externe Quizze (Stilmittel, Literaturwissenschaft, Rechtschreibung) vergeben XP nach dem Notenpunkte-System der gymnasialen Oberstufe. Die Formel lautet:
+XP werden nach dem Notenpunkte-System der gymnasialen Oberstufe vergeben:
 
 **XP = Notenpunkte × Anzahl gespielter Fragen**
-
-Die Punktetabelle (Rohpunkte = prozentualer Anteil richtiger Antworten):
 
 | Notenpunkte | Rohpunkte (%) |
 |:-----------:|:-------------:|
@@ -146,104 +195,103 @@ Die Punktetabelle (Rohpunkte = prozentualer Anteil richtiger Antworten):
 | 1           | ≥ 20 %        |
 | 0           | < 20 %        |
 
-XP werden bei **Verbesserungen** gutgeschrieben: Es zählt immer die Differenz zwischen dem neuen Ergebnis und dem bisherigen Bestergebnis. Wer beim ersten Versuch 100 XP erreicht und sich beim zweiten Mal auf 150 XP verbessert, bekommt 50 XP gutgeschrieben. Die Berechnung findet server-seitig in `kolosseum/routes/external.js` (`computeNotenpunkte`) und client-seitig (Vorschau für Gäste) in `js/kolosseum-prompt.js` statt.
+XP werden nur bei **Verbesserungen** gutgeschrieben (Differenz zum bisherigen Bestergebnis). Berechnung: serverseitig in `kolosseum/routes/external.js` (`computeNotenpunkte`), clientseitig (Gast-Vorschau) in `js/kolosseum-prompt.js`.
 
 ---
 
 ## Key Files and Their Roles
 
 ### `index.html`
-- Main teacher profile page
 - Sections: sticky navbar, hero (`#startseite`), was-ist-neu (`#was-ist-neu`), bereiche-übersicht (`#bereiche-uebersicht`), login-gate, lernkolosseum, digitalematerialien, blog-teaser, kontakt (`#kontakt`), footer
-- Copyright year is set dynamically via `id="footer-jahr"`
+- Copyright year dynamisch via `id="footer-jahr"`
 
 ### `abgabe.html`
-- Student assignment upload form
-- Integrates with **Formspree**: the form action URL contains `YOUR_FORM_ID` as a placeholder — this must be replaced with a real Formspree form ID before the form works
-- Tagged `noindex, nofollow` — intentionally excluded from search engines
-- Accepts: PDF, JPG, PNG, DOCX, ZIP (max 10 MB)
+- Student assignment upload form, Formspree-Integration
+- `YOUR_FORM_ID` in Zeile ~68 durch echte Formspree-ID ersetzen
+- `noindex, nofollow` — bewusst aus Suchmaschinen ausgeschlossen
+- Akzeptierte Dateitypen: PDF, JPG, PNG, DOCX, ZIP (max. 10 MB)
 
 ### `js/main.js`
-Four self-contained IIFE modules, each independent:
+Vier eigenständige IIFE-Module:
 
-| Module | Lines | Purpose |
-|--------|-------|---------|
-| Hamburger menu | 12–40 | Mobile nav toggle with ARIA support |
-| Scroll-spy nav | 48–75 | Highlights active nav link on scroll |
-| Footer year | 82–87 | Sets current year in copyright |
-| Submission form | 96–221 | Validates and submits the assignment form via fetch |
+| Modul | Zweck |
+|-------|-------|
+| Hamburger-Menü | Mobile-Nav-Toggle mit ARIA |
+| Scroll-Spy-Nav | Aktiven Nav-Link beim Scrollen hervorheben |
+| Footer-Jahr | Aktuelles Jahr in Copyright setzen |
+| Abgabe-Formular | Validierung + Fetch-Submit |
 
 ### `css/style.css`
-- Uses **CSS custom properties** defined at `:root`:
-  - `--primary-color: #1e3a5f` (dark blue)
-  - `--accent-color: #4a9eda` (light blue)
-  - `--transition`, `--border-radius`, `--shadow` etc.
-- Responsive breakpoints: `768px` (tablet) and `480px` (mobile)
-- Mobile-first layout using CSS Grid and Flexbox
+CSS Custom Properties (`:root`):
+- `--primary-color: #1e3a5f` (Dunkelblau)
+- `--accent-color: #4a9eda` (Hellblau)
+- `--transition`, `--border-radius`, `--shadow`
+
+Responsive Breakpoints: `768px` (Tablet), `480px` (Mobil). Layout: CSS Grid + Flexbox.
 
 ---
 
 ## Coding Conventions
 
 ### HTML
-- Language: `lang="de"`, all user-visible text is in German
-- Semantic elements: `<nav>`, `<main>`, `<section>`, `<header>`, `<footer>`
-- ARIA attributes on interactive elements (hamburger button, nav links)
-- Icons are Unicode emoji, not icon fonts or SVGs
-- IDs follow `kebab-case` and match JavaScript selectors
+- `lang="de"`, alle sichtbaren Texte auf Deutsch
+- Semantische Elemente: `<nav>`, `<main>`, `<section>`, `<header>`, `<footer>`
+- ARIA-Attribute auf interaktiven Elementen
+- Icons: Unicode-Emoji (keine Icon-Fonts, keine SVGs)
+- IDs: `kebab-case`, passend zu JavaScript-Selektoren
 
 ### CSS
-- **No preprocessors** — pure CSS only
-- CSS variables for all repeated values (colors, spacing, transitions)
-- Class names: `kebab-case`, semantic and descriptive
-- Section comments use `/* === SECTION NAME === */` style headers
-- Do not introduce utility classes or a CSS framework
+- **Kein Präprozessor** — reines CSS
+- CSS-Variablen für alle Wiederholungswerte
+- Klassen: `kebab-case`, semantisch
+- Section-Kommentare: `/* === ABSCHNITTSNAME === */`
+- Keine Utility-Classes, kein CSS-Framework
 
 ### JavaScript
-- **No frameworks, no npm packages** — vanilla ES6+ only
-- Each feature is wrapped in an IIFE `(function() { ... })()` for isolation
-- No global variables
-- Variable/comment naming: German for domain concepts, English for code constructs
-- Async form submission uses `fetch` with `async/await`
-- Error handling uses `try/catch` with user-facing German error messages
-- All DOM queries use `document.querySelector` / `document.querySelectorAll`
+- **Kein Framework, kein npm** — Vanilla ES6+
+- Jedes Feature: IIFE `(function() { ... })()`
+- Keine globalen Variablen
+- Benennung: Deutsch für fachliche Konzepte, Englisch für Code-Konstrukte
+- Async: `fetch` mit `async/await`
+- Fehlerbehandlung: `try/catch` mit deutschen Fehlermeldungen
+- DOM-Zugriff: `querySelector` / `querySelectorAll`
 
 ---
 
 ## Development Workflow
 
-### Making Changes
-1. Edit files directly — no build step required
-2. Refresh the browser to test
-3. Test on multiple viewport widths (desktop, tablet `768px`, mobile `480px`)
+### Änderungen vornehmen
+1. Dateien direkt bearbeiten — kein Build-Schritt
+2. Browser-Refresh zum Testen
+3. Auf mehreren Viewport-Breiten testen: Desktop, Tablet (`768px`), Mobil (`480px`)
 
-### No Tests or Linting
-- There is no test suite, no CI/CD, and no linter configuration
-- Validate HTML manually or with the W3C validator
-- Check JavaScript in browser DevTools console
+### Keine Tests oder Linting
+- Kein Test-Suite, kein CI/CD, kein Linter
+- HTML manuell oder mit W3C Validator prüfen
+- JavaScript im Browser-DevTools-Console prüfen
 
 ### Git — PFLICHTREGELN FÜR CLAUDE
 
 - **NIE direkt auf `main` committen oder pushen.** Kein einziger Commit darf direkt auf `main` landen.
-- **Immer auf dem zugewiesenen Feature-Branch arbeiten.** Der Branch wird vom Harness vorgegeben (`claude/<beschreibung>-<session-id>`). Existiert er noch nicht lokal: `git checkout -b claude/<beschreibung>-<id>`.
-- **Kein `git reset --hard main`**, kein Merge von `main` in den Feature-Branch ohne explizite Aufforderung des Nutzers.
+- **Immer auf dem zugewiesenen Feature-Branch arbeiten.** Branch-Schema: `claude/<beschreibung>-<session-id>`. Falls noch nicht lokal vorhanden: `git checkout -b claude/<beschreibung>-<id>`.
+- **Kein `git reset --hard main`**, kein Merge von `main` in den Feature-Branch ohne explizite Nutzeraufforderung.
 - **Kein Force-Push auf `main`** — unter keinen Umständen.
-- Nach Abschluss der Arbeit den Feature-Branch pushen (`git push -u origin <branch>`). Den Nutzer fragen, ob er mergen soll — nie selbst mergen, außer der Nutzer fordert das ausdrücklich auf.
+- Nach Abschluss: Feature-Branch pushen (`git push -u origin <branch>`), dann den Nutzer fragen, ob gemergt werden soll. **Nie selbst mergen**, außer auf ausdrückliche Aufforderung.
 - Commit-Befehl immer mit `-c user.email="jan@lehrer-herrmann.de" -c user.name="Jan Herrmann"`
 - Commit-Nachrichten auf Deutsch oder Englisch
 
-### Deploy – vollautomatisch via GitHub-Webhook
-Der Server (178.105.35.83) zieht automatisch, sobald ein Push auf `main` bei GitHub eingeht.
-**Kein manueller SSH-Befehl nötig.**
+### Deploy — vollautomatisch via GitHub-Webhook
 
-Einmalige Einrichtung (nur wenn der Webhook noch nicht aktiv ist):
+Der Server (`178.105.35.83`) zieht automatisch bei jedem Push auf `main`. **Kein manueller SSH-Befehl nötig.**
+
+Einmalige Einrichtung (nur wenn Webhook noch nicht aktiv):
 1. Auf dem Server in `/var/www/lehrer-homepage/kolosseum/.env` setzen:
    ```
    DEPLOY_SECRET=<zufälliges Secret>
    DEPLOY_DIR=/var/www/lehrer-homepage
    PM2_APP=kolosseum
    ```
-2. In den GitHub-Repository-Einstellungen unter *Webhooks* eintragen:
+2. In den GitHub-Repository-Einstellungen unter *Webhooks*:
    - Payload URL: `https://kolosseum.lehrer-herrmann.de/api/deploy`
    - Content type: `application/json`
    - Secret: dasselbe wie `DEPLOY_SECRET`
@@ -253,15 +301,13 @@ Einmalige Einrichtung (nur wenn der Webhook noch nicht aktiv ist):
 
 ## Formspree Setup
 
-The `abgabe.html` form requires a Formspree account:
-
-1. Register at [formspree.io](https://formspree.io)
-2. Create a new form and copy the form ID
-3. Replace `YOUR_FORM_ID` in `abgabe.html` (line ~68) with your actual ID:
+1. Account anlegen auf [formspree.io](https://formspree.io)
+2. Neues Formular erstellen, Form-ID kopieren
+3. In `abgabe.html` (Zeile ~68) ersetzen:
    ```html
-   <!-- Before -->
+   <!-- Vorher -->
    <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" ...>
-   <!-- After -->
+   <!-- Nachher -->
    <form action="https://formspree.io/f/abcd1234" method="POST" ...>
    ```
 
@@ -269,57 +315,43 @@ The `abgabe.html` form requires a Formspree account:
 
 ## Accessibility Requirements
 
-All changes must maintain:
-- Semantic HTML structure
-- ARIA labels on interactive elements
-- Visible focus states for keyboard navigation
-- Sufficient color contrast (WCAG AA minimum)
-- No information conveyed by color alone
+Alle Änderungen müssen sicherstellen:
+- Semantische HTML-Struktur
+- ARIA-Labels auf interaktiven Elementen
+- Sichtbare Fokus-Zustände für Tastaturnavigation
+- Ausreichender Farbkontrast (WCAG AA)
+- Keine Information ausschließlich durch Farbe vermittelt
+
+**Ausnahme (bewusst):** Der versteckte Admin-Link im Footer hat absichtlich minimalen Kontrast — das ist kein Accessibility-Fehler, sondern ein Feature.
 
 ---
 
 ## What NOT to Do
 
-- Do not introduce npm, a bundler (webpack/vite), or a CSS preprocessor
-- Do not add a JavaScript framework (React, Vue, Alpine, etc.)
-- Do not create additional files unless clearly necessary
-- Do not remove ARIA attributes or semantic HTML elements
-- Do not change text content from German to another language
-- Do not add global JavaScript variables (use IIFEs)
-- Do not hardcode colors — use the existing CSS variables
+- Kein npm, kein Bundler (webpack/vite), kein CSS-Präprozessor einführen
+- Kein JavaScript-Framework (React, Vue, Alpine etc.)
+- Keine zusätzlichen Dateien anlegen, wenn nicht klar notwendig
+- Keine ARIA-Attribute oder semantischen HTML-Elemente entfernen
+- Keinen Text von Deutsch in eine andere Sprache ändern
+- Keine globalen JavaScript-Variablen (IIFEs verwenden)
+- Keine Farben hardcoden — bestehende CSS-Variablen verwenden
+- Header oder Footer auf keiner Seite weglassen oder abweichend gestalten
 
 ---
 
 ## Interaktive Arbeitsblätter (Worksheet-Generator)
 
-Dieser Assistent unterstützt Jan Herrmann und sein Kollegium dabei, hochgeladene
-Arbeitsblätter (PDF, Bild oder Text) in interaktive, eigenständige HTML-Dateien
-umzuwandeln, die direkt auf der statischen Homepage eingebettet werden können.
+Dieser Assistent unterstützt Jan Herrmann und sein Kollegium dabei, hochgeladene Arbeitsblätter (PDF, Bild oder Text) in interaktive, eigenständige HTML-Dateien umzuwandeln.
 
 ### Ablageort
 
-Generierte Arbeitsblatt-Dateien gehören in den Unterordner `materialien/`:
-
-```
-lehrer-homepage/
-└── materialien/
-    ├── deutsch_einfuehrung_5r_2026-04.html
-    └── ...
-```
-
-Von `index.html` werden sie im Abschnitt `#materialien` verlinkt.
+Generierte Dateien → `materialien/`. Verlinkung von `index.html` im Abschnitt `#materialien`.
 
 ### Ausgabeformat
 
-Jede generierte Datei ist eine vollständige, standalone HTML-Datei mit:
-- Eingebettetem CSS (kein externes Stylesheet)
-- Eingebettetem JavaScript (keine externen Bibliotheken außer ggf. cdn.jsdelivr.net für spezifische Komponenten)
-- Responsivem Design (funktioniert auf Schüler-Smartphones)
-- Einheitlichem Designsystem (siehe unten)
+Jede Datei: vollständige standalone HTML-Datei mit eingebettetem CSS und JS, kein externes Stylesheet, responsiv (funktioniert auf Schüler-Smartphones).
 
 ### Designsystem für Arbeitsblätter
-
-Die Farben orientieren sich an der Homepage:
 
 | Rolle             | Wert      | Verwendung                        |
 |-------------------|-----------|-----------------------------------|
@@ -330,25 +362,20 @@ Die Farben orientieren sich an der Homepage:
 | Hintergrund       | `#f4f6f7` | Seiten-Hintergrund                |
 | Karten-Hintergrund| `#ffffff`  | Aufgaben-Karten                   |
 
-Weitere Vorgaben:
-- Schriftart: `system-ui, sans-serif`
-- `border-radius: 8px`, `box-shadow` auf Karten
-- Maximale Breite: `800px`, zentriert
+Weitere Vorgaben: `system-ui, sans-serif`, `border-radius: 8px`, `box-shadow` auf Karten, max. Breite `800px` zentriert.
 
 ### AB-Typen und ihre Umsetzung
 
 | Typ | Umsetzung |
 |-----|-----------|
 | **Lückentext** | Input-Felder inline im Text, Auswertung per Button, Feedback pro Lücke + Gesamtpunktzahl |
-| **Multiple Choice** | Radio-Buttons oder Checkboxen, klares Feedback nach Abgabe, kein Mehrfachversuch ohne Reset |
-| **Zuordnung** | Drag & Drop oder Dropdown-Menüs je nach Komplexität |
+| **Multiple Choice** | Radio/Checkboxen, klares Feedback nach Abgabe, kein Mehrfachversuch ohne Reset |
+| **Zuordnung** | Drag & Drop oder Dropdowns je nach Komplexität |
 | **Textanalyse / offen** | Textarea mit Zeichenzähler, Musterlösung aufklappbar (zunächst verborgen) |
-| **Schreibaufgabe** | Strukturierte Textfelder mit Hilfestellungen, optionale Bewertungsrubrik einblendbar |
+| **Schreibaufgabe** | Strukturierte Textfelder mit Hilfestellungen, optionale Bewertungsrubrik |
 | **Sonstiges** | Typ selbst erkennen, passendste interaktive Umsetzung wählen |
 
 ### Metadaten-Header
-
-Jede generierte HTML-Datei beginnt mit einem auskommentierten Block:
 
 ```html
 <!--

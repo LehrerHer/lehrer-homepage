@@ -203,6 +203,20 @@ router.post('/herausforderung/:id/annehmen', requireStudent, (req, res) => {
   res.json({ ok: true, kampfId: cId });
 });
 
+// POST /api/arena/herausforderung/:id/zurueckziehen – Herausforderung zurückziehen
+router.post('/herausforderung/:id/zurueckziehen', requireStudent, (req, res) => {
+  const meinId = req.session.studentId;
+  const cId    = Number(req.params.id);
+
+  const c = db.prepare(
+    "SELECT id FROM challenges WHERE id = ? AND challenger_id = ? AND status = 'pending'"
+  ).get(cId, meinId);
+  if (!c) return res.status(404).json({ error: 'Herausforderung nicht gefunden.' });
+
+  db.prepare("UPDATE challenges SET status = 'declined' WHERE id = ?").run(cId);
+  res.json({ ok: true });
+});
+
 // POST /api/arena/herausforderung/:id/ablehnen
 router.post('/herausforderung/:id/ablehnen', requireStudent, (req, res) => {
   const meinId = req.session.studentId;

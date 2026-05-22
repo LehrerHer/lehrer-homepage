@@ -165,9 +165,22 @@
         if (!meRes.ok) { window.location.href = '/login.html'; return; }
         const me = await meRes.json();
 
-        const res = await fetch('/api/students/rangliste');
-        if (!res.ok) return;
-        const students = await res.json();
+        const [ranglRes, challengeRes] = await Promise.all([
+          fetch('/api/students/rangliste'),
+          fetch('/api/arena/herausforderungen'),
+        ]);
+        if (!ranglRes.ok) return;
+        const students = await ranglRes.json();
+
+        // Pending-Status der eigenen Herausforderungen vorausladen
+        var pendingGegnerIds = new Set();
+        var limitReached = false;
+        if (challengeRes.ok) {
+          const cd = await challengeRes.json();
+          const pendingOut = cd.ausgehend.filter(c => c.status === 'pending');
+          pendingOut.forEach(c => pendingGegnerIds.add(c.an_id));
+          limitReached = pendingOut.length >= 3;
+        }
 
         const tbody = document.getElementById('rangliste-body');
         if (!students.length) {
@@ -188,9 +201,17 @@
             titelBadge = ` <span title="${escHtml(t.name)}" style="font-size:.95em">${t.emoji}</span>`;
           }
 
-          const challengeBtn = isMe
-            ? '<td></td>'
-            : `<td style="text-align:right"><button class="btn-challenge" data-id="${s.id}" data-nick="${escHtml(s.nick)}">⚔️ Herausfordern</button></td>`;
+          var challengeBtn;
+          if (isMe) {
+            challengeBtn = '<td></td>';
+          } else if (pendingGegnerIds.has(s.id)) {
+            challengeBtn = `<td style="text-align:right"><button class="btn-challenge gesendet" disabled>⏳ Ausstehend</button></td>`;
+          } else if (limitReached) {
+            challengeBtn = `<td style="text-align:right"><button class="btn-challenge" disabled title="Du hast bereits 3 offene Herausforderungen">🔒 Limit</button></td>`;
+          } else {
+            challengeBtn = `<td style="text-align:right"><button class="btn-challenge" data-id="${s.id}" data-nick="${escHtml(s.nick)}">⚔️ Herausfordern</button></td>`;
+          }
+
           return `
             <tr>
               <td>${rankEl}</td>
@@ -203,8 +224,8 @@
           `;
         }).join('');
 
-        // Challenge-Buttons verknüpfen
-        tbody.querySelectorAll('.btn-challenge').forEach(btn => {
+        // Challenge-Buttons verknüpfen (nur aktive)
+        tbody.querySelectorAll('.btn-challenge:not([disabled])').forEach(btn => {
           btn.addEventListener('click', async () => {
             btn.disabled = true;
             btn.textContent = '⏳';
@@ -216,6 +237,14 @@
             if (r.ok) {
               btn.textContent = '✅ Gesendet!';
               btn.classList.add('gesendet');
+              // Alle anderen aktiven Buttons auf "Limit" setzen wenn jetzt 3 erreicht
+              pendingGegnerIds.add(Number(btn.dataset.id));
+              if (pendingGegnerIds.size >= 3) {
+                tbody.querySelectorAll('.btn-challenge:not([disabled])').forEach(b => {
+                  b.disabled = true;
+                  b.textContent = '🔒 Limit';
+                });
+              }
             } else {
               const err = await r.json().catch(() => ({}));
               btn.textContent = '⚠️ ' + (err.error || 'Fehler');

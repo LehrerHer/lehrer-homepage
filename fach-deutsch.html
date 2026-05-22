@@ -2,7 +2,6 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <script src="/js/auth-guard.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Deutschunterricht bei Jan Herrmann – Oberschule Spelle. Themen, Materialien und Informationen zum Fach Deutsch.">
     <title>Deutsch – Jan Herrmann | Oberschule Spelle</title>
@@ -33,11 +32,17 @@
 
             <ul class="navbar-links" id="navbar-links">
                 <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
-                <li><a href="index.html#startseite">Startseite</a></li>
-                <li><a href="index.html#faecher" class="aktiv">Fächer</a></li>
-                <li><a href="index.html#materialien">Materialien</a></li>
-                <li><a href="blog.html">Blog</a></li>
                 <li><a href="index.html#kontakt">Kontakt</a></li>
+                <li class="navbar-dropdown">
+                    <button class="navbar-dropdown-toggle" aria-expanded="false" aria-haspopup="true">
+                        Geschützter Bereich ▾
+                    </button>
+                    <ul class="navbar-dropdown-menu" role="menu">
+                        <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" role="menuitem">🏛️ Arena</a></li>
+                        <li><a href="blog.html" role="menuitem">✍️ Schüler*innenblog</a></li>
+                        <li><a href="portal.html" role="menuitem">📋 Materialien</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </nav>
@@ -54,12 +59,13 @@
     <main class="abgabe-bereich">
         <div class="container">
 
-            <p class="fach-beschreibung">
-                Wer die Fähigkeit besitzt, die tiefere Ebene, die Absicht und die
-                sprachliche Gestaltung eines Gedichts zu durchdringen, hat die Werkzeuge
-                erworben, um auch komplexe Texte in anderen Zusammenhängen zu erfassen.
-                Und: Wer eine Gedichtanalyse verfassen kann, kann jedes Formular ausfüllen.&nbsp;😉
-            </p>
+            <div class="fach-beschreibung">
+                <p>Das Fach Deutsch hat in Niedersachsen einen klaren Auftrag:</p> 
+                <p>Es soll junge Menschen sprachlich, literarisch und medial bilden – und sie damit befähigen, die Welt zu verstehen, eine eigene Haltung zu entwickeln und diese verständlich auszudrücken.</p> 
+                <p>Im Mittelpunkt stehen Lesen, Schreiben, Sprechen und Nachdenken über Sprache – Kompetenzen, die in jedem Fach und weit über die Schule hinaus gebraucht werden.</p>
+                <p>Mein Unterricht ist textbasiert und analytisch: Texte – ob Gedichte, Kurzgeschichten, Dramen oder Sachtexte – sind der Ausgangspunkt für das gemeinsame Denken und Schreiben. Ich arbeite ohne festes Lehrwerk und entwickle meine Materialien selbst, damit sie genau zu meinen Lerngruppen passen.</p>
+                <p>Besonders am Herzen liegt mir, dass meine Schülerinnen und Schüler eigenständig arbeiten und denken lernen: lange Arbeitsphasen, klare Aufgaben, anspruchsvolle Texte. Deutsch ist kein Fach zum Auswendiglernen – es ist ein Fach zum Nachdenken, Formulieren und Entdecken.</p>
+            </div>
 
             <h2 class="section-titel" style="margin-top: 40px;">Themen &amp; Inhalte</h2>
             <p class="section-untertitel">Unterrichtsthemen je nach Jahrgang (Auswahl):</p>
@@ -71,7 +77,6 @@
                     <div class="material-info">
                         <h4>Aufsatzformen</h4>
                         <p>Erörterung, Analyse, Interpretation, Beschreibung – strukturiertes Schreiben in allen Jahrgängen</p>
-                        <a href="deutsch-dialektische-eroerterung.html" class="material-link">→ Dialektische Erörterung</a>
                     </div>
                 </div>
 
@@ -117,48 +122,11 @@
 
             </div>
 
-            <h2 class="section-titel" style="margin-top: 48px;">Literaturanalysemaschine</h2>
-            <p class="section-untertitel">Interaktive Materialien zur Erzählliteratur:</p>
-
-            <div class="materialien-grid">
-
-                <div class="material-karte">
-                    <span class="material-icon">🔬</span>
-                    <div class="material-info">
-                        <h4>Epik</h4>
-                        <p>Interaktives Arbeitsblatt zu Erzählerstandort, Fokalisierung und Zeitstruktur anhand von drei Beispieltexten</p>
-                        <a href="narratologische-analyse.html" class="material-link">→ Zur Literaturanalysemaschine</a>
-                    </div>
-                </div>
-
+            <div style="text-align:center;margin-top:3rem;padding:2rem;background:#fff;border-radius:12px;border:1px solid #d6e4f0;box-shadow:0 2px 12px rgba(30,58,95,.07)">
+                <p style="font-size:1.05rem;font-weight:600;color:var(--farbe-primaer);margin-bottom:.75rem">🔒 Materialien, Arbeitsblätter &amp; Quizze</p>
+                <p style="color:#555;font-size:.93rem;margin-bottom:1.25rem">Arbeitsblätter, Hilfen und Quizze zu diesem Fach findest du im Materialportal – für eingeloggte Schülerinnen und Schüler.</p>
+                <a href="materialien-deutsch.html" style="display:inline-block;padding:.75rem 1.75rem;background:var(--farbe-akzent);color:#fff;border-radius:8px;font-weight:700;font-size:.95rem;text-decoration:none">→ Zu den Materialien</a>
             </div>
-
-            <h2 class="section-titel" style="margin-top: 48px;">Deutsch-Projekte</h2>
-
-            <div class="materialien-grid">
-
-                <div class="material-karte">
-                    <span class="material-icon">🌹</span>
-                    <div class="material-info">
-                        <h4>Das Parfum</h4>
-                        <p>Materialien und Aufgaben zum Roman „Das Parfum" von Patrick Süskind</p>
-                        <a href="deutsch-das-parfum.html" class="material-link">→ Zur Projektseite</a>
-                    </div>
-                </div>
-
-                <div class="material-karte">
-                    <span class="material-icon">🎭</span>
-                    <div class="material-info">
-                        <h4>Theaterprojekt Jahrgang 9</h4>
-                        <p>Materialien und Informationen zum Theaterprojekt des 9. Jahrgangs</p>
-                        <a href="deutsch-theaterprojekt.html" class="material-link">→ Zur Projektseite</a>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Dynamisch hochgeladene Materialien (aus inhalte.json) -->
-            <div class="dynamic-inhalte" data-seite="deutsch"></div>
 
             <p style="text-align: center; margin-top: 40px;">
                 <a href="index.html">← Zurück zur Startseite</a>
@@ -170,17 +138,18 @@
 
     <footer>
         <div class="container footer-inner">
-            <p>© <span id="footer-jahr">2025</span> Jan Herrmann &nbsp;·&nbsp; Oberschule Spelle</p>
+            <p>© <span id="footer-jahr">2025</span> Jan Herrmann</p>
             <nav class="footer-links" aria-label="Rechtliche Links">
-                <a href="index.html#impressum">Impressum</a>
-                <a href="index.html#datenschutz">Datenschutz</a>
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
             </nav>
+            <a href="/kolosseum/public/admin/" id="admin-footer-link" class="admin-footer-link" aria-hidden="true" tabindex="-1"></a>
         </div>
     </footer>
 
     <script src="js/main.js"></script>
     <script src="js/dynamic-content.js"></script>
-
+    <script src="js/homepage-gate.js"></script>
 <script src="js/arena-bar.js"></script>
 </body>
 </html>
