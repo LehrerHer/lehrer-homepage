@@ -2477,6 +2477,18 @@ footer {
    BEREICHE-ÜBERSICHT (Homepage – immer öffentlich sichtbar)
    ================================================================ */
 
+/* Aufbau-Banner zwischen Navbar und Kacheln */
+.aufbau-banner {
+    background: #fff8e6;
+    border-bottom: 2px solid #f6c84e;
+    color: #6b4a00;
+    font-size: .9rem;
+    font-weight: 500;
+    line-height: 1.55;
+    padding: .7rem 1.5rem;
+    text-align: center;
+}
+
 #bereiche-uebersicht,
 .bereiche-uebersicht-section {
     background: var(--farbe-hintergrund);
