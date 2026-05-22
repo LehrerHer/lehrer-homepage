@@ -151,22 +151,40 @@ textarea::placeholder { color: rgba(42,31,14,.35); font-style: italic; }
 <body>
 
 <!-- NAVIGATION -->
-<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
-    <div class="container navbar-inner">
-        <a href="index.html" class="navbar-logo">Jan <span>Herrmann</span></a>
-        <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
-            <span></span><span></span><span></span>
-        </button>
-        <ul class="navbar-links" id="navbar-links">
-            <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
-            <li><a href="index.html#startseite">Startseite</a></li>
-            <li><a href="index.html#faecher" class="aktiv">Fächer</a></li>
-            <li><a href="index.html#digitalematerialien">Materialien</a></li>
-            <li><a href="blog.html">Blog</a></li>
-            <li><a href="index.html#kontakt">Kontakt</a></li>
-        </ul>
-    </div>
-</nav>
+    <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+        <div class="container navbar-inner">
+
+            <a href="index.html" class="navbar-logo">lehrer-herrmann.de</a>
+
+            <button
+                class="hamburger"
+                id="hamburger"
+                aria-label="Menü öffnen"
+                aria-expanded="false"
+                aria-controls="navbar-links"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="navbar-links" id="navbar-links">
+                <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
+                <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+                <li class="navbar-gb-trenner" aria-hidden="true">
+                    <span class="navbar-gb-label">Geschützter Bereich</span>
+                </li>
+                <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+                <li><a href="blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+                <li><a href="faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+            </ul>
+
+            <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none">
+                <!-- Wird per JS befüllt -->
+            </div>
+
+        </div>
+    </nav>
 
 <div class="ab-wrap">
 <div class="page">

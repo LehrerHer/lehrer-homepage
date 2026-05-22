@@ -86,19 +86,38 @@
 </head>
 <body>
 
-  <nav class="site-navbar" role="navigation" aria-label="Hauptnavigation">
-    <div class="site-nav-inner">
-      <a href="https://lehrer-herrmann.de" class="site-nav-logo">Jan <span>Herrmann</span></a>
-      <button class="site-hamburger" id="site-hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="site-nav-links">
-        <span></span><span></span><span></span>
+  <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+
+      <a href="https://lehrer-herrmann.de" class="navbar-logo">lehrer-herrmann.de</a>
+
+      <button
+        class="hamburger"
+        id="hamburger"
+        aria-label="Menü öffnen"
+        aria-expanded="false"
+        aria-controls="navbar-links"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
-      <ul class="site-nav-links" id="site-nav-links" role="list">
-        <li><a href="https://lehrer-herrmann.de/#faecher">Fächer</a></li>
-        <li><a href="https://lehrer-herrmann.de/portal.html">Materialien &amp; Quizze</a></li>
-        <li><a href="/profil.html" class="aktiv">🏛️ Arena</a></li>
-        <li><a href="https://lehrer-herrmann.de/blog.html">Blog</a></li>
+
+      <ul class="navbar-links" id="navbar-links">
+        <li><a href="https://lehrer-herrmann.de/#was-ist-neu">Was ist neu?</a></li>
         <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+        <li class="navbar-gb-trenner" aria-hidden="true">
+          <span class="navbar-gb-label">Geschützter Bereich</span>
+        </li>
+        <li><a href="/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+        <li><a href="https://lehrer-herrmann.de/blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+        <li><a href="https://lehrer-herrmann.de/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
       </ul>
+
+      <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none">
+        <!-- Wird per JS befüllt -->
+      </div>
+
     </div>
   </nav>
 
@@ -267,7 +286,8 @@
     })();
   </script>
   <script src="/js/arena-bar.js"></script>
-  <script src="/js/site-nav.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="/js/kolosseum-login-widget.js"></script>
 
   <footer class="site-footer">
     <div class="site-footer-inner">
