@@ -4,26 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <script src="js/auth-guard.js"></script>
-<title>Lernquiz Jahrgang 5 – Jan Herrmann</title>
+<title>Schulwissensquiz Jahrgang 5/6 – Gym | Jan Herrmann</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
 <style>
 /* ── HOMEPAGE-NAVBAR ─────────────────────────────────────────────────────────── */
-.navbar { background-color: #1e3a5f; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.25); }
-.navbar-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; max-width: 1100px; margin: 0 auto; padding: 0 24px; }
-.navbar-logo { color: #fff; font-size: 1.15rem; font-weight: 700; letter-spacing: 0.2px; text-decoration: none; font-family: 'Inter', sans-serif; }
-.navbar-logo span { color: #4a9eda; }
-.navbar-links { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
-.navbar-links a { color: rgba(255,255,255,0.82); padding: 8px 14px; border-radius: 8px; font-size: 0.95rem; font-weight: 500; font-family: 'Inter', sans-serif; text-decoration: none; transition: background-color 0.3s, color 0.3s; }
-.navbar-links a:hover, .navbar-links a.aktiv { background-color: rgba(255,255,255,0.15); color: #fff; }
-.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 6px; }
-.hamburger span { display: block; width: 24px; height: 2px; background-color: #fff; border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+
 @media (max-width: 768px) {
-  .hamburger { display: flex; }
-  .navbar-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background-color: #1e3a5f; padding: 12px 16px; gap: 2px; box-shadow: 0 6px 16px rgba(0,0,0,0.2); }
-  .navbar-links.offen { display: flex; }
-  .navbar-links a { padding: 12px 14px; display: block; font-size: 1rem; }
+
+
+
+
 }
 /* ── QUIZ-FARB-VARIABLEN (Homepage-Palette) ──────────────────────────────────── */
 :root {
@@ -45,6 +38,51 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #f4f6f7; color: 
 .quiz-intro .icon { font-size: 3rem; margin-bottom: 0.5rem; }
 .quiz-intro h1 { font-size: clamp(1.4rem, 4vw, 1.9rem); font-weight: 700; color: var(--color-text-primary); margin-bottom: 0.4rem; }
 .quiz-intro p { color: var(--color-text-secondary); font-size: 0.92rem; }
+/* ── START-SCREEN ────────────────────────────────────────────────────────────*/
+.card-box { background: var(--color-background-primary); border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(30,58,95,0.08); }
+.start-label { font-size: 14px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 0.9rem; }
+.count-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 1.25rem; }
+.count-btn {
+  padding: 16px 8px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  font-family: inherit;
+  text-align: center;
+}
+.count-btn:hover { background: var(--color-background-secondary); border-color: var(--color-border-primary); }
+.count-btn.selected { border-color: var(--color-border-primary); background: #e8f4fd; color: var(--color-text-primary); box-shadow: 0 0 0 2px rgba(74,158,218,0.18); }
+.count-hint { font-size: 0.78rem; color: var(--color-text-secondary); margin-bottom: 1.5rem; }
+.start-quiz-btn {
+  display: block; width: 100%; padding: 13px;
+  border-radius: var(--border-radius-md); border: none;
+  background: #1e3a5f; color: #fff;
+  font-size: 1rem; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+  transition: background 0.15s;
+}
+.start-quiz-btn:hover { background: #2d5a8e; }
+@media (max-width: 480px) { .count-grid { grid-template-columns: repeat(2, 1fr); } }
+/* ── BESTENLISTE ─────────────────────────────────────────────────────────────*/
+#lb-section { margin-top: 1rem; }
+.lb-heading { font-size: 1rem; font-weight: 700; color: var(--color-text-primary); margin-bottom: 1rem; }
+.lb-tabs { display: flex; gap: 6px; margin-bottom: 1rem; }
+.lb-tab { flex: 1; padding: 7px 4px; border-radius: 6px; border: 1px solid var(--color-border-secondary); background: var(--color-background-secondary); color: var(--color-text-secondary); font-size: 0.82rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: border-color 0.12s, background 0.12s, color 0.12s; }
+.lb-tab:hover { background: #dce8f5; border-color: var(--color-border-primary); }
+.lb-tab.selected { border-color: var(--color-border-primary); background: #e8f4fd; color: var(--color-text-primary); }
+.lb-list { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.lb-entry { display: grid; grid-template-columns: 30px 1fr auto auto; align-items: center; gap: 8px; padding: 8px 10px; background: var(--color-background-secondary); border-radius: 6px; }
+.lb-rank { font-weight: 700; text-align: center; font-size: 0.9rem; color: var(--color-text-secondary); }
+.lb-name { font-weight: 600; font-size: 13px; color: var(--color-text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lb-pct { font-size: 13px; font-weight: 700; color: var(--color-text-primary); white-space: nowrap; }
+.lb-detail { font-size: 11px; color: var(--color-text-secondary); white-space: nowrap; }
+.lb-empty { text-align: center; color: var(--color-text-secondary); font-size: 13px; padding: 1.5rem 0; }
+@media (max-width: 400px) { .lb-detail { display: none; } .lb-entry { grid-template-columns: 28px 1fr auto; } }
 /* ── QUIZ-WRAP ────────────────────────────────────────────────────────────────*/
 #quiz-wrap { background: var(--color-background-primary); border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(30,58,95,0.08); }
 .quiz-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 1.25rem; line-height: 1.4; }
@@ -71,10 +109,18 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #f4f6f7; color: 
 .stat-card { flex: 1; background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 14px; }
 .stat-label { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 2px; }
 .stat-val { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
-.result-wrap { text-align: center; padding: 2rem 0; }
+/* ── ERGEBNIS ────────────────────────────────────────────────────────────────*/
+.result-inner { text-align: center; padding: 1.5rem 0 0.5rem; }
 .result-score { font-size: 48px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 0.5rem; }
 .result-sub { font-size: 15px; color: var(--color-text-secondary); margin-bottom: 1.5rem; }
-.restart-btn { padding: 10px 28px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 14px; cursor: pointer; font-family: inherit; }
+.lb-save-label { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 0.5rem; text-align: left; }
+.lb-save-row { display: flex; gap: 8px; margin-bottom: 1rem; }
+.lb-name-input { flex: 1; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--color-border-secondary); font-family: inherit; font-size: 14px; color: var(--color-text-primary); background: var(--color-background-primary); outline: none; }
+.lb-name-input:focus { border-color: var(--color-border-primary); }
+.lb-save-btn { padding: 9px 16px; border-radius: 6px; border: none; background: #1e3a5f; color: #fff; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; white-space: nowrap; transition: background 0.15s; }
+.lb-save-btn:hover { background: #2d5a8e; }
+.lb-saved-msg { font-size: 13px; color: #27500A; background: #EAF3DE; border: 0.5px solid #639922; border-radius: 6px; padding: 8px 12px; margin-bottom: 1rem; }
+.restart-btn { padding: 10px 28px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 14px; cursor: pointer; font-family: inherit; margin-top: 0.75rem; }
 .restart-btn:hover { background: var(--color-background-secondary); }
 </style>
 </head>
@@ -118,30 +164,68 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #f4f6f7; color: 
 <div class="page-wrap">
   <div class="quiz-intro">
     <div class="icon">🏛️</div>
-    <h1>Lernquiz Jahrgang 5</h1>
+    <h1>Schulwissensquiz Jahrgang 5/6 – Gym</h1>
     <p>100 Fragen aus Deutsch, Mathematik, Englisch, Erdkunde, Geschichte, Biologie und mehr.</p>
   </div>
 
-  <div id="quiz-wrap">
-    <h2 class="quiz-title">100 Fragen für Gymnasiastinnen und Gymnasiasten des Jahrgangs 5</h2>
+  <!-- START-SCREEN -->
+  <div id="start-screen" class="card-box">
+    <p class="start-label">Wie viele Fragen möchtest du beantworten?</p>
+    <div class="count-grid">
+      <button class="count-btn selected" data-count="10" onclick="selectCount(10, this)">10</button>
+      <button class="count-btn" data-count="25" onclick="selectCount(25, this)">25</button>
+      <button class="count-btn" data-count="50" onclick="selectCount(50, this)">50</button>
+      <button class="count-btn" data-count="100" onclick="selectCount(100, this)">100</button>
+    </div>
+    <p class="count-hint">Die Fragen werden zufällig aus allen 100 Fragen ausgewählt.</p>
+    <button class="start-quiz-btn" onclick="startQuiz()">Quiz starten →</button>
+  </div>
+
+  <!-- BESTENLISTEN -->
+  <div id="lb-section" class="card-box">
+    <p class="lb-heading">🏆 Bestenlisten</p>
+    <div class="lb-tabs">
+      <button class="lb-tab selected" data-count="10" onclick="switchLbTab(10, this)">10 Fragen</button>
+      <button class="lb-tab" data-count="25" onclick="switchLbTab(25, this)">25 Fragen</button>
+      <button class="lb-tab" data-count="50" onclick="switchLbTab(50, this)">50 Fragen</button>
+      <button class="lb-tab" data-count="100" onclick="switchLbTab(100, this)">100 Fragen</button>
+    </div>
+    <div id="lb-content"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz-wrap" style="display:none">
+    <h2 class="quiz-title" id="quiz-title"></h2>
     <div class="header">
-      <span class="q-counter" id="q-counter">Frage 1 von 100</span>
+      <span class="q-counter" id="q-counter">Frage 1 von 10</span>
       <span class="subject-badge" id="subject-badge"></span>
     </div>
-    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill" style="width:1%"></div></div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
     <div class="stats">
       <div class="stat-card"><div class="stat-label">Richtig</div><div class="stat-val" id="stat-r" style="color:#27500A">0</div></div>
       <div class="stat-card"><div class="stat-label">Falsch</div><div class="stat-val" id="stat-f" style="color:#A32D2D">0</div></div>
-      <div class="stat-card"><div class="stat-label">Noch offen</div><div class="stat-val" id="stat-o">100</div></div>
+      <div class="stat-card"><div class="stat-label">Noch offen</div><div class="stat-val" id="stat-o">10</div></div>
     </div>
     <div class="q-text" id="q-text"></div>
     <div class="options" id="options"></div>
     <div class="feedback" id="feedback"></div>
     <button class="next-btn" id="next-btn">Weiter →</button>
-    <div class="result-wrap" id="result-wrap" style="display:none">
+  </div>
+
+  <!-- ERGEBNIS -->
+  <div id="result-wrap" class="card-box" style="display:none">
+    <div class="result-inner">
       <div class="result-score" id="result-score"></div>
       <div class="result-sub" id="result-sub"></div>
-      <button class="restart-btn" onclick="restart()">Quiz neu starten</button>
+      <div id="lb-save-section">
+        <p class="lb-save-label">Ergebnis in Bestenliste eintragen:</p>
+        <div class="lb-save-row">
+          <input type="text" id="lb-name-input" class="lb-name-input" placeholder="Dein Name" maxlength="20">
+          <button class="lb-save-btn" onclick="saveScore()">Eintragen</button>
+        </div>
+      </div>
+      <div class="lb-saved-msg" id="lb-saved-msg" style="display:none">✓ In der Bestenliste gespeichert!</div>
+      <button class="restart-btn" onclick="restart()">Neues Quiz starten</button>
     </div>
   </div>
 </div>
@@ -271,35 +355,112 @@ const allQ = [
   {s:"Informatik", q:"Was ist die Aufgabe einer Tastatur?", o:["Texte und Befehle eingeben","Bilder auf dem Bildschirm anzeigen","Dateien und Dokumente speichern","Dokumente ausdrucken"], a:0, e:"Eine Tastatur ist ein Eingabegerät zur Text- und Befehlseingabe."},
 ];
 
-const total = allQ.length; // 100
-let questions = [...allQ];
-let current = 0, correct = 0, wrong = 0, answered = false;
+/* ── BESTENLISTEN (localStorage) ──────────────────────────────────────────── */
+var LB_MAX = 10;
+var LB_PREFIX = 'schulquiz_lb_';
+
+function getLb(count) {
+  try { return JSON.parse(localStorage.getItem(LB_PREFIX + count) || '[]'); }
+  catch(e) { return []; }
+}
+
+function saveLb(count, name, score, total) {
+  var pct = Math.round(score / total * 100);
+  var lb = getLb(count);
+  lb.push({ name: escHtml(name.trim()), score: score, total: total, pct: pct,
+            date: new Date().toLocaleDateString('de-DE') });
+  lb.sort(function(a, b) { return b.pct - a.pct || b.score - a.score; });
+  if (lb.length > LB_MAX) lb = lb.slice(0, LB_MAX);
+  localStorage.setItem(LB_PREFIX + count, JSON.stringify(lb));
+  localStorage.setItem('schulquiz_name', name.trim());
+}
+
+function renderLb(count) {
+  var lb = getLb(count);
+  var el = document.getElementById('lb-content');
+  if (!lb.length) {
+    el.innerHTML = '<p class="lb-empty">Noch keine Einträge für ' + count + ' Fragen.<br>Sei der/die Erste!</p>';
+    return;
+  }
+  var medals = ['🥇','🥈','🥉'];
+  var html = '<ol class="lb-list">';
+  lb.forEach(function(e, i) {
+    html += '<li class="lb-entry">' +
+      '<span class="lb-rank">' + (medals[i] || (i+1)+'.') + '</span>' +
+      '<span class="lb-name">' + e.name + '</span>' +
+      '<span class="lb-pct">' + e.pct + '%</span>' +
+      '<span class="lb-detail">' + e.score + '/' + e.total + ' · ' + e.date + '</span>' +
+      '</li>';
+  });
+  el.innerHTML = html + '</ol>';
+}
+
+function switchLbTab(count, el) {
+  document.querySelectorAll('.lb-tab').forEach(function(b) { b.classList.remove('selected'); });
+  el.classList.add('selected');
+  renderLb(count);
+}
+
+function syncLbTab(count) {
+  document.querySelectorAll('.lb-tab').forEach(function(b) {
+    b.classList.toggle('selected', parseInt(b.dataset.count) === count);
+  });
+  renderLb(count);
+}
+
+function escHtml(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ── QUIZ-LOGIK ───────────────────────────────────────────────────────────── */
+var selectedCount = 10;
+var questions = [];
+var current = 0, correct = 0, wrong = 0, answered = false;
+var currentOpts = [];
+var scoreSaved = false;
 
 function shuffle(arr) {
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [arr[i], arr[j]] = [arr[j], arr[i]];
+  for (var i = arr.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
   }
   return arr;
 }
 
+function selectCount(n, el) {
+  selectedCount = n;
+  document.querySelectorAll('.count-btn').forEach(function(b) { b.classList.remove('selected'); });
+  el.classList.add('selected');
+  syncLbTab(n);
+}
+
+function startQuiz() {
+  questions = shuffle([...allQ]).slice(0, selectedCount);
+  current = 0; correct = 0; wrong = 0; scoreSaved = false;
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('lb-section').style.display = 'none';
+  document.getElementById('result-wrap').style.display = 'none';
+  document.getElementById('quiz-wrap').style.display = 'block';
+  document.getElementById('quiz-title').textContent =
+    selectedCount + ' Fragen – Schulwissensquiz Jahrgang 5/6 – Gym';
+  loadQuestion();
+}
+
 function shuffleOptions(q) {
-  const opts = q.o.map((text, i) => ({ text, correct: i === q.a }));
-  for (let i = opts.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [opts[i], opts[j]] = [opts[j], opts[i]];
-  }
+  var opts = q.o.map(function(text, i) { return { text: text, correct: i === q.a }; });
+  shuffle(opts);
   return opts;
 }
 
-let currentOpts = [];
-
 function loadQuestion() {
   if (current >= questions.length) { showResult(); return; }
-  const q = questions[current];
+  var total = questions.length;
+  var q = questions[current];
   answered = false;
   currentOpts = shuffleOptions(q);
-  document.getElementById('q-counter').textContent = 'Frage ' + (current + 1) + ' von ' + total;
+  document.getElementById('q-counter').textContent = 'Frage ' + (current+1) + ' von ' + total;
   document.getElementById('subject-badge').textContent = q.s;
   document.getElementById('progress-fill').style.width = ((current / total) * 100) + '%';
   document.getElementById('q-text').textContent = q.q;
@@ -309,14 +470,14 @@ function loadQuestion() {
   var fb = document.getElementById('feedback');
   fb.className = 'feedback'; fb.textContent = '';
   document.getElementById('next-btn').className = 'next-btn';
-  var opts = document.getElementById('options');
-  opts.innerHTML = '';
+  var optsEl = document.getElementById('options');
+  optsEl.innerHTML = '';
   currentOpts.forEach(function(opt, i) {
     var b = document.createElement('button');
     b.className = 'opt-btn';
     b.textContent = opt.text;
     b.onclick = function() { selectAnswer(i); };
-    opts.appendChild(b);
+    optsEl.appendChild(b);
   });
 }
 
@@ -338,7 +499,7 @@ function selectAnswer(i) {
     btns[correctIdx].classList.add('correct');
     wrong++;
     fb.className = 'feedback wrong-fb show';
-    fb.textContent = '✗ Leider falsch. Richtig ist: „' + currentOpts[correctIdx].text + '". ' + q.e;
+    fb.textContent = '✗ Leider falsch. Richtig: „' + currentOpts[correctIdx].text + '". ' + q.e;
   }
   document.getElementById('stat-r').textContent = correct;
   document.getElementById('stat-f').textContent = wrong;
@@ -348,22 +509,36 @@ function selectAnswer(i) {
 document.getElementById('next-btn').onclick = function() { current++; loadQuestion(); };
 
 function showResult() {
+  var total = questions.length;
   document.getElementById('quiz-wrap').style.display = 'none';
-  var rw = document.getElementById('result-wrap');
-  rw.style.display = 'block';
-  var pct = Math.round((correct / total) * 100);
+  document.getElementById('result-wrap').style.display = 'block';
+  var pct = Math.round(correct / total * 100);
   document.getElementById('result-score').textContent = correct + ' / ' + total;
   var msg = pct >= 80 ? 'Ausgezeichnet!' : pct >= 60 ? 'Gut gemacht!' : pct >= 40 ? 'Weiter üben!' : 'Nicht aufgeben!';
   document.getElementById('result-sub').textContent = pct + '% richtig – ' + msg;
+  var savedName = localStorage.getItem('schulquiz_name') || '';
+  document.getElementById('lb-name-input').value = savedName;
+  document.getElementById('lb-save-section').style.display = 'block';
+  document.getElementById('lb-saved-msg').style.display = 'none';
   kolosseumReport(correct, total, 'lernquiz-jahrgang5');
 }
 
+function saveScore() {
+  if (scoreSaved) return;
+  var name = document.getElementById('lb-name-input').value.trim();
+  if (!name) { document.getElementById('lb-name-input').focus(); return; }
+  saveLb(selectedCount, name, correct, questions.length);
+  scoreSaved = true;
+  document.getElementById('lb-save-section').style.display = 'none';
+  document.getElementById('lb-saved-msg').style.display = 'block';
+}
+
 function restart() {
-  questions = shuffle([...allQ]);
-  current = 0; correct = 0; wrong = 0;
   document.getElementById('result-wrap').style.display = 'none';
-  document.getElementById('quiz-wrap').style.display = 'block';
-  loadQuestion();
+  document.getElementById('quiz-wrap').style.display = 'none';
+  document.getElementById('start-screen').style.display = 'block';
+  document.getElementById('lb-section').style.display = 'block';
+  syncLbTab(selectedCount);
 }
 
 // Hamburger-Menü
@@ -384,8 +559,8 @@ function restart() {
   });
 })();
 
-shuffle(questions);
-loadQuestion();
+// Initiale Bestenliste
+renderLb(10);
 </script>
 <script src="js/kolosseum-prompt.js"></script>
 </body>

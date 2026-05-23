@@ -19,22 +19,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    <link rel="stylesheet" href="/css/style.css">
 <style>
 /* === NAVIGATION === */
-.navbar{background-color:#1e3a5f;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.25)}
-.navbar-inner{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:1100px;margin:0 auto;padding:0 24px}
-.navbar-logo{color:#fff;font-size:1.15rem;font-weight:700;letter-spacing:.2px;text-decoration:none;font-family:'Inter',sans-serif}
-.navbar-logo span{color:#4a9eda}
-.navbar-links{display:flex;gap:4px;list-style:none;margin:0;padding:0}
-.navbar-links a{color:rgba(255,255,255,.82);padding:8px 14px;border-radius:8px;font-size:.95rem;font-weight:500;font-family:'Inter',sans-serif;text-decoration:none;transition:background-color .2s,color .2s}
-.navbar-links a:hover,.navbar-links a.aktiv{background-color:rgba(255,255,255,.15);color:#fff}
-.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:6px}
-.hamburger span{display:block;width:24px;height:2px;background-color:#fff;border-radius:2px}
+
 @media(max-width:768px){
-  .hamburger{display:flex}
-  .navbar-links{display:none;flex-direction:column;position:absolute;top:64px;left:0;right:0;background-color:#1e3a5f;padding:12px 16px;gap:2px;box-shadow:0 6px 16px rgba(0,0,0,.2)}
-  .navbar-links.offen{display:flex}
-  .navbar-links a{padding:12px 14px;display:block;font-size:1rem}
+  
+  
+  
+  
 }
 
 /* === SEITE === */
@@ -617,7 +610,7 @@ button.green:hover { background: var(--ok-bg); }
 }
 
 @media print {
-  .navbar,.savebar,.btn-row,.werk-bar,.score-bar,.fb-icon,.feedback-banner,.textarea-feedback,.muster-block,.tab-nav { display: none !important; }
+  
   body { background: white; padding: 0.5rem; font-size: 13px; }
   .section { border: 1px solid #ccc; }
   .row { background: white !important; }
@@ -1515,5 +1508,7 @@ function lmClearForm() {
 </script>
 
 <script src="js/arena-bar.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/kolosseum-login-widget.js"></script>
 </body>
 </html>
