@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <script src="js/auth-guard.js"></script>
-<title>Lernquiz Jahrgang 5 – Jan Herrmann</title>
+<title>Schulwissensquiz Jahrgang 5/6 – Gym | Jan Herrmann</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -45,6 +45,36 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #f4f6f7; color: 
 .quiz-intro .icon { font-size: 3rem; margin-bottom: 0.5rem; }
 .quiz-intro h1 { font-size: clamp(1.4rem, 4vw, 1.9rem); font-weight: 700; color: var(--color-text-primary); margin-bottom: 0.4rem; }
 .quiz-intro p { color: var(--color-text-secondary); font-size: 0.92rem; }
+/* ── START-SCREEN ────────────────────────────────────────────────────────────*/
+.card-box { background: var(--color-background-primary); border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(30,58,95,0.08); }
+.start-label { font-size: 14px; font-weight: 600; color: var(--color-text-primary); margin-bottom: 0.9rem; }
+.count-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 1.25rem; }
+.count-btn {
+  padding: 16px 8px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--color-border-secondary);
+  background: var(--color-background-primary);
+  color: var(--color-text-primary);
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  font-family: inherit;
+  text-align: center;
+}
+.count-btn:hover { background: var(--color-background-secondary); border-color: var(--color-border-primary); }
+.count-btn.selected { border-color: var(--color-border-primary); background: #e8f4fd; color: var(--color-text-primary); box-shadow: 0 0 0 2px rgba(74,158,218,0.18); }
+.count-hint { font-size: 0.78rem; color: var(--color-text-secondary); margin-bottom: 1.5rem; }
+.start-quiz-btn {
+  display: block; width: 100%; padding: 13px;
+  border-radius: var(--border-radius-md); border: none;
+  background: #1e3a5f; color: #fff;
+  font-size: 1rem; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+  transition: background 0.15s;
+}
+.start-quiz-btn:hover { background: #2d5a8e; }
+@media (max-width: 480px) { .count-grid { grid-template-columns: repeat(2, 1fr); } }
 /* ── QUIZ-WRAP ────────────────────────────────────────────────────────────────*/
 #quiz-wrap { background: var(--color-background-primary); border-radius: 12px; padding: 1.5rem; box-shadow: 0 2px 12px rgba(30,58,95,0.08); }
 .quiz-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 1.25rem; line-height: 1.4; }
@@ -71,7 +101,8 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #f4f6f7; color: 
 .stat-card { flex: 1; background: var(--color-background-secondary); border-radius: var(--border-radius-md); padding: 10px 14px; }
 .stat-label { font-size: 11px; color: var(--color-text-secondary); margin-bottom: 2px; }
 .stat-val { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
-.result-wrap { text-align: center; padding: 2rem 0; }
+/* ── RESULT ──────────────────────────────────────────────────────────────────*/
+.result-inner { text-align: center; padding: 2rem 0; }
 .result-score { font-size: 48px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 0.5rem; }
 .result-sub { font-size: 15px; color: var(--color-text-secondary); margin-bottom: 1.5rem; }
 .restart-btn { padding: 10px 28px; border-radius: var(--border-radius-md); border: 0.5px solid var(--color-border-secondary); background: var(--color-background-primary); color: var(--color-text-primary); font-size: 14px; cursor: pointer; font-family: inherit; }
@@ -97,30 +128,48 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #f4f6f7; color: 
 <div class="page-wrap">
   <div class="quiz-intro">
     <div class="icon">🏛️</div>
-    <h1>Lernquiz Jahrgang 5</h1>
+    <h1>Schulwissensquiz Jahrgang 5/6 – Gym</h1>
     <p>100 Fragen aus Deutsch, Mathematik, Englisch, Erdkunde, Geschichte, Biologie und mehr.</p>
   </div>
 
-  <div id="quiz-wrap">
-    <h2 class="quiz-title">100 Fragen für Gymnasiastinnen und Gymnasiasten des Jahrgangs 5</h2>
+  <!-- START-SCREEN -->
+  <div id="start-screen" class="card-box">
+    <p class="start-label">Wie viele Fragen möchtest du beantworten?</p>
+    <div class="count-grid">
+      <button class="count-btn selected" onclick="selectCount(10, this)">10</button>
+      <button class="count-btn" onclick="selectCount(25, this)">25</button>
+      <button class="count-btn" onclick="selectCount(50, this)">50</button>
+      <button class="count-btn" onclick="selectCount(100, this)">100</button>
+    </div>
+    <p class="count-hint">Die Fragen werden zufällig aus allen 100 Fragen ausgewählt.</p>
+    <button class="start-quiz-btn" onclick="startQuiz()">Quiz starten →</button>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz-wrap" style="display:none">
+    <h2 class="quiz-title" id="quiz-title"></h2>
     <div class="header">
-      <span class="q-counter" id="q-counter">Frage 1 von 100</span>
+      <span class="q-counter" id="q-counter">Frage 1 von 10</span>
       <span class="subject-badge" id="subject-badge"></span>
     </div>
-    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill" style="width:1%"></div></div>
+    <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
     <div class="stats">
       <div class="stat-card"><div class="stat-label">Richtig</div><div class="stat-val" id="stat-r" style="color:#27500A">0</div></div>
       <div class="stat-card"><div class="stat-label">Falsch</div><div class="stat-val" id="stat-f" style="color:#A32D2D">0</div></div>
-      <div class="stat-card"><div class="stat-label">Noch offen</div><div class="stat-val" id="stat-o">100</div></div>
+      <div class="stat-card"><div class="stat-label">Noch offen</div><div class="stat-val" id="stat-o">10</div></div>
     </div>
     <div class="q-text" id="q-text"></div>
     <div class="options" id="options"></div>
     <div class="feedback" id="feedback"></div>
     <button class="next-btn" id="next-btn">Weiter →</button>
-    <div class="result-wrap" id="result-wrap" style="display:none">
+  </div>
+
+  <!-- RESULT -->
+  <div id="result-wrap" class="card-box" style="display:none">
+    <div class="result-inner">
       <div class="result-score" id="result-score"></div>
       <div class="result-sub" id="result-sub"></div>
-      <button class="restart-btn" onclick="restart()">Quiz neu starten</button>
+      <button class="restart-btn" onclick="restart()">Neues Quiz starten</button>
     </div>
   </div>
 </div>
@@ -250,9 +299,10 @@ const allQ = [
   {s:"Informatik", q:"Was ist die Aufgabe einer Tastatur?", o:["Texte und Befehle eingeben","Bilder auf dem Bildschirm anzeigen","Dateien und Dokumente speichern","Dokumente ausdrucken"], a:0, e:"Eine Tastatur ist ein Eingabegerät zur Text- und Befehlseingabe."},
 ];
 
-const total = allQ.length; // 100
-let questions = [...allQ];
+let selectedCount = 10;
+let questions = [];
 let current = 0, correct = 0, wrong = 0, answered = false;
+let currentOpts = [];
 
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -262,8 +312,25 @@ function shuffle(arr) {
   return arr;
 }
 
+function selectCount(n, el) {
+  selectedCount = n;
+  document.querySelectorAll('.count-btn').forEach(function(b) { b.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+function startQuiz() {
+  questions = shuffle([...allQ]).slice(0, selectedCount);
+  current = 0; correct = 0; wrong = 0;
+  document.getElementById('start-screen').style.display = 'none';
+  document.getElementById('result-wrap').style.display = 'none';
+  document.getElementById('quiz-wrap').style.display = 'block';
+  document.getElementById('quiz-title').textContent =
+    selectedCount + ' Fragen – Schulwissensquiz Jahrgang 5/6 – Gym';
+  loadQuestion();
+}
+
 function shuffleOptions(q) {
-  const opts = q.o.map((text, i) => ({ text, correct: i === q.a }));
+  const opts = q.o.map(function(text, i) { return { text: text, correct: i === q.a }; });
   for (let i = opts.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [opts[i], opts[j]] = [opts[j], opts[i]];
@@ -271,11 +338,10 @@ function shuffleOptions(q) {
   return opts;
 }
 
-let currentOpts = [];
-
 function loadQuestion() {
   if (current >= questions.length) { showResult(); return; }
-  const q = questions[current];
+  var total = questions.length;
+  var q = questions[current];
   answered = false;
   currentOpts = shuffleOptions(q);
   document.getElementById('q-counter').textContent = 'Frage ' + (current + 1) + ' von ' + total;
@@ -328,8 +394,8 @@ document.getElementById('next-btn').onclick = function() { current++; loadQuesti
 
 function showResult() {
   document.getElementById('quiz-wrap').style.display = 'none';
-  var rw = document.getElementById('result-wrap');
-  rw.style.display = 'block';
+  document.getElementById('result-wrap').style.display = 'block';
+  var total = questions.length;
   var pct = Math.round((correct / total) * 100);
   document.getElementById('result-score').textContent = correct + ' / ' + total;
   var msg = pct >= 80 ? 'Ausgezeichnet!' : pct >= 60 ? 'Gut gemacht!' : pct >= 40 ? 'Weiter üben!' : 'Nicht aufgeben!';
@@ -338,11 +404,9 @@ function showResult() {
 }
 
 function restart() {
-  questions = shuffle([...allQ]);
-  current = 0; correct = 0; wrong = 0;
   document.getElementById('result-wrap').style.display = 'none';
-  document.getElementById('quiz-wrap').style.display = 'block';
-  loadQuestion();
+  document.getElementById('quiz-wrap').style.display = 'none';
+  document.getElementById('start-screen').style.display = 'block';
 }
 
 // Hamburger-Menü
@@ -362,9 +426,6 @@ function restart() {
     }
   });
 })();
-
-shuffle(questions);
-loadQuestion();
 </script>
 <script src="js/kolosseum-prompt.js"></script>
 </body>
