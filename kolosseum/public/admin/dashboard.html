@@ -17,6 +17,22 @@
     .xp-pill.neg { color: var(--c1); }
     .quick-links { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
 
+    /* Materialien-Upload */
+    .mat-dropzone { border: 2px dashed #b3d4f5; border-radius: 10px; padding: 1.5rem 1rem; text-align: center; cursor: pointer; transition: background 0.2s, border-color 0.2s; position: relative; background: #f8fbff; }
+    .mat-dropzone:hover, .mat-dropzone.drag-over { background: #e8f4ff; border-color: var(--c4); }
+    .mat-drop-icon { font-size: 2rem; display: block; margin-bottom: 0.4rem; }
+    .mat-file-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .mat-upload-fields { margin-top: 1rem; }
+    .mat-field-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .mat-field-row .form-group { flex: 1; min-width: 150px; }
+    .mat-row { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 0.75rem; border-bottom: 1px solid #e2e8f0; font-size: 0.88rem; gap: 0.5rem; flex-wrap: wrap; }
+    .mat-row:last-child { border-bottom: none; }
+    .mat-badge-sm { font-size: 0.72rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; white-space: nowrap; }
+    .mat-badge-ab   { background: #e8f5e9; color: #2e7d32; }
+    .mat-badge-quiz { background: #fff3e0; color: #c07000; }
+    .mat-badge-mat  { background: #e8f4fd; color: #1e3a5f; }
+    .mat-fach-label { font-weight: 700; font-size: 0.82rem; color: var(--ink-soft); margin: 0.75rem 0 0.35rem; padding-bottom: 0.25rem; border-bottom: 1px solid #e2e8f0; }
+
     /* Einladungslinks */
     .invite-form { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: flex-end; margin-bottom: 1.25rem; }
     .invite-form .form-group { margin: 0; flex: 1; min-width: 140px; }
@@ -90,6 +106,69 @@
       <a href="/admin/schueler.html" class="btn btn-primary">+ Schüler anlegen</a>
       <a href="/admin/quiz.html" class="btn btn-secondary">+ Quiz anlegen</a>
       <a href="/admin/leseabenteuer.html" class="btn btn-secondary">📖 Leseabenteuer</a>
+    </div>
+
+    <!-- Materialien hochladen -->
+    <div class="card" style="margin-top:1.5rem">
+      <h2 style="font-size:1.2rem;margin-bottom:1.25rem">📂 Materialien hochladen</h2>
+
+      <div class="mat-dropzone" id="mat-dropzone">
+        <input type="file" id="mat-file-input" class="mat-file-input"
+               accept=".pdf,.html,.htm,.jpg,.jpeg,.png,.webp,.docx,.zip">
+        <span class="mat-drop-icon">📄</span>
+        <span id="mat-file-name">Datei hierher ziehen oder <u>auswählen</u></span>
+      </div>
+
+      <div class="mat-upload-fields" id="mat-upload-fields" style="display:none">
+        <div class="mat-field-row" style="margin-top:0.75rem">
+          <div class="form-group">
+            <label for="mat-fach">Fach</label>
+            <select id="mat-fach">
+              <option value="">– Fach auswählen –</option>
+              <option>Deutsch</option>
+              <option>Geschichte</option>
+              <option>Wirtschaft/Politik</option>
+              <option>Informatik</option>
+              <option>Werte &amp; Normen</option>
+              <option>Mathematik</option>
+              <option>Englisch</option>
+              <option>Sport</option>
+              <option>Biologie</option>
+              <option>Chemie</option>
+              <option>Physik</option>
+              <option>Musik</option>
+              <option>Erdkunde</option>
+              <option>Gestaltendes Werken</option>
+              <option>AGs &amp; Projekte</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="mat-typ">Typ</label>
+            <select id="mat-typ">
+              <option value="">– Typ auswählen –</option>
+              <option>Arbeitsblatt</option>
+              <option>Material</option>
+              <option>Quiz</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group" style="margin-top:0.5rem">
+          <label for="mat-titel">
+            Titel
+            <span style="font-weight:400;color:var(--ink-soft)">(optional – sonst Dateiname)</span>
+          </label>
+          <input type="text" id="mat-titel" placeholder="z. B. Passivkonstruktionen – Jahrgang 9" maxlength="120">
+        </div>
+        <div style="margin-top:0.75rem;display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap">
+          <button class="btn btn-primary" id="mat-upload-btn">📤 Hochladen</button>
+          <span id="mat-upload-status" style="font-size:0.9rem"></span>
+        </div>
+      </div>
+
+      <div style="margin-top:1.75rem">
+        <h3 style="font-size:1rem;margin-bottom:0.75rem;color:var(--ink-soft)">Hochgeladene Materialien</h3>
+        <div id="mat-list"><div class="text-soft" style="padding:0.5rem 0">Wird geladen…</div></div>
+      </div>
     </div>
 
     <!-- Einladungslinks -->
@@ -286,6 +365,120 @@
     });
 
     init().catch(console.error);
+
+    // ── Materialien-Upload ────────────────────────────────────────────────────
+
+    const MAT_API = '/api/materials';
+    let droppedFile = null;
+
+    async function loadMaterials() {
+      const res  = await fetch(MAT_API);
+      const data = await res.json();
+      const list = document.getElementById('mat-list');
+
+      if (!data.length) {
+        list.innerHTML = '<div class="text-soft" style="padding:0.5rem 0">Noch keine Materialien hochgeladen.</div>';
+        return;
+      }
+
+      const grouped = {};
+      data.forEach(m => { (grouped[m.fach] = grouped[m.fach] || []).push(m); });
+
+      list.innerHTML = Object.entries(grouped).map(([fach, items]) => `
+        <div>
+          <div class="mat-fach-label">${esc(fach)}</div>
+          ${items.map(m => {
+            const badgeCls = m.typ === 'Arbeitsblatt' ? 'mat-badge-ab' : m.typ === 'Quiz' ? 'mat-badge-quiz' : 'mat-badge-mat';
+            const icon     = m.datei_typ.includes('html') ? '🔗' : m.datei_typ.includes('pdf') ? '📄' : '📁';
+            return `
+            <div class="mat-row">
+              <div style="min-width:0;flex:1">
+                <span class="mat-badge-sm ${esc(badgeCls)}">${esc(m.typ)}</span>
+                <span style="margin-left:0.4rem;font-weight:600">${esc(m.titel)}</span>
+                <span style="color:var(--ink-soft);font-size:0.8rem;margin-left:0.4rem">${fmtDate(m.erstellt_am)}</span>
+              </div>
+              <div style="display:flex;gap:0.4rem;align-items:center;flex-shrink:0">
+                <a href="${esc(m.datei_url)}" target="_blank" class="btn btn-ghost copy-btn">${icon} Öffnen</a>
+                <button class="btn btn-danger copy-btn" onclick="deleteMat(${m.id},this)">Löschen</button>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>`).join('');
+    }
+
+    async function deleteMat(id, btn) {
+      if (!confirm('Material wirklich löschen?')) return;
+      btn.disabled = true;
+      await fetch(MAT_API + '/' + id, { method: 'DELETE' });
+      loadMaterials();
+    }
+
+    (function setupUpload() {
+      const dropzone  = document.getElementById('mat-dropzone');
+      const fileInput = document.getElementById('mat-file-input');
+      const fields    = document.getElementById('mat-upload-fields');
+      const fileLabel = document.getElementById('mat-file-name');
+      const uploadBtn = document.getElementById('mat-upload-btn');
+      const status    = document.getElementById('mat-upload-status');
+
+      function showFile(name) {
+        fileLabel.textContent = '✓ ' + name;
+        fields.style.display  = 'block';
+      }
+
+      fileInput.addEventListener('change', () => {
+        if (fileInput.files[0]) { droppedFile = null; showFile(fileInput.files[0].name); }
+      });
+
+      dropzone.addEventListener('dragover',  e => { e.preventDefault(); dropzone.classList.add('drag-over'); });
+      dropzone.addEventListener('dragleave', () => dropzone.classList.remove('drag-over'));
+      dropzone.addEventListener('drop', e => {
+        e.preventDefault();
+        dropzone.classList.remove('drag-over');
+        if (e.dataTransfer.files[0]) { droppedFile = e.dataTransfer.files[0]; showFile(droppedFile.name); }
+      });
+
+      uploadBtn.addEventListener('click', async () => {
+        const file = droppedFile || fileInput.files[0];
+        const fach = document.getElementById('mat-fach').value;
+        const typ  = document.getElementById('mat-typ').value;
+
+        if (!file) { status.textContent = '⚠ Bitte eine Datei auswählen.'; return; }
+        if (!fach) { status.textContent = '⚠ Bitte ein Fach auswählen.';   return; }
+        if (!typ)  { status.textContent = '⚠ Bitte einen Typ auswählen.';  return; }
+
+        const fd = new FormData();
+        fd.append('datei', file);
+        fd.append('fach',  fach);
+        fd.append('typ',   typ);
+        fd.append('titel', document.getElementById('mat-titel').value.trim());
+
+        uploadBtn.disabled = true;
+        status.textContent = '⏳ Wird hochgeladen…';
+
+        try {
+          const res  = await fetch(MAT_API + '/upload', { method: 'POST', body: fd });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Fehler beim Upload');
+
+          status.textContent = '✅ ' + data.titel + ' hochgeladen';
+          droppedFile = null;
+          fileInput.value = '';
+          fileLabel.innerHTML = 'Datei hierher ziehen oder <u>auswählen</u>';
+          fields.style.display = 'none';
+          document.getElementById('mat-titel').value = '';
+          document.getElementById('mat-fach').value  = '';
+          document.getElementById('mat-typ').value   = '';
+          loadMaterials();
+        } catch (e) {
+          status.textContent = '❌ ' + e.message;
+        } finally {
+          uploadBtn.disabled = false;
+        }
+      });
+    })();
+
+    loadMaterials();
   </script>
 
   <footer class="site-footer" style="margin-top:3rem">
