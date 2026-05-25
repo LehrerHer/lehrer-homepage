@@ -1,0 +1,632 @@
+<!--
+  Titel: Das Ende der Tschechoslowakei – Samtene Revolution & Samtene Scheidung
+  Fach: Geschichte
+  Klasse/Niveau: Jahrgang 10
+  AB-Typ: Gemischt (Lückentext, Multiple Choice, Zuordnung, offene Fragen)
+  Erstellt: 2026-05
+  Quelle: HTML-Vorlage (Material manuell von mir / AB Ende der CSSR Trennung.html)
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script src="/js/auth-guard.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>AB – Das Ende der Tschechoslowakei</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap');
+
+:root{
+  --dunkel:#1a2b4a; --mittel:#2e5fa3; --gold:#c9a84c; --hellblau:#daeaf7;
+  --gruen:#1b5e20; --hellgruen:#e8f5e9; --rot:#7b1c1c; --hellrot:#fdecea;
+  --slowakei:#0b4ea2; --grau:#f5f6f8; --text:#1c1c1c; --muted:#6b7280;
+  --weiss:#fff; --radius:12px; --shadow:0 2px 12px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Source Serif 4',Georgia,serif;background:#eef2f8;color:var(--text);font-size:17px;line-height:1.7;-webkit-text-size-adjust:100%;}
+
+/* HERO */
+.hero{background:var(--dunkel);padding:38px 28px 30px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--gold);}
+.hero-label{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:600;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(23px,5.5vw,36px);color:var(--weiss);line-height:1.2;margin-bottom:12px;}
+.hero-sub{font-size:15px;color:#9dbadc;font-style:italic;}
+.hero-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
+.hero-badge{background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);color:var(--gold);font-size:12px;padding:4px 12px;border-radius:20px;}
+
+/* BACK LINK */
+.back-bar{background:var(--dunkel);padding:0 28px 14px;}
+.back-link{color:#9dbadc;font-size:13px;text-decoration:none;opacity:.8;}
+.back-link:hover{opacity:1;color:var(--gold);}
+
+/* PROGRESS */
+.progress-wrap{background:var(--dunkel);padding:0 28px 16px;}
+.progress-track{background:rgba(255,255,255,.12);border-radius:4px;height:6px;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),#e8c96a);border-radius:4px;transition:width .5s ease;width:0%;}
+.progress-label{font-size:11px;color:#9dbadc;margin-top:5px;text-align:right;}
+
+.container{max-width:780px;margin:0 auto;padding:0 18px 70px;}
+
+/* NAV */
+.nav-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:16px 0 0;}
+.nav-scroll::-webkit-scrollbar{display:none;}
+.nav-tabs{display:flex;gap:6px;width:max-content;}
+.nav-tab{flex-shrink:0;background:var(--weiss);border:2px solid #dde3ed;border-radius:8px;padding:7px 14px;font-size:13px;color:var(--muted);cursor:pointer;transition:all .2s;white-space:nowrap;}
+.nav-tab.active{background:var(--mittel);border-color:var(--mittel);color:var(--weiss);font-weight:600;}
+.nav-tab.done{border-color:var(--gruen);color:var(--gruen);}
+.nav-tab.done::before{content:'✓ ';}
+
+.section{display:none;padding-top:18px;animation:fadeIn .35s ease;}
+.section.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;}}
+
+/* HEADER */
+.section-header{background:var(--weiss);border-radius:var(--radius);padding:20px 22px 16px;margin-bottom:16px;border-left:5px solid var(--mittel);box-shadow:var(--shadow);}
+.section-header.gold{border-left-color:var(--gold);}
+.section-header.gruen{border-left-color:var(--gruen);}
+.section-header.rot{border-left-color:var(--rot);}
+.section-kicker{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:6px;}
+.section-header h2{font-family:'Playfair Display',serif;font-size:clamp(19px,4vw,26px);color:var(--dunkel);line-height:1.25;margin-bottom:8px;}
+.leitfrage{font-style:italic;color:var(--mittel);font-size:15px;border-top:1px dashed #c8d5e8;padding-top:10px;margin-top:8px;}
+
+/* INFO-BOX */
+.info-box{background:var(--weiss);border-radius:var(--radius);padding:16px 20px;margin-bottom:14px;box-shadow:var(--shadow);}
+.info-box h3{font-family:'Playfair Display',serif;font-size:16px;color:var(--dunkel);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.info-box p,.info-box li{font-size:15.5px;color:var(--text);margin-bottom:6px;}
+.info-box ul{padding-left:18px;}
+
+/* HINWEISBOX zur PPP */
+.ppp-hinweis{background:var(--hellblau);border-left:4px solid var(--mittel);border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:14px;font-size:14.5px;color:#1a3a5c;}
+.ppp-hinweis strong{color:var(--mittel);}
+
+/* TIMELINE */
+.timeline{margin:6px 0;}
+.tl-item{display:flex;gap:14px;margin-bottom:10px;align-items:flex-start;}
+.tl-year{flex-shrink:0;background:var(--mittel);color:var(--weiss);font-family:'Playfair Display',serif;font-size:12px;font-weight:700;min-width:70px;text-align:center;padding:4px 8px;border-radius:6px;margin-top:2px;}
+.tl-text{font-size:15px;line-height:1.55;}
+.tl-text strong{color:var(--dunkel);}
+
+/* AUFGABEN */
+.aufgaben-block{background:var(--weiss);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:var(--shadow);}
+.aufgaben-block h3{font-family:'Playfair Display',serif;font-size:17px;color:var(--dunkel);margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--hellblau);}
+.aufgabe{margin-bottom:22px;padding-bottom:22px;border-bottom:1px dashed #dde3ed;}
+.aufgabe:last-child{margin-bottom:0;padding-bottom:0;border-bottom:none;}
+.aufgabe-zeile{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;}
+.aufgabe-nr{flex-shrink:0;width:32px;height:32px;border-radius:50%;background:var(--mittel);color:var(--weiss);font-family:'Playfair Display',serif;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px;margin-top:1px;}
+.aufgabe-nr.gold{background:var(--gold);}
+.aufgabe-nr.gruen{background:var(--gruen);}
+.aufgabe-nr.rot{background:var(--rot);}
+.aufgabe-text{font-size:15.5px;line-height:1.65;flex:1;}
+.aufgabe-text strong{color:var(--dunkel);}
+.hinweis{background:#fdf8ee;border-left:3px solid var(--gold);border-radius:0 6px 6px 0;padding:7px 12px;font-size:13.5px;color:#7d5a0a;margin-top:8px;font-style:italic;}
+
+.antwort-label{display:block;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin:10px 0 5px;}
+textarea{width:100%;border:1.5px solid #c8d5e8;border-radius:8px;padding:11px 13px;font-family:'Source Serif 4',serif;font-size:16px;line-height:1.65;color:var(--text);background:#fafcff;resize:vertical;min-height:100px;-webkit-appearance:none;transition:border-color .2s,box-shadow .2s;}
+textarea:focus{outline:none;border-color:var(--mittel);box-shadow:0 0 0 3px rgba(46,95,163,.12);}
+textarea::placeholder{color:#b0b8c6;font-style:italic;}
+
+/* MUSTER */
+.muster-btn{width:100%;text-align:left;background:#f0f4fa;border:1.5px dashed var(--mittel);border-radius:7px;padding:9px 14px;font-family:'Source Serif 4',serif;font-size:14.5px;color:var(--mittel);cursor:pointer;margin-top:10px;transition:background .2s;}
+.muster-btn:active{background:var(--hellblau);}
+.muster-content{display:none;margin-top:8px;padding:14px 16px;background:#eef4fb;border-radius:7px;font-size:14.5px;color:#1a3050;line-height:1.7;border-left:3px solid var(--mittel);}
+.muster-content.open{display:block;animation:fadeIn .2s ease;}
+.muster-content ul{padding-left:18px;margin-top:6px;}
+.muster-content li{margin-bottom:5px;}
+
+/* QUIZ */
+.quiz-frage{background:var(--grau);border-radius:8px;padding:16px 18px;margin-bottom:12px;border-left:4px solid var(--mittel);}
+.quiz-frage h4{font-size:15.5px;font-weight:600;color:var(--dunkel);margin-bottom:11px;}
+.quiz-optionen{display:flex;flex-direction:column;gap:7px;}
+.quiz-option{display:flex;align-items:center;gap:11px;padding:10px 13px;border:1.5px solid #dde3ed;border-radius:7px;cursor:pointer;font-size:15px;background:var(--weiss);transition:all .18s;-webkit-user-select:none;user-select:none;}
+.quiz-option:active{transform:scale(.98);}
+.quiz-option.richtig{background:var(--hellgruen);border-color:var(--gruen);color:var(--gruen);}
+.quiz-option.falsch{background:var(--hellrot);border-color:var(--rot);color:var(--rot);text-decoration:line-through;}
+.opt-kreis{width:22px;height:22px;border-radius:50%;border:1.5px solid #c8d5e8;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;}
+.quiz-feedback{margin-top:9px;padding:8px 12px;border-radius:6px;font-size:14px;font-style:italic;display:none;}
+.quiz-feedback.ok{background:var(--hellgruen);color:var(--gruen);display:block;}
+.quiz-feedback.err{background:var(--hellrot);color:var(--rot);display:block;}
+
+/* LÜCKENTEXT */
+.luecken-wrap{background:var(--weiss);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow);font-size:15.5px;line-height:2.3;margin-bottom:14px;}
+.luecken-input{border:none;border-bottom:2px solid var(--mittel);background:var(--hellblau);border-radius:3px 3px 0 0;font-family:'Source Serif 4',serif;font-size:15.5px;color:var(--mittel);padding:1px 6px;width:135px;text-align:center;vertical-align:bottom;-webkit-appearance:none;}
+.luecken-input:focus{outline:none;border-bottom-color:var(--dunkel);}
+.luecken-input.ok{background:var(--hellgruen);border-color:var(--gruen);color:var(--gruen);}
+.luecken-input.err{background:var(--hellrot);border-color:var(--rot);color:var(--rot);}
+
+/* ZUORDNUNG */
+.zuordnung{display:flex;flex-direction:column;gap:10px;}
+.zo-paar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.zo-begriff{flex-shrink:0;background:var(--dunkel);color:var(--weiss);font-weight:600;padding:8px 14px;border-radius:7px;font-size:14px;min-width:130px;}
+.zo-select{flex:1;min-width:180px;border:1.5px solid #c8d5e8;border-radius:7px;padding:9px 12px;font-family:'Source Serif 4',serif;font-size:14.5px;background:#fafcff;color:var(--text);-webkit-appearance:none;}
+.zo-select.ok{background:var(--hellgruen);border-color:var(--gruen);}
+.zo-select.err{background:var(--hellrot);border-color:var(--rot);}
+
+/* PRO-KONTRA */
+.pk-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0;}
+@media(max-width:520px){.pk-grid{grid-template-columns:1fr;}}
+.pk-karte{border-radius:8px;padding:14px 16px;}
+.pk-karte.pro{background:var(--hellgruen);border:1.5px solid #a5d6a7;}
+.pk-karte.kon{background:var(--hellrot);border:1.5px solid #e8b0a8;}
+.pk-karte h4{font-size:13px;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.pk-karte.pro h4{color:var(--gruen);}
+.pk-karte.kon h4{color:var(--rot);}
+.pk-karte ul{padding-left:16px;font-size:14px;}
+.pk-karte li{margin-bottom:5px;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 20px;border-radius:8px;font-family:'Source Serif 4',serif;font-size:15px;font-weight:600;cursor:pointer;border:none;transition:all .18s;-webkit-tap-highlight-color:transparent;}
+.btn-primary{background:var(--mittel);color:var(--weiss);box-shadow:0 2px 8px rgba(46,95,163,.25);}
+.btn-primary:active{transform:scale(.97);background:var(--dunkel);}
+.btn-outline{background:transparent;color:var(--mittel);border:2px solid var(--mittel);}
+.btn-gold{background:var(--gold);color:var(--dunkel);box-shadow:0 2px 8px rgba(201,168,76,.3);}
+.btn-gold:active{transform:scale(.97);}
+.nav-buttons{display:flex;justify-content:space-between;align-items:center;margin-top:22px;padding-top:18px;border-top:1px solid #dde3ed;gap:10px;}
+@media(max-width:480px){.nav-buttons{flex-direction:column;}.btn{width:100%;justify-content:center;}.container{padding:0 13px 70px;}.pk-grid{grid-template-columns:1fr;}}
+
+/* METHODEN */
+.methoden-box{background:#fdf8ee;border:1.5px solid #e8d9b0;border-radius:var(--radius);padding:15px 18px;margin-bottom:14px;}
+.methoden-box h4{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#7d5a0a;margin-bottom:8px;}
+.methoden-box ol,.methoden-box ul{padding-left:18px;font-size:14.5px;}
+.methoden-box li{margin-bottom:5px;}
+
+/* ABSCHLUSS */
+.abschluss-card{background:var(--dunkel);border-radius:var(--radius);padding:28px 22px;text-align:center;margin-top:10px;}
+.abschluss-card h2{font-family:'Playfair Display',serif;color:var(--gold);font-size:25px;margin-bottom:10px;}
+.abschluss-card p{color:#9dbadc;font-size:15px;margin-bottom:14px;}
+.sterne{font-size:30px;margin-bottom:8px;letter-spacing:4px;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Geschichte · Klasse 10 · Begleit-AB zum Lehrervortrag</div>
+  <h1>Das Ende der Tschechoslowakei</h1>
+  <p class="hero-sub">Von der Samtenen Revolution 1989 zur „Samtenen Scheidung" 1993</p>
+  <div class="hero-meta">
+    <span class="hero-badge">📱 Digitales AB</span>
+    <span class="hero-badge">⏱ ca. 20 Min.</span>
+    <span class="hero-badge">✓ Selbstkontrolle</span>
+    <span class="hero-badge">🧠 Weiterdenken</span>
+  </div>
+</div>
+
+<div class="back-bar">
+  <a href="../materialien-geschichte.html" class="back-link">← Zurück zur Materialübersicht Geschichte</a>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="pFill"></div></div>
+  <div class="progress-label" id="pLabel">Abschnitt 0 von 4</div>
+</div>
+
+<div class="container">
+  <div class="nav-scroll">
+    <div class="nav-tabs" id="navTabs">
+      <button class="nav-tab active" onclick="go(0)">So funktioniert's</button>
+      <button class="nav-tab" onclick="go(1)">Verständnis prüfen</button>
+      <button class="nav-tab" onclick="go(2)">Quiz &amp; Zuordnung</button>
+      <button class="nav-tab" onclick="go(3)">Weiterdenken</button>
+      <button class="nav-tab" onclick="go(4)">Abschluss</button>
+    </div>
+  </div>
+
+<!-- ABSCHNITT 0 -->
+<div class="section active" id="s0">
+  <div class="section-header gold">
+    <div class="section-kicker">Anleitung · 2 Minuten</div>
+    <h2>So arbeitest du mit diesem Arbeitsblatt</h2>
+    <div class="leitfrage">📱 Dieses AB begleitet den Vortrag deiner Lehrkraft – hör gut zu und prüfe dann dein Wissen.</div>
+  </div>
+
+  <div class="info-box">
+    <h3>📌 Worum geht es?</h3>
+    <p>Heute hast du im Vortrag gehört, wie die Tschechoslowakei – das Land, dessen Hauptstadt Prag war – zu Ende ging. In drei Schritten:</p>
+    <div class="timeline" style="margin-top:10px;">
+      <div class="tl-item"><div class="tl-year">1989</div><div class="tl-text"><strong>Samtene Revolution</strong> – das friedliche Ende der Diktatur</div></div>
+      <div class="tl-item"><div class="tl-year">1990–92</div><div class="tl-text"><strong>Neue Spannungen</strong> zwischen Tschechen und Slowaken</div></div>
+      <div class="tl-item"><div class="tl-year">1993</div><div class="tl-text"><strong>Samtene Scheidung</strong> – die friedliche Trennung in zwei Staaten</div></div>
+    </div>
+  </div>
+
+  <div class="methoden-box">
+    <h4>🧭 So gehst du vor</h4>
+    <ol>
+      <li><strong>Verständnis prüfen:</strong> Beantworte Fragen zum Vortrag. Bei jeder Frage kannst du eine Musterlösung aufdecken.</li>
+      <li><strong>Quiz &amp; Zuordnung:</strong> Teste dein Wissen mit Multiple-Choice und einem Zuordnungs-Spiel – mit sofortigem Feedback.</li>
+      <li><strong>Weiterdenken:</strong> Eine Streitfrage, bei der du eine eigene begründete Meinung entwickelst.</li>
+    </ol>
+  </div>
+
+  <div class="nav-buttons">
+    <div></div>
+    <button class="btn btn-primary" onclick="next(0)">Los geht's →</button>
+  </div>
+</div>
+
+<!-- ABSCHNITT 1 – VERSTÄNDNIS -->
+<div class="section" id="s1">
+  <div class="section-header">
+    <div class="section-kicker">Verständnis prüfen · 8 Minuten</div>
+    <h2>Hast du den Vortrag verstanden?</h2>
+    <div class="leitfrage">🔍 Beantworte die Fragen in eigenen Worten. Prüfe dich danach mit der Musterlösung.</div>
+  </div>
+
+  <div class="aufgaben-block">
+    <h3>🖊 Fragen zum Vortrag</h3>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile"><div class="aufgabe-nr">1</div>
+        <div class="aufgabe-text">Erkläre in eigenen Worten, was die <strong>Samtene Revolution 1989</strong> war. Warum trägt sie diesen Namen?</div>
+      </div>
+      <div class="ppp-hinweis">📊 <strong>Vortrag, Folie 4:</strong> Denk an die Ereignisse im November 1989 und an die Bedeutung von „samten".</div>
+      <span class="antwort-label">Meine Antwort:</span>
+      <textarea placeholder="Die Samtene Revolution war … Sie heißt so, weil …" rows="4"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content">Die Samtene Revolution war der friedliche Sturz der kommunistischen Diktatur in der Tschechoslowakei im November 1989. Sie begann mit einer brutal niedergeschlagenen Studentendemonstration (17. November), führte zu Massendemonstrationen auf dem Wenzelsplatz und einem Generalstreik. Sie heißt „samten", weil sie fast völlig gewaltlos verlief – „weich wie Samt", ohne Bürgerkrieg.</div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile"><div class="aufgabe-nr">2</div>
+        <div class="aufgabe-text">Wer war <strong>Václav Havel</strong>, und welche Rolle spielte er?</div>
+      </div>
+      <div class="ppp-hinweis">📊 <strong>Vortrag, Folie 4:</strong> Vom Dissidenten zum Präsidenten.</div>
+      <span class="antwort-label">Meine Antwort:</span>
+      <textarea placeholder="Václav Havel war … Seine Rolle war …" rows="4"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content">Václav Havel (1936–2011) war Schriftsteller und Dramatiker und unter dem kommunistischen Regime ein verfolgter Bürgerrechtler (Charta 77). In der Samtenen Revolution wurde er zur Sprecherfigur der Opposition (Bürgerforum) und am 29. Dezember 1989 zum ersten demokratischen Präsidenten gewählt. Er gilt bis heute als moralische Instanz.</div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile"><div class="aufgabe-nr">3</div>
+        <div class="aufgabe-text">Nach 1989 brachen <strong>Spannungen zwischen Tschechen und Slowaken</strong> auf. Nenne zwei Unterschiede zwischen den beiden Gruppen.</div>
+      </div>
+      <div class="ppp-hinweis">📊 <strong>Vortrag, Folie 5:</strong> Denk an Wirtschaft und politische Wünsche.</div>
+      <span class="antwort-label">Meine Antwort:</span>
+      <textarea placeholder="Unterschied 1: … Unterschied 2: …" rows="4"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content"><ul>
+        <li>Wirtschaft: Tschechien war industriell stärker und wohlhabender; die Slowakei war ländlicher und wirtschaftlich schwächer.</li>
+        <li>Politische Wünsche: Tschechen wollten eine schnelle Marktwirtschaft; Slowaken fürchteten soziale Härten und wollten mehr Eigenständigkeit.</li>
+        <li>(Weiterer Punkt: Slowaken fühlten sich von Prag bevormundet – „Bindestrich-Krieg" um den Staatsnamen.)</li>
+      </ul></div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile"><div class="aufgabe-nr">4</div>
+        <div class="aufgabe-text">Was geschah am <strong>1. Januar 1993</strong>? Beschreibe, wie es dazu kam.</div>
+      </div>
+      <div class="ppp-hinweis">📊 <strong>Vortrag, Folie 6:</strong> Die Wahlen 1992, Klaus und Mečiar, der Parlamentsbeschluss.</div>
+      <span class="antwort-label">Meine Antwort:</span>
+      <textarea placeholder="Am 1. Januar 1993 … Dazu kam es, weil …" rows="5"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content">Am 1. Januar 1993 löste sich die Tschechoslowakei auf, und es entstanden zwei neue Staaten: die Tschechische Republik und die Slowakische Republik. Dazu kam es, weil bei den Wahlen im Juni 1992 in Tschechien Václav Klaus und in der Slowakei Vladimír Mečiar gewannen – mit unvereinbaren Programmen. Statt zu streiten, einigten sich beide auf eine geordnete Trennung. Das Parlament beschloss am 25. November 1992 das Auflösungsgesetz.</div>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile"><div class="aufgabe-nr">5</div>
+        <div class="aufgabe-text">Wie ist das Verhältnis zwischen Tschechien und der Slowakei <strong>heute</strong>?</div>
+      </div>
+      <div class="ppp-hinweis">📊 <strong>Vortrag, Folie 7:</strong> EU, Sprache, Freundschaft.</div>
+      <span class="antwort-label">Meine Antwort:</span>
+      <textarea placeholder="Heute ist das Verhältnis … weil …" rows="3"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Musterlösung anzeigen</button>
+      <div class="muster-content">Das Verhältnis ist heute sehr eng und freundschaftlich. Beide Länder traten 2004 gemeinsam der EU bei. Ihre Sprachen sind so ähnlich, dass sich Tschechen und Slowaken problemlos verstehen. Die friedliche Trennung wird rückblickend oft als kluge Entscheidung gesehen, die das Verhältnis sogar verbesserte.</div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-outline" onclick="prev(1)">← Zurück</button>
+    <button class="btn btn-primary" onclick="next(1)">Weiter: Quiz &amp; Zuordnung →</button>
+  </div>
+</div>
+
+<!-- ABSCHNITT 2 – QUIZ & ZUORDNUNG -->
+<div class="section" id="s2">
+  <div class="section-header gruen">
+    <div class="section-kicker">Wissen testen · 6 Minuten</div>
+    <h2>Quiz, Lückentext und Zuordnung</h2>
+    <div class="leitfrage">🎯 Sofortiges Feedback – du siehst direkt, ob du richtig liegst.</div>
+  </div>
+
+  <!-- LÜCKENTEXT -->
+  <div class="aufgaben-block">
+    <h3>📝 Lückentext</h3>
+    <div class="luecken-wrap" id="lt">
+      <p>Im November <input class="luecken-input" data-a="1989" placeholder="Jahr"> stürzte die <input class="luecken-input" data-a="Samtene" placeholder="Adjektiv"> Revolution die kommunistische Diktatur. Der Schriftsteller <input class="luecken-input" data-a="Havel" placeholder="Name"> wurde erster demokratischer Präsident. Nach Spannungen zwischen Tschechen und Slowaken trennte sich das Land am 1. Januar <input class="luecken-input" data-a="1993" placeholder="Jahr"> in zwei Staaten. Die Hauptstadt Tschechiens ist <input class="luecken-input" data-a="Prag" placeholder="Stadt">, die Hauptstadt der Slowakei ist <input class="luecken-input" data-a="Bratislava" placeholder="Stadt">. Beide Länder traten <input class="luecken-input" data-a="2004" placeholder="Jahr"> der EU bei.</p>
+    </div>
+    <button class="btn btn-gold" onclick="pruefeLT()" style="margin-bottom:10px;">✓ Lücken überprüfen</button>
+    <div id="lt-erg" style="display:none;font-size:14px;padding:10px;border-radius:7px;"></div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="aufgaben-block">
+    <h3>🎯 Wissensquiz</h3>
+
+    <div class="quiz-frage" id="q1">
+      <h4>1. Warum konnte die Revolution 1989 friedlich verlaufen?</h4>
+      <div class="quiz-optionen">
+        <div class="quiz-option" onclick="qa(this,'q1',false)"><span class="opt-kreis">A</span> Weil die Kommunisten freiwillig zurücktraten</div>
+        <div class="quiz-option" onclick="qa(this,'q1',true)"><span class="opt-kreis">B</span> Weil Gorbatschow auf militärische Eingriffe verzichtete – anders als 1968</div>
+        <div class="quiz-option" onclick="qa(this,'q1',false)"><span class="opt-kreis">C</span> Weil die NATO eingriff</div>
+        <div class="quiz-option" onclick="qa(this,'q1',false)"><span class="opt-kreis">D</span> Weil es kaum Demonstranten gab</div>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-frage" id="q2">
+      <h4>2. Was bedeutet der Begriff „Samtene Scheidung"?</h4>
+      <div class="quiz-optionen">
+        <div class="quiz-option" onclick="qa(this,'q2',false)"><span class="opt-kreis">A</span> Ein Krieg zwischen Tschechen und Slowaken</div>
+        <div class="quiz-option" onclick="qa(this,'q2',false)"><span class="opt-kreis">B</span> Die Wiedervereinigung zweier Staaten</div>
+        <div class="quiz-option" onclick="qa(this,'q2',true)"><span class="opt-kreis">C</span> Die friedliche, geordnete Trennung der Tschechoslowakei in zwei Staaten</div>
+        <div class="quiz-option" onclick="qa(this,'q2',false)"><span class="opt-kreis">D</span> Der Austritt der Tschechoslowakei aus dem Warschauer Pakt</div>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-frage" id="q3">
+      <h4>3. Welche Besonderheit hatte die Trennung 1993?</h4>
+      <div class="quiz-optionen">
+        <div class="quiz-option" onclick="qa(this,'q3',false)"><span class="opt-kreis">A</span> Sie wurde durch eine Volksabstimmung beschlossen</div>
+        <div class="quiz-option" onclick="qa(this,'q3',true)"><span class="opt-kreis">B</span> Sie wurde von Politikern entschieden – ohne Volksabstimmung</div>
+        <div class="quiz-option" onclick="qa(this,'q3',false)"><span class="opt-kreis">C</span> Sie führte zu einem Bürgerkrieg</div>
+        <div class="quiz-option" onclick="qa(this,'q3',false)"><span class="opt-kreis">D</span> Sie wurde von der Sowjetunion erzwungen</div>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+
+    <div class="quiz-frage" id="q4">
+      <h4>4. Wer waren die beiden Politiker, die 1992 die Trennung aushandelten?</h4>
+      <div class="quiz-optionen">
+        <div class="quiz-option" onclick="qa(this,'q4',false)"><span class="opt-kreis">A</span> Havel und Gorbatschow</div>
+        <div class="quiz-option" onclick="qa(this,'q4',false)"><span class="opt-kreis">B</span> Masaryk und Beneš</div>
+        <div class="quiz-option" onclick="qa(this,'q4',true)"><span class="opt-kreis">C</span> Klaus (Tschechien) und Mečiar (Slowakei)</div>
+        <div class="quiz-option" onclick="qa(this,'q4',false)"><span class="opt-kreis">D</span> Dubček und Breschnew</div>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+
+  <!-- ZUORDNUNG -->
+  <div class="aufgaben-block">
+    <h3>🔗 Zuordnung: Jahr / Begriff → Ereignis</h3>
+    <p style="font-size:15px;color:var(--muted);margin-bottom:14px;">Wähle für jeden Begriff das passende Ereignis aus.</p>
+    <div class="zuordnung" id="zo">
+      <div class="zo-paar">
+        <span class="zo-begriff">1989</span>
+        <select class="zo-select" data-a="rev">
+          <option value="">— bitte wählen —</option>
+          <option value="rev">Samtene Revolution – Sturz der Diktatur</option>
+          <option value="scheid">Trennung in zwei Staaten</option>
+          <option value="havel">Havel wird Präsident</option>
+          <option value="eu">EU-Beitritt beider Länder</option>
+        </select>
+      </div>
+      <div class="zo-paar">
+        <span class="zo-begriff">1. Jan. 1993</span>
+        <select class="zo-select" data-a="scheid">
+          <option value="">— bitte wählen —</option>
+          <option value="rev">Samtene Revolution – Sturz der Diktatur</option>
+          <option value="scheid">Trennung in zwei Staaten</option>
+          <option value="havel">Havel wird Präsident</option>
+          <option value="eu">EU-Beitritt beider Länder</option>
+        </select>
+      </div>
+      <div class="zo-paar">
+        <span class="zo-begriff">Václav Havel</span>
+        <select class="zo-select" data-a="havel">
+          <option value="">— bitte wählen —</option>
+          <option value="rev">Samtene Revolution – Sturz der Diktatur</option>
+          <option value="scheid">Trennung in zwei Staaten</option>
+          <option value="havel">Wird erster demokratischer Präsident</option>
+          <option value="eu">EU-Beitritt beider Länder</option>
+        </select>
+      </div>
+      <div class="zo-paar">
+        <span class="zo-begriff">2004</span>
+        <select class="zo-select" data-a="eu">
+          <option value="">— bitte wählen —</option>
+          <option value="rev">Samtene Revolution – Sturz der Diktatur</option>
+          <option value="scheid">Trennung in zwei Staaten</option>
+          <option value="havel">Havel wird Präsident</option>
+          <option value="eu">EU-Beitritt beider Länder</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn btn-gold" onclick="pruefeZO()" style="margin-top:14px;">✓ Zuordnung überprüfen</button>
+    <div id="zo-erg" style="display:none;font-size:14px;padding:10px;border-radius:7px;margin-top:10px;"></div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-outline" onclick="prev(2)">← Zurück</button>
+    <button class="btn btn-primary" onclick="next(2)">Weiter: Weiterdenken →</button>
+  </div>
+</div>
+
+<!-- ABSCHNITT 3 – WEITERDENKEN -->
+<div class="section" id="s3">
+  <div class="section-header rot">
+    <div class="section-kicker">Weiterdenken &amp; Urteilen · 8 Minuten</div>
+    <h2>Streitfrage: Hätte man das Volk fragen müssen?</h2>
+    <div class="leitfrage">🧠 Die Trennung 1993 wurde von Politikern beschlossen – ohne Volksabstimmung. War das richtig?</div>
+  </div>
+
+  <div class="info-box">
+    <h3>📌 Der Hintergrund</h3>
+    <p>Umfragen zeigten damals: Die Mehrheit der Tschechen und Slowaken wollte eigentlich <strong>zusammenbleiben</strong>. Trotzdem beschlossen die Politiker Klaus und Mečiar die Trennung – ohne das Volk abstimmen zu lassen. Über diese Entscheidung wird bis heute diskutiert.</p>
+  </div>
+
+  <div class="pk-grid">
+    <div class="pk-karte pro">
+      <h4>✓ Pro Politiker-Entscheidung</h4>
+      <ul>
+        <li>Schnelle, geordnete Lösung ohne langen Streit</li>
+        <li>Eine Volksabstimmung hätte das Land spalten und lähmen können</li>
+        <li>Die gewählten Politiker hatten ein demokratisches Mandat</li>
+        <li>Ergebnis: friedlich, kein Blutvergießen</li>
+      </ul>
+    </div>
+    <div class="pk-karte kon">
+      <h4>✗ Kontra Politiker-Entscheidung</h4>
+      <ul>
+        <li>Das Volk wollte mehrheitlich zusammenbleiben</li>
+        <li>Eine so große Entscheidung sollte das Volk treffen</li>
+        <li>Die Trennung war eine „Eliten-Entscheidung"</li>
+        <li>Demokratisch fragwürdig: kein direktes Mitspracherecht</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="aufgaben-block">
+    <h3>🖊 Deine Aufgaben</h3>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile"><div class="aufgabe-nr rot">1</div>
+        <div class="aufgabe-text">Wäge ab: Lies beide Argumentkarten. Welches Argument auf jeder Seite findest du am stärksten? Begründe kurz.</div>
+      </div>
+      <span class="antwort-label">Meine Auswahl:</span>
+      <textarea placeholder="Das stärkste Pro-Argument ist … weil …&#10;Das stärkste Kontra-Argument ist … weil …" rows="5"></textarea>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile"><div class="aufgabe-nr rot">2</div>
+        <div class="aufgabe-text"><strong>Dein Urteil:</strong> Hätte man das Volk fragen müssen? Formuliere eine begründete eigene Position (mindestens 4 Sätze). Beziehe Argumente beider Seiten ein.</div>
+      </div>
+      <div class="hinweis">💡 Ein gutes Urteil nennt die Gegenseite und erklärt, warum du dich trotzdem so entscheidest. Es gibt keine „falsche" Meinung – nur schlecht oder gut begründete.</div>
+      <span class="antwort-label">Mein begründetes Urteil:</span>
+      <textarea placeholder="Einerseits … Andererseits … Ich bin der Meinung, dass … weil …" rows="8"></textarea>
+    </div>
+
+    <div class="aufgabe">
+      <div class="aufgabe-zeile"><div class="aufgabe-nr rot">3</div>
+        <div class="aufgabe-text"><strong>Transfer:</strong> Zur gleichen Zeit (1991–95) zerfiel auch Jugoslawien – aber durch einen blutigen Bürgerkrieg mit Zehntausenden Toten. Stelle eine Vermutung an: Warum verlief die eine Trennung friedlich und die andere gewaltsam?</div>
+      </div>
+      <div class="hinweis">💡 Diese Frage ist offen. Denk an: Anzahl der Volksgruppen, gemischte Wohngebiete, Rolle der Politiker, Geschichte der Konflikte.</div>
+      <span class="antwort-label">Meine Vermutung:</span>
+      <textarea placeholder="Ich vermute, dass die tschechoslowakische Trennung friedlich verlief, weil … Im Gegensatz dazu …" rows="6"></textarea>
+      <button class="muster-btn" onclick="toggleM(this)">🔍 Denkanstoß anzeigen</button>
+      <div class="muster-content">Mögliche Gründe (kein „richtig" oder „falsch", sondern Denkanstöße): In der Tschechoslowakei gab es nur zwei große Gruppen mit klarer geografischer Trennung (Tschechen im Westen, Slowaken im Osten) – die Grenze war einfach zu ziehen. In Jugoslawien lebten viele Volksgruppen gemischt durcheinander, es gab keine klaren Grenzen. Außerdem setzten in Jugoslawien Politiker bewusst auf nationalistische Hetze und Gewalt, während Klaus und Mečiar auf Verhandlung setzten. Auch historische Konflikte und Erinnerungen an frühere Gewalt spielten in Jugoslawien eine größere Rolle.</div>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-outline" onclick="prev(3)">← Zurück</button>
+    <button class="btn btn-primary" onclick="next(3)">Weiter: Abschluss →</button>
+  </div>
+</div>
+
+<!-- ABSCHNITT 4 – ABSCHLUSS -->
+<div class="section" id="s4">
+  <div class="abschluss-card">
+    <div class="sterne">⭐⭐⭐</div>
+    <h2>Geschafft!</h2>
+    <p>Du hast das Arbeitsblatt zum Ende der Tschechoslowakei abgeschlossen.</p>
+  </div>
+
+  <div class="info-box" style="margin-top:16px;">
+    <h3>📋 Das solltest du jetzt wissen</h3>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-year">1989</div><div class="tl-text"><strong>Samtene Revolution:</strong> friedlicher Sturz der Diktatur, Havel wird Präsident.</div></div>
+      <div class="tl-item"><div class="tl-year">1990–92</div><div class="tl-text"><strong>Spannungen:</strong> Tschechen und Slowaken driften auseinander.</div></div>
+      <div class="tl-item"><div class="tl-year">1993</div><div class="tl-text"><strong>Samtene Scheidung:</strong> friedliche Trennung in zwei Staaten.</div></div>
+      <div class="tl-item"><div class="tl-year">heute</div><div class="tl-text"><strong>Freundschaft:</strong> beide in der EU, enge Partner.</div></div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <h3>🗺 Für die Fahrt nach Prag</h3>
+    <ul>
+      <li><strong>Wenzelsplatz:</strong> Hier versammelten sich 1989 die Hunderttausenden der Samtenen Revolution – einer der wichtigsten Orte eurer Reise.</li>
+      <li><strong>Národní třída:</strong> Hier begann am 17. November 1989 alles – mit der niedergeschlagenen Studentendemonstration. Es gibt eine Gedenkstätte.</li>
+      <li><strong>Prager Burg:</strong> Hier residierte Václav Havel als Präsident.</div></li>
+    </ul>
+  </div>
+
+  <div class="methoden-box">
+    <h4>📌 Merksatz</h4>
+    <p style="font-size:15px;font-style:italic;color:var(--text);">„Die Tschechoslowakei entstand 1918 friedlich, durchlebte zwei Diktaturen – und endete 1993 ebenso friedlich, wie sie begonnen hatte. Aus einem Land wurden zwei gute Nachbarn."</p>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-outline" onclick="prev(4)">← Zurück</button>
+    <button class="btn btn-gold" onclick="restart()">↩ Von vorne beginnen</button>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+const GESAMT = 5;
+let done = new Set();
+
+function updateProgress(){
+  const pct = Math.round((done.size/(GESAMT-1))*100);
+  document.getElementById('pFill').style.width = pct+'%';
+  document.getElementById('pLabel').textContent = 'Abschnitt '+done.size+' von '+(GESAMT-1)+' abgeschlossen';
+}
+function go(nr){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+nr).classList.add('active');
+  const tabs=document.querySelectorAll('.nav-tab');
+  tabs.forEach((t,i)=>{t.classList.remove('active');if(done.has(i)&&i!==nr)t.classList.add('done');else t.classList.remove('done');});
+  tabs[nr].classList.add('active');tabs[nr].classList.remove('done');
+  updateProgress();window.scrollTo({top:0,behavior:'smooth'});
+}
+function next(v){done.add(v);go(v+1);}
+function prev(v){go(v-1);}
+function restart(){done.clear();go(0);}
+
+function toggleM(btn){
+  const c=btn.nextElementSibling;
+  const open=c.classList.toggle('open');
+  btn.textContent=open?'🔼 Ausblenden':(btn.textContent.includes('Denkanstoß')?'🔍 Denkanstoß anzeigen':'🔍 Musterlösung anzeigen');
+}
+
+function qa(el,id,korrekt){
+  const f=document.getElementById(id);
+  if(f.dataset.done)return;f.dataset.done='1';
+  f.querySelectorAll('.quiz-option').forEach(o=>{o.onclick=null;o.style.cursor='default';});
+  const fb=f.querySelector('.quiz-feedback');
+  if(korrekt){el.classList.add('richtig');el.querySelector('.opt-kreis').textContent='✓';fb.className='quiz-feedback ok';fb.textContent='✓ Richtig!';}
+  else{el.classList.add('falsch');el.querySelector('.opt-kreis').textContent='✗';
+    f.querySelectorAll('.quiz-option').forEach(o=>{if(o.dataset.k==='true')o.classList.add('richtig');});
+    fb.className='quiz-feedback err';fb.textContent='✗ Leider falsch. Die richtige Antwort ist grün markiert.';}
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.quiz-option').forEach(o=>{
+    const oc=o.getAttribute('onclick')||'';
+    const m=oc.match(/qa\(this,'([^']+)',(true|false)\)/);
+    if(m){o.dataset.k=m[2];const id=m[1],k=m[2]==='true';o.onclick=function(){qa(this,id,k);};}
+  });
+  updateProgress();
+});
+
+function pruefeLT(){
+  const inp=document.querySelectorAll('#lt .luecken-input');let r=0;
+  inp.forEach(i=>{
+    const v=i.value.trim().toLowerCase().replace(/\s+/g,'');
+    const a=(i.dataset.a||'').toLowerCase().replace(/\s+/g,'');
+    const ok=v.length>0&&(v===a||a.startsWith(v.substring(0,Math.max(3,v.length-1))));
+    i.classList.toggle('ok',ok&&v.length>0);i.classList.toggle('err',!ok&&v.length>0);
+    if(ok&&v.length>0)r++;
+  });
+  const e=document.getElementById('lt-erg');e.style.display='block';
+  if(r===inp.length){e.style.cssText='display:block;padding:11px;background:var(--hellgruen);border-radius:7px;color:var(--gruen);font-size:14px;';e.textContent='✓ Alle '+inp.length+' Lücken korrekt!';}
+  else{e.style.cssText='display:block;padding:11px;background:var(--hellrot);border-radius:7px;color:var(--rot);font-size:14px;';e.textContent=r+' von '+inp.length+' korrekt. Rot markierte Felder noch einmal überprüfen.';}
+}
+
+function pruefeZO(){
+  const sel=document.querySelectorAll('#zo .zo-select');let r=0;
+  sel.forEach(s=>{
+    const ok=s.value===s.dataset.a&&s.value!=='';
+    s.classList.toggle('ok',ok);s.classList.toggle('err',!ok&&s.value!=='');
+    if(ok)r++;
+  });
+  const e=document.getElementById('zo-erg');e.style.display='block';
+  if(r===sel.length){e.style.cssText='display:block;padding:10px;background:var(--hellgruen);border-radius:7px;color:var(--gruen);font-size:14px;margin-top:10px;';e.textContent='✓ Alle Zuordnungen richtig!';}
+  else{e.style.cssText='display:block;padding:10px;background:var(--hellrot);border-radius:7px;color:var(--rot);font-size:14px;margin-top:10px;';e.textContent=r+' von '+sel.length+' richtig. Rot markierte noch einmal prüfen.';}
+}
+</script>
+</body>
+</html>
