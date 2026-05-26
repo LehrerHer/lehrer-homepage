@@ -175,22 +175,36 @@
             <div class="bereiche-grid">
 
                 <!-- Fächervorstellung – öffentlich -->
-                <div class="bereich-karte bereich-oeffnetlich">
+                <div class="bereich-karte bereich-oeffnetlich bereich-karte-klickbar"
+                     onclick="if(!event.target.closest('a'))location.href='faecher.html'"
+                     role="link"
+                     tabindex="0"
+                     onkeydown="if(event.key==='Enter'&amp;&amp;!event.target.closest('a'))location.href='faecher.html'"
+                     title="Alle Fächer ansehen">
                     <div class="bereich-badge-zeile">
                         <span class="bereich-status bereich-status-offen">✓ Öffentlich</span>
                     </div>
                     <div class="bereich-icon">📚</div>
                     <h3>Fächervorstellung</h3>
-                    <p>Übersicht über alle Unterrichtsfächer: Deutsch, Geschichte, Wirtschaft/Politik, Informatik, Werte &amp; Normen, weitere Fächer und AGs &amp; Projekte.</p>
+                    <p>Alle Unterrichtsfächer auf einen Blick – klick ein Fach an oder öffne die Übersicht.</p>
                     <div class="bereich-links">
                         <a href="fach-deutsch.html">📖 Deutsch</a>
                         <a href="fach-geschichte.html">🏛️ Geschichte</a>
                         <a href="fach-wipo.html">🌍 WiPo</a>
                         <a href="fach-informatik.html">💻 Informatik</a>
                         <a href="fach-werte-normen.html">⚖️ W&amp;N</a>
-                        <a href="fach-andere.html">📂 Andere</a>
-                        <a href="fach-ag-projekte.html">🎭 AGs</a>
+                        <a href="fach-andere.html">➗ Mathe</a>
+                        <a href="fach-andere.html">🇬🇧 Englisch</a>
+                        <a href="fach-andere.html">⚽ Sport</a>
+                        <a href="fach-andere.html">🌿 Biologie</a>
+                        <a href="fach-andere.html">⚗️ Chemie</a>
+                        <a href="fach-andere.html">⚡ Physik</a>
+                        <a href="fach-andere.html">🎵 Musik</a>
+                        <a href="fach-andere.html">🗺️ Erdkunde</a>
+                        <a href="fach-andere.html">🎨 Gest. Werken</a>
+                        <a href="fach-ag-projekte.html">🎭 AGs &amp; Projekte</a>
                     </div>
+                    <span class="bereich-cta">→ Alle Fächer</span>
                 </div>
 
                 <!-- Arena / Lernkolosseum – Login nötig -->
