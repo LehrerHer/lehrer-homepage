@@ -126,13 +126,6 @@
 </head>
 <body>
 
-<!-- ── Oben fixiertes Banner für wichtige Meldungen ── -->
-<div id="top-banner" style="
-  display:none; position:fixed; top:0; left:0; right:0; z-index:999;
-  padding:12px 20px; font-size:.95rem; font-weight:600;
-  text-align:center; box-shadow:0 2px 8px rgba(0,0,0,.2);">
-</div>
-
 <header>
   <h1>RESO Dashboard</h1>
   <div class="hdr-inputs">
@@ -153,6 +146,12 @@
 </nav>
 
 <main>
+<!-- Banner: erscheint unter den Tabs, nie vor dem Token-Feld -->
+<div id="top-banner" style="
+  display:none; position:sticky; top:0; z-index:50;
+  padding:12px 20px; font-size:.95rem; font-weight:600;
+  text-align:center; box-shadow:0 2px 8px rgba(0,0,0,.15); margin-bottom:8px;">
+</div>
 <div id="global-msg" class="msg"></div>
 
 <!-- ═══════════════════════════════ Tab 1: Ergebnisliste -->
