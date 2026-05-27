@@ -201,7 +201,7 @@
   </div>
   <div class="card">
     <h2>Vorhandene Klassen</h2>
-    <div id="klassen-list"><div class="empty-state">Token eingeben und „Laden" klicken.</div></div>
+    <div id="klassen-list"><div class="empty-state">Noch keine Klassen angelegt.</div></div>
   </div>
 </div>
 </main>
@@ -267,6 +267,8 @@ function tab(id, btn) {
   document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
   document.getElementById(id).classList.add("active");
   btn.classList.add("active");
+  // Beim Wechsel zum Klassen-Tab: Liste sofort laden (wenn Token vorhanden)
+  if (id === "t-klassen" && token()) loadKlassen();
 }
 
 // ── Daten laden ──────────────────────────────────────────────────────────────
@@ -299,10 +301,13 @@ async function loadKlassen() {
     klassen = await res.json();
     renderKlassenList();
     updateKlasseSelect();
-    if (!klasseCode()) {
-      msg(klassen.length > 0
-        ? `${klassen.length} Klasse(n) geladen – bitte auswählen.`
-        : "Keine Klassen vorhanden. Lege unter „Klassen" eine neue an.", "info");
+    if (klassen.length === 0) {
+      // Noch keine Klassen → direkt zum Klassen-Tab navigieren
+      const klassenBtn = document.querySelector("nav button:nth-child(4)");
+      tab("t-klassen", klassenBtn);
+      banner("👋 Noch keine Klassen vorhanden – lege jetzt die erste Klasse an!", "info");
+    } else if (!klasseCode()) {
+      banner(`✅ ${klassen.length} Klasse(n) geladen – bitte oben auswählen.`, "ok");
     }
   } catch(e) { msg("Klassen konnten nicht geladen werden – Netzwerkfehler?", "err"); }
 }
@@ -615,12 +620,16 @@ async function checkApi() {
 // Token aus LocalStorage – bei vorhandenem Token direkt Klassen laden
 window.onload = async () => {
   const t = localStorage.getItem("reso_token");
-  if (t) document.getElementById("inp-token").value = t;
-
-  // Zuerst Verbindung prüfen
-  const apiOk = await checkApi();
-  if (apiOk && t) {
-    await loadKlassen();
+  if (t) {
+    document.getElementById("inp-token").value = t;
+    // Zuerst Verbindung prüfen, dann Klassen laden
+    const apiOk = await checkApi();
+    if (apiOk) await loadKlassen();
+  } else {
+    // Kein Token gespeichert → direkt zum Klassen-Tab mit Hinweis
+    const klassenBtn = document.querySelector("nav button:nth-child(4)");
+    tab("t-klassen", klassenBtn);
+    banner("Bitte Token oben eingeben und dann eine Klasse anlegen.", "info");
   }
 };
 
