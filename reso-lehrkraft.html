@@ -130,7 +130,7 @@
   <h1>RESO Dashboard</h1>
   <div class="hdr-inputs">
     <input id="inp-token" type="password" placeholder="Lehrkraft-Token" autocomplete="off">
-    <select id="inp-klasse">
+    <select id="inp-klasse" onchange="onKlasseChange()">
       <option value="">— Klasse wählen —</option>
     </select>
     <button class="btn-hdr" onclick="loadData()">Laden ↻</button>
@@ -250,17 +250,37 @@ function tab(id, btn) {
 // ── Daten laden ──────────────────────────────────────────────────────────────
 async function loadData() {
   if (!token()) { msg("Bitte Token eingeben.", "err"); return; }
-  await Promise.all([loadKlassen(), loadErgebnisse()]);
+  await loadKlassen();
+  await loadErgebnisse();
+}
+
+// Wird aufgerufen, wenn Klasse im Dropdown geändert wird
+async function onKlasseChange() {
+  if (!token()) { msg("Bitte Token eingeben.", "err"); return; }
+  if (klasseCode()) await loadErgebnisse();
 }
 
 async function loadKlassen() {
   try {
     const res = await fetch(API + "/klassen", {headers:{Authorization:"Bearer "+token()}});
-    if (!res.ok) throw new Error(res.status);
+    if (!res.ok) {
+      const status = res.status;
+      if (status === 401 || status === 403) {
+        msg("Ungültiger Token – bitte korrekten Token eingeben.", "err");
+      } else {
+        msg(`Klassen konnten nicht geladen werden (Fehler ${status}).`, "err");
+      }
+      return;
+    }
     klassen = await res.json();
     renderKlassenList();
     updateKlasseSelect();
-  } catch(e) { msg("Klassen konnten nicht geladen werden (Token korrekt?).", "err"); }
+    if (!klasseCode()) {
+      msg(klassen.length > 0
+        ? `${klassen.length} Klasse(n) geladen – bitte auswählen.`
+        : "Keine Klassen vorhanden. Lege unter „Klassen" eine neue an.", "info");
+    }
+  } catch(e) { msg("Klassen konnten nicht geladen werden – Netzwerkfehler?", "err"); }
 }
 
 async function loadErgebnisse() {
@@ -439,19 +459,50 @@ function renderProfil() {
 async function createKlasse() {
   const name = document.getElementById("inp-new-klasse").value.trim();
   const el = document.getElementById("create-msg");
-  if (!name) { el.textContent="Name eingeben."; el.className="msg err"; return; }
-  if (!token()) { el.textContent="Token eingeben."; el.className="msg err"; return; }
+  if (!name) { showMsg(el, "Klassenname eingeben.", "err"); return; }
+  if (!token()) { showMsg(el, "Token eingeben.", "err"); return; }
+  const btn = document.querySelector("#t-klassen .btn-primary");
+  btn.disabled = true; btn.textContent = "…";
   try {
     const res = await fetch(API+"/klasse",{method:"POST",
       headers:{"Content-Type":"application/json","Authorization":"Bearer "+token()},
       body:JSON.stringify({name})});
-    if (!res.ok) throw new Error(res.status);
+    if (!res.ok) {
+      const status = res.status;
+      const errText = status === 401 || status === 403
+        ? "Token ungültig – kein Zugriff."
+        : `Fehler beim Anlegen (HTTP ${status}).`;
+      showMsg(el, errText, "err");
+      return;
+    }
     const d = await res.json();
-    el.textContent = `Klasse angelegt! Code: ${d.code}  (an Schüler:innen weitergeben)`;
-    el.className = "msg ok";
     document.getElementById("inp-new-klasse").value = "";
+    // Klassenoption anlegen & auswählen
     await loadKlassen();
-  } catch(e) { el.textContent="Fehler beim Anlegen."; el.className="msg err"; }
+    document.getElementById("inp-klasse").value = d.code;
+    allData = null; renderListe(); renderHeatmap(); updateSchuelerSelect();
+    // Code prominent anzeigen mit Kopier-Button
+    showMsg(el,
+      `Klasse „${d.name}" angelegt! Code: <strong>${d.code}</strong>
+       <button onclick="copyCode('${d.code}',this)"
+         style="margin-left:10px;padding:2px 10px;border:none;border-radius:6px;
+                background:#166534;color:#fff;cursor:pointer;font-size:.82rem">
+         📋 Kopieren</button>`, "ok", false);
+  } catch(e) { showMsg(el, "Netzwerkfehler – Verbindung zur API prüfen.", "err"); }
+  finally { btn.disabled = false; btn.textContent = "Anlegen"; }
+}
+
+function copyCode(code, btn) {
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = "✓ Kopiert!"; btn.disabled = true;
+  });
+}
+
+// Hilfsfunktion: Nachricht in einem lokalen msg-div setzen
+function showMsg(el, html, type, autoHide = true) {
+  el.innerHTML = html;
+  el.className = "msg " + type;
+  if (autoHide && type !== "err") setTimeout(() => { el.className = "msg"; }, 6000);
 }
 
 function renderKlassenList() {
@@ -510,13 +561,17 @@ async function deleteKlasse(code) {
   } catch(e) { msg("Fehler beim Löschen.", "err"); }
 }
 
-// Token aus LocalStorage (optional merken)
+// Token aus LocalStorage – bei vorhandenem Token direkt Klassen laden
 window.onload = () => {
   const t = localStorage.getItem("reso_token");
-  if (t) document.getElementById("inp-token").value = t;
+  if (t) {
+    document.getElementById("inp-token").value = t;
+    loadKlassen(); // direkt beim Seitenstart laden
+  }
 };
-document.getElementById("inp-token").addEventListener("change", e => {
-  localStorage.setItem("reso_token", e.target.value);
+// Token bei jeder Eingabe speichern (nicht erst beim Fokusverlust)
+document.getElementById("inp-token").addEventListener("input", e => {
+  localStorage.setItem("reso_token", e.target.value.trim());
 });
 </script>
 </body>
