@@ -166,8 +166,13 @@ Das Copyright-Jahr wird dynamisch via `id="footer-jahr"` gesetzt (bereits implem
 ```
 Startseite (index.html)
 ├── Aufbau-Banner    → (.aufbau-banner) Hinweis zwischen Navbar und Bereiche-Kacheln
-├── #startseite      → Bereiche-Übersicht: 6 Kacheln (Fächer, Arena, Materialien,
-│                      Blog, Leseabenteuer, Jan Herrmann – Wer bin ich?)
+├── #startseite      → Bereiche-Übersicht: 6 Kacheln in dieser Reihenfolge:
+│                      1. Fächervorstellung (öffentlich, klickbar → faecher.html)
+│                      2. Arena – Lernkolosseum (🔒)
+│                      3. Jan Herrmann – Wer bin ich? (öffentlich)
+│                      4. Schüler*innenblog (🔒)
+│                      5. Leseabenteuer (🔒)
+│                      6. Materialien & Quizze (🔒)
 ├── #was-ist-neu     → Aktuelle Funktionen, Quiz-Leistungen, neue Materialien
 ├── Login-Gate       → sichtbar wenn NICHT eingeloggt
 ├── Lernkolosseum-Teaser → sichtbar wenn eingeloggt
@@ -264,9 +269,15 @@ XP werden nur bei **Verbesserungen** gutgeschrieben (Differenz zum bisherigen Be
 
 ### `index.html`
 - **Sektionsreihenfolge:** Navbar → Aufbau-Banner (`.aufbau-banner`) → Bereiche-Übersicht (`#startseite`, `.bereiche-uebersicht-section`) → `#was-ist-neu` → Gladiatoren-Teaser → Login-Gate → `#lernkolosseum` → `#digitale-materialien` → Blog-Teaser → `#kontakt` → Footer
-- Bereiche-Grid: 6 Kacheln (Fächervorstellung, Arena, Materialien, Blog, Leseabenteuer, Jan Herrmann)
+- **Bereiche-Grid:** 6 Kacheln in fester Reihenfolge:
+  1. **Fächervorstellung** (öffentlich) — alle 15 Fächer als Pill-Chips; Klick auf Chip → Fachseite; Klick auf Karte → `faecher.html`; umgesetzt via `.bereich-karte-klickbar` + `onclick="if(!event.target.closest('a'))location.href='faecher.html'"`
+  2. **Arena – Lernkolosseum** (🔒 Login)
+  3. **Jan Herrmann – Wer bin ich?** (öffentlich)
+  4. **Schüler\*innenblog** (🔒 Login)
+  5. **Leseabenteuer** (🔒 Login)
+  6. **Materialien & Quizze** (🔒 Login)
 - Digitalematerialien-Sektion: Jahrgang-Filterleiste (`.dm-filter-leiste`) über dem Grid; Karten tragen `data-jahrgang="5-6|7-8|9-10"` Attribute
-- `id="startseite"` sitzt jetzt auf der `<section class="bereiche-uebersicht-section">` (kein Hero mehr)
+- `id="startseite"` sitzt auf der `<section class="bereiche-uebersicht-section">` (kein Hero mehr)
 - Copyright year dynamisch via `id="footer-jahr"`
 - Scripts: `main.js`, `dynamic-content.js`, `homepage-gate.js`, `kolosseum-login-widget.js`
 
@@ -309,10 +320,13 @@ CSS Custom Properties (`:root`):
 
 Responsive Breakpoints: `768px` (Tablet), `480px` (Mobil). Layout: CSS Grid + Flexbox.
 
-Wichtige Navbar-spezifische CSS-Klassen (ab 2026-05):
+Wichtige CSS-Klassen (ab 2026-05):
 - `.navbar-gb-trenner` / `.navbar-gb-label` — Trenner + Beschriftung „Geschützter Bereich"
 - `.navbar-gb-link` — amber/goldene Links (Arena, Blog, Fächer)
 - `#kolo-widget .kolo-user-chip` — Farb-Override für eingeloggten Gladiatorennamen
+- `.bereich-karte-klickbar` — `cursor: pointer` für Kacheln, die per `onclick` navigieren (ohne `<a>`-Wrapper)
+
+**Hinweis Kolosseum-CSS** (`kolosseum/public/css/style.css`): Der Kolosseum-Server lädt seine eigene CSS-Datei, nicht die Haupt-`style.css`. Navbar-Stile sind daher dort separat mit hardcodierten Farbwerten dupliziert. Bei Navbar-CSS-Änderungen in `css/style.css` immer auch `kolosseum/public/css/style.css` am Ende (Abschnitt „SITE NAVBAR") aktualisieren.
 
 ---
 
