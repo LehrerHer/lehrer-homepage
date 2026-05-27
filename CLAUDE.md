@@ -29,6 +29,14 @@ lehrer-homepage/
 ├── Material manuell von mir/  # Source files uploaded manually by Jan Herrmann (PPTX, images, etc.)
 ├── upload/              # Drop folder for raw worksheet files
 │   └── _erledigt/       # Processed originals (moved here after conversion)
+├── reso-selbsttest.html # RESO Rechtschreibdiagnostik: Schüler-Selbsttest (5 Varianten × 35 Items)
+├── reso-lehrkraft.html  # RESO Rechtschreibdiagnostik: Lehrkraft-Dashboard
+├── reso-backend/        # RESO API-Backend (FastAPI + SQLite, läuft als systemd-Service)
+│   ├── api.py           # FastAPI-App, Endpunkte: /klasse, /klassen, /ergebnis, /ergebnisse
+│   ├── requirements.txt # Python-Abhängigkeiten (fastapi, uvicorn, pydantic)
+│   ├── reso-api.service # systemd-Servicedatei
+│   ├── nginx-snippet.conf # (veraltet – Server nutzt Caddy, nicht nginx)
+│   └── setup.sh         # Einmaliges Server-Setup-Skript
 ├── kolosseum/           # Lernkolosseum (geschützter Bereich, Node.js-Backend)
 │   ├── public/
 │   │   ├── profil.html
@@ -396,6 +404,37 @@ Einmalige Einrichtung (nur wenn Webhook noch nicht aktiv):
    - Secret: dasselbe wie `DEPLOY_SECRET`
    - Event: *Just the push event*
 
+### Server-Infrastruktur (Stand 2026-05)
+
+**Webserver: Caddy** (kein nginx!) — Config unter `/etc/caddy/Caddyfile`:
+
+```
+lehrer-herrmann.de, www.lehrer-herrmann.de {
+    root * /var/www/lehrer-homepage
+    handle /reso-api/* {
+        uri strip_prefix /reso-api
+        reverse_proxy localhost:8400
+    }
+    file_server
+}
+
+kolosseum.lehrer-herrmann.de {
+    reverse_proxy localhost:3000
+}
+```
+
+Caddy neu laden nach Änderungen: `systemctl reload caddy`
+
+**RESO API** läuft als systemd-Service auf Port `8400`:
+- Service-Name: `reso-api`
+- Prozess: `/opt/reso/venv/bin/uvicorn api:app --host 127.0.0.1 --port 8400`
+- Datenbank: `/opt/reso/reso.db` (SQLite)
+- Token: in `/etc/systemd/system/reso-api.service` unter `RESO_TOKEN=...`
+- Neustart nach Token-Änderung: `systemctl daemon-reload && systemctl restart reso-api`
+- Erreichbar von außen: `https://lehrer-herrmann.de/reso-api/`
+
+**Kolosseum-Backend** (Node.js/PM2): läuft auf Port `3000`
+
 ---
 
 ## Formspree Setup
@@ -435,6 +474,44 @@ Alle Änderungen müssen sicherstellen:
 - Keine globalen JavaScript-Variablen (IIFEs verwenden)
 - Keine Farben hardcoden — bestehende CSS-Variablen verwenden
 - Header oder Footer auf keiner Seite weglassen oder abweichend gestalten
+
+---
+
+## RESO Rechtschreibdiagnostik (Stand 2026-05)
+
+RESO ist ein eigenständiges Diagnosesystem für den Deutschunterricht. Es besteht aus drei Teilen:
+
+### Schüler-Selbsttest (`reso-selbsttest.html`)
+- Öffentlich erreichbar unter `https://lehrer-herrmann.de/reso-selbsttest.html`
+- 5 Varianten × 35 Items, 7 Rechtschreibkategorien (Doppelkonsonanten, s/ß/ss, Auslautverhärtung, ä/äu, Zusammensetzungen, Ableitungen/Vorsilben, Groß-/Kleinschreibung)
+- Schüler:innen geben Klassencode + Namen ein → wählen Variante → Multiple-Choice-Test → Ergebnis → optional an Lehrkraft senden (POST an `/reso-api/ergebnis`)
+- API-URL ist fest eingebaut: `https://lehrer-herrmann.de/reso-api`
+
+### Lehrkraft-Dashboard (`reso-lehrkraft.html`)
+- Öffentlich erreichbar unter `https://lehrer-herrmann.de/reso-lehrkraft.html`
+- Login via **Lehrkraft-Token** (Bearer-Token, wird im Header mitgeschickt)
+- 4 Tabs: Ergebnisliste · Klassenheatmap · Schülerprofil · Klassen verwalten
+- Klassen anlegen → Code kopieren → an Schüler:innen weitergeben
+
+### Backend (`reso-backend/api.py`)
+- FastAPI + SQLite, läuft als systemd-Service `reso-api` auf Port 8400
+- Proxy via Caddy: `https://lehrer-herrmann.de/reso-api/` → `localhost:8400`
+- **Wichtige Endpunkte:**
+
+| Methode | Pfad | Auth | Zweck |
+|---------|------|------|-------|
+| POST | `/klasse` | ✅ Token | Neue Klasse anlegen |
+| GET | `/klassen` | ✅ Token | Alle Klassen abrufen |
+| POST | `/ergebnis` | ❌ öffentlich | Schülerergebnis einreichen |
+| GET | `/ergebnisse/{code}` | ✅ Token | Ergebnisse einer Klasse |
+| DELETE | `/ergebnis/{id}` | ✅ Token | Ergebnis löschen |
+| DELETE | `/klasse/{code}` | ✅ Token | Klasse löschen |
+
+### Token ändern (per SSH)
+```bash
+sed -i 's/RESO_TOKEN=alterToken/RESO_TOKEN=neuerToken/' /etc/systemd/system/reso-api.service
+systemctl daemon-reload && systemctl restart reso-api
+```
 
 ---
 

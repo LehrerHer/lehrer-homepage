@@ -9,7 +9,7 @@
 
   var K = 'https://kolosseum.lehrer-herrmann.de';
 
-  var PROTECTED_IDS = ['lernkolosseum', 'digitale-materialien', 'blog-teaser'];
+  var PROTECTED_IDS = ['reso-teaser', 'lernkolosseum', 'digitale-materialien', 'blog-teaser'];
   var GATE_ID       = 'homepage-login-gate';
 
   function setProtectedVisible(visible) {
