@@ -1,0 +1,18 @@
+[Unit]
+Description=RESO API (FastAPI)
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/reso
+Environment="RESO_DB=/opt/reso/reso.db"
+# Token hier setzen – oder besser via EnvironmentFile:
+# EnvironmentFile=/opt/reso/.env
+Environment="RESO_TOKEN=HIER_SICHERES_TOKEN_EINTRAGEN"
+ExecStart=/opt/reso/venv/bin/uvicorn api:app --host 127.0.0.1 --port 8400 --workers 2
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
