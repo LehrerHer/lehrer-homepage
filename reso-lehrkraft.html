@@ -126,6 +126,13 @@
 </head>
 <body>
 
+<!-- ── Oben fixiertes Banner für wichtige Meldungen ── -->
+<div id="top-banner" style="
+  display:none; position:fixed; top:0; left:0; right:0; z-index:999;
+  padding:12px 20px; font-size:.95rem; font-weight:600;
+  text-align:center; box-shadow:0 2px 8px rgba(0,0,0,.2);">
+</div>
+
 <header>
   <h1>RESO Dashboard</h1>
   <div class="hdr-inputs">
@@ -135,6 +142,7 @@
     </select>
     <button class="btn-hdr" onclick="loadData()">Laden ↻</button>
   </div>
+  <span id="api-status" style="font-size:.8rem;opacity:.85">…</span>
 </header>
 
 <nav>
@@ -193,7 +201,7 @@
   </div>
   <div class="card">
     <h2>Vorhandene Klassen</h2>
-    <div id="klassen-list"><div class="empty-state">Token eingeben und „Laden" klicken.</div></div>
+    <div id="klassen-list"><div class="empty-state">Noch keine Klassen angelegt.</div></div>
   </div>
 </div>
 </main>
@@ -231,12 +239,26 @@ let klassen = [];     // alle Klassen
 function token() { return document.getElementById("inp-token").value.trim(); }
 function klasseCode() { return document.getElementById("inp-klasse").value; }
 
+// ── Oben-fixiertes Banner (immer sichtbar, auch beim Scrollen) ───────────────
+function banner(text, type="info") {
+  const el = document.getElementById("top-banner");
+  el.textContent = text;
+  el.style.display = "block";
+  el.style.background = type==="err"  ? "#dc2626" :
+                         type==="ok"   ? "#16a34a" : "#2563eb";
+  el.style.color = "#fff";
+  if (type !== "err") {
+    setTimeout(() => { el.style.display = "none"; }, 6000);
+  }
+  // Auch im globalen msg-Bereich anzeigen
+  const gm = document.getElementById("global-msg");
+  gm.textContent = text;
+  gm.className = "msg " + type;
+}
+
 // ── Globale Nachricht ────────────────────────────────────────────────────────
 function msg(text, type="info") {
-  const el = document.getElementById("global-msg");
-  el.textContent = text;
-  el.className = "msg " + type;
-  if (type !== "err") setTimeout(() => { el.className="msg"; }, 4000);
+  banner(text, type);
 }
 
 // ── Tab-Wechsel ──────────────────────────────────────────────────────────────
@@ -245,11 +267,15 @@ function tab(id, btn) {
   document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
   document.getElementById(id).classList.add("active");
   btn.classList.add("active");
+  // Beim Wechsel zum Klassen-Tab: Liste sofort laden (wenn Token vorhanden)
+  if (id === "t-klassen" && token()) loadKlassen();
 }
 
 // ── Daten laden ──────────────────────────────────────────────────────────────
 async function loadData() {
   if (!token()) { msg("Bitte Token eingeben.", "err"); return; }
+  const apiOk = await checkApi();
+  if (!apiOk) return;
   await loadKlassen();
   await loadErgebnisse();
 }
@@ -275,10 +301,13 @@ async function loadKlassen() {
     klassen = await res.json();
     renderKlassenList();
     updateKlasseSelect();
-    if (!klasseCode()) {
-      msg(klassen.length > 0
-        ? `${klassen.length} Klasse(n) geladen – bitte auswählen.`
-        : "Keine Klassen vorhanden. Lege unter „Klassen" eine neue an.", "info");
+    if (klassen.length === 0) {
+      // Noch keine Klassen → direkt zum Klassen-Tab navigieren
+      const klassenBtn = document.querySelector("nav button:nth-child(4)");
+      tab("t-klassen", klassenBtn);
+      banner("👋 Noch keine Klassen vorhanden – lege jetzt die erste Klasse an!", "info");
+    } else if (!klasseCode()) {
+      banner(`✅ ${klassen.length} Klasse(n) geladen – bitte oben auswählen.`, "ok");
     }
   } catch(e) { msg("Klassen konnten nicht geladen werden – Netzwerkfehler?", "err"); }
 }
@@ -470,9 +499,10 @@ async function createKlasse() {
     if (!res.ok) {
       const status = res.status;
       const errText = status === 401 || status === 403
-        ? "Token ungültig – kein Zugriff."
+        ? `Token ungültig (HTTP ${status}) – bitte richtigen Token verwenden.`
         : `Fehler beim Anlegen (HTTP ${status}).`;
       showMsg(el, errText, "err");
+      banner(errText, "err");
       return;
     }
     const d = await res.json();
@@ -481,14 +511,19 @@ async function createKlasse() {
     await loadKlassen();
     document.getElementById("inp-klasse").value = d.code;
     allData = null; renderListe(); renderHeatmap(); updateSchuelerSelect();
-    // Code prominent anzeigen mit Kopier-Button
-    showMsg(el,
-      `Klasse „${d.name}" angelegt! Code: <strong>${d.code}</strong>
+    // Code lokal + oben anzeigen
+    const successHtml = `Klasse „${d.name}" angelegt! Code: <strong>${d.code}</strong>
        <button onclick="copyCode('${d.code}',this)"
          style="margin-left:10px;padding:2px 10px;border:none;border-radius:6px;
                 background:#166534;color:#fff;cursor:pointer;font-size:.82rem">
-         📋 Kopieren</button>`, "ok", false);
-  } catch(e) { showMsg(el, "Netzwerkfehler – Verbindung zur API prüfen.", "err"); }
+         📋 Kopieren</button>`;
+    showMsg(el, successHtml, "ok", false);
+    banner(`✅ Klasse „${d.name}" angelegt! Code: ${d.code} — an Schüler:innen weitergeben.`, "ok");
+  } catch(e) {
+    const errText = `Netzwerkfehler: ${e.message || "Verbindung zur API prüfen."}`;
+    showMsg(el, errText, "err");
+    banner(errText, "err");
+  }
   finally { btn.disabled = false; btn.textContent = "Anlegen"; }
 }
 
@@ -561,14 +596,43 @@ async function deleteKlasse(code) {
   } catch(e) { msg("Fehler beim Löschen.", "err"); }
 }
 
+// ── API-Verbindungstest ──────────────────────────────────────────────────────
+async function checkApi() {
+  const statusEl = document.getElementById("api-status");
+  statusEl.textContent = "Verbinde…";
+  try {
+    const res = await fetch(API + "/", {signal: AbortSignal.timeout(5000)});
+    if (res.ok) {
+      statusEl.textContent = "🟢 API OK";
+      return true;
+    } else {
+      statusEl.textContent = `🔴 API Fehler ${res.status}`;
+      banner(`RESO-API antwortet mit HTTP ${res.status}. Bitte Server prüfen.`, "err");
+      return false;
+    }
+  } catch(e) {
+    statusEl.textContent = "🔴 Keine Verbindung";
+    banner("RESO-API nicht erreichbar – läuft der Dienst auf dem Server?", "err");
+    return false;
+  }
+}
+
 // Token aus LocalStorage – bei vorhandenem Token direkt Klassen laden
-window.onload = () => {
+window.onload = async () => {
   const t = localStorage.getItem("reso_token");
   if (t) {
     document.getElementById("inp-token").value = t;
-    loadKlassen(); // direkt beim Seitenstart laden
+    // Zuerst Verbindung prüfen, dann Klassen laden
+    const apiOk = await checkApi();
+    if (apiOk) await loadKlassen();
+  } else {
+    // Kein Token gespeichert → direkt zum Klassen-Tab mit Hinweis
+    const klassenBtn = document.querySelector("nav button:nth-child(4)");
+    tab("t-klassen", klassenBtn);
+    banner("Bitte Token oben eingeben und dann eine Klasse anlegen.", "info");
   }
 };
+
 // Token bei jeder Eingabe speichern (nicht erst beim Fokusverlust)
 document.getElementById("inp-token").addEventListener("input", e => {
   localStorage.setItem("reso_token", e.target.value.trim());
