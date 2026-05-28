@@ -168,6 +168,15 @@
 
       const EXTERN_QUIZZE = [
         {
+          slug: 'deutsch-seki-quiz',
+          title: 'Deutsch-Quiz Sek I (Jg 5–10)',
+          desc: '124 Fragen aus Textsorten, Grammatik, Erzählperspektive, Stilmittel und Rechtschreibung – Jg 5 bis 10. Wähle deinen Jahrgang und den Umfang.',
+          url: 'https://lehrer-herrmann.de/materialien/deutsch_seki_quiz_2026-05.html',
+          icon: '📝',
+          subject: 'Deutsch',
+          meta: 'Deutsch · Jg 5–10 · bis zu 124 Fragen',
+        },
+        {
           slug: 'stilmittel',
           title: 'Stilmittel-Quiz',
           desc: 'Metapher, Personifikation, Alliteration & Co. – erkenne und benenne rhetorische Figuren.',
@@ -199,12 +208,14 @@
             : (loggedIn
                 ? '<span style="color:var(--ink-soft);font-size:.82rem">Noch nicht gespielt</span>'
                 : '<span style="color:var(--c4);font-size:.82rem">⚔️ Login → XP verdienen</span>');
-          const meta = q.faecher
-            ? `<div style="font-size:.82rem;color:var(--ink-soft);font-weight:700">${escHtml(q.faecher)}</div>`
+          const metaText = q.meta || q.faecher || '';
+          const meta = metaText
+            ? `<div style="font-size:.82rem;color:var(--ink-soft);font-weight:700">${escHtml(metaText)}</div>`
             : '';
+          const chipLabel = q.subject || (q.faecher ? 'Fächerübergreifend' : 'Deutsch');
           return `
             <div class="card quiz-card">
-              <span class="quiz-subject">${q.faecher ? 'Fächerübergreifend' : 'Deutsch'}</span>
+              <span class="quiz-subject">${escHtml(chipLabel)}</span>
               <div class="quiz-title">${q.icon} ${escHtml(q.title)}</div>
               ${meta}
               <div style="font-size:.84rem;color:var(--ink-soft);line-height:1.45">${escHtml(q.desc)}</div>

@@ -1,0 +1,760 @@
+<!--
+  Titel: Deutsch-Quiz Sekundarstufe I
+  Fach: Deutsch
+  Klasse/Niveau: 5–10 (Sek I)
+  AB-Typ: Quiz (Multiple Choice)
+  Erstellt: 2026-05-28
+  Quelle: Quizfragen_Deutsch_SekI_1 V2.xlsx
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deutsch-Quiz Sek I – Jahrgänge 5–10</title>
+<link rel="stylesheet" href="../css/style.css">
+<style>
+/* === QUIZ-SPEZIFISCHE STILE === */
+.quiz-page { max-width: 720px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
+
+/* Setup-Screen */
+.setup-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(30,58,95,.1);
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+}
+.setup-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--farbe-primaer);
+  margin-bottom: 0.25rem;
+}
+.setup-sub { color: var(--farbe-text-hell); margin-bottom: 1.75rem; font-size: .95rem; }
+
+.jg-btns { display: flex; gap: .75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.jg-btn {
+  padding: .65rem 1.4rem;
+  border: 2px solid var(--farbe-rahmen);
+  border-radius: 8px;
+  background: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--farbe-text);
+  cursor: pointer;
+  transition: border-color .15s, background .15s, color .15s;
+}
+.jg-btn:hover { border-color: var(--farbe-akzent); }
+.jg-btn.active { border-color: var(--farbe-primaer); background: var(--farbe-primaer); color: #fff; }
+
+.scope-section { margin-bottom: 1.5rem; display: none; }
+.scope-section.show { display: block; }
+.scope-label { font-weight: 700; color: var(--farbe-primaer); margin-bottom: .6rem; font-size: .9rem; text-transform: uppercase; letter-spacing: .05em; }
+
+.scope-tabs { display: flex; gap: .5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.scope-tab {
+  padding: .45rem 1rem;
+  border: 2px solid var(--farbe-rahmen);
+  border-radius: 6px;
+  background: #fff;
+  font-weight: 600;
+  font-size: .88rem;
+  color: var(--farbe-text);
+  cursor: pointer;
+  transition: border-color .15s, background .15s, color .15s;
+}
+.scope-tab:hover { border-color: var(--farbe-akzent); }
+.scope-tab.active { border-color: var(--farbe-primaer-hell); background: var(--farbe-primaer-hell); color: #fff; }
+
+.count-btns { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.count-btn {
+  padding: .55rem 1.1rem;
+  border: 2px solid var(--farbe-rahmen);
+  border-radius: 6px;
+  background: #fff;
+  font-weight: 700;
+  font-size: .92rem;
+  color: var(--farbe-text);
+  cursor: pointer;
+  transition: border-color .15s, background .15s, color .15s;
+}
+.count-btn:hover { border-color: var(--farbe-akzent); }
+.count-btn.active { border-color: var(--farbe-akzent); background: var(--farbe-akzent); color: #fff; }
+
+.start-btn-wrap { margin-top: .5rem; }
+.btn-start {
+  display: inline-block;
+  padding: .85rem 2.2rem;
+  background: var(--farbe-primaer);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn-start:hover { background: var(--farbe-primaer-hell); }
+.btn-start:disabled { background: #aaa; cursor: default; }
+
+/* Fortschrittsbereich */
+.prog-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.prog-label { font-weight: 700; font-size: .88rem; color: var(--farbe-text-hell); white-space: nowrap; }
+.prog-bar-wrap { flex: 1; background: #e2e8f0; border-radius: 50px; height: 9px; overflow: hidden; }
+.prog-bar-fill { height: 100%; border-radius: 50px; background: linear-gradient(90deg, var(--farbe-primaer), var(--farbe-akzent)); transition: width .4s ease; }
+.score-chip { font-weight: 700; font-size: .88rem; color: var(--farbe-text-hell); white-space: nowrap; }
+
+/* Fragekarte */
+.q-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(30,58,95,.1);
+  padding: 1.75rem;
+  animation: fadeUp .25s ease;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.q-meta { display: flex; gap: .6rem; align-items: center; margin-bottom: 1rem; }
+.q-tag {
+  display: inline-block;
+  background: var(--farbe-primaer);
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: .18rem .6rem;
+  border-radius: 50px;
+}
+.q-text { font-size: 1.15rem; font-weight: 700; color: var(--farbe-text); line-height: 1.5; margin-bottom: 1.25rem; }
+
+.opts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; }
+.opt-btn {
+  display: flex;
+  align-items: flex-start;
+  gap: .65rem;
+  width: 100%;
+  padding: .9rem 1rem;
+  background: var(--farbe-hintergrund);
+  border: 2px solid var(--farbe-rahmen);
+  border-radius: 8px;
+  font-size: .93rem;
+  font-weight: 600;
+  color: var(--farbe-text);
+  cursor: pointer;
+  text-align: left;
+  line-height: 1.4;
+  transition: border-color .15s, background .15s, transform .15s;
+}
+.opt-btn:hover:not(:disabled) { border-color: var(--farbe-akzent); background: #fff; transform: translateY(-2px); }
+.opt-btn:disabled { cursor: default; }
+.opt-btn.correct { border-color: #2ecc71; background: rgba(46,204,113,.1); color: #1a7a43; }
+.opt-btn.wrong   { border-color: #e74c3c; background: rgba(231,76,60,.08); color: #a93226; }
+.opt-btn.reveal  { border-color: #2ecc71; background: rgba(46,204,113,.07); color: #1a7a43; }
+.opt-letter {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 1.6rem; height: 1.6rem;
+  background: var(--farbe-primaer);
+  color: #fff;
+  border-radius: 50%;
+  font-size: .75rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.opt-btn.correct .opt-letter { background: #2ecc71; }
+.opt-btn.wrong   .opt-letter { background: #e74c3c; }
+.opt-btn.reveal  .opt-letter { background: #2ecc71; }
+
+.feedback-box {
+  margin-top: 1rem;
+  padding: .85rem 1rem;
+  border-radius: 8px;
+  font-size: .92rem;
+  line-height: 1.5;
+  display: none;
+}
+.feedback-box.ok  { background: rgba(46,204,113,.12); color: #1a7a43; border-left: 4px solid #2ecc71; }
+.feedback-box.no  { background: rgba(231,76,60,.1);   color: #922b21; border-left: 4px solid #e74c3c; }
+
+.next-wrap { text-align: center; margin-top: 1.25rem; display: none; }
+.btn-next {
+  padding: .75rem 2rem;
+  background: var(--farbe-primaer);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .15s;
+}
+.btn-next:hover { background: var(--farbe-primaer-hell); }
+
+/* Ergebnis-Screen */
+.result-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(30,58,95,.12);
+  padding: 2.25rem 2rem;
+  text-align: center;
+}
+.result-emoji { font-size: 3.5rem; display: block; margin-bottom: .6rem; }
+.result-title { font-size: 1.6rem; font-weight: 800; color: var(--farbe-primaer); margin-bottom: .25rem; }
+.result-score { font-size: 2.6rem; font-weight: 900; color: var(--farbe-akzent); margin: .5rem 0; }
+.result-pct { font-size: 1.1rem; color: var(--farbe-text-hell); margin-bottom: 1rem; }
+.result-note { font-size: .95rem; color: var(--farbe-text); margin-bottom: 1.5rem; }
+
+.result-actions { display: flex; gap: .75rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1.75rem; }
+.btn-repeat {
+  padding: .7rem 1.6rem;
+  background: var(--farbe-primaer);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: .95rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .15s;
+}
+.btn-repeat:hover { background: var(--farbe-primaer-hell); }
+.btn-secondary {
+  padding: .7rem 1.6rem;
+  background: #fff;
+  color: var(--farbe-primaer);
+  border: 2px solid var(--farbe-primaer);
+  border-radius: 8px;
+  font-size: .95rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .15s;
+}
+.btn-secondary:hover { background: var(--farbe-hintergrund); }
+
+.detail-list { text-align: left; max-height: 400px; overflow-y: auto; }
+.detail-item {
+  display: flex;
+  gap: .75rem;
+  padding: .7rem 0;
+  border-bottom: 1px solid var(--farbe-rahmen);
+  font-size: .87rem;
+  line-height: 1.45;
+}
+.detail-item:last-child { border-bottom: none; }
+.detail-icon { font-size: 1rem; flex-shrink: 0; margin-top: .1rem; }
+.detail-ans { color: var(--farbe-text-hell); margin-top: .2rem; font-size: .82rem; }
+
+@media (max-width: 540px) {
+  .opts-grid { grid-template-columns: 1fr; }
+  .jg-btns { gap: .5rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+  <div class="container navbar-inner">
+    <a href="/index.html" class="navbar-logo">lehrer-herrmann.de</a>
+    <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="navbar-links" id="navbar-links">
+      <li><a href="/index.html#was-ist-neu">Was ist neu?</a></li>
+      <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+      <li class="navbar-gb-trenner" aria-hidden="true"><span class="navbar-gb-label">Geschützter Bereich</span></li>
+      <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+      <li><a href="/blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+      <li><a href="/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+    </ul>
+    <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+  </div>
+</nav>
+
+<main>
+<div class="quiz-page">
+
+  <!-- ══ SETUP-SCREEN ══ -->
+  <div id="setup-screen">
+    <div class="setup-card">
+      <div class="setup-title">📝 Deutsch-Quiz Sek I</div>
+      <div class="setup-sub">Wähle deinen Jahrgang, den Fragenbereich und die Anzahl – dann geht es los!</div>
+
+      <!-- Jahrgang -->
+      <div class="scope-label">Mein Jahrgang</div>
+      <div class="jg-btns">
+        <button class="jg-btn" onclick="setJg('5/6', this)">Jahrgang 5/6</button>
+        <button class="jg-btn" onclick="setJg('7/8', this)">Jahrgang 7/8</button>
+        <button class="jg-btn" onclick="setJg('9/10', this)">Jahrgang 9/10</button>
+      </div>
+
+      <!-- Scope-Auswahl 5/6 -->
+      <div class="scope-section" id="scope-56">
+        <div class="scope-label">Fragenanzahl</div>
+        <div class="count-btns" id="count-56"></div>
+      </div>
+
+      <!-- Scope-Auswahl 7/8 -->
+      <div class="scope-section" id="scope-78">
+        <div class="scope-label">Fragenbereich</div>
+        <div class="scope-tabs">
+          <button class="scope-tab active" id="scope-tab-78-own" onclick="setScope78('own', this)">Nur Jg 7/8</button>
+          <button class="scope-tab" id="scope-tab-78-cum" onclick="setScope78('cum', this)">Jg 5–8 kombiniert</button>
+        </div>
+        <div class="scope-label">Fragenanzahl</div>
+        <div class="count-btns" id="count-78"></div>
+      </div>
+
+      <!-- Scope-Auswahl 9/10 -->
+      <div class="scope-section" id="scope-910">
+        <div class="scope-label">Fragenbereich</div>
+        <div class="scope-tabs">
+          <button class="scope-tab active" id="scope-tab-910-own" onclick="setScope910('own', this)">Nur Jg 9/10</button>
+          <button class="scope-tab" id="scope-tab-910-all" onclick="setScope910('all', this)">Alle Jahrgänge (5–10)</button>
+        </div>
+        <div class="scope-label">Fragenanzahl</div>
+        <div class="count-btns" id="count-910"></div>
+      </div>
+
+      <div class="start-btn-wrap">
+        <button class="btn-start" id="start-btn" disabled onclick="startQuiz()">Quiz starten →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ QUIZ-SCREEN ══ -->
+  <div id="quiz-screen" style="display:none">
+    <div class="prog-row">
+      <span class="prog-label" id="prog-label">1 / 10</span>
+      <div class="prog-bar-wrap"><div class="prog-bar-fill" id="prog-fill" style="width:0%"></div></div>
+      <span class="score-chip" id="score-chip">0 ✓</span>
+    </div>
+    <div class="q-card" id="q-card">
+      <div class="q-meta"><span class="q-tag" id="q-tag">Deutsch</span></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="opts-grid" id="opts-grid"></div>
+      <div class="feedback-box" id="feedback-box"></div>
+      <div class="next-wrap" id="next-wrap">
+        <button class="btn-next" id="next-btn" onclick="nextQ()">Weiter →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ERGEBNIS-SCREEN ══ -->
+  <div id="result-screen" style="display:none">
+    <div class="result-card">
+      <span class="result-emoji" id="r-emoji">🎉</span>
+      <div class="result-title" id="r-title">Ergebnis</div>
+      <div class="result-score" id="r-score">0/0</div>
+      <div class="result-pct" id="r-pct">0 % richtig</div>
+      <div class="result-note" id="r-note"></div>
+      <div class="result-actions">
+        <button class="btn-repeat" onclick="showSetup()">Nochmal spielen</button>
+        <a href="https://kolosseum.lehrer-herrmann.de/quiz.html" class="btn-secondary">Mehr Quizze</a>
+      </div>
+      <details style="text-align:left">
+        <summary style="cursor:pointer;font-weight:700;color:var(--farbe-primaer);margin-bottom:.75rem">Alle Fragen anzeigen</summary>
+        <div class="detail-list" id="detail-list"></div>
+      </details>
+    </div>
+  </div>
+
+</div><!-- /quiz-page -->
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+    <nav class="site-footer-links" aria-label="Rechtliche Links">
+      <a href="/impressum.html">Impressum</a>
+      <a href="/datenschutz.html">Datenschutz</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+const allQ = [
+  {s:"Deutsch",j:"5/6",q:"Welche Textsorte erzählt eine kurze Geschichte mit Tieren, die wie Menschen handeln, und endet oft mit einer Lehre?",o:["Fabel","Märchen","Sage","Gedicht"],a:0,e:"Eine Fabel nutzt sprechende Tiere als Figuren und vermittelt am Ende eine Moral oder Lehre."},
+  {s:"Deutsch",j:"5/6",q:"Was ist ein Märchen?",o:["Eine erfundene Erzählung mit Zauber und oft mit „Es war einmal“","Ein Bericht über ein echtes Ereignis","Ein Sachtext über Tiere","Ein Gedicht mit Reimen"],a:0,e:"Märchen sind fiktionale Erzählungen, oft mit übernatürlichen Elementen und festen Eröffnungsformeln."},
+  {s:"Deutsch",j:"5/6",q:"Wer erzählt in einer Geschichte das Geschehen?",o:["Der Erzähler","Der Autor","Der Leser","Die Hauptfigur immer selbst"],a:0,e:"Der Erzähler ist die Instanz im Text, die das Geschehen vermittelt – nicht zu verwechseln mit dem Autor."},
+  {s:"Deutsch",j:"5/6",q:"Wenn eine Figur „Ich ging nach Hause“ erzählt, liegt welche Erzählform vor?",o:["Ich-Form (Ich-Erzähler)","Er/Sie-Form","Du-Form","Wir-Form"],a:0,e:"Erzählt eine Figur aus der eigenen Perspektive mit „ich“, spricht man vom Ich-Erzähler."},
+  {s:"Deutsch",j:"5/6",q:"Was ist ein Konflikt in einer Erzählung?",o:["Ein Gegensatz oder Streit, der die Handlung vorantreibt","Das Ende der Geschichte","Die Überschrift","Eine Beschreibung des Wetters"],a:0,e:"Ein Konflikt ist die Spannung zwischen Figuren oder Kräften, die die Handlung in Gang hält."},
+  {s:"Deutsch",j:"5/6",q:"Was ist ein Vers in einem Gedicht?",o:["Eine einzelne Zeile","Eine ganze Strophe","Der Titel","Der Reim am Ende"],a:0,e:"Ein Vers ist eine einzelne Zeile eines Gedichts."},
+  {s:"Deutsch",j:"5/6",q:"Mehrere zusammengehörige Verse, die durch eine Leerzeile abgetrennt sind, nennt man …",o:["Strophe","Reim","Metrum","Zeile"],a:0,e:"Eine Strophe ist ein Abschnitt aus mehreren Versen, vergleichbar mit einem Absatz."},
+  {s:"Deutsch",j:"5/6",q:"Was bedeutet „Reim“?",o:["Gleichklang am Ende von Versen (z. B. Haus – Maus)","Die Anzahl der Strophen","Der Titel des Gedichts","Eine Figur im Gedicht"],a:0,e:"Ein Reim ist der Gleichklang von Lauten, meist am Versende."},
+  {s:"Deutsch",j:"5/6",q:"„Stark wie ein Löwe“ – welches sprachliche Mittel ist das?",o:["Vergleich","Personifikation","Wiederholung","Reim"],a:0,e:"Ein Vergleich verbindet zwei Dinge mit „wie“ oder „als“."},
+  {s:"Deutsch",j:"5/6",q:"„Die Sonne lacht“ – welches sprachliche Mittel ist das?",o:["Personifikation","Vergleich","Wiederholung","Metapher"],a:0,e:"Bei der Personifikation bekommt etwas Unbelebtes menschliche Eigenschaften (lachen)."},
+  {s:"Deutsch",j:"5/6",q:"Welche Zeitform (Tempus) beschreibt das Jetzt: „Ich gehe“?",o:["Präsens","Präteritum","Perfekt","Futur I"],a:0,e:"Das Präsens (Gegenwart) beschreibt, was gerade geschieht."},
+  {s:"Deutsch",j:"5/6",q:"In welchem Fall (Kasus) steht das Wort in der Frage „Wem gibst du das Buch?“",o:["Dativ","Nominativ","Genitiv","Akkusativ"],a:0,e:"Die Frage „Wem?“ erfragt den Dativ."},
+  {s:"Deutsch",j:"5/6",q:"Was sind Genus, Numerus und Kasus bei einem Nomen?",o:["Geschlecht, Zahl und Fall","Drei Zeitformen","Drei Wortarten","Drei Satzglieder"],a:0,e:"Genus = grammatisches Geschlecht, Numerus = Einzahl/Mehrzahl, Kasus = Fall."},
+  {s:"Deutsch",j:"5/6",q:"Welches Satzglied erfragt man mit „Wer oder was?“",o:["Subjekt","Prädikat","Objekt","Adverb"],a:0,e:"Das Subjekt ist der Satzgegenstand und wird mit „Wer/Was?“ erfragt."},
+  {s:"Deutsch",j:"5/6",q:"Welches Satzglied ist die Satzaussage und enthält das Verb?",o:["Prädikat","Subjekt","Objekt","Attribut"],a:0,e:"Das Prädikat ist die Satzaussage und besteht aus dem (finiten) Verb."},
+  {s:"Deutsch",j:"5/6",q:"Was gehört zu gutem Zuhören in einem Gespräch?",o:["Aufmerksam sein und nachfragen, wenn man etwas nicht versteht","Sofort dazwischenreden","Auf das Handy schauen","Über etwas anderes nachdenken"],a:0,e:"Sinnverstehendes Zuhören heißt, aufmerksam zu folgen und Nichtverstehen zu äußern."},
+  {s:"Deutsch",j:"5/6",q:"Was ist beim Vortragen vor der Klasse wichtig?",o:["Deutlich sprechen und Pausen machen","So leise wie möglich sprechen","Möglichst schnell fertig werden","Den Text nur ablesen ohne Blickkontakt"],a:0,e:"Betonung, Pausen, Lautstärke und Körpersprache unterstützen die Wirkung eines Vortrags."},
+  {s:"Deutsch",j:"5/6",q:"Was hilft beim Planen eines Textes ganz am Anfang?",o:["Ideen sammeln, z. B. in einem Cluster","Den Text sofort fehlerfrei abschreiben","Die Note ausrechnen","Das Blatt schön bemalen"],a:0,e:"Vor dem Schreiben sammelt man Ideen, etwa in einem Cluster oder einer Liste."},
+  {s:"Deutsch",j:"5/6",q:"Welches Satzzeichen steht am Ende einer Frage?",o:["Fragezeichen","Punkt","Ausrufezeichen","Komma"],a:0,e:"Fragesätze enden mit einem Fragezeichen."},
+  {s:"Deutsch",j:"5/6",q:"Was bedeutet „eine Textstelle markieren“ beim Lesen?",o:["Wichtige Wörter oder Sätze hervorheben","Den Text abschreiben","Den Text vorlesen","Den Text wegwerfen"],a:0,e:"Markieren ist eine Lesestrategie, um Schlüsselwörter und wichtige Stellen sichtbar zu machen."},
+  {s:"Deutsch",j:"5/6",q:"Wo kann man verlässlich Informationen für ein Referat suchen?",o:["In der Bibliothek und in geprüften Online-Quellen","Nur in privaten Chats","Nur auf Werbeplakaten","Gar nicht"],a:0,e:"Bibliothek, Mediathek und seriöse Internetquellen eignen sich zur Recherche."},
+  {s:"Deutsch",j:"5/6",q:"Was ist „Standardsprache“?",o:["Die allgemein verständliche Hochsprache","Ein regionaler Dialekt","Eine Geheimsprache","Eine Fremdsprache"],a:0,e:"Standardsprache ist die überregionale, normgerechte Form des Deutschen."},
+  {s:"Deutsch",j:"5/6",q:"Was ist ein Jugendbuch?",o:["Ein längeres Erzählwerk für junge Leserinnen und Leser","Ein Sachbuch über Berufe","Ein Wörterbuch","Eine Zeitung"],a:0,e:"Das Jugendbuch ist ein epischer Text, der sich an Jugendliche richtet."},
+  {s:"Deutsch",j:"5/6",q:"Welche drei großen Gattungen der Literatur unterscheidet man?",o:["Epik, Lyrik und Dramatik","Märchen, Sage, Fabel","Roman, Brief, Liste","Prosa, Reim, Strophe"],a:0,e:"Epik (Erzähltexte), Lyrik (Gedichte) und Dramatik (Theatertexte) sind die drei Hauptgattungen."},
+  {s:"Deutsch",j:"5/6",q:"Was ist typisch für einen dramatischen (szenischen) Text?",o:["Er besteht überwiegend aus Figurenrede und ist zum Spielen gedacht","Er reimt sich immer","Er hat keinen Konflikt","Er besteht nur aus Beschreibung"],a:0,e:"Dramatische Texte bestehen aus Dialogen/Monologen und sind für die Bühne gedacht."},
+  {s:"Deutsch",j:"5/6",q:"Was ist ein „Dialog“?",o:["Ein Gespräch zwischen mindestens zwei Figuren","Ein einzelner langer Satz","Eine Überschrift","Ein Reim"],a:0,e:"Im Dialog sprechen zwei oder mehr Figuren miteinander."},
+  {s:"Deutsch",j:"5/6",q:"Was meint „Handlung“ in einer Erzählung?",o:["Die Abfolge der Ereignisse","Die Anzahl der Seiten","Der Name des Autors","Die Schriftart"],a:0,e:"Die Handlung ist das, was in der Geschichte geschieht – die Abfolge der Ereignisse."},
+  {s:"Deutsch",j:"5/6",q:"Was beschreibt das „Metrum“ eines Gedichts?",o:["Den regelmäßigen Wechsel betonter und unbetonter Silben","Die Anzahl der Strophen","Den Titel","Die Sprache des Gedichts"],a:0,e:"Das Metrum ist das rhythmische Grundmuster aus betonten und unbetonten Silben."},
+  {s:"Deutsch",j:"5/6",q:"„Wieder und wieder und wieder klopfte es“ – welches Mittel ist das?",o:["Wiederholung","Vergleich","Personifikation","Metapher"],a:0,e:"Die Wiederholung betont durch das mehrfache Nennen desselben Wortes."},
+  {s:"Deutsch",j:"5/6",q:"Was meint „Wortwahl“ als Gestaltungsmittel?",o:["Die bewusste Auswahl von Wörtern für eine bestimmte Wirkung","Die Reihenfolge der Strophen","Die Anzahl der Sätze","Die Schriftgröße"],a:0,e:"Mit der Wortwahl erzeugen Autorinnen und Autoren gezielt Stimmungen oder Bewertungen."},
+  {s:"Deutsch",j:"5/6",q:"Welche Zeitform ist Vergangenheit: „Ich ging nach Hause“?",o:["Präteritum","Präsens","Futur I","Perfekt"],a:0,e:"Das Präteritum ist die einfache Vergangenheitsform, typisch in Erzähltexten."},
+  {s:"Deutsch",j:"5/6",q:"Welche Zeitform drückt die Zukunft aus: „Ich werde gehen“?",o:["Futur I","Präsens","Präteritum","Perfekt"],a:0,e:"Das Futur I beschreibt zukünftiges Geschehen mit „werden“ + Infinitiv."},
+  {s:"Deutsch",j:"5/6",q:"Was bedeutet „Komparation“?",o:["Die Steigerung von Adjektiven (groß – größer – am größten)","Die Mehrzahlbildung","Die Fallbildung","Die Zeitform"],a:0,e:"Komparation ist die Steigerung: Positiv, Komparativ, Superlativ."},
+  {s:"Deutsch",j:"5/6",q:"Was erfragt man mit „Wen oder was?“",o:["Den Akkusativ","Den Nominativ","Den Dativ","Den Genitiv"],a:0,e:"Die Frage „Wen/Was?“ erfragt den Akkusativ (4. Fall)."},
+  {s:"Deutsch",j:"5/6",q:"Welches Satzglied erfragt man mit „Wen oder was?“ bzw. „Wem?“",o:["Objekt","Subjekt","Prädikat","Attribut"],a:0,e:"Objekte ergänzen das Prädikat und werden u. a. mit „Wen/Was?“ oder „Wem?“ erfragt."},
+  {s:"Deutsch",j:"5/6",q:"An welcher Stelle steht das finite Verb im einfachen Aussagesatz?",o:["An zweiter Stelle","Immer am Anfang","Immer am Ende","Egal wo"],a:0,e:"Im deutschen Aussagesatz steht das finite (gebeugte) Verb an zweiter Position."},
+  {s:"Deutsch",j:"5/6",q:"Welche Textsorte gibt sachlich wieder, was passiert ist?",o:["Bericht","Märchen","Gedicht","Werbeanzeige"],a:0,e:"Der Bericht informiert sachlich und chronologisch über ein Geschehen."},
+  {s:"Deutsch",j:"5/6",q:"Was beschreibt eine „Beschreibung“ (z. B. Tierbeschreibung)?",o:["Merkmale sachlich und genau in eigenen Worten","Eine erfundene Abenteuergeschichte","Die Meinung des Autors","Einen Reim"],a:0,e:"Eine Beschreibung gibt Merkmale eines Gegenstands oder Lebewesens sachlich wieder."},
+  {s:"Deutsch",j:"5/6",q:"Was ist beim Erzählen einer spannenden Geschichte hilfreich?",o:["Anschaulich und in sinnvoller Reihenfolge erzählen","Möglichst viele Fremdwörter nutzen","Das Ende zuerst verraten","Monoton sprechen"],a:0,e:"Erzählen heißt, Erlebtes oder Erfundenes anschaulich und adressatengerecht darzustellen."},
+  {s:"Deutsch",j:"5/6",q:"Welches Satzzeichen trennt Aufzählungen wie „Äpfel, Birnen, Pflaumen“?",o:["Komma","Punkt","Doppelpunkt","Fragezeichen"],a:0,e:"Bei Aufzählungen werden die Glieder durch Kommas getrennt."},
+  {s:"Deutsch",j:"5/6",q:"Wozu dient das „Vorwissen aktivieren“ vor dem Lesen?",o:["Man verknüpft den Text leichter mit dem, was man schon weiß","Man muss dann nicht mehr lesen","Man lernt Vokabeln","Man schreibt schneller"],a:0,e:"Vorwissen zu aktivieren ist eine Lesestrategie, die das Verstehen erleichtert."},
+  {s:"Deutsch",j:"5/6",q:"Was bedeutet „adressatengerecht“ schreiben oder sprechen?",o:["Passend für die Person, an die man sich richtet","Möglichst kompliziert","Immer gleich, egal für wen","Nur mit Bildern"],a:0,e:"Adressatengerecht heißt, Sprache und Inhalt an die Zielgruppe anzupassen."},
+  {s:"Deutsch",j:"7/8",q:"Welches Merkmal ist typisch für eine Kurzgeschichte?",o:["Unvermittelter Anfang und offenes Ende","Ausführliche Einleitung über mehrere Seiten","Immer ein Happy End","Reime in jeder Zeile"],a:0,e:"Kurzgeschichten beginnen oft mitten im Geschehen und enden offen, ohne ausführlichen Schluss."},
+  {s:"Deutsch",j:"7/8",q:"Was ist eine Ballade?",o:["Ein erzählendes Gedicht mit dramatischer Handlung","Ein Sachtext","Ein kurzer Witz","Eine Nachricht in der Zeitung"],a:0,e:"Die Ballade vereint epische (erzählende), lyrische und dramatische Elemente."},
+  {s:"Deutsch",j:"7/8",q:"Was beschreibt die „Erzählperspektive“?",o:["Aus welchem Blickwinkel das Geschehen erzählt wird","Wie lang der Text ist","Wann der Text geschrieben wurde","Wie viele Figuren vorkommen"],a:0,e:"Die Erzählperspektive bestimmt, aus wessen Sicht und mit welchem Wissen erzählt wird."},
+  {s:"Deutsch",j:"7/8",q:"Was ist ein „innerer Monolog“?",o:["Die ungefilterten Gedanken einer Figur","Ein lautes Streitgespräch","Eine Regieanweisung","Eine Überschrift"],a:0,e:"Im inneren Monolog werden die Gedanken einer Figur unmittelbar wiedergegeben."},
+  {s:"Deutsch",j:"7/8",q:"Was ist das „lyrische Ich“?",o:["Die Sprechinstanz in einem Gedicht","Der Autor selbst","Der Leser","Die Hauptfigur eines Romans"],a:0,e:"Das lyrische Ich ist die fiktive Stimme, die im Gedicht spricht – nicht der Autor."},
+  {s:"Deutsch",j:"7/8",q:"Was ist eine „Regieanweisung“ in einem Drama?",o:["Ein Hinweis zu Handlung, Mimik oder Bühne (meist kursiv)","Der gesprochene Text einer Figur","Der Titel des Stücks","Eine Strophe"],a:0,e:"Regieanweisungen geben Hinweise zur Darstellung und stehen nicht im Figurentext."},
+  {s:"Deutsch",j:"7/8",q:"Wie heißt ein Hauptabschnitt eines Dramas?",o:["Akt","Strophe","Vers","Kapitel"],a:0,e:"Ein Drama gliedert sich in Akte, diese wiederum in Szenen."},
+  {s:"Deutsch",j:"7/8",q:"„Mein Herz ist ein Stein“ – welches sprachliche Mittel ist das?",o:["Metapher","Vergleich","Personifikation","Wiederholung"],a:0,e:"Eine Metapher überträgt Bedeutung ohne „wie“; das Herz wird bildlich mit einem Stein gleichgesetzt."},
+  {s:"Deutsch",j:"7/8",q:"Was ist ein „Symbol“ in einem literarischen Text?",o:["Ein Zeichen, das für etwas Abstraktes steht (z. B. Taube = Frieden)","Ein Rechtschreibfehler","Ein Reimschema","Eine Zeitform"],a:0,e:"Ein Symbol verweist über sich hinaus auf eine allgemeinere Bedeutung."},
+  {s:"Deutsch",j:"7/8",q:"Was bezeichnet die „Kameraperspektive“ im Film?",o:["Den Blickwinkel, aus dem gefilmt wird (z. B. Frosch-, Vogelperspektive)","Die Lautstärke der Musik","Die Länge des Films","Den Filmtitel"],a:0,e:"Die Kameraperspektive bestimmt den Blickwinkel und beeinflusst die Wirkung einer Einstellung."},
+  {s:"Deutsch",j:"7/8",q:"Welche Zeitform drückt die Vorvergangenheit aus: „Ich hatte gegessen“?",o:["Plusquamperfekt","Perfekt","Präteritum","Futur II"],a:0,e:"Das Plusquamperfekt beschreibt etwas, das vor einem anderen vergangenen Ereignis liegt."},
+  {s:"Deutsch",j:"7/8",q:"Was unterscheidet Aktiv und Passiv (Genus verbi)?",o:["Aktiv betont den Handelnden, Passiv das Geschehen/den Betroffenen","Es sind zwei Zeitformen","Es sind zwei Fälle","Es sind zwei Wortarten"],a:0,e:"Das Genus verbi (Aktiv/Passiv) regelt, ob der Handelnde oder die Handlung im Vordergrund steht."},
+  {s:"Deutsch",j:"7/8",q:"Welcher Modus liegt in „Er sagte, er sei krank“ vor?",o:["Konjunktiv","Indikativ","Imperativ","Infinitiv"],a:0,e:"Der Konjunktiv kennzeichnet u. a. die indirekte Rede."},
+  {s:"Deutsch",j:"7/8",q:"Was ist ein „Satzgefüge“?",o:["Ein Hauptsatz mit mindestens einem Nebensatz","Zwei gleichrangige Hauptsätze","Ein einzelnes Wort","Ein Satz ohne Verb"],a:0,e:"Im Satzgefüge ist ein Nebensatz von einem Hauptsatz abhängig."},
+  {s:"Deutsch",j:"7/8",q:"Was ist eine „adverbiale Bestimmung“?",o:["Eine Angabe zu Ort, Zeit, Art oder Grund","Das Subjekt des Satzes","Das Prädikat","Ein Eigenname"],a:0,e:"Adverbiale Bestimmungen geben Umstände an, z. B. „gestern“, „im Garten“, „aus Angst“."},
+  {s:"Deutsch",j:"7/8",q:"Welche drei Ebenen unterscheidet man beim Sprachhandeln?",o:["Handlungs-, Inhalts- und Beziehungsebene","Vergangenheit, Gegenwart, Zukunft","Anfang, Mitte, Schluss","Subjekt, Prädikat, Objekt"],a:0,e:"Eine Äußerung wirkt auf der Handlungs-, der Inhalts- und der Beziehungsebene zugleich."},
+  {s:"Deutsch",j:"7/8",q:"Was ist eine „Entlehnung“?",o:["Ein aus einer anderen Sprache übernommenes Wort","Ein Rechtschreibfehler","Ein veraltetes Wort","Ein Reimwort"],a:0,e:"Entlehnungen sind Wörter, die aus anderen Sprachen ins Deutsche übernommen wurden (z. B. „Computer“)."},
+  {s:"Deutsch",j:"7/8",q:"Welche Textsorte bewertet ein Buch oder einen Film begründet?",o:["Rezension","Nachricht","Protokoll","Bericht"],a:0,e:"Eine Rezension beurteilt ein Werk argumentativ und begründet das Urteil."},
+  {s:"Deutsch",j:"7/8",q:"Was ist die Hauptfunktion eines Kommentars?",o:["Eine Meinung argumentativ vertreten","Nur sachlich informieren","Eine Geschichte erzählen","Eine Anleitung geben"],a:0,e:"Der Kommentar ist ein meinungsbetonter, argumentierender Text."},
+  {s:"Deutsch",j:"7/8",q:"Was prüft man bei einer Internetquelle für ein Referat?",o:["Ob sie zuverlässig und für das Thema relevant ist","Ob sie bunt gestaltet ist","Ob sie als erste in der Trefferliste steht","Ob sie kurz ist"],a:0,e:"Quellen werden kriteriengeleitet auf Relevanz und Qualität geprüft."},
+  {s:"Deutsch",j:"7/8",q:"Was gehört zu einer guten Inhaltsangabe?",o:["Knappe Wiedergabe im Präsens, sachlich und in eigenen Worten","Wörtliches Abschreiben des Textes","Die eigene Meinung in jedem Satz","Möglichst viele Adjektive"],a:0,e:"Die Inhaltsangabe fasst sachlich, im Präsens und in eigenen Worten zusammen."},
+  {s:"Deutsch",j:"7/8",q:"Was bedeutet „formelle“ Sprache?",o:["Eine sachliche, höfliche Ausdrucksweise, z. B. in einem Bewerbungsschreiben","Umgangssprache unter Freunden","Dialekt","Eine Geheimsprache"],a:0,e:"Formelle Sprache ist normgerecht und situationsangemessen für offizielle Anlässe."},
+  {s:"Deutsch",j:"7/8",q:"Was ist eine „Kalendergeschichte“?",o:["Eine kurze, oft lehrhafte Erzählung mit überraschender Wendung","Ein Kalender mit Terminen","Ein Gedicht über die Monate","Eine Wettervorhersage"],a:0,e:"Die Kalendergeschichte ist eine kurze, häufig pointierte Erzählform mit moralischem oder überraschendem Schluss."},
+  {s:"Deutsch",j:"7/8",q:"Was ist ein „Erlebnisbericht“ im Unterschied zu einer Erzählung?",o:["Eine sachliche Wiedergabe eines tatsächlichen Erlebnisses","Eine frei erfundene Geschichte","Ein Gedicht","Eine Werbeanzeige"],a:0,e:"Der Erlebnisbericht gibt ein reales Erlebnis sachlich und geordnet wieder."},
+  {s:"Deutsch",j:"7/8",q:"Was leistet ein „Erzählerbericht“?",o:["Der Erzähler fasst Geschehen zusammen oder kommentiert es","Eine Figur spricht direkt","Eine Bühnenanweisung","Ein Reim"],a:0,e:"Im Erzählerbericht vermittelt der Erzähler Geschehen, im Unterschied zur direkten Figurenrede."},
+  {s:"Deutsch",j:"7/8",q:"Wie heißt der kleinere Abschnitt innerhalb eines Aktes?",o:["Szene","Strophe","Vers","Kapitel"],a:0,e:"Akte gliedern sich in Szenen, die meist durch Auf- oder Abtritt von Figuren begrenzt sind."},
+  {s:"Deutsch",j:"7/8",q:"Was ist eine „Ellipse“ als sprachliches Mittel?",o:["Ein unvollständiger Satz, bei dem Teile weggelassen sind","Ein langer Schachtelsatz","Ein Vergleich mit „wie“","Eine Wiederholung"],a:0,e:"Bei der Ellipse werden Satzteile ausgelassen, ohne dass der Sinn verloren geht."},
+  {s:"Deutsch",j:"7/8",q:"Was meint die „Kamerabewegung“ (z. B. Schwenk, Zoom)?",o:["Die Bewegung der Kamera während einer Einstellung","Die Lautstärke","Die Filmlänge","Den Titel"],a:0,e:"Kamerabewegungen wie Schwenk oder Zoom lenken den Blick und erzeugen Wirkung."},
+  {s:"Deutsch",j:"7/8",q:"Was bedeutet „Schnitt“ im Film?",o:["Der Übergang von einer Einstellung zur nächsten","Die Filmmusik","Das Drehbuch","Der Vorspann"],a:0,e:"Der Schnitt verbindet einzelne Einstellungen miteinander."},
+  {s:"Deutsch",j:"7/8",q:"In welchem Modus steht ein Befehl wie „Geh nach Hause!“?",o:["Imperativ","Indikativ","Konjunktiv","Infinitiv"],a:0,e:"Der Imperativ ist die Befehlsform."},
+  {s:"Deutsch",j:"7/8",q:"Was ist eine „Satzreihe“?",o:["Zwei oder mehr gleichrangige Hauptsätze","Ein Hauptsatz mit Nebensatz","Ein einzelnes Wort","Ein Satz ohne Subjekt"],a:0,e:"In der Satzreihe (Parataxe) stehen gleichrangige Hauptsätze nebeneinander."},
+  {s:"Deutsch",j:"7/8",q:"Welche Zeitform ist „vollendete Zukunft“: „Ich werde gegessen haben“?",o:["Futur II","Futur I","Perfekt","Plusquamperfekt"],a:0,e:"Das Futur II beschreibt etwas, das in der Zukunft abgeschlossen sein wird."},
+  {s:"Deutsch",j:"7/8",q:"Was ist ein „Dialekt“?",o:["Eine regional gesprochene Sprachvariante","Eine Fremdsprache","Die Hochsprache","Eine Geheimschrift"],a:0,e:"Ein Dialekt ist eine regionale Ausprägung einer Sprache."},
+  {s:"Deutsch",j:"7/8",q:"Was versteht man unter „Mehrsprachigkeit“?",o:["Die Fähigkeit, mehrere Sprachen zu nutzen","Sehr schnell sprechen","Viele Dialekte erfinden","Nur Schriftsprache verwenden"],a:0,e:"Mehrsprachigkeit bezeichnet die Verfügbarkeit über mehr als eine Sprache."},
+  {s:"Deutsch",j:"7/8",q:"Was ist ein „Protokoll“?",o:["Eine geordnete schriftliche Festhaltung von Verlauf oder Ergebnissen","Eine erfundene Geschichte","Ein Gedicht","Eine Werbung"],a:0,e:"Ein Protokoll hält Verlauf (Verlaufsprotokoll) oder Ergebnisse (Ergebnisprotokoll) sachlich fest."},
+  {s:"Deutsch",j:"7/8",q:"Welche Absicht hat eine Werbeanzeige vor allem?",o:["Überzeugen bzw. zum Kauf anregen (appellieren)","Sachlich informieren","Eine Geschichte erzählen","Ein Protokoll führen"],a:0,e:"Werbeanzeigen sind appellative Texte mit überzeugender Wirkungsabsicht."},
+  {s:"Deutsch",j:"7/8",q:"Was kennzeichnet einen „Leserbrief“?",o:["Eine begründete Stellungnahme zu einem Artikel oder Thema","Eine private Einkaufsliste","Eine Filmszene","Ein Märchen"],a:0,e:"Der Leserbrief äußert meinungsbetont und begründet eine Position zu einem Thema."},
+  {s:"Deutsch",j:"7/8",q:"Was gehört zu einer guten Gliederung vor dem Schreiben?",o:["Gedanken sinnvoll ordnen, z. B. in einer Mindmap","Den Text auswendig lernen","Die Seitenzahl festlegen","Bunte Stifte wählen"],a:0,e:"Eine Gliederung oder Mindmap strukturiert die Gedanken vor dem Formulieren."},
+  {s:"Deutsch",j:"7/8",q:"Was bedeutet „über den Text hinausdenken“ als Lesestrategie?",o:["Schlüsse ziehen und Vermutungen über den Text hinaus anstellen","Den Text laut vorlesen","Den Text abschreiben","Nur die Überschrift lesen"],a:0,e:"Elaborierende Lesestrategien verknüpfen Textinhalte mit eigenem Wissen und Vermutungen."},
+  {s:"Deutsch",j:"7/8",q:"Wozu dient ein „Verlaufsprotokoll“?",o:["Den Ablauf eines Gesprächs oder einer Stunde festzuhalten","Ergebnisse zu bewerten","Eine Geschichte zu erfinden","Werbung zu machen"],a:0,e:"Das Verlaufsprotokoll dokumentiert den zeitlichen Ablauf eines Geschehens."},
+  {s:"Deutsch",j:"7/8",q:"Was ist beim Vergleich von Buch und Hörspiel sinnvoll?",o:["Gemeinsamkeiten und Unterschiede kriteriengeleitet herausarbeiten","Nur das Hörspiel anhören","Nur die Lautstärke beachten","Beides ignorieren"],a:0,e:"Der mediale Vergleich untersucht Gestaltung und Wirkung in verschiedenen Medien."},
+  {s:"Deutsch",j:"9/10",q:"Was kennzeichnet die „Novelle“ als Gattung?",o:["Eine straffe Erzählung um ein zentrales, oft außergewöhnliches Ereignis","Ein Gedicht mit festem Reim","Einen reinen Sachtext","Ein mehrbändiges Werk ohne Handlung"],a:0,e:"Die Novelle ist eine konzentrierte Erzählung mit einer „unerhörten Begebenheit“ im Zentrum."},
+  {s:"Deutsch",j:"9/10",q:"Wodurch unterscheidet sich die Komödie von der Tragödie?",o:["Die Komödie nimmt meist einen heiteren, versöhnlichen Ausgang","Die Komödie hat keine Figuren","Die Tragödie ist immer lustig","Beide sind identisch"],a:0,e:"Die Tragödie endet meist unheilvoll, die Komödie heiter; beide sind dramatische Gattungen."},
+  {s:"Deutsch",j:"9/10",q:"Was meint der Unterschied von „Erzählzeit“ und „erzählter Zeit“?",o:["Erzählzeit = Dauer des Erzählens, erzählte Zeit = Dauer der Handlung","Zwei Tempusformen","Anfang und Ende","Haupt- und Nebensatz"],a:0,e:"Erzählzeit ist die Lesedauer, erzählte Zeit der Zeitraum, den die Handlung umfasst."},
+  {s:"Deutsch",j:"9/10",q:"Was bezeichnet die „Exposition“ in einem Drama oder Erzähltext?",o:["Die Einführung in Figuren, Ort und Ausgangssituation","Den Höhepunkt","Das Ende","Eine rhetorische Figur"],a:0,e:"Die Exposition stellt zu Beginn die Voraussetzungen der Handlung vor."},
+  {s:"Deutsch",j:"9/10",q:"Was ist die „Peripetie“?",o:["Der entscheidende Wendepunkt der Handlung","Die Einleitung","Eine Nebenfigur","Ein Reimschema"],a:0,e:"Die Peripetie ist der Umschwung, der die Handlung in eine neue Richtung lenkt."},
+  {s:"Deutsch",j:"9/10",q:"Was ist ein „Leitmotiv“?",o:["Ein wiederkehrendes Motiv mit besonderer Bedeutung","Die Hauptfigur","Der Titel","Eine Zeitform"],a:0,e:"Ein Leitmotiv ist ein bedeutungstragendes Element, das im Werk mehrfach auftaucht."},
+  {s:"Deutsch",j:"9/10",q:"„Der eine baut auf, der andere reißt nieder“ – welches Mittel liegt vor?",o:["Antithese","Vergleich","Personifikation","Alliteration"],a:0,e:"Die Antithese stellt gegensätzliche Aussagen einander gegenüber."},
+  {s:"Deutsch",j:"9/10",q:"„Wer rastet, der rostet“ – welches sprachliche Mittel betont die parallele Struktur?",o:["Parallelismus","Metapher","Symbol","Ellipse"],a:0,e:"Der Parallelismus wiederholt denselben syntaktischen Aufbau in aufeinanderfolgenden Teilen."},
+  {s:"Deutsch",j:"9/10",q:"Was bezeichnet die „Montage“ im Film?",o:["Das gezielte Zusammenfügen einzelner Einstellungen zu einer Wirkung","Die Filmmusik","Den Titelvorspann","Die Länge eines Films"],a:0,e:"Montage meint die bedeutungsvolle Anordnung und Verknüpfung von Einstellungen im Schnitt."},
+  {s:"Deutsch",j:"9/10",q:"Was ist ein „Attribut“?",o:["Eine nähere Bestimmung zu einem Nomen (z. B. „das rote Auto“)","Das Prädikat","Ein eigenständiger Hauptsatz","Eine Zeitform"],a:0,e:"Ein Attribut bestimmt ein Nomen näher und ist Teil einer Nominalgruppe."},
+  {s:"Deutsch",j:"9/10",q:"Was ist eine „Apposition“?",o:["Ein erläuternder Beisatz, meist durch Kommas abgetrennt","Ein Nebensatz mit Verb","Ein Fragezeichen","Ein Stilmittel der Lyrik"],a:0,e:"Die Apposition ist ein nachgestellter Beisatz, z. B. „Berlin, die Hauptstadt, …“."},
+  {s:"Deutsch",j:"9/10",q:"Was meint „Bedeutungswandel“ eines Wortes?",o:["Dass sich die Bedeutung eines Wortes im Lauf der Zeit verändert","Ein Rechtschreibfehler","Eine neue Zeitform","Ein Synonym"],a:0,e:"Beim Bedeutungswandel verschiebt, erweitert oder verengt sich die Wortbedeutung historisch."},
+  {s:"Deutsch",j:"9/10",q:"Was kennzeichnet „elaborierte“ Schriftlichkeit?",o:["Eine durchdachte, komplexe und differenzierte Ausdrucksweise","Einfache Stichworte","Umgangssprache","Emojis und Abkürzungen"],a:0,e:"Elaborierte Schriftlichkeit ist anspruchsvoll strukturiert und sprachlich differenziert."},
+  {s:"Deutsch",j:"9/10",q:"Was ist das Ziel einer (textgebundenen) Erörterung?",o:["Argumente abwägen und zu einem begründeten Urteil kommen","Eine Geschichte erfinden","Nur Fakten auflisten","Ein Gedicht analysieren ohne Wertung"],a:0,e:"Die Erörterung wägt Pro- und Kontra-Argumente ab und gelangt zu einem begründeten Fazit."},
+  {s:"Deutsch",j:"9/10",q:"Was leistet eine „Charakterisierung“ einer literarischen Figur?",o:["Sie arbeitet Eigenarten und ihre Funktion für die Handlung heraus","Sie zählt nur das Aussehen auf","Sie gibt die eigene Meinung wieder","Sie fasst nur den Inhalt zusammen"],a:0,e:"Die Charakterisierung beschreibt belegt Merkmale der Figur und ihre Bedeutung im Text."},
+  {s:"Deutsch",j:"9/10",q:"Welche Wirkungsabsicht verfolgt eine politische Rede vor allem?",o:["Überzeugen und zu Haltung oder Handeln bewegen","Sachlich-neutral informieren","Unterhalten ohne Ziel","Eine Anleitung geben"],a:0,e:"Die politische Rede ist ein appellativer Text mit überzeugender Wirkungsabsicht."},
+  {s:"Deutsch",j:"9/10",q:"Wie integriert man ein Zitat formal richtig in einen eigenen Text?",o:["Wörtlich in Anführungszeichen mit Quellen-/Stellenangabe","Ohne Kennzeichnung im eigenen Text","Nur sinngemäß ohne Beleg","Als Überschrift"],a:0,e:"Belege werden korrekt zitiert oder paraphrasiert und mit Quellenangabe versehen."},
+  {s:"Deutsch",j:"9/10",q:"Was sollte man bei digitalen Inhalten kritisch prüfen?",o:["Echtheit und Verlässlichkeit (z. B. Fake News, Deep Fakes)","Nur die Farbgestaltung","Nur die Länge","Gar nichts"],a:0,e:"Quellen sind auf Echtheit und Qualität zu prüfen, gerade bei Manipulationsrisiken."},
+  {s:"Deutsch",j:"9/10",q:"Was bewirkt eine „Filterblase“ bei Algorithmen?",o:["Man sieht v. a. Inhalte, die die eigene Meinung bestätigen","Schnelleres Internet","Bessere Rechtschreibung","Mehr Speicherplatz"],a:0,e:"Algorithmen können Inhalte so vorselektieren, dass abweichende Sichtweisen ausgeblendet werden."},
+  {s:"Deutsch",j:"9/10",q:"Was zeichnet einen gelungenen argumentativen Beitrag in einer Debatte aus?",o:["Eigener Standpunkt, Begründung und sachlicher Bezug auf Gegenargumente","Lautstärke","Persönliche Angriffe","Möglichst viele Fremdwörter"],a:0,e:"Überzeugende Argumentation vertritt einen Standpunkt begründet und geht sachlich auf Gegenpositionen ein."},
+  {s:"Deutsch",j:"9/10",q:"Was bedeutet „intermedialer Vergleich“ (z. B. Buch und Verfilmung)?",o:["Dasselbe Werk in verschiedenen Medien vergleichend deuten und werten","Zwei Bücher desselben Autors lesen","Nur den Film anschauen","Nur die Lautstärke vergleichen"],a:0,e:"Beim intermedialen Vergleich werden Gestaltung und Wirkung eines Stoffes in verschiedenen Medien untersucht."},
+  {s:"Deutsch",j:"9/10",q:"Was ist ein „Roman“?",o:["Ein umfangreiches episches Werk mit komplexer Handlung","Ein kurzes Gedicht","Ein Theaterstück","Ein Sachtext mit Tabellen"],a:0,e:"Der Roman ist die umfangreichste epische Großform mit meist vielschichtiger Handlung."},
+  {s:"Deutsch",j:"9/10",q:"Was meint „Lyrik in epochalen Bezügen“?",o:["Gedichte im Zusammenhang mit ihrer literarischen Epoche deuten","Gedichte ohne Reim","Nur moderne Songtexte","Gedichte über Geschichte"],a:0,e:"Lyrik wird hier im Kontext von Entstehungszeit und Epoche betrachtet und gedeutet."},
+  {s:"Deutsch",j:"9/10",q:"Was ist das „retardierende Moment“?",o:["Eine Verzögerung kurz vor dem Höhepunkt, die Spannung steigert","Der Anfang der Handlung","Eine Nebenfigur","Ein Reimschema"],a:0,e:"Das retardierende Moment verzögert die Auflösung und erhöht so die Spannung."},
+  {s:"Deutsch",j:"9/10",q:"Was unterscheidet „Figurenrede“ vom „Erzählerbericht“?",o:["Figurenrede ist das, was Figuren selbst sagen; der Erzählerbericht vermittelt","Beides ist dasselbe","Figurenrede steht nur in Gedichten","Erzählerbericht ist eine Regieanweisung"],a:0,e:"Figurenrede gibt Äußerungen der Figuren wieder, der Erzählerbericht ist die vermittelnde Erzählerstimme."},
+  {s:"Deutsch",j:"9/10",q:"Was meint „Rede und Replik“ im Drama?",o:["Aussage einer Figur und die Erwiderung einer anderen","Zwei Akte","Vor- und Nachspiel","Bühnenbild und Kostüm"],a:0,e:"Rede und Replik bezeichnen Äußerung und Gegenäußerung im dramatischen Dialog."},
+  {s:"Deutsch",j:"9/10",q:"Was ist eine „rhetorische Frage“?",o:["Eine Frage, auf die keine Antwort erwartet wird","Eine Frage im Test","Eine Frage des Lehrers","Eine Frage mit mehreren Antworten"],a:0,e:"Die rhetorische Frage zielt nicht auf eine Antwort, sondern auf Wirkung beim Publikum."},
+  {s:"Deutsch",j:"9/10",q:"Welche Wirkung hat eine „Klimax“ (z. B. „kam, sah, siegte“)?",o:["Eine Steigerung, die zum Höhepunkt führt","Ein Gegensatz","Eine Wiederholung ohne Steigerung","Eine Auslassung"],a:0,e:"Die Klimax ordnet Begriffe steigernd an und erzeugt so eine Zuspitzung."},
+  {s:"Deutsch",j:"9/10",q:"Welche Satzart ist ein Relativsatz?",o:["Ein Nebensatz, der ein Nomen näher bestimmt (z. B. „… der lacht“)","Ein Hauptsatz","Eine Aufzählung","Ein Imperativsatz"],a:0,e:"Der Relativsatz ist ein Attributsatz, der sich auf ein Bezugswort bezieht."},
+  {s:"Deutsch",j:"9/10",q:"Wann verwendet man häufig den Konjunktiv I?",o:["Bei der indirekten Rede","Bei Befehlen","Bei Aufzählungen","Bei der Mehrzahl"],a:0,e:"Der Konjunktiv I kennzeichnet typischerweise die indirekte Rede."},
+  {s:"Deutsch",j:"9/10",q:"Was beschreibt das Modell der Handlungs-, Inhalts- und Beziehungsebene?",o:["Dass jede Äußerung zugleich handelt, informiert und Beziehung gestaltet","Drei Tempusformen","Drei Textsorten","Drei Satzglieder"],a:0,e:"Kommunikation wirkt gleichzeitig auf der Handlungs-, Inhalts- und Beziehungsebene."},
+  {s:"Deutsch",j:"9/10",q:"Was meint „Sprachwandel durch digitale Kommunikation“?",o:["Sprache verändert sich durch Chats, Emojis und neue Wörter","Sprache bleibt immer gleich","Nur die Schrift ändert sich","Nur Dialekte verschwinden"],a:0,e:"Digitale Kommunikation prägt Wortschatz, Stil und Konventionen und treibt Sprachwandel voran."},
+  {s:"Deutsch",j:"9/10",q:"Was ist der Unterschied zwischen linearer und dialektischer Erörterung?",o:["Linear behandelt eine Seite, dialektisch wägt Pro und Kontra ab","Beide sind identisch","Linear ist mündlich, dialektisch schriftlich","Dialektisch hat keine Argumente"],a:0,e:"Die lineare Erörterung entfaltet eine These; die dialektische wägt gegensätzliche Positionen ab."},
+  {s:"Deutsch",j:"9/10",q:"Was leistet eine „Rezension“ über die reine Inhaltsangabe hinaus?",o:["Sie bewertet das Werk begründet","Sie erzählt nur nach","Sie nennt nur den Titel","Sie zählt Seiten"],a:0,e:"Die Rezension verbindet knappe Information mit einer begründeten Bewertung."},
+  {s:"Deutsch",j:"9/10",q:"Welche sprachlichen Mittel sind in einer politischen Rede zentral?",o:["Rhetorische Mittel zur Überzeugung (z. B. Wiederholung, rhetorische Frage)","Nur Fachbegriffe","Nur Zahlen","Nur Zitate ohne Quelle"],a:0,e:"Politische Reden setzen rhetorische Mittel gezielt zur Überzeugung ein."},
+  {s:"Deutsch",j:"9/10",q:"Was bedeutet „paraphrasieren“ beim Umgang mit Quellen?",o:["Eine fremde Aussage sinngemäß in eigenen Worten wiedergeben","Wörtlich abschreiben","Die Quelle verschweigen","Den Text übersetzen"],a:0,e:"Paraphrasieren heißt, fremde Gedanken sinngemäß und mit Quellenangabe wiederzugeben."},
+  {s:"Deutsch",j:"9/10",q:"Was kennzeichnet eine seriöse Quelle bei der Internetrecherche?",o:["Nachvollziehbarer Urheber, Aktualität und Belege","Viele bunte Werbebanner","Eine reißerische Überschrift","Anonyme Behauptungen"],a:0,e:"Seriöse Quellen sind transparent in Urheberschaft, aktuell und belegen ihre Aussagen."},
+  {s:"Deutsch",j:"9/10",q:"Wie wirkt sich ein Algorithmus auf einer Social-Media-Plattform aus?",o:["Er wählt anhand des Verhaltens aus, welche Inhalte angezeigt werden","Er korrigiert Rechtschreibung","Er übersetzt automatisch","Er löscht alte Beiträge"],a:0,e:"Algorithmen steuern die Auswahl und Reihenfolge von Inhalten nach Nutzerverhalten."},
+  {s:"Deutsch",j:"9/10",q:"Was ist beim Halten einer Stegreifrede besonders gefordert?",o:["Spontanes, strukturiertes Sprechen ohne lange Vorbereitung","Auswendiglernen eines Skripts","Vorlesen vom Blatt","Schweigen"],a:0,e:"Die Stegreifrede erfordert spontanes, dennoch geordnetes und adressatengerechtes Sprechen."},
+  {s:"Deutsch",j:"9/10",q:"Was prüft man beim „Beurteilen“ einer Aussage (Operator)?",o:["Man schätzt sie kriterienbezogen und begründet ein","Man schreibt sie ab","Man erzählt eine Geschichte","Man ignoriert sie"],a:0,e:"Beim Beurteilen wird eine Aussage anhand begründeter Wertmaßstäbe eingeschätzt."},
+  {s:"Deutsch",j:"9/10",q:"Was bedeutet der Operator „analysieren“?",o:["Inhaltliche, formale und sprachliche Aspekte erschließen und das Ergebnis darlegen","Eine Meinung äußern","Auswendig lernen","Abschreiben"],a:0,e:"Analysieren heißt, Aspekte im funktionalen Zusammenhang zu erschließen und darzustellen."}
+];
+
+(function () {
+  'use strict';
+
+  // Fragenpool-Konfiguration
+  const Q56  = allQ.filter(q => q.j === '5/6');   // 42
+  const Q78  = allQ.filter(q => q.j === '7/8');   // 41
+  const Q910 = allQ.filter(q => q.j === '9/10'); // 41
+  const Q58  = [...Q56, ...Q78];                   // 83
+  const QALL = allQ;                               // 124
+
+  let selJg     = null;
+  let selScope  = null; // 'own'|'cum'|'all' (je nach Jg)
+  let selCount  = null;
+  let quizPool  = [];
+  let questions = [];
+  let cur = 0, score = 0, answered = false, history = [];
+
+  /* ─── Setup ─── */
+  function buildCounts(id, counts) {
+    const el = document.getElementById(id);
+    el.innerHTML = '';
+    counts.forEach(n => {
+      const btn = document.createElement('button');
+      btn.className = 'count-btn';
+      btn.textContent = n === 9999 ? 'Alle' : n + ' Fragen';
+      btn.onclick = function () {
+        el.querySelectorAll('.count-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        selCount = n;
+        updateStartBtn();
+      };
+      el.appendChild(btn);
+    });
+  }
+
+  function updateCounts78() {
+    const pool = selScope === 'cum' ? Q58 : Q78;
+    const max  = pool.length;
+    const opts = selScope === 'cum' ? [10, 20, 50, max] : [10, 20, max];
+    selCount = null;
+    buildCounts('count-78', opts);
+    updateStartBtn();
+  }
+
+  function updateCounts910() {
+    const pool = selScope === 'all' ? QALL : Q910;
+    const max  = pool.length;
+    const opts = selScope === 'all' ? [10, 20, 50, 75, max] : [10, 20, max];
+    selCount = null;
+    buildCounts('count-910', opts);
+    updateStartBtn();
+  }
+
+  window.setJg = function (jg, btn) {
+    selJg = jg; selCount = null;
+    document.querySelectorAll('.jg-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    ['scope-56','scope-78','scope-910'].forEach(id => {
+      document.getElementById(id).classList.remove('show');
+    });
+    if (jg === '5/6') {
+      selScope = 'own';
+      buildCounts('count-56', [10, 20, Q56.length]);
+      document.getElementById('scope-56').classList.add('show');
+    } else if (jg === '7/8') {
+      selScope = 'own';
+      document.getElementById('scope-tab-78-own').classList.add('active');
+      document.getElementById('scope-tab-78-cum').classList.remove('active');
+      updateCounts78();
+      document.getElementById('scope-78').classList.add('show');
+    } else {
+      selScope = 'own';
+      document.getElementById('scope-tab-910-own').classList.add('active');
+      document.getElementById('scope-tab-910-all').classList.remove('active');
+      updateCounts910();
+      document.getElementById('scope-910').classList.add('show');
+    }
+    updateStartBtn();
+  };
+
+  window.setScope78 = function (scope, btn) {
+    selScope = scope;
+    document.querySelectorAll('#scope-78 .scope-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updateCounts78();
+  };
+
+  window.setScope910 = function (scope, btn) {
+    selScope = scope;
+    document.querySelectorAll('#scope-910 .scope-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updateCounts910();
+  };
+
+  function updateStartBtn() {
+    document.getElementById('start-btn').disabled = !(selJg && selCount);
+  }
+
+  /* ─── Quiz ─── */
+  function shuffle(arr) {
+    return arr.map(v => ({v, r: Math.random()})).sort((a, b) => a.r - b.r).map(x => x.v);
+  }
+
+  window.startQuiz = function () {
+    if (selJg === '5/6') {
+      quizPool = Q56;
+    } else if (selJg === '7/8') {
+      quizPool = selScope === 'cum' ? Q58 : Q78;
+    } else {
+      quizPool = selScope === 'all' ? QALL : Q910;
+    }
+    const n = selCount === 9999 ? quizPool.length : Math.min(selCount, quizPool.length);
+    questions = shuffle(quizPool).slice(0, n).map(q => ({
+      ...q,
+      shuffled: shuffle([0, 1, 2, 3]),
+    }));
+    cur = 0; score = 0; answered = false; history = [];
+    document.getElementById('setup-screen').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'block';
+    renderQ();
+  };
+
+  function renderQ() {
+    const q   = questions[cur];
+    const pct = ((cur / questions.length) * 100).toFixed(1);
+    document.getElementById('prog-fill').style.width  = pct + '%';
+    document.getElementById('prog-label').textContent = (cur + 1) + ' / ' + questions.length;
+    document.getElementById('score-chip').textContent = score + ' ✓';
+
+    document.getElementById('q-tag').textContent = 'Deutsch · Jg ' + q.j;
+    document.getElementById('q-text').textContent = q.q;
+
+    const grid = document.getElementById('opts-grid');
+    const letters = ['A', 'B', 'C', 'D'];
+    grid.innerHTML = q.shuffled.map((origIdx, pos) =>
+      '<button class="opt-btn" id="ob' + pos + '" onclick="pick(' + pos + ')">'
+      + '<span class="opt-letter">' + letters[pos] + '</span>'
+      + '<span>' + escHtml(q.o[origIdx]) + '</span>'
+      + '</button>'
+    ).join('');
+
+    const fb = document.getElementById('feedback-box');
+    fb.style.display = 'none';
+    fb.className = 'feedback-box';
+    document.getElementById('next-wrap').style.display = 'none';
+    document.getElementById('next-btn').textContent =
+      (cur + 1 < questions.length) ? 'Weiter →' : 'Auswertung →';
+    answered = false;
+  }
+
+  window.pick = function (pos) {
+    if (answered) return;
+    answered = true;
+    const q = questions[cur];
+    const origIdx  = q.shuffled[pos];
+    const ok = origIdx === q.a; // a is always 0 = correct
+    if (ok) score++;
+    history.push({ q: q.q, ok, chosen: q.o[origIdx], correct: q.o[q.a], e: q.e });
+
+    for (let p = 0; p < 4; p++) {
+      const btn = document.getElementById('ob' + p);
+      btn.disabled = true;
+      const oi = q.shuffled[p];
+      if (oi === q.a) {
+        btn.classList.add(ok && p === pos ? 'correct' : 'reveal');
+      } else if (p === pos && !ok) {
+        btn.classList.add('wrong');
+      }
+    }
+
+    const fb = document.getElementById('feedback-box');
+    fb.style.display = 'block';
+    fb.className = 'feedback-box ' + (ok ? 'ok' : 'no');
+    fb.innerHTML = (ok ? '<strong>Richtig!</strong> ' : '<strong>Leider falsch.</strong> ') + escHtml(q.e);
+    document.getElementById('next-wrap').style.display = 'block';
+  };
+
+  window.nextQ = function () {
+    cur++;
+    if (cur >= questions.length) showResult();
+    else renderQ();
+  };
+
+  function showResult() {
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'block';
+
+    const total = questions.length;
+    const pct   = Math.round((score / total) * 100);
+
+    let emoji, title;
+    if (pct >= 90)      { emoji = '🏆'; title = 'Hervorragend!'; }
+    else if (pct >= 75) { emoji = '⭐'; title = 'Sehr gut!'; }
+    else if (pct >= 60) { emoji = '👍'; title = 'Solide Leistung!'; }
+    else if (pct >= 45) { emoji = '📚'; title = 'Weiter üben!'; }
+    else                { emoji = '💪'; title = 'Nicht aufgeben!'; }
+
+    let note;
+    if (pct >= 85)      note = 'Ausgezeichnet – du beherrschst den Deutschstoff sicher!';
+    else if (pct >= 65) note = 'Gutes Ergebnis – einige Themen lohnen nochmal einen Blick.';
+    else if (pct >= 45) note = 'Guter Ansatz – mit Übung wirst du noch sicherer.';
+    else                note = 'Lass dich nicht entmutigen – nochmal spielen bringt dich weiter!';
+
+    document.getElementById('r-emoji').textContent  = emoji;
+    document.getElementById('r-title').textContent  = title;
+    document.getElementById('r-score').textContent  = score + ' / ' + total;
+    document.getElementById('r-pct').textContent    = pct + ' % richtig';
+    document.getElementById('r-note').textContent   = note;
+
+    document.getElementById('detail-list').innerHTML = history.map(h =>
+      '<div class="detail-item">'
+      + '<span class="detail-icon">' + (h.ok ? '✅' : '❌') + '</span>'
+      + '<div>'
+      +   '<div>' + escHtml(h.q) + '</div>'
+      +   '<div class="detail-ans">' + (h.ok
+          ? 'Richtig: ' + escHtml(h.correct)
+          : 'Deine Antwort: ' + escHtml(h.chosen) + ' · Richtig: ' + escHtml(h.correct))
+      +   '</div>'
+      + '</div>'
+      + '</div>'
+    ).join('');
+
+    // XP an Kolosseum melden
+    if (typeof kolosseumReport === 'function') {
+      kolosseumReport(score, total, 'deutsch-seki-quiz');
+    }
+  }
+
+  window.showSetup = function () {
+    document.getElementById('result-screen').style.display  = 'none';
+    document.getElementById('quiz-screen').style.display   = 'none';
+    document.getElementById('setup-screen').style.display  = 'block';
+  };
+
+  function escHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+})();
+</script>
+
+<script src="../js/main.js"></script>
+<script src="../js/kolosseum-prompt.js"></script>
+<script src="../js/kolosseum-login-widget.js"></script>
+</body>
+</html>
