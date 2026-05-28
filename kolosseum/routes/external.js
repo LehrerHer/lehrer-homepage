@@ -5,14 +5,15 @@ const { checkAndAwardBadges } = require('../db/badges');
 
 const router = express.Router();
 
-const VALID_SLUGS = ['stilmittel', 'literaturwissenschaft', 'rechtschreibung', 'lernquiz-jahrgang5', 'das-parfum', 'theaterprojekt-9'];
+const VALID_SLUGS = ['stilmittel', 'literaturwissenschaft', 'rechtschreibung', 'lernquiz-jahrgang5', 'das-parfum', 'theaterprojekt-9', 'deutsch-seki-quiz'];
 const QUIZ_LABELS = {
-  stilmittel:            'Stilmittel-Quiz',
-  literaturwissenschaft: 'Literaturwissenschaft-Quiz',
-  rechtschreibung:       'Rechtschreib-Quiz',
-  'lernquiz-jahrgang5':  'Lernquiz Jahrgang 5',
-  'das-parfum':          'Das Parfum',
-  'theaterprojekt-9':    'Theaterprojekt Jahrgang 9',
+  stilmittel:             'Stilmittel-Quiz',
+  literaturwissenschaft:  'Literaturwissenschaft-Quiz',
+  rechtschreibung:        'Rechtschreib-Quiz',
+  'lernquiz-jahrgang5':   'Lernquiz Jahrgang 5',
+  'das-parfum':           'Das Parfum',
+  'theaterprojekt-9':     'Theaterprojekt Jahrgang 9',
+  'deutsch-seki-quiz':    'Deutsch-Quiz Sek I',
 };
 
 // Notenpunkte-Tabelle (Oberstufe, 0–15 Punkte)
