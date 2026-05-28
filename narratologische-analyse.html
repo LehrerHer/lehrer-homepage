@@ -1389,7 +1389,7 @@ function clearAll() {
 // ============================================================
 // LEHRERMODUS
 // ============================================================
-const LM_PW = 'herrmann';
+const LM_PW = 'Gast-Lehrer';
 const LM_STORE = 'narratologie_lehrer_werke';
 let lmUnlocked = false;
 
@@ -1504,6 +1504,7 @@ function lmClearForm() {
     LOESUNGEN[k] = custom[k];
     addToDropdown(k, custom[k].titel);
   });
+  if (location.hash === '#lehrer') switchTab('lehrer');
 })();
 </script>
 
