@@ -21,6 +21,7 @@ function getLevel(xp) {
 
 // GET /api/public/letzter-spitzname
 // Gibt den zuletzt registrierten Spitznamen zurück. Öffentlich, kein Login nötig.
+// (Beibehalten für Abwärtskompatibilität – neue Aufrufer nutzen /neue-gladiatoren.)
 router.get('/letzter-spitzname', (req, res) => {
   try {
     const row = db.prepare(
@@ -33,18 +34,33 @@ router.get('/letzter-spitzname', (req, res) => {
   }
 });
 
-// GET /api/public/recent-gladiatoren
-// Gibt die 2 zuletzt aktiven Gladiatoren zurück, die bereits einen Rang
+// GET /api/public/neue-gladiatoren?limit=5
+// Gibt die zuletzt registrierten Spitznamen zurück (Standard 5). Öffentlich, kein Login nötig.
+router.get('/neue-gladiatoren', (req, res) => {
+  const limit = Math.min(parseInt(req.query.limit) || 5, 20);
+  try {
+    const rows = db.prepare(
+      `SELECT nick, created_at FROM students ORDER BY created_at DESC LIMIT ?`
+    ).all(limit);
+    res.json(rows.map(r => ({ nick: r.nick, created_at: r.created_at })));
+  } catch (e) {
+    res.json([]);
+  }
+});
+
+// GET /api/public/recent-gladiatoren?limit=5
+// Gibt die zuletzt aktiven Gladiatoren zurück (Standard 5), die bereits einen Rang
 // über Rekrut erreicht haben (xp >= 100). Öffentlich, kein Login nötig.
 router.get('/recent-gladiatoren', (req, res) => {
+  const limit = Math.min(parseInt(req.query.limit) || 5, 20);
   try {
     const rows = db.prepare(
       `SELECT nick, xp, last_active
        FROM students
        WHERE xp >= 100
        ORDER BY last_active DESC
-       LIMIT 3`
-    ).all();
+       LIMIT ?`
+    ).all(limit);
     const result = rows.map(r => ({
       nickname:    r.nick,
       xp:          r.xp,

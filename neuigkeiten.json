@@ -1,0 +1,53 @@
+{
+  "_hinweis": "Neue Funktionen für die 'Was ist neu?'-Sektion. Neueste oben einfügen. Felder: titel, datum (JJJJ-MM-TT), meta (Bereich), url. Wird von js/was-ist-neu.js geladen; es werden automatisch die 5 jüngsten angezeigt.",
+  "funktionen": [
+    {
+      "titel": "Deutsch-Quiz Sek I mit Bestenliste (5 Kategorien)",
+      "datum": "2026-05-29",
+      "meta": "Quizze",
+      "url": "materialien/deutsch_seki_quiz_2026-05.html"
+    },
+    {
+      "titel": "Deutsch-Quiz Sek I (Jg. 5–10) mit Arena-XP",
+      "datum": "2026-05-28",
+      "meta": "Lernkolosseum",
+      "url": "materialien/deutsch_seki_quiz_2026-05.html"
+    },
+    {
+      "titel": "RESO Rechtschreib-Selbsttest & Lehrkraft-Dashboard",
+      "datum": "2026-05-27",
+      "meta": "Diagnostik",
+      "url": "reso-selbsttest.html"
+    },
+    {
+      "titel": "Fächervorstellung mit allen Fächern als Übersicht",
+      "datum": "2026-05-26",
+      "meta": "Startseite",
+      "url": "faecher.html"
+    },
+    {
+      "titel": "Geschichte Jg. 10: Das Ende der Tschechoslowakei",
+      "datum": "2026-05-25",
+      "meta": "Material",
+      "url": "materialien/geschichte_ende-tschechoslowakei_jg10_2026-05.html"
+    },
+    {
+      "titel": "Materialien-Upload + dynamische Fachseiten",
+      "datum": "2026-05-23",
+      "meta": "Lernkolosseum",
+      "url": "kolosseum/public/admin/material-hochladen.html"
+    },
+    {
+      "titel": "Parfum-Lektürequiz (Jg. 10)",
+      "datum": "2026-05-22",
+      "meta": "Quizze",
+      "url": "materialien/deutsch_parfum_quiz_jg10_2026-05.html"
+    },
+    {
+      "titel": "Neue Navbar mit „Geschütztem Bereich“ auf allen Seiten",
+      "datum": "2026-05-22",
+      "meta": "Startseite",
+      "url": "index.html"
+    }
+  ]
+}

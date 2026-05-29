@@ -1,5 +1,5 @@
 /* ============================================================
-   WAS IST NEU? – Kompakte Neuigkeiten-Übersicht (je 2 pro Kategorie)
+   WAS IST NEU? – Kompakte Neuigkeiten-Übersicht (je 5 pro Kategorie)
    Jan Herrmann · Oberschule Spelle
 
    Kategorien:
@@ -14,12 +14,16 @@
     'use strict';
 
     var QUIZ_URLS = {
-        stilmittel:          'stilmittel-quiz.html',
-        literaturwissenschaft: 'literaturwissenschaft_quiz_v2.html'
+        stilmittel:            'stilmittel-quiz.html',
+        literaturwissenschaft: 'literaturwissenschaft_quiz_v2.html',
+        rechtschreib:          'rechtschreibquiz.html',
+        deutsch:               'materialien/deutsch_seki_quiz_2026-05.html'
     };
     var QUIZ_LABELS = {
-        stilmittel:          'Stilmittel-Quiz',
+        stilmittel:            'Stilmittel-Quiz',
         literaturwissenschaft: 'Literaturwissenschaft-Quiz',
+        rechtschreib:          'Rechtschreib-Quiz',
+        deutsch:               'Deutsch-Quiz (Sek I)',
         name_from_beispiel:  'Bsp → Name',
         name_from_erklaerung:'Erkl → Name',
         wirkung_from_name:   'Name → Wirkung',
@@ -52,7 +56,7 @@
             .then(function (d) {
                 return (d.materialien || []).slice()
                     .sort(function (a, b) { return (b.datum || '').localeCompare(a.datum || ''); })
-                    .slice(0, 3)
+                    .slice(0, 5)
                     .map(function (m) {
                         return {
                             icon: '📥', kat: 'Materialien',
@@ -67,10 +71,10 @@
     }
 
     function ladeBlogbeitraege() {
-        return fetch(API + '/api/blog?limit=3')
+        return fetch(API + '/api/blog?limit=5')
             .then(function (r) { return r.ok ? r.json() : []; })
             .then(function (d) {
-                return d.slice(0, 3).map(function (b) {
+                return d.slice(0, 5).map(function (b) {
                     return {
                         icon: '✍️', kat: 'Blog',
                         titel: b.titel,
@@ -83,10 +87,10 @@
     }
 
     function ladeQuizBestenliste() {
-        return fetch(API + '/api/leaderboard/alle?limit=3')
+        return fetch(API + '/api/leaderboard/alle?limit=5')
             .then(function (r) { return r.ok ? r.json() : []; })
             .then(function (d) {
-                return d.slice(0, 3).map(function (e) {
+                return d.slice(0, 5).map(function (e) {
                     return {
                         icon: '🏆', kat: 'Quiz-Bestleistung',
                         titel: esc(e.name || '???') + ' – ' + e.prozent + ' %',
@@ -99,10 +103,10 @@
     }
 
     function ladeAvataraufstiege() {
-        return fetch(API + '/api/public/recent-gladiatoren')
+        return fetch(API + '/api/public/recent-gladiatoren?limit=5')
             .then(function (r) { return r.ok ? r.json() : []; })
             .then(function (d) {
-                return d.map(function (g) {
+                return d.slice(0, 5).map(function (g) {
                     return {
                         icon: g.level_icon || '⚔️', kat: 'Avatar-Aufstieg',
                         titel: esc(g.nickname) + ' → ' + esc(g.level_name),
@@ -115,36 +119,43 @@
             .catch(function () { return []; });
     }
 
-    function ladeLetzterSpitzname() {
-        return fetch(API + '/api/public/letzter-spitzname')
-            .then(function (r) { return r.ok ? r.json() : null; })
+    function ladeNeueGladiatoren() {
+        return fetch(API + '/api/public/neue-gladiatoren?limit=5')
+            .then(function (r) { return r.ok ? r.json() : []; })
             .then(function (d) {
-                if (!d || !d.nick) return [];
-                return [{
-                    icon: '🪖', kat: 'Neuer Gladiator',
-                    titel: esc(d.nick),
-                    meta: 'Neu registriert',
-                    datum: d.created_at,
-                    url: 'kolosseum/public/rangliste.html'
-                }];
+                if (!Array.isArray(d)) return [];
+                return d.slice(0, 5).map(function (g) {
+                    return {
+                        icon: '🪖', kat: 'Neuer Gladiator',
+                        titel: esc(g.nick),
+                        meta: 'Neu registriert',
+                        datum: g.created_at,
+                        url: 'kolosseum/public/rangliste.html'
+                    };
+                });
             })
             .catch(function () { return []; });
     }
 
     function ladeEntwicklungen() {
-        var eintraege = [
-            { titel: 'Kolosseum: Fächer & Materialien + Fortschritt', datum: '2026-04-29T12:00:00', url: 'kolosseum.html' },
-            { titel: 'Arena-Statusleiste auf allen Seiten', datum: '2026-04-28T12:00:00', url: 'kolosseum.html' },
-            { titel: 'Neue Kolosseum-Unterseite mit Level-System', datum: '2026-04-27T12:00:00', url: 'kolosseum.html' },
-            { titel: 'Quizze ohne Login spielbar', datum: '2026-04-25T12:00:00', url: 'stilmittel-quiz.html' },
-        ];
-        return Promise.resolve(eintraege.slice(0, 3).map(function (e) {
-            return {
-                icon: '🛠️', kat: 'Neue Funktion',
-                titel: e.titel, meta: 'Lernkolosseum',
-                datum: e.datum, url: e.url, nurDatum: true
-            };
-        }));
+        // Quelle: neuigkeiten.json (leicht pflegbar – neueste Einträge oben).
+        return fetch('neuigkeiten.json?t=' + Date.now())
+            .then(function (r) { return r.ok ? r.json() : { funktionen: [] }; })
+            .then(function (d) {
+                return (d.funktionen || []).slice()
+                    .sort(function (a, b) { return (b.datum || '').localeCompare(a.datum || ''); })
+                    .slice(0, 5)
+                    .map(function (e) {
+                        var datum = e.datum && e.datum.length <= 10 ? e.datum + 'T00:00:00' : e.datum;
+                        return {
+                            icon: '🛠️', kat: 'Neue Funktion',
+                            titel: e.titel, meta: e.meta || 'Update',
+                            datum: datum, url: e.url || 'index.html#was-ist-neu',
+                            nurDatum: true
+                        };
+                    });
+            })
+            .catch(function () { return []; });
     }
 
     /* ---- Kompaktes Spalten-Rendering ---- */
@@ -203,7 +214,7 @@
             ladeEntwicklungen(),
             ladeQuizBestenliste(),
             ladeAvataraufstiege(),
-            ladeLetzterSpitzname(),
+            ladeNeueGladiatoren(),
             ladeMaterialien(),
             ladeBlogbeitraege()
         ]).then(function (ergebnisse) {
