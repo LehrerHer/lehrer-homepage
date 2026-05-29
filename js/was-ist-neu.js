@@ -17,13 +17,15 @@
         stilmittel:            'stilmittel-quiz.html',
         literaturwissenschaft: 'literaturwissenschaft_quiz_v2.html',
         rechtschreib:          'rechtschreibquiz.html',
-        deutsch:               'materialien/deutsch_seki_quiz_2026-05.html'
+        deutsch:               'materialien/deutsch_seki_quiz_2026-05.html',
+        erdkunde:              'materialien-erdkunde.html'
     };
     var QUIZ_LABELS = {
         stilmittel:            'Stilmittel-Quiz',
         literaturwissenschaft: 'Literaturwissenschaft-Quiz',
         rechtschreib:          'Rechtschreib-Quiz',
         deutsch:               'Deutsch-Quiz (Sek I)',
+        erdkunde:              'Erdkunde-Kartenquiz',
         name_from_beispiel:  'Bsp → Name',
         name_from_erklaerung:'Erkl → Name',
         wirkung_from_name:   'Name → Wirkung',
