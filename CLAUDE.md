@@ -553,6 +553,15 @@ Weitere Vorgaben: `system-ui, sans-serif`, `border-radius: 8px`, `box-shadow` au
 | **Schreibaufgabe** | Strukturierte Textfelder mit Hilfestellungen, optionale Bewertungsrubrik |
 | **Sonstiges** | Typ selbst erkennen, passendste interaktive Umsetzung wählen |
 
+### XP, Bestenliste & Lösungsanzeige (verbindlich für ALLE Quizze)
+
+Jedes Quiz (insbesondere die „stummen Karten" in `materialien/erdkunde_*`) muss folgende Mechanik enthalten – Vorlage: `materialien/erdkunde_niedersachsen-landkreise_jg5-10_2026-05.html` und `materialien/erdkunde_bundeslaender_jg5-10_2026-05.html`:
+
+1. **XP-Vergabe** über `js/kolosseum-prompt.js` → `window.kolosseumReport(score, total, 'quiz-slug')` (Notenpunkte-System). Skripte am Dateiende einbinden: `/js/supabase-config.js`, `/js/supabase-leaderboard.js`, `/js/kolosseum-prompt.js`.
+2. **Bestenliste** über `js/supabase-leaderboard.js` (`leaderboardSave` / `leaderboardFetch` / `leaderboardHTML`), Namenseingabe + globale Top-10 nach Abschluss.
+3. **Lösungsanzeige umschaltbar:** Der Button „Lösung zeigen" darf die eigenen Eingaben **nicht dauerhaft verstecken**. Er ist ein **Toggle** zwischen „Lösung" und „Meine Antworten zeigen", sodass Lernende beliebig hin- und herklicken und ihre Treffer mit der Lösung vergleichen können.
+4. **Faire XP-Wertung:** Sobald die Lösung **das erste Mal** aufgedeckt wird, wird die XP-würdige Punktzahl auf den Stand **vor** der Hilfe eingefroren (`lockedScore = currentCorrect()`). XP und Bestenlisten-Eintrag zählen nur das, was **ohne** Lösungshilfe richtig war; ein Hinweis dazu wird im Ergebnis angezeigt.
+
 ### Metadaten-Header
 
 ```html
