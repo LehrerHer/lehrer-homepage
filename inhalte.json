@@ -1,6 +1,33 @@
 {
   "materialien": [
     {
+      "id": "1748476800002",
+      "titel": "Stumme Karte – Niedersachsen (Jg. 5–10)",
+      "beschreibung": "Alle Landkreise & kreisfreien Städte zuordnen – 3 Schwierigkeitsstufen, XP & Bestenliste",
+      "icon": "🗺️",
+      "url": "materialien/erdkunde_niedersachsen-landkreise_jg5-10_2026-05.html",
+      "seite": "erdkunde",
+      "datum": "2026-05-29"
+    },
+    {
+      "id": "1748476800001",
+      "titel": "Stumme Karte – Bundesländer (Jg. 5–10)",
+      "beschreibung": "Die 16 Bundesländer Deutschlands zuordnen – 3 Schwierigkeitsstufen, XP & Bestenliste",
+      "icon": "🇩🇪",
+      "url": "materialien/erdkunde_bundeslaender_jg5-10_2026-05.html",
+      "seite": "erdkunde",
+      "datum": "2026-05-29"
+    },
+    {
+      "id": "1748476800000",
+      "titel": "Stumme Karte – Bundesländer & Hauptstädte (Jg. 5–10)",
+      "beschreibung": "Bundesländer und Landeshauptstädte auf einer Karte üben – 3 Schwierigkeitsstufen, XP & Bestenliste",
+      "icon": "🏛️",
+      "url": "materialien/erdkunde_bundeslaender-hauptstaedte_jg5-10_2026-05.html",
+      "seite": "erdkunde",
+      "datum": "2026-05-29"
+    },
+    {
       "id": "1748390400000",
       "titel": "Deutsch-Quiz Sek I (Jg. 5–10)",
       "beschreibung": "Interaktives Quiz mit Bestenliste in 5 Kategorien und Arena-XP-Anbindung",
