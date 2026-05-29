@@ -75,7 +75,7 @@ h1{font-size:17px;font-weight:700;margin-bottom:10px}
 <div class="btn-row" id="btnrow" style="display:none">
   <button class="btn-check" onclick="checkAll()">Auswerten</button>
   <button class="btn-sec" onclick="init()">Neu starten</button>
-  <button class="btn-sec" onclick="showLsg()">L&#246;sung zeigen</button>
+  <button class="btn-sec" id="lsg-btn" onclick="toggleLsg()">L&#246;sung zeigen</button>
 </div>
 <div class="progress" id="prog"><div class="progress-bar" id="pbar" style="width:0%"></div></div>
 
@@ -96,12 +96,17 @@ const LOESUNG="data:image/gif;base64,R0lGODlhLwPJAvcAAP//////9///7///5vf/9///3vf
 const HS=[{"id": 1, "label": "Ammerland", "x": 30.1, "y": 28.01}, {"id": 2, "label": "Aurich", "x": 17.14, "y": 18.88}, {"id": 3, "label": "Braunschweig", "x": 76.81, "y": 61.54}, {"id": 4, "label": "Celle", "x": 69.0, "y": 46.16}, {"id": 5, "label": "Cloppenburg", "x": 29.07, "y": 39.51}, {"id": 6, "label": "Cuxhaven", "x": 45.75, "y": 12.77}, {"id": 7, "label": "Delmenhorst", "x": 41.77, "y": 34.09}, {"id": 8, "label": "Diepholz", "x": 43.91, "y": 44.93}, {"id": 9, "label": "Emden", "x": 13.46, "y": 23.26}, {"id": 10, "label": "Emsland", "x": 16.83, "y": 43.01}, {"id": 11, "label": "Friesland", "x": 30.14, "y": 21.68}, {"id": 12, "label": "Gifhorn", "x": 79.41, "y": 51.68}, {"id": 13, "label": "Goslar", "x": 74.05, "y": 74.94}, {"id": 14, "label": "Grafschaft Bentheim", "x": 11.17, "y": 52.21}, {"id": 15, "label": "Göttingen", "x": 64.87, "y": 88.68}, {"id": 16, "label": "Hameln-Pyrmont", "x": 55.08, "y": 67.77}, {"id": 17, "label": "Harburg", "x": 65.94, "y": 24.65}, {"id": 18, "label": "Heidekreis", "x": 63.65, "y": 37.94}, {"id": 19, "label": "Helmstedt", "x": 84.0, "y": 61.72}, {"id": 20, "label": "Hildesheim", "x": 65.02, "y": 68.29}, {"id": 21, "label": "Holzminden", "x": 58.6, "y": 74.24}, {"id": 22, "label": "Leer", "x": 20.2, "y": 27.63}, {"id": 23, "label": "Lüchow-Dannenberg", "x": 89.2, "y": 35.18}, {"id": 24, "label": "Lüneburg", "x": 78.03, "y": 26.4}, {"id": 25, "label": "Nienburg/Weser", "x": 52.02, "y": 49.13}, {"id": 26, "label": "Northeim", "x": 65.33, "y": 80.53}, {"id": 27, "label": "Oldenburg (Landkreis)", "x": 37.03, "y": 35.32}, {"id": 28, "label": "Oldenburg (Stadt)", "x": 34.27, "y": 30.22}, {"id": 29, "label": "Osnabrück (Landkreis)", "x": 33.05, "y": 57.87}, {"id": 30, "label": "Osnabrück (Stadt)", "x": 29.83, "y": 62.14}, {"id": 31, "label": "Osterholz", "x": 44.06, "y": 26.75}, {"id": 32, "label": "Osterode am Harz", "x": 73.9, "y": 82.56}, {"id": 33, "label": "Peine", "x": 71.76, "y": 60.49}, {"id": 34, "label": "Region Hannover", "x": 61.05, "y": 55.6}, {"id": 35, "label": "Rotenburg (Wümme)", "x": 54.31, "y": 26.51}, {"id": 36, "label": "Salzgitter", "x": 74.05, "y": 66.02}, {"id": 37, "label": "Schaumburg", "x": 51.71, "y": 61.23}, {"id": 38, "label": "Stade", "x": 56.61, "y": 16.09}, {"id": 39, "label": "Uelzen", "x": 76.96, "y": 36.19}, {"id": 40, "label": "Vechta", "x": 33.35, "y": 47.73}, {"id": 41, "label": "Verden", "x": 51.87, "y": 37.77}, {"id": 42, "label": "Wesermarsch", "x": 36.41, "y": 24.13}, {"id": 43, "label": "Wilhelmshaven", "x": 31.21, "y": 15.39}, {"id": 44, "label": "Wittmund", "x": 23.71, "y": 14.51}, {"id": 45, "label": "Wolfenbüttel", "x": 79.25, "y": 66.72}, {"id": 46, "label": "Wolfsburg", "x": 82.01, "y": 56.58}];
 const HINTS={easy:"4 Auswahloptionen · Sofort-Feedback",medium:"Alle Begriffe per Drag & Drop · Auswertung auf Knopfdruck",hard:"Freie Eingabe · Auswertung auf Knopfdruck"};
 let mode="easy",state={},popup=null,drag=null;
+let showingSolution=false,xpLocked=false,lockedScore=null;
+function norm(s){return(s||"").trim().toLowerCase()}
+function currentCorrect(){let c=0;HS.forEach(h=>{if(norm(state[h.id].answer)===norm(h.label))c++});return c}
 function shuffle(a){return[...a].sort(()=>Math.random()-.5)}
 function opts(correct,all){const o=shuffle(all.filter(l=>l!==correct));return shuffle([correct,...o.slice(0,3)])}
 function setMode(m){mode=m;document.querySelectorAll(".mode-btn").forEach((b,i)=>b.classList.toggle("active",["easy","medium","hard"][i]===m));document.getElementById("mhint").textContent=HINTS[m];init()}
 function init(){
   state={};HS.forEach(h=>state[h.id]={answer:"",done:false});popup=null;drag=null;
+  showingSolution=false;xpLocked=false;lockedScore=null;
   document.getElementById("mapimg").src=STUMM;
+  const lb=document.getElementById("lsg-btn");if(lb)lb.textContent="Lösung zeigen";
   document.getElementById("score").innerHTML="";
   document.getElementById("prog").style.display="none";
   document.getElementById("pbar").style.width="0%";
@@ -131,7 +136,7 @@ function buildUI(){
     if(mode==="easy"){
       const el=document.createElement("div");el.className="dot";el.id="dot-"+h.id;
       el.style.left=h.x+"%";el.style.top=h.y+"%";
-      el.onclick=e=>{e.stopPropagation();if(!state[h.id].done)openPop(h,el,all)};
+      el.onclick=e=>{e.stopPropagation();if(!state[h.id].done&&!showingSolution)openPop(h,el,all)};
       w.appendChild(el);
     } else if(mode==="medium"){
       const dz=document.createElement("div");dz.className="dz";dz.style.left=h.x+"%";dz.style.top=h.y+"%";
@@ -211,9 +216,14 @@ function updProg(){
 const QUIZ_SLUG="erdkunde-niedersachsen-landkreise";
 let lastResult=null;
 function finishQuiz(correct,total){
-  lastResult={correct:correct,total:total};
+  // XP nur für das, was OHNE Lösungshilfe richtig war
+  const fair=xpLocked?lockedScore:correct;
+  lastResult={correct:fair,total:total};
   // XP ans Kolosseum melden (Notenpunkte-System)
-  if(typeof window.kolosseumReport==="function"){window.kolosseumReport(correct,total,QUIZ_SLUG);}
+  if(typeof window.kolosseumReport==="function"){window.kolosseumReport(fair,total,QUIZ_SLUG);}
+  if(xpLocked&&fair<correct){
+    document.getElementById("score").innerHTML+='<span style="display:block;font-size:12px;color:#b06000;margin-top:5px">ℹ️ XP nur für <strong>'+fair+'/'+total+'</strong> richtig <em>ohne</em> Lösungshilfe.</span>';
+  }
   // Bestenliste einblenden
   const box=document.getElementById("bl-box");
   box.style.display="block";
@@ -244,10 +254,22 @@ function blRender(){
     el.innerHTML=(typeof leaderboardHTML==="function")?leaderboardHTML(data):"";
   }).catch(()=>{el.innerHTML='<p style="font-size:13px;color:#888">Konnte nicht geladen werden.</p>';});
 }
-function showLsg(){
-  document.getElementById("mapimg").src=LOESUNG;
-  document.getElementById("mapwrap").querySelectorAll(".dot,.dz,.hz,.popup").forEach(e=>e.style.display="none");
-  document.getElementById("score").innerHTML="<em>Lösung wird angezeigt.</em> <button onclick='init()' style='margin-left:8px;padding:3px 10px;border-radius:6px;border:1px solid #bbb;cursor:pointer;font-size:12px'>↩ Zurück</button>";
+/* ── Lösung ein-/ausblenden (umschaltbar – man kann hin- und herklicken) ── */
+function setSolutionView(show){
+  document.getElementById("mapimg").src=show?LOESUNG:STUMM;
+  document.getElementById("mapwrap").querySelectorAll(".dot,.dz,.hz").forEach(e=>e.style.display=show?"none":"");
+  if(show&&popup){popup.remove();popup=null}
+}
+function toggleLsg(){
+  if(!showingSolution){
+    // erstes Aufdecken: XP-würdige Punktzahl auf den aktuellen Stand (ohne Hilfe) einfrieren
+    if(!xpLocked){lockedScore=currentCorrect();xpLocked=true;}
+    showingSolution=true;setSolutionView(true);
+    document.getElementById("lsg-btn").textContent="↩ Meine Antworten zeigen";
+  } else {
+    showingSolution=false;setSolutionView(false);
+    document.getElementById("lsg-btn").textContent="Lösung zeigen";
+  }
 }
 init();
 </script>
