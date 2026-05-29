@@ -253,6 +253,142 @@
 .detail-icon { font-size: 1rem; flex-shrink: 0; margin-top: .1rem; }
 .detail-ans { color: var(--farbe-text-hell); margin-top: .2rem; font-size: .82rem; }
 
+/* === BESTENLISTE === */
+.bl-screen .setup-card { padding: 1.75rem; }
+.bl-screen-title { font-size: 1.4rem; font-weight: 800; color: var(--farbe-primaer); margin-bottom: 1.25rem; }
+
+.hs-tabs { display: flex; gap: .4rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.hs-tab {
+  padding: .4rem .9rem;
+  border: 2px solid var(--farbe-rahmen);
+  border-radius: 6px;
+  background: #fff;
+  font-weight: 700;
+  font-size: .83rem;
+  color: var(--farbe-text);
+  cursor: pointer;
+  transition: border-color .12s, background .12s, color .12s;
+}
+.hs-tab:hover { border-color: var(--farbe-akzent); }
+.hs-tab.active { border-color: var(--farbe-primaer); background: var(--farbe-primaer); color: #fff; }
+
+.hs-section-label {
+  font-size: .78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--farbe-text-hell);
+  margin: 1.25rem 0 .5rem;
+}
+
+.hs-table {
+  border: 1px solid var(--farbe-rahmen);
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: .88rem;
+  margin-bottom: .5rem;
+}
+.hs-row {
+  display: grid;
+  grid-template-columns: 36px 1fr auto 68px;
+  gap: .5rem;
+  align-items: center;
+  padding: .6rem .9rem;
+  border-bottom: 1px solid var(--farbe-rahmen);
+}
+.hs-row:last-child { border-bottom: none; }
+.hs-row.hs-head {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--farbe-text-hell);
+  background: var(--farbe-hintergrund);
+}
+.hs-rank { text-align: center; font-weight: 700; }
+.hs-score-cell { font-weight: 700; text-align: right; white-space: nowrap; }
+.hs-score-sub { font-size: .75rem; font-weight: 400; color: var(--farbe-text-hell); }
+.hs-datum { text-align: right; color: var(--farbe-text-hell); font-size: .78rem; }
+.hs-empty {
+  text-align: center;
+  padding: 1rem;
+  color: var(--farbe-text-hell);
+  font-size: .88rem;
+}
+
+.bl-back-wrap { margin-top: 1.25rem; display: flex; gap: .75rem; flex-wrap: wrap; }
+
+/* === NAMENS-MODAL === */
+.hs-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5,10,20,.8);
+  z-index: 9600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s;
+}
+.hs-modal-overlay.open { opacity: 1; pointer-events: all; }
+.hs-modal-box {
+  background: var(--farbe-primaer);
+  border: 1px solid rgba(74,158,218,.4);
+  border-radius: 16px;
+  padding: 2rem 1.75rem 1.75rem;
+  max-width: 340px;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  transform: scale(.88);
+  transition: transform .25s cubic-bezier(.34,1.56,.64,1);
+  position: relative;
+}
+.hs-modal-overlay.open .hs-modal-box { transform: scale(1); }
+.hs-modal-stars { font-size: 1.6rem; margin-bottom: .4rem; }
+.hs-modal-title { font-size: 1.3rem; font-weight: 800; margin-bottom: .3rem; }
+.hs-modal-sub { font-size: .88rem; color: rgba(255,255,255,.7); margin-bottom: 1.25rem; line-height: 1.4; }
+.hs-modal-label { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: rgba(255,255,255,.6); margin-bottom: .4rem; }
+.hs-modal-input {
+  width: 100%;
+  padding: .7rem 1rem;
+  border-radius: 8px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 700;
+  font-family: inherit;
+  text-align: center;
+  margin-bottom: .75rem;
+  background: rgba(255,255,255,.12);
+  color: #fff;
+}
+.hs-modal-input::placeholder { color: rgba(255,255,255,.4); }
+.hs-modal-input:focus { outline: 2px solid var(--farbe-akzent); }
+.hs-modal-save {
+  display: block;
+  width: 100%;
+  padding: .7rem;
+  background: var(--farbe-akzent);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: .95rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: .5rem;
+  font-family: inherit;
+}
+.hs-modal-skip {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,.4);
+  font-size: .82rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+.hs-modal-skip:hover { color: rgba(255,255,255,.7); }
+
 @media (max-width: 540px) {
   .opts-grid { grid-template-columns: 1fr; }
   .jg-btns { gap: .5rem; }
@@ -358,12 +494,32 @@
       <div class="result-note" id="r-note"></div>
       <div class="result-actions">
         <button class="btn-repeat" onclick="showSetup()">Nochmal spielen</button>
+        <button class="btn-secondary" onclick="showBestenliste('result')">🏆 Bestenliste</button>
         <a href="https://kolosseum.lehrer-herrmann.de/quiz.html" class="btn-secondary">Mehr Quizze</a>
       </div>
       <details style="text-align:left">
         <summary style="cursor:pointer;font-weight:700;color:var(--farbe-primaer);margin-bottom:.75rem">Alle Fragen anzeigen</summary>
         <div class="detail-list" id="detail-list"></div>
       </details>
+    </div>
+  </div>
+
+  <!-- ══ BESTENLISTE-SCREEN ══ -->
+  <div id="bl-screen" class="bl-screen" style="display:none">
+    <div class="setup-card">
+      <div class="bl-screen-title">🏆 Bestenliste</div>
+      <div class="hs-tabs" id="hs-tabs"></div>
+
+      <div class="hs-section-label">💾 Meine Top-5 (dieses Gerät)</div>
+      <div id="hs-local"></div>
+
+      <div class="hs-section-label">🌐 Geteilte Bestenliste (Top 10)</div>
+      <div id="hs-global"><p class="hs-empty">Lädt…</p></div>
+
+      <div class="bl-back-wrap">
+        <button class="btn-repeat" onclick="closeBestenliste()">← Zurück</button>
+        <button class="btn-secondary" onclick="showSetup()">Nochmal spielen</button>
+      </div>
     </div>
   </div>
 
@@ -379,6 +535,19 @@
     </nav>
   </div>
 </footer>
+
+<!-- NAMENS-MODAL -->
+<div class="hs-modal-overlay" id="hs-modal-overlay">
+  <div class="hs-modal-box">
+    <div class="hs-modal-stars">⭐ ⭐ ⭐</div>
+    <div class="hs-modal-title">NEUER EINTRAG!</div>
+    <div class="hs-modal-sub" id="hs-modal-sub">Du schaffst es in die Top&nbsp;5!</div>
+    <div class="hs-modal-label">Dein Name:</div>
+    <input type="text" id="hs-name-input" class="hs-modal-input" maxlength="20" placeholder="Dein Name" autocomplete="off">
+    <button class="hs-modal-save" onclick="saveHSEntry()">Eintragen ▶</button>
+    <button class="hs-modal-skip" onclick="skipHSEntry()">✕ Überspringen</button>
+  </div>
+</div>
 
 <script>
 const allQ = [
@@ -524,6 +693,165 @@ const allQ = [
   let quizPool  = [];
   let questions = [];
   let cur = 0, score = 0, answered = false, history = [];
+
+  // ── BESTENLISTE ──────────────────────────────────────────────
+  const HS_KEY = 'deutsch_seki_hs_v1';
+  const HS_CATS = ['56', '78own', '78cum', '910own', '910all'];
+  const HS_LABELS = {
+    '56':     '📚 Jg 5/6',
+    '78own':  '📖 Jg 7/8',
+    '78cum':  '📗 Jg 5–8',
+    '910own': '📕 Jg 9/10',
+    '910all': '🏛️ Jg 5–10',
+  };
+  let currentHSTab = '56';
+  let blReturnTo = 'result';
+  let pendingHS = null;
+
+  function getCat() {
+    if (selJg === '5/6') return '56';
+    if (selJg === '7/8') return selScope === 'cum' ? '78cum' : '78own';
+    return selScope === 'all' ? '910all' : '910own';
+  }
+
+  function loadHS() {
+    try { return JSON.parse(localStorage.getItem(HS_KEY) || '{}'); } catch(e) { return {}; }
+  }
+  function saveHSData(data) {
+    try { localStorage.setItem(HS_KEY, JSON.stringify(data)); } catch(e) {}
+  }
+  function qualifiesForHS(cat, pct, total) {
+    const list = loadHS()[cat] || [];
+    if (list.length < 5) return true;
+    const worst = list[list.length - 1];
+    return pct > worst.pct || (pct === worst.pct && total > worst.total);
+  }
+  function addToLocalHS(cat, name, pct, sc, tot) {
+    const data = loadHS();
+    const list = data[cat] || [];
+    const d = new Date();
+    const ds = d.getDate() + '.' + (d.getMonth() + 1) + '.' + d.getFullYear();
+    list.push({ name: (name.trim() || 'Anonym').slice(0, 20), pct, score: sc, total: tot, date: ds });
+    list.sort((a, b) => b.pct - a.pct || b.total - a.total);
+    data[cat] = list.slice(0, 5);
+    saveHSData(data);
+  }
+
+  function checkAndMaybePromptHS(cat, pct, sc, tot) {
+    if (!qualifiesForHS(cat, pct, tot)) return;
+    pendingHS = { cat, pct, score: sc, total: tot };
+    const savedName = localStorage.getItem('schulquiz_name') || '';
+    document.getElementById('hs-name-input').value = savedName;
+    document.getElementById('hs-modal-sub').textContent =
+      'Ergebnis: ' + pct + ' % · ' + sc + '/' + tot + ' richtig';
+    const overlay = document.getElementById('hs-modal-overlay');
+    overlay.classList.add('open');
+    setTimeout(() => document.getElementById('hs-name-input').focus(), 120);
+  }
+
+  window.saveHSEntry = function () {
+    if (!pendingHS) return;
+    const name = document.getElementById('hs-name-input').value.trim() || 'Anonym';
+    localStorage.setItem('schulquiz_name', name);
+    addToLocalHS(pendingHS.cat, name, pendingHS.pct, pendingHS.score, pendingHS.total);
+    if (typeof leaderboardSave === 'function') {
+      leaderboardSave('deutsch-seki-' + pendingHS.cat, name, pendingHS.score, pendingHS.total);
+    }
+    pendingHS = null;
+    document.getElementById('hs-modal-overlay').classList.remove('open');
+  };
+
+  window.skipHSEntry = function () {
+    pendingHS = null;
+    document.getElementById('hs-modal-overlay').classList.remove('open');
+  };
+
+  window.showBestenliste = function (returnTo) {
+    blReturnTo = returnTo || 'result';
+    ['setup-screen', 'quiz-screen', 'result-screen'].forEach(id =>
+      document.getElementById(id).style.display = 'none'
+    );
+    document.getElementById('bl-screen').style.display = 'block';
+    currentHSTab = getCat() || HS_CATS[0];
+    renderHSTabs();
+    renderHSLocal(currentHSTab);
+    fetchHSGlobal(currentHSTab);
+  };
+
+  window.closeBestenliste = function () {
+    document.getElementById('bl-screen').style.display = 'none';
+    const target = blReturnTo === 'result' ? 'result-screen' : 'setup-screen';
+    document.getElementById(target).style.display = 'block';
+  };
+
+  window.switchHSTab = function (cat) {
+    currentHSTab = cat;
+    renderHSTabs();
+    renderHSLocal(cat);
+    fetchHSGlobal(cat);
+  };
+
+  function renderHSTabs() {
+    document.getElementById('hs-tabs').innerHTML = HS_CATS.map(c =>
+      '<button class="hs-tab' + (c === currentHSTab ? ' active' : '') + '" onclick="switchHSTab(\'' + c + '\')">'
+      + HS_LABELS[c] + '</button>'
+    ).join('');
+  }
+
+  function hsTableHTML(list) {
+    if (!list || !list.length)
+      return '<div class="hs-empty">Noch keine Einträge – sei der erste! 🚀</div>';
+    const medals = ['🥇','🥈','🥉'];
+    return '<div class="hs-table">'
+      + '<div class="hs-row hs-head"><span class="hs-rank">#</span><span>Name</span><span>Score</span><span style="text-align:right">Datum</span></div>'
+      + list.map((e, i) =>
+        '<div class="hs-row">'
+        + '<span class="hs-rank">' + (i < 3 ? medals[i] : (i + 1) + '.') + '</span>'
+        + '<span>' + escHtml(e.name) + '</span>'
+        + '<span class="hs-score-cell">' + e.pct + '%<span class="hs-score-sub"> (' + e.score + '/' + e.total + ')</span></span>'
+        + '<span class="hs-datum">' + escHtml(e.date || '–') + '</span>'
+        + '</div>'
+      ).join('')
+      + '</div>';
+  }
+
+  function renderHSLocal(cat) {
+    const list = loadHS()[cat] || [];
+    document.getElementById('hs-local').innerHTML = hsTableHTML(list);
+  }
+
+  function fetchHSGlobal(cat) {
+    const el = document.getElementById('hs-global');
+    el.innerHTML = '<p class="hs-empty">Lädt…</p>';
+    if (typeof leaderboardFetch !== 'function') {
+      el.innerHTML = '<p class="hs-empty">Nicht verfügbar.</p>';
+      return;
+    }
+    leaderboardFetch('deutsch-seki-' + cat, 10).then(data => {
+      // supabase-leaderboard gibt andere Felder zurück – normalisieren
+      const mapped = (data || []).map(e => ({
+        name:  e.name  || 'Anonym',
+        pct:   e.prozent !== undefined ? e.prozent : Math.round((e.punkte / e.maximum) * 100),
+        score: e.punkte,
+        total: e.maximum,
+        date:  e.datum ? new Date(e.datum).toLocaleDateString('de-DE') : '–',
+      }));
+      if (typeof leaderboardHTML === 'function') {
+        el.innerHTML = leaderboardHTML(data);
+      } else {
+        el.innerHTML = hsTableHTML(mapped);
+      }
+    }).catch(() => {
+      el.innerHTML = '<p class="hs-empty">Konnte nicht geladen werden.</p>';
+    });
+  }
+
+  document.getElementById('hs-name-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') window.saveHSEntry();
+  });
+  document.getElementById('hs-modal-overlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('hs-modal-overlay')) window.skipHSEntry();
+  });
 
   /* ─── Setup ─── */
   function buildCounts(id, counts) {
@@ -731,6 +1059,10 @@ const allQ = [
       + '</div>'
     ).join('');
 
+    // Bestenliste prüfen
+    const cat = getCat();
+    setTimeout(() => checkAndMaybePromptHS(cat, pct, score, total), 600);
+
     // XP an Kolosseum melden
     if (typeof kolosseumReport === 'function') {
       kolosseumReport(score, total, 'deutsch-seki-quiz');
@@ -739,8 +1071,9 @@ const allQ = [
 
   window.showSetup = function () {
     document.getElementById('result-screen').style.display  = 'none';
-    document.getElementById('quiz-screen').style.display   = 'none';
-    document.getElementById('setup-screen').style.display  = 'block';
+    document.getElementById('quiz-screen').style.display    = 'none';
+    document.getElementById('bl-screen').style.display      = 'none';
+    document.getElementById('setup-screen').style.display   = 'block';
   };
 
   function escHtml(s) {
@@ -754,6 +1087,7 @@ const allQ = [
 </script>
 
 <script src="../js/main.js"></script>
+<script src="../js/supabase-leaderboard.js"></script>
 <script src="../js/kolosseum-prompt.js"></script>
 <script src="../js/kolosseum-login-widget.js"></script>
 </body>
