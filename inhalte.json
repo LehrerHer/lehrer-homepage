@@ -1,6 +1,69 @@
 {
   "materialien": [
     {
+      "id": "1748390400000",
+      "titel": "Deutsch-Quiz Sek I (Jg. 5–10)",
+      "beschreibung": "Interaktives Quiz mit Bestenliste in 5 Kategorien und Arena-XP-Anbindung",
+      "icon": "📝",
+      "url": "materialien/deutsch_seki_quiz_2026-05.html",
+      "seite": "deutsch",
+      "datum": "2026-05-28"
+    },
+    {
+      "id": "1748131200000",
+      "titel": "Das Ende der Tschechoslowakei (Jg. 10)",
+      "beschreibung": "Arbeitsblatt: Samtene Revolution & Samtene Scheidung",
+      "icon": "📜",
+      "url": "materialien/geschichte_ende-tschechoslowakei_jg10_2026-05.html",
+      "seite": "geschichte",
+      "datum": "2026-05-25"
+    },
+    {
+      "id": "1747872000000",
+      "titel": "Das Parfum – Lektürequiz (Jg. 10)",
+      "beschreibung": "Interaktives Quiz zur Lektüre »Das Parfum«",
+      "icon": "🧪",
+      "url": "materialien/deutsch_parfum_quiz_jg10_2026-05.html",
+      "seite": "das-parfum",
+      "datum": "2026-05-22"
+    },
+    {
+      "id": "1747612800000",
+      "titel": "Prag – Stunden 3–4: NS-Herrschaft & Kommunismus",
+      "beschreibung": "Selbstlernseite zur NS-Herrschaft und zum Kommunismus in der Tschechoslowakei",
+      "icon": "🏛️",
+      "url": "materialien/geschichte_prag_stunden3-4_selbstlernseite_2026-05.html",
+      "seite": "geschichte",
+      "datum": "2026-05-19"
+    },
+    {
+      "id": "1747526400000",
+      "titel": "Übungsaufgaben Mathematikarbeit (Jg. 4)",
+      "beschreibung": "Interaktives Übungsblatt zur Vorbereitung auf die Mathearbeit",
+      "icon": "➗",
+      "url": "materialien/mathe_uebungsaufgaben_klasse4_2026-05.html",
+      "seite": "andere",
+      "datum": "2026-05-18"
+    },
+    {
+      "id": "1747353600000",
+      "titel": "Burg Bentheim – Museumsführung (Kl. 7)",
+      "beschreibung": "Rollenspiel-Aufgabe zur Museumsführung auf der Burg Bentheim",
+      "icon": "🏰",
+      "url": "materialien/geschichte_burg-bentheim_museumsführung_7r_2026-05.html",
+      "seite": "geschichte",
+      "datum": "2026-05-13"
+    },
+    {
+      "id": "1747094400000",
+      "titel": "Prag – Stunde 2: Erste Tschechoslowakische Republik",
+      "beschreibung": "Selbstlernseite zur Ersten Tschechoslowakischen Republik (1918–1938)",
+      "icon": "🏛️",
+      "url": "materialien/geschichte_prag_stunde2_2026-05.html",
+      "seite": "geschichte",
+      "datum": "2026-05-12"
+    },
+    {
       "id": "1747008000000",
       "titel": "Geschichte Prags – Stunde 1",
       "beschreibung": "Interaktive PPP: Geografische Lage, Přemysliden, Herzog Wenzel, Karl IV. und die Blütezeit Prags – 14 Folien",
