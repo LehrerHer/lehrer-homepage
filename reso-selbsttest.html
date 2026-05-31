@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>RESO Selbstüberprüfung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -148,6 +152,24 @@
 </head>
 <body>
 
+    <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+        <div class="container navbar-inner">
+            <a href="index.html" class="navbar-logo">lehrer-herrmann.de</a>
+            <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="navbar-links" id="navbar-links">
+                <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
+                <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+                <li class="navbar-gb-trenner" aria-hidden="true"><span class="navbar-gb-label">Geschützter Bereich</span></li>
+                <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+                <li><a href="blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+                <li><a href="faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+            </ul>
+            <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+        </div>
+    </nav>
+
 <!-- ═══════════════════════════════════════════════════════════ SCREEN 1: Eingabe -->
 <div id="s-entry" class="screen active">
   <div style="margin-top:12px" class="top-logo">RESO Selbstüberprüfung</div>
@@ -162,7 +184,7 @@
       <input id="inp-name" type="text" placeholder="Vorname Nachname" autocomplete="off" spellcheck="false">
     </div>
     <div class="field">
-      <label for="inp-variante">Variante <span style="font-weight:400;color:#9ca3af">(bekommst du von deiner Lehrkraft)</span></label>
+      <label for="inp-variante">Variante <span style="font-weight:400;color:#9ca3af">(falls nicht anders gesagt: Variante 1)</span></label>
       <select id="inp-variante">
         <option value="1">Variante 1</option>
         <option value="2">Variante 2</option>
@@ -627,5 +649,19 @@ function restart() {
   document.getElementById("inp-code").value = "";
 }
 </script>
+
+    <footer>
+        <div class="container footer-inner">
+            <p>© <span id="footer-jahr">2025</span> Jan Herrmann</p>
+            <nav class="footer-links" aria-label="Rechtliche Links">
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+            </nav>
+            <a href="/kolosseum/public/admin/" id="admin-footer-link" class="admin-footer-link" aria-hidden="true" tabindex="-1"></a>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/kolosseum-login-widget.js"></script>
 </body>
 </html>
