@@ -122,6 +122,63 @@
   .modal-bg.open { display: flex; }
   .modal { background: #fff; border-radius: var(--r); padding: 24px; width: 90%; max-width: 420px; }
   .modal h3 { margin-bottom: 14px; }
+
+  /* ── Detail-Modal ───────────────────────────────────────── */
+  .detail-bg { position: fixed; inset: 0; background: rgba(0,0,0,.5);
+               display: none; align-items: flex-start; justify-content: center;
+               z-index: 200; overflow-y: auto; padding: 20px 12px; }
+  .detail-bg.open { display: flex; }
+  .detail-modal {
+    background: #fff; border-radius: var(--r); width: 100%; max-width: 720px;
+    box-shadow: 0 8px 40px rgba(0,0,0,.2); margin: auto;
+  }
+  .detail-header {
+    padding: 18px 22px 14px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  }
+  .detail-header h2 { font-size: 1.05rem; font-weight: 700; }
+  .detail-header .meta { font-size: .8rem; color: var(--gray); margin-top: 3px; }
+  .detail-close { background: none; border: none; font-size: 1.4rem; cursor: pointer;
+                  color: var(--gray); padding: 0 4px; line-height: 1; flex-shrink: 0; }
+  .detail-close:hover { color: var(--text); }
+  .detail-body { padding: 18px 22px; }
+
+  .detail-bars { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+  .d-bar-row { display: flex; align-items: center; gap: 8px; }
+  .d-bar-lbl { font-size: .78rem; font-weight: 700; width: 48px; text-align: right; }
+  .d-bar-bg  { flex: 1; background: var(--border); border-radius: 99px; height: 16px; overflow: hidden; }
+  .d-bar-fill{ height: 100%; border-radius: 99px; }
+  .d-bar-sc  { font-size: .78rem; color: var(--gray); width: 38px; }
+
+  .detail-section { margin-bottom: 16px; }
+  .detail-section h3 { font-size: .8rem; font-weight: 700; text-transform: uppercase;
+                       letter-spacing: .06em; margin-bottom: 8px; }
+  .items-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+  .items-table th { text-align: left; padding: 5px 8px; font-size: .75rem; color: var(--gray);
+                    border-bottom: 1.5px solid var(--border); }
+  .items-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); }
+  .items-table tr:last-child td { border-bottom: none; }
+  .item-korrekt   { color: var(--green); font-weight: 600; }
+  .item-falsch-w  { color: var(--red);   font-weight: 600; text-decoration: line-through; }
+  .item-falsch-k  { color: var(--green); font-weight: 600; }
+  .item-row-wrong td { background: #fff5f5; }
+  .item-row-ok  td   { background: #f0fdf4; }
+
+  .detail-footer { padding: 12px 22px; border-top: 1px solid var(--border);
+                   display: flex; gap: 10px; justify-content: flex-end; }
+  .btn-print { background: #f1f5f9; color: var(--text); }
+
+  /* ── Drucklayout ────────────────────────────────────────── */
+  @media print {
+    header, nav, main > .card:not(#print-target),
+    .detail-bg, .detail-footer, .detail-close,
+    #global-msg, .msg, .btn-hdr { display: none !important; }
+    body { background: #fff; }
+    #print-area { display: block !important; padding: 0; }
+    .print-page { page-break-after: always; padding: 20px; }
+    .items-table td, .items-table th { padding: 4px 6px; }
+  }
+  #print-area { display: none; }
 </style>
 </head>
 <body>
@@ -144,13 +201,56 @@
   <button onclick="tab('t-klassen',this)">Klassen</button>
 </nav>
 
+<!-- ═══════════════════════════════ Detail-Modal -->
+<div class="detail-bg" id="detail-bg">
+  <div class="detail-modal">
+    <div class="detail-header">
+      <div>
+        <h2 id="det-name">—</h2>
+        <div class="meta" id="det-meta">—</div>
+      </div>
+      <button class="detail-close" onclick="closeDetail()">×</button>
+    </div>
+    <div class="detail-body">
+      <div id="det-spinner" style="text-align:center;padding:20px">
+        <span class="spinner"></span> Lade Details …
+      </div>
+      <div id="det-content" style="display:none">
+        <div class="detail-bars" id="det-bars"></div>
+        <div id="det-sections"></div>
+      </div>
+    </div>
+    <div class="detail-footer">
+      <button class="btn btn-print" onclick="printDetail()">🖨️ Drucken / PDF</button>
+      <button class="btn" style="background:var(--border)" onclick="closeDetail()">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<!-- Unsichtbarer Druckbereich -->
+<div id="print-area"></div>
+
 <main>
 <div id="global-msg" class="msg"></div>
 
 <!-- ═══════════════════════════════ Tab 1: Ergebnisliste -->
 <div id="t-liste" class="panel active">
   <div class="card">
-    <h2>Eingereichte Selbsttests</h2>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
+      <h2 style="margin:0">Eingereichte Tests</h2>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <select id="filter-stufe" onchange="renderListe()" style="padding:6px 10px;border:1px solid var(--border);border-radius:7px;font-size:.82rem;outline:none">
+          <option value="">Alle Stufen</option>
+          <option value="1">Stufe 1 – Diktate</option>
+          <option value="2">Stufe 2 – Selbsttest</option>
+          <option value="3">Stufe 3 – Strategie</option>
+          <option value="4">Stufe 4 – Quatsch</option>
+        </select>
+        <select id="filter-name" onchange="renderListe()" style="padding:6px 10px;border:1px solid var(--border);border-radius:7px;font-size:.82rem;outline:none">
+          <option value="">Alle Schüler:innen</option>
+        </select>
+      </div>
+    </div>
     <div id="liste-content">
       <div class="empty-state">Klasse wählen und „Laden" klicken.</div>
     </div>
@@ -286,6 +386,8 @@ function updateKlasseSelect() {
   });
 }
 
+const STUFE_LABEL = {1:"Diktat", 2:"Selbsttest", 3:"Strategie", 4:"Quatsch"};
+
 // ── Tab 1: Ergebnisliste ──────────────────────────────────────────────────────
 function renderListe() {
   const el = document.getElementById("liste-content");
@@ -293,36 +395,183 @@ function renderListe() {
     el.innerHTML = '<div class="empty-state">Noch keine Ergebnisse für diese Klasse.</div>';
     return;
   }
+
+  // Filter
+  const filterStufe = document.getElementById("filter-stufe").value;
+  const filterName  = document.getElementById("filter-name").value;
+  let ergebnisse = allData.ergebnisse;
+  if (filterStufe) ergebnisse = ergebnisse.filter(e => String(e.stufe||1) === filterStufe);
+  if (filterName)  ergebnisse = ergebnisse.filter(e => e.schueler_name === filterName);
+
+  // Name-Filter befüllen
+  const names = [...new Set(allData.ergebnisse.map(e => e.schueler_name))].sort();
+  const nameSel = document.getElementById("filter-name");
+  const curName = nameSel.value;
+  nameSel.innerHTML = '<option value="">Alle Schüler:innen</option>' +
+    names.map(n => `<option value="${n}" ${n===curName?"selected":""}>${n}</option>`).join("");
+
+  if (!ergebnisse.length) {
+    el.innerHTML = '<div class="empty-state">Keine Ergebnisse für diesen Filter.</div>';
+    return;
+  }
+
   let html = `<table>
     <thead><tr>
-      <th>Name</th><th>Var.</th>
+      <th>Name</th><th>Stufe</th>
       ${CATS.map(k=>`<th style="color:${KAT[k].c}">${KAT[k].k}</th>`).join("")}
       <th>Ges.</th><th>Datum</th><th></th>
     </tr></thead><tbody>`;
 
-  allData.ergebnisse.forEach(e => {
-    let total = 0;
+  ergebnisse.forEach(e => {
+    let total = 0, maxP = 0;
     const kat_cells = CATS.map(k => {
-      const v = e.kategorien[String(k)] || {richtig:0,gesamt:5};
-      total += v.richtig;
-      const cl = v.richtig>=4?"g":v.richtig>=2?"o":"r";
-      return `<td><span class="ampel ${cl}">${v.richtig}/5</span></td>`;
+      const v = e.kategorien[String(k)] || {richtig:0, gesamt:0};
+      total += v.richtig; maxP += (v.gesamt || 0);
+      if (!v.gesamt) return `<td style="color:#cbd5e1">—</td>`;
+      const pct = v.richtig/v.gesamt;
+      const cl  = pct>=0.8?"g":pct>=0.5?"o":"r";
+      return `<td><span class="ampel ${cl}">${v.richtig}/${v.gesamt}</span></td>`;
     }).join("");
 
-    const d = new Date(e.eingereicht);
+    const stufe = e.stufe || 1;
+    const d  = new Date(e.eingereicht);
     const ds = d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"2-digit"});
+    const stufeLabel = STUFE_LABEL[stufe] || `S${stufe}`;
+
     html += `<tr>
       <td><strong>${e.schueler_name}</strong></td>
-      <td style="color:var(--gray)">${e.variante}</td>
+      <td><span style="font-size:.75rem;background:#f1f5f9;padding:2px 7px;border-radius:99px;font-weight:600">${stufeLabel}</span></td>
       ${kat_cells}
-      <td><strong>${total}/35</strong></td>
+      <td><strong>${total}${maxP?"/"+maxP:""}</strong></td>
       <td style="font-size:.78rem;color:var(--gray)">${ds}</td>
-      <td><button class="btn btn-danger" style="padding:4px 10px;font-size:.78rem"
-          onclick="confirmDelete(${e.id},'${e.schueler_name}')">×</button></td>
+      <td style="display:flex;gap:4px">
+        <button class="btn btn-primary" style="padding:4px 10px;font-size:.78rem"
+            onclick="openDetail(${e.id},'${e.schueler_name.replace(/'/g,"\\'")}','${stufeLabel}','${ds}')">Details</button>
+        <button class="btn btn-danger" style="padding:4px 10px;font-size:.78rem"
+            onclick="confirmDelete(${e.id},'${e.schueler_name}')">×</button>
+      </td>
     </tr>`;
   });
   html += "</tbody></table>";
   el.innerHTML = html;
+}
+
+// ── Detail-Modal ──────────────────────────────────────────────────────────────
+async function openDetail(id, name, stufe, datum) {
+  document.getElementById("det-name").textContent  = name;
+  document.getElementById("det-meta").textContent  = `${stufe} · ${datum}`;
+  document.getElementById("det-spinner").style.display = "block";
+  document.getElementById("det-content").style.display = "none";
+  document.getElementById("detail-bg").classList.add("open");
+
+  try {
+    const res = await fetch(`${API}/ergebnis/${id}/items`,
+      {headers:{Authorization:"Bearer "+token()}});
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    renderDetail(data);
+  } catch(e) {
+    document.getElementById("det-spinner").textContent = "Fehler beim Laden der Details.";
+  }
+}
+
+function closeDetail() {
+  document.getElementById("detail-bg").classList.remove("open");
+}
+
+function renderDetail(data) {
+  document.getElementById("det-spinner").style.display = "none";
+  document.getElementById("det-content").style.display = "block";
+
+  const items = data.items || [];
+  const kat   = data.kategorien || {};
+
+  // Kategorie-Balken
+  const bars = document.getElementById("det-bars");
+  bars.innerHTML = "";
+  CATS.forEach(k => {
+    const v = kat[String(k)];
+    if (!v || !v.gesamt) return;
+    const pct = Math.round(v.richtig / v.gesamt * 100);
+    const col = pct>=80?"var(--green)":pct>=50?"var(--orange)":"var(--red)";
+    bars.innerHTML += `
+      <div class="d-bar-row">
+        <div class="d-bar-lbl" style="color:${KAT[k].c}">${KAT[k].k}</div>
+        <div class="d-bar-bg">
+          <div class="d-bar-fill" style="width:${pct}%;background:${col}"></div>
+        </div>
+        <div class="d-bar-sc">${v.richtig}/${v.gesamt}</div>
+      </div>`;
+  });
+
+  // Items pro Kategorie
+  const sections = document.getElementById("det-sections");
+  sections.innerHTML = "";
+
+  if (!items.length) {
+    sections.innerHTML = `<p style="color:var(--gray);font-size:.88rem">
+      Keine Einzelitem-Daten vorhanden (älteres Ergebnis ohne Detailspeicherung).</p>`;
+    return;
+  }
+
+  // Gruppieren nach Kategorie
+  const byKat = {};
+  items.forEach(it => {
+    const k = it.kat;
+    if (!byKat[k]) byKat[k] = [];
+    byKat[k].push(it);
+  });
+
+  CATS.forEach(k => {
+    const list = byKat[k];
+    if (!list || !list.length) return;
+    const wrong  = list.filter(i => !i.richtig);
+    const richtig = list.filter(i => i.richtig).length;
+
+    let sec = `<div class="detail-section">
+      <h3 style="color:${KAT[k].c}">${KAT[k].k} – ${KAT[k].n}
+        <span style="font-weight:400;color:var(--gray)">· ${richtig}/${list.length} richtig</span>
+      </h3>`;
+
+    if (wrong.length === 0) {
+      sec += `<p style="color:var(--green);font-size:.85rem;font-weight:600;margin-bottom:8px">✓ Alle richtig!</p>`;
+    } else {
+      sec += `<table class="items-table">
+        <thead><tr>
+          <th>#</th><th>Korrektes Wort</th><th>Eingabe des Schülers</th><th>Kontext</th>
+        </tr></thead><tbody>`;
+      wrong.forEach(it => {
+        const ctx = it.satz ? `<span style="color:var(--gray);font-size:.75rem">${it.satz.substring(0,50)}…</span>` : "—";
+        sec += `<tr class="item-row-wrong">
+          <td style="color:var(--gray)">${it.nr}</td>
+          <td class="item-falsch-k">${it.wort}</td>
+          <td class="item-falsch-w">${it.eingabe || "—"}</td>
+          <td>${ctx}</td>
+        </tr>`;
+      });
+      sec += "</tbody></table>";
+    }
+    sec += "</div>";
+    sections.innerHTML += sec;
+  });
+
+  // Für Druckbereich aufbereiten
+  document.getElementById("print-area").innerHTML =
+    `<div class="print-page">
+      <h2 style="margin-bottom:4px">${document.getElementById("det-name").textContent}</h2>
+      <p style="color:#64748b;font-size:.85rem;margin-bottom:16px">
+        ${document.getElementById("det-meta").textContent}</p>
+      ${bars.outerHTML}
+      ${sections.innerHTML}
+    </div>`;
+}
+
+function printDetail() {
+  document.getElementById("print-area").style.display = "block";
+  window.print();
+  setTimeout(() => {
+    document.getElementById("print-area").style.display = "none";
+  }, 500);
 }
 
 // ── Tab 2: Heatmap ─────────────────────────────────────────────────────────
