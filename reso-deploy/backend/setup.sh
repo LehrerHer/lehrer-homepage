@@ -32,8 +32,10 @@ systemctl enable reso-api
 systemctl start reso-api
 
 echo ""
-echo "5. Nginx konfigurieren – nginx-snippet.conf in den server{}-Block einfügen."
-echo "   Danach: nginx -t && systemctl reload nginx"
+echo "5. Caddy konfigurieren – caddy-snippet.conf in den lehrer-herrmann.de-Block des Caddyfiles einfügen."
+echo "   Typischer Pfad: /etc/caddy/Caddyfile"
+echo "   Danach: caddy reload  (oder: systemctl reload caddy)"
 echo ""
 echo "=== Fertig! API läuft auf http://127.0.0.1:8400 ==="
 echo "=== Test: curl http://127.0.0.1:8400/ ==="
+echo "=== Test über Domain: curl https://lehrer-herrmann.de/reso-api/ ==="
