@@ -516,11 +516,14 @@ async function openDetail(id, name, stufe, datum) {
   try {
     const res = await fetch(`${API}/ergebnis/${id}/items`,
       {headers:{Authorization:"Bearer "+token()}});
-    if (!res.ok) throw new Error(res.status);
+    if (!res.ok) {
+      const body = await res.text().catch(()=>"");
+      throw new Error(`HTTP ${res.status}: ${body.substring(0,120)}`);
+    }
     const data = await res.json();
     renderDetail(data);
   } catch(e) {
-    document.getElementById("det-spinner").textContent = "Fehler beim Laden der Details.";
+    document.getElementById("det-spinner").textContent = "Fehler: " + e.message;
   }
 }
 
