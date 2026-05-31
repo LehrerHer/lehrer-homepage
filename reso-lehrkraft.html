@@ -217,14 +217,9 @@
     </div>
 </nav>
 
-<div style="background:#f0f4f8;padding:0.6rem 1rem;font-size:0.82rem;text-align:center;border-bottom:1px solid #e2e8f0;">
-    <a href="reso.html" style="color:#2563eb;text-decoration:none;font-weight:600;">← Startseite des individuellen Rechtschreibtrainings</a>
-</div>
-
-
-
 <header>
-  <h1>RESO Dashboard</h1>
+  <a href="reso.html" style="color:rgba(255,255,255,.85);text-decoration:none;font-size:.82rem;font-weight:600;white-space:nowrap;flex-shrink:0;">← Startseite des individuellen<br>Rechtschreibtrainings</a>
+  <h1>Dashboard</h1>
   <div class="hdr-inputs">
     <input id="inp-token" type="password" placeholder="Lehrkraft-Token" autocomplete="off">
     <select id="inp-klasse">
@@ -240,6 +235,20 @@
   <button onclick="tab('t-profil',this)">Schülerprofil</button>
   <button onclick="tab('t-klassen',this)">Klassen</button>
 </nav>
+
+<!-- ═══════════════════════════════ Legende Abkürzungen -->
+<div style="background:#fff;border-bottom:1px solid var(--border);padding:8px 16px;overflow-x:auto;">
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;min-width:0;font-size:.75rem;">
+    <span style="color:var(--gray);font-weight:600;white-space:nowrap;">Abkürzungen:</span>
+    <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;"><span style="background:#3b82f6;color:#fff;padding:1px 7px;border-radius:99px;font-weight:700;">DK</span> Doppelkonsonanten</span>
+    <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;"><span style="background:#8b5cf6;color:#fff;padding:1px 7px;border-radius:99px;font-weight:700;">s/ß</span> s / ß / ss</span>
+    <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;"><span style="background:#06b6d4;color:#fff;padding:1px 7px;border-radius:99px;font-weight:700;">AK</span> Auslautverhärtung</span>
+    <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;"><span style="background:#f59e0b;color:#fff;padding:1px 7px;border-radius:99px;font-weight:700;">ä/äu</span> ä / äu (Ableiten)</span>
+    <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;"><span style="background:#10b981;color:#fff;padding:1px 7px;border-radius:99px;font-weight:700;">ZW</span> Zusammensetzungen</span>
+    <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;"><span style="background:#f97316;color:#fff;padding:1px 7px;border-radius:99px;font-weight:700;">AE</span> Ableitungen &amp; Vorsilben</span>
+    <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;"><span style="background:#ec4899;color:#fff;padding:1px 7px;border-radius:99px;font-weight:700;">GK</span> Groß-/Kleinschreibung</span>
+  </div>
+</div>
 
 <!-- ═══════════════════════════════ Detail-Modal -->
 <div class="detail-bg" id="detail-bg">
