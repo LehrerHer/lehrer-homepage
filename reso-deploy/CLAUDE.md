@@ -1,129 +1,151 @@
-# Anweisung für Claude Code – RESO-System auf lehrer-herrmann.de aktualisieren
+# Anweisung für Claude Code – RESO-System aktualisieren (großes Update)
 
-## Ausgangslage (wichtig zuerst lesen!)
+## Ausgangslage
 
-Die Website **lehrer-herrmann.de** hat bereits ein RESO-System in einer älteren Version:
-- `reso.html` — Portalseite, bereits live ✅
-- `reso-selbsttest.html` — ältere Version, bereits live ✅
-- `reso-lehrkraft.html` — ältere Version, bereits live ✅
-- `reso-strategien.html` — bereits live ✅
-- `reso-uebungen.html` — bereits live ✅
+Die Website lehrer-herrmann.de hat bereits ein laufendes RESO-System.
+Dieser Ordner (`reso-deploy/`) enthält ein vollständiges Update mit neuen Seiten,
+Audio-Dateien und einer aktualisierten Backend-Version.
 
-Die Dateien in diesem Ordner (`reso-deploy/`) sind aktualisierte bzw. neue Versionen.
-**Es muss nichts gelöscht werden** – gleiche Dateinamen überschreiben automatisch, neue Dateien kommen hinzu.
-
-Deployment läuft über: **GitHub → automatischer Webhook → Hetzner-Server**.
+Deployment: **GitHub → automatischer Webhook → Hetzner-Server** (Caddy, nicht nginx).
 
 ---
 
 ## Schritt 1 – Repo-Struktur verstehen
 
-Schau dir kurz an, wo die HTML-Dateien der Website liegen (Stammverzeichnis oder Unterordner wie `public/`, `www/` etc.) und ob es eine GitHub Actions Workflow-Datei unter `.github/workflows/` gibt.
+Schau kurz nach:
+- Wo liegen die HTML-Seiten? (Stammverzeichnis oder `public/` o. ä.)
+- Gibt es `.github/workflows/` mit einem Deploy-Workflow?
+- Merke dir den **Server-Deploy-Pfad** aus dem Workflow (z. B. `/var/www/lehrer-homepage`).
 
 ---
 
 ## Schritt 2 – HTML-Dateien platzieren
 
-Kopiere alle HTML-Dateien aus `reso-deploy/` **in denselben Ordner, in dem `reso.html` und die anderen HTML-Seiten liegen**.
+Kopiere **alle** HTML-Dateien aus `reso-deploy/` in denselben Ordner,
+in dem die anderen HTML-Seiten der Homepage liegen.
+Gleiche Dateinamen überschreiben alte Versionen automatisch.
 
 ```
-reso-selbsttest.html    → ersetzt alte Version (Multiple-Choice-Selbsttest, 35 Items)
-reso-lehrkraft.html     → ersetzt alte Version (Lehrkraft-Dashboard)
-reso-strategien.html    → ersetzt alte Version (Strategieerklärungen)
-reso-uebungen.html      → ersetzt alte Version (Übungen)
-reso-diktat.html        → NEU: Stufe 1 – Diagnosediktate mit Audio (5 Diktate, freie Eingabe)
-reso-selbsttest2.html   → NEU: Stufe 2 – Erweiterter Selbsttest (98 Items, freie Eingabe)
+reso-selbsttest.html        → ersetzt (Multiple-Choice-Selbsttest)
+reso-lehrkraft.html         → ersetzt (Dashboard + neue Detailansicht)
+reso-strategien.html        → ersetzt
+reso-uebungen.html          → ersetzt
+reso-diktat.html            → NEU: Stufe 1 – Diagnosediktate mit Audio
+reso-selbsttest2.html       → NEU: Stufe 2 – 98 Items, freie Eingabe
+reso-strategieabfrage.html  → NEU: Stufe 3 – Strategie benennen
+reso-quatsch.html           → NEU: Stufe 4 – Quatschwortdiktat
 ```
 
-**Inhalt der HTML-Dateien nicht verändern.** Die API-URL `https://lehrer-herrmann.de/reso-api` ist korrekt.
+Inhalt der HTML-Dateien **nicht verändern**.
 
 ---
 
-## Schritt 3 – reso.html um neue Links erweitern
+## Schritt 3 – Audio-Ordner ins Repo
 
-Die bestehende `reso.html` hat bereits Karten für Selbsttest, Strategien, Übungen und Dashboard.
-Füge zwei neue Karten hinzu – am besten direkt unter der bestehenden Selbsttest-Karte:
+Kopiere den kompletten Unterordner `reso-deploy/audio/` ins Repo-Stammverzeichnis:
+
+```
+audio/
+  quatsch/
+    q1-full.mp3   q1-full.m4a
+    q1-s1.mp3     q1-s1.m4a
+    q1-s2.mp3     q1-s2.m4a
+    … (alle q1 und q2 Dateien)
+    q2-full.mp3   q2-full.m4a
+    q2-s1.mp3     q2-s1.m4a
+    … usw.
+```
+
+Wichtig: Sowohl `.mp3` als auch `.m4a` mitnehmen – verschiedene Browser
+bevorzugen verschiedene Formate.
+
+---
+
+## Schritt 4 – reso.html um neue Seiten erweitern
+
+Die bestehende `reso.html` zeigt Karten für Selbsttest, Dashboard usw.
+Füge vier neue Karten hinzu, passend zum vorhandenen Stil:
 
 ```html
+<!-- Stufe 1: Diagnosediktate -->
 <div>
   <h3>🎤 Diagnosediktate (Stufe 1)</h3>
-  <p>5 Diktattexte mit Lücken – du hörst jedes Wort per Klick und schreibst es selbst.
-     Keine Auswahlmöglichkeiten, echte Diagnostik.</p>
+  <p>5 Diktattexte – du hörst jedes Wort per Klick und schreibst es selbst. Keine Auswahlmöglichkeiten.</p>
   <a href="https://lehrer-herrmann.de/reso-diktat.html">→ Zu den Diktaten</a>
 </div>
 
+<!-- Stufe 2: Erweiterter Selbsttest -->
 <div>
   <h3>✍️ Erweiterter Selbsttest (Stufe 2)</h3>
-  <p>98 Lückenwörter aus allen 7 Rechtschreibbereichen – du tippst die fehlenden
-     Buchstaben selbst ein statt sie auszuwählen.</p>
+  <p>98 Lückenwörter – fehlende Buchstaben selbst eintippen statt auswählen.</p>
   <a href="https://lehrer-herrmann.de/reso-selbsttest2.html">→ Zum erweiterten Test</a>
+</div>
+
+<!-- Stufe 3: Strategieabfrage -->
+<div>
+  <h3>🧠 Strategieabfrage (Stufe 3)</h3>
+  <p>Richtige Schreibung wählen und erklären, welche Strategie du genutzt hast.</p>
+  <a href="https://lehrer-herrmann.de/reso-strategieabfrage.html">→ Zur Strategieabfrage</a>
+</div>
+
+<!-- Stufe 4: Quatschwortdiktat -->
+<div>
+  <h3>🔊 Quatschwortdiktat (Stufe 4)</h3>
+  <p>Erfundene Wörter hören und aufschreiben – Rechtschreibregeln gelten auch für Quatschwörter!</p>
+  <a href="https://lehrer-herrmann.de/reso-quatsch.html">→ Zum Quatschwortdiktat</a>
 </div>
 ```
 
-Passe Klassen und HTML-Struktur an den vorhandenen Stil von `reso.html` an.
+Klassen und HTML-Struktur an den vorhandenen Stil von `reso.html` anpassen.
 
 ---
 
-## Schritt 4 – Backend-Dateien aktualisieren
+## Schritt 5 – Backend aktualisieren
 
-Kopiere den Unterordner `reso-deploy/backend/` ins Repo als `reso-backend/` (ersetzt alte Version):
-
-```
-reso-backend/api.py              → v2.0: speichert jetzt Einzelitems pro Antwort
-reso-backend/requirements.txt
-reso-backend/reso-api.service
-reso-backend/caddy-snippet.conf  → NEU: Caddy-Konfiguration (nicht nginx!)
-reso-backend/nginx-snippet.conf  → alt, kann bleiben
-reso-backend/setup.sh
-```
+Kopiere `reso-deploy/backend/api.py` ins Repo als `reso-backend/api.py`
+(ersetzt die alte Version – das ist Backend v2.0 mit granularer Fehlerstruktur).
 
 ---
 
-## Schritt 5 – Commit & Push
+## Schritt 6 – Commit & Push
 
-**Commit-Message:**
 ```
-RESO: Diagnosediktate (Stufe 1) und erweiterter Selbsttest (Stufe 2) hinzugefügt, Backend v2
+RESO: Stufe 2–4, Audio-Quatschwortdiktat, Dashboard-Detailansicht
 ```
 
 ---
 
-## Was NICHT zu tun ist
+## Schritt 7 – Server: Backend neu starten (SSH)
 
-- Inhalt der HTML-Dateien aus `reso-deploy/` nicht verändern
-- `reso-deploy/` selbst **nicht** ins Repo committen – nur die Dateien daraus
-- `reso-deploy/CLAUDE.md` (diese Datei) **nicht** committen
-- Keine bestehenden Dateien löschen
-
----
-
-## Was danach noch manuell per SSH erledigt werden muss
-
-*(Einmalig – braucht Server-Zugriff. Der Server nutzt **Caddy**, nicht nginx.)*
+Nach dem Deploy muss das Backend neu gestartet werden, damit v2.0 aktiv wird:
 
 ```bash
-# Backend-Upgrade auf v2 (neue Datenbankstruktur wird automatisch migriert)
-cd /var/www/lehrer-homepage/reso-backend
-source ../venv/bin/activate   # oder: /opt/reso/venv/bin/activate
-pip install -r requirements.txt -q
+ssh root@lehrer-herrmann.de
 systemctl stop reso-api && systemctl start reso-api
-
-# Test
 curl https://lehrer-herrmann.de/reso-api/
 # Erwartete Antwort: {"status":"RESO API läuft","version":"2.0"}
 ```
 
 ---
 
+## Was NICHT zu tun ist
+
+- Inhalt der HTML-Dateien nicht verändern
+- `reso-deploy/` selbst nicht committen – nur Dateien daraus
+- `reso-deploy/CLAUDE.md` und `reso-deploy/CLAUDE-AUDIO.md` nicht committen
+- Keine bestehenden Dateien löschen
+
+---
+
 ## Ergebnis nach dem Deployment
 
-| URL | Beschreibung |
-|-----|-------------|
-| `https://lehrer-herrmann.de/reso.html` | Portal (aktualisiert) |
-| `https://lehrer-herrmann.de/reso-selbsttest.html` | Selbsttest (aktualisiert) |
-| `https://lehrer-herrmann.de/reso-diktat.html` | Diagnosediktate – NEU |
-| `https://lehrer-herrmann.de/reso-selbsttest2.html` | Erweiterter Selbsttest – NEU |
-| `https://lehrer-herrmann.de/reso-strategien.html` | Strategien (aktualisiert) |
-| `https://lehrer-herrmann.de/reso-uebungen.html` | Übungen (aktualisiert) |
-| `https://lehrer-herrmann.de/reso-lehrkraft.html` | Dashboard (aktualisiert) |
-| `https://lehrer-herrmann.de/reso-api/` | Backend v2 |
+| URL | Status |
+|-----|--------|
+| `…/reso.html` | Aktualisiert (+4 neue Karten) |
+| `…/reso-diktat.html` | NEU |
+| `…/reso-selbsttest2.html` | NEU |
+| `…/reso-strategieabfrage.html` | NEU |
+| `…/reso-quatsch.html` | NEU (Audio für Diktat 1+2 aktiv) |
+| `…/audio/quatsch/q1-s1.mp3` | NEU (Audio-Dateien) |
+| `…/reso-lehrkraft.html` | Aktualisiert (Detailansicht) |
+| `…/reso-api/` | Backend v2.0 |
