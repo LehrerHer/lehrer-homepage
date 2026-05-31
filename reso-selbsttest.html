@@ -115,6 +115,35 @@
 
   .top-logo { font-weight: 800; font-size: 1.1rem; color: var(--accent);
               letter-spacing: .05em; margin-bottom: 20px; text-align: center; }
+
+  /* ── Weiter-Lernen-Buttons im Ergebnis ───────────────── */
+  .next-steps { margin: 14px 0 6px; }
+  .next-steps h3 { font-size: .82rem; font-weight: 700; color: var(--gray);
+                   text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; }
+  .step-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; flex-wrap: wrap; }
+  .step-label { font-size: .85rem; font-weight: 600; min-width: 120px; flex: 0 0 auto; }
+  .step-btn {
+    flex: 1; padding: 9px 12px; border: none; border-radius: 9px;
+    font-size: .82rem; font-weight: 600; cursor: pointer; text-align: center;
+    text-decoration: none; display: inline-block; transition: filter .15s;
+  }
+  .step-btn:hover { filter: brightness(.92); }
+  .step-btn-strat { background: #eff6ff; color: #1d4ed8; }
+  .step-btn-ueb   { background: #ecfdf5; color: #065f46; }
+
+  /* ── Seiten-Navigation (footer) ─────────────────────── */
+  .page-nav {
+    display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;
+    margin-top: 18px; padding: 14px 0 4px;
+    border-top: 1px solid var(--border);
+  }
+  .page-nav a {
+    padding: 8px 14px; border-radius: 99px; font-size: .82rem; font-weight: 600;
+    text-decoration: none; background: var(--border); color: var(--gray);
+    transition: all .15s;
+  }
+  .page-nav a:hover { background: #cbd5e1; color: var(--text); }
+  .page-nav a.current { background: var(--accent); color: #fff; }
 </style>
 </head>
 <body>
@@ -133,7 +162,7 @@
       <input id="inp-name" type="text" placeholder="Vorname Nachname" autocomplete="off" spellcheck="false">
     </div>
     <div class="field">
-      <label for="inp-variante">Variante</label>
+      <label for="inp-variante">Variante <span style="font-weight:400;color:#9ca3af">(bekommst du von deiner Lehrkraft)</span></label>
       <select id="inp-variante">
         <option value="1">Variante 1</option>
         <option value="2">Variante 2</option>
@@ -175,6 +204,12 @@
     <button class="btn btn-green" id="btn-send" onclick="sendResult()">Ergebnis an Lehrkraft senden</button>
     <div class="sent-box" id="sent-box">✓ Ergebnis wurde übermittelt!</div>
     <button class="btn btn-ghost" style="margin-top:10px" onclick="restart()">Neu starten</button>
+
+    <nav class="page-nav">
+      <a href="reso-selbsttest.html"  class="current">🔎 Test</a>
+      <a href="reso-strategien.html"  target="_blank">📖 Strategien</a>
+      <a href="reso-uebungen.html"    target="_blank">✏️ Übungen</a>
+    </nav>
   </div>
 </div>
 
@@ -515,26 +550,37 @@ function showResult() {
     else if (r <= 3) { ampel="üben";        aClass="ampel-gelb"; }
     else             { ampel="sicher ✓";    aClass="ampel-gruen"; }
 
+    // Weiter-Lernen-Links nur bei rot/gelb
+    const links = (r <= 3) ? `
+      <tr>
+        <td colspan="3" style="padding:0 6px 10px">
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <a class="step-btn step-btn-strat" href="reso-strategien.html#${k}" target="_blank">📖 Strategie erklären lassen</a>
+            <a class="step-btn step-btn-ueb"   href="reso-uebungen.html#${k}"   target="_blank">✏️ Jetzt üben</a>
+          </div>
+        </td>
+      </tr>` : "";
+
     tbody.innerHTML += `
       <tr>
         <td><strong style="color:${KAT[k].farbe}">${KAT[k].kuerzel}</strong>
             <span style="font-size:.78rem;color:#6b7280;display:block">${KAT[k].name}</span></td>
         <td class="dots">${dots} <span style="color:#6b7280;font-size:.8rem;margin-left:4px">${r}/5</span></td>
         <td><span class="ampel ${aClass}">${ampel}</span></td>
-      </tr>`;
+      </tr>${links}`;
   });
 
   const pct = Math.round(total/totalMax*100);
   const summary = document.getElementById("res-summary");
   if (pct >= 80) {
     summary.className = "summary-box summary-ok";
-    summary.innerHTML = `<strong>Super! ${total} von ${totalMax} Punkten (${pct} %)</strong><br>Du bist in den meisten Bereichen schon sicher!`;
+    summary.innerHTML = `<strong>Super! ${total} von ${totalMax} Punkten (${pct} %)</strong><br>Du bist in den meisten Bereichen schon sicher! Die grünen Bereiche kannst du trotzdem weiter üben.`;
   } else if (pct >= 50) {
     summary.className = "summary-box summary-mid";
-    summary.innerHTML = `<strong>${total} von ${totalMax} Punkten (${pct} %)</strong><br>Du kennst schon einige Strategien – ein paar Bereiche solltest du noch üben.`;
+    summary.innerHTML = `<strong>${total} von ${totalMax} Punkten (${pct} %)</strong><br>Du kennst schon einige Strategien. Klicke bei den gelben und roten Bereichen auf „Strategie erklären lassen" – dann weißt du, was zu tun ist.`;
   } else {
     summary.className = "summary-box summary-bad";
-    summary.innerHTML = `<strong>${total} von ${totalMax} Punkten (${pct} %)</strong><br>Keine Sorge – die Strategien lassen sich lernen. Schau dir die roten Bereiche genauer an.`;
+    summary.innerHTML = `<strong>${total} von ${totalMax} Punkten (${pct} %)</strong><br>Keine Sorge – die Strategien lassen sich lernen! Klicke bei den roten Bereichen auf „Strategie erklären lassen" und dann auf „Jetzt üben".`;
   }
 
   document.getElementById("btn-send").style.display = state.code ? "block" : "none";
