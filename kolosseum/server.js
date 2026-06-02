@@ -33,7 +33,7 @@ app.use((req, res, next) => {
   if (origin === 'https://lehrer-herrmann.de') {
     res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PATCH,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-kroatien-secret');
   }
   if (req.method === 'OPTIONS') return res.sendStatus(204);
