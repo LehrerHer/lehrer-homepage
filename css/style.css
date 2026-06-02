@@ -157,12 +157,24 @@ ul {
     cursor: pointer;
     transition: background-color var(--transition), color var(--transition);
     white-space: nowrap;
+    font-family: inherit;
+    line-height: inherit;
+}
+
+.navbar-dropdown-toggle.navbar-gb-link {
+    color: rgba(255, 210, 80, 0.88) !important;
 }
 
 .navbar-dropdown-toggle:hover,
 .navbar-dropdown-toggle[aria-expanded="true"] {
     background-color: rgba(255, 255, 255, 0.15);
     color: var(--farbe-weiss);
+}
+
+.navbar-dropdown-toggle.navbar-gb-link:hover,
+.navbar-dropdown-toggle.navbar-gb-link[aria-expanded="true"] {
+    background-color: rgba(255, 210, 80, 0.15) !important;
+    color: #FFD84D !important;
 }
 
 .navbar-dropdown-menu {
@@ -173,7 +185,7 @@ ul {
     background: var(--farbe-weiss);
     border-radius: var(--radius);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
-    min-width: 200px;
+    min-width: 220px;
     padding: 6px 0;
     z-index: 200;
 }
@@ -182,21 +194,48 @@ ul {
     display: block;
 }
 
+/* Hover auf Desktop öffnet Dropdown automatisch */
+@media (hover: hover) {
+    .navbar-dropdown:hover .navbar-dropdown-menu {
+        display: block;
+    }
+    .navbar-dropdown:hover .navbar-dropdown-toggle {
+        background-color: rgba(255, 210, 80, 0.15);
+        color: #FFD84D;
+    }
+}
+
 .navbar-dropdown-menu li {
     list-style: none;
 }
 
 .navbar-dropdown-menu a {
     display: block;
-    padding: 10px 18px;
+    padding: 9px 18px;
     color: var(--farbe-text);
-    font-size: 0.95rem;
+    font-size: 0.92rem;
     transition: background-color var(--transition);
 }
 
 .navbar-dropdown-menu a:hover {
     background-color: var(--farbe-hintergrund);
     color: var(--farbe-primaer);
+}
+
+.dropdown-group-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--farbe-text-hell);
+    padding: 8px 18px 3px;
+    pointer-events: none;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: var(--farbe-rahmen);
+    margin: 4px 10px;
 }
 
 /* === NAVBAR: GESCHÜTZTER-BEREICH TRENNER & LINKS === */
@@ -416,6 +455,105 @@ a.fach-badge:hover {
     border-left: 4px solid var(--farbe-primaer);
     border-radius: var(--radius);
 }
+
+/* Themen-Kasten: kompakte Liste statt Karten-Grid */
+.themen-kasten {
+    background: var(--farbe-weiss);
+    border: 1px solid var(--farbe-rahmen);
+    border-radius: var(--radius);
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    box-shadow: var(--schatten);
+}
+
+.themen-kasten .section-titel { margin-top: 0; font-size: 1.05rem; }
+.themen-kasten .section-untertitel { font-size: 0.9rem; color: var(--farbe-text-hell); margin-bottom: 1rem; }
+
+.themen-liste {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.3rem 2rem;
+}
+
+.themen-liste li {
+    padding: 0.45rem 0;
+    font-size: 0.93rem;
+    color: var(--farbe-text);
+    border-bottom: 1px solid var(--farbe-hintergrund);
+}
+
+@media (max-width: 600px) { .themen-liste { grid-template-columns: 1fr; } }
+
+/* === MATERIALIEN-KARTEN (kombinierte Fachseiten) === */
+.fach-materialien-bereich {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--farbe-rahmen);
+}
+
+.fach-materialien-bereich h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--farbe-primaer);
+    margin-bottom: 1.5rem;
+}
+
+.mat-kategorie {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--farbe-text-hell);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 1.5rem 0 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid var(--farbe-rahmen);
+}
+
+.mat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.mat-card {
+    background: var(--farbe-weiss);
+    border: 1px solid var(--farbe-rahmen);
+    border-left: 4px solid var(--farbe-primaer-hell);
+    border-radius: 0 10px 10px 0;
+    padding: 1rem 1.1rem;
+    text-decoration: none;
+    color: var(--farbe-text);
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    transition: box-shadow 0.18s, border-left-color 0.18s;
+    box-shadow: var(--schatten);
+}
+
+.mat-card:hover { box-shadow: 0 4px 16px rgba(30,58,95,0.15); border-left-color: var(--farbe-akzent); }
+
+.mat-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-bottom: 0.2rem;
+}
+
+.mat-badge.ab   { background: #e8f5e9; color: #2e7d32; }
+.mat-badge.quiz { background: #fff3e0; color: #c07000; }
+.mat-badge.mat  { background: #e8f4fd; color: var(--farbe-primaer); }
+.mat-badge.proj { background: #f3e8ff; color: #6b21a8; }
+.mat-title { font-weight: 600; font-size: 0.92rem; }
+.mat-desc  { font-size: 0.82rem; color: var(--farbe-text-hell); }
+.mat-leer  { color: var(--farbe-text-hell); font-size: 0.9rem; padding: 0.5rem 0 0.75rem; }
+
+@media (max-width: 600px) { .mat-grid { grid-template-columns: 1fr; } }
 
 
 /* ================================================================

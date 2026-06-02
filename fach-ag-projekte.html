@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <script src="/js/auth-guard.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Arbeitsgemeinschaften und Projekte bei Jan Herrmann – Oberschule Spelle. Extracurriculare Aktivitäten und Schulprojekte.">
     <title>AGs &amp; Projekte – Jan Herrmann | Oberschule Spelle</title>
@@ -39,7 +40,29 @@
                 </li>
                 <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
                 <li><a href="blog.html" class="navbar-gb-link">✍️ Blog</a></li>
-                <li><a href="faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+                <li class="navbar-dropdown">
+                    <button class="navbar-dropdown-toggle navbar-gb-link" aria-expanded="false" aria-haspopup="true">📚 Fächer ▾</button>
+                    <ul class="navbar-dropdown-menu" role="menu">
+                        <li class="dropdown-group-label">Hauptfächer</li>
+                        <li><a href="fach-deutsch.html" role="menuitem">📖 Deutsch</a></li>
+                        <li><a href="fach-geschichte.html" role="menuitem">🏛️ Geschichte</a></li>
+                        <li><a href="fach-wipo.html" role="menuitem">⚖️ Wirtschaft/Politik</a></li>
+                        <li><a href="fach-informatik.html" role="menuitem">💻 Informatik</a></li>
+                        <li><a href="fach-werte-normen.html" role="menuitem">🤝 Werte &amp; Normen</a></li>
+                        <li class="dropdown-group-label">Weitere Fächer</li>
+                        <li><a href="materialien-mathe.html" role="menuitem">🔢 Mathematik</a></li>
+                        <li><a href="materialien-englisch.html" role="menuitem">🇬🇧 Englisch</a></li>
+                        <li><a href="materialien-sport.html" role="menuitem">⚽ Sport</a></li>
+                        <li><a href="materialien-biologie.html" role="menuitem">🌱 Biologie</a></li>
+                        <li><a href="materialien-chemie.html" role="menuitem">⚗️ Chemie</a></li>
+                        <li><a href="materialien-physik.html" role="menuitem">⚛️ Physik</a></li>
+                        <li><a href="materialien-musik.html" role="menuitem">🎵 Musik</a></li>
+                        <li><a href="materialien-erdkunde.html" role="menuitem">🗺️ Erdkunde</a></li>
+                        <li><a href="materialien-gestaltendes-werken.html" role="menuitem">🎨 Gestaltendes Werken</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="fach-ag-projekte.html" role="menuitem">🚀 AGs &amp; Projekte</a></li>
+                    </ul>
+                </li>
             </ul>
 
             <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none">
@@ -66,74 +89,36 @@
                 entdecken Schülerinnen und Schüler ihre Talente und setzen
                 eigene Ideen um.
             </p>
-
-            <h2 class="section-titel" style="margin-top: 40px;">Aktuelle AGs &amp; Projekte</h2>
-            <p class="section-untertitel">Ein Überblick über laufende und vergangene Aktivitäten:</p>
-
-            <div class="materialien-grid">
-
-                <div class="material-karte">
-                    <span class="material-icon">📰</span>
-                    <div class="material-info">
-                        <h4>Schülerzeitung</h4>
-                        <p>Artikel schreiben, layouten und veröffentlichen – die Schulzeitung der Oberschule Spelle</p>
-                    </div>
-                </div>
-
-                <div class="material-karte">
-                    <span class="material-icon">🎬</span>
-                    <div class="material-info">
-                        <h4>Film- &amp; Medien-AG</h4>
-                        <p>Kurzfilme drehen, schneiden und präsentieren – kreative Medienprojekte</p>
-                    </div>
-                </div>
-
-                <div class="material-karte">
-                    <span class="material-icon">💡</span>
-                    <div class="material-info">
-                        <h4>Projekttage</h4>
-                        <p>Jährliche Projekttage zu wechselnden Themen – fächerübergreifend und teamorientiert</p>
-                    </div>
-                </div>
-
-                <div class="material-karte">
-                    <span class="material-icon">🌿</span>
-                    <div class="material-info">
-                        <h4>Nachhaltigkeitsprojekte</h4>
-                        <p>Schulgarten, Umwelttag und weitere Projekte rund um Klimaschutz und Nachhaltigkeit</p>
-                    </div>
-                </div>
-
-                <div class="material-karte">
-                    <span class="material-icon">🤝</span>
-                    <div class="material-info">
-                        <h4>Sozialprojekte</h4>
-                        <p>Ehrenamtliches Engagement, Sammelaktionen und soziale Initiativen in der Region</p>
-                    </div>
-                </div>
-
-                <div class="material-karte">
-                    <span class="material-icon">🏆</span>
-                    <div class="material-info">
-                        <h4>Wettbewerbe</h4>
-                        <p>Teilnahme an Schreib-, Lese- und Informatikwettbewerben auf regionaler und überregionaler Ebene</p>
-                    </div>
-                </div>
-
+            <div class="themen-kasten">
+                <h2 class="section-titel">Aktuelle AGs &amp; Projekte</h2>
+                <p class="section-untertitel">Ein Überblick über laufende und vergangene Aktivitäten:</p>
+                <ul class="themen-liste">
+                    <li>📰 <strong>Schülerzeitung</strong> – Artikel schreiben, layouten und veröffentlichen – die Schulzeitung der Oberschule Spelle</li>
+                    <li>🎬 <strong>Film- &amp; Medien-AG</strong> – Kurzfilme drehen, schneiden und präsentieren – kreative Medienprojekte</li>
+                    <li>💡 <strong>Projekttage</strong> – Jährliche Projekttage zu wechselnden Themen – fächerübergreifend und teamorientiert</li>
+                    <li>🌿 <strong>Nachhaltigkeitsprojekte</strong> – Schulgarten, Umwelttag und Projekte rund um Klimaschutz und Nachhaltigkeit</li>
+                    <li>🤝 <strong>Sozialprojekte</strong> – Ehrenamtliches Engagement, Sammelaktionen und soziale Initiativen in der Region</li>
+                    <li>🏆 <strong>Wettbewerbe</strong> – Teilnahme an Schreib-, Lese- und Informatikwettbewerben auf regionaler und überregionaler Ebene</li>
+                </ul>
             </div>
 
-            <div class="hinweis-box" style="margin-top: 40px;">
+            <div class="fach-materialien-bereich">
+                <h2>Materialien, Arbeitsblätter &amp; Quizze</h2>
+            <h2 class="mat-kategorie">Materialien</h2>
+            <p class="mat-leer">Noch keine Inhalte vorhanden. Schau bald wieder vorbei!</p>
+
+            <h2 class="mat-kategorie">Projekte</h2>
+            <p class="mat-leer">Noch keine Inhalte vorhanden. Schau bald wieder vorbei!</p>
+
+                <!-- dynamisch hochgeladene Materialien (via Kolosseum-API) -->
+                <div class="dyn-mat-section" data-fach="AGs und Projekte"></div>
+            </div>
+            <div class="hinweis-box" style="margin-top: 1.5rem;">
                 📣 <strong>Interesse?</strong> Wer bei einer AG mitmachen oder ein eigenes Projekt vorschlagen möchte,
                 kann mich gerne nach dem Unterricht ansprechen!
             </div>
 
-            <div style="text-align:center;margin-top:3rem;padding:2rem;background:#fff;border-radius:12px;border:1px solid #d6e4f0;box-shadow:0 2px 12px rgba(30,58,95,.07)">
-                <p style="font-size:1.05rem;font-weight:600;color:var(--farbe-primaer);margin-bottom:.75rem">🔒 Materialien, Arbeitsblätter &amp; Quizze</p>
-                <p style="color:#555;font-size:.93rem;margin-bottom:1.25rem">Arbeitsblätter, Hilfen und Quizze zu diesem Fach findest du im Materialportal – für eingeloggte Schülerinnen und Schüler.</p>
-                <a href="materialien-ag-projekte.html" style="display:inline-block;padding:.75rem 1.75rem;background:var(--farbe-akzent);color:#fff;border-radius:8px;font-weight:700;font-size:.95rem;text-decoration:none">→ Zu den Materialien</a>
-            </div>
-
-            <p style="text-align: center; margin-top: 32px;">
+            <p style="text-align: center; margin-top: 40px;">
                 <a href="index.html">← Zurück zur Startseite</a>
             </p>
 
@@ -153,6 +138,7 @@
     </footer>
 
     <script src="js/main.js"></script>
+    <script src="js/materialien-dynamisch.js"></script>
     <script src="js/dynamic-content.js"></script>
     <script src="js/homepage-gate.js"></script>
 <script src="js/arena-bar.js"></script>

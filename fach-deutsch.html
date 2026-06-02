@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <script src="/js/auth-guard.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Deutschunterricht bei Jan Herrmann – Oberschule Spelle. Themen, Materialien und Informationen zum Fach Deutsch.">
     <title>Deutsch – Jan Herrmann | Oberschule Spelle</title>
@@ -39,7 +40,29 @@
                 </li>
                 <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
                 <li><a href="blog.html" class="navbar-gb-link">✍️ Blog</a></li>
-                <li><a href="faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+                <li class="navbar-dropdown">
+                    <button class="navbar-dropdown-toggle navbar-gb-link" aria-expanded="false" aria-haspopup="true">📚 Fächer ▾</button>
+                    <ul class="navbar-dropdown-menu" role="menu">
+                        <li class="dropdown-group-label">Hauptfächer</li>
+                        <li><a href="fach-deutsch.html" role="menuitem">📖 Deutsch</a></li>
+                        <li><a href="fach-geschichte.html" role="menuitem">🏛️ Geschichte</a></li>
+                        <li><a href="fach-wipo.html" role="menuitem">⚖️ Wirtschaft/Politik</a></li>
+                        <li><a href="fach-informatik.html" role="menuitem">💻 Informatik</a></li>
+                        <li><a href="fach-werte-normen.html" role="menuitem">🤝 Werte &amp; Normen</a></li>
+                        <li class="dropdown-group-label">Weitere Fächer</li>
+                        <li><a href="materialien-mathe.html" role="menuitem">🔢 Mathematik</a></li>
+                        <li><a href="materialien-englisch.html" role="menuitem">🇬🇧 Englisch</a></li>
+                        <li><a href="materialien-sport.html" role="menuitem">⚽ Sport</a></li>
+                        <li><a href="materialien-biologie.html" role="menuitem">🌱 Biologie</a></li>
+                        <li><a href="materialien-chemie.html" role="menuitem">⚗️ Chemie</a></li>
+                        <li><a href="materialien-physik.html" role="menuitem">⚛️ Physik</a></li>
+                        <li><a href="materialien-musik.html" role="menuitem">🎵 Musik</a></li>
+                        <li><a href="materialien-erdkunde.html" role="menuitem">🗺️ Erdkunde</a></li>
+                        <li><a href="materialien-gestaltendes-werken.html" role="menuitem">🎨 Gestaltendes Werken</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="fach-ag-projekte.html" role="menuitem">🚀 AGs &amp; Projekte</a></li>
+                    </ul>
+                </li>
             </ul>
 
             <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none">
@@ -68,68 +91,86 @@
                 <p>Mein Unterricht ist textbasiert und analytisch: Texte – ob Gedichte, Kurzgeschichten, Dramen oder Sachtexte – sind der Ausgangspunkt für das gemeinsame Denken und Schreiben. Ich arbeite ohne festes Lehrwerk und entwickle meine Materialien selbst, damit sie genau zu meinen Lerngruppen passen.</p>
                 <p>Besonders am Herzen liegt mir, dass meine Schülerinnen und Schüler eigenständig arbeiten und denken lernen: lange Arbeitsphasen, klare Aufgaben, anspruchsvolle Texte. Deutsch ist kein Fach zum Auswendiglernen – es ist ein Fach zum Nachdenken, Formulieren und Entdecken.</p>
             </div>
-
-            <h2 class="section-titel" style="margin-top: 40px;">Themen &amp; Inhalte</h2>
-            <p class="section-untertitel">Unterrichtsthemen je nach Jahrgang (Auswahl):</p>
-
-            <div class="materialien-grid">
-
-                <div class="material-karte">
-                    <span class="material-icon">✍️</span>
-                    <div class="material-info">
-                        <h4>Aufsatzformen</h4>
-                        <p>Erörterung, Analyse, Interpretation, Beschreibung – strukturiertes Schreiben in allen Jahrgängen</p>
-                    </div>
-                </div>
-
-                <div class="material-karte">
-                    <span class="material-icon">📚</span>
-                    <div class="material-info">
-                        <h4>Lektüre &amp; Erzähltechnik</h4>
-                        <p>Kurzgeschichten, Jugendbücher, Romane und Dramen – je nach Jahrgangsstufe</p>
-                    </div>
-                </div>
-
-                <div class="material-karte">
-                    <span class="material-icon">🎭</span>
-                    <div class="material-info">
-                        <h4>Sprache &amp; Grammatik</h4>
-                        <p>Satzglieder, Wortarten, Rechtschreibung und Zeichensetzung</p>
-                    </div>
-                </div>
-
-                <div class="material-karte">
-                    <span class="material-icon">🎤</span>
-                    <div class="material-info">
-                        <h4>Sprechen &amp; Präsentieren</h4>
-                        <p>Referate, Diskussionen, freies Sprechen und Vorlesen</p>
-                    </div>
-                </div>
-
-                <div class="material-karte">
-                    <span class="material-icon">🔍</span>
-                    <div class="material-info">
-                        <h4>Medienkompetenz</h4>
-                        <p>Texte aus verschiedenen Medien verstehen, hinterfragen und bewerten</p>
-                    </div>
-                </div>
-
-                <div class="material-karte">
-                    <span class="material-icon">📝</span>
-                    <div class="material-info">
-                        <h4>Stilmittel &amp; Rhetorik</h4>
-                        <p>Metaphern, Personifikationen, Alliterationen und weitere sprachliche Gestaltungsmittel</p>
-                    </div>
-                </div>
-
+            <div class="themen-kasten">
+                <h2 class="section-titel">Themen &amp; Inhalte</h2>
+                <p class="section-untertitel">Unterrichtsthemen je nach Jahrgang (Auswahl):</p>
+                <ul class="themen-liste">
+                    <li>✍️ <strong>Aufsatzformen</strong> – Erörterung, Analyse, Interpretation, Beschreibung – strukturiertes Schreiben</li>
+                    <li>📚 <strong>Lektüre &amp; Erzähltechnik</strong> – Kurzgeschichten, Jugendbücher, Romane und Dramen – je nach Jahrgangsstufe</li>
+                    <li>🎭 <strong>Sprache &amp; Grammatik</strong> – Satzglieder, Wortarten, Rechtschreibung und Zeichensetzung</li>
+                    <li>🎤 <strong>Sprechen &amp; Präsentieren</strong> – Referate, Diskussionen, freies Sprechen und Vorlesen</li>
+                    <li>🔍 <strong>Medienkompetenz</strong> – Texte aus verschiedenen Medien verstehen, hinterfragen und bewerten</li>
+                    <li>📝 <strong>Stilmittel &amp; Rhetorik</strong> – Metaphern, Personifikationen, Alliterationen und weitere Gestaltungsmittel</li>
+                </ul>
             </div>
 
-            <div style="text-align:center;margin-top:3rem;padding:2rem;background:#fff;border-radius:12px;border:1px solid #d6e4f0;box-shadow:0 2px 12px rgba(30,58,95,.07)">
-                <p style="font-size:1.05rem;font-weight:600;color:var(--farbe-primaer);margin-bottom:.75rem">🔒 Materialien, Arbeitsblätter &amp; Quizze</p>
-                <p style="color:#555;font-size:.93rem;margin-bottom:1.25rem">Arbeitsblätter, Hilfen und Quizze zu diesem Fach findest du im Materialportal – für eingeloggte Schülerinnen und Schüler.</p>
-                <a href="materialien-deutsch.html" style="display:inline-block;padding:.75rem 1.75rem;background:var(--farbe-akzent);color:#fff;border-radius:8px;font-weight:700;font-size:.95rem;text-decoration:none">→ Zu den Materialien</a>
+            <div class="fach-materialien-bereich">
+                <h2>Materialien, Arbeitsblätter &amp; Quizze</h2>
+            <h2 class="mat-kategorie">Arbeitsblätter</h2>
+            <div class="mat-grid">
+                <a href="narratologische-analyse.html" class="mat-card">
+                    <span class="mat-badge ab">Arbeitsblatt</span>
+                    <div class="mat-title">Narratologische Analyse</div>
+                    <div class="mat-desc">Erzählerstandort, Fokalisierung, Zeitstruktur und Figurenrede</div>
+                </a>
+                <a href="deutsch-dialektische-eroerterung.html" class="mat-card">
+                    <span class="mat-badge ab">Arbeitsblatt</span>
+                    <div class="mat-title">Dialektische Erörterung</div>
+                    <div class="mat-desc">Aufbau und Schreiben einer dialektischen Erörterung</div>
+                </a>
+                <a href="fuenfschrittlesemethode.html" class="mat-card">
+                    <span class="mat-badge ab">Arbeitsblatt</span>
+                    <div class="mat-title">Fünf-Schritt-Lesemethode</div>
+                    <div class="mat-desc">Strategisches Lesen – Überschriften, Abschnitte, Exzerpieren</div>
+                </a>
             </div>
 
+            <h2 class="mat-kategorie">Materialien</h2>
+            <div class="mat-grid">
+                <a href="deutsch-das-parfum.html" class="mat-card">
+                    <span class="mat-badge mat">Material</span>
+                    <div class="mat-title">Das Parfum</div>
+                    <div class="mat-desc">Materialien und Aufgaben zum Roman von Patrick Süskind</div>
+                </a>
+                <a href="deutsch-theaterprojekt.html" class="mat-card">
+                    <span class="mat-badge mat">Material</span>
+                    <div class="mat-title">Theaterprojekt Jahrgang 9</div>
+                    <div class="mat-desc">Materialien und Informationen zum Theaterprojekt</div>
+                </a>
+            </div>
+
+            <h2 class="mat-kategorie">Quizze</h2>
+            <div class="mat-grid">
+                <a href="stilmittel-quiz.html" class="mat-card">
+                    <span class="mat-badge quiz">⚔️ Quiz</span>
+                    <div class="mat-title">Stilmittel-Quiz</div>
+                    <div class="mat-desc">Rhetorische Figuren erkennen und benennen</div>
+                </a>
+                <a href="literaturwissenschaft_quiz_v2.html" class="mat-card">
+                    <span class="mat-badge quiz">⚔️ Quiz</span>
+                    <div class="mat-title">Literaturwissenschaft-Quiz</div>
+                    <div class="mat-desc">Gattungen, Epochen, Fachbegriffe</div>
+                </a>
+                <a href="rechtschreibquiz.html" class="mat-card">
+                    <span class="mat-badge quiz">⚔️ Quiz</span>
+                    <div class="mat-title">Rechtschreib-Quiz</div>
+                    <div class="mat-desc">Häufige Fehlerquellen der deutschen Rechtschreibung</div>
+                </a>
+                <a href="materialien/deutsch_parfum_quiz_jg10_2026-05.html" class="mat-card">
+                    <span class="mat-badge quiz">⚔️ Quiz</span>
+                    <div class="mat-title">Das Parfum – Lektürequiz</div>
+                    <div class="mat-desc">Handlung, Figuren, Themen &amp; Erzählform – 20 Fragen, 4 Modi. Jahrgang 10.</div>
+                </a>
+                <a href="materialien/deutsch_seki_quiz_2026-05.html" class="mat-card">
+                    <span class="mat-badge quiz">⚔️ Quiz</span>
+                    <div class="mat-title">Deutsch-Quiz Sek I (Jg 5–10)</div>
+                    <div class="mat-desc">124 Fragen zu Textsorten, Grammatik, Stilmitteln und Rechtschreibung</div>
+                </a>
+            </div>
+
+                <!-- dynamisch hochgeladene Materialien (via Kolosseum-API) -->
+                <div class="dyn-mat-section" data-fach="Deutsch"></div>
+            </div>
             <div style="margin-top:1.5rem;padding:1.75rem 2rem;background:#fff;border-radius:12px;border:1px solid #dbeafe;box-shadow:0 2px 12px rgba(30,58,95,.07);display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
                 <div style="font-size:2rem;flex-shrink:0;">📝</div>
                 <div style="flex:1;min-width:200px;">
@@ -159,6 +200,7 @@
     </footer>
 
     <script src="js/main.js"></script>
+    <script src="js/materialien-dynamisch.js"></script>
     <script src="js/dynamic-content.js"></script>
     <script src="js/homepage-gate.js"></script>
 <script src="js/arena-bar.js"></script>
