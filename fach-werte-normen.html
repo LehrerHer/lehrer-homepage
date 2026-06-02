@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
+    <script src="/js/auth-guard.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Werte und Normen bei Jan Herrmann – Oberschule Spelle. Ethik, Philosophie und gesellschaftliche Werte im Unterricht.">
     <title>Werte &amp; Normen – Jan Herrmann | Oberschule Spelle</title>
@@ -39,7 +40,29 @@
                 </li>
                 <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
                 <li><a href="blog.html" class="navbar-gb-link">✍️ Blog</a></li>
-                <li><a href="faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+                <li class="navbar-dropdown">
+                    <button class="navbar-dropdown-toggle navbar-gb-link" aria-expanded="false" aria-haspopup="true">📚 Fächer ▾</button>
+                    <ul class="navbar-dropdown-menu" role="menu">
+                        <li class="dropdown-group-label">Hauptfächer</li>
+                        <li><a href="fach-deutsch.html" role="menuitem">📖 Deutsch</a></li>
+                        <li><a href="fach-geschichte.html" role="menuitem">🏛️ Geschichte</a></li>
+                        <li><a href="fach-wipo.html" role="menuitem">⚖️ Wirtschaft/Politik</a></li>
+                        <li><a href="fach-informatik.html" role="menuitem">💻 Informatik</a></li>
+                        <li><a href="fach-werte-normen.html" role="menuitem">🤝 Werte &amp; Normen</a></li>
+                        <li class="dropdown-group-label">Weitere Fächer</li>
+                        <li><a href="materialien-mathe.html" role="menuitem">🔢 Mathematik</a></li>
+                        <li><a href="materialien-englisch.html" role="menuitem">🇬🇧 Englisch</a></li>
+                        <li><a href="materialien-sport.html" role="menuitem">⚽ Sport</a></li>
+                        <li><a href="materialien-biologie.html" role="menuitem">🌱 Biologie</a></li>
+                        <li><a href="materialien-chemie.html" role="menuitem">⚗️ Chemie</a></li>
+                        <li><a href="materialien-physik.html" role="menuitem">⚛️ Physik</a></li>
+                        <li><a href="materialien-musik.html" role="menuitem">🎵 Musik</a></li>
+                        <li><a href="materialien-erdkunde.html" role="menuitem">🗺️ Erdkunde</a></li>
+                        <li><a href="materialien-gestaltendes-werken.html" role="menuitem">🎨 Gestaltendes Werken</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="fach-ag-projekte.html" role="menuitem">🚀 AGs &amp; Projekte</a></li>
+                    </ul>
+                </li>
             </ul>
 
             <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none">
@@ -66,66 +89,32 @@
                 philosophische Grundbegriffe und gesellschaftliche Werte –
                 für ein eigenverantwortliches Leben.
             </p>
-
-            <h2 class="section-titel" style="margin-top: 40px;">Themen &amp; Inhalte</h2>
-            <p class="section-untertitel">Unterrichtsthemen je nach Jahrgang (Auswahl):</p>
-
-            <div class="materialien-grid">
-
-                <div class="material-karte">
-                    <span class="material-icon">🤔</span>
-                    <div class="material-info">
-                        <h4>Philosophische Grundfragen</h4>
-                        <p>Was ist Wahrheit? Was kann ich wissen? Erkenntnistheorie und Logik</p>
-                    </div>
-                </div>
-
-                <div class="material-karte">
-                    <span class="material-icon">❤️</span>
-                    <div class="material-info">
-                        <h4>Ethik &amp; Moral</h4>
-                        <p>Was ist gut und böse? Moralische Urteile begründen und reflektieren</p>
-                    </div>
-                </div>
-
-                <div class="material-karte">
-                    <span class="material-icon">🌍</span>
-                    <div class="material-info">
-                        <h4>Weltreligionen</h4>
-                        <p>Christentum, Islam, Judentum, Buddhismus und Hinduismus im Vergleich</p>
-                    </div>
-                </div>
-
-                <div class="material-karte">
-                    <span class="material-icon">👥</span>
-                    <div class="material-info">
-                        <h4>Zusammenleben &amp; Toleranz</h4>
-                        <p>Vielfalt, Respekt, Diskriminierung und Menschenwürde im Alltag</p>
-                    </div>
-                </div>
-
-                <div class="material-karte">
-                    <span class="material-icon">🌱</span>
-                    <div class="material-info">
-                        <h4>Verantwortung &amp; Nachhaltigkeit</h4>
-                        <p>Ökologische Ethik – Verantwortung gegenüber Natur und zukünftigen Generationen</p>
-                    </div>
-                </div>
-
-                <div class="material-karte">
-                    <span class="material-icon">⚡</span>
-                    <div class="material-info">
-                        <h4>Ethische Dilemmata</h4>
-                        <p>Schwierige Entscheidungen diskutieren: Konflikte zwischen Werten und Interessen</p>
-                    </div>
-                </div>
-
+            <div class="themen-kasten">
+                <h2 class="section-titel">Themen &amp; Inhalte</h2>
+                <p class="section-untertitel">Unterrichtsthemen je nach Jahrgang (Auswahl):</p>
+                <ul class="themen-liste">
+                    <li>🤔 <strong>Philosophische Grundfragen</strong> – Was ist Wahrheit? Was kann ich wissen? Erkenntnistheorie und Logik</li>
+                    <li>❤️ <strong>Ethik &amp; Moral</strong> – Was ist gut und böse? Moralische Urteile begründen und reflektieren</li>
+                    <li>🌍 <strong>Weltreligionen</strong> – Christentum, Islam, Judentum, Buddhismus und Hinduismus im Vergleich</li>
+                    <li>👥 <strong>Zusammenleben &amp; Toleranz</strong> – Vielfalt, Respekt, Diskriminierung und Menschenwürde im Alltag</li>
+                    <li>🌱 <strong>Verantwortung &amp; Nachhaltigkeit</strong> – Ökologische Ethik – Verantwortung gegenüber Natur und zukünftigen Generationen</li>
+                    <li>⚡ <strong>Ethische Dilemmata</strong> – Schwierige Entscheidungen diskutieren: Konflikte zwischen Werten und Interessen</li>
+                </ul>
             </div>
 
-            <div style="text-align:center;margin-top:3rem;padding:2rem;background:#fff;border-radius:12px;border:1px solid #d6e4f0;box-shadow:0 2px 12px rgba(30,58,95,.07)">
-                <p style="font-size:1.05rem;font-weight:600;color:var(--farbe-primaer);margin-bottom:.75rem">🔒 Materialien, Arbeitsblätter &amp; Quizze</p>
-                <p style="color:#555;font-size:.93rem;margin-bottom:1.25rem">Arbeitsblätter, Hilfen und Quizze zu diesem Fach findest du im Materialportal – für eingeloggte Schülerinnen und Schüler.</p>
-                <a href="materialien-werte-normen.html" style="display:inline-block;padding:.75rem 1.75rem;background:var(--farbe-akzent);color:#fff;border-radius:8px;font-weight:700;font-size:.95rem;text-decoration:none">→ Zu den Materialien</a>
+            <div class="fach-materialien-bereich">
+                <h2>Materialien, Arbeitsblätter &amp; Quizze</h2>
+            <h2 class="mat-kategorie">Arbeitsblätter</h2>
+            <p class="mat-leer">Noch keine Inhalte vorhanden. Schau bald wieder vorbei!</p>
+
+            <h2 class="mat-kategorie">Materialien</h2>
+            <p class="mat-leer">Noch keine Inhalte vorhanden. Schau bald wieder vorbei!</p>
+
+            <h2 class="mat-kategorie">Quizze</h2>
+            <p class="mat-leer">Noch keine Inhalte vorhanden. Schau bald wieder vorbei!</p>
+
+                <!-- dynamisch hochgeladene Materialien (via Kolosseum-API) -->
+                <div class="dyn-mat-section" data-fach="Werte und Normen"></div>
             </div>
 
             <p style="text-align: center; margin-top: 40px;">
@@ -148,6 +137,7 @@
     </footer>
 
     <script src="js/main.js"></script>
+    <script src="js/materialien-dynamisch.js"></script>
     <script src="js/dynamic-content.js"></script>
     <script src="js/homepage-gate.js"></script>
 <script src="js/arena-bar.js"></script>
