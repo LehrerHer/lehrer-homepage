@@ -77,6 +77,15 @@ db.exec(`
   );
 `);
 
+// Kroatien-Packliste: einfacher Key-Value-Speicher
+db.exec(`
+  CREATE TABLE IF NOT EXISTS kv_store (
+    key        TEXT PRIMARY KEY,
+    value      TEXT NOT NULL,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+  )
+`);
+
 // Session-Store für express-session auf Basis von better-sqlite3
 class SQLiteSessionStore {
   constructor(session) {

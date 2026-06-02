@@ -19,6 +19,7 @@ const shopRoutes        = require('./routes/shop');
 const worksheetRoutes        = require('./routes/worksheets');
 const leseabenteuerRoutes    = require('./routes/leseabenteuer');
 const materialsRoutes        = require('./routes/materials');
+const kroatienRoutes         = require('./routes/kroatien');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -79,6 +80,7 @@ app.use('/api/shop',        shopRoutes);
 app.use('/api/worksheets',     worksheetRoutes);
 app.use('/api/leseabenteuer', leseabenteuerRoutes);
 app.use('/api/materials',     materialsRoutes);
+app.use('/api/kroatien',     kroatienRoutes);
 
 // SPA-Catch: alle nicht-API-Routen geben die jeweilige HTML-Datei zurück
 // (oder leiten zu login weiter)
