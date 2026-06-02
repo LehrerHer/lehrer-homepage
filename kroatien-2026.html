@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>🌊 Kroatien 2026 – Packliste</title>
+<style>
+  :root {
+    --blau:    #1a5f8a;
+    --meer:    #2a9fd6;
+    --sand:    #f5e6c8;
+    --orange:  #e8851a;
+    --gruen:   #2ecc71;
+    --rot:     #e74c3c;
+    --weiss:   #ffffff;
+    --bg:      #eef7fb;
+    --schatten: 0 2px 12px rgba(0,0,0,0.10);
+    --radius:  10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background: var(--bg);
+    color: #222;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, var(--blau) 0%, var(--meer) 100%);
+    color: var(--weiss);
+    padding: 28px 20px 22px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 3px 16px rgba(0,0,0,0.18);
+  }
+  header h1 { font-size: clamp(1.2rem, 4vw, 1.9rem); font-weight: 800; letter-spacing: -.01em; }
+  header p  { font-size: .88rem; opacity: .82; margin-top: 4px; }
+
+  .header-actions {
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+    margin-top: 14px;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 18px; border-radius: 8px; border: none;
+    font-size: .84rem; font-weight: 700; cursor: pointer;
+    transition: transform .12s, opacity .12s;
+  }
+  .btn:hover { opacity: .88; transform: translateY(-1px); }
+  .btn-share  { background: var(--orange); color: #fff; }
+  .btn-reset  { background: rgba(255,255,255,.15); color: #fff; border: 1px solid rgba(255,255,255,.35); }
+  .btn-import { background: var(--gruen); color: #fff; }
+
+  /* ── DUPLIKAT-WARNUNG ── */
+  #warnung-box {
+    display: none;
+    background: #fff3cd; border-left: 4px solid #f0ad4e;
+    padding: 12px 18px; margin: 16px auto;
+    max-width: 1100px; border-radius: var(--radius);
+    font-size: .88rem;
+  }
+  #warnung-box.sichtbar { display: block; }
+  #warnung-box strong { color: #856404; }
+  #warnung-liste { margin-top: 6px; padding-left: 18px; color: #6b500b; }
+
+  /* ── HAUPT-LAYOUT ── */
+  main {
+    max-width: 1200px; margin: 0 auto;
+    padding: 20px 12px 60px;
+  }
+
+  .familien-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+  @media (max-width: 860px) {
+    .familien-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── FAMILIEN-SPALTE ── */
+  .familie-spalte {
+    background: var(--weiss);
+    border-radius: 14px;
+    box-shadow: var(--schatten);
+    overflow: hidden;
+  }
+
+  .familie-header {
+    padding: 14px 18px;
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: var(--weiss);
+    text-align: center;
+    letter-spacing: .02em;
+  }
+  .familie-huette  .familie-header { background: linear-gradient(135deg, #1a5f8a, #2a9fd6); }
+  .familie-berg    .familie-header { background: linear-gradient(135deg, #2d6a4f, #52b788); }
+  .familie-hellern .familie-header { background: linear-gradient(135deg, #7b3f00, #e8851a); }
+
+  .familie-body { padding: 14px; }
+
+  /* ── RUBRIK ── */
+  .rubrik { margin-bottom: 14px; }
+  .rubrik-titel {
+    font-size: .72rem; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: #888; margin-bottom: 7px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .rubrik-titel::after {
+    content: ''; flex: 1; height: 1px; background: #e8e8e8;
+  }
+
+  .item-liste { list-style: none; margin-bottom: 7px; min-height: 4px; }
+  .item-liste li {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #f7f9fb; border-radius: 6px;
+    padding: 5px 9px; margin-bottom: 4px;
+    font-size: .88rem; transition: background .12s;
+  }
+  .item-liste li.duplikat {
+    background: #fff3cd; border-left: 3px solid #f0ad4e;
+  }
+  .item-liste li.duplikat .item-text::after {
+    content: ' ⚠️';
+  }
+  .item-text { flex: 1; }
+  .del-btn {
+    background: none; border: none; cursor: pointer;
+    color: #bbb; font-size: 1rem; padding: 0 2px;
+    line-height: 1; transition: color .12s;
+  }
+  .del-btn:hover { color: var(--rot); }
+
+  .item-eingabe {
+    display: flex; gap: 6px;
+  }
+  .item-eingabe input {
+    flex: 1; padding: 6px 10px; border-radius: 7px;
+    border: 1px solid #d8e3ea; font-size: .86rem;
+    font-family: inherit; background: #f7f9fb;
+    transition: border-color .15s;
+  }
+  .item-eingabe input:focus {
+    outline: none; border-color: var(--meer);
+    background: #fff;
+  }
+  .add-btn {
+    background: var(--meer); color: #fff; border: none;
+    border-radius: 7px; padding: 6px 12px; font-size: 1rem;
+    cursor: pointer; font-weight: 700; transition: background .12s;
+  }
+  .add-btn:hover { background: var(--blau); }
+
+  /* ── STATISTIK ── */
+  .stats-bar {
+    text-align: center; margin-bottom: 18px;
+    font-size: .82rem; color: #666;
+    display: flex; gap: 18px; justify-content: center; flex-wrap: wrap;
+  }
+  .stats-bar span strong { color: var(--blau); }
+
+  /* ── TOAST ── */
+  #toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(80px);
+    background: #222; color: #fff; padding: 10px 22px;
+    border-radius: 20px; font-size: .88rem; font-weight: 600;
+    opacity: 0; transition: transform .3s, opacity .3s;
+    pointer-events: none; z-index: 999; white-space: nowrap;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45); z-index: 200;
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.offen { display: flex; }
+  .modal {
+    background: #fff; border-radius: 14px; padding: 28px 24px;
+    max-width: 480px; width: 90%; box-shadow: 0 8px 40px rgba(0,0,0,.22);
+  }
+  .modal h2 { font-size: 1.1rem; margin-bottom: 10px; }
+  .modal p  { font-size: .88rem; color: #555; margin-bottom: 16px; }
+  .modal textarea {
+    width: 100%; height: 120px; border-radius: 8px;
+    border: 1px solid #d0d0d0; font-size: .82rem; padding: 10px;
+    font-family: monospace; resize: vertical;
+  }
+  .modal-actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .btn-primary { background: var(--meer); color: #fff; }
+  .btn-secondary { background: #eee; color: #333; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌊 Kroatien 2026 – Packliste</h1>
+  <p>Gemeinsame Übersicht für drei Familien · Kein Doppelt-Packen!</p>
+  <div class="header-actions">
+    <button class="btn btn-share" onclick="App.teilen()">📤 Link teilen / exportieren</button>
+    <button class="btn btn-import" onclick="App.importModal()">📥 Link importieren</button>
+    <button class="btn btn-reset" onclick="App.allesZuruecksetzen()">🗑️ Alles löschen</button>
+  </div>
+</header>
+
+<main>
+  <div id="warnung-box" class="warnung-box">
+    <strong>⚠️ Doppelte Einträge gefunden:</strong>
+    <ul id="warnung-liste"></ul>
+  </div>
+
+  <div class="stats-bar" id="stats-bar"></div>
+
+  <div class="familien-grid" id="familien-grid"></div>
+</main>
+
+<div id="toast"></div>
+
+<!-- Import-Modal -->
+<div class="modal-overlay" id="import-modal">
+  <div class="modal">
+    <h2>📥 Stand importieren</h2>
+    <p>Füge hier den Link (oder nur den Hash-Teil ab dem <code>#</code>) ein, den du von jemandem bekommen hast. Dein aktueller Stand wird damit <strong>zusammengeführt</strong>.</p>
+    <textarea id="import-input" placeholder="https://lehrer-herrmann.de/kroatien-2026.html#...  oder  eJ1c2..."></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="App.importAusfuehren()">Importieren & zusammenführen</button>
+      <button class="btn btn-secondary" onclick="App.modalSchliessen()">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+<!-- Teilen-Modal -->
+<div class="modal-overlay" id="teilen-modal">
+  <div class="modal">
+    <h2>📤 Aktuellen Stand teilen</h2>
+    <p>Kopiere diesen Link und schicke ihn an die anderen Familien. Wer den Link öffnet, kann den Stand importieren und zusammenführen.</p>
+    <textarea id="teilen-output" readonly onclick="this.select()"></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-primary" onclick="App.linkKopieren()">📋 Link kopieren</button>
+      <button class="btn btn-secondary" onclick="App.modalSchliessen()">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+
+  // ── Konfiguration ──────────────────────────────────────────────────────
+  const FAMILIEN = [
+    { id: 'huette',  name: 'Familie Hütte',  emoji: '🏠' },
+    { id: 'berg',    name: 'Familie Berg',   emoji: '⛰️' },
+    { id: 'hellern', name: 'Familie Hellern',emoji: '🌻' },
+  ];
+
+  const RUBRIKEN = [
+    { id: 'elektro', name: 'Elektro',  emoji: '🔌' },
+    { id: 'kueche',  name: 'Küche',    emoji: '🍳' },
+    { id: 'pool',    name: 'Pool',     emoji: '🏊' },
+    { id: 'sport',   name: 'Sport',    emoji: '⚽' },
+    { id: 'strand',  name: 'Strand',   emoji: '🏖️' },
+    { id: 'essen',   name: 'Essen',    emoji: '🥗' },
+    { id: 'trinken', name: 'Trinken',  emoji: '🥤' },
+    { id: 'spiele',  name: 'Spiele',   emoji: '🎲' },
+    { id: 'kinder',  name: 'Kinder',   emoji: '🧸' },
+    { id: 'medizin', name: 'Medizin',  emoji: '💊' },
+    { id: 'sonstiges',name:'Sonstiges',emoji: '📦' },
+  ];
+
+  const STORAGE_KEY = 'kroatien_2026_v1';
+
+  // ── Zustand ────────────────────────────────────────────────────────────
+  // state[familieId][rubrikId] = ['item1', 'item2', ...]
+  let state = {};
+
+  function leerenState() {
+    const s = {};
+    FAMILIEN.forEach(f => {
+      s[f.id] = {};
+      RUBRIKEN.forEach(r => { s[f.id][r.id] = []; });
+    });
+    return s;
+  }
+
+  function laden() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        state = leerenState();
+        FAMILIEN.forEach(f => {
+          RUBRIKEN.forEach(r => {
+            if (parsed[f.id] && Array.isArray(parsed[f.id][r.id])) {
+              state[f.id][r.id] = parsed[f.id][r.id];
+            }
+          });
+        });
+        return;
+      }
+    } catch(e) {}
+    state = leerenState();
+  }
+
+  function speichern() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  }
+
+  // ── URL-Hash Import / Export ───────────────────────────────────────────
+  function stateZuHash(s) {
+    return btoa(unescape(encodeURIComponent(JSON.stringify(s))));
+  }
+
+  function hashZuState(hash) {
+    return JSON.parse(decodeURIComponent(escape(atob(hash))));
+  }
+
+  function mergeState(importiert) {
+    FAMILIEN.forEach(f => {
+      RUBRIKEN.forEach(r => {
+        if (importiert[f.id] && Array.isArray(importiert[f.id][r.id])) {
+          const vorhanden = new Set(state[f.id][r.id].map(x => x.toLowerCase()));
+          importiert[f.id][r.id].forEach(item => {
+            if (!vorhanden.has(item.toLowerCase())) {
+              state[f.id][r.id].push(item);
+              vorhanden.add(item.toLowerCase());
+            }
+          });
+        }
+      });
+    });
+  }
+
+  // ── Duplikat-Erkennung ─────────────────────────────────────────────────
+  function duplikateErmitteln() {
+    // item → [{familieId, rubrikId}]
+    const vorkommen = {};
+    FAMILIEN.forEach(f => {
+      RUBRIKEN.forEach(r => {
+        state[f.id][r.id].forEach(item => {
+          const key = item.trim().toLowerCase();
+          if (!key) return;
+          if (!vorkommen[key]) vorkommen[key] = [];
+          vorkommen[key].push({ fam: f.id, rub: r.id, orig: item });
+        });
+      });
+    });
+    return Object.entries(vorkommen)
+      .filter(([, liste]) => {
+        const familien = new Set(liste.map(x => x.fam));
+        return familien.size > 1;
+      })
+      .map(([key, liste]) => ({ key, liste }));
+  }
+
+  // ── DOM-Rendering ──────────────────────────────────────────────────────
+  function render() {
+    const duplikate = duplikateErmitteln();
+    const dupSet = new Set(duplikate.map(d => d.key));
+
+    renderWarnungen(duplikate);
+    renderStats();
+
+    FAMILIEN.forEach(fam => {
+      RUBRIKEN.forEach(rub => {
+        const listeEl = document.getElementById(`liste-${fam.id}-${rub.id}`);
+        if (!listeEl) return;
+        listeEl.innerHTML = '';
+        state[fam.id][rub.id].forEach((item, idx) => {
+          const key = item.trim().toLowerCase();
+          const li = document.createElement('li');
+          li.classList.toggle('duplikat', dupSet.has(key));
+          li.innerHTML = `<span class="item-text">${esc(item)}</span>`
+            + `<button class="del-btn" title="Entfernen" data-fam="${fam.id}" data-rub="${rub.id}" data-idx="${idx}">✕</button>`;
+          listeEl.appendChild(li);
+        });
+      });
+    });
+  }
+
+  function renderWarnungen(duplikate) {
+    const box = document.getElementById('warnung-box');
+    const liste = document.getElementById('warnung-liste');
+    if (!duplikate.length) {
+      box.classList.remove('sichtbar');
+      return;
+    }
+    box.classList.add('sichtbar');
+    liste.innerHTML = duplikate.map(d => {
+      const orte = d.liste.map(x => {
+        const fNam = FAMILIEN.find(f => f.id === x.fam).name;
+        const rNam = RUBRIKEN.find(r => r.id === x.rub).name;
+        return `${fNam} (${rNam})`;
+      }).join(' & ');
+      return `<li><strong>${esc(d.liste[0].orig)}</strong> – ${esc(orte)}</li>`;
+    }).join('');
+  }
+
+  function renderStats() {
+    const bar = document.getElementById('stats-bar');
+    const gesamt = FAMILIEN.reduce((acc, f) =>
+      acc + RUBRIKEN.reduce((a, r) => a + state[f.id][r.id].length, 0), 0);
+    const teile = FAMILIEN.map(f => {
+      const n = RUBRIKEN.reduce((a, r) => a + state[f.id][r.id].length, 0);
+      return `<span>${f.emoji} <strong>${n}</strong></span>`;
+    });
+    bar.innerHTML = teile.join(' · ') + ` · Gesamt: <strong>${gesamt}</strong> Einträge`;
+  }
+
+  // ── Grid aufbauen (einmalig) ───────────────────────────────────────────
+  function aufbauen() {
+    const grid = document.getElementById('familien-grid');
+    grid.innerHTML = '';
+    FAMILIEN.forEach(fam => {
+      const col = document.createElement('div');
+      col.className = `familie-spalte familie-${fam.id}`;
+      col.innerHTML = `<div class="familie-header">${fam.emoji} ${fam.name}</div>`;
+      const body = document.createElement('div');
+      body.className = 'familie-body';
+      RUBRIKEN.forEach(rub => {
+        const rubEl = document.createElement('div');
+        rubEl.className = 'rubrik';
+        rubEl.innerHTML = `
+          <div class="rubrik-titel">${rub.emoji} ${rub.name}</div>
+          <ul class="item-liste" id="liste-${fam.id}-${rub.id}"></ul>
+          <div class="item-eingabe">
+            <input type="text" placeholder="Eintrag hinzufügen…"
+              id="input-${fam.id}-${rub.id}"
+              data-fam="${fam.id}" data-rub="${rub.id}"
+              maxlength="80">
+            <button class="add-btn" data-fam="${fam.id}" data-rub="${rub.id}" title="Hinzufügen">+</button>
+          </div>`;
+        body.appendChild(rubEl);
+      });
+      col.appendChild(body);
+      grid.appendChild(col);
+    });
+  }
+
+  // ── Events ─────────────────────────────────────────────────────────────
+  function eventsRegistrieren() {
+    document.getElementById('familien-grid').addEventListener('click', function(e) {
+      // Löschen
+      const delBtn = e.target.closest('.del-btn');
+      if (delBtn) {
+        const { fam, rub, idx } = delBtn.dataset;
+        state[fam][rub].splice(+idx, 1);
+        speichern(); render();
+        return;
+      }
+      // Hinzufügen via +
+      const addBtn = e.target.closest('.add-btn');
+      if (addBtn) {
+        const { fam, rub } = addBtn.dataset;
+        hinzufuegen(fam, rub);
+        return;
+      }
+    });
+
+    document.getElementById('familien-grid').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        const input = e.target.closest('input[data-fam]');
+        if (input) hinzufuegen(input.dataset.fam, input.dataset.rub);
+      }
+    });
+
+    // Modal-Overlay schließen
+    document.querySelectorAll('.modal-overlay').forEach(el => {
+      el.addEventListener('click', function(e) {
+        if (e.target === el) App.modalSchliessen();
+      });
+    });
+  }
+
+  function hinzufuegen(famId, rubId) {
+    const input = document.getElementById(`input-${famId}-${rubId}`);
+    const wert = input.value.trim();
+    if (!wert) return;
+    // Duplikat in gleicher Rubrik der gleichen Familie vermeiden
+    const klein = wert.toLowerCase();
+    if (state[famId][rubId].some(x => x.toLowerCase() === klein)) {
+      toast('⚠️ Schon in dieser Rubrik vorhanden!');
+      return;
+    }
+    state[famId][rubId].push(wert);
+    input.value = '';
+    speichern();
+    render();
+    // Hinweistoast bei direktem Duplikat über Familien
+    const dups = duplikateErmitteln().find(d => d.key === klein);
+    if (dups) toast('⚠️ Dieser Artikel ist bei einer anderen Familie schon eingetragen!');
+  }
+
+  // ── Toast ──────────────────────────────────────────────────────────────
+  let toastTimer;
+  function toast(msg) {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 3200);
+  }
+
+  // ── Public API ─────────────────────────────────────────────────────────
+  window.App = {
+    teilen() {
+      const hash = stateZuHash(state);
+      const url = location.origin + location.pathname + '#' + hash;
+      document.getElementById('teilen-output').value = url;
+      document.getElementById('teilen-modal').classList.add('offen');
+    },
+    linkKopieren() {
+      const ta = document.getElementById('teilen-output');
+      ta.select();
+      navigator.clipboard.writeText(ta.value).then(() => {
+        toast('✅ Link in die Zwischenablage kopiert!');
+        App.modalSchliessen();
+      }).catch(() => { ta.select(); toast('Bitte manuell kopieren (Strg+C)'); });
+    },
+    importModal() {
+      document.getElementById('import-input').value = '';
+      document.getElementById('import-modal').classList.add('offen');
+    },
+    importAusfuehren() {
+      let raw = document.getElementById('import-input').value.trim();
+      try {
+        // Link oder reiner Hash
+        if (raw.includes('#')) raw = raw.split('#').pop();
+        const importiert = hashZuState(raw);
+        mergeState(importiert);
+        speichern(); render();
+        App.modalSchliessen();
+        toast('✅ Stand wurde zusammengeführt!');
+      } catch(e) {
+        toast('❌ Ungültiger Link oder Hash.');
+      }
+    },
+    modalSchliessen() {
+      document.querySelectorAll('.modal-overlay').forEach(el => el.classList.remove('offen'));
+    },
+    allesZuruecksetzen() {
+      if (!confirm('Wirklich alle Einträge für alle Familien löschen?')) return;
+      state = leerenState();
+      speichern(); render();
+      toast('🗑️ Alle Einträge gelöscht.');
+    },
+  };
+
+  // ── Initialisierung ────────────────────────────────────────────────────
+  function init() {
+    laden();
+
+    // URL-Hash automatisch laden beim ersten Öffnen
+    if (location.hash && location.hash.length > 1) {
+      try {
+        const importiert = hashZuState(location.hash.slice(1));
+        mergeState(importiert);
+        speichern();
+        // Hash aus URL entfernen (sieht sauberer aus)
+        history.replaceState(null, '', location.pathname);
+        toast('✅ Einträge aus dem geteilten Link wurden übernommen!');
+      } catch(e) {
+        // kein gültiger Hash, ignorieren
+      }
+    }
+
+    aufbauen();
+    eventsRegistrieren();
+    render();
+  }
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+  }
+
+  init();
+
+})();
+</script>
+</body>
+</html>
