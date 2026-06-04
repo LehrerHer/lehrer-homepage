@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="robots" content="noindex, nofollow">
 <title>🌊 Kroatien 2026 – Packliste</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --blau:   #1a5f8a;
@@ -118,6 +120,117 @@
     pointer-events: none; z-index: 999; white-space: nowrap;
   }
   #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+  /* ── INSPIRATION ── */
+  .inspiration-wrapper {
+    max-width: 1200px; margin: 48px auto 0; padding: 0 12px 60px;
+  }
+  .inspiration-trenner {
+    display: flex; align-items: center; gap: 14px;
+    font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700;
+    color: #0d4a62; margin-bottom: 10px;
+  }
+  .inspiration-trenner::before,
+  .inspiration-trenner::after { content: ''; flex: 1; height: 2px; background: #c8dde8; }
+  .inspiration-sub {
+    text-align: center; font-size: .85rem; color: #6b8a99; margin-bottom: 28px;
+  }
+  .insp {
+    font-family: 'Source Sans 3', system-ui, sans-serif;
+    background: #f5ede0;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  }
+  .insp-header {
+    background: #0d4a62; color: #fefcfa;
+    padding: 2rem 2rem 3.5rem; position: relative; overflow: hidden;
+  }
+  .insp-header::before {
+    content: ''; position: absolute; bottom: -2px; left: 0; right: 0;
+    height: 50px; background: #f5ede0;
+    clip-path: ellipse(55% 100% at 50% 100%);
+  }
+  .insp-header::after {
+    content: '🌊'; position: absolute; right: 2rem; top: 1.5rem;
+    font-size: 5rem; opacity: .15;
+  }
+  .insp-subtitle {
+    font-size: .82rem; letter-spacing: .2em; text-transform: uppercase;
+    color: #c49a6c; margin-bottom: .4rem;
+  }
+  .insp-header h2 {
+    font-family: 'Playfair Display', serif; font-size: clamp(1.5rem,4vw,2.4rem);
+    font-weight: 900; line-height: 1.1; margin-bottom: .4rem;
+  }
+  .insp-header-meta { font-size: .88rem; color: #a8ccd8; }
+  .insp-body { padding: 1.5rem 1.5rem 2rem; }
+  .insp-intro {
+    background: #1a6b8a; color: #fefcfa; border-radius: 10px;
+    padding: 1rem 1.3rem; margin-bottom: 1.8rem; font-size: .92rem; line-height: 1.6;
+  }
+  .insp-intro strong { color: #c49a6c; }
+  .insp-section { margin-bottom: 2rem; }
+  .insp-section-header {
+    display: flex; align-items: center; gap: .7rem;
+    margin-bottom: 1rem; padding-bottom: .5rem; border-bottom: 2px solid;
+  }
+  .insp-section-header.personal { border-color: #e05c3a; }
+  .insp-section-header.shared   { border-color: #6b7c45; }
+  .insp-icon {
+    width: 2rem; height: 2rem; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .95rem; flex-shrink: 0;
+  }
+  .personal .insp-icon { background: #e05c3a; color: #fff; }
+  .shared   .insp-icon { background: #6b7c45; color: #fff; }
+  .insp-section-title {
+    font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700;
+  }
+  .insp-badge {
+    margin-left: auto; font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase; padding: .2rem .7rem; border-radius: 20px;
+  }
+  .personal .insp-badge { background: #fde8e2; color: #e05c3a; }
+  .shared   .insp-badge { background: #e8eddf; color: #6b7c45; }
+  .insp-cat-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: .9rem;
+  }
+  .insp-card {
+    background: #fefcfa; border-radius: 9px; padding: 1rem 1.1rem;
+    box-shadow: 0 2px 7px rgba(0,0,0,0.06);
+  }
+  .insp-cat-title {
+    font-size: .74rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+    color: #8a7a6a; margin-bottom: .6rem; display: flex; align-items: center; gap: .4rem;
+  }
+  .insp-items { list-style: none; display: flex; flex-direction: column; gap: .3rem; }
+  .insp-items li {
+    font-size: .88rem; line-height: 1.4; display: flex; align-items: flex-start; gap: .4rem;
+  }
+  .insp-items li::before { content: '·'; font-weight: 700; flex-shrink: 0; }
+  .personal .insp-items li::before { color: #e05c3a; }
+  .shared   .insp-items li::before { color: #6b7c45; }
+  .insp-tip { font-size: .78rem; color: #8a7a6a; font-style: italic; margin-top: .5rem; }
+  .insp-chips-card {
+    background: #fefcfa; border-radius: 9px; padding: 1rem 1.1rem;
+    box-shadow: 0 2px 7px rgba(0,0,0,0.06); margin-top: .9rem;
+  }
+  .insp-chips { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .6rem; }
+  .insp-chip {
+    background: #e8eddf; color: #6b7c45; font-size: .8rem; font-weight: 600;
+    padding: .25rem .75rem; border-radius: 20px;
+  }
+  .insp-hinweis {
+    background: linear-gradient(135deg, #0d4a62, #1a6b8a);
+    color: #fefcfa; border-radius: 10px; padding: 1.2rem 1.4rem; margin-top: 1.5rem;
+  }
+  .insp-hinweis h3 {
+    font-family: 'Playfair Display', serif; font-size: 1rem;
+    margin-bottom: .5rem; color: #c49a6c;
+  }
+  .insp-hinweis ul { list-style: none; display: flex; flex-direction: column; gap: .35rem; font-size: .88rem; }
+  .insp-hinweis ul li::before { content: '→ '; color: #c49a6c; font-weight: 700; }
 </style>
 </head>
 <body>
@@ -133,6 +246,216 @@
   <div class="stats-bar" id="stats-bar"></div>
   <div class="familien-grid" id="familien-grid"></div>
 </main>
+
+<!-- ── INSPIRATION ── -->
+<div class="inspiration-wrapper">
+  <div class="inspiration-trenner">💡 Inspiration & Vorschläge</div>
+  <p class="inspiration-sub">KI-generierte Ideen als Anregung — einfach oben übernehmen was passt</p>
+
+  <div class="insp">
+    <div class="insp-header">
+      <div class="insp-subtitle">Sommer 2026 · 3 Familien · 7 Kinder</div>
+      <h2>Kroatien Packliste<br>Cista Velika</h2>
+      <div class="insp-header-meta">Juli · Dalmatinisches Hinterland · Ferienhaus</div>
+    </div>
+
+    <div class="insp-body">
+      <div class="insp-intro">
+        <strong>Legende:</strong> Alles unter „Jede Familie für sich" bringt jede Familie vollständig mit – keine Abhängigkeiten. Alles unter „Gemeinsam teilen" reicht <strong>1× für alle drei Familien</strong> – Kosten und Gewicht teilen.
+      </div>
+
+      <!-- JEDE FAMILIE FÜR SICH -->
+      <div class="insp-section personal">
+        <div class="insp-section-header personal">
+          <div class="insp-icon">👨‍👩‍👧</div>
+          <div class="insp-section-title">Jede Familie für sich</div>
+          <div class="insp-badge">3× mitnehmen</div>
+        </div>
+        <div class="insp-cat-grid">
+          <div class="insp-card">
+            <div class="insp-cat-title"><span>🧴</span> Gesundheit & Apotheke</div>
+            <ul class="insp-items">
+              <li>Autan / Insektenschutz (Spray + Pump)</li>
+              <li>Mückenschutz-Patches für Kleinkinder</li>
+              <li>Sonnencreme LSF 50+ (viel davon!)</li>
+              <li>After-Sun Lotion</li>
+              <li>Kinderfiebermittel (Saft + Zäpfchen)</li>
+              <li>Schmerzmittel Erwachsene</li>
+              <li>Antihistaminikum (Tabletten)</li>
+              <li>Durchfallmittel + Elektrolytpulver</li>
+              <li>Wunddesinfektion + Pflaster-Sortiment</li>
+              <li>Zeckenpinzette</li>
+              <li>Europäische Krankenversicherungskarte</li>
+            </ul>
+          </div>
+          <div class="insp-card">
+            <div class="insp-cat-title"><span>👙</span> Strand & Wasser</div>
+            <ul class="insp-items">
+              <li>Badeschuhe für alle (Felsen + Seeigel!)</li>
+              <li>Schnorchelset pro Kind ab ca. 7 J.</li>
+              <li>Schwimmflügel / Auftriebsweste für Jüngere</li>
+              <li>Strandtücher (mind. 1 pro Person)</li>
+              <li>Strandmatte oder Liegematte</li>
+              <li>Wasserdichte Handyhülle</li>
+            </ul>
+          </div>
+          <div class="insp-card">
+            <div class="insp-cat-title"><span>👕</span> Kleidung & Basics</div>
+            <ul class="insp-items">
+              <li>Leichte Sommerkleidung (Baumwolle/Leinen)</li>
+              <li>1 Fleecejacke / Hoodie für kühle Abende</li>
+              <li>Feste Schuhe für Ausflüge (Krka, Felsen)</li>
+              <li>Sonnenhut für jedes Kind</li>
+              <li>Sonnenbrille (Kinder + Erwachsene)</li>
+            </ul>
+          </div>
+          <div class="insp-card">
+            <div class="insp-cat-title"><span>🛌</span> Schlafen & Hygiene</div>
+            <ul class="insp-items">
+              <li>Toilettenartikel komplett</li>
+              <li>Waschmittel (Handwäsche, kleine Flasche)</li>
+              <li>Nachtlicht für kleine Kinder</li>
+              <li>Mückennetz fürs Bett (optional, aber gut)</li>
+            </ul>
+          </div>
+          <div class="insp-card">
+            <div class="insp-cat-title"><span>📱</span> Technik & Dokumente</div>
+            <ul class="insp-items">
+              <li>Reisepässe / Personalausweise (alle)</li>
+              <li>Ladekabel + Mehrfachstecker</li>
+              <li>Powerbank</li>
+              <li>Google Maps offline (Dalmatien)</li>
+              <li>Bargeld Euro (mind. 200–300 € pro Familie)</li>
+              <li>Kreditkarte (Visa/Mastercard)</li>
+            </ul>
+          </div>
+          <div class="insp-card">
+            <div class="insp-cat-title"><span>🧒</span> Für die Kinder</div>
+            <ul class="insp-items">
+              <li>Sandspielzeug (Eimer, Formen)</li>
+              <li>Lieblingskuscheltier / Einschlafhilfe</li>
+              <li>1–2 Bücher oder Hörbücher offline</li>
+              <li>Snacks für die Fahrt (Riegel, Cracker)</li>
+              <li>Feuchttücher in Massen</li>
+              <li>Große Trinkflasche pro Kind</li>
+            </ul>
+          </div>
+          <div class="insp-card">
+            <div class="insp-cat-title"><span>🚗</span> Auto / ID.7</div>
+            <ul class="insp-items">
+              <li>Ladekabel Typ 2 (prüfen)</li>
+              <li>Kfz-Verbandskasten + Warndreieck</li>
+              <li>Grüne Versicherungskarte</li>
+              <li>Vignettengebühr Kroatien (elektronisch)</li>
+              <li>Kühlbox / Kühltaschen für Ausflüge</li>
+              <li>Sonnenschutz für Autoscheiben</li>
+            </ul>
+          </div>
+          <div class="insp-card">
+            <div class="insp-cat-title"><span>🍳</span> Küche & Essen</div>
+            <ul class="insp-items">
+              <li>Lieblingsgewürze (Salz, Pfeffer, Paprika)</li>
+              <li>Gutes Olivenöl (1 kleine Flasche)</li>
+              <li>Frühstücksvorrat für erste Tage</li>
+              <li>Kaffee / Kaffeekapseln nach Bedarf</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- GEMEINSAM TEILEN -->
+      <div class="insp-section shared">
+        <div class="insp-section-header shared">
+          <div class="insp-icon">🤝</div>
+          <div class="insp-section-title">Gemeinsam teilen</div>
+          <div class="insp-badge">1× für alle 3 Familien</div>
+        </div>
+        <div class="insp-cat-grid">
+          <div class="insp-card">
+            <div class="insp-cat-title"><span>🏖️</span> Strand-Ausstattung</div>
+            <ul class="insp-items">
+              <li>Großer Sonnenschirm (1–2 Stück)</li>
+              <li>Strandzelt / UV-Schutz-Zelt für Kleinkinder</li>
+              <li>Große Kühltasche für Ausflüge</li>
+              <li>Wasserball, Frisbee, Schläger-Set</li>
+              <li>Unterwasserkamera / GoPro</li>
+            </ul>
+          </div>
+          <div class="insp-card">
+            <div class="insp-cat-title"><span>🍖</span> Grill & Abende</div>
+            <ul class="insp-items">
+              <li>Grillbesteck-Set (falls nicht im Haus)</li>
+              <li>Große Schüsseln / Servierschalen</li>
+              <li>Lichterkette für die Terrasse</li>
+              <li>Bluetooth-Lautsprecher (wasserfest)</li>
+            </ul>
+          </div>
+          <div class="insp-card">
+            <div class="insp-cat-title"><span>🧹</span> Haushalt & Putzen</div>
+            <ul class="insp-items">
+              <li>Waschmittel (für Waschmaschine)</li>
+              <li>Spülmittel + Schwamm</li>
+              <li>Müllbeutel groß</li>
+              <li>Erste-Hilfe-Kasten erweitert</li>
+            </ul>
+          </div>
+          <div class="insp-card">
+            <div class="insp-cat-title"><span>🎲</span> Abendprogramm</div>
+            <ul class="insp-items">
+              <li>1–2 Gesellschaftsspiele (Siedler, Uno…)</li>
+              <li>Kartenspiel-Set</li>
+              <li>Wachsmalkreiden / Malbücher</li>
+              <li>Wasserpistolen</li>
+            </ul>
+          </div>
+          <div class="insp-card">
+            <div class="insp-cat-title"><span>🚤</span> Aktivitäten vor Ort</div>
+            <ul class="insp-items">
+              <li>Bootsverleih gemeinsam buchen</li>
+              <li>Krka-Tickets online vorbuchen</li>
+              <li>Kajak / Zipline Omiš: Gruppenbuchung</li>
+              <li>Mostar-Ausflug planen</li>
+            </ul>
+            <div class="insp-tip">Tipp: Als Gruppe buchen = oft Gruppenrabatt</div>
+          </div>
+          <div class="insp-card">
+            <div class="insp-cat-title"><span>🛒</span> Großeinkauf bei Ankunft</div>
+            <ul class="insp-items">
+              <li>Gemeinsam in Split oder Imotski</li>
+              <li>Wasser (Paletten), Öl, Pasta, Reis</li>
+              <li>Lokales Obst + Gemüse (Markt Imotski)</li>
+              <li>Fleisch für Grillabende</li>
+            </ul>
+            <div class="insp-tip">Kosten direkt aufteilen – vereinfacht den Urlaub</div>
+          </div>
+        </div>
+        <div class="insp-chips-card">
+          <div class="insp-cat-title"><span>📋</span> Aufgabenverteilung (Vorschlag)</div>
+          <div class="insp-chips">
+            <span class="insp-chip">Familie Hütte → Strandausstattung</span>
+            <span class="insp-chip">Familie Berg → Grill & Abende</span>
+            <span class="insp-chip">Familie Hellern → Spiele & Unterhaltung</span>
+            <span class="insp-chip">Alle → Einkauf gemeinsam</span>
+            <span class="insp-chip">Alle → Aktivitäten vorbuchen</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- HINWEISE -->
+      <div class="insp-hinweis">
+        <h3>🌡️ Juli-Spezial: Cista Velika</h3>
+        <ul>
+          <li>35–40°C tagsüber – Siesta 12–16 Uhr strikt einhalten</li>
+          <li>Laden mit ID.7: Ionity Makarska (40 km), mehrere Lader in Split</li>
+          <li>Imotski Seen: Tickets + Parkplatz früh morgens (8–9 Uhr)</li>
+          <li>Mostar Tagesausflug: Personalausweis reicht, kein Visum nötig</li>
+          <li>Krka Wasserfälle: Online vorbuchen – im Juli oft ausverkauft!</li>
+          <li>Kleingeld bereitlegen: Viele kleine Läden nur Bargeld</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div id="toast"></div>
 
