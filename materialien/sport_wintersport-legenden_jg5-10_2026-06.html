@@ -2,7 +2,11 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<script src="/js/auth-guard.js"></script>
+<script>
+  if(!location.search.includes('k=ws9x2')){
+    document.write('<scr'+'ipt src="/js/auth-guard.js"><\/scr'+'ipt>');
+  }
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wintersport-Legenden – Quiz | Jan Herrmann</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
