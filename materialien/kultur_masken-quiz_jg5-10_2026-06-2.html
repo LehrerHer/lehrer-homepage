@@ -415,15 +415,27 @@
     return dp[m][n];
   }
 
-  function b64toURL(dataURL) {
-    const parts = dataURL.split(',');
-    const mime = parts[0].match(/:(.*?);/)[1];
-    const bstr = atob(parts[1]);
-    const u8 = new Uint8Array(bstr.length);
-    for (let i = 0; i < bstr.length; i++) u8[i] = bstr.charCodeAt(i);
-    return URL.createObjectURL(new Blob([u8], {type: mime}));
+  var _dbg = document.createElement('div');
+  _dbg.id='quiz-debug';
+  _dbg.style.cssText='position:fixed;bottom:8px;left:8px;right:8px;background:rgba(0,0,0,0.85);color:#fff;font-size:12px;padding:8px 12px;border-radius:8px;z-index:9999;border:1px solid #f59e0b;';
+  document.body.appendChild(_dbg);
+  function _log(msg){_dbg.textContent=msg;}
+
+  var IMG_URLS=[];
+  try {
+    function b64toURL(dataURL) {
+      const parts = dataURL.split(',');
+      const mime = parts[0].match(/:(.*?);/)[1];
+      const bstr = atob(parts[1]);
+      const u8 = new Uint8Array(bstr.length);
+      for (let i = 0; i < bstr.length; i++) u8[i] = bstr.charCodeAt(i);
+      return URL.createObjectURL(new Blob([u8], {type: mime}));
+    }
+    IMG_URLS = IMAGES.map(b64toURL);
+    _log('✅ '+IMG_URLS.length+' Blob-URLs erstellt. Erster: '+IMG_URLS[0].slice(0,30)+'...');
+  } catch(e) {
+    _log('❌ Blob-Fehler: '+e.message);
   }
-  const IMG_URLS = IMAGES.map(b64toURL);
 
   let current=0, score=0, order=[];
   let stats={correct:0,partial:0,wrong:0};
@@ -446,8 +458,10 @@
   function loadQuestion() {
     const idx=order[current];
     const img=document.getElementById('card-img');
-    img.onerror=function(){console.error('Bild '+idx+' konnte nicht geladen werden, src='+img.src.slice(0,40));};
-    img.src=IMG_URLS[idx];
+    img.onerror=function(){_log('❌ Bild '+idx+' Ladefehler. src='+img.src.slice(0,35));};
+    img.onload=function(){_log('✅ Bild '+idx+' geladen ('+img.naturalWidth+'×'+img.naturalHeight+'px)');};
+    img.src=IMG_URLS[idx] || '';
+    _log('⏳ Setze Bild '+idx+', IMG_URLS['+idx+']='+String(IMG_URLS[idx]).slice(0,30));
     document.getElementById('card-badge').textContent='Frage '+(current+1);
     document.getElementById('card-prompt').textContent=PROMPTS[idx];
     const inp=document.getElementById('answer-input');
