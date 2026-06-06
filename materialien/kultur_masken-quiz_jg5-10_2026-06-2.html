@@ -126,7 +126,7 @@
       from { opacity:0; transform:translateY(18px); }
       to   { opacity:1; transform:translateY(0); }
     }
-    .card-img-wrap { position: relative; background: #111318; }
+    .card-img-wrap { position: relative; background: #111318; min-height: 200px; }
     .card-img {
       width: 100%; max-height: 400px;
       object-fit: contain; display: block;
@@ -282,7 +282,7 @@
 <div class="quiz-wrap" id="quiz-wrap">
   <div class="card" id="card">
     <div class="card-img-wrap">
-      <img class="card-img" id="card-img" src="" alt="Masken-Bild">
+      <img class="card-img" id="card-img" alt="Masken-Bild">
       <div class="card-q-badge" id="card-badge">Frage 1</div>
     </div>
     <div class="card-body">
@@ -436,6 +436,7 @@
   function loadQuestion() {
     const idx=order[current];
     const img=document.getElementById('card-img');
+    img.onerror=function(){console.error('Bild '+idx+' konnte nicht geladen werden');};
     img.src=IMAGES[idx];
     document.getElementById('card-badge').textContent='Frage '+(current+1);
     document.getElementById('card-prompt').textContent=PROMPTS[idx];
