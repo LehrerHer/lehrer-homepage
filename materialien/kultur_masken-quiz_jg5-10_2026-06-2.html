@@ -576,7 +576,7 @@
     const open=links.classList.toggle('open');
     this.setAttribute('aria-expanded',open);
   });
-  document.getElementById('footer-jahr').textContent=new Date().getFullYear();
+  var _fyEl=document.getElementById('footer-jahr'); if(_fyEl) _fyEl.textContent=new Date().getFullYear();
 
   initQuiz();
 </script>
