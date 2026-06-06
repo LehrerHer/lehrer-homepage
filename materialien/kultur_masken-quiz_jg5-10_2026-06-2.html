@@ -415,6 +415,16 @@
     return dp[m][n];
   }
 
+  function b64toURL(dataURL) {
+    const parts = dataURL.split(',');
+    const mime = parts[0].match(/:(.*?);/)[1];
+    const bstr = atob(parts[1]);
+    const u8 = new Uint8Array(bstr.length);
+    for (let i = 0; i < bstr.length; i++) u8[i] = bstr.charCodeAt(i);
+    return URL.createObjectURL(new Blob([u8], {type: mime}));
+  }
+  const IMG_URLS = IMAGES.map(b64toURL);
+
   let current=0, score=0, order=[];
   let stats={correct:0,partial:0,wrong:0};
 
@@ -436,8 +446,8 @@
   function loadQuestion() {
     const idx=order[current];
     const img=document.getElementById('card-img');
-    img.onerror=function(){console.error('Bild '+idx+' konnte nicht geladen werden');};
-    img.src=IMAGES[idx];
+    img.onerror=function(){console.error('Bild '+idx+' konnte nicht geladen werden, src='+img.src.slice(0,40));};
+    img.src=IMG_URLS[idx];
     document.getElementById('card-badge').textContent='Frage '+(current+1);
     document.getElementById('card-prompt').textContent=PROMPTS[idx];
     const inp=document.getElementById('answer-input');
