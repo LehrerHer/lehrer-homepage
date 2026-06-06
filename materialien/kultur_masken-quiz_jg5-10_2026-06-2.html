@@ -436,7 +436,6 @@
   function loadQuestion() {
     const idx=order[current];
     const img=document.getElementById('card-img');
-    img.src='';
     img.src=IMAGES[idx];
     document.getElementById('card-badge').textContent='Frage '+(current+1);
     document.getElementById('card-prompt').textContent=PROMPTS[idx];
