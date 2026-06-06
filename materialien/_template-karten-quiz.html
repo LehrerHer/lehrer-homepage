@@ -1,0 +1,487 @@
+<!--
+  TEMPLATE: Karten-Quiz (Bilderraten)
+  ====================================
+  So verwendest du dieses Template:
+
+  1. QUIZ-METADATEN anpassen (Suche: "QUIZ-METADATEN")
+     - QUIZ_TITEL, QUIZ_EYEBROW, QUIZ_UNTERTITEL, QUIZ_SLUG
+     - ANZAHL (Anzahl der Karten/Fragen)
+     - MAX_SCORE = ANZAHL * 100
+     - Ergebnis-Texte anpassen (emoji, sub – Suche: "ERGEBNIS-TEXTE")
+
+  2. BILDER einfügen (Suche: "BILDER")
+     - IMAGES: Array mit Base64-Data-URLs (data:image/jpeg;base64,...)
+     - Ein Eintrag pro Bild, gleiche Reihenfolge wie LABELS/HASHES/INFOS/PROMPTS
+
+  3. INHALTE befüllen (Suche: "INHALTE")
+     - HASHES: SHA-256-Hash der normalisierten korrekten Antwort
+       Normalisierung: toLowerCase, ä→ae, ö→oe, ü→ue, ß→ss
+       Hash erzeugen: https://emn178.github.io/online-tools/sha256.html
+     - LABELS: Korrekte Antwort im Klartext (wird bei falscher Antwort gezeigt)
+     - INFOS: Objekt mit flag, born, sport (=Kategorie), highlights (Array)
+     - PROMPTS: Frage-Text pro Karte ("Wie heißt ...?")
+
+  4. Datei umbenennen nach Schema:
+     fach_thema_jg5-10_JJJJ-MM.html
+     z.B. geografie_flaggen-quiz_jg5-10_2026-07.html
+
+  5. In der passenden materialien-*.html verlinken.
+
+  ALLE BUGS BEREITS GEFIXT:
+  - Safari: Base64 → Blob-URL-Konvertierung (kein Darstellungsfehler)
+  - Safari: footer-jahr Null-Check (kein TypeError → kein Abbruch)
+  - Kein src="" am <img> (kein unnötiger Netzwerkrequest)
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- QUIZ-METADATEN: Titel anpassen -->
+  <title>QUIZ_TITEL – lehrer-herrmann.de</title>
+  <script>
+    if(!location.search.includes('k=0fp5ma8')){
+      document.write('<scr'+'ipt src="/js/auth-guard.js"><\/scr'+'ipt>');
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --gold: #f0c040;
+      --gold2: #e0a820;
+      --accent: #6c8ef5;
+      --green: #22c55e;
+      --red: #ef4444;
+      --orange: #f97316;
+      --text: #e8eaf6;
+      --muted: #94a3b8;
+      --radius: 16px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh; }
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(15,17,23,0.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(240,192,64,0.15);
+    }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+    .navbar-inner { display: flex; align-items: center; gap: 16px; height: 58px; }
+    .navbar-logo {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.25rem;
+      letter-spacing: 2px; color: var(--gold); text-decoration: none; flex-shrink: 0;
+    }
+    .navbar-links { display: flex; list-style: none; gap: 4px; margin-left: auto; align-items: center; flex-wrap: wrap; }
+    .navbar-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; padding: 6px 10px; border-radius: 8px; transition: color .2s, background .2s; }
+    .navbar-links a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+    .navbar-gb-trenner { display: flex; align-items: center; gap: 6px; padding: 0 8px; color: var(--muted); font-size: 0.75rem; border-left: 1px solid rgba(255,255,255,0.1); margin-left: 4px; }
+    .navbar-gb-label { opacity: .6; }
+    .navbar-gb-link { color: var(--gold) !important; }
+    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 8px; flex-direction: column; gap: 5px; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--gold); border-radius: 2px; }
+    @media(max-width:700px) {
+      .hamburger { display: flex; margin-left: auto; }
+      .navbar-links { display: none; position: absolute; top: 58px; left: 0; right: 0; background: rgba(15,17,23,0.98); flex-direction: column; padding: 12px; gap: 2px; border-bottom: 1px solid rgba(240,192,64,0.15); }
+      .navbar-links.open { display: flex; }
+      .navbar-gb-trenner { border-left: none; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px; margin-top: 4px; }
+    }
+    .hero { text-align: center; padding: 52px 20px 32px; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(108,142,245,0.12) 0%, transparent 70%); }
+    .hero-eyebrow { font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; letter-spacing: 4px; color: var(--gold); margin-bottom: 12px; }
+    .hero h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2.4rem, 6vw, 4rem); letter-spacing: 4px; line-height: 1.05; margin-bottom: 12px; }
+    .hero h1 span { color: var(--gold); }
+    .hero-sub { color: var(--muted); font-size: 1rem; max-width: 500px; margin: 0 auto 28px; }
+    .score-display { display: inline-flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid rgba(240,192,64,0.2); border-radius: 40px; padding: 10px 24px; font-size: 1.1rem; font-weight: 700; }
+    .score-display .pts { color: var(--gold); font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; }
+    .progress-wrap { max-width: 600px; margin: 16px auto 0; }
+    .progress-bar-bg { height: 6px; background: var(--surface2); border-radius: 3px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); border-radius: 3px; transition: width .4s ease; }
+    .progress-label { font-size: 0.8rem; color: var(--muted); text-align: right; margin-top: 4px; }
+    .quiz-wrap { max-width: 680px; margin: 32px auto 60px; padding: 0 16px; }
+    .card { background: var(--surface); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius); overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.4); animation: cardIn .35s ease; }
+    @keyframes cardIn { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+    .card-img-wrap { position: relative; background: #111318; min-height: 200px; }
+    .card-img { width: 100%; max-height: 400px; object-fit: contain; display: block; }
+    .card-q-badge { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); border: 1px solid rgba(240,192,64,0.4); border-radius: 20px; padding: 4px 14px; font-family: 'Bebas Neue', sans-serif; font-size: 0.95rem; letter-spacing: 2px; color: var(--gold); }
+    .card-body { padding: 24px; }
+    .card-prompt { font-size: 0.95rem; color: var(--muted); margin-bottom: 14px; text-align: center; }
+    .input-row { display: flex; gap: 10px; }
+    .answer-input { flex: 1; background: var(--surface2); border: 1.5px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 13px 16px; color: var(--text); font-size: 1rem; font-family: 'Inter', sans-serif; transition: border-color .2s; outline: none; }
+    .answer-input:focus { border-color: var(--accent); }
+    .answer-input.correct { border-color: var(--green); background: rgba(34,197,94,0.08); }
+    .answer-input.partial { border-color: var(--orange); background: rgba(249,115,22,0.08); }
+    .answer-input.wrong   { border-color: var(--red);   background: rgba(239,68,68,0.08); }
+    .btn-check { background: var(--gold); color: #0f1117; border: none; border-radius: 10px; padding: 13px 22px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: background .2s; white-space: nowrap; }
+    .btn-check:hover { background: var(--gold2); }
+    .btn-check:disabled { opacity: .45; cursor: default; }
+    .feedback { margin-top: 16px; border-radius: 12px; padding: 16px 18px; display: none; animation: fadeIn .3s ease; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+    .feedback.correct { background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.3); }
+    .feedback.partial  { background: rgba(249,115,22,0.12); border: 1px solid rgba(249,115,22,0.3); }
+    .feedback.wrong    { background: rgba(239,68,68,0.10);  border: 1px solid rgba(239,68,68,0.25); }
+    .feedback-head { font-weight: 700; font-size: 1rem; margin-bottom: 6px; }
+    .feedback.correct .feedback-head { color: var(--green); }
+    .feedback.partial  .feedback-head { color: var(--orange); }
+    .feedback.wrong    .feedback-head { color: var(--red); }
+    .info-grid { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 0.88rem; margin-top: 10px; }
+    .info-label { color: var(--muted); font-weight: 600; }
+    .highlights ul { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-direction: column; gap: 3px; }
+    .highlights ul li::before { content: "✦ "; color: var(--gold); font-size: 0.75em; }
+    .highlights ul li { font-size: 0.88rem; }
+    .btn-next { display: none; width: 100%; margin-top: 16px; background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 13px; font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: background .2s; }
+    .btn-next:hover { background: #5577e0; }
+    .results { display: none; max-width: 680px; margin: 40px auto 80px; padding: 0 16px; }
+    .results-card { background: var(--surface); border-radius: var(--radius); border: 1px solid rgba(240,192,64,0.2); padding: 36px 28px; text-align: center; }
+    .results-emoji { font-size: 3rem; margin-bottom: 12px; }
+    .results-card h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: 3px; color: var(--gold); margin-bottom: 8px; }
+    .results-score-big { font-family: 'Bebas Neue', sans-serif; font-size: 3.5rem; line-height: 1; }
+    .results-score-big span { color: var(--gold); }
+    .results-sub { color: var(--muted); font-size: 0.95rem; margin-top: 8px; }
+    .results-breakdown { display: flex; justify-content: center; gap: 28px; margin: 24px 0; flex-wrap: wrap; }
+    .rb-item { text-align: center; }
+    .rb-num { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; }
+    .rb-num.g { color: var(--green); }
+    .rb-num.o { color: var(--orange); }
+    .rb-num.r { color: var(--red); }
+    .rb-label { font-size: 0.8rem; color: var(--muted); margin-top: 2px; }
+    .btn-again { background: var(--gold); color: #0f1117; border: none; border-radius: 12px; padding: 14px 32px; font-weight: 700; font-size: 1rem; cursor: pointer; transition: background .2s; margin-top: 8px; }
+    .btn-again:hover { background: var(--gold2); }
+    footer { background: rgba(15,17,23,0.8); border-top: 1px solid rgba(255,255,255,0.06); padding: 20px 0; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 0.85rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 16px; }
+    .footer-links a { color: var(--muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--text); }
+    .admin-footer-link { opacity: 0; pointer-events: none; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+  <div class="container navbar-inner">
+    <a href="/index.html" class="navbar-logo">lehrer-herrmann.de</a>
+    <button class="hamburger" id="hamburger" aria-label="Menü öffnen"
+            aria-expanded="false" aria-controls="navbar-links">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="navbar-links" id="navbar-links">
+      <li><a href="/index.html#was-ist-neu">Was ist neu?</a></li>
+      <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+      <li class="navbar-gb-trenner" aria-hidden="true">
+        <span class="navbar-gb-label">Geschützter Bereich</span>
+      </li>
+      <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+      <li><a href="/blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+      <li><a href="/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+    </ul>
+    <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+  </div>
+</nav>
+
+<!-- QUIZ-METADATEN: Eyebrow-Emoji, Titel (zweiter Teil in <span>), Untertitel anpassen -->
+<section class="hero">
+  <p class="hero-eyebrow">🖼️ Bilderraten</p>
+  <h1>QUIZ_TITEL_TEIL1-<span>QUIZ_TITEL_TEIL2</span></h1>
+  <p class="hero-sub">QUIZ_UNTERTITEL</p>
+  <!-- MAX_SCORE = ANZAHL * 100 -->
+  <div class="score-display">
+    🎯 Punkte: <span class="pts" id="score-disp">0</span> / MAX_SCORE
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="prog-fill" style="width:0%"></div>
+    </div>
+    <!-- ANZAHL anpassen -->
+    <div class="progress-label" id="prog-label">Frage 1 von ANZAHL</div>
+  </div>
+</section>
+
+<div class="quiz-wrap" id="quiz-wrap">
+  <div class="card" id="card">
+    <div class="card-img-wrap">
+      <!-- alt-Text anpassen -->
+      <img class="card-img" id="card-img" alt="Quiz-Bild">
+      <div class="card-q-badge" id="card-badge">Frage 1</div>
+    </div>
+    <div class="card-body">
+      <p class="card-prompt" id="card-prompt"></p>
+      <div class="input-row">
+        <input class="answer-input" id="answer-input" type="text"
+               placeholder="Deine Antwort …" autocomplete="off" autocorrect="off" spellcheck="false">
+        <button class="btn-check" id="btn-check">Prüfen</button>
+      </div>
+      <div class="feedback" id="feedback">
+        <div class="feedback-head" id="fb-head"></div>
+        <div class="info-grid" id="fb-info"></div>
+        <div class="highlights" id="fb-highlights"></div>
+      </div>
+      <button class="btn-next" id="btn-next">Weiter →</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAX_SCORE in res-score anpassen -->
+<div class="results" id="results">
+  <div class="results-card">
+    <div class="results-emoji" id="res-emoji">🎉</div>
+    <h2>Auswertung</h2>
+    <div class="results-score-big" id="res-score">0 <span>/ MAX_SCORE</span></div>
+    <div class="results-sub" id="res-sub"></div>
+    <div class="results-breakdown">
+      <div class="rb-item"><div class="rb-num g" id="rb-correct">0</div><div class="rb-label">Exakt richtig<br>(+100)</div></div>
+      <div class="rb-item"><div class="rb-num o" id="rb-partial">0</div><div class="rb-label">Fast richtig<br>(+50)</div></div>
+      <div class="rb-item"><div class="rb-num r" id="rb-wrong">0</div><div class="rb-label">Falsch<br>(+0)</div></div>
+    </div>
+    <div id="lb-container" style="margin:24px 0;background:rgba(255,255,255,0.05);border-radius:16px;padding:20px;">
+      <h3 style="font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:2px;color:var(--gold);margin-bottom:12px;text-align:center;">🏆 Bestenliste</h3>
+      <div id="lb-output" style="color:#94a3b8;text-align:center;font-size:0.9rem;">Wird geladen…</div>
+    </div>
+    <button class="btn-again" onclick="initQuiz()">🔄 Nochmal spielen</button>
+  </div>
+</div>
+
+<script>
+  // ================================================================
+  // BILDER: Base64-Data-URLs einfügen (data:image/jpeg;base64,...)
+  // Ein Eintrag pro Bild, gleiche Reihenfolge wie LABELS/HASHES/INFOS/PROMPTS
+  // ================================================================
+  const IMAGES = [
+    // "data:image/jpeg;base64,/9j/4AAQ...",  // Bild 1
+    // "data:image/jpeg;base64,/9j/4AAQ...",  // Bild 2
+    // ...
+  ];
+
+  // ================================================================
+  // INHALTE: Arrays befüllen
+  // ================================================================
+
+  // SHA-256-Hashes der normalisierten Antworten
+  // Normalisierung: s.toLowerCase().replace(ä→ae, ö→oe, ü→ue, ß→ss)
+  // Hash-Tool: https://emn178.github.io/online-tools/sha256.html
+  const HASHES = [
+    // "abc123...",  // Hash von Antwort 1
+    // "def456...",  // Hash von Antwort 2
+    // ...
+  ];
+
+  // Korrekte Antworten im Klartext (wird bei falscher Antwort angezeigt)
+  const LABELS = [
+    // "Antwort 1",
+    // "Antwort 2",
+    // ...
+  ];
+
+  // Infos pro Karte: flag = Länder-Emoji, born = Herkunft/Jahr,
+  // sport = Kategorie/Typ, highlights = Array mit 3-4 Fakten
+  const INFOS = [
+    // {"flag":"🇩🇪","born":"Deutschland, 1990","sport":"Beispiel-Kategorie","highlights":["Fakt 1","Fakt 2","Fakt 3"]},
+    // ...
+  ];
+
+  // Frage-Text pro Karte
+  const PROMPTS = [
+    // "Wie heißt diese Person?",
+    // "Wie heißt dieses Objekt?",
+    // ...
+  ];
+
+  // ================================================================
+  // QUIZ-LOGIK (nicht ändern)
+  // ================================================================
+
+  // ANZAHL hier eintragen (gleiche Zahl wie Einträge in IMAGES/LABELS/etc.)
+  const ANZAHL = IMAGES.length;
+  // MAX_SCORE = ANZAHL * 100
+  const MAX_SCORE = ANZAHL * 100;
+  // QUIZ_SLUG: eindeutiger Bezeichner für Kolosseum-XP und Bestenliste
+  const QUIZ_SLUG = 'QUIZ_SLUG';
+
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+
+  function normalize(s) {
+    return s.toLowerCase()
+      .replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss');
+  }
+
+  function levenshtein(a,b) {
+    const m=a.length,n=b.length;
+    const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i||j));
+    for(let i=1;i<=m;i++) for(let j=1;j<=n;j++)
+      dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
+    return dp[m][n];
+  }
+
+  // Safari-Fix: Base64 → Blob-URL (verhindert Darstellungsfehler in Safari)
+  function b64toURL(dataURL) {
+    const parts = dataURL.split(',');
+    const mime = parts[0].match(/:(.*?);/)[1];
+    const bstr = atob(parts[1]);
+    const u8 = new Uint8Array(bstr.length);
+    for (let i = 0; i < bstr.length; i++) u8[i] = bstr.charCodeAt(i);
+    return URL.createObjectURL(new Blob([u8], {type: mime}));
+  }
+  const IMG_URLS = IMAGES.map(b64toURL);
+
+  let current=0, score=0, order=[];
+  let stats={correct:0,partial:0,wrong:0};
+
+  function shuffle(arr) {
+    const a=[...arr];
+    for(let i=a.length-1;i>0;i--){const j=0|Math.random()*(i+1);[a[i],a[j]]=[a[j],a[i]];}
+    return a;
+  }
+
+  function initQuiz() {
+    current=0; score=0; stats={correct:0,partial:0,wrong:0};
+    order=shuffle([...Array(ANZAHL).keys()]);
+    document.getElementById('results').style.display='none';
+    document.getElementById('quiz-wrap').style.display='block';
+    document.getElementById('score-disp').textContent='0';
+    loadQuestion();
+  }
+
+  function loadQuestion() {
+    const idx=order[current];
+    const img=document.getElementById('card-img');
+    img.src=IMG_URLS[idx] || '';
+    document.getElementById('card-badge').textContent='Frage '+(current+1);
+    document.getElementById('card-prompt').textContent=PROMPTS[idx];
+    const inp=document.getElementById('answer-input');
+    inp.value=''; inp.className='answer-input'; inp.disabled=false;
+    document.getElementById('feedback').style.display='none';
+    document.getElementById('feedback').className='feedback';
+    document.getElementById('btn-next').style.display='none';
+    document.getElementById('btn-check').disabled=false;
+    const card=document.getElementById('card');
+    card.style.animation='none'; void card.offsetHeight; card.style.animation='';
+    document.getElementById('prog-fill').style.width=(current/ANZAHL*100)+'%';
+    document.getElementById('prog-label').textContent='Frage '+(current+1)+' von '+ANZAHL;
+    inp.focus();
+  }
+
+  async function checkAnswer() {
+    const idx=order[current];
+    const raw=document.getElementById('answer-input').value.trim();
+    if(!raw) return;
+    const norm=normalize(raw);
+    const hash=await sha256(norm);
+    const correctNorm=normalize(LABELS[idx]);
+    const lev=levenshtein(norm,correctNorm);
+
+    let pts=0,feedClass='',headText='';
+    if(hash===HASHES[idx]) {
+      pts=100; feedClass='correct'; headText='✅ Exakt richtig! +100 Punkte';
+      stats.correct++;
+      document.getElementById('answer-input').className='answer-input correct';
+    } else if(lev<=3) {
+      pts=50; feedClass='partial'; headText='⚡ Fast richtig! +50 Punkte';
+      stats.partial++;
+      document.getElementById('answer-input').className='answer-input partial';
+    } else {
+      pts=0; feedClass='wrong'; headText='❌ Leider falsch – 0 Punkte';
+      stats.wrong++;
+      document.getElementById('answer-input').className='answer-input wrong';
+    }
+
+    score+=pts;
+    document.getElementById('score-disp').textContent=score;
+    document.getElementById('btn-check').disabled=true;
+    document.getElementById('answer-input').disabled=true;
+
+    const info=INFOS[idx];
+    const fb=document.getElementById('feedback');
+    fb.className='feedback '+feedClass;
+    document.getElementById('fb-head').innerHTML=
+      headText+(pts===0?' — Richtig: <strong>'+LABELS[idx]+'</strong>':'');
+    document.getElementById('fb-info').innerHTML=
+      '<span class="info-label">'+info.flag+' Ursprung:</span><span>'+info.born+'</span>'+
+      '<span class="info-label">📌 Kategorie:</span><span>'+info.sport+'</span>';
+    document.getElementById('fb-highlights').innerHTML=
+      '<div style="margin-top:10px"><strong style="font-size:.85rem;color:var(--muted)">Highlights:</strong>'+
+      '<ul style="list-style:none;padding:0;margin:4px 0 0;display:flex;flex-direction:column;gap:3px">'+
+      info.highlights.map(h=>'<li style="font-size:.88rem"><span style="color:var(--gold);font-size:.75em">✦ </span>'+h+'</li>').join('')+
+      '</ul></div>';
+    fb.style.display='block';
+    document.getElementById('btn-next').style.display='block';
+  }
+
+  function nextQuestion() {
+    current++;
+    if(current>=ANZAHL) showResults();
+    else loadQuestion();
+  }
+
+  function showResults() {
+    document.getElementById('quiz-wrap').style.display='none';
+    document.getElementById('results').style.display='block';
+    document.getElementById('prog-fill').style.width='100%';
+    document.getElementById('prog-label').textContent='Quiz abgeschlossen!';
+    document.getElementById('score-disp').textContent=score;
+    document.getElementById('res-score').innerHTML=score+' <span>/ '+MAX_SCORE+'</span>';
+    document.getElementById('rb-correct').textContent=stats.correct;
+    document.getElementById('rb-partial').textContent=stats.partial;
+    document.getElementById('rb-wrong').textContent=stats.wrong;
+
+    const pct=score/MAX_SCORE;
+    // ERGEBNIS-TEXTE: Emoji und Texte anpassen
+    let emoji='😐',sub='Nicht schlecht – beim nächsten Mal schaffst du mehr!';
+    if(pct>=0.95){emoji='🏆';sub='Unglaublich! Perfektes Ergebnis!';}
+    else if(pct>=0.75){emoji='🎉';sub='Super Ergebnis – du kennst dich wirklich gut aus!';}
+    else if(pct>=0.5){emoji='👍';sub='Solides Ergebnis! Ein paar waren wirklich knifflig.';}
+    else if(pct<0.25){emoji='😅';sub='Da ist noch Luft nach oben – versuch es nochmal!';}
+    document.getElementById('res-emoji').textContent=emoji;
+    document.getElementById('res-sub').textContent=sub;
+
+    if(typeof window.kolosseumReport==='function')
+      window.kolosseumReport(score,MAX_SCORE,QUIZ_SLUG);
+    if(typeof window.leaderboardSave==='function')
+      window.leaderboardSave(QUIZ_SLUG,score,MAX_SCORE)
+        .then(()=>window.leaderboardFetch(QUIZ_SLUG))
+        .then(e=>{document.getElementById('lb-output').innerHTML=window.leaderboardHTML(e);})
+        .catch(()=>{});
+  }
+
+  document.getElementById('btn-check').addEventListener('click',checkAnswer);
+  document.getElementById('btn-next').addEventListener('click',nextQuestion);
+  document.getElementById('answer-input').addEventListener('keydown',e=>{
+    if(e.key==='Enter'){
+      if(!document.getElementById('btn-check').disabled) checkAnswer();
+      else if(document.getElementById('btn-next').style.display!=='none') nextQuestion();
+    }
+  });
+  document.getElementById('hamburger').addEventListener('click',function(){
+    const links=document.getElementById('navbar-links');
+    const open=links.classList.toggle('open');
+    this.setAttribute('aria-expanded',open);
+  });
+
+  // Safari-Fix: Null-Check verhindert TypeError wenn footer-jahr noch nicht im DOM ist
+  var _fyEl=document.getElementById('footer-jahr'); if(_fyEl) _fyEl.textContent=new Date().getFullYear();
+
+  initQuiz();
+</script>
+
+<script src="/js/main.js"></script>
+<script src="/js/kolosseum-login-widget.js"></script>
+<script src="/js/supabase-config.js"></script>
+<script src="/js/supabase-leaderboard.js"></script>
+<script src="/js/kolosseum-prompt.js"></script>
+
+<footer>
+  <div class="container footer-inner">
+    <p>© <span id="footer-jahr">2025</span> Jan Herrmann</p>
+    <nav class="footer-links" aria-label="Rechtliche Links">
+      <a href="/impressum.html">Impressum</a>
+      <a href="/datenschutz.html">Datenschutz</a>
+    </nav>
+    <a href="/kolosseum/public/admin/" id="admin-footer-link"
+       class="admin-footer-link" aria-hidden="true" tabindex="-1"></a>
+  </div>
+</footer>
+
+</body>
+</html>
