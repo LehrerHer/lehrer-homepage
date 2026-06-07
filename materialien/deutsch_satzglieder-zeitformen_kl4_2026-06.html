@@ -1,0 +1,1042 @@
+<!--
+  Titel: Satzglieder & Zeitformen – Klasse 4
+  Fach: Deutsch
+  Klasse/Niveau: Klasse 4 (Grundschule / Primarstufe)
+  AB-Typ: Gemischt (Einfärben, Bestimmen, Multiple Choice, Satz ordnen)
+  Erstellt: 2026-06-07
+  Quelle: AB Satzglieder Zeitformen Klasse4.html (Material manuell von mir)
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Satzglieder &amp; Zeitformen – Klasse 4 | Jan Herrmann</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Fredoka+One&display=swap');
+
+    /* === AB-BEREICH === */
+    .ab-main {
+      font-family: 'Nunito', sans-serif;
+      background: #fef9f0;
+      padding-bottom: 60px;
+    }
+    .ab-main {
+      --sg-subjekt:   #e74c8b;
+      --sg-praedikat: #2ecc71;
+      --sg-objekt:    #e67e22;
+      --sg-adverbiale:#9b59b6;
+      --sg-shadow:    0 4px 16px rgba(0,0,0,0.08);
+      --sg-radius:    16px;
+    }
+
+    /* HERO */
+    .ab-hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 32px 24px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .ab-hero::before {
+      content: '';
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 50%;
+    }
+    .ab-hero h1 {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2.2rem;
+      letter-spacing: 1px;
+      position: relative;
+    }
+    .ab-hero p { opacity: 0.85; margin-top: 6px; font-size: 1rem; position: relative; }
+
+    /* TAB-NAV */
+    .ab-nav {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 16px 24px;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .ab-nav button {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 8px 18px;
+      border: 2px solid transparent;
+      border-radius: 50px;
+      cursor: pointer;
+      background: #f0f0f0;
+      color: #555;
+      transition: all 0.2s;
+    }
+    .ab-nav button.active,
+    .ab-nav button:hover { background: #667eea; color: white; border-color: #667eea; }
+
+    /* SEKTIONEN */
+    .ab-section {
+      display: none;
+      max-width: 860px;
+      margin: 32px auto;
+      padding: 0 20px;
+    }
+    .ab-section.visible { display: block; }
+
+    /* LEGENDE */
+    .sg-legend {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      background: white;
+      border-radius: var(--sg-radius);
+      padding: 16px 20px;
+      box-shadow: var(--sg-shadow);
+      margin-bottom: 28px;
+    }
+    .sg-legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 700; }
+    .sg-dot { width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0; }
+    .sg-dot.subjekt    { background: var(--sg-subjekt); }
+    .sg-dot.praedikat  { background: var(--sg-praedikat); }
+    .sg-dot.objekt     { background: var(--sg-objekt); }
+    .sg-dot.adverbiale { background: var(--sg-adverbiale); }
+
+    /* KARTEN */
+    .sg-card {
+      background: white;
+      border-radius: var(--sg-radius);
+      padding: 24px;
+      box-shadow: var(--sg-shadow);
+      margin-bottom: 20px;
+    }
+    .sg-card h2 { font-family: 'Fredoka One', cursive; font-size: 1.3rem; color: #555; margin-bottom: 16px; }
+    .task-label { font-size: 0.8rem; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #999; margin-bottom: 8px; }
+
+    /* SATZ-EINFÄRBEN */
+    .sentence-box { margin: 14px 0; line-height: 2.2; }
+    .sentence-box p { font-size: 1rem; color: #444; margin-bottom: 6px; font-weight: 600; }
+    .word {
+      display: inline-block;
+      font-size: 1.15rem;
+      font-weight: 700;
+      padding: 3px 6px;
+      margin: 2px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .word:hover { filter: brightness(0.92); transform: scale(1.04); }
+    .word.subjekt    { background: #fce8f3; border-color: var(--sg-subjekt);    color: var(--sg-subjekt); }
+    .word.praedikat  { background: #e8f8ef; border-color: var(--sg-praedikat);  color: #1a9e52; }
+    .word.objekt     { background: #fef0e0; border-color: var(--sg-objekt);     color: #c0601a; }
+    .word.adverbiale { background: #f3eafe; border-color: var(--sg-adverbiale); color: #6e3fa3; }
+    .word.selected-none { background: #f8f8f8; border-color: #ddd; color: #333; }
+
+    .color-selector { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0 18px; }
+    .color-btn {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.82rem;
+      padding: 7px 16px;
+      border: 3px solid transparent;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.15s;
+      background: white;
+    }
+    .color-btn:hover { transform: scale(1.05); }
+    .color-btn[data-color="subjekt"]            { border-color: var(--sg-subjekt);    color: var(--sg-subjekt); }
+    .color-btn[data-color="praedikat"]          { border-color: var(--sg-praedikat);  color: #1a9e52; }
+    .color-btn[data-color="objekt"]             { border-color: var(--sg-objekt);     color: #c0601a; }
+    .color-btn[data-color="adverbiale"]         { border-color: var(--sg-adverbiale); color: #6e3fa3; }
+    .color-btn[data-color="reset"]              { border-color: #ccc; color: #888; }
+    .color-btn.active-btn[data-color="subjekt"]    { background: var(--sg-subjekt);    color: white; }
+    .color-btn.active-btn[data-color="praedikat"]  { background: var(--sg-praedikat);  color: white; }
+    .color-btn.active-btn[data-color="objekt"]     { background: var(--sg-objekt);     color: white; }
+    .color-btn.active-btn[data-color="adverbiale"] { background: var(--sg-adverbiale); color: white; }
+    .color-btn.active-btn[data-color="reset"]      { background: #ccc; color: #555; }
+
+    /* PRÜFEN-BUTTON */
+    .check-btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 24px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.95rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 12px rgba(102,126,234,0.4);
+    }
+    .check-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(102,126,234,0.5); }
+
+    /* FEEDBACK */
+    .feedback {
+      margin-top: 12px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      display: none;
+    }
+    .feedback.correct   { background: #e8f8ef; color: #1a9e52; border: 2px solid #2ecc71; }
+    .feedback.incorrect { background: #fde8ef; color: #c0395a; border: 2px solid #e74c8b; }
+    .feedback.show      { display: block; }
+
+    /* CHIPS (Bestimmen) */
+    .chip-pool { display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0 20px; }
+    .chip {
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+      user-select: none;
+      border: 2px solid;
+      transition: all 0.15s;
+    }
+    .chip:hover { transform: scale(1.05); }
+    .chip.subjekt    { background: #fce8f3; border-color: var(--sg-subjekt);    color: var(--sg-subjekt); }
+    .chip.praedikat  { background: #e8f8ef; border-color: var(--sg-praedikat);  color: #1a9e52; }
+    .chip.objekt     { background: #fef0e0; border-color: var(--sg-objekt);     color: #c0601a; }
+    .chip.adverbiale { background: #f3eafe; border-color: var(--sg-adverbiale); color: #6e3fa3; }
+
+    /* ZEITFORMEN (Multiple Choice) */
+    .sentence-tense { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: #333; line-height: 1.7; }
+    .tense-options { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+    .tense-btn {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 8px 18px;
+      border: 2px solid #ddd;
+      border-radius: 50px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.15s;
+      color: #555;
+    }
+    .tense-btn:hover           { border-color: #667eea; color: #667eea; }
+    .tense-btn.selected-tense  { background: #667eea; border-color: #667eea; color: white; }
+    .tense-btn.correct-tense   { background: #2ecc71; border-color: #2ecc71; color: white !important; }
+    .tense-btn.wrong-tense     { background: #fce4ec; border-color: #e74c8b; color: #c0395a !important; }
+
+    /* SATZ ORDNEN */
+    .sort-sentence {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 14px 0;
+      min-height: 50px;
+      padding: 10px;
+      border: 2px dashed #ccc;
+      border-radius: 10px;
+      align-items: center;
+    }
+    .sort-word {
+      padding: 8px 14px;
+      background: #f0eafa;
+      border: 2px solid #9b59b6;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: grab;
+      color: #6e3fa3;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .sort-word:hover { background: #e4d9f7; transform: scale(1.03); }
+    .sort-word.dragging { opacity: 0.4; }
+
+    /* ERGEBNIS-SEKTION */
+    .score-panel {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border-radius: var(--sg-radius);
+      padding: 24px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    .score-panel .big-score { font-family: 'Fredoka One', cursive; font-size: 3rem; }
+    .score-panel p { opacity: 0.85; margin-top: 4px; }
+
+    .progress-bar-wrap { background: #eee; border-radius: 50px; height: 10px; margin: 8px 0 20px; overflow: hidden; }
+    .progress-bar { height: 100%; background: linear-gradient(90deg, #667eea, #2ecc71); border-radius: 50px; transition: width 0.5s ease; }
+
+    /* SECTION-HEADER */
+    .section-header { display: flex; align-items: center; gap: 14px; margin-bottom: 24px; }
+    .section-icon { width: 50px; height: 50px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+    .section-header h2 { font-family: 'Fredoka One', cursive; font-size: 1.5rem; color: #333; }
+    .section-header p  { color: #777; font-size: 0.9rem; margin-top: 2px; }
+
+    .reset-all-btn {
+      display: block;
+      margin: 16px auto 0;
+      padding: 12px 32px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      background: white;
+      border: 3px solid #667eea;
+      color: #667eea;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: all 0.2s;
+    }
+    .reset-all-btn:hover { background: #667eea; color: white; }
+
+    /* BESTENLISTE */
+    .lb-wrap { margin-top: 24px; }
+    .lb-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.2rem;
+      color: #333;
+      margin-bottom: 12px;
+    }
+    .lb-input-row { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+    .lb-name-input {
+      flex: 1;
+      min-width: 180px;
+      padding: 10px 16px;
+      border: 2px solid #ddd;
+      border-radius: 50px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+    }
+    .lb-name-input:focus { outline: none; border-color: #667eea; }
+    .lb-save-btn {
+      padding: 10px 24px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+      font-size: 0.95rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .lb-save-btn:disabled { background: #aaa; cursor: default; }
+    .lb-saved-msg { font-size: 0.9rem; color: #1a9e52; font-weight: 700; margin-bottom: 10px; display: none; }
+    .lb-saved-msg.show { display: block; }
+    .lb-list { margin-top: 8px; }
+    .lb-empty { color: #aaa; font-size: 0.9rem; font-style: italic; }
+    .lb-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      margin-bottom: 6px;
+      background: #f8f8f8;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+    .lb-row:nth-child(1) { background: #fff3cd; }
+    .lb-row:nth-child(2) { background: #f0f0f0; }
+    .lb-row:nth-child(3) { background: #f8e6d0; }
+    .lb-rank { width: 26px; color: #999; font-size: 0.85rem; text-align: center; }
+    .lb-name { flex: 1; }
+    .lb-score { color: #667eea; font-weight: 800; }
+
+    @media (max-width: 600px) {
+      .ab-hero h1 { font-size: 1.6rem; }
+      .word { font-size: 1rem; }
+      .ab-nav { gap: 6px; padding: 10px 12px; }
+      .ab-nav button { font-size: 0.78rem; padding: 6px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+  <div class="container navbar-inner">
+    <a href="/index.html" class="navbar-logo">lehrer-herrmann.de</a>
+    <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="navbar-links" id="navbar-links">
+      <li><a href="/index.html#was-ist-neu">Was ist neu?</a></li>
+      <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+      <li class="navbar-gb-trenner" aria-hidden="true"><span class="navbar-gb-label">Geschützter Bereich</span></li>
+      <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+      <li><a href="/blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+      <li><a href="/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+    </ul>
+    <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+  </div>
+</nav>
+
+<main class="ab-main">
+
+  <div class="ab-hero">
+    <h1>🌟 Satzglieder &amp; Zeitformen</h1>
+    <p>Klasse 4 &nbsp;·&nbsp; Interaktives Übungsblatt</p>
+  </div>
+
+  <div class="ab-nav">
+    <button class="active" onclick="showSection('s1',this)">🎨 Einfärben</button>
+    <button onclick="showSection('s2',this)">🏷️ Bestimmen</button>
+    <button onclick="showSection('s3',this)">⏰ Zeitformen</button>
+    <button onclick="showSection('s4',this)">🔀 Satz ordnen</button>
+    <button onclick="showSection('s5',this)">⭐ Ergebnis</button>
+  </div>
+
+  <!-- ====== SEKTION 1: EINFÄRBEN ====== -->
+  <div class="ab-section visible" id="s1">
+    <div class="section-header">
+      <div class="section-icon" style="background:#fce8f3;">🎨</div>
+      <div>
+        <h2>Satzglieder einfärben</h2>
+        <p>Wähle zuerst eine Farbe aus – dann klicke auf die Wörter im Satz!</p>
+      </div>
+    </div>
+
+    <div class="sg-legend">
+      <div class="sg-legend-item"><div class="sg-dot subjekt"></div> Subjekt</div>
+      <div class="sg-legend-item"><div class="sg-dot praedikat"></div> Prädikat</div>
+      <div class="sg-legend-item"><div class="sg-dot objekt"></div> Objekt</div>
+      <div class="sg-legend-item"><div class="sg-dot adverbiale"></div> Adverbiale Bestimmung</div>
+    </div>
+
+    <div class="sg-card">
+      <div class="task-label">Aufgabe 1</div>
+      <h2>Färbe die Satzglieder ein.</h2>
+      <p style="color:#888;font-size:0.88rem;margin-bottom:12px;">Wähle zuerst eine Farbe, dann klicke auf die Satzglieder.</p>
+      <div class="color-selector" id="cs1">
+        <button class="color-btn" data-color="subjekt"    onclick="selectColor('cs1','subjekt')">Subjekt</button>
+        <button class="color-btn" data-color="praedikat"  onclick="selectColor('cs1','praedikat')">Prädikat</button>
+        <button class="color-btn" data-color="objekt"     onclick="selectColor('cs1','objekt')">Objekt</button>
+        <button class="color-btn" data-color="adverbiale" onclick="selectColor('cs1','adverbiale')">Adv. Bestimmung</button>
+        <button class="color-btn" data-color="reset"      onclick="selectColor('cs1','reset')">✕ Löschen</button>
+      </div>
+      <div class="sentence-box" id="box1"></div>
+      <button class="check-btn" onclick="checkColoring(1)">Überprüfen ✓</button>
+      <div class="feedback" id="fb1"></div>
+    </div>
+
+    <div class="sg-card">
+      <div class="task-label">Aufgabe 2</div>
+      <div class="color-selector" id="cs2">
+        <button class="color-btn" data-color="subjekt"    onclick="selectColor('cs2','subjekt')">Subjekt</button>
+        <button class="color-btn" data-color="praedikat"  onclick="selectColor('cs2','praedikat')">Prädikat</button>
+        <button class="color-btn" data-color="objekt"     onclick="selectColor('cs2','objekt')">Objekt</button>
+        <button class="color-btn" data-color="adverbiale" onclick="selectColor('cs2','adverbiale')">Adv. Bestimmung</button>
+        <button class="color-btn" data-color="reset"      onclick="selectColor('cs2','reset')">✕ Löschen</button>
+      </div>
+      <div class="sentence-box" id="box2"></div>
+      <button class="check-btn" onclick="checkColoring(2)">Überprüfen ✓</button>
+      <div class="feedback" id="fb2"></div>
+    </div>
+
+    <div class="sg-card">
+      <div class="task-label">Aufgabe 3</div>
+      <div class="color-selector" id="cs3">
+        <button class="color-btn" data-color="subjekt"    onclick="selectColor('cs3','subjekt')">Subjekt</button>
+        <button class="color-btn" data-color="praedikat"  onclick="selectColor('cs3','praedikat')">Prädikat</button>
+        <button class="color-btn" data-color="objekt"     onclick="selectColor('cs3','objekt')">Objekt</button>
+        <button class="color-btn" data-color="adverbiale" onclick="selectColor('cs3','adverbiale')">Adv. Bestimmung</button>
+        <button class="color-btn" data-color="reset"      onclick="selectColor('cs3','reset')">✕ Löschen</button>
+      </div>
+      <div class="sentence-box" id="box3"></div>
+      <button class="check-btn" onclick="checkColoring(3)">Überprüfen ✓</button>
+      <div class="feedback" id="fb3"></div>
+    </div>
+  </div>
+
+  <!-- ====== SEKTION 2: BESTIMMEN ====== -->
+  <div class="ab-section" id="s2">
+    <div class="section-header">
+      <div class="section-icon" style="background:#e8f8ef;">🏷️</div>
+      <div>
+        <h2>Satzglieder bestimmen</h2>
+        <p>Welches Satzglied ist das markierte Wort? Klicke auf die richtige Karte!</p>
+      </div>
+    </div>
+    <div id="labeling-tasks"></div>
+    <button class="check-btn" onclick="checkLabeling()">Alle überprüfen ✓</button>
+    <div class="feedback" id="fb-label"></div>
+  </div>
+
+  <!-- ====== SEKTION 3: ZEITFORMEN ====== -->
+  <div class="ab-section" id="s3">
+    <div class="section-header">
+      <div class="section-icon" style="background:#fef0e0;">⏰</div>
+      <div>
+        <h2>Zeitformen bestimmen</h2>
+        <p>Klicke auf die richtige Zeitform für jeden Satz.</p>
+      </div>
+    </div>
+    <div id="tense-tasks"></div>
+    <button class="check-btn" onclick="checkTenses()">Alle überprüfen ✓</button>
+    <div class="feedback" id="fb-tense"></div>
+  </div>
+
+  <!-- ====== SEKTION 4: SATZ ORDNEN ====== -->
+  <div class="ab-section" id="s4">
+    <div class="section-header">
+      <div class="section-icon" style="background:#f3eafe;">🔀</div>
+      <div>
+        <h2>Satz ordnen</h2>
+        <p>Ziehe die Wörter in die richtige Reihenfolge! (Auf Mobilgerät: antippen zum Auswählen, nochmal tippen zum Tauschen)</p>
+      </div>
+    </div>
+    <div id="sort-tasks"></div>
+    <button class="check-btn" onclick="checkSort()">Überprüfen ✓</button>
+    <div class="feedback" id="fb-sort"></div>
+  </div>
+
+  <!-- ====== SEKTION 5: ERGEBNIS ====== -->
+  <div class="ab-section" id="s5">
+    <div class="section-header">
+      <div class="section-icon" style="background:#fff3cd;">⭐</div>
+      <div>
+        <h2>Dein Ergebnis</h2>
+        <p>Wie gut hast du abgeschnitten?</p>
+      </div>
+    </div>
+
+    <div class="score-panel">
+      <div class="big-score" id="final-score">– / –</div>
+      <p id="final-msg">Bearbeite alle Aufgaben, dann siehst du dein Ergebnis!</p>
+    </div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-bar" id="score-bar" style="width:0%"></div>
+    </div>
+
+    <div class="sg-card" id="score-details" style="text-align:center;color:#777;font-size:0.95rem;">
+      <p>Klicke auf „Alle überprüfen" in den einzelnen Abschnitten,<br>dann erscheint hier deine Auswertung.</p>
+    </div>
+
+    <!-- BESTENLISTE -->
+    <div class="sg-card lb-wrap" id="lb-section" style="display:none;">
+      <div class="lb-title">🏆 Bestenliste – Top 10</div>
+      <p style="color:#777;font-size:0.88rem;margin-bottom:14px;">Trage deinen Namen ein, um dich zu verewigen!</p>
+      <div class="lb-input-row">
+        <input class="lb-name-input" id="lb-name" type="text" maxlength="30" placeholder="Dein Name …" aria-label="Name für Bestenliste">
+        <button class="lb-save-btn" id="lb-save-btn" onclick="saveLbEntry()">Eintragen ✓</button>
+      </div>
+      <div class="lb-saved-msg" id="lb-saved-msg">✓ Eingetragen! Viel Erfolg beim nächsten Mal.</div>
+      <div class="lb-list" id="lb-list"><p class="lb-empty">Lädt…</p></div>
+    </div>
+
+    <button class="reset-all-btn" onclick="resetAll()">🔄 Von vorne beginnen</button>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <div class="site-footer-inner">
+    <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+    <nav class="site-footer-links" aria-label="Rechtliche Links">
+      <a href="/impressum.html">Impressum</a>
+      <a href="/datenschutz.html">Datenschutz</a>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  // ─── DATEN ───────────────────────────────────────────────────────────────
+
+  const coloringSentences = [
+    {
+      label: 'Satz 1',
+      tokens: [
+        { t: 'Die kleine Katze', c: 'subjekt' },
+        { t: 'spielt',           c: 'praedikat' },
+        { t: 'mit dem roten Ball', c: 'objekt' },
+        { t: 'im Garten',        c: 'adverbiale' },
+      ]
+    },
+    {
+      label: 'Satz 2',
+      tokens: [
+        { t: 'Mein Bruder',         c: 'subjekt' },
+        { t: 'liest',               c: 'praedikat' },
+        { t: 'ein spannendes Buch', c: 'objekt' },
+        { t: 'jeden Abend',         c: 'adverbiale' },
+      ]
+    },
+    {
+      label: 'Satz 3',
+      tokens: [
+        { t: 'Die Lehrerin', c: 'subjekt' },
+        { t: 'erklärt',      c: 'praedikat' },
+        { t: 'die Aufgabe',  c: 'objekt' },
+        { t: 'an der Tafel', c: 'adverbiale' },
+      ]
+    }
+  ];
+
+  const labelTasks = [
+    {
+      parts: ['Die Kinder', '[spielen]', 'Fußball', 'auf dem Schulhof'],
+      blank: 1,
+      answer: 'praedikat',
+      hint: 'spielen → Was tun die Kinder?',
+    },
+    {
+      parts: ['[Meine Mutter]', 'backt', 'einen Kuchen', 'für uns'],
+      blank: 0,
+      answer: 'subjekt',
+      hint: 'Meine Mutter → Wer backt?',
+    },
+    {
+      parts: ['Das Pferd', 'galoppiert', '[über die Wiese]', 'schnell'],
+      blank: 2,
+      answer: 'adverbiale',
+      hint: 'über die Wiese → Wo?',
+    },
+    {
+      parts: ['Der Junge', 'wirft', '[den Ball]', 'weit'],
+      blank: 3,
+      answer: 'objekt',
+      hint: 'den Ball → Wen oder Was?',
+    },
+  ];
+
+  const tenseData = [
+    { s: 'Die Sonne scheint hell.',                                              ans: 'Präsens',        opts: ['Präsens','Präteritum','Perfekt','Futur I'] },
+    { s: 'Gestern regnete es den ganzen Tag.',                                   ans: 'Präteritum',     opts: ['Präsens','Präteritum','Futur I','Plusquamperfekt'] },
+    { s: 'Wir haben das Spiel gewonnen.',                                        ans: 'Perfekt',        opts: ['Präsens','Perfekt','Futur I','Präteritum'] },
+    { s: 'Morgen werden wir ins Schwimmbad gehen.',                              ans: 'Futur I',        opts: ['Präteritum','Perfekt','Futur I','Futur II'] },
+    { s: 'Nachdem er gegessen hatte, spielte er draußen.',                       ans: 'Plusquamperfekt',opts: ['Präteritum','Perfekt','Plusquamperfekt','Futur II'] },
+    { s: 'Wenn du morgen früh aufgestanden sein wirst, können wir starten.',     ans: 'Futur II',       opts: ['Futur I','Futur II','Perfekt','Präsens'] },
+    { s: 'Die Schüler lernten fleißig für die Klassenarbeit.',                   ans: 'Präteritum',     opts: ['Präsens','Präteritum','Perfekt','Plusquamperfekt'] },
+    { s: 'Ich habe meine Hausaufgaben vergessen.',                               ans: 'Perfekt',        opts: ['Präsens','Futur I','Perfekt','Präteritum'] },
+  ];
+
+  const sortData = [
+    { words: ['am','Morgen','Das','singt','laut','Vöglein'], correct: ['Das','Vöglein','singt','laut','am','Morgen'] },
+    { words: ['ihren','Hund','Lisa','täglich','füttert'],    correct: ['Lisa','füttert','ihren','Hund','täglich'] },
+  ];
+
+  // ─── ZUSTAND ─────────────────────────────────────────────────────────────
+
+  const activeColor = { cs1: 'subjekt', cs2: 'subjekt', cs3: 'subjekt' };
+  const scores      = { color: null, label: null, tense: null, sort: null };
+  const maxScores   = {
+    color: coloringSentences.reduce((a, s) => a + s.tokens.length, 0), // 12
+    label: labelTasks.length,  // 4
+    tense: tenseData.length,   // 8
+    sort:  sortData.length,    // 2
+  };
+  const QUIZ_SLUG   = 'deutsch-satzglieder-kl4';
+  let   xpReported  = false;
+  let   lbSaved     = false;
+
+  // ─── NAVIGATION ──────────────────────────────────────────────────────────
+
+  window.showSection = function (id, btn) {
+    document.querySelectorAll('.ab-section').forEach(s => s.classList.remove('visible'));
+    document.querySelectorAll('.ab-nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('visible');
+    btn.classList.add('active');
+    if (id === 's5') updateScore();
+  };
+
+  // ─── SEKTION 1: EINFÄRBEN ────────────────────────────────────────────────
+
+  window.selectColor = function (csId, color) {
+    activeColor[csId] = color;
+    document.querySelectorAll('#' + csId + ' .color-btn').forEach(b => {
+      b.classList.toggle('active-btn', b.dataset.color === color);
+    });
+  };
+
+  function buildColorBoxes() {
+    coloringSentences.forEach((sent, idx) => {
+      const box = document.getElementById('box' + (idx + 1));
+      const csId = 'cs' + (idx + 1);
+      let html = '<p style="color:#888;font-size:0.88rem;margin-bottom:6px;">' + sent.label + '</p>';
+      sent.tokens.forEach((tok, ti) => {
+        html += '<span class="word selected-none" data-sent="' + (idx+1) + '" data-tok="' + ti + '" onclick="colorWord(this,\'' + csId + '\')">' + tok.t + '</span> ';
+      });
+      box.innerHTML = html;
+    });
+  }
+
+  window.colorWord = function (el, csId) {
+    const color = activeColor[csId] || 'reset';
+    el.className = 'word';
+    el.classList.add(color !== 'reset' ? color : 'selected-none');
+  };
+
+  window.checkColoring = function (idx) {
+    const sent  = coloringSentences[idx - 1];
+    const words = document.getElementById('box' + idx).querySelectorAll('.word');
+    let correct = 0;
+    words.forEach((w, i) => { if (w.classList.contains(sent.tokens[i].c)) correct++; });
+    const total = sent.tokens.length;
+    const fb    = document.getElementById('fb' + idx);
+    fb.className = 'feedback show ' + (correct === total ? 'correct' : 'incorrect');
+    fb.textContent = correct === total
+      ? '✓ Super! Alle ' + total + ' Satzglieder richtig eingefärbt!'
+      : correct + ' von ' + total + ' Satzgliedern richtig. Schau noch mal genau hin!';
+
+    let colorScore = 0;
+    [1, 2, 3].forEach(i => {
+      const s = coloringSentences[i - 1];
+      document.getElementById('box' + i).querySelectorAll('.word').forEach((w, j) => {
+        if (w.classList.contains(s.tokens[j].c)) colorScore++;
+      });
+    });
+    scores.color = colorScore;
+  };
+
+  // ─── SEKTION 2: BESTIMMEN ────────────────────────────────────────────────
+
+  const labelSelections = {};
+
+  function buildLabeling() {
+    const container = document.getElementById('labeling-tasks');
+    const names = { subjekt: 'Subjekt', praedikat: 'Prädikat', objekt: 'Objekt', adverbiale: 'Adverbiale Bestimmung' };
+    labelTasks.forEach((task, ti) => {
+      let html = '<div class="sg-card" id="ltask' + ti + '">'
+        + '<div class="task-label">Aufgabe ' + (ti + 1) + '</div>'
+        + '<p style="color:#555;font-size:0.88rem;margin-bottom:10px;">Welches Satzglied ist das markierte Wort?</p>'
+        + '<div style="font-size:1.1rem;font-weight:700;line-height:2;margin-bottom:14px;">';
+      task.parts.forEach((p, pi) => {
+        if (pi === task.blank) {
+          const label = p.replace('[', '').replace(']', '');
+          html += '<span style="background:#f0f0f0;border:2px solid #ccc;border-radius:8px;padding:4px 10px;margin:2px;">' + label + '</span> ';
+        } else {
+          html += '<span style="margin:0 4px;">' + p + '</span> ';
+        }
+      });
+      html += '</div>'
+        + '<p style="font-size:0.82rem;color:#aaa;margin-bottom:8px;">💡 Hinweis: ' + task.hint + '</p>'
+        + '<div class="chip-pool" id="chips' + ti + '">'
+        + '<div class="chip subjekt"    data-val="subjekt"    onclick="selectChip(' + ti + ',\'subjekt\')">'    + names.subjekt    + '</div>'
+        + '<div class="chip praedikat"  data-val="praedikat"  onclick="selectChip(' + ti + ',\'praedikat\')">'  + names.praedikat  + '</div>'
+        + '<div class="chip objekt"     data-val="objekt"     onclick="selectChip(' + ti + ',\'objekt\')">'     + names.objekt     + '</div>'
+        + '<div class="chip adverbiale" data-val="adverbiale" onclick="selectChip(' + ti + ',\'adverbiale\')">' + names.adverbiale + '</div>'
+        + '</div>'
+        + '<div id="lsel' + ti + '" style="min-height:24px;font-size:0.9rem;color:#777;font-style:italic;">Noch keine Auswahl</div>'
+        + '</div>';
+      container.innerHTML += html;
+    });
+  }
+
+  window.selectChip = function (ti, val) {
+    const names = { subjekt: 'Subjekt', praedikat: 'Prädikat', objekt: 'Objekt', adverbiale: 'Adverbiale Bestimmung' };
+    labelSelections[ti] = val;
+    document.getElementById('chips' + ti).querySelectorAll('.chip').forEach(c => {
+      c.style.opacity   = c.dataset.val === val ? '1' : '0.3';
+      c.style.transform = c.dataset.val === val ? 'scale(1.08)' : 'scale(1)';
+    });
+    document.getElementById('lsel' + ti).textContent = 'Deine Wahl: ' + names[val];
+  };
+
+  window.checkLabeling = function () {
+    let correct = 0;
+    labelTasks.forEach((task, ti) => {
+      const sel = labelSelections[ti];
+      document.getElementById('chips' + ti).querySelectorAll('.chip').forEach(c => {
+        c.style.boxShadow = '';
+        if (c.dataset.val === task.answer)                    c.style.boxShadow = '0 0 0 3px #2ecc71';
+        else if (c.dataset.val === sel && sel !== task.answer) c.style.boxShadow = '0 0 0 3px #e74c8b';
+      });
+      if (sel === task.answer) correct++;
+    });
+    scores.label = correct;
+    const fb = document.getElementById('fb-label');
+    fb.className = 'feedback show ' + (correct === labelTasks.length ? 'correct' : 'incorrect');
+    fb.textContent = correct === labelTasks.length
+      ? '✓ Klasse! Alle ' + correct + ' Satzglieder richtig bestimmt!'
+      : correct + ' von ' + labelTasks.length + ' richtig. Die grün umrandeten sind korrekt.';
+  };
+
+  // ─── SEKTION 3: ZEITFORMEN ───────────────────────────────────────────────
+
+  const tenseSelections = {};
+
+  function buildTenses() {
+    const container = document.getElementById('tense-tasks');
+    const tc = { 'Präsens':'#2ecc71','Präteritum':'#e67e22','Perfekt':'#3498db','Plusquamperfekt':'#9b59b6','Futur I':'#e74c8b','Futur II':'#c0392b' };
+    tenseData.forEach((task, ti) => {
+      let html = '<div class="sg-card" id="ttask' + ti + '">'
+        + '<div class="task-label">Satz ' + (ti + 1) + '</div>'
+        + '<div class="sentence-tense">„' + task.s + '"</div>'
+        + '<div class="tense-options">';
+      task.opts.forEach(opt => {
+        html += '<button class="tense-btn" data-task="' + ti + '" data-val="' + opt + '" onclick="selectTense(' + ti + ',\'' + opt + '\')">' + opt + '</button>';
+      });
+      html += '</div></div>';
+      container.innerHTML += html;
+    });
+  }
+
+  window.selectTense = function (ti, val) {
+    tenseSelections[ti] = val;
+    document.querySelectorAll('[data-task="' + ti + '"]').forEach(b => {
+      b.classList.toggle('selected-tense', b.dataset.val === val);
+    });
+  };
+
+  window.checkTenses = function () {
+    let correct = 0;
+    tenseData.forEach((task, ti) => {
+      const sel = tenseSelections[ti];
+      document.querySelectorAll('[data-task="' + ti + '"]').forEach(b => {
+        b.classList.remove('selected-tense');
+        if (b.dataset.val === task.ans)                      b.classList.add('correct-tense');
+        else if (b.dataset.val === sel && sel !== task.ans)  b.classList.add('wrong-tense');
+      });
+      if (sel === task.ans) correct++;
+    });
+    scores.tense = correct;
+    const fb = document.getElementById('fb-tense');
+    fb.className = 'feedback show ' + (correct === tenseData.length ? 'correct' : 'incorrect');
+    fb.textContent = correct === tenseData.length
+      ? '✓ Perfekt! Alle ' + correct + ' Zeitformen erkannt!'
+      : correct + ' von ' + tenseData.length + ' richtig. Die grünen Buttons zeigen die richtigen Antworten.';
+  };
+
+  // ─── SEKTION 4: SATZ ORDNEN ──────────────────────────────────────────────
+
+  let sortState = sortData.map(d => [...d.words].sort(() => Math.random() - 0.5));
+  let draggedTask = null;
+  let draggedIdx  = null;
+  let firstClick  = null;
+
+  function buildSort() {
+    const container = document.getElementById('sort-tasks');
+    sortData.forEach((task, ti) => {
+      const shuffled = [...task.words].sort(() => Math.random() - 0.5);
+      sortState[ti] = shuffled;
+      let html = '<div class="sg-card">'
+        + '<div class="task-label">Satz ' + (ti + 1) + '</div>'
+        + '<p style="color:#666;font-size:0.9rem;margin-bottom:10px;">Bringe die Wörter in die richtige Reihenfolge:</p>'
+        + '<div class="sort-sentence" id="sortbox' + ti + '" ondragover="allowDrop(event)" ondrop="dropWord(event,' + ti + ')">';
+      shuffled.forEach((w, wi) => {
+        html += '<span class="sort-word" draggable="true" data-task="' + ti + '" data-idx="' + wi + '"'
+          + ' ondragstart="dragStart(event)" onclick="moveWordClick(' + ti + ',' + wi + ')">' + w + '</span>';
+      });
+      html += '</div>'
+        + '<div style="margin-top:8px;">'
+        + '<button style="font-size:0.8rem;padding:6px 14px;border:2px solid #ccc;border-radius:50px;background:white;cursor:pointer;font-family:Nunito,sans-serif;font-weight:700;color:#888;" onclick="shuffleSortTask(' + ti + ')">🔀 Neu mischen</button>'
+        + '</div></div>';
+      container.innerHTML += html;
+    });
+  }
+
+  window.dragStart = function (e) {
+    draggedTask = parseInt(e.target.dataset.task);
+    draggedIdx  = parseInt(e.target.dataset.idx);
+    e.target.classList.add('dragging');
+  };
+  window.allowDrop = function (e) { e.preventDefault(); };
+  window.dropWord = function (e, ti) {
+    e.preventDefault();
+    if (draggedTask !== ti) return;
+    const target = e.target.closest('.sort-word');
+    if (!target) return;
+    const targetIdx = parseInt(target.dataset.idx);
+    const arr = sortState[ti];
+    [arr[draggedIdx], arr[targetIdx]] = [arr[targetIdx], arr[draggedIdx]];
+    rebuildSort(ti);
+  };
+
+  window.moveWordClick = function (ti, idx) {
+    if (firstClick === null) {
+      firstClick = { ti, idx };
+      const box = document.getElementById('sortbox' + ti);
+      box.querySelectorAll('.sort-word')[idx].style.outline = '3px solid #667eea';
+    } else if (firstClick.ti === ti) {
+      const arr = sortState[ti];
+      [arr[firstClick.idx], arr[idx]] = [arr[idx], arr[firstClick.idx]];
+      firstClick = null;
+      rebuildSort(ti);
+    } else {
+      firstClick = null;
+    }
+  };
+
+  function rebuildSort(ti) {
+    const box = document.getElementById('sortbox' + ti);
+    box.innerHTML = '';
+    sortState[ti].forEach((w, wi) => {
+      const span = document.createElement('span');
+      span.className = 'sort-word';
+      span.draggable = true;
+      span.dataset.task = ti;
+      span.dataset.idx  = wi;
+      span.textContent  = w;
+      span.addEventListener('dragstart', window.dragStart);
+      span.addEventListener('click', () => window.moveWordClick(ti, wi));
+      box.appendChild(span);
+    });
+  }
+
+  window.shuffleSortTask = function (ti) {
+    sortState[ti] = [...sortState[ti]].sort(() => Math.random() - 0.5);
+    rebuildSort(ti);
+  };
+
+  window.checkSort = function () {
+    let correct = 0;
+    sortData.forEach((task, ti) => {
+      const match = JSON.stringify(sortState[ti]) === JSON.stringify(task.correct);
+      if (match) correct++;
+      const box = document.getElementById('sortbox' + ti);
+      box.style.border     = match ? '2px solid #2ecc71' : '2px solid #e74c8b';
+      box.style.background = match ? '#e8f8ef' : '#fde8ef';
+    });
+    scores.sort = correct;
+    const fb = document.getElementById('fb-sort');
+    fb.className = 'feedback show ' + (correct === sortData.length ? 'correct' : 'incorrect');
+    fb.textContent = correct === sortData.length
+      ? '✓ Wunderbar! Alle Sätze richtig geordnet!'
+      : correct + ' von ' + sortData.length + ' Sätzen richtig. Rote Felder nochmal prüfen!';
+  };
+
+  // ─── SEKTION 5: ERGEBNIS ─────────────────────────────────────────────────
+
+  function updateScore() {
+    const labels = { color: '🎨 Einfärben', label: '🏷️ Bestimmen', tense: '⏰ Zeitformen', sort: '🔀 Satz ordnen' };
+    let details  = '';
+    let doneTotal = 0;
+    let doneMax   = 0;
+
+    Object.keys(maxScores).forEach(k => {
+      const sc = scores[k];
+      const mx = maxScores[k];
+      if (sc !== null) {
+        doneTotal += sc;
+        doneMax   += mx;
+        details += '<p style="margin:6px 0;"><strong>' + labels[k] + ':</strong> ' + sc + ' / ' + mx + '</p>';
+      } else {
+        details += '<p style="margin:6px 0;color:#bbb;">' + labels[k] + ': noch nicht bearbeitet</p>';
+      }
+    });
+
+    document.getElementById('final-score').textContent = doneMax > 0 ? doneTotal + ' / ' + doneMax : '– / –';
+    document.getElementById('score-bar').style.width   = doneMax > 0 ? Math.round(doneTotal / doneMax * 100) + '%' : '0%';
+
+    const pct   = doneMax > 0 ? Math.round(doneTotal / doneMax * 100) : 0;
+    const emoji = pct >= 90 ? '🌟 Fantastisch!' : pct >= 70 ? '👍 Gut gemacht!' : pct >= 50 ? '💪 Weiter üben!' : '🔁 Nochmal versuchen!';
+    document.getElementById('final-msg').textContent = doneMax > 0
+      ? pct + '% richtig – ' + emoji
+      : 'Bearbeite alle Aufgaben!';
+    document.getElementById('score-details').innerHTML = details;
+
+    const allDone = Object.values(scores).every(v => v !== null);
+    if (allDone) {
+      // XP melden (einmalig)
+      if (!xpReported) {
+        xpReported = true;
+        if (typeof window.kolosseumReport === 'function') {
+          window.kolosseumReport(doneTotal, doneMax, QUIZ_SLUG);
+        }
+      }
+      // Bestenliste anzeigen
+      const lbSection = document.getElementById('lb-section');
+      if (lbSection) {
+        lbSection.style.display = 'block';
+        loadLeaderboard();
+      }
+    }
+  }
+
+  // ─── BESTENLISTE ─────────────────────────────────────────────────────────
+
+  function loadLeaderboard() {
+    if (typeof window.leaderboardFetch !== 'function') {
+      setTimeout(loadLeaderboard, 800);
+      return;
+    }
+    window.leaderboardFetch(QUIZ_SLUG, 10).then(data => {
+      renderLb(data);
+    }).catch(() => {
+      document.getElementById('lb-list').innerHTML = '<p class="lb-empty">Bestenliste konnte nicht geladen werden.</p>';
+    });
+  }
+
+  function renderLb(data) {
+    const list = document.getElementById('lb-list');
+    if (!data || data.length === 0) {
+      list.innerHTML = '<p class="lb-empty">Noch keine Einträge – sei der Erste!</p>';
+      return;
+    }
+    if (typeof window.leaderboardHTML === 'function') {
+      list.innerHTML = window.leaderboardHTML(data);
+      return;
+    }
+    list.innerHTML = data.map((row, i) => {
+      const medals = ['🥇', '🥈', '🥉'];
+      const rank   = medals[i] || (i + 1) + '.';
+      const pct    = row.total > 0 ? Math.round(row.score / row.total * 100) : 0;
+      return '<div class="lb-row">'
+        + '<span class="lb-rank">' + rank + '</span>'
+        + '<span class="lb-name">' + (row.name || '?') + '</span>'
+        + '<span class="lb-score">' + row.score + '/' + row.total + ' (' + pct + '%)</span>'
+        + '</div>';
+    }).join('');
+  }
+
+  window.saveLbEntry = function () {
+    if (lbSaved) return;
+    const name = (document.getElementById('lb-name').value || '').trim();
+    if (!name) { document.getElementById('lb-name').focus(); return; }
+
+    const doneTotal = Object.entries(scores).filter(([,v]) => v !== null).reduce((a, [,v]) => a + v, 0);
+    const doneMax   = Object.entries(scores).filter(([,v]) => v !== null).reduce((a, [k]) => a + maxScores[k], 0);
+
+    if (typeof window.leaderboardSave === 'function') {
+      window.leaderboardSave(QUIZ_SLUG, name, doneTotal, doneMax);
+    }
+    lbSaved = true;
+    document.getElementById('lb-save-btn').disabled = true;
+    const msg = document.getElementById('lb-saved-msg');
+    msg.className = 'lb-saved-msg show';
+    setTimeout(loadLeaderboard, 1000);
+  };
+
+  // ─── RESET ───────────────────────────────────────────────────────────────
+
+  window.resetAll = function () { location.reload(); };
+
+  // ─── INIT ────────────────────────────────────────────────────────────────
+
+  document.addEventListener('DOMContentLoaded', function () {
+    buildColorBoxes();
+    buildLabeling();
+    buildTenses();
+    buildSort();
+    selectColor('cs1', 'subjekt');
+    selectColor('cs2', 'subjekt');
+    selectColor('cs3', 'subjekt');
+  });
+
+})();
+</script>
+
+<script src="../js/main.js"></script>
+<script src="../js/supabase-leaderboard.js"></script>
+<script src="../js/kolosseum-prompt.js"></script>
+<script src="../js/kolosseum-login-widget.js"></script>
+</body>
+</html>
