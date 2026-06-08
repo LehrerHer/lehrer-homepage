@@ -219,6 +219,7 @@
 
     /* ZEITFORMEN (Multiple Choice) */
     .sentence-tense { font-size: 1.1rem; font-weight: 700; margin-bottom: 12px; color: #333; line-height: 1.7; }
+    .sg-mark { text-decoration-color: #667eea; text-decoration-thickness: 2px; }
     .tense-options { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
     .tense-btn {
       font-family: 'Nunito', sans-serif;
@@ -482,7 +483,7 @@
       <div class="section-icon" style="background:#fef0e0;">⏰</div>
       <div>
         <h2>Zeitformen bestimmen</h2>
-        <p>Klicke auf die richtige Zeitform für jeden Satz.</p>
+        <p>Klicke auf die richtige Zeitform für jeden Satz. Bei zweigliedrigen Sätzen: Bestimme die Zeitform des <u>unterstrichenen</u> Teils.</p>
       </div>
     </div>
     <div id="tense-tasks"></div>
@@ -611,7 +612,7 @@
     },
     {
       parts: ['Der Junge', 'wirft', '[den Ball]', 'weit'],
-      blank: 3,
+      blank: 2,
       answer: 'objekt',
       hint: 'den Ball → Wen oder Was?',
     },
@@ -622,15 +623,27 @@
     { s: 'Gestern regnete es den ganzen Tag.',                                   ans: 'Präteritum',     opts: ['Präsens','Präteritum','Futur I','Plusquamperfekt'] },
     { s: 'Wir haben das Spiel gewonnen.',                                        ans: 'Perfekt',        opts: ['Präsens','Perfekt','Futur I','Präteritum'] },
     { s: 'Morgen werden wir ins Schwimmbad gehen.',                              ans: 'Futur I',        opts: ['Präteritum','Perfekt','Futur I','Futur II'] },
-    { s: 'Nachdem er gegessen hatte, spielte er draußen.',                       ans: 'Plusquamperfekt',opts: ['Präteritum','Perfekt','Plusquamperfekt','Futur II'] },
-    { s: 'Wenn du morgen früh aufgestanden sein wirst, können wir starten.',     ans: 'Futur II',       opts: ['Futur I','Futur II','Perfekt','Präsens'] },
+    { s: '<u class="sg-mark">Nachdem er gegessen hatte</u>, spielte er draußen.',                     ans: 'Plusquamperfekt',opts: ['Präteritum','Perfekt','Plusquamperfekt','Futur II'] },
+    { s: '<u class="sg-mark">Wenn du morgen früh aufgestanden sein wirst</u>, können wir starten.', ans: 'Futur II',       opts: ['Futur I','Futur II','Perfekt','Präsens'] },
     { s: 'Die Schüler lernten fleißig für die Klassenarbeit.',                   ans: 'Präteritum',     opts: ['Präsens','Präteritum','Perfekt','Plusquamperfekt'] },
     { s: 'Ich habe meine Hausaufgaben vergessen.',                               ans: 'Perfekt',        opts: ['Präsens','Futur I','Perfekt','Präteritum'] },
   ];
 
   const sortData = [
-    { words: ['am','Morgen','Das','singt','laut','Vöglein'], correct: ['Das','Vöglein','singt','laut','am','Morgen'] },
-    { words: ['ihren','Hund','Lisa','täglich','füttert'],    correct: ['Lisa','füttert','ihren','Hund','täglich'] },
+    {
+      words: ['am','Morgen','Das','singt','laut','Vöglein'],
+      correct: [
+        ['Das','Vöglein','singt','laut','am','Morgen'],
+        ['Das','Vöglein','singt','am','Morgen','laut'],
+      ]
+    },
+    {
+      words: ['ihren','Hund','Lisa','täglich','füttert'],
+      correct: [
+        ['Lisa','füttert','ihren','Hund','täglich'],
+        ['Lisa','füttert','täglich','ihren','Hund'],
+      ]
+    },
   ];
 
   // ─── ZUSTAND ─────────────────────────────────────────────────────────────
@@ -780,7 +793,7 @@
       let html = '<div class="sg-card" id="ttask' + ti + '">'
         + '<div class="task-label">Satz ' + (ti + 1) + '</div>'
         + '<div class="sentence-tense">„' + task.s + '"</div>'
-        + '<div class="tense-options">';
+        + '<div class="tense-options" aria-label="Zeitform-Auswahl für Satz ' + (ti + 1) + '">';
       task.opts.forEach(opt => {
         html += '<button class="tense-btn" data-task="' + ti + '" data-val="' + opt + '" onclick="selectTense(' + ti + ',\'' + opt + '\')">' + opt + '</button>';
       });
@@ -899,7 +912,8 @@
   window.checkSort = function () {
     let correct = 0;
     sortData.forEach((task, ti) => {
-      const match = JSON.stringify(sortState[ti]) === JSON.stringify(task.correct);
+      const current = JSON.stringify(sortState[ti]);
+      const match = task.correct.some(valid => JSON.stringify(valid) === current);
       if (match) correct++;
       const box = document.getElementById('sortbox' + ti);
       box.style.border     = match ? '2px solid #2ecc71' : '2px solid #e74c8b';
