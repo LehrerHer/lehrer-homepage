@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WM 2026 – Bilderquiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #FFD700;
+    --gold-dark: #c9a800;
+    --dark: #0a0a12;
+    --card: #13131f;
+    --correct: #22c55e;
+    --wrong: #ef4444;
+    --text: #f0f0f0;
+    --muted: #888;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--dark);
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 12px 40px;
+  }
+  header {
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+    padding: 32px 0 8px;
+  }
+  .trophy { font-size: 2.4rem; }
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.2rem, 8vw, 3.6rem);
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(255,215,0,.35);
+    line-height: 1;
+    margin: 4px 0 2px;
+  }
+  .subtitle {
+    font-size: .95rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  #scoreboard {
+    display: flex;
+    gap: 24px;
+    margin: 18px auto 0;
+    justify-content: center;
+  }
+  .score-chip {
+    background: var(--card);
+    border: 1px solid #2a2a3a;
+    border-radius: 12px;
+    padding: 8px 20px;
+    text-align: center;
+    min-width: 90px;
+  }
+  .score-chip .label { font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .score-chip .value { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; color: var(--gold); }
+  #progress-wrap {
+    width: 100%;
+    max-width: 700px;
+    margin: 16px auto 0;
+    background: #1e1e2e;
+    border-radius: 4px;
+    height: 6px;
+    overflow: hidden;
+  }
+  #progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+    border-radius: 4px;
+    transition: width .5s ease;
+    width: 0%;
+  }
+  #quiz-area {
+    width: 100%;
+    max-width: 700px;
+    margin-top: 24px;
+  }
+  .question-label {
+    font-size: .8rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+  }
+  .question-text {
+    font-size: clamp(1rem, 3vw, 1.2rem);
+    font-weight: 700;
+    margin-bottom: 16px;
+    line-height: 1.4;
+  }
+  .img-wrap {
+    width: 100%;
+    height: 240px;
+    border-radius: 14px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    position: relative;
+    border: 2px solid #2a2a3a;
+    background: #111;
+  }
+  .img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .4s ease;
+  }
+  .img-wrap:hover img { transform: scale(1.03); }
+  .img-badge {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: rgba(0,0,0,.7);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: .7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .options-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .opt-btn {
+    background: var(--card);
+    border: 2px solid #2a2a3a;
+    color: var(--text);
+    font-family: 'Barlow', sans-serif;
+    font-size: .95rem;
+    font-weight: 600;
+    padding: 14px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color .2s, background .2s, transform .15s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .opt-btn .opt-letter {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: #2a2a3a;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    transition: background .2s;
+  }
+  .opt-btn:hover:not(:disabled) {
+    border-color: var(--gold);
+    background: #1e1e30;
+    transform: translateY(-2px);
+  }
+  .opt-btn:hover:not(:disabled) .opt-letter { background: var(--gold); color: #000; }
+  .opt-btn.correct { border-color: var(--correct); background: rgba(34,197,94,.12); }
+  .opt-btn.correct .opt-letter { background: var(--correct); color: #000; }
+  .opt-btn.wrong { border-color: var(--wrong); background: rgba(239,68,68,.12); }
+  .opt-btn.wrong .opt-letter { background: var(--wrong); color: #fff; }
+  .opt-btn:disabled { cursor: default; }
+  #feedback {
+    margin-top: 16px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: .95rem;
+    display: none;
+    line-height: 1.5;
+  }
+  #feedback.show { display: block; }
+  #feedback.correct-fb { background: rgba(34,197,94,.15); border: 1px solid var(--correct); color: var(--correct); }
+  #feedback.wrong-fb   { background: rgba(239,68,68,.15);  border: 1px solid var(--wrong);   color: #f87171; }
+  #next-btn {
+    display: none;
+    margin-top: 20px;
+    width: 100%;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    color: #000;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    cursor: pointer;
+    transition: opacity .2s, transform .15s;
+  }
+  #next-btn:hover { opacity: .9; transform: translateY(-1px); }
+  #next-btn.show { display: block; }
+  #result-screen {
+    display: none;
+    width: 100%;
+    max-width: 700px;
+    margin-top: 24px;
+    text-align: center;
+  }
+  #result-screen.show { display: block; }
+  .result-trophy { font-size: 5rem; margin-bottom: 12px; }
+  .result-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 7vw, 3rem);
+    color: var(--gold);
+    letter-spacing: 3px;
+  }
+  .result-score {
+    font-size: 1.1rem;
+    color: var(--muted);
+    margin: 8px 0 24px;
+  }
+  .result-score span { color: var(--text); font-weight: 700; font-size: 1.4rem; }
+  .result-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 28px;
+    text-align: left;
+  }
+  .result-row {
+    background: var(--card);
+    border-radius: 10px;
+    padding: 10px 14px;
+    border-left: 4px solid;
+    font-size: .88rem;
+    line-height: 1.4;
+  }
+  .result-row.r-correct { border-color: var(--correct); }
+  .result-row.r-wrong   { border-color: var(--wrong); }
+  .result-row .r-q { color: var(--muted); font-size: .75rem; margin-bottom: 3px; }
+  .result-row .r-a { font-weight: 700; }
+  #restart-btn {
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    color: #000;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    border: none;
+    border-radius: 12px;
+    padding: 14px 40px;
+    cursor: pointer;
+    transition: opacity .2s;
+  }
+  #restart-btn:hover { opacity: .9; }
+  .stars { font-size: 2rem; margin: 8px 0 16px; }
+  @keyframes confetti-fall {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+  .confetti-piece {
+    position: fixed;
+    width: 10px; height: 10px;
+    top: -20px;
+    animation: confetti-fall linear forwards;
+    pointer-events: none;
+    border-radius: 2px;
+    z-index: 999;
+  }
+  /* Fallback image style */
+  .img-fallback {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="trophy">⚽</div>
+  <h1>WM 2026 Quiz</h1>
+  <p class="subtitle">Spieler · Länder · Regeln · Orte</p>
+</header>
+
+<div id="scoreboard">
+  <div class="score-chip">
+    <div class="label">Punkte</div>
+    <div class="value" id="score-val">0</div>
+  </div>
+  <div class="score-chip">
+    <div class="label">Frage</div>
+    <div class="value" id="q-counter">1 / 12</div>
+  </div>
+  <div class="score-chip">
+    <div class="label">Richtig</div>
+    <div class="value" id="correct-val">0</div>
+  </div>
+</div>
+
+<div id="progress-wrap"><div id="progress-bar"></div></div>
+
+<div id="quiz-area">
+  <div class="question-label" id="q-label">Frage 1 von 12</div>
+  <div class="question-text" id="q-text"></div>
+  <div class="img-wrap" id="img-wrap">
+    <img id="q-img" src="" alt="Quizbild">
+    <span class="img-badge" id="q-badge"></span>
+  </div>
+  <div class="options-grid" id="options"></div>
+  <div id="feedback"></div>
+  <button id="next-btn">Weiter →</button>
+</div>
+
+<div id="result-screen">
+  <div class="result-trophy" id="result-emoji">🏆</div>
+  <div class="result-title" id="result-title">Quiz beendet!</div>
+  <div class="stars" id="result-stars"></div>
+  <div class="result-score">Du hast <span id="final-score">0</span> von 12 Fragen richtig!</div>
+  <div class="result-grid" id="result-grid"></div>
+  <button id="restart-btn" onclick="startQuiz()">Nochmal spielen ↺</button>
+</div>
+
+<script>
+const questions = [
+  {
+    question: "Welcher Superstar führt Frankreich bei der WM 2026 an?",
+    badge: "Spieler",
+    emoji: "🇫🇷",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Kylian_Mbappe_2019.jpg/480px-Kylian_Mbappe_2019.jpg",
+    options: ["Kylian Mbappé", "Antoine Griezmann", "Karim Benzema", "Olivier Giroud"],
+    correct: 0,
+    info: "Kylian Mbappé ist Frankreichs Superstar und einer der besten Stürmer der Welt."
+  },
+  {
+    question: "In welchen drei Ländern findet die WM 2026 statt?",
+    badge: "Austragungsort",
+    emoji: "🌎",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/640px-Flag_of_the_United_States.svg.png",
+    options: ["USA, Kanada, Mexiko", "USA, Brasilien, Mexiko", "USA, Kanada, Costa Rica", "Mexiko, Kolumbien, USA"],
+    correct: 0,
+    info: "Erstmals findet eine WM in drei Ländern gleichzeitig statt: USA, Kanada und Mexiko."
+  },
+  {
+    question: "Wie viele Mannschaften nehmen an der WM 2026 teil – so viele wie nie zuvor?",
+    badge: "Rekord",
+    emoji: "🏆",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/FIFA_World_Cup_2026_logo.svg/480px-FIFA_World_Cup_2026_logo.svg.png",
+    options: ["48 Teams", "32 Teams", "40 Teams", "36 Teams"],
+    correct: 0,
+    info: "Die WM 2026 ist mit 48 Mannschaften die bisher größte WM aller Zeiten – 50 % mehr als bei früheren Turnieren."
+  },
+  {
+    question: "In welchem legendären Stadion findet das WM 2026 Eröffnungsspiel (Mexiko – Südafrika) statt?",
+    badge: "Eröffnung",
+    emoji: "🏟️",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Azteca_090506.JPG/640px-Azteca_090506.JPG",
+    options: ["Aztekenstadion (Mexiko-Stadt)", "MetLife Stadium (New York)", "Maracanã (Rio)", "AT&T Stadium (Dallas)"],
+    correct: 0,
+    info: "Das Aztekenstadion in Mexiko-Stadt richtet das Eröffnungsspiel am 11. Juni 2026 aus – zum dritten Mal in der WM-Geschichte!"
+  },
+  {
+    question: "Welches Stadion ist als Finalort der WM 2026 offiziell bestätigt (19. Juli)?",
+    badge: "Finalstadion",
+    emoji: "🥇",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/MetLife_Stadium_-_aerial.jpg/640px-MetLife_Stadium_-_aerial.jpg",
+    options: ["MetLife Stadium (New York/New Jersey)", "Aztekenstadion (Mexiko-Stadt)", "AT&T Stadium (Dallas)", "Rose Bowl (Los Angeles)"],
+    correct: 0,
+    info: "Die FIFA hat das MetLife Stadium in East Rutherford (New Jersey) als Finalstadion für den 19. Juli 2026 offiziell bestätigt."
+  },
+  {
+    question: "Wer ist der Titelverteidiger bei der WM 2026?",
+    badge: "Weltmeister",
+    emoji: "🥇",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/24701-nature-natural-beauty-1920x1080.jpg/320px-24701-nature-natural-beauty-1920x1080.jpg",
+    options: ["Argentinien", "Frankreich", "Brasilien", "Deutschland"],
+    correct: 0,
+    info: "Argentinien gewann die WM 2022 in Katar und tritt bei der WM 2026 als Titelverteidiger an – mit Messi bei seiner 6. WM-Teilnahme."
+  },
+  {
+    question: "Gegen wen spielt Deutschland sein erstes WM-Spiel am 14. Juni 2026?",
+    badge: "DFB-Team",
+    emoji: "🇩🇪",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/640px-Flag_of_Germany.svg.png",
+    options: ["Curaçao", "Ecuador", "Elfenbeinküste", "Marokko"],
+    correct: 0,
+    info: "Das DFB-Team von Bundestrainer Julian Nagelsmann startet in Gruppe E gegen Curaçao (14. Juni, 19 Uhr)."
+  },
+  {
+    question: "Was ist der VAR beim Fußball?",
+    badge: "Regel",
+    emoji: "📺",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Videoassistent_%28VAR%29_beim_DFB-Pokalspiel_SV_Werder_Bremen_gegen_Bayer_04_Leverkusen_%2801%29.jpg/640px-Videoassistent_%28VAR%29_beim_DFB-Pokalspiel_SV_Werder_Bremen_gegen_Bayer_04_Leverkusen_%2801%29.jpg",
+    options: ["Video-Assistent-Referee", "Verdeckter Angriffs-Referee", "Virtueller Angriffs-Regelcheck", "Vereinfachtes Abseits-Regelwerk"],
+    correct: 0,
+    info: "Der VAR (Video Assistant Referee) überprüft strittige Entscheidungen des Schiedsrichters per Video – z. B. Tore, Elfmeter und Rote Karten."
+  },
+  {
+    question: "Wie viele Spiele werden bei der WM 2026 insgesamt ausgetragen?",
+    badge: "Format",
+    emoji: "⚽",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Football_in_Bloomington%2C_Indiana%2C_1995.jpg/640px-Football_in_Bloomington%2C_Indiana%2C_1995.jpg",
+    options: ["104 Spiele", "64 Spiele", "80 Spiele", "96 Spiele"],
+    correct: 0,
+    info: "Durch 48 statt 32 Teams steigt die Zahl der Partien von 64 auf 104 Spiele."
+  },
+  {
+    question: "Bei welchem Verein spielt Florian Wirtz seit Sommer 2025?",
+    badge: "DFB-Spieler",
+    emoji: "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Florian_Wirtz_2023_%28cropped%29.jpg/480px-Florian_Wirtz_2023_%28cropped%29.jpg",
+    options: ["FC Liverpool", "Bayern München", "Bayer Leverkusen", "Real Madrid"],
+    correct: 0,
+    info: "Florian Wirtz wechselte im Sommer 2025 für rund 125 Mio. € von Bayer Leverkusen zum FC Liverpool – britischer Transferrekord."
+  },
+  {
+    question: "Welches Land hat insgesamt die meisten Weltmeistertitel gewonnen?",
+    badge: "Rekordweltmeister",
+    emoji: "🇧🇷",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Brazil.svg/640px-Flag_of_Brazil.svg.png",
+    options: ["Brasilien (5×)", "Deutschland (4×)", "Italien (4×)", "Argentinien (3×)"],
+    correct: 0,
+    info: "Brasilien ist Rekordweltmeister mit fünf Titeln: 1958, 1962, 1970, 1994 und 2002."
+  },
+  {
+    question: "Wie viele Spieler nominiert jeder Trainer für den WM-Kader 2026?",
+    badge: "Kader",
+    emoji: "📋",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Manuel_Neuer_2021.jpg/480px-Manuel_Neuer_2021.jpg",
+    options: ["26 Spieler", "23 Spieler", "30 Spieler", "22 Spieler"],
+    correct: 0,
+    info: "Jeder Nationaltrainer darf 26 Spieler für die WM nominieren – das gilt auch bei der WM 2026."
+  }
+];
+
+const LETTERS = ['A', 'B', 'C', 'D'];
+
+let current = 0, score = 0, correct = 0;
+let shuffledQ = [], answered = false, history = [];
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  current = 0; score = 0; correct = 0; history = [];
+  shuffledQ = shuffle(questions).map(q => {
+    const correctText = q.options[q.correct];
+    const opts = shuffle(q.options);
+    return { ...q, options: opts, correct: opts.indexOf(correctText) };
+  });
+  document.getElementById('result-screen').classList.remove('show');
+  document.getElementById('quiz-area').style.display = '';
+  document.getElementById('score-val').textContent = '0';
+  document.getElementById('correct-val').textContent = '0';
+  updateProgress();
+  loadQuestion();
+}
+
+function updateProgress() {
+  document.getElementById('progress-bar').style.width = (current / shuffledQ.length * 100) + '%';
+}
+
+function loadQuestion() {
+  answered = false;
+  const q = shuffledQ[current];
+  document.getElementById('q-label').textContent = `Frage ${current + 1} von ${shuffledQ.length}`;
+  document.getElementById('q-counter').textContent = `${current + 1} / ${shuffledQ.length}`;
+  document.getElementById('q-text').textContent = q.question;
+  document.getElementById('q-badge').textContent = q.badge;
+
+  // Image with emoji fallback
+  const wrap = document.getElementById('img-wrap');
+  const img = document.getElementById('q-img');
+  img.style.display = 'block';
+  // Remove old fallback if present
+  const old = wrap.querySelector('.img-fallback');
+  if (old) old.remove();
+
+  img.src = '';
+  img.onload = null;
+  img.onerror = () => {
+    img.style.display = 'none';
+    const fb = document.createElement('div');
+    fb.className = 'img-fallback';
+    fb.textContent = q.emoji;
+    wrap.insertBefore(fb, img);
+  };
+  img.src = q.image;
+
+  const optDiv = document.getElementById('options');
+  optDiv.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.innerHTML = `<span class="opt-letter">${LETTERS[i]}</span>${opt}`;
+    btn.onclick = () => selectAnswer(i);
+    optDiv.appendChild(btn);
+  });
+
+  document.getElementById('feedback').className = '';
+  document.getElementById('feedback').textContent = '';
+  document.getElementById('next-btn').classList.remove('show');
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = shuffledQ[current];
+  const btns = document.querySelectorAll('.opt-btn');
+  btns.forEach(b => b.disabled = true);
+
+  const fb = document.getElementById('feedback');
+  if (idx === q.correct) {
+    btns[idx].classList.add('correct');
+    score += 100; correct++;
+    document.getElementById('score-val').textContent = score;
+    document.getElementById('correct-val').textContent = correct;
+    fb.textContent = `✅ Richtig! ${q.info}`;
+    fb.className = 'show correct-fb';
+    history.push({ q: q.question, a: q.options[idx], ok: true });
+  } else {
+    btns[idx].classList.add('wrong');
+    btns[q.correct].classList.add('correct');
+    fb.textContent = `❌ Falsch! Richtig: „${q.options[q.correct]}". ${q.info}`;
+    fb.className = 'show wrong-fb';
+    history.push({ q: q.question, a: q.options[q.correct], ok: false });
+  }
+  document.getElementById('next-btn').classList.add('show');
+}
+
+document.getElementById('next-btn').onclick = () => {
+  current++;
+  updateProgress();
+  if (current >= shuffledQ.length) showResult();
+  else loadQuestion();
+};
+
+function showResult() {
+  document.getElementById('quiz-area').style.display = 'none';
+  document.getElementById('progress-bar').style.width = '100%';
+  document.getElementById('result-screen').classList.add('show');
+  document.getElementById('final-score').textContent = correct;
+
+  const pct = correct / shuffledQ.length;
+  let emoji, title, stars;
+  if (pct === 1)       { emoji = '🏆'; title = 'Weltmeister-Wissen!';    stars = '⭐⭐⭐⭐⭐'; launchConfetti(); }
+  else if (pct >= .75) { emoji = '🥇'; title = 'Klasse Leistung!';       stars = '⭐⭐⭐⭐'; }
+  else if (pct >= .5)  { emoji = '🥈'; title = 'Solide Kenntnisse!';     stars = '⭐⭐⭐'; }
+  else if (pct >= .25) { emoji = '🥉'; title = 'Noch Luft nach oben!';   stars = '⭐⭐'; }
+  else                 { emoji = '⚽'; title = 'Nochmal versuchen!';      stars = '⭐'; }
+
+  document.getElementById('result-emoji').textContent = emoji;
+  document.getElementById('result-title').textContent = title;
+  document.getElementById('result-stars').textContent = stars;
+
+  const grid = document.getElementById('result-grid');
+  grid.innerHTML = '';
+  history.forEach(h => {
+    const div = document.createElement('div');
+    div.className = `result-row ${h.ok ? 'r-correct' : 'r-wrong'}`;
+    const qShort = h.q.length > 58 ? h.q.substring(0, 55) + '…' : h.q;
+    div.innerHTML = `<div class="r-q">${h.ok ? '✅' : '❌'} ${qShort}</div><div class="r-a">${h.a}</div>`;
+    grid.appendChild(div);
+  });
+}
+
+function launchConfetti() {
+  const colors = ['#FFD700','#22c55e','#ef4444','#60a5fa','#f97316','#a855f7'];
+  for (let i = 0; i < 60; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.background = colors[Math.floor(Math.random() * colors.length)];
+    el.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+    el.style.animationDelay = Math.random() * 1.5 + 's';
+    el.style.width = el.style.height = (6 + Math.random() * 8) + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 4000);
+  }
+}
+
+startQuiz();
+</script>
+</body>
+</html>
