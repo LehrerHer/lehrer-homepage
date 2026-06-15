@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Strategieabfrage – Individuelles Rechtschreibtraining</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#f0f4f8; --card:#fff; --text:#1e293b; --gray:#64748b; --border:#e2e8f0;
+  --accent:#2563eb; --green:#16a34a; --red:#dc2626; --orange:#d97706; --r:14px;
+  --sv:#0ea5e9; --sa:#f59e0b; --sz:#10b981;
+  --c2:#3b82f6;--c3:#8b5cf6;--c4:#06b6d4;--c5:#f59e0b;--c6:#10b981;--c7:#f97316;--c8:#ec4899;
+}
+body { background:var(--bg); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+       color:var(--text); min-height:100dvh; display:flex; flex-direction:column;
+       align-items:center; padding:16px; }
+
+.card { background:var(--card); border-radius:var(--r);
+        box-shadow:0 2px 12px rgba(0,0,0,.08); padding:24px 20px;
+        width:100%; max-width:500px; }
+h1 { font-size:1.25rem; font-weight:800; margin-bottom:4px; }
+.sub { color:var(--gray); font-size:.88rem; margin-bottom:20px; line-height:1.5; }
+
+.field { margin-bottom:14px; }
+label { display:block; font-size:.82rem; font-weight:600; color:var(--gray); margin-bottom:5px; }
+input { width:100%; padding:10px 12px; border:1.5px solid var(--border);
+        border-radius:9px; font-size:.95rem; outline:none; }
+input:focus { border-color:var(--accent); }
+.btn { display:block; width:100%; padding:12px; border:none; border-radius:10px;
+       font-weight:700; font-size:.95rem; cursor:pointer; transition:filter .15s; }
+.btn-primary { background:var(--accent); color:#fff; }
+.btn-ghost   { background:var(--border); color:var(--text); margin-top:8px; }
+.btn:hover   { filter:brightness(1.07); }
+
+/* ── Test ──────────────────────────────────────── */
+.prog-row  { display:flex; justify-content:space-between; font-size:.8rem; color:var(--gray); margin-bottom:5px; }
+.prog-bar  { background:var(--border); border-radius:99px; height:5px; margin-bottom:18px; overflow:hidden; }
+.prog-fill { height:100%; border-radius:99px; background:var(--accent); transition:width .3s; }
+
+/* Phase 1: Schreibung wählen */
+.satz-box {
+  background:#f8fafc; border-radius:10px; padding:14px 16px; font-size:1rem;
+  line-height:1.7; margin-bottom:16px; border-left:3px solid var(--accent);
+}
+.lücke { font-weight:700; color:var(--accent); border-bottom:2px solid var(--accent);
+         padding:0 2px; }
+.lücke.ok  { color:var(--green); border-color:var(--green); }
+.lücke.err { color:var(--red);   border-color:var(--red); text-decoration:line-through; }
+
+.opt-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px; }
+.opt-btn {
+  padding:16px 8px; border:2px solid var(--border); border-radius:12px;
+  background:#fff; font-size:1.25rem; font-weight:700; cursor:pointer;
+  transition:all .15s; text-align:center;
+}
+.opt-btn:hover:not(:disabled) { border-color:var(--accent); background:#eff6ff; }
+.opt-btn.correct { background:#dcfce7; border-color:var(--green); color:var(--green); }
+.opt-btn.wrong   { background:#fee2e2; border-color:var(--red);   color:var(--red); }
+.opt-btn:disabled { cursor:default; }
+
+/* Phase 2: Strategie wählen */
+.phase2 { display:none; margin-top:4px; }
+.phase2 h3 { font-size:.85rem; font-weight:700; color:var(--gray); margin-bottom:10px;
+             text-align:center; }
+.strat-row { display:flex; flex-direction:column; gap:8px; }
+.strat-btn {
+  padding:12px 16px; border:2px solid var(--border); border-radius:12px;
+  font-size:.92rem; font-weight:600; cursor:pointer; transition:all .15s;
+  text-align:left; display:flex; align-items:center; gap:10px; background:#fff;
+}
+.strat-btn:hover:not(:disabled) { border-color:var(--accent); background:#eff6ff; }
+.strat-btn .strat-icon { font-size:1.2rem; }
+.strat-btn .strat-name { flex:1; }
+.strat-btn .strat-desc { font-size:.77rem; color:var(--gray); font-weight:400; }
+.strat-btn.correct { background:#dcfce7; border-color:var(--green); }
+.strat-btn.wrong   { background:#fee2e2; border-color:var(--red); }
+.strat-btn:disabled { cursor:default; }
+
+/* Erklärung nach Antwort */
+.erklaerung {
+  margin-top:12px; padding:11px 14px; border-radius:10px;
+  background:#eff6ff; color:#1e40af; font-size:.88rem; line-height:1.55;
+  display:none;
+}
+.erklaerung.show { display:block; }
+
+.fb-bar { padding:9px 14px; border-radius:10px; text-align:center;
+          font-weight:600; font-size:.88rem; display:none; margin-bottom:8px; }
+.fb-bar.ok  { display:block; background:#dcfce7; color:var(--green); }
+.fb-bar.err { display:block; background:#fee2e2; color:var(--red); }
+
+.next-btn { display:none; margin-top:10px; }
+
+/* Laufende Punkte */
+.score-mini { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
+.sc-chip { padding:3px 9px; border-radius:99px; font-size:.74rem; font-weight:700; color:#fff; }
+
+/* ── Ergebnis ──────────────────────────────────── */
+.result-table { width:100%; border-collapse:collapse; font-size:.88rem; margin:14px 0; }
+.result-table th { text-align:left; padding:7px 8px; font-size:.77rem; color:var(--gray);
+                   border-bottom:1.5px solid var(--border); }
+.result-table td { padding:8px 8px; border-bottom:1px solid var(--border); vertical-align:middle; }
+.result-table tr:last-child td { border-bottom:none; }
+
+.ampel { display:inline-block; padding:3px 9px; border-radius:99px; font-size:.79rem; font-weight:600; }
+.g { background:#dcfce7; color:var(--green); }
+.o { background:#fef9c3; color:#854d0e; }
+.r { background:#fee2e2; color:var(--red); }
+
+.sent-box { background:#eff6ff; border-radius:10px; padding:11px 14px; font-size:.88rem;
+            color:#1e40af; text-align:center; margin-top:8px; display:none; }
+
+.screen { width:100%; max-width:500px; display:none; }
+.screen.active { display:block; }
+
+.page-nav { display:flex; gap:8px; justify-content:center; flex-wrap:wrap;
+            margin-top:16px; padding-top:14px; border-top:1px solid var(--border); }
+.page-nav a { padding:8px 14px; border-radius:99px; font-size:.82rem; font-weight:600;
+              text-decoration:none; background:var(--border); color:var(--gray); }
+</style>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+
+        <a href="index.html" class="navbar-logo">lehrer-herrmann.de</a>
+
+        <button
+            class="hamburger"
+            id="hamburger"
+            aria-label="Menü öffnen"
+            aria-expanded="false"
+            aria-controls="navbar-links"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <ul class="navbar-links" id="navbar-links">
+            <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
+            <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+            <li class="navbar-gb-trenner" aria-hidden="true">
+                <span class="navbar-gb-label">Geschützter Bereich</span>
+            </li>
+            <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+            <li><a href="blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+            <li><a href="faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+        </ul>
+
+        <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none">
+        </div>
+
+    </div>
+</nav>
+
+<div style="background:#f0f4f8;padding:0.6rem 1rem;font-size:0.82rem;text-align:center;border-bottom:1px solid #e2e8f0;">
+    <a href="regelradar.html" style="color:#2563eb;text-decoration:none;font-weight:600;">← Startseite des individuellen Rechtschreibtrainings</a>
+</div>
+
+
+
+<!-- ══════════ Screen 1: Eingabe -->
+<div id="s-entry" class="screen active">
+  <div class="card">
+    <h1>Strategieabfrage</h1>
+    <p class="sub">Du siehst Sätze mit Lücken — wähle die richtige Schreibung und erkläre, welche Strategie du genutzt hast.</p>
+    <div class="field">
+      <label>Klassencode <span style="font-weight:400;color:#9ca3af">(von der Lehrkraft)</span></label>
+      <input id="inp-code" type="text" maxlength="6" placeholder="z. B. AB3X7Y"
+             style="text-transform:uppercase;letter-spacing:.08em" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="field">
+      <label>Dein Name</label>
+      <input id="inp-name" type="text" placeholder="Vorname Nachname" autocomplete="off" spellcheck="false">
+    </div>
+    <button class="btn btn-primary" onclick="start()">Los geht's →</button>
+    <p id="entry-err" style="color:var(--red);font-size:.83rem;margin-top:8px;display:none"></p>
+  </div>
+</div>
+
+<!-- ══════════ Screen 2: Test -->
+<div id="s-test" class="screen">
+  <div class="card">
+    <div class="prog-row">
+      <span id="var-lbl" style="font-weight:700;color:var(--accent)">Runde 1 / 6</span>
+      <span id="item-lbl">Frage 1 / 7</span>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="score-mini" id="score-mini"></div>
+
+    <!-- Phase 1: Schreibung -->
+    <p style="font-size:.78rem;font-weight:600;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">Welche Schreibung ist richtig?</p>
+    <div class="satz-box" id="satz-box"></div>
+    <div class="opt-row" id="opt-row">
+      <button class="opt-btn" id="btn-a" onclick="wähle('a')"></button>
+      <button class="opt-btn" id="btn-b" onclick="wähle('b')"></button>
+    </div>
+    <div class="fb-bar" id="fb-bar"></div>
+
+    <!-- Phase 2: Strategie -->
+    <div class="phase2" id="phase2">
+      <h3>Welche Strategie hast du genutzt?</h3>
+      <div class="strat-row">
+        <button class="strat-btn" id="strat-V" onclick="wähleStrat('V')">
+          <span class="strat-icon">🔁</span>
+          <span class="strat-name">Verlängern</span>
+          <span class="strat-desc">Wort verlängern → Laut wird hörbar</span>
+        </button>
+        <button class="strat-btn" id="strat-A" onclick="wähleStrat('A')">
+          <span class="strat-icon">🔀</span>
+          <span class="strat-name">Ableiten</span>
+          <span class="strat-desc">Verwandtes Wort → zeigt den richtigen Buchstaben</span>
+        </button>
+        <button class="strat-btn" id="strat-Z" onclick="wähleStrat('Z')">
+          <span class="strat-icon">🧩</span>
+          <span class="strat-name">Zerlegen</span>
+          <span class="strat-desc">Wort in Teile zerlegen → jeden Teil vollständig schreiben</span>
+        </button>
+      </div>
+      <div class="erklaerung" id="erklaerung"></div>
+    </div>
+
+    <button class="btn btn-ghost next-btn" id="next-btn" onclick="next()">Weiter →</button>
+  </div>
+</div>
+
+<!-- ══════════ Screen 3: Ergebnis -->
+<div id="s-result" class="screen">
+  <div class="card">
+    <h2 style="text-align:center;margin-bottom:4px">Dein Ergebnis</h2>
+    <p id="res-sub" style="text-align:center;color:var(--gray);font-size:.88rem;margin-bottom:14px"></p>
+
+    <table class="result-table">
+      <thead><tr><th>Bereich</th><th>Schreibung</th><th>Strategie</th></tr></thead>
+      <tbody id="res-tbody"></tbody>
+    </table>
+
+    <div id="res-summary" style="padding:13px;border-radius:10px;font-size:.92rem;line-height:1.5;margin-bottom:12px"></div>
+
+    <button class="btn btn-primary" id="btn-send" onclick="senden()" style="margin-top:4px">
+      Ergebnis an Lehrkraft senden
+    </button>
+    <div class="sent-box" id="sent-box">✓ Ergebnis wurde übermittelt!</div>
+    <button class="btn btn-ghost" onclick="location.reload()">Neu starten</button>
+
+    <nav class="page-nav">
+      <a href="regelradar-diktat.html">🎤 Diktate</a>
+      <a href="regelradar-strategien.html">📖 Strategien</a>
+      <a href="regelradar-uebungen.html">✏️ Übungen</a>
+    </nav>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// DATEN – 6 Varianten × 7 Items
+// v=Variante, satz=Satz mit ___ als Lückenmarkierung,
+// a/b=Optionen, k=korrekte Option("a"|"b"),
+// wort=korrektes vollständiges Wort (wird nach Antwort gezeigt),
+// kat=Kategorie 2–8, strat=V/A/Z, hinweis=Erklärung
+// ═══════════════════════════════════════════════════════════
+const ITEMS = [
+// ── Variante 1 ──────────────────────────────────────────
+{v:1,satz:"Der Fußballer rannte schne___l nach vorne.",          a:"l",  b:"ll", k:"b",wort:"schnell",         kat:2,strat:"V",hinweis:"Verlängern: schnel·le → kurzes e vor der Lücke → Doppelkonsonant ll"},
+{v:1,satz:"Bei dem Spiel mussten wir schwierige R___tsel lösen.",a:"ä",  b:"e",  k:"a",wort:"Rätsel",          kat:5,strat:"A",hinweis:"Ableiten: Rätsel → das Raten → a in der Grundform → ä"},
+{v:1,satz:"Die meisten Formen waren run___.",                     a:"t",  b:"d",  k:"b",wort:"rund",            kat:4,strat:"A",hinweis:"Ableiten: runde Formen → man hört das d deutlich → rund"},
+{v:1,satz:"Tim ist grö___er als sein kleiner Bruder.",            a:"s",  b:"ß",  k:"b",wort:"größer",          kat:3,strat:"V",hinweis:"Verlängern: groß → gro·ße → langes o → ß"},
+{v:1,satz:"Jan hat sich auf dem Schulhof ___erletzt.",            a:"v",  b:"f",  k:"a",wort:"verletzt",        kat:7,strat:"Z",hinweis:"Zerlegen: ver- + letzt → Vorsilbe ver- schreibt man immer mit v"},
+{v:1,satz:"Am Meer sehe ich den großen Leuch___urm.",             a:"t",  b:"tt", k:"b",wort:"Leuchtturm",      kat:6,strat:"Z",hinweis:"Zerlegen: Leucht + Turm → beide Teile vollständig → tt an der Naht"},
+{v:1,satz:"Tim hat ___wierigkeiten, auf den Baum zu klettern.",   a:"sch",b:"Sch",k:"b",wort:"Schwierigkeiten",kat:8,strat:"Z",hinweis:"Artikel-Probe: die Schwierigkeiten → Nomen → Großschreibung"},
+
+// ── Variante 2 ──────────────────────────────────────────
+{v:2,satz:"Kennst du die Lied___exte dieses Lieds?",             a:"d",  b:"t",  k:"a",wort:"Liedtexte",       kat:4,strat:"A",hinweis:"Ableiten: die Lieder → man hört das d → Lied-texte"},
+{v:2,satz:"Der Schu___ ging knapp am Tor vorbei.",               a:"s",  b:"ss", k:"b",wort:"Schuss",          kat:2,strat:"V",hinweis:"Verlängern: Schüs·se → kurzes ü → Doppelkonsonant ss"},
+{v:2,satz:"Die Kinder haben sich zu dem Fest alle ___erkleidet.",a:"f",  b:"v",  k:"b",wort:"verkleidet",      kat:7,strat:"Z",hinweis:"Zerlegen: ver- + kleidet → Vorsilbe ver- immer mit v"},
+{v:2,satz:"Klara wurde für ihre ___nelligkeit gelobt.",          a:"sch",b:"Sch",k:"b",wort:"Schnelligkeit",   kat:8,strat:"Z",hinweis:"Artikel-Probe: die Schnelligkeit → Nomen → Großschreibung"},
+{v:2,satz:"Die Bauarbeiter wollen das Gerüst a___auen.",         a:"b",  b:"bb", k:"b",wort:"abbauen",         kat:6,strat:"Z",hinweis:"Zerlegen: ab + bauen → b von ab + b von bauen → bb an der Naht"},
+{v:2,satz:"Sie muss die restlichen F___den abschneiden.",        a:"e",  b:"ä",  k:"b",wort:"Fäden",           kat:5,strat:"A",hinweis:"Ableiten: der Faden → a in der Grundform → ä im Plural: Fäden"},
+{v:2,satz:"Oma und Opa la___en den Kindern Märchen vor.",        a:"ß",  b:"s",  k:"b",wort:"lasen",           kat:3,strat:"V",hinweis:"Verlängern: las + en → kurzes a → ss... aber: lasen! Stimmhaftes s nach kurzem a → s"},
+
+// ── Variante 3 ──────────────────────────────────────────
+{v:3,satz:"In dem Obstkor___ waren Äpfel und Birnen.",           a:"p",  b:"b",  k:"b",wort:"Obstkorb",        kat:4,strat:"A",hinweis:"Ableiten: die Körbe → man hört das b → Obstkorb"},
+{v:3,satz:"Der Postbote holte die P___ckchen aus dem Auto.",     a:"ä",  b:"e",  k:"a",wort:"Päckchen",        kat:5,strat:"A",hinweis:"Ableiten: das Paket / der Pack → a in der Grundform → ä: Päckchen"},
+{v:3,satz:"Bei nächster ___elegenheit wollte er noch klingeln.", a:"g",  b:"G",  k:"b",wort:"Gelegenheit",     kat:8,strat:"Z",hinweis:"Artikel-Probe: die Gelegenheit → Nomen → Großschreibung"},
+{v:3,satz:"Die Dame wollte die Kinder in der Schlange ___orlassen.",a:"f",b:"v", k:"b",wort:"vorlassen",       kat:7,strat:"Z",hinweis:"Zerlegen: vor- + lassen → Vorsilbe vor- immer mit v"},
+{v:3,satz:"Der Hund wollte mich bei___en.",                      a:"s",  b:"ß",  k:"b",wort:"beißen",          kat:3,strat:"V",hinweis:"Verlängern: bei·ßen → Diphthong ei → ß"},
+{v:3,satz:"Der Hund wollte alles auf einmal au___ressen.",       a:"f",  b:"ff", k:"b",wort:"auffressen",      kat:6,strat:"Z",hinweis:"Zerlegen: auf + fressen → f von auf + f von fressen → ff an der Naht"},
+{v:3,satz:"Die Schüler wollten im Sportunterricht Bre___ball spielen.",a:"n",b:"nn",k:"b",wort:"Brennball",    kat:2,strat:"V",hinweis:"Verlängern: bren·nen → kurzes e → Doppelkonsonant nn"},
+
+// ── Variante 4 ──────────────────────────────────────────
+{v:4,satz:"Auf meiner Hose ist ein Fle___.",                     a:"ck", b:"k",  k:"a",wort:"Fleck",           kat:2,strat:"V",hinweis:"Verlängern: Fle·cke → kurzes e → ck (Doppelkonsonant-Ersatz)"},
+{v:4,satz:"Tom will heute endlich seinen Müll wegschmei___en.",  a:"s",  b:"ß",  k:"b",wort:"wegschmeißen",    kat:3,strat:"V",hinweis:"Verlängern: schmei·ße → Diphthong ei → ß"},
+{v:4,satz:"Die Kuh hat ein kleines Käl___chen.",                 a:"b",  b:"p",  k:"a",wort:"Kälbchen",        kat:4,strat:"A",hinweis:"Ableiten: das Kalb → die Kälber → man hört das b → Kälbchen"},
+{v:4,satz:"Unsere Schule ist ein schönes Geb___de.",             a:"eu", b:"äu", k:"b",wort:"Gebäude",         kat:5,strat:"A",hinweis:"Ableiten: das Haus → die Häuser → au → äu: Gebäude (Bau)"},
+{v:4,satz:"Jonas ließ die Badewanne mit Wasser vo___laufen.",    a:"ll", b:"lll",k:"b",wort:"volllaufen",       kat:6,strat:"Z",hinweis:"Zerlegen: voll + laufen → ll von voll + l von laufen → lll an der Naht"},
+{v:4,satz:"Der Angestellte soll die Kartons ___erlagern.",       a:"v",  b:"f",  k:"a",wort:"verlagern",       kat:7,strat:"Z",hinweis:"Zerlegen: ver- + lagern → Vorsilbe ver- immer mit v"},
+{v:4,satz:"Über die Brücke zu gehen ist ein gefährliches ___indernis.",a:"h",b:"H",k:"b",wort:"Hindernis",     kat:8,strat:"Z",hinweis:"Artikel-Probe: das Hindernis → Nomen → Großschreibung"},
+
+// ── Variante 5 ──────────────────────────────────────────
+{v:5,satz:"Tim hat sich im Labyrinth ve___irrt.",                a:"r",  b:"rr", k:"b",wort:"verirrt",         kat:2,strat:"V",hinweis:"Verlängern: ir·re → kurzes i → Doppelkonsonant rr: verirrt"},
+{v:5,satz:"Der Arbeiter arbeitete schon lange am Flie___band.",  a:"s",  b:"ß",  k:"b",wort:"Fließband",       kat:3,strat:"V",hinweis:"Verlängern: flie·ßen → Diphthong ie → ß"},
+{v:5,satz:"Die Mutprobe ist für Peter sehr herausfordern___.",   a:"d",  b:"t",  k:"a",wort:"herausfordernd",  kat:4,strat:"A",hinweis:"Ableiten: fordernde Aufgaben → man hört das d → herausfordernd"},
+{v:5,satz:"Nach dem Unfall ist das Auto besch___digt.",          a:"e",  b:"ä",  k:"b",wort:"beschädigt",      kat:5,strat:"A",hinweis:"Ableiten: der Schaden → a in der Grundform → ä: beschädigt"},
+{v:5,satz:"Zum Geburtstag möchte ich Sabine übe___aschen.",      a:"r",  b:"rr", k:"b",wort:"überraschen",     kat:6,strat:"Z",hinweis:"Zerlegen: über + raschen → r von über + r von raschen → rr an der Naht"},
+{v:5,satz:"Am Film gefiel mir am besten der ___orspann.",        a:"V",  b:"F",  k:"a",wort:"Vorspann",        kat:7,strat:"Z",hinweis:"Zerlegen: Vor- + spann → Vorsilbe Vor- immer mit V (Nomen) oder v (Verb)"},
+{v:5,satz:"Maria lobt die ___merksamkeit des Orchesters.",       a:"Auf",b:"auf",k:"a",wort:"Aufmerksamkeit",  kat:8,strat:"Z",hinweis:"Artikel-Probe: die Aufmerksamkeit → Nomen → Großschreibung"},
+
+// ── Variante 6 ──────────────────────────────────────────
+{v:6,satz:"Meine Tante bestellt ein Kä___nchen Kaffee.",         a:"n",  b:"nn", k:"b",wort:"Kännchen",        kat:2,strat:"V",hinweis:"Verlängern: Kan·ne → kurzes a → Doppelkonsonant nn: Kännchen"},
+{v:6,satz:"Mein Hund ist immer sehr gefr___ig.",                 a:"äs", b:"äß", k:"b",wort:"gefräßig",        kat:3,strat:"V",hinweis:"Verlängern: fressen → fraß → langes a → ß: gefräßig"},
+{v:6,satz:"Die Mutter ist begeistert, dass der Junge sein Bett allein bezo___.",a:"k",b:"g",k:"b",wort:"bezog",kat:4,strat:"A",hinweis:"Ableiten: beziehen → bezogen → man hört das g → bezog"},
+{v:6,satz:"Der Bandit kann nicht gut sehen, denn er ist ein___gig.",a:"eu",b:"äu",k:"b",wort:"einäugig",       kat:5,strat:"A",hinweis:"Ableiten: das Auge → au → äu: einäugig (ein Auge)"},
+{v:6,satz:"Ich sah Freudentränen heru___te rieseln.",            a:"r",  b:"rr", k:"b",wort:"herunterrieseln", kat:6,strat:"Z",hinweis:"Zerlegen: herunter + rieseln → r von herunter + r von rieseln → rr"},
+{v:6,satz:"Nach dem Streit ist das ___trauen groß.",             a:"Mis",b:"Miss",k:"b",wort:"Misstrauen",     kat:7,strat:"Z",hinweis:"Zerlegen: Miss- + trauen → Vorsilbe miss- immer doppeltes ss"},
+{v:6,satz:"Der kleine Junge verlor seine Hose beim ___aden.",    a:"b",  b:"B",  k:"b",wort:"Baden",           kat:8,strat:"Z",hinweis:"Artikel-Probe: das Baden → nominalisierter Infinitiv → Nomen → Großschreibung"}
+];
+
+const KAT = {
+  2:{k:"DK",  n:"Doppelkonsonanten",     c:"var(--c2)"},
+  3:{k:"s/ß", n:"s / ß / ss",           c:"var(--c3)"},
+  4:{k:"AK",  n:"Auslautverhärtung",     c:"var(--c4)"},
+  5:{k:"ä/äu",n:"ä / äu (Ableiten)",    c:"var(--c5)"},
+  6:{k:"ZW",  n:"Zusammensetzungen",     c:"var(--c6)"},
+  7:{k:"AE",  n:"Ableitungen/Vorsilben", c:"var(--c7)"},
+  8:{k:"GK",  n:"Groß-/Kleinschreibung", c:"var(--c8)"}
+};
+const STRAT_NAME = {V:"Verlängern", A:"Ableiten", Z:"Zerlegen"};
+const CATS = [2,3,4,5,6,7,8];
+const API  = "https://lehrer-herrmann.de/reso-api";
+
+// ── State ───────────────────────────────────────────────
+let st = {
+  name:"", code:"", idx:0,
+  phase:1,          // 1=Schreibung, 2=Strategie
+  schreibungOk:false,
+  scores:{},        // per kat: {r_schreib, r_strat, g}
+  items:[]
+};
+
+function initScores() {
+  CATS.forEach(k => st.scores[k] = {rs:0, rt:0, g:0});
+}
+
+function show(id) {
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+// ── Start ───────────────────────────────────────────────
+function start() {
+  const name = document.getElementById("inp-name").value.trim();
+  const err  = document.getElementById("entry-err");
+  if (!name) { err.textContent="Bitte deinen Namen eingeben."; err.style.display="block"; return; }
+  err.style.display = "none";
+  st.name = name;
+  st.code = document.getElementById("inp-code").value.trim().toUpperCase();
+  st.idx  = 0; st.items = [];
+  initScores();
+  show("s-test");
+  renderItem();
+}
+
+// ── Item rendern ─────────────────────────────────────────
+function renderItem() {
+  const item = ITEMS[st.idx];
+  const total = ITEMS.length; // 42
+  const varNr = item.v;
+  const itemNr = st.idx % 7 + 1;
+
+  document.getElementById("prog-fill").style.width = (st.idx/total*100) + "%";
+  document.getElementById("var-lbl").textContent   = `Runde ${varNr} / 6`;
+  document.getElementById("item-lbl").textContent  = `Frage ${itemNr} / 7`;
+
+  // Satz rendern – Lücke hervorheben
+  const html = item.satz.replace("___",
+    `<span class="lücke" id="lücke-span">___</span>`);
+  document.getElementById("satz-box").innerHTML = html;
+
+  // Optionen
+  const ba = document.getElementById("btn-a");
+  const bb = document.getElementById("btn-b");
+  ba.textContent = item.a; ba.disabled = false; ba.className = "opt-btn";
+  bb.textContent = item.b; bb.disabled = false; bb.className = "opt-btn";
+
+  // Reset
+  document.getElementById("fb-bar").className   = "fb-bar";
+  document.getElementById("phase2").style.display = "none";
+  document.getElementById("erklaerung").className = "erklaerung";
+  document.getElementById("next-btn").style.display = "none";
+  document.getElementById("next-btn").textContent  =
+    st.idx < total-1 ? "Weiter →" : "Zum Ergebnis →";
+
+  ["strat-V","strat-A","strat-Z"].forEach(id => {
+    const b = document.getElementById(id);
+    b.disabled = false; b.className = "strat-btn";
+  });
+
+  st.phase = 1;
+  st.schreibungOk = false;
+
+  updateScoreMini();
+}
+
+// ── Phase 1: Schreibung ──────────────────────────────────
+function wähle(choice) {
+  const item = ITEMS[st.idx];
+  const correct = choice === item.k;
+  st.schreibungOk = correct;
+  st.scores[item.kat].g++;
+  if (correct) st.scores[item.kat].rs++;
+
+  document.getElementById("btn-a").disabled = true;
+  document.getElementById("btn-b").disabled = true;
+  document.getElementById("btn-" + choice).classList.add(correct ? "correct" : "wrong");
+  if (!correct) document.getElementById("btn-" + item.k).classList.add("correct");
+
+  // Lücke füllen
+  const span = document.getElementById("lücke-span");
+  span.textContent = item[item.k];
+  span.className   = "lücke " + (correct ? "ok" : "err");
+
+  const fb = document.getElementById("fb-bar");
+  fb.textContent = correct ? "✓ Richtig! Jetzt zur Strategie →" : `✗ Richtig wäre: ${item[item.k]}`;
+  fb.className   = "fb-bar " + (correct ? "ok" : "err");
+
+  // Phase 2 zeigen
+  st.phase = 2;
+  document.getElementById("phase2").style.display = "block";
+}
+
+// ── Phase 2: Strategie ───────────────────────────────────
+function wähleStrat(choice) {
+  const item = ITEMS[st.idx];
+  const correct = choice === item.strat;
+  if (correct) st.scores[item.kat].rt++;
+
+  ["strat-V","strat-A","strat-Z"].forEach(id => {
+    document.getElementById(id).disabled = true;
+  });
+
+  const sid  = "strat-" + choice;
+  const cid  = "strat-" + item.strat;
+  document.getElementById(sid).classList.add(correct ? "correct" : "wrong");
+  if (!correct) document.getElementById(cid).classList.add("correct");
+
+  // Erklärung zeigen
+  const erkl = document.getElementById("erklaerung");
+  erkl.innerHTML = `<strong>${STRAT_NAME[item.strat]}:</strong> ${item.hinweis}`;
+  erkl.className = "erklaerung show";
+
+  st.items.push({
+    nr:      st.idx + 1,
+    satz:    item.satz.replace("___", item[item.k]).substring(0,80),
+    wort:    item.wort,
+    eingabe: "—",   // Schreibung war Multiple Choice
+    richtig: st.schreibungOk,
+    kat:     item.kat,
+    format:  "strategie",
+    strat_korrekt: correct
+  });
+
+  document.getElementById("next-btn").style.display = "block";
+  updateScoreMini();
+}
+
+function next() {
+  st.idx++;
+  if (st.idx >= ITEMS.length) { showResult(); return; }
+  renderItem();
+}
+
+// ── Score-Mini ───────────────────────────────────────────
+function updateScoreMini() {
+  const el = document.getElementById("score-mini");
+  el.innerHTML = CATS.map(k => {
+    const s = st.scores[k];
+    if (!s.g) return "";
+    const bg = s.rs===s.g?"var(--green)":s.rs>=s.g/2?"var(--orange)":"var(--red)";
+    return `<span class="sc-chip" style="background:${bg}">${KAT[k].k} ${s.rs}/${s.g}</span>`;
+  }).join("");
+}
+
+// ── Ergebnis ─────────────────────────────────────────────
+function showResult() {
+  document.getElementById("res-sub").textContent =
+    `${st.name} · 42 Aufgaben · Schreibung + Strategie`;
+
+  const tbody = document.getElementById("res-tbody");
+  tbody.innerHTML = "";
+  let totS=0, totT=0, maxG=0;
+
+  CATS.forEach(k => {
+    const s = st.scores[k];
+    if (!s.g) return;
+    totS += s.rs; totT += s.rt; maxG += s.g;
+
+    const pS = Math.round(s.rs/s.g*100);
+    const pT = Math.round(s.rt/s.g*100);
+    const clS = pS>=80?"g":pS>=50?"o":"r";
+    const clT = pT>=80?"g":pT>=50?"o":"r";
+
+    tbody.innerHTML += `<tr>
+      <td><strong style="color:${KAT[k].c}">${KAT[k].k}</strong>
+          <span style="font-size:.76rem;color:#6b7280;display:block">${KAT[k].n}</span></td>
+      <td><span class="ampel ${clS}">${s.rs}/${s.g}</span></td>
+      <td><span class="ampel ${clT}">${s.rt}/${s.g}</span></td>
+    </tr>`;
+  });
+
+  const pct = Math.round(totS/maxG*100);
+  const sum = document.getElementById("res-summary");
+  if (pct>=80) {
+    sum.style.cssText="background:#dcfce7;color:#14532d;padding:13px;border-radius:10px";
+    sum.innerHTML=`<strong>Super! Schreibung ${totS}/${maxG} (${pct}%)</strong><br>Du kennst die meisten Strategien sicher.`;
+  } else if (pct>=50) {
+    sum.style.cssText="background:#fef9c3;color:#713f12;padding:13px;border-radius:10px";
+    sum.innerHTML=`<strong>Schreibung ${totS}/${maxG} (${pct}%)</strong><br>Du kennst schon viele Strategien. Schau dir die schwachen Bereiche in den Strategieerklärungen an.`;
+  } else {
+    sum.style.cssText="background:#fee2e2;color:#7f1d1d;padding:13px;border-radius:10px";
+    sum.innerHTML=`<strong>Schreibung ${totS}/${maxG} (${pct}%)</strong><br>Keine Sorge! Die Strategien kann man gut lernen – schau dir die Erklärungen an.`;
+  }
+
+  document.getElementById("btn-send").style.display = st.code ? "block" : "none";
+  show("s-result");
+}
+
+// ── Senden ───────────────────────────────────────────────
+async function senden() {
+  const btn = document.getElementById("btn-send");
+  btn.textContent="Wird gesendet …"; btn.disabled=true;
+
+  const kategorien = {};
+  CATS.forEach(k => {
+    if (st.scores[k].g)
+      kategorien[String(k)] = {richtig: st.scores[k].rs, gesamt: st.scores[k].g};
+  });
+
+  try {
+    const res = await fetch(API+"/ergebnis",{
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({
+        klasse_code: st.code, schueler_name: st.name,
+        stufe: 3, format: "strategie", variante: 1,
+        kategorien, items: st.items
+      })
+    });
+    if (!res.ok) throw new Error(await res.text());
+    document.getElementById("sent-box").style.display="block";
+    btn.style.display="none";
+  } catch(e) {
+    btn.textContent="Senden fehlgeschlagen – nochmal versuchen";
+    btn.disabled=false;
+  }
+}
+</script>
+
+<footer>
+    <div class="container footer-inner">
+        <p>© <span id="footer-jahr">2025</span> Jan Herrmann</p>
+        <nav class="footer-links" aria-label="Rechtliche Links">
+            <a href="impressum.html">Impressum</a>
+            <a href="datenschutz.html">Datenschutz</a>
+        </nav>
+        <a href="/kolosseum/public/admin/" id="admin-footer-link" class="admin-footer-link" aria-hidden="true" tabindex="-1"></a>
+    </div>
+</footer>
+<script src="js/main.js"></script>
+<script src="js/kolosseum-login-widget.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Quatschwortdiktat – Individuelles Rechtschreibtraining</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:#f0f4f8; --card:#fff; --text:#1e293b; --gray:#64748b; --border:#e2e8f0;
+  --accent:#7c3aed; --green:#16a34a; --red:#dc2626; --orange:#d97706; --r:14px;
+  --c2:#3b82f6;--c3:#8b5cf6;--c4:#06b6d4;--c5:#f59e0b;--c6:#10b981;--c7:#f97316;--c8:#ec4899;
+}
+body { background:var(--bg); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+       color:var(--text); min-height:100dvh; display:flex; flex-direction:column;
+       align-items:center; padding:16px; }
+
+.card { background:var(--card); border-radius:var(--r);
+        box-shadow:0 2px 12px rgba(0,0,0,.08);
+        padding:24px 20px; width:100%; max-width:520px; }
+h1 { font-size:1.2rem; font-weight:800; margin-bottom:4px; }
+.sub { color:var(--gray); font-size:.88rem; margin-bottom:20px; line-height:1.55; }
+.field { margin-bottom:14px; }
+label { display:block; font-size:.82rem; font-weight:600; color:var(--gray); margin-bottom:5px; }
+input[type=text] { width:100%; padding:10px 12px; border:1.5px solid var(--border);
+        border-radius:9px; font-size:.95rem; outline:none; }
+input[type=text]:focus { border-color:var(--accent); }
+.btn { display:block; width:100%; padding:12px; border:none; border-radius:10px;
+       font-weight:700; font-size:.95rem; cursor:pointer; transition:filter .15s; }
+.btn-primary { background:var(--accent); color:#fff; }
+.btn-ghost   { background:var(--border); color:var(--text); margin-top:8px; }
+.btn:hover   { filter:brightness(1.07); }
+
+/* Audio-Hinweis */
+.audio-hint {
+  background:#fef9c3; border-radius:10px; padding:11px 14px;
+  font-size:.85rem; line-height:1.55; margin-bottom:16px;
+  border-left:3px solid var(--orange);
+}
+.audio-hint strong { display:block; margin-bottom:3px; }
+
+/* Test */
+.prog-row { display:flex; justify-content:space-between; font-size:.8rem;
+            color:var(--gray); margin-bottom:5px; }
+.prog-bar { background:var(--border); border-radius:99px; height:5px;
+            margin-bottom:18px; overflow:hidden; }
+.prog-fill { height:100%; border-radius:99px; background:var(--accent); transition:width .3s; }
+
+/* Audio-Buttons */
+.audio-row { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+.audio-btn {
+  display:flex; align-items:center; gap:6px; padding:9px 14px;
+  background:var(--accent); color:#fff; border:none; border-radius:10px;
+  font-size:.85rem; font-weight:600; cursor:pointer; transition:all .15s;
+}
+.audio-btn:hover { filter:brightness(1.12); }
+.audio-btn.unavail { background:#e2e8f0; color:var(--gray); cursor:default; }
+.audio-btn.playing { background:#5b21b6; }
+
+/* Satz */
+.satz-box {
+  background:#f8fafc; border-radius:10px; padding:14px 16px;
+  font-size:1rem; line-height:2.2; margin-bottom:16px;
+  border-left:3px solid var(--accent);
+}
+.satz-static { font-weight:500; }
+.gap-wrap { display:inline-flex; align-items:center; gap:3px;
+            vertical-align:middle; margin:1px 0; }
+.gap-inp {
+  width:130px; padding:4px 8px; border:2px solid var(--accent);
+  border-radius:7px; font-size:.95rem; font-weight:600; outline:none;
+  background:#f5f0ff; transition:all .2s;
+}
+.gap-inp:focus { border-color:#5b21b6; background:#fff; }
+.gap-inp.ok   { border-color:var(--green); background:#dcfce7; color:var(--green); }
+.gap-inp.err  { border-color:var(--red);   background:#fee2e2; color:var(--red); }
+.gap-inp:disabled { cursor:default; }
+.correct-label { font-size:.76rem; font-weight:700; color:var(--green);
+                 background:#dcfce7; border-radius:5px; padding:1px 6px; display:none; }
+
+.feedback-bar { padding:9px 14px; border-radius:10px; text-align:center;
+                font-weight:600; font-size:.88rem; margin-top:10px; display:none; }
+.feedback-bar.ok  { display:block; background:#dcfce7; color:var(--green); }
+.feedback-bar.err { display:block; background:#fee2e2; color:var(--red); }
+.feedback-bar.mid { display:block; background:#fef9c3; color:#854d0e; }
+
+.next-btn { display:none; margin-top:10px; }
+
+/* Score-Mini */
+.score-mini { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:12px; }
+.sc-chip { padding:3px 9px; border-radius:99px; font-size:.73rem; font-weight:700; color:#fff; }
+
+/* Ergebnis */
+.result-table { width:100%; border-collapse:collapse; font-size:.88rem; margin:12px 0; }
+.result-table th { text-align:left; padding:7px 8px; font-size:.77rem; color:var(--gray);
+                   border-bottom:1.5px solid var(--border); }
+.result-table td { padding:8px 8px; border-bottom:1px solid var(--border); vertical-align:middle; }
+.result-table tr:last-child td { border-bottom:none; }
+.ampel { display:inline-block; padding:3px 9px; border-radius:99px; font-size:.78rem; font-weight:600; }
+.g { background:#dcfce7; color:var(--green); }
+.o { background:#fef9c3; color:#854d0e; }
+.r { background:#fee2e2; color:var(--red); }
+
+.sent-box { background:#eff6ff; border-radius:10px; padding:11px 14px; font-size:.88rem;
+            color:#1e40af; text-align:center; margin-top:8px; display:none; }
+
+.screen { width:100%; max-width:520px; display:none; }
+.screen.active { display:block; }
+
+.page-nav { display:flex; gap:8px; justify-content:center; flex-wrap:wrap;
+            margin-top:16px; padding-top:14px; border-top:1px solid var(--border); }
+.page-nav a { padding:8px 14px; border-radius:99px; font-size:.82rem; font-weight:600;
+              text-decoration:none; background:var(--border); color:var(--gray); }
+</style>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+
+        <a href="index.html" class="navbar-logo">lehrer-herrmann.de</a>
+
+        <button
+            class="hamburger"
+            id="hamburger"
+            aria-label="Menü öffnen"
+            aria-expanded="false"
+            aria-controls="navbar-links"
+        >
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <ul class="navbar-links" id="navbar-links">
+            <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
+            <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+            <li class="navbar-gb-trenner" aria-hidden="true">
+                <span class="navbar-gb-label">Geschützter Bereich</span>
+            </li>
+            <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+            <li><a href="blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+            <li><a href="faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+        </ul>
+
+        <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none">
+        </div>
+
+    </div>
+</nav>
+
+<div style="background:#f0f4f8;padding:0.6rem 1rem;font-size:0.82rem;text-align:center;border-bottom:1px solid #e2e8f0;">
+    <a href="regelradar.html" style="color:#2563eb;text-decoration:none;font-weight:600;">← Startseite des individuellen Rechtschreibtrainings</a>
+</div>
+
+
+
+<!-- ══════════ Screen 1: Eingabe -->
+<div id="s-entry" class="screen active">
+  <div class="card">
+    <h1>Quatschwortdiktat</h1>
+    <p class="sub">Du hörst Sätze mit erfundenen Wörtern — und schreibst sie auf. Die Rechtschreibregeln gelten auch für Quatschwörter!</p>
+
+    <div class="audio-hint">
+      <strong>🎤 So läuft der Test ab:</strong>
+      Deine Lehrkraft liest die Sätze vor (oder du klickst auf 🔊, wenn Audio verfügbar ist).
+      Du füllst die Lücken mit den Quatschwörtern — schreib einfach, was du hörst.
+      Es gibt keine richtige oder falsche Aussprache — nur richtige oder falsche Schreibung!
+    </div>
+
+    <div class="field">
+      <label>Klassencode <span style="font-weight:400;color:#9ca3af">(von der Lehrkraft)</span></label>
+      <input type="text" id="inp-code" maxlength="6" placeholder="z. B. AB3X7Y"
+             style="text-transform:uppercase;letter-spacing:.08em" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="field">
+      <label>Dein Name</label>
+      <input type="text" id="inp-name" placeholder="Vorname Nachname" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="field">
+      <label>Diktat-Nummer <span style="font-weight:400;color:#9ca3af">(von der Lehrkraft)</span></label>
+      <select id="inp-diktat" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:.95rem;outline:none">
+        <option value="1">Diktat 1 – Nappige Sehmheiten</option>
+        <option value="2">Diktat 2 – Siebliche Plocker</option>
+        <option value="3">Diktat 3 – Plödige Tosslein</option>
+        <option value="4">Diktat 4 – Sümmliche Keunde</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" onclick="start()">Los geht's →</button>
+    <p id="entry-err" style="color:var(--red);font-size:.83rem;margin-top:8px;display:none"></p>
+  </div>
+</div>
+
+<!-- ══════════ Screen 2: Test -->
+<div id="s-test" class="screen">
+  <div class="card">
+    <div class="prog-row">
+      <span id="dikt-lbl" style="font-weight:700;color:var(--accent)">Diktat 1</span>
+      <span id="satz-lbl">Satz 1 / 7</span>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="score-mini" id="score-mini"></div>
+
+    <div class="audio-row" id="audio-row"></div>
+    <div class="satz-box" id="satz-box"></div>
+
+    <div class="feedback-bar" id="fb-bar"></div>
+    <button class="btn btn-primary" id="check-btn" onclick="check()">Prüfen ✓</button>
+    <button class="btn btn-ghost next-btn" id="next-btn" onclick="next()">Weiter →</button>
+  </div>
+</div>
+
+<!-- ══════════ Screen 3: Ergebnis -->
+<div id="s-result" class="screen">
+  <div class="card">
+    <h2 style="text-align:center;margin-bottom:4px">Dein Ergebnis</h2>
+    <p id="res-sub" style="text-align:center;color:var(--gray);font-size:.88rem;margin-bottom:14px"></p>
+
+    <table class="result-table">
+      <thead><tr><th>Bereich</th><th>Richtig</th><th></th></tr></thead>
+      <tbody id="res-tbody"></tbody>
+    </table>
+
+    <div id="res-summary" style="padding:13px;border-radius:10px;font-size:.92rem;line-height:1.5;margin-bottom:12px"></div>
+
+    <button class="btn btn-primary" id="btn-send" onclick="senden()" style="margin-top:4px">
+      Ergebnis an Lehrkraft senden
+    </button>
+    <div class="sent-box" id="sent-box">✓ Ergebnis wurde übermittelt!</div>
+    <button class="btn btn-ghost" onclick="location.reload()">Neu starten</button>
+
+    <nav class="page-nav">
+      <a href="regelradar-diktat.html">🎤 Diktate</a>
+      <a href="regelradar-strategien.html">📖 Strategien</a>
+      <a href="regelradar.html">🏠 Startseite</a>
+    </nav>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// QUATSCHDIKTAT-DATEN – 4 Diktate × 7 Sätze
+//
+// Satz-Format:
+//   t = Template mit {Quatschwort} als Lücke
+//   l = [{w: "Quatschwort", k: primäre Kategorie}]
+//   audio = Pfad zur Audio-Datei (Lehrkraft-Aufnahme)
+//
+// Audio-Dateien müssen auf dem Server liegen:
+//   /audio/quatsch/q1-s1.mp3  (Diktat 1, Satz 1)
+//   /audio/quatsch/q1-full.mp3 (kompletter Vortrag Diktat 1)
+//   usw.
+// ═══════════════════════════════════════════════════════════════
+
+const DIKTATE = {
+1: {
+  titel: "Nappige Sehmheiten",
+  saetze: [
+    {t:"Alle {nappigen} {Sehmheiten} schmellen oft.",
+     l:[{w:"nappigen",k:2},{w:"Sehmheiten",k:8}],
+     audio:"q1-s1"},
+    {t:"Auch gestern haben sie {nappig} {abgeschmellt}.",
+     l:[{w:"nappig",k:2},{w:"abgeschmellt",k:7}],
+     audio:"q1-s2"},
+    {t:"Viele {Tolge} {knoben}.",
+     l:[{w:"Tolge",k:8},{w:"knoben",k:4}],
+     audio:"q1-s3"},
+    {t:"Ein {Tolg} allein {knobt} nie.",
+     l:[{w:"Tolg",k:4},{w:"knobt",k:4}],
+     audio:"q1-s4"},
+    {t:"Eine {Gattel} mag {Lasungen}.",
+     l:[{w:"Gattel",k:2},{w:"Lasungen",k:8}],
+     audio:"q1-s5"},
+    {t:"Viele {Gättel} {verpollern} oft.",
+     l:[{w:"Gättel",k:5},{w:"verpollern",k:7}],
+     audio:"q1-s6"},
+    {t:"Eine {Tolggattel} {verpollert} manchmal.",
+     l:[{w:"Tolggattel",k:6},{w:"verpollert",k:7}],
+     audio:"q1-s7"}
+  ]
+},
+2: {
+  titel: "Siebliche Plocker",
+  saetze: [
+    {t:"Einige {siebliche} {Plocker} {pallen} manchmal.",
+     l:[{w:"siebliche",k:4},{w:"Plocker",k:2},{w:"pallen",k:2}],
+     audio:"q2-s1"},
+    {t:"Schon oft sind sie {sieblich} {vorgepallt}.",
+     l:[{w:"sieblich",k:4},{w:"vorgepallt",k:7}],
+     audio:"q2-s2"},
+    {t:"Ein {Taum} {baust} häufig.",
+     l:[{w:"Taum",k:8},{w:"baust",k:4}],
+     audio:"q2-s3"},
+    {t:"Alle {Täume} {bausen} gemeinsam.",
+     l:[{w:"Täume",k:5},{w:"bausen",k:4}],
+     audio:"q2-s4"},
+    {t:"Ein {Mand} liebt {Bohlheiten}.",
+     l:[{w:"Mand",k:4},{w:"Bohlheiten",k:8}],
+     audio:"q2-s5"},
+    {t:"Viele {Mände} {verfissen} oft.",
+     l:[{w:"Mände",k:5},{w:"verfissen",k:7}],
+     audio:"q2-s6"},
+    {t:"Ein {Taummand} {verfisst} meistens.",
+     l:[{w:"Taummand",k:6},{w:"verfisst",k:7}],
+     audio:"q2-s7"}
+  ]
+},
+3: {
+  titel: "Plödige Tosslein",
+  saetze: [
+    {t:"Vier {plödige} {Tosslein} {pullen} gern.",
+     l:[{w:"plödige",k:4},{w:"Tosslein",k:2},{w:"pullen",k:2}],
+     audio:"q3-s1"},
+    {t:"Jede {Hesung} werden sie {plödig} {gepullt}.",
+     l:[{w:"Hesung",k:8},{w:"plödig",k:4},{w:"gepullt",k:2}],
+     audio:"q3-s2"},
+    {t:"Einige {Häude} {rießen}.",
+     l:[{w:"Häude",k:5},{w:"rießen",k:3}],
+     audio:"q3-s3"},
+    {t:"Kein {Haud} {rießt} immer.",
+     l:[{w:"Haud",k:4},{w:"rießt",k:3}],
+     audio:"q3-s4"},
+    {t:"Eine {Dage} {klüht} gern.",
+     l:[{w:"Dage",k:8},{w:"klüht",k:4}],
+     audio:"q3-s5"},
+    {t:"Alle {Dägen} mögen {Pielungen}.",
+     l:[{w:"Dägen",k:5},{w:"Pielungen",k:8}],
+     audio:"q3-s6"},
+    {t:"Eine {Hauddage} {klüht} {verramelt}.",
+     l:[{w:"Hauddage",k:6},{w:"klüht",k:4},{w:"verramelt",k:7}],
+     audio:"q3-s7"}
+  ]
+},
+4: {
+  titel: "Sümmliche Keunde",
+  saetze: [
+    {t:"{Sümmliche} {Keunde} haben viel zu {raunzeln}.",
+     l:[{w:"Sümmliche",k:2},{w:"Keunde",k:8},{w:"raunzeln",k:8}],
+     audio:"q4-s1"},
+    {t:"Das {Raunzeln} ist {sümmlich}.",
+     l:[{w:"Raunzeln",k:8},{w:"sümmlich",k:2}],
+     audio:"q4-s2"},
+    {t:"Ein {Keund} ist immer {verleht}.",
+     l:[{w:"Keund",k:4},{w:"verleht",k:7}],
+     audio:"q4-s3"},
+    {t:"Wenn alle {Raunzler} {sümmlich} sind, {leht} eine {Fruße} oft.",
+     l:[{w:"Raunzler",k:8},{w:"sümmlich",k:2},{w:"leht",k:2},{w:"Fruße",k:3}],
+     audio:"q4-s4"},
+    {t:"Ein {Paud} ist oft {verraunzelt}.",
+     l:[{w:"Paud",k:4},{w:"verraunzelt",k:7}],
+     audio:"q4-s5"},
+    {t:"Viele {Taubsen} kennen sehr schöne {Päude}.",
+     l:[{w:"Taubsen",k:8},{w:"Päude",k:5}],
+     audio:"q4-s6"},
+    {t:"So nennt man sie auch {raunzelnde} {Paudtaubsen}.",
+     l:[{w:"raunzelnde",k:8},{w:"Paudtaubsen",k:6}],
+     audio:"q4-s7"}
+  ]
+}};
+
+// Pfad zu Audio-Dateien – anpassen wenn nötig
+const AUDIO_BASE = "/audio/quatsch/";
+
+const KAT = {
+  2:{k:"DK",  n:"Doppelkonsonanten",     c:"var(--c2)"},
+  3:{k:"s/ß", n:"s / ß / ss",           c:"var(--c3)"},
+  4:{k:"AK",  n:"Auslautverhärtung",     c:"var(--c4)"},
+  5:{k:"ä/äu",n:"ä / äu (Ableiten)",    c:"var(--c5)"},
+  6:{k:"ZW",  n:"Zusammensetzungen",     c:"var(--c6)"},
+  7:{k:"AE",  n:"Ableitungen/Vorsilben", c:"var(--c7)"},
+  8:{k:"GK",  n:"Groß-/Kleinschreibung", c:"var(--c8)"}
+};
+const CATS = [2,3,4,5,6,7,8];
+const API  = "https://lehrer-herrmann.de/reso-api";
+
+let st = { name:"", code:"", dNr:1, sIdx:0, scores:{}, items:[], audio:null };
+function initScores() { CATS.forEach(k => st.scores[k]={r:0,g:0}); }
+
+function show(id) {
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+// ── Start ───────────────────────────────────────────────
+function start() {
+  const name = document.getElementById("inp-name").value.trim();
+  const err  = document.getElementById("entry-err");
+  if (!name) { err.textContent="Bitte deinen Namen eingeben."; err.style.display="block"; return; }
+  err.style.display = "none";
+  st.name = name;
+  st.code = document.getElementById("inp-code").value.trim().toUpperCase();
+  st.dNr  = parseInt(document.getElementById("inp-diktat").value);
+  st.sIdx = 0; st.items = [];
+  initScores();
+  show("s-test");
+  renderSatz();
+}
+
+// ── Satz rendern ─────────────────────────────────────────
+function renderSatz() {
+  const diktat = DIKTATE[st.dNr];
+  const satz   = diktat.saetze[st.sIdx];
+
+  document.getElementById("prog-fill").style.width = (st.sIdx/7*100)+"%";
+  document.getElementById("dikt-lbl").textContent  = `Diktat ${st.dNr} – ${diktat.titel}`;
+  document.getElementById("satz-lbl").textContent  = `Satz ${st.sIdx+1} / 7`;
+
+  // Audio-Buttons
+  const audioRow = document.getElementById("audio-row");
+  audioRow.innerHTML = "";
+  // Satz-Audio
+  const satzAudioPath = AUDIO_BASE + satz.audio + ".mp3";
+  audioRow.innerHTML += `
+    <button class="audio-btn" id="play-satz" onclick="playAudio('${satzAudioPath}','play-satz')">
+      🔊 Satz hören
+    </button>`;
+  // Komplettes Diktat
+  const fullAudioPath = AUDIO_BASE + "q" + st.dNr + "-full.mp3";
+  audioRow.innerHTML += `
+    <button class="audio-btn" id="play-full" onclick="playAudio('${fullAudioPath}','play-full')"
+            style="background:#e2e8f0;color:#475569">
+      📋 Ganzes Diktat
+    </button>`;
+
+  // Satz mit Lücken aufbauen
+  let html = satz.t;
+  let lIdx = 0;
+  html = html.replace(/\{([^}]+)\}/g, (_,wort) => {
+    const luecke = satz.l[lIdx++];
+    return `<span class="gap-wrap">
+      <input class="gap-inp" type="text" data-word="${wort}" data-kat="${luecke.k}"
+             autocomplete="off" spellcheck="false" autocorrect="off" autocapitalize="off"
+             placeholder="?">
+      <span class="correct-label"></span>
+    </span>`;
+  });
+  document.getElementById("satz-box").innerHTML = `<span class="satz-static">${html}</span>`;
+
+  // Reset
+  document.getElementById("fb-bar").className = "feedback-bar";
+  document.getElementById("check-btn").style.display = "block";
+  document.getElementById("next-btn").style.display  = "none";
+  document.getElementById("next-btn").textContent    =
+    st.sIdx < 6 ? "Weiter →" : "Zum Ergebnis →";
+
+  updateScoreMini();
+  setTimeout(() => { const f=document.querySelector(".gap-inp"); if(f) f.focus(); }, 80);
+}
+
+// ── Audio ───────────────────────────────────────────────
+function playAudio(path, btnId) {
+  if (st.audio) { st.audio.pause(); st.audio = null; }
+  const btn = document.getElementById(btnId);
+  const audio = new Audio(path);
+  st.audio = audio;
+  audio.onerror = () => {
+    btn.textContent = "⚠️ Audio fehlt";
+    btn.classList.add("unavail");
+  };
+  audio.onended = () => { btn.classList.remove("playing"); };
+  btn.classList.add("playing");
+  audio.play().catch(() => { btn.textContent = "⚠️ Audio fehlt"; btn.classList.add("unavail"); });
+}
+
+// ── Prüfen ───────────────────────────────────────────────
+function check() {
+  const satz   = DIKTATE[st.dNr].saetze[st.sIdx];
+  const inputs = document.querySelectorAll(".gap-inp");
+  let richtig  = 0;
+
+  inputs.forEach((inp, i) => {
+    const luecke  = satz.l[i];
+    const correct = inp.value.trim() === luecke.w;  // exakter Match inkl. Groß/Klein
+
+    inp.classList.add(correct ? "ok" : "err");
+    inp.disabled = true;
+
+    if (!correct) {
+      const lbl = inp.nextElementSibling;
+      lbl.textContent = "→ " + luecke.w;
+      lbl.style.display = "inline";
+    }
+
+    st.scores[luecke.k].g++;
+    if (correct) { st.scores[luecke.k].r++; richtig++; }
+
+    st.items.push({
+      nr:      st.items.length + 1,
+      satz:    satz.t.replace(/\{([^}]+)\}/g,"$1").substring(0,80),
+      wort:    luecke.w,
+      eingabe: inp.value.trim(),
+      richtig: correct,
+      kat:     luecke.k,
+      format:  "quatsch"
+    });
+  });
+
+  const n   = satz.l.length;
+  const fb  = document.getElementById("fb-bar");
+  if (richtig === n)        { fb.className="feedback-bar ok";  fb.textContent=`✓ Alle ${n} Wörter richtig!`; }
+  else if (richtig >= n/2)  { fb.className="feedback-bar mid"; fb.textContent=`${richtig} von ${n} richtig.`; }
+  else                      { fb.className="feedback-bar err"; fb.textContent=`${richtig} von ${n} richtig.`; }
+
+  document.getElementById("check-btn").style.display = "none";
+  document.getElementById("next-btn").style.display  = "block";
+  updateScoreMini();
+}
+
+function next() {
+  st.sIdx++;
+  if (st.sIdx >= 7) { showResult(); return; }
+  renderSatz();
+}
+
+// ── Score-Mini ───────────────────────────────────────────
+function updateScoreMini() {
+  document.getElementById("score-mini").innerHTML = CATS.map(k => {
+    const s = st.scores[k];
+    if (!s.g) return "";
+    const bg = s.r===s.g?"var(--green)":s.r>=s.g/2?"var(--orange)":"var(--red)";
+    return `<span class="sc-chip" style="background:${bg}">${KAT[k].k} ${s.r}/${s.g}</span>`;
+  }).join("");
+}
+
+// ── Ergebnis ─────────────────────────────────────────────
+function showResult() {
+  const diktat = DIKTATE[st.dNr];
+  document.getElementById("res-sub").textContent =
+    `${st.name} · Diktat ${st.dNr} – ${diktat.titel}`;
+
+  const tbody = document.getElementById("res-tbody");
+  tbody.innerHTML = "";
+  let tot=0, max=0;
+
+  CATS.forEach(k => {
+    const s = st.scores[k];
+    if (!s.g) return;
+    tot += s.r; max += s.g;
+    const pct = Math.round(s.r/s.g*100);
+    const cl  = pct>=80?"g":pct>=50?"o":"r";
+    tbody.innerHTML += `<tr>
+      <td><strong style="color:${KAT[k].c}">${KAT[k].k}</strong>
+          <span style="font-size:.76rem;color:#6b7280;display:block">${KAT[k].n}</span></td>
+      <td><span class="ampel ${cl}">${s.r}/${s.g}</span></td>
+      <td style="color:var(--gray);font-size:.8rem">${pct}%</td>
+    </tr>`;
+  });
+
+  const pct = max ? Math.round(tot/max*100) : 0;
+  const sum = document.getElementById("res-summary");
+  if (pct>=80) {
+    sum.style.cssText="background:#dcfce7;color:#14532d;padding:13px;border-radius:10px";
+    sum.innerHTML=`<strong>Super! ${tot}/${max} richtig (${pct}%)</strong><br>Du wendest die Strategien schon gut auf neue Wörter an!`;
+  } else if (pct>=50) {
+    sum.style.cssText="background:#fef9c3;color:#713f12;padding:13px;border-radius:10px";
+    sum.innerHTML=`<strong>${tot}/${max} richtig (${pct}%)</strong><br>Einige Strategien klappt schon – übe die roten Bereiche noch etwas.`;
+  } else {
+    sum.style.cssText="background:#fee2e2;color:#7f1d1d;padding:13px;border-radius:10px";
+    sum.innerHTML=`<strong>${tot}/${max} richtig (${pct}%)</strong><br>Das Quatschwortdiktat ist besonders schwer. Schau dir die Strategien noch einmal an.`;
+  }
+
+  document.getElementById("btn-send").style.display = st.code ? "block" : "none";
+  show("s-result");
+}
+
+// ── Senden ───────────────────────────────────────────────
+async function senden() {
+  const btn = document.getElementById("btn-send");
+  btn.textContent="Wird gesendet …"; btn.disabled=true;
+  const kategorien = {};
+  CATS.forEach(k => { if(st.scores[k].g) kategorien[String(k)]={richtig:st.scores[k].r,gesamt:st.scores[k].g}; });
+  try {
+    const res = await fetch(API+"/ergebnis",{
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        klasse_code:st.code, schueler_name:st.name,
+        stufe:4, format:"quatsch", variante:st.dNr,
+        kategorien, items:st.items
+      })
+    });
+    if (!res.ok) throw new Error(await res.text());
+    document.getElementById("sent-box").style.display="block";
+    btn.style.display="none";
+  } catch(e) {
+    btn.textContent="Senden fehlgeschlagen – nochmal versuchen";
+    btn.disabled=false;
+  }
+}
+</script>
+
+<footer>
+    <div class="container footer-inner">
+        <p>© <span id="footer-jahr">2025</span> Jan Herrmann</p>
+        <nav class="footer-links" aria-label="Rechtliche Links">
+            <a href="impressum.html">Impressum</a>
+            <a href="datenschutz.html">Datenschutz</a>
+        </nav>
+        <a href="/kolosseum/public/admin/" id="admin-footer-link" class="admin-footer-link" aria-hidden="true" tabindex="-1"></a>
+    </div>
+</footer>
+<script src="js/main.js"></script>
+<script src="js/kolosseum-login-widget.js"></script>
+
+</body>
+</html>
