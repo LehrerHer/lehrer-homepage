@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 104" role="img" aria-label="Logo Jan Herrmann">
+  <!-- Linke Buchseite: goldenes Blatt dahinter -->
+  <path d="M64 27 C46 18 24 19 12 26 L12 75 C24 68 46 67 64 76 Z" fill="#e0a32e"/>
+  <!-- Linke Buchseite: weißes Blatt mit navy Kontur -->
+  <path d="M64 31 C48 23 30 23 19 29 L19 71 C30 65 48 65 64 73 Z"
+        fill="#ffffff" stroke="#1e3a5f" stroke-width="3.6" stroke-linejoin="round"/>
+  <!-- Rechte Seite = Laptop-Bildschirm -->
+  <rect x="66" y="23" width="49" height="43" rx="5"
+        fill="#ffffff" stroke="#1e3a5f" stroke-width="3.6"/>
+  <!-- JH-Monogramm auf dem Bildschirm -->
+  <text x="90.5" y="54" text-anchor="middle"
+        font-family="Georgia, 'Times New Roman', serif" font-weight="700" font-size="27">
+    <tspan fill="#1e3a5f">J</tspan><tspan fill="#e0a32e">H</tspan>
+  </text>
+  <!-- Buchrücken / Mittellinie -->
+  <path d="M64 29 L64 75" stroke="#1e3a5f" stroke-width="3.6" stroke-linecap="round"/>
+  <!-- Laptop-Basis / Buchunterkante -->
+  <path d="M50 70 L116 70 L126 92 C126.8 93.6 125.6 95 123.8 95 L40.2 95 C38.4 95 37.2 93.6 38 92 Z"
+        fill="#1e3a5f"/>
+  <!-- goldenes Trackpad -->
+  <rect x="73" y="86" width="18" height="3.8" rx="1.9" fill="#e0a32e"/>
+</svg>

@@ -88,18 +88,31 @@ Visit `http://localhost:8000` to view the site.
 
 Die Navbar erscheint **auf jeder einzelnen Seite** – sowohl auf der Hauptdomain als auch im Kolosseum (Subdomain). **Keine Seite darf einen abweichenden Header haben.**
 
+#### Design (Stand 2026-06): Schwebend + Icon-Navigation
+
+Kopf- und Fußbereich sind **nicht durchgezogen**, sondern **schwebende „Karten"**
+(abgerundet, Schatten, seitlicher Abstand, dunkler Blau-Verlauf). Die Navigation
+zeigt **nur zentrierte Icons** (alle gleich hoch); der Linktext steckt in einer
+Screenreader-only-`.nav-label` und erscheint beim Hover/Fokus als **Tooltip**
+(`data-tooltip`). Oben links **und** unten links steht die **Bildmarke**
+(`img/logo.svg` — Buch/Laptop mit JH-Monogramm, Navy/Gold).
+
 #### Navbar-Elemente (von links nach rechts)
 
-| Element | Ziel | CSS-Klasse |
-|---|---|---|
-| **lehrer-herrmann.de** | `index.html` (Startseite) | `.navbar-logo` |
-| **Was ist neu?** | `index.html#was-ist-neu` | `.navbar-links a` |
-| **Kontakt** | `https://lehrer-herrmann.de/kontakt.html` | `.navbar-links a` |
-| *(Trenner „Geschützter Bereich")* | — | `.navbar-gb-trenner` + `.navbar-gb-label` |
-| **⚔️ Arena** | `https://kolosseum.lehrer-herrmann.de/profil.html` | `.navbar-gb-link` |
-| **✍️ Blog** | `blog.html` | `.navbar-gb-link` |
-| **📚 Fächer** | `faecher.html` | `.navbar-gb-link` |
-| *(Login-Widget)* | — | `#kolosseum-widget` |
+| Element | Icon | Ziel | CSS-Klasse |
+|---|---|---|---|
+| **Logo (Bildmarke)** | (Buch/Laptop) | `index.html` (Startseite) | `.navbar-logo` + `.navbar-logo-img` |
+| **Was ist neu?** | ✨ | `index.html#was-ist-neu` | `.nav-item` |
+| **Kontakt** | ✉️ | `https://lehrer-herrmann.de/kontakt.html` | `.nav-item` |
+| *(Trenner „Geschützter Bereich")* | — | — | `.navbar-gb-trenner` + `.navbar-gb-label` |
+| **Arena** | ⚔️ | `https://kolosseum.lehrer-herrmann.de/profil.html` | `.nav-item .navbar-gb-link` |
+| **Blog** | ✍️ | `blog.html` | `.nav-item .navbar-gb-link` |
+| **Fächer** | 📚 | Dropdown (`faecher.html` + Einzelfächer) | `.navbar-dropdown-toggle .nav-item .navbar-gb-link` |
+| *(Login-Widget)* | — | — | `#kolosseum-widget` |
+
+Jeder Icon-Link/-Button hat die Struktur:
+`<span class="nav-icon" aria-hidden="true">ICON</span><span class="nav-label">Text</span>`
+plus `class="nav-item"` und `data-tooltip="Text"`.
 
 #### Verbindliches HTML-Snippet (Hauptdomain-Seiten)
 
@@ -107,29 +120,39 @@ Die Navbar erscheint **auf jeder einzelnen Seite** – sowohl auf der Hauptdomai
 <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
     <div class="container navbar-inner">
 
-        <a href="index.html" class="navbar-logo">lehrer-herrmann.de</a>
+        <a href="index.html" class="navbar-logo" aria-label="Zur Startseite">
+            <img src="img/logo.svg" alt="" class="navbar-logo-img" width="47" height="38">
+            <span class="navbar-logo-text">lehrer-herrmann.de</span>
+        </a>
 
-        <button
-            class="hamburger"
-            id="hamburger"
-            aria-label="Menü öffnen"
-            aria-expanded="false"
-            aria-controls="navbar-links"
-        >
-            <span></span>
-            <span></span>
-            <span></span>
+        <button class="hamburger" id="hamburger" aria-label="Menü öffnen"
+                aria-expanded="false" aria-controls="navbar-links">
+            <span></span><span></span><span></span>
         </button>
 
         <ul class="navbar-links" id="navbar-links">
-            <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
-            <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+            <li><a href="index.html#was-ist-neu" class="nav-item" data-tooltip="Was ist neu?">
+                <span class="nav-icon" aria-hidden="true">✨</span>
+                <span class="nav-label">Was ist neu?</span></a></li>
+            <li><a href="https://lehrer-herrmann.de/kontakt.html" class="nav-item" data-tooltip="Kontakt">
+                <span class="nav-icon" aria-hidden="true">✉️</span>
+                <span class="nav-label">Kontakt</span></a></li>
             <li class="navbar-gb-trenner" aria-hidden="true">
                 <span class="navbar-gb-label">Geschützter Bereich</span>
             </li>
-            <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
-            <li><a href="blog.html" class="navbar-gb-link">✍️ Blog</a></li>
-            <li><a href="faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+            <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="nav-item navbar-gb-link" data-tooltip="Arena – Lernkolosseum">
+                <span class="nav-icon" aria-hidden="true">⚔️</span>
+                <span class="nav-label">Arena</span></a></li>
+            <li><a href="blog.html" class="nav-item navbar-gb-link" data-tooltip="Schüler*innenblog">
+                <span class="nav-icon" aria-hidden="true">✍️</span>
+                <span class="nav-label">Blog</span></a></li>
+            <li class="navbar-dropdown">
+                <button class="navbar-dropdown-toggle navbar-gb-link nav-item" aria-expanded="false" aria-haspopup="true" data-tooltip="Fächer" aria-label="Fächer">
+                    <span class="nav-icon" aria-hidden="true">📚</span>
+                    <span class="nav-label">Fächer</span>
+                </button>
+                <ul class="navbar-dropdown-menu" role="menu"><!-- Fächerliste --></ul>
+            </li>
         </ul>
 
         <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none">
@@ -140,32 +163,51 @@ Die Navbar erscheint **auf jeder einzelnen Seite** – sowohl auf der Hauptdomai
 </nav>
 ```
 
-Für **Unterverzeichnis-Seiten** (`materialien/`): relative Links mit `../` Prefix oder absolute Pfade (`/index.html`, `/blog.html`, `/faecher.html`).
+> **Automatischer Umbau (`js/main.js`, Abschnitt 0):** Seiten mit *altem*
+> Textmenü müssen nicht zwingend von Hand umgestellt werden – der
+> `navbar-enhancer` in `js/main.js` rüstet jede Seite, die `js/main.js` +
+> `css/style.css` lädt, **idempotent** auf Logo + Icon-Navigation + Footer-Logo
+> um (überspringt bereits umgebaute Seiten). Für neue Seiten dennoch das obige
+> Snippet verwenden (kein Aufblitzen, sauberes HTML).
 
-Für **Kolosseum-Seiten** (`kolosseum.lehrer-herrmann.de`): alle Links als vollständige absolute URLs (`https://lehrer-herrmann.de/...`), Arena-Link als Relativ-Pfad (`/profil.html`).
+Für **Unterverzeichnis-Seiten** (`materialien/`): Logo/Links als absolute Pfade (`/img/logo.svg`, `/index.html`, …).
+
+Für **Kolosseum-Seiten** (`kolosseum.lehrer-herrmann.de`): alle Links als vollständige absolute URLs (`https://lehrer-herrmann.de/...`), Arena-Link als Relativ-Pfad (`/profil.html`), Logo als `https://lehrer-herrmann.de/img/logo.svg`. Der Umbau erfolgt dort über `kolosseum/public/js/main.js`.
 
 #### CSS-Klassen der Navbar
 
 | Klasse | Beschreibung |
 |---|---|
+| `.navbar-inner` | Schwebende Karte (Grid: Logo · zentrierte Icons · Widget) |
+| `.navbar-logo` / `.navbar-logo-img` / `.navbar-logo-text` | Bildmarke + (auf Mobile ausgeblendeter) Wortmarken-Text |
+| `.nav-item` | Einzelnes Icon (Link **oder** Dropdown-Button), gleiche Höhe |
+| `.nav-icon` | Das sichtbare Emoji-Icon |
+| `.nav-label` | Linktext, visuell versteckt (Screenreader); im Mobile-Menü sichtbar |
+| `.nav-item[data-tooltip]` | Erzeugt den Hover/Fokus-Tooltip (zeigt das Linkziel) |
 | `.navbar-gb-trenner` | Vertikaler Trennstrich (auf Mobile: horizontale Linie) |
-| `.navbar-gb-label` | Kleine Beschriftung „GESCHÜTZTER BEREICH" (amber/gold) |
+| `.navbar-gb-label` | „GESCHÜTZTER BEREICH" – Desktop versteckt, Mobile sichtbar |
 | `.navbar-gb-link` | Amber/goldene Linkfarbe für Arena, Blog, Fächer |
-| `#kolo-widget .kolo-user-chip` | CSS-Override: gelber Text auf dunkler Navbar (Widget inject eigene Styles) |
+| `#kolo-widget .kolo-user-chip` | CSS-Override: gelber Text auf dunkler Navbar |
 
 #### Erforderliche Scripts pro Seite
 
-- Alle Seiten: `js/main.js` (Hamburger-Toggle, Footer-Jahr)
+- Alle Seiten: `js/main.js` (Navbar/Footer-Umbau, Hamburger-Toggle, Footer-Jahr)
 - Seiten mit Login-Widget: `js/kolosseum-login-widget.js`
 
 ### Footer
 
-Der Footer erscheint ebenfalls **auf jeder Seite**. Er enthält:
+Der Footer erscheint ebenfalls **auf jeder Seite** als **schwebende Karte**
+(`.footer-inner`). Er enthält:
 
-- **Links:** `© [aktuelles Jahr] Jan Herrmann` | `Impressum` | `Datenschutz`
-- **Rechts:** `Eingeloggt als [Avatarname], Rang [XP]` — und ((nahezu unsichtbar) dieser Text ist ein funktionierender Link zu `/kolosseum/public/admin/`, mit minimalem Kontrast (z. B. `color: rgba(0,0,0,0.15)` auf weißem Grund). Wenn kein Nutzer eingeloggt ist: unsichtbar / leer.
+- **Links:** Bildmarke (`.footer-logo` / `.footer-logo-img`) + `© [aktuelles Jahr] Jan Herrmann` (zusammengefasst in `.footer-marke`) | `Impressum` | `Datenschutz`
+- **Rechts:** `Eingeloggt als [Avatarname], Rang [XP]` — und (nahezu unsichtbar) ein funktionierender Link zu `/kolosseum/public/admin/`, mit minimalem Kontrast. Wenn kein Nutzer eingeloggt ist: unsichtbar / leer.
 
-Das Copyright-Jahr wird dynamisch via `id="footer-jahr"` gesetzt (bereits implementiert in `js/main.js`).
+Das Copyright-Jahr wird dynamisch via `id="footer-jahr"` gesetzt; das Footer-Logo
+wird auf Alt-Seiten vom `navbar-enhancer` ergänzt (beides in `js/main.js`).
+
+**Logo-Asset:** `img/logo.svg` ist eine Vektor-Nachbildung von „Logo 16"
+(Buch + Laptop + JH, Navy `#1e3a5f` / Gold `#e0a32e`). Eine andere Datei kann
+einfach unter gleichem Pfad ersetzt werden.
 
 ---
 
