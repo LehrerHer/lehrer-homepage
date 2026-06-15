@@ -120,7 +120,10 @@
         <div class="container navbar-inner">
 
             <!-- Logo / Homebutton -->
-            <a href="index.html" class="navbar-logo">lehrer-herrmann.de</a>
+            <a href="index.html" class="navbar-logo" aria-label="Zur Startseite">
+                <img src="img/logo.svg" alt="" class="navbar-logo-img" width="47" height="38">
+                <span class="navbar-logo-text">lehrer-herrmann.de</span>
+            </a>
 
             <!-- Hamburger-Button – nur auf kleinen Bildschirmen sichtbar -->
             <button
@@ -137,15 +140,30 @@
 
             <!-- Navigationslinks -->
             <ul class="navbar-links" id="navbar-links">
-                <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
-                <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+                <li><a href="index.html#was-ist-neu" class="nav-item" data-tooltip="Was ist neu?">
+                    <span class="nav-icon" aria-hidden="true">✨</span>
+                    <span class="nav-label">Was ist neu?</span>
+                </a></li>
+                <li><a href="https://lehrer-herrmann.de/kontakt.html" class="nav-item" data-tooltip="Kontakt">
+                    <span class="nav-icon" aria-hidden="true">✉️</span>
+                    <span class="nav-label">Kontakt</span>
+                </a></li>
                 <li class="navbar-gb-trenner" aria-hidden="true">
                     <span class="navbar-gb-label">Geschützter Bereich</span>
                 </li>
-                <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
-                <li><a href="blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+                <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="nav-item navbar-gb-link" data-tooltip="Arena – Lernkolosseum">
+                    <span class="nav-icon" aria-hidden="true">⚔️</span>
+                    <span class="nav-label">Arena</span>
+                </a></li>
+                <li><a href="blog.html" class="nav-item navbar-gb-link" data-tooltip="Schüler*innenblog">
+                    <span class="nav-icon" aria-hidden="true">✍️</span>
+                    <span class="nav-label">Blog</span>
+                </a></li>
                 <li class="navbar-dropdown">
-                    <button class="navbar-dropdown-toggle navbar-gb-link" aria-expanded="false" aria-haspopup="true">📚 Fächer ▾</button>
+                    <button class="navbar-dropdown-toggle navbar-gb-link nav-item" aria-expanded="false" aria-haspopup="true" data-tooltip="Fächer" aria-label="Fächer">
+                        <span class="nav-icon" aria-hidden="true">📚</span>
+                        <span class="nav-label">Fächer</span>
+                    </button>
                     <ul class="navbar-dropdown-menu" role="menu">
                         <li class="dropdown-group-label">Hauptfächer</li>
                         <li><a href="fach-deutsch.html" role="menuitem">📖 Deutsch</a></li>
@@ -779,7 +797,12 @@
          ======================================================== -->
     <footer>
         <div class="container footer-inner">
-            <p>© <span id="footer-jahr">2025</span> Jan Herrmann</p>
+            <div class="footer-marke">
+                <a href="index.html" class="footer-logo" aria-label="Zur Startseite">
+                    <img src="img/logo.svg" alt="" class="footer-logo-img" width="49" height="40">
+                </a>
+                <p>© <span id="footer-jahr">2025</span> Jan Herrmann</p>
+            </div>
             <nav class="footer-links" aria-label="Rechtliche Links">
                 <a href="impressum.html">Impressum</a>
                 <a href="datenschutz.html">Datenschutz</a>

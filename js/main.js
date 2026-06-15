@@ -5,6 +5,90 @@
 
 
 /* ============================================================
+   0. NAVBAR & FOOTER VEREINHEITLICHEN
+   Rüstet jede Seite auf das schwebende Design um:
+   - Bildmarke (Logo) oben links und unten links
+   - zentrierte Icon-Navigation mit Tooltip statt Textlinks
+   Idempotent: bereits umgebaute Seiten (z. B. index.html)
+   werden übersprungen.
+   ============================================================ */
+(function () {
+    'use strict';
+
+    var LOGO_SRC  = '/img/logo.svg';
+    var HOME_HREF = '/index.html';
+
+    /* --- Logo in die Navbar setzen --- */
+    var logo = document.querySelector('.navbar-logo');
+    if (logo && !logo.querySelector('img')) {
+        var wortmarke = (logo.textContent || '').trim() || 'lehrer-herrmann.de';
+        logo.setAttribute('aria-label', 'Zur Startseite');
+        logo.innerHTML =
+            '<img src="' + LOGO_SRC + '" alt="" class="navbar-logo-img" width="47" height="38">' +
+            '<span class="navbar-logo-text">' + wortmarke + '</span>';
+    }
+
+    /* --- Navigations-Links zu Icons + Tooltip umbauen --- */
+    var TIPS = [
+        { test: /was-ist-neu/i,            icon: '✨',          label: 'Was ist neu?', tip: 'Was ist neu?' },
+        { test: /kontakt/i,                icon: '✉️',    label: 'Kontakt',      tip: 'Kontakt' },
+        { test: /profil|kolosseum|arena/i, icon: '⚔️',    label: 'Arena',        tip: 'Arena – Lernkolosseum' },
+        { test: /blog/i,                   icon: '✍️',    label: 'Blog',         tip: 'Schüler*innenblog' },
+        { test: /faecher|fächer/i,    icon: '📚',    label: 'Fächer',  tip: 'Fächer' }
+    ];
+
+    function ersteEmoji(text) {
+        var token = text.split(/\s+/)[0] || '';
+        // Emoji-Token ohne Buchstaben gilt als Icon
+        if (/[A-Za-zÀ-ɏ]/.test(token)) return '';
+        return /[☀-➿⚔️]|[\uD83C-\uDBFF][\uDC00-\uDFFF]/.test(token) ? token : '';
+    }
+
+    var liste = document.querySelector('.navbar-links');
+    if (liste) {
+        liste.querySelectorAll(':scope > li > a, :scope > li > .navbar-dropdown-toggle').forEach(function (el) {
+            if (el.querySelector('.nav-icon')) return; // schon umgebaut
+            var roh  = (el.textContent || '').replace(/[▾▼]/g, '').trim();
+            var href = el.getAttribute('href') || '';
+            var treffer = null;
+            TIPS.forEach(function (t) { if (!treffer && (t.test.test(href) || t.test.test(roh))) treffer = t; });
+
+            var icon  = ersteEmoji(roh);
+            var label = treffer ? treffer.label : roh.replace(icon, '').trim();
+            var tip   = treffer ? treffer.tip   : (roh.replace(icon, '').trim() || label || 'Link');
+            if (!icon)  icon  = treffer ? treffer.icon : '🔗';
+            if (!label) label = tip;
+
+            el.classList.add('nav-item');
+            el.setAttribute('data-tooltip', tip);
+            if (el.tagName === 'BUTTON') el.setAttribute('aria-label', tip);
+            el.innerHTML =
+                '<span class="nav-icon" aria-hidden="true">' + icon + '</span>' +
+                '<span class="nav-label">' + label + '</span>';
+        });
+    }
+
+    /* --- Logo + Marke in den Footer setzen --- */
+    var fInner = document.querySelector('.footer-inner, .site-footer-inner');
+    if (fInner && !fInner.querySelector('.footer-marke')) {
+        var p = fInner.querySelector('p');
+        if (p) {
+            var marke = document.createElement('div');
+            marke.className = 'footer-marke';
+            var a = document.createElement('a');
+            a.className = 'footer-logo';
+            a.href = HOME_HREF;
+            a.setAttribute('aria-label', 'Zur Startseite');
+            a.innerHTML = '<img src="' + LOGO_SRC + '" alt="" class="footer-logo-img" width="49" height="40">';
+            p.parentNode.insertBefore(marke, p);
+            marke.appendChild(a);
+            marke.appendChild(p);
+        }
+    }
+}());
+
+
+/* ============================================================
    1. HAMBURGER-MENÜ (Mobile Navigation)
    Das Menü wird per Klick auf den Hamburger-Button geöffnet/
    geschlossen. CSS-Klasse "offen" schaltet die Sichtbarkeit.
