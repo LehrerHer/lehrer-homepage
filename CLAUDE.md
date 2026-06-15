@@ -556,7 +556,7 @@ Deutschunterricht. Claim: **„Rechtschreibung & Zeichensetzung diagnostizieren,
 > Die alten `reso*.html`-Pfade existieren nur noch als **Redirect-Stubs** → `regelradar*.html`.
 
 ### Seiten (alle im Root)
-- **Hub:** `regelradar.html` – bündelt alle Unterbereiche, Hero + Claim, Logo `img/regelradar-logo.svg`.
+- **Hub:** `regelradar.html` – bündelt alle Unterbereiche, Hero + Claim, Logo `img/regelradar-logo.jpg`.
 - **Schüler-Selbsttest:** `regelradar-selbsttest.html` – 5 Varianten × 35 Items, 7 Rechtschreibkategorien
   (Doppelkonsonanten, s/ß/ss, Auslautverhärtung, ä/äu, Zusammensetzungen, Ableitungen/Vorsilben,
   Groß-/Kleinschreibung). Klassencode + Name → Variante → MC-Test → Ergebnis → optional an Lehrkraft
