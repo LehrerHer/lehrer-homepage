@@ -18,7 +18,7 @@
         literaturwissenschaft: 'literaturwissenschaft_quiz_v2.html',
         rechtschreib:          'rechtschreibquiz.html',
         deutsch:               'materialien/deutsch_seki_quiz_2026-05.html',
-        erdkunde:              'materialien-erdkunde.html'
+        erdkunde:              'fach-erdkunde.html'
     };
     var QUIZ_LABELS = {
         stilmittel:            'Stilmittel-Quiz',

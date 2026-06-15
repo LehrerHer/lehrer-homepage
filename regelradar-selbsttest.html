@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>RegelRadar – Selbsttest</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg:      #f5f7fa;
+    --card:    #ffffff;
+    --accent:  #2563eb;
+    --green:   #16a34a;
+    --red:     #dc2626;
+    --orange:  #d97706;
+    --gray:    #6b7280;
+    --border:  #e2e8f0;
+    --text:    #1e293b;
+    --radius:  14px;
+  }
+  body { background: var(--bg); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+         color: var(--text); min-height: 100dvh; display: flex; flex-direction: column; align-items: center;
+         justify-content: flex-start; padding: 16px; }
+
+  h1  { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; text-align: center; }
+  h2  { font-size: 1.15rem; font-weight: 600; margin-bottom: 12px; }
+  .sub { color: var(--gray); font-size: 0.875rem; text-align: center; margin-bottom: 24px; }
+
+  .card {
+    background: var(--card); border-radius: var(--radius);
+    box-shadow: 0 2px 12px rgba(0,0,0,.08);
+    padding: 28px 24px; width: 100%; max-width: 480px; margin: 0 auto;
+  }
+
+  /* ── Eingabe ──────────────────────────────────────────────── */
+  .field      { margin-bottom: 16px; }
+  label       { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--gray); }
+  input, select {
+    width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
+    border-radius: 10px; font-size: 1rem; background: #fff; color: var(--text);
+    outline: none; transition: border-color .15s;
+  }
+  input:focus, select:focus { border-color: var(--accent); }
+  input.upper { text-transform: uppercase; letter-spacing: .1em; }
+
+  .btn {
+    display: block; width: 100%; padding: 14px; border: none; border-radius: 10px;
+    font-size: 1.05rem; font-weight: 600; cursor: pointer; transition: filter .15s, transform .1s;
+    margin-top: 8px;
+  }
+  .btn:hover  { filter: brightness(1.07); }
+  .btn:active { transform: scale(.98); }
+  .btn-primary  { background: var(--accent); color: #fff; }
+  .btn-ghost    { background: var(--border); color: var(--text); }
+  .btn-green    { background: var(--green);  color: #fff; }
+
+  /* ── Fortschritt ─────────────────────────────────────────── */
+  .prog-bar { background: var(--border); border-radius: 99px; height: 6px; margin-bottom: 20px; overflow: hidden; }
+  .prog-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width .3s; }
+  .prog-label { font-size: .8rem; color: var(--gray); text-align: right; margin-bottom: 6px; }
+
+  /* ── Item-Karte ──────────────────────────────────────────── */
+  .item-word {
+    font-size: 1.6rem; font-weight: 700; text-align: center;
+    margin: 12px 0 28px; letter-spacing: .02em; min-height: 52px;
+    display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 2px;
+  }
+  .blank { display: inline-block; border-bottom: 3px solid var(--accent); min-width: 40px; text-align: center; }
+  .blank.filled-correct { color: var(--green); border-color: var(--green); }
+  .blank.filled-wrong   { color: var(--red);   border-color: var(--red);   text-decoration: line-through; }
+  .correct-answer       { color: var(--green); font-weight: 700; }
+
+  .opt-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+  .opt-btn {
+    padding: 18px 8px; border: 2px solid var(--border); border-radius: 12px;
+    background: #fff; font-size: 1.3rem; font-weight: 700; cursor: pointer;
+    transition: all .15s; text-align: center;
+  }
+  .opt-btn:hover   { border-color: var(--accent); background: #eff6ff; }
+  .opt-btn:active  { transform: scale(.96); }
+  .opt-btn.correct { background: #dcfce7; border-color: var(--green); color: var(--green); }
+  .opt-btn.wrong   { background: #fee2e2; border-color: var(--red);   color: var(--red);   }
+  .opt-btn:disabled { cursor: default; }
+
+  .feedback-bar {
+    margin-top: 14px; padding: 10px 16px; border-radius: 10px; text-align: center;
+    font-weight: 600; font-size: .95rem; display: none;
+  }
+  .feedback-bar.show-ok  { display: block; background: #dcfce7; color: var(--green); }
+  .feedback-bar.show-err { display: block; background: #fee2e2; color: var(--red); }
+
+  .next-btn { margin-top: 14px; }
+
+  /* ── Ergebnis ────────────────────────────────────────────── */
+  .result-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: .9rem; }
+  .result-table th { text-align: left; padding: 8px 6px; font-size: .78rem; color: var(--gray);
+                     border-bottom: 1.5px solid var(--border); font-weight: 600; }
+  .result-table td { padding: 10px 6px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .dots span { font-size: 1.1rem; }
+  .ampel { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: .8rem; font-weight: 600; }
+  .ampel-gruen  { background: #dcfce7; color: var(--green); }
+  .ampel-gelb   { background: #fef9c3; color: #854d0e; }
+  .ampel-rot    { background: #fee2e2; color: var(--red); }
+
+  .summary-box { padding: 16px; border-radius: 12px; margin: 16px 0; font-size: .95rem; line-height: 1.5; }
+  .summary-ok   { background: #dcfce7; color: #14532d; }
+  .summary-mid  { background: #fef9c3; color: #713f12; }
+  .summary-bad  { background: #fee2e2; color: #7f1d1d; }
+
+  .sent-box { background: #eff6ff; border-radius: 10px; padding: 12px 16px;
+              font-size: .9rem; color: #1e40af; text-align: center; margin-top: 8px; display: none; }
+
+  .screen { width: 100%; max-width: 480px; display: none; }
+  .screen.active { display: block; }
+
+  .top-logo { font-weight: 800; font-size: 1.1rem; color: var(--accent);
+              letter-spacing: .05em; margin-bottom: 20px; text-align: center; }
+
+  /* ── Weiter-Lernen-Buttons im Ergebnis ───────────────── */
+  .next-steps { margin: 14px 0 6px; }
+  .next-steps h3 { font-size: .82rem; font-weight: 700; color: var(--gray);
+                   text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; }
+  .step-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; flex-wrap: wrap; }
+  .step-label { font-size: .85rem; font-weight: 600; min-width: 120px; flex: 0 0 auto; }
+  .step-btn {
+    flex: 1; padding: 9px 12px; border: none; border-radius: 9px;
+    font-size: .82rem; font-weight: 600; cursor: pointer; text-align: center;
+    text-decoration: none; display: inline-block; transition: filter .15s;
+  }
+  .step-btn:hover { filter: brightness(.92); }
+  .step-btn-strat { background: #eff6ff; color: #1d4ed8; }
+  .step-btn-ueb   { background: #ecfdf5; color: #065f46; }
+
+  /* ── Seiten-Navigation (footer) ─────────────────────── */
+  .page-nav {
+    display: flex; gap: 6px; justify-content: center; flex-wrap: wrap;
+    margin-top: 18px; padding: 14px 0 4px;
+    border-top: 1px solid var(--border);
+  }
+  .page-nav a {
+    padding: 8px 14px; border-radius: 99px; font-size: .82rem; font-weight: 600;
+    text-decoration: none; background: var(--border); color: var(--gray);
+    transition: all .15s;
+  }
+  .page-nav a:hover { background: #cbd5e1; color: var(--text); }
+  .page-nav a.current { background: var(--accent); color: #fff; }
+</style>
+</head>
+<body>
+
+    <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+        <div class="container navbar-inner">
+            <a href="index.html" class="navbar-logo">lehrer-herrmann.de</a>
+            <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="navbar-links" id="navbar-links">
+                <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
+                <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+                <li class="navbar-gb-trenner" aria-hidden="true"><span class="navbar-gb-label">Geschützter Bereich</span></li>
+                <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+                <li><a href="blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+                <li class="navbar-dropdown">
+                    <button class="navbar-dropdown-toggle navbar-gb-link" aria-expanded="false" aria-haspopup="true">📚 Fächer ▾</button>
+                    <ul class="navbar-dropdown-menu" role="menu">
+                        <li class="dropdown-group-label">Hauptfächer</li>
+                        <li><a href="fach-deutsch.html" role="menuitem">📖 Deutsch</a></li>
+                        <li><a href="fach-geschichte.html" role="menuitem">🏛️ Geschichte</a></li>
+                        <li><a href="fach-wipo.html" role="menuitem">⚖️ Wirtschaft/Politik</a></li>
+                        <li><a href="fach-informatik.html" role="menuitem">💻 Informatik</a></li>
+                        <li><a href="fach-werte-normen.html" role="menuitem">🤝 Werte &amp; Normen</a></li>
+                        <li class="dropdown-group-label">Weitere Fächer</li>
+                        <li><a href="fach-mathe.html" role="menuitem">🔢 Mathematik</a></li>
+                        <li><a href="fach-englisch.html" role="menuitem">🇬🇧 Englisch</a></li>
+                        <li><a href="fach-sport.html" role="menuitem">⚽ Sport</a></li>
+                        <li><a href="fach-biologie.html" role="menuitem">🌱 Biologie</a></li>
+                        <li><a href="fach-chemie.html" role="menuitem">⚗️ Chemie</a></li>
+                        <li><a href="fach-physik.html" role="menuitem">⚛️ Physik</a></li>
+                        <li><a href="fach-musik.html" role="menuitem">🎵 Musik</a></li>
+                        <li><a href="fach-erdkunde.html" role="menuitem">🗺️ Erdkunde</a></li>
+                        <li><a href="fach-gestaltendes-werken.html" role="menuitem">🎨 Gestaltendes Werken</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="fach-ag-projekte.html" role="menuitem">🚀 AGs &amp; Projekte</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+        </div>
+    </nav>
+
+<!-- ═══════════════════════════════════════════════════════════ SCREEN 1: Eingabe -->
+<div id="s-entry" class="screen active">
+  <div style="margin-top:12px" class="top-logo">RegelRadar – Selbsttest</div>
+  <p class="sub">Rechtschreibung &amp; Zeichensetzung diagnostizieren, trainieren, meistern. Finde heraus, wo du in der Rechtschreibung schon sicher bist.</p>
+  <div class="card">
+    <div class="field">
+      <label for="inp-code">Klassencode (von der Lehrkraft)</label>
+      <input id="inp-code" class="upper" type="text" maxlength="6" placeholder="z. B. AB3X7Y" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="field">
+      <label for="inp-name">Dein Name</label>
+      <input id="inp-name" type="text" placeholder="Vorname Nachname" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="field">
+      <label for="inp-variante">Variante <span style="font-weight:400;color:#9ca3af">(falls nicht anders gesagt: Variante 1)</span></label>
+      <select id="inp-variante">
+        <option value="1">Variante 1</option>
+        <option value="2">Variante 2</option>
+        <option value="3">Variante 3</option>
+        <option value="4">Variante 4</option>
+        <option value="5">Variante 5</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" onclick="startTest()">Los geht's →</button>
+    <p id="entry-err" style="color:var(--red);font-size:.85rem;margin-top:10px;display:none"></p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ SCREEN 2: Test -->
+<div id="s-test" class="screen">
+  <div class="card">
+    <div class="prog-label"><span id="prog-num">1</span> / 35</div>
+    <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <div class="item-word" id="item-word"></div>
+    <div class="opt-row">
+      <button class="opt-btn" id="btn-a" onclick="answer('a')"></button>
+      <button class="opt-btn" id="btn-b" onclick="answer('b')"></button>
+    </div>
+    <div class="feedback-bar" id="fb-bar"></div>
+    <button class="btn btn-ghost next-btn" id="next-btn" onclick="nextItem()" style="display:none">Weiter →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ SCREEN 3: Ergebnis -->
+<div id="s-result" class="screen">
+  <div class="card">
+    <h2 style="text-align:center">Dein Ergebnis 🎉</h2>
+    <p id="res-name" style="text-align:center;color:var(--gray);font-size:.9rem;margin-bottom:14px"></p>
+    <table class="result-table">
+      <thead><tr><th>Bereich</th><th>Punkte</th><th></th></tr></thead>
+      <tbody id="res-tbody"></tbody>
+    </table>
+    <div class="summary-box" id="res-summary"></div>
+    <button class="btn btn-green" id="btn-send" onclick="sendResult()">Ergebnis an Lehrkraft senden</button>
+    <div class="sent-box" id="sent-box">✓ Ergebnis wurde übermittelt!</div>
+    <button class="btn btn-ghost" style="margin-top:10px" onclick="restart()">Neu starten</button>
+
+    <nav class="page-nav">
+      <a href="regelradar-selbsttest.html"  class="current">🔎 Test</a>
+      <a href="regelradar-strategien.html"  target="_blank">📖 Strategien</a>
+      <a href="regelradar-uebungen.html"    target="_blank">✏️ Übungen</a>
+    </nav>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════════════════════════
+// TESTDATEN – alle 5 Varianten × 35 Items
+// Felder: v=Prefix, n=Suffix, a=Option A, b=Option B, k=korrekte Option ("a"|"b"), kat=Kategorie (2–8)
+// ═══════════════════════════════════════════════════════════════════════════════
+const TESTS = {
+1:[
+ {v:"die Be",n:"decke",a:"t",b:"tt",k:"b",kat:2},
+ {v:"die Ro",n:"e",a:"s",b:"ß",k:"a",kat:3},
+ {v:"schwier",n:"",a:"ig",b:"ich",k:"a",kat:4},
+ {v:"tats",n:"chlich",a:"ä",b:"e",k:"a",kat:5},
+ {v:"die Tenni",n:"ocke",a:"s",b:"ss",k:"b",kat:6},
+ {v:"un",n:"orsichtig",a:"v",b:"f",k:"a",kat:7},
+ {v:"die ",n:"icherheit",a:"S",b:"s",k:"a",kat:8},
+ {v:"das Mä",n:"chen",a:"pp",b:"p",k:"a",kat:2},
+ {v:"er begrü",n:"t",a:"s",b:"ß",k:"b",kat:3},
+ {v:"der Kor",n:"",a:"p",b:"b",k:"b",kat:4},
+ {v:"der B",n:"tel",a:"äu",b:"eu",k:"b",kat:5},
+ {v:"die Spor",n:"asche",a:"t",b:"tt",k:"b",kat:6},
+ {v:"ent",n:"ernen",a:"f",b:"v",k:"a",kat:7},
+ {v:"",n:"ick",a:"d",b:"D",k:"a",kat:8},
+ {v:"er fä",n:"t",a:"l",b:"ll",k:"b",kat:2},
+ {v:"das Prei",n:"schild",a:"ß",b:"s",k:"b",kat:3},
+ {v:"er lo",n:"t",a:"p",b:"b",k:"b",kat:4},
+ {v:"der D",n:"ckel",a:"ä",b:"e",k:"b",kat:5},
+ {v:"das Lauf",n:"ad",a:"r",b:"rr",k:"a",kat:6},
+ {v:"das Miss",n:"erständnis",a:"v",b:"f",k:"a",kat:7},
+ {v:"die ",n:"rdnung",a:"O",b:"o",k:"a",kat:8},
+ {v:"schi",n:"",a:"k",b:"ck",k:"b",kat:2},
+ {v:"es flie",n:"t",a:"s",b:"ß",k:"b",kat:3},
+ {v:"grün",n:"lich",a:"t",b:"d",k:"b",kat:4},
+ {v:"sch",n:"mend",a:"eu",b:"äu",k:"b",kat:5},
+ {v:"die Bro",n:"üte",a:"t",b:"tt",k:"b",kat:6},
+ {v:"der ",n:"erband",a:"V",b:"F",k:"a",kat:7},
+ {v:"",n:"äumlich",a:"R",b:"r",k:"b",kat:8},
+ {v:"er hä",n:"t",a:"l",b:"ll",k:"a",kat:2},
+ {v:"er lie",n:"t",a:"s",b:"ß",k:"a",kat:3},
+ {v:"er mer",n:"t",a:"k",b:"g",k:"a",kat:4},
+ {v:"er w",n:"scht",a:"e",b:"ä",k:"b",kat:5},
+ {v:"das Trin",n:"eld",a:"k",b:"kg",k:"b",kat:6},
+ {v:"a",n:"nehmen",a:"b",b:"p",k:"a",kat:7},
+ {v:"die ",n:"mgebung",a:"U",b:"u",k:"a",kat:8}
+],
+2:[
+ {v:"wir re",n:"en",a:"nn",b:"n",k:"a",kat:2},
+ {v:"die Lo",n:"e",a:"s",b:"ß",k:"a",kat:3},
+ {v:"er le",n:"t",a:"g",b:"k",k:"a",kat:4},
+ {v:"die L",n:"te",a:"eu",b:"äu",k:"a",kat:5},
+ {v:"auf",n:"egen",a:"r",b:"rr",k:"a",kat:6},
+ {v:"er ",n:"erläuft sich",a:"v",b:"f",k:"a",kat:7},
+ {v:"",n:"auber",a:"s",b:"S",k:"a",kat:8},
+ {v:"es kna",n:"t",a:"l",b:"ll",k:"b",kat:2},
+ {v:"drau",n:"en",a:"s",b:"ß",k:"b",kat:3},
+ {v:"freundl",n:"",a:"ich",b:"ig",k:"a",kat:4},
+ {v:"aufr",n:"men",a:"äu",b:"eu",k:"a",kat:5},
+ {v:"der Quar",n:"uchen",a:"k",b:"kk",k:"b",kat:6},
+ {v:"ent",n:"ernen",a:"f",b:"v",k:"a",kat:7},
+ {v:"die ",n:"älte",a:"k",b:"K",k:"b",kat:8},
+ {v:"er ist verle",n:"t",a:"t",b:"tz",k:"b",kat:2},
+ {v:"die Fuß",n:"ohle",a:"s",b:"ß",k:"a",kat:3},
+ {v:"er lie",n:"t",a:"p",b:"b",k:"b",kat:4},
+ {v:"er fr",n:"t sich",a:"äu",b:"eu",k:"b",kat:5},
+ {v:"das Schlüsse",n:"och",a:"l",b:"ll",k:"b",kat:6},
+ {v:"",n:"erbrennen",a:"v",b:"f",k:"a",kat:7},
+ {v:"die ",n:"rdnung",a:"O",b:"o",k:"a",kat:8},
+ {v:"wi",n:"d",a:"l",b:"ll",k:"a",kat:2},
+ {v:"er lie",n:"t",a:"s",b:"ß",k:"a",kat:3},
+ {v:"die Wan",n:"farbe",a:"t",b:"d",k:"b",kat:4},
+ {v:"gl",n:"nzend",a:"ä",b:"e",k:"a",kat:5},
+ {v:"der Fenste",n:"ahmen",a:"r",b:"rr",k:"b",kat:6},
+ {v:"be",n:"or",a:"v",b:"f",k:"a",kat:7},
+ {v:"",n:"reundlich",a:"F",b:"f",k:"b",kat:8},
+ {v:"der Sa",n:"",a:"c",b:"ck",k:"b",kat:2},
+ {v:"er gie",n:"t",a:"s",b:"ß",k:"b",kat:3},
+ {v:"er ist witz",n:"",a:"ig",b:"ich",k:"a",kat:4},
+ {v:"die B",n:"nder",a:"e",b:"ä",k:"b",kat:5},
+ {v:"das Moto",n:"ad",a:"r",b:"rr",k:"b",kat:6},
+ {v:"der ",n:"ernseher",a:"F",b:"V",k:"a",kat:7},
+ {v:"die ",n:"reiheit",a:"F",b:"f",k:"a",kat:8}
+],
+3:[
+ {v:"wir wo",n:"en",a:"ll",b:"l",k:"a",kat:2},
+ {v:"die Lo",n:"e",a:"s",b:"ß",k:"a",kat:3},
+ {v:"die Luf",n:"",a:"t",b:"d",k:"a",kat:4},
+ {v:"das M",n:"ppchen",a:"ä",b:"e",k:"a",kat:5},
+ {v:"die Hau",n:"uhe",a:"ssch",b:"sch",k:"a",kat:6},
+ {v:"der ",n:"ernseher",a:"F",b:"V",k:"a",kat:7},
+ {v:"",n:"reckig",a:"d",b:"D",k:"a",kat:8},
+ {v:"es fä",n:"t",a:"l",b:"ll",k:"b",kat:2},
+ {v:"drau",n:"en",a:"s",b:"ß",k:"b",kat:3},
+ {v:"der Zwei",n:"",a:"g",b:"k",k:"a",kat:4},
+ {v:"m",n:"chtig",a:"ä",b:"e",k:"a",kat:5},
+ {v:"a",n:"sehen",a:"n",b:"nn",k:"a",kat:6},
+ {v:"we",n:"laufen",a:"g",b:"k",k:"a",kat:7},
+ {v:"die ",n:"rkältung",a:"E",b:"e",k:"a",kat:8},
+ {v:"die Wa",n:"d",a:"n",b:"nn",k:"a",kat:2},
+ {v:"er gie",n:"t",a:"ß",b:"s",k:"a",kat:3},
+ {v:"der Ausflu",n:"",a:"k",b:"g",k:"b",kat:4},
+ {v:"die R",n:"gel",a:"ä",b:"e",k:"b",kat:5},
+ {v:"der Gol",n:"aler",a:"d",b:"dt",k:"b",kat:6},
+ {v:"a",n:"geben",a:"b",b:"p",k:"a",kat:7},
+ {v:"die ",n:"elegenheit",a:"G",b:"g",k:"a",kat:8},
+ {v:"der Fe",n:"s",a:"l",b:"ll",k:"a",kat:2},
+ {v:"die Mau",n:"",a:"s",b:"ß",k:"a",kat:3},
+ {v:"freun",n:"lich",a:"d",b:"t",k:"a",kat:4},
+ {v:"die G",n:"nse",a:"ä",b:"e",k:"a",kat:5},
+ {v:"der Compute",n:"aum",a:"r",b:"rr",k:"b",kat:6},
+ {v:"",n:"erraten",a:"f",b:"v",k:"b",kat:7},
+ {v:"",n:"ändlich",a:"l",b:"L",k:"a",kat:8},
+ {v:"die Gru",n:"e",a:"p",b:"pp",k:"b",kat:2},
+ {v:"das Ei",n:"",a:"s",b:"ß",k:"a",kat:3},
+ {v:"bill",n:"",a:"ig",b:"ich",k:"a",kat:4},
+ {v:"gef",n:"hrlich",a:"e",b:"ä",k:"b",kat:5},
+ {v:"zah",n:"ose",a:"l",b:"ll",k:"b",kat:6},
+ {v:"die ",n:"orliebe",a:"F",b:"V",k:"b",kat:7},
+ {v:"die ",n:"rankheit",a:"K",b:"k",k:"a",kat:8}
+],
+4:[
+ {v:"die Ö",n:"entlichkeit",a:"f",b:"ff",k:"b",kat:2},
+ {v:"das Schlie",n:"fach",a:"s",b:"ß",k:"b",kat:3},
+ {v:"der Kor",n:"jäger",a:"p",b:"b",k:"b",kat:4},
+ {v:"w",n:"rend",a:"eh",b:"äh",k:"b",kat:5},
+ {v:"die Arbeit",n:"telle",a:"ss",b:"sss",k:"a",kat:6},
+ {v:"w",n:"derlegen",a:"i",b:"ie",k:"a",kat:7},
+ {v:"die ",n:"röhlichkeit",a:"f",b:"F",k:"b",kat:8},
+ {v:"das Wi",n:"en",a:"s",b:"ss",k:"b",kat:2},
+ {v:"der Rie",n:"e",a:"s",b:"ß",k:"a",kat:3},
+ {v:"das Wil",n:"schwein",a:"d",b:"t",k:"a",kat:4},
+ {v:"aus dem B",n:"cher",a:"e",b:"ä",k:"a",kat:5},
+ {v:"das Fitne",n:"tudio",a:"ss",b:"sss",k:"b",kat:6},
+ {v:"we",n:"machen",a:"g",b:"ck",k:"a",kat:7},
+ {v:"Das ",n:"ilmen",a:"f",b:"F",k:"b",kat:8},
+ {v:"bre",n:"en",a:"n",b:"nn",k:"b",kat:2},
+ {v:"lei",n:"e",a:"s",b:"ß",k:"a",kat:3},
+ {v:"der Schulzwei",n:"",a:"g",b:"k",k:"a",kat:4},
+ {v:"den W",n:"nden",a:"e",b:"ä",k:"b",kat:5},
+ {v:"die Schu",n:"eistung",a:"l",b:"ll",k:"b",kat:6},
+ {v:"das Mi",n:"trauen",a:"s",b:"ss",k:"b",kat:7},
+ {v:"",n:"rühestens",a:"f",b:"F",k:"a",kat:8},
+ {v:"die Höh",n:"e",a:"l",b:"ll",k:"a",kat:2},
+ {v:"er lie",n:"",a:"s",b:"ß",k:"b",kat:3},
+ {v:"der Hem",n:"kragen",a:"t",b:"d",k:"b",kat:4},
+ {v:"das Tr",n:"merlein",a:"eu",b:"äu",k:"b",kat:5},
+ {v:"die Schi",n:"ahrt",a:"ff",b:"fff",k:"b",kat:6},
+ {v:"ve",n:"eisen",a:"r",b:"rr",k:"b",kat:7},
+ {v:"das laute ",n:"ingen",a:"s",b:"S",k:"b",kat:8},
+ {v:"der Te",n:"ich",a:"p",b:"pp",k:"b",kat:2},
+ {v:"der Freisto",n:"",a:"ss",b:"ß",k:"b",kat:3},
+ {v:"die Techni",n:"",a:"k",b:"g",k:"a",kat:4},
+ {v:"h",n:"len",a:"eu",b:"äu",k:"a",kat:5},
+ {v:"übe",n:"agend",a:"r",b:"rr",k:"b",kat:6},
+ {v:"das Erleb",n:"",a:"nis",b:"niss",k:"a",kat:7},
+ {v:"Er liebt die ",n:"leinen",a:"k",b:"K",k:"b",kat:8}
+],
+5:[
+ {v:"der O",n:"en",a:"f",b:"ff",k:"a",kat:2},
+ {v:"de",n:"halb",a:"s",b:"ß",k:"a",kat:3},
+ {v:"das Sie",n:"",a:"b",b:"p",k:"a",kat:4},
+ {v:"kr",n:"ftig",a:"e",b:"ä",k:"b",kat:5},
+ {v:"die Topf",n:"lanze",a:"f",b:"pf",k:"b",kat:6},
+ {v:"der ",n:"lauf",a:"Ab",b:"Ap",k:"a",kat:7},
+ {v:"die ",n:"ünktlichkeit",a:"p",b:"P",k:"b",kat:8},
+ {v:"das Wa",n:"er",a:"s",b:"ss",k:"b",kat:2},
+ {v:"Er stellte sie blo",n:"",a:"ß",b:"s",k:"a",kat:3},
+ {v:"Die Narbe ist wun",n:"",a:"d",b:"t",k:"a",kat:4},
+ {v:"die ",n:"ngste",a:"E",b:"Ä",k:"b",kat:5},
+ {v:"herübe",n:"eiten",a:"r",b:"rr",k:"b",kat:6},
+ {v:"das ",n:"geschick",a:"Mis",b:"Miss",k:"b",kat:7},
+ {v:"beim ",n:"aufen",a:"l",b:"L",k:"b",kat:8},
+ {v:"die Po",n:"es",a:"m",b:"mm",k:"b",kat:2},
+ {v:"die Va",n:"e",a:"ß",b:"s",k:"b",kat:3},
+ {v:"die Frem",n:"wahrnehmung",a:"d",b:"t",k:"a",kat:4},
+ {v:"der H",n:"rtetest",a:"e",b:"ä",k:"b",kat:5},
+ {v:"der Jun",n:"eselle",a:"g",b:"gg",k:"b",kat:6},
+ {v:"die ",n:"antwortung",a:"Ver",b:"Fer",k:"a",kat:7},
+ {v:"das aufregende ",n:"piel",a:"s",b:"S",k:"b",kat:8},
+ {v:"schnu",n:"en",a:"r",b:"rr",k:"b",kat:2},
+ {v:"er verga",n:"",a:"ss",b:"ß",k:"b",kat:3},
+ {v:"er ma",n:"keinen Spinat",a:"g",b:"k",k:"a",kat:4},
+ {v:"br",n:"nlich",a:"eu",b:"äu",k:"b",kat:5},
+ {v:"hoc",n:"eben",a:"h",b:"hh",k:"b",kat:6},
+ {v:"",n:"beikommen",a:"vor",b:"vorr",k:"a",kat:7},
+ {v:"Das macht viel ",n:"paß",a:"s",b:"S",k:"b",kat:8},
+ {v:"die Sche",n:"be",a:"r",b:"rr",k:"a",kat:2},
+ {v:"genie",n:"en",a:"ss",b:"ß",k:"b",kat:3},
+ {v:"das Käl",n:"chen",a:"p",b:"b",k:"b",kat:4},
+ {v:"d",n:"tlich",a:"eu",b:"äu",k:"a",kat:5},
+ {v:"dahe",n:"eden",a:"r",b:"rr",k:"b",kat:6},
+ {v:"wunder",n:"",a:"lich",b:"lig",k:"a",kat:7},
+ {v:"Das ist am ",n:"esten",a:"b",b:"B",k:"a",kat:8}
+]};
+
+// Kategorieninfo
+const KAT = {
+  2: {kuerzel:"DK",  name:"Doppelkonsonanten",      farbe:"#3b82f6"},
+  3: {kuerzel:"s/ß", name:"s / ß / ss",             farbe:"#8b5cf6"},
+  4: {kuerzel:"AK",  name:"Auslautverhärtung",       farbe:"#06b6d4"},
+  5: {kuerzel:"ä/äu",name:"ä / äu (Ableiten)",      farbe:"#f59e0b"},
+  6: {kuerzel:"ZW",  name:"Zusammensetzungen",       farbe:"#10b981"},
+  7: {kuerzel:"AE",  name:"Ableitungen / Vorsilben", farbe:"#f97316"},
+  8: {kuerzel:"GK",  name:"Groß- / Kleinschreibung", farbe:"#ec4899"}
+};
+
+// API-Basis – ANPASSEN auf deinen Server!
+const API = "https://lehrer-herrmann.de/reso-api";
+
+// ── App-Zustand ──────────────────────────────────────────────────────────────
+let state = {
+  name: "", code: "", variante: 1,
+  items: [], idx: 0,
+  answers: [],         // true/false pro Item
+  scores: {}           // {2: {r:0,g:5}, ...}
+};
+
+// ── Hilfsfunktionen ──────────────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0,0);
+}
+
+function renderWord(item, chosen, correct) {
+  const blank = chosen
+    ? `<span class="blank ${chosen===item.k?'filled-correct':'filled-wrong'}">${item[chosen]}</span>`
+    : `<span class="blank">___</span>`;
+  const suffix = item.n ? `<span>${item.n}</span>` : "";
+  const prefix = item.v ? `<span>${item.v}</span>` : "";
+  document.getElementById("item-word").innerHTML = prefix + blank + suffix;
+}
+
+// ── Start ────────────────────────────────────────────────────────────────────
+function startTest() {
+  const name = document.getElementById("inp-name").value.trim();
+  const code = document.getElementById("inp-code").value.trim().toUpperCase();
+  const variante = parseInt(document.getElementById("inp-variante").value);
+  const err = document.getElementById("entry-err");
+
+  if (!name) { err.textContent = "Bitte deinen Namen eingeben."; err.style.display="block"; return; }
+  err.style.display = "none";
+
+  state.name = name;
+  state.code = code;
+  state.variante = variante;
+  state.items = TESTS[variante];
+  state.idx = 0;
+  state.answers = [];
+  state.scores = {};
+  [2,3,4,5,6,7,8].forEach(k => state.scores[k] = {r:0, g:5});
+
+  showScreen("s-test");
+  renderItem();
+}
+
+// ── Item rendern ─────────────────────────────────────────────────────────────
+function renderItem() {
+  const item = state.items[state.idx];
+  const n = state.idx + 1;
+
+  document.getElementById("prog-num").textContent = n;
+  document.getElementById("prog-fill").style.width = ((n-1)/35*100) + "%";
+
+  renderWord(item, null, null);
+
+  const ba = document.getElementById("btn-a");
+  const bb = document.getElementById("btn-b");
+  ba.textContent = item.a; ba.disabled = false;
+  bb.textContent = item.b; bb.disabled = false;
+  ba.className = "opt-btn"; bb.className = "opt-btn";
+
+  const fb = document.getElementById("fb-bar");
+  fb.className = "feedback-bar";
+  document.getElementById("next-btn").style.display = "none";
+}
+
+// ── Antwort ──────────────────────────────────────────────────────────────────
+function answer(choice) {
+  const item = state.items[state.idx];
+  const correct = choice === item.k;
+
+  document.getElementById("btn-a").disabled = true;
+  document.getElementById("btn-b").disabled = true;
+
+  document.getElementById("btn-" + choice).classList.add(correct ? "correct" : "wrong");
+  if (!correct) document.getElementById("btn-" + item.k).classList.add("correct");
+
+  renderWord(item, choice, item.k);
+
+  if (correct) state.scores[item.kat].r++;
+  state.answers.push(correct);
+
+  const fb = document.getElementById("fb-bar");
+  if (correct) {
+    fb.textContent = "✓ Richtig!";
+    fb.className = "feedback-bar show-ok";
+  } else {
+    fb.textContent = "✗ Falsch – richtig: " + item[item.k];
+    fb.className = "feedback-bar show-err";
+  }
+
+  // letztes Item → direkt zum Ergebnis nach kurzer Pause
+  if (state.idx === 34) {
+    document.getElementById("next-btn").textContent = "Zum Ergebnis →";
+  } else {
+    document.getElementById("next-btn").textContent = "Weiter →";
+  }
+  document.getElementById("next-btn").style.display = "block";
+}
+
+function nextItem() {
+  state.idx++;
+  if (state.idx >= 35) { showResult(); return; }
+  renderItem();
+}
+
+// ── Ergebnis ─────────────────────────────────────────────────────────────────
+function showResult() {
+  document.getElementById("res-name").textContent =
+    state.name + "  |  Variante " + state.variante;
+
+  const tbody = document.getElementById("res-tbody");
+  tbody.innerHTML = "";
+  let total = 0, totalMax = 0;
+
+  [2,3,4,5,6,7,8].forEach(k => {
+    const s = state.scores[k];
+    const r = s.r, g = s.g;
+    total += r; totalMax += g;
+
+    const dots = Array.from({length:g}, (_,i) =>
+      `<span>${i < r ? "●" : "○"}</span>`
+    ).join("");
+
+    let ampel, aClass;
+    if (r <= 1)      { ampel="noch üben";   aClass="ampel-rot"; }
+    else if (r <= 3) { ampel="üben";        aClass="ampel-gelb"; }
+    else             { ampel="sicher ✓";    aClass="ampel-gruen"; }
+
+    // Weiter-Lernen-Links nur bei rot/gelb
+    const links = (r <= 3) ? `
+      <tr>
+        <td colspan="3" style="padding:0 6px 10px">
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <a class="step-btn step-btn-strat" href="regelradar-strategien.html#${k}" target="_blank">📖 Strategie erklären lassen</a>
+            <a class="step-btn step-btn-ueb"   href="regelradar-uebungen.html#${k}"   target="_blank">✏️ Jetzt üben</a>
+          </div>
+        </td>
+      </tr>` : "";
+
+    tbody.innerHTML += `
+      <tr>
+        <td><strong style="color:${KAT[k].farbe}">${KAT[k].kuerzel}</strong>
+            <span style="font-size:.78rem;color:#6b7280;display:block">${KAT[k].name}</span></td>
+        <td class="dots">${dots} <span style="color:#6b7280;font-size:.8rem;margin-left:4px">${r}/5</span></td>
+        <td><span class="ampel ${aClass}">${ampel}</span></td>
+      </tr>${links}`;
+  });
+
+  const pct = Math.round(total/totalMax*100);
+  const summary = document.getElementById("res-summary");
+  if (pct >= 80) {
+    summary.className = "summary-box summary-ok";
+    summary.innerHTML = `<strong>Super! ${total} von ${totalMax} Punkten (${pct} %)</strong><br>Du bist in den meisten Bereichen schon sicher! Die grünen Bereiche kannst du trotzdem weiter üben.`;
+  } else if (pct >= 50) {
+    summary.className = "summary-box summary-mid";
+    summary.innerHTML = `<strong>${total} von ${totalMax} Punkten (${pct} %)</strong><br>Du kennst schon einige Strategien. Klicke bei den gelben und roten Bereichen auf „Strategie erklären lassen" – dann weißt du, was zu tun ist.`;
+  } else {
+    summary.className = "summary-box summary-bad";
+    summary.innerHTML = `<strong>${total} von ${totalMax} Punkten (${pct} %)</strong><br>Keine Sorge – die Strategien lassen sich lernen! Klicke bei den roten Bereichen auf „Strategie erklären lassen" und dann auf „Jetzt üben".`;
+  }
+
+  document.getElementById("btn-send").style.display = state.code ? "block" : "none";
+  document.getElementById("sent-box").style.display = "none";
+  showScreen("s-result");
+}
+
+// ── An API senden ────────────────────────────────────────────────────────────
+async function sendResult() {
+  const btn = document.getElementById("btn-send");
+  btn.textContent = "Wird gesendet …";
+  btn.disabled = true;
+
+  const kategorien = {};
+  [2,3,4,5,6,7,8].forEach(k => {
+    kategorien[String(k)] = {richtig: state.scores[k].r, gesamt: state.scores[k].g};
+  });
+
+  try {
+    const res = await fetch(API + "/ergebnis", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        klasse_code:   state.code,
+        schueler_name: state.name,
+        format:        "selbsttest",
+        variante:      state.variante,
+        kategorien
+      })
+    });
+    if (!res.ok) throw new Error(await res.text());
+    document.getElementById("sent-box").style.display = "block";
+    btn.style.display = "none";
+  } catch(e) {
+    btn.textContent = "Senden fehlgeschlagen – nochmal versuchen";
+    btn.disabled = false;
+    console.error(e);
+  }
+}
+
+function restart() {
+  showScreen("s-entry");
+  document.getElementById("inp-name").value = "";
+  document.getElementById("inp-code").value = "";
+}
+</script>
+
+    <footer>
+        <div class="container footer-inner">
+            <p>© <span id="footer-jahr">2025</span> Jan Herrmann</p>
+            <nav class="footer-links" aria-label="Rechtliche Links">
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+            </nav>
+            <a href="/kolosseum/public/admin/" id="admin-footer-link" class="admin-footer-link" aria-hidden="true" tabindex="-1"></a>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+    <script src="js/kolosseum-login-widget.js"></script>
+
+</body>
+</html>

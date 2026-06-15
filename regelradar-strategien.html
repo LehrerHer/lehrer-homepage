@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>RegelRadar – Rechtschreibstrategien</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:    #f0f4f8;
+  --card:  #ffffff;
+  --text:  #1e293b;
+  --gray:  #64748b;
+  --border:#e2e8f0;
+  --r:     16px;
+  /* Kategoriefarben */
+  --c2:#3b82f6; --c3:#8b5cf6; --c4:#06b6d4;
+  --c5:#f59e0b; --c6:#10b981; --c7:#f97316; --c8:#ec4899;
+  /* Strategiefarben */
+  --sv:#0ea5e9; --sa:#f59e0b; --sz:#10b981;
+}
+body {
+  background: var(--bg);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--text);
+  min-height: 100dvh;
+}
+
+/* ── Header ───────────────────────────────────────────── */
+header {
+  background: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+  color: #fff; padding: 20px 20px 0; text-align: center;
+}
+header h1 { font-size: 1.4rem; font-weight: 800; letter-spacing: .03em; }
+header p  { font-size: .9rem; opacity: .8; margin: 4px 0 16px; }
+
+/* ── Kategorie-Tabs (horizontal scroll) ──────────────── */
+.cat-scroll {
+  display: flex; gap: 8px; overflow-x: auto; padding: 0 16px 14px;
+  scrollbar-width: none;
+}
+.cat-scroll::-webkit-scrollbar { display: none; }
+.cat-tab {
+  flex: 0 0 auto; padding: 8px 16px; border-radius: 99px;
+  border: 2px solid transparent; background: rgba(255,255,255,.15);
+  color: #fff; font-weight: 700; font-size: .85rem; cursor: pointer;
+  transition: all .2s; white-space: nowrap;
+}
+.cat-tab:hover   { background: rgba(255,255,255,.25); }
+.cat-tab.active  { background: #fff; border-color: #fff; color: #1e3a5f; }
+
+/* ── Haupt-Content ────────────────────────────────────── */
+main { padding: 20px 16px; max-width: 640px; margin: 0 auto; }
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* ── Strategie-Badge ──────────────────────────────────── */
+.strat-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 14px; border-radius: 99px; font-size: .82rem;
+  font-weight: 700; margin-bottom: 14px;
+}
+.strat-v { background: #e0f2fe; color: #0369a1; }
+.strat-a { background: #fef9c3; color: #92400e; }
+.strat-z { background: #d1fae5; color: #065f46; }
+
+/* ── Erklärungsbox ────────────────────────────────────── */
+.explain-card {
+  background: var(--card); border-radius: var(--r);
+  box-shadow: 0 2px 12px rgba(0,0,0,.07);
+  overflow: hidden; margin-bottom: 16px;
+}
+.explain-head {
+  padding: 18px 20px 14px; border-bottom: 1px solid var(--border);
+}
+.kat-title {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+}
+.kat-icon {
+  width: 42px; height: 42px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; font-weight: 800; color: #fff; flex-shrink: 0;
+}
+.kat-title h2 { font-size: 1.1rem; font-weight: 700; }
+.kat-title .sub { font-size: .8rem; color: var(--gray); }
+
+.explain-body { padding: 16px 20px; }
+.explain-body p { font-size: .95rem; line-height: 1.65; margin-bottom: 10px; }
+.explain-body p:last-child { margin-bottom: 0; }
+
+.rule-box {
+  background: #f8fafc; border-left: 4px solid; border-radius: 0 10px 10px 0;
+  padding: 12px 16px; margin: 12px 0; font-size: .92rem; line-height: 1.55;
+}
+
+/* ── Beispiele (klickbar) ─────────────────────────────── */
+.beispiele { margin-top: 18px; }
+.beispiele h3 { font-size: .82rem; font-weight: 700; color: var(--gray);
+                text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
+
+.bsp-grid { display: flex; flex-direction: column; gap: 10px; }
+
+.bsp-card {
+  border: 1.5px solid var(--border); border-radius: 12px;
+  padding: 14px 16px; cursor: pointer; transition: all .18s;
+  user-select: none;
+}
+.bsp-card:hover { border-color: inherit; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.bsp-card.revealed { border-color: inherit; }
+
+.bsp-word {
+  font-size: 1.25rem; font-weight: 700; margin-bottom: 4px;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.bsp-lupenstelle {
+  display: inline-block; border-bottom: 2.5px solid; padding: 0 1px;
+}
+.bsp-hint { font-size: .82rem; color: var(--gray); margin-bottom: 6px; }
+
+.bsp-strategie {
+  display: none; margin-top: 10px; padding: 10px 14px;
+  border-radius: 10px; font-size: .88rem; line-height: 1.55;
+}
+.bsp-card.revealed .bsp-strategie { display: block; }
+.bsp-tap { font-size: .78rem; color: var(--gray); margin-top: 6px; }
+.bsp-card.revealed .bsp-tap { display: none; }
+
+/* ── Merksatz-Box ─────────────────────────────────────── */
+.merksatz {
+  border-radius: var(--r); padding: 16px 18px; margin-top: 4px;
+  font-size: .95rem; line-height: 1.6;
+}
+.merksatz strong { display: block; font-size: .8rem; text-transform: uppercase;
+                   letter-spacing: .06em; margin-bottom: 6px; opacity: .7; }
+
+/* ── Strategie-Übersicht (Startseite) ────────────────── */
+.strat-overview { display: flex; flex-direction: column; gap: 14px; margin-bottom: 16px; }
+.strat-card {
+  border-radius: var(--r); padding: 18px 20px;
+  background: var(--card); box-shadow: 0 2px 10px rgba(0,0,0,.07);
+}
+.strat-card h2 { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
+.strat-card p  { font-size: .9rem; color: var(--gray); line-height: 1.5; }
+.strat-card .cats { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+.chip {
+  padding: 3px 10px; border-radius: 99px; font-size: .78rem;
+  font-weight: 700; color: #fff;
+}
+
+.nav-hint {
+  text-align: center; color: var(--gray); font-size: .85rem;
+  padding: 20px 0 8px;
+}
+.nav-hint span { font-size: 1.1rem; }
+</style>
+</head>
+<body>
+
+    <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+        <div class="container navbar-inner">
+            <a href="index.html" class="navbar-logo">lehrer-herrmann.de</a>
+            <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="navbar-links" id="navbar-links">
+                <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
+                <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+                <li class="navbar-gb-trenner" aria-hidden="true"><span class="navbar-gb-label">Geschützter Bereich</span></li>
+                <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+                <li><a href="blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+                <li class="navbar-dropdown">
+                    <button class="navbar-dropdown-toggle navbar-gb-link" aria-expanded="false" aria-haspopup="true">📚 Fächer ▾</button>
+                    <ul class="navbar-dropdown-menu" role="menu">
+                        <li class="dropdown-group-label">Hauptfächer</li>
+                        <li><a href="fach-deutsch.html" role="menuitem">📖 Deutsch</a></li>
+                        <li><a href="fach-geschichte.html" role="menuitem">🏛️ Geschichte</a></li>
+                        <li><a href="fach-wipo.html" role="menuitem">⚖️ Wirtschaft/Politik</a></li>
+                        <li><a href="fach-informatik.html" role="menuitem">💻 Informatik</a></li>
+                        <li><a href="fach-werte-normen.html" role="menuitem">🤝 Werte &amp; Normen</a></li>
+                        <li class="dropdown-group-label">Weitere Fächer</li>
+                        <li><a href="fach-mathe.html" role="menuitem">🔢 Mathematik</a></li>
+                        <li><a href="fach-englisch.html" role="menuitem">🇬🇧 Englisch</a></li>
+                        <li><a href="fach-sport.html" role="menuitem">⚽ Sport</a></li>
+                        <li><a href="fach-biologie.html" role="menuitem">🌱 Biologie</a></li>
+                        <li><a href="fach-chemie.html" role="menuitem">⚗️ Chemie</a></li>
+                        <li><a href="fach-physik.html" role="menuitem">⚛️ Physik</a></li>
+                        <li><a href="fach-musik.html" role="menuitem">🎵 Musik</a></li>
+                        <li><a href="fach-erdkunde.html" role="menuitem">🗺️ Erdkunde</a></li>
+                        <li><a href="fach-gestaltendes-werken.html" role="menuitem">🎨 Gestaltendes Werken</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="fach-ag-projekte.html" role="menuitem">🚀 AGs &amp; Projekte</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+        </div>
+    </nav>
+
+<header>
+  <h1>RegelRadar – Strategien</h1>
+  <p>Klicke eine Kategorie an – und lern die Strategie dahinter.</p>
+  <div class="cat-scroll">
+    <button class="cat-tab active" onclick="showPanel('p-start',this)" style="background:rgba(255,255,255,.9);color:#1e3a5f">Übersicht</button>
+    <button class="cat-tab" onclick="showPanel('p-2',this)" style="--cc:var(--c2)">DK</button>
+    <button class="cat-tab" onclick="showPanel('p-3',this)" style="--cc:var(--c3)">s/ß</button>
+    <button class="cat-tab" onclick="showPanel('p-4',this)" style="--cc:var(--c4)">AK</button>
+    <button class="cat-tab" onclick="showPanel('p-5',this)" style="--cc:var(--c5)">ä/äu</button>
+    <button class="cat-tab" onclick="showPanel('p-6',this)" style="--cc:var(--c6)">ZW</button>
+    <button class="cat-tab" onclick="showPanel('p-7',this)" style="--cc:var(--c7)">AE</button>
+    <button class="cat-tab" onclick="showPanel('p-8',this)" style="--cc:var(--c8)">GK</button>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══════════════════════════════ Startseite: Strategieübersicht -->
+<div id="p-start" class="panel active">
+  <div class="strat-overview">
+
+    <div class="strat-card" style="border-top:4px solid var(--sv)">
+      <h2 style="color:var(--sv)">Strategie 1 – Verlängern</h2>
+      <p>Du verlängerst das Wort oder bildest den Plural, um einen unklaren Laut hörbar zu machen.</p>
+      <div class="cats">
+        <span class="chip" style="background:var(--c2)">DK</span>
+        <span class="chip" style="background:var(--c3)">s/ß</span>
+        <span class="chip" style="background:var(--c6)">ZW</span>
+      </div>
+    </div>
+
+    <div class="strat-card" style="border-top:4px solid var(--sa)">
+      <h2 style="color:var(--sa)">Strategie 2 – Ableiten</h2>
+      <p>Du leitest das Wort von einer verwandten Form ab, in der der kritische Laut klar zu hören ist.</p>
+      <div class="cats">
+        <span class="chip" style="background:var(--c4)">AK</span>
+        <span class="chip" style="background:var(--c5)">ä/äu</span>
+      </div>
+    </div>
+
+    <div class="strat-card" style="border-top:4px solid var(--sz)">
+      <h2 style="color:var(--sz)">Strategie 3 – Zerlegen</h2>
+      <p>Du zerlegst das Wort in seine Bestandteile (Vorsilbe, Wortstamm, Nachsilbe) und schreibst jeden Teil so, wie er einzeln aussieht.</p>
+      <div class="cats">
+        <span class="chip" style="background:var(--c6)">ZW</span>
+        <span class="chip" style="background:var(--c7)">AE</span>
+        <span class="chip" style="background:var(--c8)">GK</span>
+      </div>
+    </div>
+
+  </div>
+  <p class="nav-hint"><span>👆</span> Wähle oben eine Kategorie für die genaue Erklärung.</p>
+</div>
+
+<!-- ═══════════════════════════════ Kat 2: Doppelkonsonanten -->
+<div id="p-2" class="panel">
+  <div class="explain-card">
+    <div class="explain-head">
+      <div class="kat-title">
+        <div class="kat-icon" style="background:var(--c2)">DK</div>
+        <div>
+          <h2>Doppelkonsonanten</h2>
+          <div class="sub">Kategorie 2</div>
+        </div>
+      </div>
+      <span class="strat-badge strat-v">🔁 Strategie: Verlängern</span>
+      <p style="font-size:.9rem;color:var(--gray)">Wann schreibt man <em>tt</em> statt <em>t</em>, <em>mm</em> statt <em>m</em>, <em>ll</em> statt <em>l</em> …?</p>
+    </div>
+    <div class="explain-body">
+      <p>Nach einem <strong>kurzen betonten Vokal</strong> (a, e, i, o, u, ä, ö, ü) wird der folgende Konsonant verdoppelt.</p>
+      <div class="rule-box" style="border-color:var(--c2)">
+        <strong>Die Probe:</strong> Verlängere das Wort so, dass du die Silbengrenze hörst.<br>
+        Hörst du den Vokal kurz und den Konsonanten doppelt? → Schreibe ihn doppelt.<br><br>
+        <em>Bett → Bet·ten</em> ✓ kurzer Vokal → <strong>tt</strong><br>
+        <em>Mond → Mon·de</em> ✓ langer Vokal → kein Doppel
+      </div>
+      <p>Ausnahme: Nach <em>ck</em> und <em>tz</em> wird nicht nochmals verdoppelt.</p>
+    </div>
+  </div>
+  <div class="merksatz" style="background:#eff6ff;border-left:4px solid var(--c2)">
+    <strong>Merksatz</strong>
+    Kurz gesprochen – doppelt geschrieben.
+  </div>
+  <div class="beispiele">
+    <h3>Beispiele – Tippe für die Strategie</h3>
+    <div class="bsp-grid">
+      <div class="bsp-card" style="border-color:var(--c2)" onclick="toggle(this)">
+        <div class="bsp-word">die <span class="bsp-lupenstelle" style="border-color:var(--c2)">tt</span>Bettdecke</div>
+        <div class="bsp-hint">→ Bett + Decke | Wie viele t?</div>
+        <div class="bsp-strategie" style="background:#eff6ff">
+          Verlängern: <em>das Bett → die Bet·ten</em><br>
+          Der Vokal <em>e</em> ist kurz → der Konsonant wird verdoppelt: <strong>tt</strong><br>
+          Im Kompositum bleibt das: <em>Bett·decke → Bettdecke</em>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+      <div class="bsp-card" style="border-color:var(--c2)" onclick="toggle(this)">
+        <div class="bsp-word">das Mä<span class="bsp-lupenstelle" style="border-color:var(--c2)">pp</span>chen</div>
+        <div class="bsp-hint">→ Mappe | Wie viele p?</div>
+        <div class="bsp-strategie" style="background:#eff6ff">
+          Verlängern: <em>die Map·pe</em><br>
+          Kurzes <em>a</em> → <strong>pp</strong><br>
+          Bei Verkleinerungsformen bleibt die Schreibung: <em>Mäppchen</em>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+      <div class="bsp-card" style="border-color:var(--c2)" onclick="toggle(this)">
+        <div class="bsp-word">er fä<span class="bsp-lupenstelle" style="border-color:var(--c2)">ll</span>t</div>
+        <div class="bsp-hint">→ fallen | Wie viele l?</div>
+        <div class="bsp-strategie" style="background:#eff6ff">
+          Verlängern: <em>fal·len</em><br>
+          Kurzes <em>a</em> → <strong>ll</strong><br>
+          Beim Konjugieren bleibt das doppelte l: <em>er fällt</em>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ Kat 3: s / ß / ss -->
+<div id="p-3" class="panel">
+  <div class="explain-card">
+    <div class="explain-head">
+      <div class="kat-title">
+        <div class="kat-icon" style="background:var(--c3)">s/ß</div>
+        <div><h2>s – ss – ß</h2><div class="sub">Kategorie 3</div></div>
+      </div>
+      <span class="strat-badge strat-v">🔁 Strategie: Verlängern</span>
+      <p style="font-size:.9rem;color:var(--gray)">Wann schreibt man <em>s</em>, wann <em>ss</em>, wann <em>ß</em>?</p>
+    </div>
+    <div class="explain-body">
+      <div class="rule-box" style="border-color:var(--c3)">
+        <strong>Die Regeln auf einen Blick:</strong><br><br>
+        <strong>ss</strong> → nach kurzem Vokal: <em>Fluss, Kissen, müssen</em><br>
+        <strong>ß</strong>  → nach langem Vokal oder Diphthong (ei, au, eu): <em>Straße, heiß, Fuß</em><br>
+        <strong>s</strong>  → alles andere (stimmhaftes s, Endung -s, Fremdwörter): <em>Rose, des, Bus</em>
+      </div>
+      <p><strong>Probe:</strong> Verlängere das Wort. Hörst du einen kurzen Vokal vor dem s-Laut? → <strong>ss</strong>. Hörst du einen langen Vokal oder Diphthong? → <strong>ß</strong>.</p>
+      <p style="margin-top:8px"><em>Fluss → Flüs·se</em> (kurzes ü) → <strong>ss</strong><br>
+      <em>Straße → Stra·ßen</em> (langes a) → <strong>ß</strong></p>
+    </div>
+  </div>
+  <div class="merksatz" style="background:#f5f3ff;border-left:4px solid var(--c3)">
+    <strong>Merksatz</strong>
+    Kurz vor ss – lang vor ß.
+  </div>
+  <div class="beispiele">
+    <h3>Beispiele – Tippe für die Strategie</h3>
+    <div class="bsp-grid">
+      <div class="bsp-card" style="border-color:var(--c3)" onclick="toggle(this)">
+        <div class="bsp-word">die Ro<span class="bsp-lupenstelle" style="border-color:var(--c3)">s</span>e</div>
+        <div class="bsp-hint">→ s, ss oder ß?</div>
+        <div class="bsp-strategie" style="background:#f5f3ff">
+          Das <em>o</em> in „Rose" ist lang → kein ss.<br>
+          Es ist ein stimmhaftes s (weiches s) → <strong>s</strong>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+      <div class="bsp-card" style="border-color:var(--c3)" onclick="toggle(this)">
+        <div class="bsp-word">er begrü<span class="bsp-lupenstelle" style="border-color:var(--c3)">ß</span>t</div>
+        <div class="bsp-hint">→ s, ss oder ß?</div>
+        <div class="bsp-strategie" style="background:#f5f3ff">
+          Verlängern: <em>begrü·ßen</em><br>
+          Das <em>ü</em> ist lang → <strong>ß</strong>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+      <div class="bsp-card" style="border-color:var(--c3)" onclick="toggle(this)">
+        <div class="bsp-word">es flie<span class="bsp-lupenstelle" style="border-color:var(--c3)">ß</span>t</div>
+        <div class="bsp-hint">→ s, ss oder ß?</div>
+        <div class="bsp-strategie" style="background:#f5f3ff">
+          Verlängern: <em>flie·ßen</em><br>
+          Diphthong <em>ie</em> (langer Vokal) → <strong>ß</strong>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ Kat 4: Auslautverhärtung -->
+<div id="p-4" class="panel">
+  <div class="explain-card">
+    <div class="explain-head">
+      <div class="kat-title">
+        <div class="kat-icon" style="background:var(--c4)">AK</div>
+        <div><h2>Auslautverhärtung</h2><div class="sub">Kategorie 4</div></div>
+      </div>
+      <span class="strat-badge strat-a">🔀 Strategie: Ableiten</span>
+      <p style="font-size:.9rem;color:var(--gray)">Am Wortende klingen <em>b/p</em>, <em>d/t</em>, <em>g/k</em> gleich – wie schreibt man richtig?</p>
+    </div>
+    <div class="explain-body">
+      <p>Im Deutschen werden stimmhafte Konsonanten (<em>b, d, g, v</em>) am Wortende oder vor stimmlosen Konsonanten wie ihr stimmloser Partner ausgesprochen:</p>
+      <p><em>Korb</em> klingt wie »Korp« – aber wir schreiben <strong>b</strong>.</p>
+      <div class="rule-box" style="border-color:var(--c4)">
+        <strong>Die Probe:</strong> Leite das Wort ab (Plural, Steigerung, andere Form).<br>
+        In der abgeleiteten Form ist der Konsonant klar hörbar.<br><br>
+        <em>der Korb → die Kör·be</em> → hört man das <strong>b</strong> → Korb<br>
+        <em>das Kind → die Kin·der</em> → hört man das <strong>d</strong> → Kind
+      </div>
+    </div>
+  </div>
+  <div class="merksatz" style="background:#ecfeff;border-left:4px solid var(--c4)">
+    <strong>Merksatz</strong>
+    Leite ab – dann hörst du, was du schreiben musst.
+  </div>
+  <div class="beispiele">
+    <h3>Beispiele – Tippe für die Strategie</h3>
+    <div class="bsp-grid">
+      <div class="bsp-card" style="border-color:var(--c4)" onclick="toggle(this)">
+        <div class="bsp-word">der Kor<span class="bsp-lupenstelle" style="border-color:var(--c4)">b</span></div>
+        <div class="bsp-hint">→ klingt wie »p« – b oder p?</div>
+        <div class="bsp-strategie" style="background:#ecfeff">
+          Ableiten: <em>die Kör·be</em> → man hört deutlich das <strong>b</strong><br>
+          Also: <em>der Korb</em>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+      <div class="bsp-card" style="border-color:var(--c4)" onclick="toggle(this)">
+        <div class="bsp-word">grün<span class="bsp-lupenstelle" style="border-color:var(--c4)">d</span>lich</div>
+        <div class="bsp-hint">→ klingt wie »t« – d oder t?</div>
+        <div class="bsp-strategie" style="background:#ecfeff">
+          Ableiten: <em>der Grund → die Grün·de</em> → man hört das <strong>d</strong><br>
+          Also: <em>gründlich</em>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+      <div class="bsp-card" style="border-color:var(--c4)" onclick="toggle(this)">
+        <div class="bsp-word">schwieri<span class="bsp-lupenstelle" style="border-color:var(--c4)">g</span></div>
+        <div class="bsp-hint">→ klingt wie »ch« oder »k« – g oder k?</div>
+        <div class="bsp-strategie" style="background:#ecfeff">
+          Ableiten: <em>schwie·ri·ge Aufgabe</em> → man hört das <strong>g</strong><br>
+          Also: <em>schwierig</em> (nicht »schwierick«)
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ Kat 5: ä / äu -->
+<div id="p-5" class="panel">
+  <div class="explain-card">
+    <div class="explain-head">
+      <div class="kat-title">
+        <div class="kat-icon" style="background:var(--c5)">ä/äu</div>
+        <div><h2>ä und äu – Umlautableitung</h2><div class="sub">Kategorie 5</div></div>
+      </div>
+      <span class="strat-badge strat-a">🔀 Strategie: Ableiten</span>
+      <p style="font-size:.9rem;color:var(--gray)">Wann schreibt man <em>ä</em> (nicht e) und <em>äu</em> (nicht eu)?</p>
+    </div>
+    <div class="explain-body">
+      <p><em>ä</em> und <em>äu</em> sind Umlaute. Sie entstehen aus <em>a</em> bzw. <em>au</em>. Wenn du dir unsicher bist, leite das Wort zu einer Form ab, in der kein Umlaut steht.</p>
+      <div class="rule-box" style="border-color:var(--c5)">
+        <strong>Die Probe:</strong><br>
+        <em>Hände</em> → Singular: <em>die Hand</em> → da steckt ein <strong>a</strong> drin → <strong>ä</strong><br>
+        <em>Häuser</em> → Singular: <em>das Haus</em> → da steckt <strong>au</strong> drin → <strong>äu</strong><br><br>
+        Kein <em>a / au</em> in der Grundform? → dann schreibt man <em>e</em> oder <em>eu</em>:<br>
+        <em>der Beutel</em> – kein verwandtes Wort mit <em>au</em> → <strong>eu</strong>
+      </div>
+    </div>
+  </div>
+  <div class="merksatz" style="background:#fffbeb;border-left:4px solid var(--c5)">
+    <strong>Merksatz</strong>
+    Steckt ein <em>a</em> drin? → ä | Steckt <em>au</em> drin? → äu
+  </div>
+  <div class="beispiele">
+    <h3>Beispiele – Tippe für die Strategie</h3>
+    <div class="bsp-grid">
+      <div class="bsp-card" style="border-color:var(--c5)" onclick="toggle(this)">
+        <div class="bsp-word">tats<span class="bsp-lupenstelle" style="border-color:var(--c5)">ä</span>chlich</div>
+        <div class="bsp-hint">→ ä oder e?</div>
+        <div class="bsp-strategie" style="background:#fffbeb">
+          Ableiten: <em>die Tat·sa·che</em> → da steckt ein <strong>a</strong> → <strong>ä</strong><br>
+          Also: <em>tatsächlich</em>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+      <div class="bsp-card" style="border-color:var(--c5)" onclick="toggle(this)">
+        <div class="bsp-word">sch<span class="bsp-lupenstelle" style="border-color:var(--c5)">äu</span>mend</div>
+        <div class="bsp-hint">→ äu oder eu?</div>
+        <div class="bsp-strategie" style="background:#fffbeb">
+          Ableiten: <em>der Schaum</em> → da steckt <strong>au</strong> → <strong>äu</strong><br>
+          Also: <em>schäumend</em>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+      <div class="bsp-card" style="border-color:var(--c5)" onclick="toggle(this)">
+        <div class="bsp-word">der B<span class="bsp-lupenstelle" style="border-color:var(--c5)">eu</span>tel</div>
+        <div class="bsp-hint">→ äu oder eu?</div>
+        <div class="bsp-strategie" style="background:#fffbeb">
+          Kein verwandtes Wort mit <em>au</em> bekannt → kein Umlaut<br>
+          Also: <strong>eu</strong> → <em>der Beutel</em>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ Kat 6: Zusammensetzungen -->
+<div id="p-6" class="panel">
+  <div class="explain-card">
+    <div class="explain-head">
+      <div class="kat-title">
+        <div class="kat-icon" style="background:var(--c6)">ZW</div>
+        <div><h2>Zusammensetzungen</h2><div class="sub">Kategorie 6</div></div>
+      </div>
+      <span class="strat-badge strat-z">🧩 Strategie: Zerlegen</span>
+      <p style="font-size:.9rem;color:var(--gray)">Bei zusammengesetzten Wörtern bleiben alle Buchstaben erhalten – auch doppelte.</p>
+    </div>
+    <div class="explain-body">
+      <p>Viele deutsche Wörter entstehen aus zwei einzelnen Wörtern. An der <strong>Nahtstelle</strong> treffen beide Schreibweisen aufeinander – alle Buchstaben bleiben erhalten.</p>
+      <div class="rule-box" style="border-color:var(--c6)">
+        <strong>Die Probe: Zerlegung</strong><br><br>
+        <em>Tennissocke = Tennis + Socke</em> → Naht: <strong>ss</strong><br>
+        <em>Schifffahrt = Schiff + Fahrt</em> → Naht: <strong>fff</strong><br>
+        <em>Schlüsselloch = Schlüssel + Loch</em> → Naht: <strong>ll</strong><br>
+        <em>Hausschuhe = Haus + Schuhe</em> → Naht: <strong>ssch</strong>
+      </div>
+      <p>Zerlege das Wort in seine Teile. Schreibe jeden Teil vollständig – und füge sie dann zusammen.</p>
+    </div>
+  </div>
+  <div class="merksatz" style="background:#ecfdf5;border-left:4px solid var(--c6)">
+    <strong>Merksatz</strong>
+    Teile + Teile = Ganzes. Kein Buchstabe geht verloren.
+  </div>
+  <div class="beispiele">
+    <h3>Beispiele – Tippe für die Strategie</h3>
+    <div class="bsp-grid">
+      <div class="bsp-card" style="border-color:var(--c6)" onclick="toggle(this)">
+        <div class="bsp-word">Tenni<span class="bsp-lupenstelle" style="border-color:var(--c6)">ss</span>ocke</div>
+        <div class="bsp-hint">→ s oder ss?</div>
+        <div class="bsp-strategie" style="background:#ecfdf5">
+          Zerlegen: <em>Tennis</em> + <em>Socke</em><br>
+          Tennis endet auf <em>s</em>, Socke beginnt mit <em>S</em> → zusammen: <strong>ss</strong>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+      <div class="bsp-card" style="border-color:var(--c6)" onclick="toggle(this)">
+        <div class="bsp-word">Schif<span class="bsp-lupenstelle" style="border-color:var(--c6)">fff</span>ahrt</div>
+        <div class="bsp-hint">→ ff oder fff?</div>
+        <div class="bsp-strategie" style="background:#ecfdf5">
+          Zerlegen: <em>Schiff</em> + <em>Fahrt</em><br>
+          Schiff endet auf <em>ff</em>, Fahrt beginnt mit <em>F</em> → zusammen: <strong>fff</strong>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+      <div class="bsp-card" style="border-color:var(--c6)" onclick="toggle(this)">
+        <div class="bsp-word">Hau<span class="bsp-lupenstelle" style="border-color:var(--c6)">ssch</span>uhe</div>
+        <div class="bsp-hint">→ sch oder ssch?</div>
+        <div class="bsp-strategie" style="background:#ecfdf5">
+          Zerlegen: <em>Haus</em> + <em>Schuhe</em><br>
+          Haus endet auf <em>s</em>, Schuhe beginnt mit <em>Sch</em> → zusammen: <strong>ssch</strong>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ Kat 7: Ableitungen / Vorsilben -->
+<div id="p-7" class="panel">
+  <div class="explain-card">
+    <div class="explain-head">
+      <div class="kat-title">
+        <div class="kat-icon" style="background:var(--c7)">AE</div>
+        <div><h2>Ableitungen &amp; Vorsilben</h2><div class="sub">Kategorie 7</div></div>
+      </div>
+      <span class="strat-badge strat-z">🧩 Strategie: Zerlegen</span>
+      <p style="font-size:.9rem;color:var(--gray)">Vorsilben wie <em>ver-, ab-, vor-, miss-</em> haben eine feste Schreibung.</p>
+    </div>
+    <div class="explain-body">
+      <p>Viele Wörter beginnen mit einer <strong>Vorsilbe</strong> (Präfix), die immer gleich geschrieben wird – egal wie sie klingt.</p>
+      <div class="rule-box" style="border-color:var(--c7)">
+        <strong>Wichtige Vorsilben:</strong><br><br>
+        <strong>ver-</strong>: verlieren, verbrennen, verreisen<br>
+        <strong>vor-</strong>: vorbeikommen, vorstellen, Vorsicht<br>
+        <strong>ab-</strong>: abnehmen, Ablauf, abgeben<br>
+        <strong>miss-</strong>: Missgeschick, Misstrauen<br>
+        <strong>ent-</strong>: entfernen, entdecken
+      </div>
+      <p><strong>Probe:</strong> Zerlege das Wort in Vorsilbe + Wortstamm. Erkennst du die Vorsilbe? Dann schreibe sie in ihrer gewohnten Form.</p>
+      <p style="margin-top:8px"><em>ver·reisen</em> → Vorsilbe <em>ver-</em> + Stamm <em>reisen</em><br>
+      <em>Reisen</em> beginnt mit <em>r</em> → zusammen: <em>ver</em> + <em>r</em> = <strong>verreisen</strong> (zwei r!)</p>
+    </div>
+  </div>
+  <div class="merksatz" style="background:#fff7ed;border-left:4px solid var(--c7)">
+    <strong>Merksatz</strong>
+    Vorsilbe erkannt – Schreibung bekannt.
+  </div>
+  <div class="beispiele">
+    <h3>Beispiele – Tippe für die Strategie</h3>
+    <div class="bsp-grid">
+      <div class="bsp-card" style="border-color:var(--c7)" onclick="toggle(this)">
+        <div class="bsp-word">un<span class="bsp-lupenstelle" style="border-color:var(--c7)">v</span>orsichtig</div>
+        <div class="bsp-hint">→ v oder f?</div>
+        <div class="bsp-strategie" style="background:#fff7ed">
+          Zerlegen: <em>un-</em> + <em>vor-</em> + <em>sichtig</em><br>
+          Die Vorsilbe lautet immer <strong>vor-</strong> (mit <em>v</em>) → <em>unvorsichtig</em>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+      <div class="bsp-card" style="border-color:var(--c7)" onclick="toggle(this)">
+        <div class="bsp-word"><span class="bsp-lupenstelle" style="border-color:var(--c7)">ver</span>reisen</div>
+        <div class="bsp-hint">→ ver- oder fer-? Wie viele r?</div>
+        <div class="bsp-strategie" style="background:#fff7ed">
+          Zerlegen: <em>ver-</em> + <em>reisen</em><br>
+          Vorsilbe <strong>ver-</strong> endet auf <em>r</em>, Stamm <em>reisen</em> beginnt mit <em>r</em><br>
+          → zusammen: <strong>verreisen</strong> (zwei r)
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+      <div class="bsp-card" style="border-color:var(--c7)" onclick="toggle(this)">
+        <div class="bsp-word"><span class="bsp-lupenstelle" style="border-color:var(--c7)">Miss</span>geschick</div>
+        <div class="bsp-hint">→ Mis- oder Miss-?</div>
+        <div class="bsp-strategie" style="background:#fff7ed">
+          Zerlegen: <em>miss-</em> + <em>Geschick</em><br>
+          Die Vorsilbe heißt immer <strong>miss-</strong> (mit ss) → <em>Missgeschick</em>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ Kat 8: Groß- / Kleinschreibung -->
+<div id="p-8" class="panel">
+  <div class="explain-card">
+    <div class="explain-head">
+      <div class="kat-title">
+        <div class="kat-icon" style="background:var(--c8)">GK</div>
+        <div><h2>Groß- und Kleinschreibung</h2><div class="sub">Kategorie 8</div></div>
+      </div>
+      <span class="strat-badge strat-z">🧩 Strategie: Zerlegen</span>
+      <p style="font-size:.9rem;color:var(--gray)">Nomen groß – alles andere klein. Aber wie erkennt man Nomen?</p>
+    </div>
+    <div class="explain-body">
+      <p>Im Deutschen werden alle <strong>Nomen (Substantive)</strong> großgeschrieben. Adjektive, Verben und Adverbien schreibt man klein.</p>
+      <div class="rule-box" style="border-color:var(--c8)">
+        <strong>Die Probe: Zerlegen und einsetzen</strong><br><br>
+        Setze einen <strong>Artikel</strong> davor (<em>der / die / das / ein / eine</em>).<br>
+        Funktioniert das? → <strong>Groß</strong>schreiben.<br><br>
+        <em>die Sicherheit</em> ✓ → Nomen → <strong>Sicherheit</strong><br>
+        <em>die gründlich</em> ✗ → kein Nomen → <strong>gründlich</strong> (klein)<br><br>
+        Auch <strong>nominalisierte Infinitive</strong> sind Nomen:<br>
+        <em>das Laufen, das Filmen, beim Laufen</em>
+      </div>
+    </div>
+  </div>
+  <div class="merksatz" style="background:#fdf2f8;border-left:4px solid var(--c8)">
+    <strong>Merksatz</strong>
+    Ein Artikel davor? → Großschreiben.
+  </div>
+  <div class="beispiele">
+    <h3>Beispiele – Tippe für die Strategie</h3>
+    <div class="bsp-grid">
+      <div class="bsp-card" style="border-color:var(--c8)" onclick="toggle(this)">
+        <div class="bsp-word">die <span class="bsp-lupenstelle" style="border-color:var(--c8)">S</span>icherheit</div>
+        <div class="bsp-hint">→ Groß oder klein?</div>
+        <div class="bsp-strategie" style="background:#fdf2f8">
+          Probe: <em>die Sicherheit</em> ✓ → Artikel passt → Nomen → <strong>Großschreibung</strong>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+      <div class="bsp-card" style="border-color:var(--c8)" onclick="toggle(this)">
+        <div class="bsp-word">beim <span class="bsp-lupenstelle" style="border-color:var(--c8)">L</span>aufen</div>
+        <div class="bsp-hint">→ Groß oder klein?</div>
+        <div class="bsp-strategie" style="background:#fdf2f8">
+          Probe: <em>das Laufen</em> ✓ → nominalisierter Infinitiv → Nomen → <strong>Großschreibung</strong>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+      <div class="bsp-card" style="border-color:var(--c8)" onclick="toggle(this)">
+        <div class="bsp-word"><span class="bsp-lupenstelle" style="border-color:var(--c8)">r</span>äumlich</div>
+        <div class="bsp-hint">→ Groß oder klein?</div>
+        <div class="bsp-strategie" style="background:#fdf2f8">
+          Probe: <em>die räumlich</em> ✗ → kein Nomen → Adjektiv → <strong>Kleinschreibung</strong>
+        </div>
+        <div class="bsp-tap">👆 antippen</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- Seitennavigation -->
+<nav style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:14px 16px 24px;max-width:640px;margin:0 auto">
+  <a href="regelradar-selbsttest.html" style="padding:9px 16px;border-radius:99px;font-size:.83rem;font-weight:600;text-decoration:none;background:#e2e8f0;color:#475569">🔎 Selbsttest</a>
+  <a href="regelradar-strategien.html" style="padding:9px 16px;border-radius:99px;font-size:.83rem;font-weight:600;text-decoration:none;background:#2563eb;color:#fff">📖 Strategien</a>
+  <a href="regelradar-uebungen.html"   style="padding:9px 16px;border-radius:99px;font-size:.83rem;font-weight:600;text-decoration:none;background:#e2e8f0;color:#475569">✏️ Übungen</a>
+</nav>
+
+<script>
+function showPanel(id, btn) {
+  document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".cat-tab").forEach(b => b.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  btn.classList.add("active");
+  btn.scrollIntoView({behavior:"smooth", block:"nearest", inline:"center"});
+  window.scrollTo({top:0, behavior:"smooth"});
+  // Hash für Deep-Links setzen
+  history.replaceState(null, "", "#" + id.replace("p-",""));
+}
+
+function toggle(card) {
+  card.classList.toggle("revealed");
+}
+
+// Deep-Link via URL-Hash (z. B. regelradar-strategien.html#2 → Kategorie DK)
+window.addEventListener("DOMContentLoaded", () => {
+  const hash = location.hash.replace("#","");
+  if (hash) {
+    const panel = document.getElementById("p-" + hash);
+    // Passenden Tab finden und aktivieren
+    const tabs = document.querySelectorAll(".cat-tab");
+    tabs.forEach(t => {
+      if (t.getAttribute("onclick") && t.getAttribute("onclick").includes("'p-" + hash + "'")) {
+        showPanel("p-" + hash, t);
+      }
+    });
+  }
+});
+</script>
+
+    <footer>
+        <div class="container footer-inner">
+            <p>© <span id="footer-jahr">2025</span> Jan Herrmann</p>
+            <nav class="footer-links" aria-label="Rechtliche Links">
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+            </nav>
+            <a href="/kolosseum/public/admin/" id="admin-footer-link" class="admin-footer-link" aria-hidden="true" tabindex="-1"></a>
+        </div>
+    </footer>
+    <script src="js/main.js"></script>
+    <script src="js/kolosseum-login-widget.js"></script>
+
+</body>
+</html>
