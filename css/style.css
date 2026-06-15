@@ -149,9 +149,10 @@ ul {
     gap: 6px;
 }
 
-/* Einzelnes Navigations-Icon (Link oder Dropdown-Button) */
+/* Einzelnes Navigations-Icon (Link oder Dropdown-Button) –
+   nur direkte Navi-Items, NICHT die Links im Fächer-Aufklappmenü */
 .navbar-links .nav-item,
-.navbar-links a {
+.navbar-links > li > a {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -185,8 +186,8 @@ ul {
 }
 
 .navbar-links .nav-item:hover,
-.navbar-links a:hover,
-.navbar-links a.aktiv {
+.navbar-links > li > a:hover,
+.navbar-links > li > a.aktiv {
     background-color: rgba(255, 255, 255, 0.16);
     color: var(--farbe-weiss);
     transform: translateY(-1px);
@@ -294,6 +295,17 @@ ul {
     min-width: 220px;
     padding: 6px 0;
     z-index: 200;
+}
+
+/* Unsichtbare „Brücke" über die Lücke zwischen Button und Menü,
+   damit das Menü beim Rübergehen mit der Maus geöffnet bleibt */
+.navbar-dropdown-menu::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -14px;
+    height: 14px;
 }
 
 .navbar-dropdown-menu.offen {
@@ -1700,7 +1712,7 @@ footer {
 
     /* Im Mobile-Menü: Icon + Text nebeneinander (Tooltips entfallen bei Touch) */
     .navbar-links .nav-item,
-    .navbar-links a {
+    .navbar-links > li > a {
         width: 100%;
         height: auto;
         justify-content: flex-start;

@@ -505,7 +505,7 @@ input:focus, select:focus, textarea:focus {
     padding: 0;
 }
 .navbar-links .nav-item,
-.navbar-links a {
+.navbar-links > li > a {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -527,8 +527,8 @@ input:focus, select:focus, textarea:focus {
     overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
 }
 .navbar-links .nav-item:hover,
-.navbar-links a:hover,
-.navbar-links a.aktiv {
+.navbar-links > li > a:hover,
+.navbar-links > li > a.aktiv {
     background-color: rgba(255,255,255,0.16);
     color: #ffffff;
     transform: translateY(-1px);
@@ -632,7 +632,7 @@ input:focus, select:focus, textarea:focus {
     }
     .navbar .navbar-links.offen { display: flex; }
     .navbar .navbar-links .nav-item,
-    .navbar .navbar-links a {
+    .navbar .navbar-links > li > a {
         width: 100%; height: auto; justify-content: flex-start; gap: 12px;
         padding: 12px 14px; display: flex; font-size: 1rem;
     }
