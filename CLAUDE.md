@@ -18,34 +18,58 @@ This file provides context for AI assistants (e.g., Claude Code) working on this
 
 ```
 lehrer-homepage/
-├── index.html           # Main homepage: hero, subject cards, materials, contact
+├── index.html           # Startseite: Bereiche-Übersicht, Was-ist-neu, Teaser, Kontakt
 ├── abgabe.html          # Student assignment submission form (Formspree-powered)
+├── faecher.html         # Fächer-Übersicht (verlinkt jede fach-*.html)
+├── fach-<fach>.html     # EINE öffentliche Seite pro Fach: Vorstellung + Material
+│                        #   (deutsch, geschichte, wipo, informatik, werte-normen,
+│                        #    mathe, englisch, sport, biologie, chemie, physik, musik,
+│                        #    erdkunde, gestaltendes-werken, ag-projekte, faecheruebergreifend)
+├── portal.html          # Login-geschützte Material-Schnellübersicht (Kolosseum-Redirect-Ziel)
+├── kontakt.html · impressum.html · datenschutz.html
 ├── css/
-│   └── style.css        # All site styles
+│   └── style.css        # All site styles (inkl. globaler .mat-* / .material-karte / .fach-* Klassen)
 ├── js/
-│   ├── main.js          # All site JavaScript
-│   └── homepage-gate.js # Auth-Gate: blendet geschützte Sektionen ein/aus
-├── materialien/         # Generated interactive worksheets (HTML)
-├── Material manuell von mir/  # Source files uploaded manually by Jan Herrmann (PPTX, images, etc.)
+│   ├── main.js          # Navbar/Footer-Enhancer, Hamburger, Scroll-Spy, Footer-Jahr, Abgabe-Form
+│   ├── homepage-gate.js # Auth-Gate: blendet geschützte Sektionen ein/aus
+│   ├── kolosseum-login-widget.js # Login-Status-Chip in der Navbar
+│   ├── kolosseum-prompt.js       # XP-Modal nach Quiz (Gast-Vorschau computeNotenpunkte)
+│   ├── worksheet-xp.js           # XP-Modal/-Einlösung für Arbeitsblätter
+│   ├── arena-bar.js              # Persistente Kolosseum-Statusleiste unten auf jeder Seite
+│   ├── auth-guard.js             # Body verstecken bis Auth-Check (geschützte Einzelseiten)
+│   ├── dynamic-content.js        # Lädt dynamische Inhalte (inhalte.json)
+│   ├── materialien-dynamisch.js  # Lädt je Fach hochgeladene Materialien (Kolosseum-API, data-fach)
+│   ├── was-ist-neu.js            # „Was ist neu?"-Spalten (neuigkeiten.json + inhalte.json + API)
+│   ├── blog.js · blog-daten.js · blog-einreichen.js  # Blog-Rendering/-Fallback/-Upload
+│   ├── supabase-config.js · supabase-leaderboard.js  # Globale Quiz-Bestenlisten
+├── neuigkeiten.json     # Pflegbare Einträge für „Was ist neu?" (Funktionen)
+├── inhalte.json         # Pflegbare Einträge für neue Materialien (dynamic-content.js)
+├── materialien/         # Generierte interaktive Arbeitsblätter/Quizze (HTML)
+│   └── _template-karten-quiz.html  # Vorlage für Bilderraten-/Karten-Quizze
+├── ANLEITUNG-Bilderraten-Quiz.md   # Schritt-für-Schritt-Anleitung Bilderraten-Quiz
+├── Material manuell von mir/  # Quelldateien (PPTX, Bilder, HTML-Entwürfe) von Jan Herrmann
 ├── upload/              # Drop folder for raw worksheet files
 │   └── _erledigt/       # Processed originals (moved here after conversion)
-├── reso-selbsttest.html # RESO Rechtschreibdiagnostik: Schüler-Selbsttest (5 Varianten × 35 Items)
-├── reso-lehrkraft.html  # RESO Rechtschreibdiagnostik: Lehrkraft-Dashboard
-├── reso-backend/        # RESO API-Backend (FastAPI + SQLite, läuft als systemd-Service)
-│   ├── api.py           # FastAPI-App, Endpunkte: /klasse, /klassen, /ergebnis, /ergebnisse
-│   ├── requirements.txt # Python-Abhängigkeiten (fastapi, uvicorn, pydantic)
-│   ├── reso-api.service # systemd-Servicedatei
-│   ├── nginx-snippet.conf # (veraltet – Server nutzt Caddy, nicht nginx)
+├── regelradar.html      # RegelRadar (Rechtschreibung/Zeichensetzung): zentraler Hub
+├── regelradar-selbsttest.html   # Schüler-Selbsttest (5 Varianten × 35 Items)
+├── regelradar-lehrkraft.html    # Lehrkraft-Dashboard
+├── regelradar-{diktat,strategien,strategieabfrage,uebungen,selbsttest2,quatsch}.html
+├── reso*.html           # Reine Redirect-Stubs (alte Pfade → regelradar*.html)
+├── reso-backend/        # RegelRadar-API-Backend (FastAPI + SQLite, systemd-Service)
+│   ├── api.py           # Endpunkte /klasse, /klassen, /ergebnis, /ergebnisse, …
+│   ├── reso-api.service # systemd-Servicedatei (Pfad bleibt /reso-api – Server-Vertrag!)
 │   └── setup.sh         # Einmaliges Server-Setup-Skript
+├── reso-deploy/         # Separater Deploy-Stand des Backends (eigene CLAUDE.md) – nicht das Live-Frontend
 ├── kolosseum/           # Lernkolosseum (geschützter Bereich, Node.js-Backend)
 │   ├── public/
-│   │   ├── profil.html
-│   │   ├── rangliste.html
+│   │   ├── profil.html · rangliste.html · charakter.html
+│   │   ├── quiz.html · quiz-spiel.html · kampf.html · shop.html
+│   │   ├── login.html · register.html
+│   │   ├── js/ (main.js, arena-bar.js, avatar.js, charakter-avatar.js, site-nav.js)
 │   │   └── admin/
-│   │       ├── index.html
-│   │       ├── link-erstellen.html
-│   │       ├── material-hochladen.html
-│   │       └── xp-vergabe.html
+│   │       ├── index.html · dashboard.html · quiz.html · schueler.html
+│   │       ├── link-erstellen.html · material-hochladen.html · xp-vergabe.html
+│   │       └── leseabenteuer.html
 │   └── routes/
 │       └── external.js  # XP-Berechnung (computeNotenpunkte)
 └── tools/
@@ -53,7 +77,13 @@ lehrer-homepage/
     └── requirements.txt # Python dependencies (anthropic)
 ```
 
-There are no build tools, transpilation steps, or generated output folders beyond `materialien/`.
+> **Weitere eigenständige Lernseiten im Root** (öffentlich bzw. teils per `auth-guard.js`/Geheimlink
+> geschützt), von den Fachseiten verlinkt: `narratologische-analyse.html`,
+> `deutsch-dialektische-eroerterung.html`, `deutsch-das-parfum.html`, `deutsch-theaterprojekt.html`,
+> `fuenfschrittlesemethode.html`, `stilmittel-quiz.html`, `literaturwissenschaft_quiz_v2.html`,
+> `rechtschreibquiz.html`, `lernquiz_jahrgang5.html`, `ab-herrschaft-mittelalter.html`,
+> `leseabenteuer.html` (+ `-regeln`, `-heldenbogen`), `kroatien-2026.html`, `wintersport-q8z2x.html`,
+> `lehrer-upload.html`, `blog.html`, `blog-einreichen.html`, `kolosseum.html`.
 
 ### Manuell bereitgestellte Quelldateien (`Material manuell von mir/`)
 
@@ -215,62 +245,56 @@ einfach unter gleichem Pfad ersetzt werden.
 
 ```
 Startseite (index.html)
+├── #ladebildschirm  → Kurze History-Timeline-Ladeanimation (blendet sich aus)
 ├── Aufbau-Banner    → (.aufbau-banner) Hinweis zwischen Navbar und Bereiche-Kacheln
 ├── #startseite      → Bereiche-Übersicht: 6 Kacheln in dieser Reihenfolge:
-│                      1. Fächervorstellung (öffentlich, klickbar → faecher.html)
+│                      1. Fächervorstellung (öffentlich, klickbar → faecher.html;
+│                         Pill-Chips verlinken direkt auf die jeweilige fach-*.html)
 │                      2. Arena – Lernkolosseum (🔒)
 │                      3. Jan Herrmann – Wer bin ich? (öffentlich)
 │                      4. Schüler*innenblog (🔒)
 │                      5. Leseabenteuer (🔒)
 │                      6. Materialien & Quizze (🔒)
-├── #was-ist-neu     → Aktuelle Funktionen, Quiz-Leistungen, neue Materialien
-├── Login-Gate       → sichtbar wenn NICHT eingeloggt
-├── Lernkolosseum-Teaser → sichtbar wenn eingeloggt
-├── Digitale Materialien → sichtbar wenn eingeloggt (mit Jahrgang-Filterleiste)
-├── Blog-Teaser      → sichtbar wenn eingeloggt
+├── #was-ist-neu     → Aktuelle Funktionen, Quiz-Leistungen, neue Materialien (js/was-ist-neu.js)
+├── #gladiatoren-teaser → Kolosseum-Teaser mit Statistiken
+├── #regelradar-teaser  → RegelRadar (Rechtschreibung & Zeichensetzung) → regelradar.html
+├── Login-Gate       → sichtbar wenn NICHT eingeloggt (#homepage-login-gate)
+├── #lernkolosseum   → Lernkolosseum-Teaser, sichtbar wenn eingeloggt
+├── #digitale-materialien → Materialien-Grid mit Jahrgang-Filterleiste, sichtbar wenn eingeloggt
+├── #blog-teaser     → Blog-Teaser, sichtbar wenn eingeloggt
 ├── #kontakt         → jan.herrmann AT obsspelle.de (E-Mail verschleiert)
 └── Footer           → © Impressum · Datenschutz + versteckter Admin-Link
 
-ÖFFENTLICH
-├── faecher.html             → Fächer-Landingpage (alle Fächer, Link zum Materialportal)
-└── Fächervorstellung (je ein eigener Bereich pro Hauptfach)
-    ├── fach-deutsch.html    → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
-    ├── fach-geschichte.html    → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
-    ├── fach-wipo.html              (Wirtschaft/Politik)     → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
-    ├── fach-informatik.html     → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
-    ├── fach-werte-normen.html     → Erklärung des Faches + Link zur Seite Materialien des entsprechenden Faches
-    ├── fach-andere.html            (Mathe, Englisch, Sport, Bio, Chemie, Physik, Musik,
-    │                                Erdkunde, Gestaltendes Werken) → Erklärung der Fächer + Links zur Seite Materialien des jeweiligen Faches
-    └── fach-ag-projekte.html    → Erklärung der Projekte und Arbeitsgemeinschaften + Link zur Seite Materialien des entsprechenden Faches
+ÖFFENTLICH – Fächer (Grundprinzip: EINE Seite pro Fach = Vorstellung + Material)
+├── faecher.html             → Fächer-Übersicht; jede Karte → eine fach-*.html
+└── fach-<fach>.html         → öffentliche Fachseite: Fachvorstellung + Themen
+                               + komplette Materialliste (Arbeitsblätter · Materialien · Quizze)
+                               + dynamisch hochgeladene Materialien (.dyn-mat-section[data-fach])
+    ├── Hauptfächer: fach-deutsch · fach-geschichte · fach-wipo · fach-informatik · fach-werte-normen
+    ├── Weitere Fächer: fach-mathe · fach-englisch · fach-sport · fach-biologie · fach-chemie
+    │                   · fach-physik · fach-musik · fach-erdkunde · fach-gestaltendes-werken
+    ├── fach-ag-projekte           → AGs & Projekte
+    └── fach-faecheruebergreifend  → fächerverbindende Quizze/Projekte
+    (Die einzelnen Arbeitsblätter/Quizze in materialien/ bleiben hinter Login bzw.
+     Geheimlink geschützt – nur die Material-LISTE ist öffentlich sichtbar.)
+
+    ⚠️ Ehemalige materialien-<fach>.html sind ENTFERNT (waren login-geschützte Dubletten);
+       ebenso fach-andere.html. Alle Verweise zeigen jetzt auf fach-<fach>.html.
 
 GESCHLOSSEN (Login via Kolosseum-Account erforderlich)
-├── Materialien (portal.html)
-│   ├── Deutsch        → Arbeitsblätter · Materialien · Quizze
-│   ├── Geschichte     → Arbeitsblätter · Materialien · Quizze
-│   ├── Wirtschaft/Politik → Arbeitsblätter · Materialien · Quizze
-│   ├── Werte und Normen → Arbeitsblätter · Materialien · Quizze
-│   ├── Informatik → Arbeitsblätter · Materialien · Quizze
-│   ├── Gestaltendes Werken → Arbeitsblätter · Materialien · Quizze
-│   ├── Mathematik     → Arbeitsblätter · Materialien · Quizze
-│   ├── Englisch    → Arbeitsblätter · Materialien · Quizze
-│   ├── Sport    → Arbeitsblätter · Materialien · Quizze
-│   ├── Biologie    → Arbeitsblätter · Materialien · Quizze
-│   ├── Chemie    → Arbeitsblätter · Materialien · Quizze
-│   ├── Physik    → Arbeitsblätter · Materialien · Quizze
-│   ├── Musik    → Arbeitsblätter · Materialien · Quizze
-│   ├── Erdkunde     → Arbeitsblätter · Materialien · Quizze   
-│   └── AGs & Projekte → Arbeitsblätter · Materialien · Quizze
+├── portal.html  → login-geschützte Material-Schnellübersicht; verlinkt die fach-*.html.
+│                  Ziel der Kolosseum-Redirects (login.html/register.html/students.js).
+│                  Sekundär – die Fachseiten sind die kanonische Materialquelle.
 ├── Schüler*innenblog (blog.html)
 │   └── blog-einreichen.html
 └── Lernkolosseum
     ├── Übersicht/Landing (kolosseum.html) → auth-guard.js
     ├── Profil (kolosseum/public/profil.html) ← primäres Ziel aller „Zur Arena"-Links
     ├── Rangliste (kolosseum/public/rangliste.html)
-    ├── Arena / Quiz-Spiel
+    ├── Charakter · Quiz · Quiz-Spiel · Kampf · Shop (kolosseum/public/)
     └── Admin-Ebene (kolosseum/public/admin/) ← Zugang nur via verstecktem Footer-Link
-        ├── Einladungslink erstellen
-        ├── Material hochladen
-        └── Manuelle XP-Vergabe
+        ├── index · dashboard · quiz · schueler · leseabenteuer
+        ├── Einladungslink erstellen · Material hochladen · Manuelle XP-Vergabe
 ```
 
 ### Zugangslogik (`js/homepage-gate.js`)
@@ -318,7 +342,7 @@ XP werden nur bei **Verbesserungen** gutgeschrieben (Differenz zum bisherigen Be
 ## Key Files and Their Roles
 
 ### `index.html`
-- **Sektionsreihenfolge:** Navbar → Aufbau-Banner (`.aufbau-banner`) → Bereiche-Übersicht (`#startseite`, `.bereiche-uebersicht-section`) → `#was-ist-neu` → Gladiatoren-Teaser → Login-Gate → `#lernkolosseum` → `#digitale-materialien` → Blog-Teaser → `#kontakt` → Footer
+- **Sektionsreihenfolge:** `#ladebildschirm` (Lade-Animation) → Navbar → Aufbau-Banner (`.aufbau-banner`) → Bereiche-Übersicht (`#startseite`, `.bereiche-uebersicht-section`) → `#was-ist-neu` → `#gladiatoren-teaser` → `#regelradar-teaser` → Login-Gate (`#homepage-login-gate`) → `#lernkolosseum` → `#digitale-materialien` → `#blog-teaser` → `#kontakt` → Footer
 - **Bereiche-Grid:** 6 Kacheln in fester Reihenfolge:
   1. **Fächervorstellung** (öffentlich) — alle 15 Fächer als Pill-Chips; Klick auf Chip → Fachseite; Klick auf Karte → `faecher.html`; umgesetzt via `.bereich-karte-klickbar` + `onclick="if(!event.target.closest('a'))location.href='faecher.html'"`
   2. **Arena – Lernkolosseum** (🔒 Login)
@@ -329,13 +353,15 @@ XP werden nur bei **Verbesserungen** gutgeschrieben (Differenz zum bisherigen Be
 - Digitalematerialien-Sektion: Jahrgang-Filterleiste (`.dm-filter-leiste`) über dem Grid; Karten tragen `data-jahrgang="5-6|7-8|9-10"` Attribute
 - `id="startseite"` sitzt auf der `<section class="bereiche-uebersicht-section">` (kein Hero mehr)
 - Copyright year dynamisch via `id="footer-jahr"`
-- Scripts: `main.js`, `dynamic-content.js`, `homepage-gate.js`, `kolosseum-login-widget.js`
+- Scripts: `main.js`, `dynamic-content.js`, `supabase-config.js`, `was-ist-neu.js`, `arena-bar.js`, `kolosseum-login-widget.js`, `homepage-gate.js` (+ Analytics/GoatCounter am Ende)
 
-### `faecher.html`
-- Landingpage für alle Unterrichtsfächer (Navbar-Link „📚 Fächer")
-- Drei Gruppen: Hauptfächer (Deutsch, Geschichte, WiPo, Informatik, W&N), Weitere Fächer (Mathe, Englisch, Sport, Bio, Chemie, Physik, Musik, Erdkunde, Gestaltendes Werken), AGs & Projekte
-- Jede Fachkarte verlinkt auf die entsprechende `fach-*.html`-Seite (Hauptfächer) oder `fach-andere.html` (weitere Fächer)
-- CTA-Box am Ende mit Link zum Materialportal (`portal.html`)
+### Fächer: `faecher.html` + `fach-<fach>.html` (Grundprinzip)
+- **Eine Seite pro Fach.** `fach-<fach>.html` ist die **öffentliche, kanonische** Fachseite und enthält Fachvorstellung **und** die komplette Materialliste (Kategorien Arbeitsblätter · Materialien · Quizze) plus `<div class="dyn-mat-section" data-fach="…">` für dynamisch hochgeladene Materialien.
+- Die einzelnen Arbeitsblätter/Quizze in `materialien/` bleiben hinter Login bzw. Geheimlink geschützt – nur die **Liste** ist öffentlich.
+- `faecher.html` ist die Übersicht (Navbar-Link „📚 Fächer"); jede Fachkarte verlinkt direkt auf die zugehörige `fach-<fach>.html`. Drei Gruppen: Hauptfächer · Weitere Fächer · AGs & Projekte.
+- **Neue Materialien immer auf der `fach-<fach>.html` verlinken** (in der passenden Kategorie). Es gibt **keine** `materialien-<fach>.html` und **kein** `fach-andere.html` mehr.
+- Scripts der Fachseiten: `main.js`, `materialien-dynamisch.js`, `dynamic-content.js`, `homepage-gate.js`, `arena-bar.js`. Fachseiten sind öffentlich (kein `auth-guard.js`, kein `noindex`).
+- `portal.html` bleibt als login-geschützte Schnellübersicht bestehen (Kolosseum-Redirect-Ziel) und verlinkt ebenfalls die `fach-<fach>.html`.
 
 ### `abgabe.html`
 - Student assignment upload form, Formspree-Integration
@@ -467,7 +493,7 @@ kolosseum.lehrer-herrmann.de {
 
 Caddy neu laden nach Änderungen: `systemctl reload caddy`
 
-**RESO API** läuft als systemd-Service auf Port `8400`:
+**RegelRadar-API** (Service/Pfad bewusst weiterhin `reso-api`) läuft als systemd-Service auf Port `8400`:
 - Service-Name: `reso-api`
 - Prozess: `/opt/reso/venv/bin/uvicorn api:app --host 127.0.0.1 --port 8400`
 - Datenbank: `/opt/reso/reso.db` (SQLite)
@@ -519,23 +545,29 @@ Alle Änderungen müssen sicherstellen:
 
 ---
 
-## RESO Rechtschreibdiagnostik (Stand 2026-05)
+## RegelRadar – Rechtschreibung & Zeichensetzung (Stand 2026-06)
 
-RESO ist ein eigenständiges Diagnosesystem für den Deutschunterricht. Es besteht aus drei Teilen:
+**RegelRadar** (vormals „RESO") ist ein eigenständiges Diagnose- und Trainingssystem für den
+Deutschunterricht. Claim: **„Rechtschreibung & Zeichensetzung diagnostizieren, trainieren, meistern."**
 
-### Schüler-Selbsttest (`reso-selbsttest.html`)
-- Öffentlich erreichbar unter `https://lehrer-herrmann.de/reso-selbsttest.html`
-- 5 Varianten × 35 Items, 7 Rechtschreibkategorien (Doppelkonsonanten, s/ß/ss, Auslautverhärtung, ä/äu, Zusammensetzungen, Ableitungen/Vorsilben, Groß-/Kleinschreibung)
-- Schüler:innen geben Klassencode + Namen ein → wählen Variante → Multiple-Choice-Test → Ergebnis → optional an Lehrkraft senden (POST an `/reso-api/ergebnis`)
-- API-URL ist fest eingebaut: `https://lehrer-herrmann.de/reso-api`
+> **Namenskonvention:** Im **Frontend** durchgängig „RegelRadar"; „RESO" darf in sichtbaren Texten
+> nicht mehr auftauchen. **Ausnahme (Infrastruktur):** Der Backend-API-Pfad `/reso-api`, der
+> systemd-Service `reso-api` und das Verzeichnis `reso-backend/` behalten ihren Namen (Server-Vertrag).
+> Die alten `reso*.html`-Pfade existieren nur noch als **Redirect-Stubs** → `regelradar*.html`.
 
-### Lehrkraft-Dashboard (`reso-lehrkraft.html`)
-- Öffentlich erreichbar unter `https://lehrer-herrmann.de/reso-lehrkraft.html`
-- Login via **Lehrkraft-Token** (Bearer-Token, wird im Header mitgeschickt)
-- 4 Tabs: Ergebnisliste · Klassenheatmap · Schülerprofil · Klassen verwalten
-- Klassen anlegen → Code kopieren → an Schüler:innen weitergeben
+### Seiten (alle im Root)
+- **Hub:** `regelradar.html` – bündelt alle Unterbereiche, Hero + Claim, Logo `img/regelradar-logo.svg`.
+- **Schüler-Selbsttest:** `regelradar-selbsttest.html` – 5 Varianten × 35 Items, 7 Rechtschreibkategorien
+  (Doppelkonsonanten, s/ß/ss, Auslautverhärtung, ä/äu, Zusammensetzungen, Ableitungen/Vorsilben,
+  Groß-/Kleinschreibung). Klassencode + Name → Variante → MC-Test → Ergebnis → optional an Lehrkraft
+  senden (POST `/reso-api/ergebnis`). API fest eingebaut: `https://lehrer-herrmann.de/reso-api`.
+- **Lehrkraft-Dashboard:** `regelradar-lehrkraft.html` – Login via **Lehrkraft-Token** (Bearer-Header),
+  4 Tabs: Ergebnisliste · Klassenheatmap · Schülerprofil · Klassen verwalten.
+- **Weitere:** `regelradar-diktat.html`, `regelradar-strategien.html`, `regelradar-strategieabfrage.html`,
+  `regelradar-uebungen.html`, `regelradar-selbsttest2.html`, `regelradar-quatsch.html`.
+- **Teaser** auf der Startseite: `#regelradar-teaser` in `index.html` → `regelradar.html`.
 
-### Backend (`reso-backend/api.py`)
+### Backend (`reso-backend/api.py`) — Pfad/Service bewusst weiter „reso-api"
 - FastAPI + SQLite, läuft als systemd-Service `reso-api` auf Port 8400
 - Proxy via Caddy: `https://lehrer-herrmann.de/reso-api/` → `localhost:8400`
 - **Wichtige Endpunkte:**
@@ -563,7 +595,7 @@ Dieser Assistent unterstützt Jan Herrmann und sein Kollegium dabei, hochgeladen
 
 ### Ablageort
 
-Generierte Dateien → `materialien/`. Verlinkung von `index.html` im Abschnitt `#materialien`.
+Generierte Dateien → `materialien/`. Verlinkt werden sie auf der jeweiligen **`fach-<fach>.html`** (in der passenden Kategorie Arbeitsblätter · Materialien · Quizze); für die Startseiten-Übersicht ggf. zusätzlich in `inhalte.json`/`neuigkeiten.json` eintragen.
 
 ### Ausgabeformat
 
