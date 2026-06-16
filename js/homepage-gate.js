@@ -1,7 +1,7 @@
 /**
  * homepage-gate.js – Steuert die sichtbaren Sektionen auf index.html.
  * Öffentlich: Hero, Was-ist-neu, Kontakt.
- * Geschützt: Lernkolosseum-Teaser, Materialien, Blog.
+ * Geschützt: Lernkolosseum-Teaser, Materialien, Blog, RegelRadar.
  * Prüft die Kolosseum-Session und blendet Sektionen entsprechend ein/aus.
  */
 (function () {
@@ -9,7 +9,7 @@
 
   var K = 'https://kolosseum.lehrer-herrmann.de';
 
-  var PROTECTED_IDS = ['lernkolosseum', 'digitale-materialien', 'blog-teaser'];
+  var PROTECTED_IDS = ['lernkolosseum', 'digitale-materialien', 'blog-teaser', 'regelradar-teaser'];
   var GATE_ID       = 'homepage-login-gate';
 
   function setProtectedVisible(visible) {
