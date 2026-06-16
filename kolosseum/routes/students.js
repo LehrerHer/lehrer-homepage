@@ -17,12 +17,12 @@ const WORKSHEET_REGISTRY = [
 
 // Registry der statischen Quizze mit ihren Seiten-URLs
 const EXTERN_QUIZ_REGISTRY = [
-  { slug: 'stilmittel',            title: 'Stilmittel-Quiz',           url: 'https://lehrer-herrmann.de/portal.html' },
-  { slug: 'literaturwissenschaft', title: 'Literaturwissenschaft-Quiz', url: 'https://lehrer-herrmann.de/portal.html' },
-  { slug: 'rechtschreibung',       title: 'Rechtschreib-Quiz',          url: 'https://lehrer-herrmann.de/portal.html' },
-  { slug: 'lernquiz-jahrgang5',    title: 'Lernquiz Jahrgang 5',        url: 'https://lehrer-herrmann.de/portal.html' },
-  { slug: 'das-parfum',            title: 'Das Parfum',                  url: 'https://lehrer-herrmann.de/portal.html' },
-  { slug: 'theaterprojekt-9',      title: 'Theaterprojekt Jahrgang 9',  url: 'https://lehrer-herrmann.de/portal.html' },
+  { slug: 'stilmittel',            title: 'Stilmittel-Quiz',           url: 'https://lehrer-herrmann.de/stilmittel-quiz.html' },
+  { slug: 'literaturwissenschaft', title: 'Literaturwissenschaft-Quiz', url: 'https://lehrer-herrmann.de/literaturwissenschaft_quiz_v2.html' },
+  { slug: 'rechtschreibung',       title: 'Rechtschreib-Quiz',          url: 'https://lehrer-herrmann.de/rechtschreibquiz.html' },
+  { slug: 'lernquiz-jahrgang5',    title: 'Lernquiz Jahrgang 5',        url: 'https://lehrer-herrmann.de/lernquiz_jahrgang5.html' },
+  { slug: 'das-parfum',            title: 'Das Parfum',                  url: 'https://lehrer-herrmann.de/deutsch-das-parfum.html' },
+  { slug: 'theaterprojekt-9',      title: 'Theaterprojekt Jahrgang 9',  url: 'https://lehrer-herrmann.de/deutsch-theaterprojekt.html' },
 ];
 
 // GET /api/students/profile
