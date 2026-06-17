@@ -811,7 +811,7 @@
   $('btn-to-results').addEventListener('click', showResults);
 
   // ── ERGEBNISSE ─────────────────────────────────────────────────────────────
-  function showResults() {
+  async function showResults() {
     $('bonus-section').style.display = 'none';
     const res = $('results-area');
     res.style.display = 'block';
