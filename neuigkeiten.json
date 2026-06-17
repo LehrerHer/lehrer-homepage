@@ -2,6 +2,12 @@
   "_hinweis": "Neue Funktionen für die 'Was ist neu?'-Sektion. Neueste oben einfügen. Felder: titel, datum (JJJJ-MM-TT), meta (Bereich), url. Wird von js/was-ist-neu.js geladen; es werden automatisch die 5 jüngsten angezeigt.",
   "funktionen": [
     {
+      "titel": "Neues Rätsel-Quiz: Es gibt ein verbindendes Element",
+      "datum": "2026-06-17",
+      "meta": "Quizze",
+      "url": "materialien/faecheruebergreifend_monatsnamen-rebus_jg5-10_2026-06.html"
+    },
+    {
       "titel": "Deutsch-Quiz Sek I mit Bestenliste (5 Kategorien)",
       "datum": "2026-05-29",
       "meta": "Quizze",
