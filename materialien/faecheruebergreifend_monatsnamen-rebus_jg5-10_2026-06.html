@@ -1,0 +1,981 @@
+<!--
+  Titel: Es gibt ein verbindendes Element – Monatsnamen-Rebus-Quiz
+  Fach: Fächerübergreifend
+  Klasse/Niveau: Jahrgang 5–10
+  AB-Typ: Rätsel-Quiz (verbindendes Element erkennen)
+  Erstellt: 2026-06-17
+  Quelle: Bilder von Jan Herrmann (Chat-Upload)
+
+  BILDER-UPLOAD: Die 12 Bilder müssen in den Ordner
+  materialien/monatsnamen-rebus-bilder/ hochgeladen werden:
+    01-januar.jpg    → Janus-Münze (röm. Gott)
+    02-februar.jpg   → Russische Februarrevolution 1917
+    03-maerz.jpg     → Friedrich Merz (als Kind, S/W-Foto)
+    04-april.jpg     → Avril Lavigne
+    05-mai.jpg       → Vanessa Mai
+    06-juni.jpg      → Juno (Filmszene 2007)
+    07-juli.jpg      → Julia Roberts
+    08-august.jpg    → Auguste Rodin (S/W-Foto)
+    09-september.jpg → Green Day – „Wake Me Up When September Ends"
+    10-oktober.jpg   → Oktoberfest-Zelt
+    11-november.jpg  → Movember-Schnurrbart mit blauem Band
+    12-dezember.jpg  → The Decemberists (Bandphoto)
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Es gibt ein verbindendes Element – lehrer-herrmann.de</title>
+  <script>
+    (function(){
+      if(!location.search.includes('k=m9nx2q')){
+        var s=document.createElement('script');
+        s.src='/js/auth-guard.js';
+        document.head.appendChild(s);
+      }
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;600;700&display=swap">
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface2: #334155;
+      --gold: #f59e0b;
+      --gold2: #fbbf24;
+      --green: #22c55e;
+      --red: #ef4444;
+      --blue: #3b82f6;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --radius: 16px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* NAVBAR */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(15,23,42,0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+    .navbar-inner { display: flex; align-items: center; gap: 16px; height: 56px; }
+    .navbar-logo {
+      font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem;
+      letter-spacing: 2px; color: var(--gold); text-decoration: none; flex-shrink: 0;
+    }
+    .navbar-links { display: flex; list-style: none; gap: 4px; margin-left: auto; align-items: center; flex-wrap: wrap; }
+    .navbar-links a { color: var(--muted); text-decoration: none; font-size: 0.85rem; padding: 6px 10px; border-radius: 8px; transition: color 0.2s, background 0.2s; }
+    .navbar-links a:hover { color: var(--text); background: var(--surface); }
+    .navbar-gb-trenner { display: flex; align-items: center; gap: 8px; padding: 0 8px; color: var(--muted); font-size: 0.75rem; }
+    .navbar-gb-trenner::before { content: ''; display: block; width: 1px; height: 20px; background: var(--surface2); }
+    .navbar-gb-label { white-space: nowrap; }
+    .navbar-gb-link { color: var(--gold) !important; }
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 8px; margin-left: auto; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; transition: all 0.3s; }
+    @media(max-width:700px){
+      .hamburger { display: flex; }
+      .navbar-links { display: none; position: absolute; top: 56px; left: 0; right: 0; background: var(--surface); flex-direction: column; padding: 12px; gap: 4px; border-bottom: 1px solid var(--surface2); }
+      .navbar-links.open { display: flex; }
+    }
+
+    /* HERO */
+    .hero { text-align: center; padding: 48px 20px 24px; }
+    .eyebrow { font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.2rem, 7vw, 3.8rem); letter-spacing: 3px;
+      background: linear-gradient(135deg, #fff 30%, var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      line-height: 1.1;
+    }
+    .hero-sub { color: var(--muted); font-size: 0.95rem; margin-top: 12px; }
+
+    /* PHASE 1: 12-BILDER-GRID */
+    #phase1 { display: block; }
+    .grid12 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      max-width: 960px; margin: 0 auto 32px;
+      padding: 0 20px;
+    }
+    @media(max-width:700px){ .grid12 { grid-template-columns: repeat(3, 1fr); } }
+    @media(max-width:480px){ .grid12 { grid-template-columns: repeat(2, 1fr); } }
+    .grid-cell {
+      position: relative; background: var(--surface); border-radius: 12px;
+      overflow: hidden; aspect-ratio: 1;
+      border: 2px solid transparent; transition: border-color 0.3s;
+    }
+    .grid-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .grid-cell .cell-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+      padding: 20px 8px 8px; font-size: 0.72rem; font-weight: 600;
+      color: transparent; transition: color 0.4s; text-align: center;
+      letter-spacing: 0.3px;
+    }
+    .grid-cell .cell-month {
+      position: absolute; top: 6px; right: 6px;
+      background: var(--gold); color: #0f172a;
+      font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 1px;
+      padding: 2px 10px; border-radius: 999px;
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .grid-cell.revealed .cell-label { color: var(--text); }
+    .grid-cell.revealed .cell-month { opacity: 1; }
+    .grid-cell.correct-cell { border-color: var(--green); }
+
+    .no-img-hint {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 6px; padding: 8px; text-align: center;
+      background: var(--surface2); font-size: 0.72rem; color: var(--muted);
+    }
+    .no-img-hint .ni-month { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--gold); }
+
+    /* META-FRAGE (Phase 1) */
+    .meta-section {
+      max-width: 640px; margin: 0 auto 48px; padding: 0 20px; text-align: center;
+    }
+    .meta-question {
+      font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.3rem, 4vw, 2rem);
+      letter-spacing: 2px; color: var(--text); margin-bottom: 20px;
+    }
+    .meta-question span { color: var(--gold); }
+    .input-row { display: flex; gap: 12px; }
+    .answer-input {
+      flex: 1; padding: 14px 18px; background: var(--surface);
+      border: 2px solid var(--surface2); border-radius: var(--radius);
+      color: var(--text); font-size: 1rem; font-family: 'Inter', sans-serif;
+      outline: none; transition: border-color 0.2s;
+    }
+    .answer-input:focus { border-color: var(--gold); }
+    .answer-input.correct { border-color: var(--green); background: rgba(34,197,94,0.1); }
+    .answer-input.wrong { border-color: var(--red); background: rgba(239,68,68,0.1); }
+    .btn-check {
+      padding: 14px 28px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #000; font-weight: 700; font-size: 1rem;
+      border: none; border-radius: var(--radius); cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s; white-space: nowrap;
+    }
+    .btn-check:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-check:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .meta-feedback {
+      margin-top: 16px; padding: 16px 20px;
+      background: var(--surface); border-radius: var(--radius);
+      border-left: 4px solid var(--green); display: none;
+      text-align: left; animation: slideIn 0.3s ease;
+    }
+    .meta-feedback.wrong { border-left-color: var(--red); }
+    .meta-feedback .fb-result { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
+    .meta-feedback .fb-result.correct { color: var(--green); }
+    .meta-feedback .fb-result.wrong   { color: var(--red); }
+    .meta-feedback p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
+    .btn-reveal {
+      margin-top: 16px; padding: 10px 24px;
+      background: transparent; border: 1px solid var(--surface2);
+      border-radius: var(--radius); color: var(--muted); font-size: 0.9rem;
+      cursor: pointer; transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-reveal:hover { border-color: var(--gold); color: var(--gold); }
+    .btn-proceed {
+      display: block; width: 100%; margin-top: 20px; padding: 14px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #000; font-weight: 700; font-size: 1rem;
+      border: none; border-radius: var(--radius); cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-proceed:hover { opacity: 0.9; }
+
+    /* PHASE 2: EINZELBILD-QUIZ */
+    #phase2 { display: none; }
+    .progress-wrap { max-width: 640px; margin: 0 auto 28px; padding: 0 20px; }
+    .progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--muted); margin-bottom: 8px; }
+    .progress-bar-bg { height: 6px; background: var(--surface2); border-radius: 999px; overflow: hidden; }
+    .progress-bar { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); border-radius: 999px; transition: width 0.5s ease; width: 0%; }
+    .score-live { text-align: center; margin-bottom: 12px; font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 3px; color: var(--gold); }
+
+    .quiz-card { max-width: 800px; margin: 0 auto 40px; padding: 0 20px; }
+    .image-box {
+      border-radius: var(--radius); overflow: hidden; background: var(--surface);
+      min-height: 280px; max-height: 60vh;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px; box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    }
+    .image-box img { max-width: 100%; max-height: 60vh; width: auto; height: auto; object-fit: contain; }
+    @media(max-width:600px){ .image-box { max-height: 45vh; } .image-box img { max-height: 45vh; } }
+    .question-num { text-align: center; color: var(--muted); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
+    .clue-text { text-align: center; font-size: 0.82rem; color: var(--muted); margin-bottom: 16px; font-style: italic; display: none; }
+
+    .nav-btns { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .btn-nav { background: #1a1a2e; color: var(--text); border: 1px solid rgba(255,255,255,0.15); border-radius: 50%; width: 40px; height: 40px; font-size: 1.1rem; cursor: pointer; transition: background 0.2s, color 0.2s; display: flex; align-items: center; justify-content: center; }
+    .btn-nav:hover:not(:disabled) { background: var(--gold); color: #1a1a2e; }
+    .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+    .btn-gallery { background: transparent; color: var(--muted); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 6px 16px; font-size: 0.85rem; cursor: pointer; transition: background 0.2s, color 0.2s; }
+    .btn-gallery:hover { background: var(--gold); color: #1a1a2e; border-color: var(--gold); }
+
+    .feedback-card {
+      margin-top: 20px; background: var(--surface); border-radius: var(--radius);
+      padding: 20px 24px; border-left: 4px solid var(--green);
+      display: none; animation: slideIn 0.3s ease;
+    }
+    .feedback-card.wrong { border-left-color: var(--red); }
+    .feedback-result { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    .feedback-result.correct { color: var(--green); }
+    .feedback-result.wrong   { color: var(--red); }
+    .feedback-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 2px; margin-bottom: 4px; }
+    .feedback-clue { font-size: 0.9rem; color: var(--gold); font-weight: 600; margin-bottom: 8px; }
+    .feedback-info { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+    .btn-next { display: block; width: 100%; margin-top: 16px; padding: 12px; background: var(--surface2); border: none; border-radius: var(--radius); color: var(--text); font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
+    .btn-next:hover { background: var(--blue); }
+
+    /* GALLERY OVERLAY */
+    .gallery-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.85); display: none; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 24px 16px; }
+    .gallery-overlay.open { display: flex; }
+    .gallery-container { background: #12122a; border-radius: 16px; max-width: 960px; width: 100%; padding: 24px; box-shadow: 0 8px 40px rgba(0,0,0,0.6); }
+    .gallery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .gallery-header h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 2px; }
+    .btn-close { background: var(--surface2); border: none; color: var(--text); border-radius: 8px; padding: 8px 16px; cursor: pointer; font-size: 0.9rem; }
+    .btn-close:hover { background: var(--red); }
+    .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    @media(max-width:600px){ .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media(max-width:400px){ .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+    .gallery-thumb { position: relative; background: rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s; }
+    .gallery-thumb:hover { transform: scale(1.04); box-shadow: 0 4px 16px rgba(0,0,0,0.5); }
+    .gallery-thumb.active { outline: 2px solid var(--gold); }
+    .gallery-thumb img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+    .gallery-thumb .g-label { font-size: 0.72rem; color: var(--muted); text-align: center; padding: 4px 4px 6px; }
+    .gallery-thumb .g-badge { position: absolute; top: 6px; right: 6px; width: 12px; height: 12px; border-radius: 50%; border: 2px solid rgba(0,0,0,0.5); }
+    .g-badge.correct { background: var(--green); }
+    .g-badge.wrong   { background: var(--red); }
+
+    /* RESULTS */
+    .results {
+      display: none; max-width: 640px; margin: 0 auto 60px;
+      padding: 0 20px; text-align: center;
+    }
+    .results-title { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem, 8vw, 3.2rem); letter-spacing: 3px; margin-bottom: 8px; }
+    .results-score {
+      font-family: 'Bebas Neue', sans-serif; font-size: clamp(3rem, 12vw, 5.5rem);
+      letter-spacing: 4px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .results-max { color: var(--muted); font-size: 1rem; margin-bottom: 16px; }
+    .results-msg { font-size: 1rem; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
+    .xp-note { font-size: 0.82rem; color: var(--gold); margin-bottom: 20px; padding: 10px 16px; background: rgba(245,158,11,0.1); border-radius: 10px; border: 1px solid rgba(245,158,11,0.2); }
+    .lb-section { margin-top: 32px; text-align: left; }
+    .lb-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 2px; margin-bottom: 16px; text-align: center; }
+    .lb-input-row { display: flex; gap: 10px; margin-bottom: 20px; }
+    .lb-name-input { flex: 1; padding: 12px 16px; background: var(--surface); border: 2px solid var(--surface2); border-radius: var(--radius); color: var(--text); font-size: 0.95rem; outline: none; }
+    .lb-name-input:focus { border-color: var(--gold); }
+    .btn-lb-save { padding: 12px 24px; background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #000; font-weight: 700; border: none; border-radius: var(--radius); cursor: pointer; white-space: nowrap; }
+    .btn-lb-save:disabled { opacity: 0.4; cursor: not-allowed; }
+    #lb-list { list-style: none; }
+    #lb-list li { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--surface); border-radius: 10px; margin-bottom: 8px; font-size: 0.9rem; }
+    #lb-list li .lb-rank { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--gold); min-width: 28px; }
+    #lb-list li .lb-name { flex: 1; }
+    #lb-list li .lb-pts { color: var(--gold); font-weight: 700; }
+    .btn-retry { margin-top: 28px; padding: 14px 40px; background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #000; font-weight: 700; font-size: 1.05rem; border: none; border-radius: var(--radius); cursor: pointer; transition: opacity 0.2s; }
+    .btn-retry:hover { opacity: 0.85; }
+
+    /* FOOTER */
+    footer { background: var(--surface); border-top: 1px solid var(--surface2); padding: 24px 20px; margin-top: 40px; }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 0.85rem; color: var(--muted); }
+    .footer-links { display: flex; gap: 16px; }
+    .footer-links a { color: var(--muted); text-decoration: none; }
+    .footer-links a:hover { color: var(--text); }
+
+    @keyframes slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+    .fade-in { animation: fadeIn 0.5s ease; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+  <div class="container navbar-inner">
+    <a href="/index.html" class="navbar-logo">lehrer-herrmann.de</a>
+    <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="navbar-links" id="navbar-links">
+      <li><a href="/index.html#was-ist-neu">Was ist neu?</a></li>
+      <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+      <li class="navbar-gb-trenner" aria-hidden="true"><span class="navbar-gb-label">Geschützter Bereich</span></li>
+      <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+      <li><a href="/blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+      <li><a href="/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+    </ul>
+    <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+  </div>
+</nav>
+
+<!-- ═══════════════ PHASE 1: DAS GROSSE RÄTSEL ═══════════════ -->
+<div id="phase1">
+  <div class="hero">
+    <p class="eyebrow">Fächerübergreifendes Rätsel</p>
+    <h1>Es gibt ein verbindendes Element</h1>
+    <p class="hero-sub">12 Bilder · 1 Geheimnis · Was steckt drin?</p>
+    <button id="btn-lb-popup" type="button"
+      style="margin-top:14px;background:var(--gold);color:#0f172a;border:none;
+             border-radius:999px;padding:8px 20px;font-weight:700;font-size:0.85rem;
+             cursor:pointer;letter-spacing:0.5px;">
+      🏆 Bestenliste ansehen
+    </button>
+  </div>
+
+  <div class="grid12" id="grid12">
+    <!-- Wird per JS befüllt -->
+  </div>
+
+  <div class="meta-section">
+    <p class="meta-question">🔍 Was <span>verbindet</span> alle 12 Bilder?</p>
+    <div class="input-row">
+      <input type="text" id="meta-input" class="answer-input"
+             placeholder="Deine Antwort …" autocomplete="off" autocorrect="off"
+             aria-label="Verbindendes Element eingeben">
+      <button class="btn-check" id="btn-meta-check">Prüfen</button>
+    </div>
+    <div class="meta-feedback" id="meta-feedback"></div>
+    <button class="btn-reveal" id="btn-meta-reveal" style="display:none">
+      💡 Hinweis / Auflösung anzeigen
+    </button>
+    <button class="btn-proceed" id="btn-proceed" style="display:none">
+      Weiter zu den Einzelrätseln →
+    </button>
+  </div>
+</div>
+
+<!-- ═══════════════ PHASE 2: EINZELBILD-QUIZ ═══════════════ -->
+<div id="phase2">
+  <div class="hero" style="padding-top:32px;padding-bottom:16px;">
+    <p class="eyebrow">Phase 2 – Welcher Monat steckt im Namen?</p>
+    <h1 style="font-size:clamp(1.8rem,6vw,3rem)">Finde den versteckten Monat</h1>
+  </div>
+
+  <div class="progress-wrap">
+    <div class="progress-info">
+      <span id="prog-text">Frage 1 von 12</span>
+      <span id="prog-score">0 Punkte</span>
+    </div>
+    <div class="progress-bar-bg"><div class="progress-bar" id="prog-bar"></div></div>
+  </div>
+
+  <div class="quiz-card" id="quiz-area">
+    <div class="score-live" id="score-live">0 / 1200</div>
+    <div class="image-box">
+      <img id="quiz-img" alt="Rätselbild" style="transition:opacity 0.3s;">
+    </div>
+    <div class="nav-btns">
+      <button class="btn-nav" id="btn-prev" aria-label="Vorherige Frage" disabled>←</button>
+      <button class="btn-gallery" id="btn-gallery">⊞ Alle Bilder</button>
+      <button class="btn-nav" id="btn-nav-next" aria-label="Nächste Frage">→</button>
+    </div>
+    <div class="question-num" id="question-num">BILD 1 / 12</div>
+    <div class="clue-text" id="clue-text"></div>
+    <div class="input-row">
+      <input type="text" id="answer-input" class="answer-input"
+             placeholder="Welcher Monat? …" autocomplete="off" autocorrect="off">
+      <button class="btn-check" id="btn-check">Prüfen</button>
+    </div>
+    <div class="feedback-card" id="feedback-card">
+      <div class="feedback-result" id="fb-result"></div>
+      <div class="feedback-name" id="fb-name"></div>
+      <div class="feedback-clue" id="fb-clue"></div>
+      <div class="feedback-info" id="fb-info"></div>
+      <button class="btn-next" id="btn-next">Weiter →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ ERGEBNIS ═══════════════ -->
+<div class="results" id="results-area">
+  <div class="results-title">Ergebnis</div>
+  <div class="results-score" id="res-score">0</div>
+  <div class="results-max" id="res-max">von 1500 möglichen Punkten</div>
+  <div class="results-msg" id="res-msg"></div>
+  <div class="xp-note" id="xp-note" style="display:none"></div>
+
+  <div class="lb-section">
+    <div class="lb-title">🏆 Bestenliste</div>
+    <div class="lb-input-row">
+      <input type="text" id="lb-name" class="lb-name-input"
+             placeholder="Dein Name für die Bestenliste …" maxlength="30">
+      <button class="btn-lb-save" id="btn-lb-save">Eintragen</button>
+    </div>
+    <ul id="lb-list"></ul>
+  </div>
+
+  <button class="btn-retry" id="btn-retry">↩ Nochmal spielen</button>
+</div>
+
+<!-- ═══════════════ GALERIE-OVERLAY ═══════════════ -->
+<div class="gallery-overlay" id="gallery-overlay" role="dialog" aria-label="Alle Bilder">
+  <div class="gallery-container">
+    <div class="gallery-header">
+      <h2>Alle 12 Bilder</h2>
+      <button class="btn-close" id="btn-gallery-close">✕ Schließen</button>
+    </div>
+    <div class="gallery-grid" id="gallery-grid"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="container footer-inner">
+    <span>© <span id="footer-jahr"></span> Jan Herrmann · lehrer-herrmann.de</span>
+    <div class="footer-links">
+      <a href="/impressum.html">Impressum</a>
+      <a href="/datenschutz.html">Datenschutz</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  'use strict';
+
+  // ── DATEN ──────────────────────────────────────────────────────────────────
+  // Bildpfade: ../Material manuell von mir/Menschen als Monate/N.jpg
+  // Reihenfolge nach Monaten (Jan–Dez); Dateinummern nach Upload-Reihenfolge:
+  // 1=Avril Lavigne(April), 2=The Decemberists(Dez), 3=Juno(Juni), 4=Rodin(Aug),
+  // 5=Vanessa Mai(Mai), 6=Merz(März), 7=Julia Roberts(Juli), 8=Janus(Jan),
+  // 9=Green Day(Sep), 10=Oktoberfest(Okt), 11=Februarrevolution(Feb), 12=Movember(Nov)
+  const IMG = '../Material%20manuell%20von%20mir/Menschen%20als%20Monate/';
+  const ITEMS = [
+    {
+      img: IMG + '8.jpg',
+      monat: 'Januar', monatKey: 'januar',
+      label: 'Janus (röm. Gott)',
+      clue: '→ Janus gab dem Januar seinen Namen',
+      info: 'Der zweigesichtige Gott Janus schaut gleichzeitig vorwärts in die Zukunft und rückwärts in die Vergangenheit – perfekt für den Jahreswechsel! Der Monat <strong>Januar</strong> ist nach ihm benannt.',
+      hashes: ['0727590cbf310941dc1571c19423a8066dea8074753190aafa15afd92d6eaff3']
+    },
+    {
+      img: IMG + '11.jpg',
+      monat: 'Februar', monatKey: 'februar',
+      label: 'Februarrevolution 1917',
+      clue: '→ Die russische Februarrevolution',
+      info: 'Im <strong>Februar</strong> 1917 begannen in Petrograd (St. Petersburg) Massendemonstrationen gegen den Zar – die sogenannte <em>Februarrevolution</em>, die das Ende der Romanow-Herrschaft einleitete.',
+      hashes: ['0b465773ecc0327e96c2ca33844ab5a71e9cf05e6c759fb0cd8536fce8d5b5a5']
+    },
+    {
+      img: IMG + '6.jpg',
+      monat: 'März', monatKey: 'maerz',
+      label: 'Friedrich Merz',
+      clue: '→ Friedrich <strong>Merz</strong> → klingt wie März',
+      info: 'Friedrich <strong>Merz</strong>, CDU-Politiker und Bundeskanzler seit 2025 – sein Nachname klingt fast wie <strong>März</strong>!',
+      hashes: ['398e93011b59b834a4102c68bc30fa0feb28112dc8e661fe23b5493a718920a3']
+    },
+    {
+      img: IMG + '1.jpg',
+      monat: 'April', monatKey: 'april',
+      label: 'Avril Lavigne',
+      clue: '→ <strong>Avril</strong> Lavigne: „Avril" = April auf Französisch',
+      info: '<strong>Avril</strong> Lavigne – der Vorname der kanadischen Pop-Punk-Sängerin bedeutet auf Französisch schlicht <strong>April</strong>!',
+      hashes: ['aa6890829510931f9593852ec1d97209340be9883c8b675accdd54b582e32219']
+    },
+    {
+      img: IMG + '5.jpg',
+      monat: 'Mai', monatKey: 'mai',
+      label: 'Vanessa Mai',
+      clue: '→ Vanessa <strong>Mai</strong> – Nachname = Mai',
+      info: '<strong>Vanessa Mai</strong> ist eine deutsche Schlagersängerin – ihr Künstlername enthält den Monat <strong>Mai</strong>!',
+      hashes: ['7d980bbde514db41b1a9cbc7be8c6ac32111f32c63f29147fff16cc575d5401c']
+    },
+    {
+      img: IMG + '3.jpg',
+      monat: 'Juni', monatKey: 'juni',
+      label: 'Juno (Film, 2007)',
+      clue: '→ <strong>Juno</strong> → klingt wie Juni',
+      info: '<strong>Juno</strong> ist ein US-amerikanischer Indie-Film aus 2007. Der Name der Hauptfigur klingt wie <strong>Juni</strong> – und Juno ist auch eine römische Göttin, die dem Monat Juni ihren Namen gab!',
+      hashes: ['4b0d7f59fd93b3c0e42c86c0c87158c2e6e4f209edf4f194db11fbf8bcbd716b']
+    },
+    {
+      img: IMG + '7.jpg',
+      monat: 'Juli', monatKey: 'juli',
+      label: 'Julia Roberts',
+      clue: '→ <strong>Juli</strong>a Roberts: „Juli" steckt in „Julia"',
+      info: '<strong>Juli</strong>a Roberts, US-amerikanische Schauspielerin und Oscar-Gewinnerin (Erin Brockovich) – der Monatsname <strong>Juli</strong> steckt direkt in ihrem Vornamen.',
+      hashes: ['eba744c8533dec47ebe77f389fa160806e1b4b9610dbe63d4273547c6ec22def']
+    },
+    {
+      img: IMG + '4.jpg',
+      monat: 'August', monatKey: 'august',
+      label: 'Auguste Rodin',
+      clue: '→ <strong>August</strong>e Rodin: „August" steckt in „Auguste"',
+      info: '<strong>August</strong>e Rodin (1840–1917), der berühmte französische Bildhauer (u.a. „Der Denker"). Sein Vorname <strong>Auguste</strong> enthält den Monat <strong>August</strong>.',
+      hashes: ['c2afdd38565b01f278bc8a5513cd8354840fec53de25dd45af4d23d6939abe8a']
+    },
+    {
+      img: IMG + '9.jpg',
+      monat: 'September', monatKey: 'september',
+      label: 'Green Day – „Wake Me Up When September Ends"',
+      clue: '→ Green Day: <strong>September</strong> steckt im Songtitel',
+      info: '<em>Wake Me Up When <strong>September</strong> Ends</em> (2005) von <strong>Green Day</strong> – der Titel nennt den Monat <strong>September</strong> direkt. Billie Joe Armstrong schrieb das Lied als Trauerarbeit nach dem Tod seines Vaters.',
+      hashes: ['249d1f9cb846410c407c6569aa28ba7ac9f8cd6d95685ba6321a627fa0997db5']
+    },
+    {
+      img: IMG + '10.jpg',
+      monat: 'Oktober', monatKey: 'oktober',
+      label: 'Oktoberfest München',
+      clue: '→ <strong>Oktober</strong>fest: Oktober direkt im Namen',
+      info: 'Das <strong>Oktober</strong>fest in München ist das größte Volksfest der Welt. Es beginnt Ende September und endet Anfang <strong>Oktober</strong> – der Monat steckt direkt im Namen!',
+      hashes: ['ec9dc88ae0c7f6cba3980bd9a993e248bfef6457c5004f7417dcb1549e4e38fc']
+    },
+    {
+      img: IMG + '12.jpg',
+      monat: 'November', monatKey: 'november',
+      label: 'Movember (No-Shave November)',
+      clue: '→ Mo(ustache) + <strong>November</strong> = Movember',
+      info: '<strong>Movember</strong> ist eine weltweite Gesundheitskampagne für Männer: Im <strong>November</strong> (No-Shave November) lassen Männer Schnurrbärte stehen, um auf Prostatakrebs aufmerksam zu machen. Der Name ist ein Kofferwort aus „Moustache" und „<strong>November</strong>".',
+      hashes: ['b68823eded0bc9c7f3317d601ac24f6ac563895cee8e5a2bd2ca475906fe2615']
+    },
+    {
+      img: IMG + '2.jpg',
+      monat: 'Dezember', monatKey: 'dezember',
+      label: 'The Decemberists',
+      clue: '→ The <strong>December</strong>ists = Dezember',
+      info: '<strong>The Decemberists</strong> sind eine US-amerikanische Indie-Folk-Band. Ihr Name leitet sich vom englischen <em>December</em> ab – <strong>Dezember</strong>!',
+      hashes: ['268cb99ffe465245e219161c92fca608766ba2d3754701222f34736d186c1aad']
+    }
+  ];
+
+  // Akzeptierte Antworten für die Meta-Frage (Phase 1)
+  const META_HASHES = new Set([
+    '94d96eaef1230f89859376692e2eaa65a8a3b4fe3870a8ae7425ddeace093264', // monate
+    '53289ff7319393578bc7fc80937acbc0d1fd9a3f22c2ea0c53b3ddbea29eca74', // monatsnamen
+    '0f108bceee216f26c04875de79f6635158a53303bf43ac4f1e5000f20c9b9042', // die monate
+    'd9f011df576835d5eb9fe38e89a6c537a8691be1ff12283c8eeb56023a768158', // der monat
+    '49c9d38196a3beba7decb45557906e43218a9a23142ea5b3a57a3507a0087786', // monatsname
+  ]);
+
+  const QUIZ_SLUG  = 'monatsnamen-rebus';
+  const MAX_META   = 300;
+  const PTS_EACH   = 100;
+  const MAX_TOTAL  = MAX_META + ITEMS.length * PTS_EACH; // 1500
+
+  // ── SHA-256 ────────────────────────────────────────────────────────────────
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
+  function normalize(s) {
+    return s.toLowerCase()
+      .replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss')
+      .trim();
+  }
+
+  // ── STATE ──────────────────────────────────────────────────────────────────
+  let totalScore = 0;
+  let metaAnswered = false;
+  let metaCorrect  = false;
+  let lockedScore  = null; // gesperrter Wert vor Lösungsanzeige
+  let revealUsed   = false;
+  let metaWrongCount = 0;
+
+  let current = 0;
+  let phase2Answered = false;
+  const questionStates = ITEMS.map(() => ({
+    answered: false, pts: 0, resultClass: '', inputValue: ''
+  }));
+
+  // ── HILFSFUNKTIONEN ────────────────────────────────────────────────────────
+  function $(id){ return document.getElementById(id); }
+
+  function updateProgress() {
+    const done = questionStates.filter(q => q.answered).length;
+    $('prog-text').textContent = `Frage ${Math.min(done + 1, ITEMS.length)} von ${ITEMS.length}`;
+    $('prog-score').textContent = `${totalScore} Punkte`;
+    $('prog-bar').style.width = (done / ITEMS.length * 100) + '%';
+    $('score-live').textContent = `${totalScore} / ${MAX_META + questionStates.reduce((s,q)=>s+q.pts,0) + (ITEMS.length - questionStates.filter(q=>q.answered).length)*PTS_EACH}`;
+    $('score-live').textContent = `${totalScore} / ${MAX_TOTAL}`;
+  }
+
+  // ── PHASE 1: GRID RENDERN ─────────────────────────────────────────────────
+  function renderGrid(revealed) {
+    const grid = $('grid12');
+    grid.innerHTML = '';
+    ITEMS.forEach((item, i) => {
+      const cell = document.createElement('div');
+      cell.className = 'grid-cell' + (revealed ? ' revealed' : '') + (questionStates[i].pts > 0 ? ' correct-cell' : '');
+      cell.innerHTML = `
+        <img src="${item.img}" alt="${revealed ? item.label : 'Rätselbild ' + (i+1)}"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="no-img-hint" style="display:none">
+          <span>📷</span>
+          <span>Bild ${i+1}</span>
+          ${revealed ? `<span class="ni-month">${item.monat}</span>` : ''}
+        </div>
+        ${revealed ? `<div class="cell-label">${item.label}</div><div class="cell-month">${item.monat}</div>` : ''}
+      `;
+      grid.appendChild(cell);
+    });
+  }
+
+  renderGrid(false);
+
+  // ── GALLERY GRID RENDERN ───────────────────────────────────────────────────
+  function renderGallery() {
+    const gg = $('gallery-grid');
+    gg.innerHTML = '';
+    ITEMS.forEach((item, i) => {
+      const th = document.createElement('div');
+      th.className = 'gallery-thumb' + (i === current ? ' active' : '');
+      const st = questionStates[i];
+      const badge = st.answered ? `<div class="g-badge ${st.pts > 0 ? 'correct' : 'wrong'}"></div>` : '';
+      const label = st.answered ? item.monat : `Bild ${i+1}`;
+      th.innerHTML = `
+        <img src="${item.img}" alt="${label}"
+             onerror="this.style.display='none'">
+        ${badge}
+        <div class="g-label">${label}</div>
+      `;
+      th.addEventListener('click', () => {
+        current = i;
+        closeGallery();
+        showQuestion();
+      });
+      gg.appendChild(th);
+    });
+  }
+
+  // ── META-FRAGE (PHASE 1) ───────────────────────────────────────────────────
+  const metaInput   = $('meta-input');
+  const btnMetaChk  = $('btn-meta-check');
+  const metaFeedback= $('meta-feedback');
+  const btnMetaRev  = $('btn-meta-reveal');
+  const btnProceed  = $('btn-proceed');
+
+  async function checkMeta() {
+    const raw = metaInput.value.trim();
+    if (!raw) return;
+    btnMetaChk.disabled = true;
+    const hash = await sha256(normalize(raw));
+    const correct = META_HASHES.has(hash);
+
+    metaFeedback.style.display = 'block';
+    if (correct) {
+      metaInput.classList.add('correct');
+      metaFeedback.className = 'meta-feedback';
+      metaFeedback.innerHTML = `
+        <div class="fb-result correct">✅ Richtig! +${MAX_META} Punkte</div>
+        <p>Genau – in jedem der 12 Bilder steckt ein <strong>Monatsname</strong>! Manchmal im Vornamen, manchmal im Nachnamen, manchmal im Titel.</p>
+      `;
+      totalScore += MAX_META;
+      metaCorrect = true;
+      metaAnswered = true;
+      metaInput.disabled = true;
+      btnMetaChk.style.display = 'none';
+      btnMetaRev.style.display = 'none';
+      btnProceed.style.display = 'block';
+      revealGrid(false);
+    } else {
+      metaWrongCount++;
+      metaInput.classList.add('wrong');
+      metaFeedback.className = 'meta-feedback wrong';
+
+      let hint = 'Das stimmt leider nicht. Schau noch einmal genauer hin!';
+      if (metaWrongCount === 1) hint = 'Nicht ganz – schau auf die <em>Namen</em> der Personen und Dinge!';
+      if (metaWrongCount === 2) hint = 'Tipp: Manchmal steckt etwas direkt im Vor- oder Nachnamen…';
+      if (metaWrongCount >= 3) {
+        hint = 'Tipp: Es sind immer 12 davon im Kalender zu finden – eines pro Bild!';
+        btnMetaRev.style.display = 'block';
+      }
+
+      metaFeedback.innerHTML = `<div class="fb-result wrong">❌ Noch nicht ganz …</div><p>${hint}</p>`;
+      setTimeout(() => {
+        metaInput.classList.remove('wrong');
+        btnMetaChk.disabled = false;
+      }, 1200);
+    }
+  }
+
+  function revealGrid(lockScore) {
+    if (lockScore && lockedScore === null) lockedScore = totalScore;
+    renderGrid(true);
+    btnProceed.style.display = 'block';
+  }
+
+  btnMetaChk.addEventListener('click', checkMeta);
+  metaInput.addEventListener('keydown', e => { if (e.key === 'Enter') checkMeta(); });
+  btnMetaRev.addEventListener('click', () => {
+    if (lockedScore === null) lockedScore = totalScore;
+    revealUsed = true;
+    metaAnswered = true;
+    metaInput.disabled = true;
+    btnMetaChk.style.display = 'none';
+    btnMetaRev.style.display = 'none';
+    metaFeedback.style.display = 'block';
+    metaFeedback.className = 'meta-feedback wrong';
+    metaFeedback.innerHTML = `
+      <div class="fb-result wrong">💡 Auflösung: Monatsnamen</div>
+      <p>In jedem Bild steckt ein <strong>Monatsname</strong> – im Namen der Person, im Titel oder in der Bezeichnung. Jetzt weißt du das Geheimnis!</p>
+    `;
+    revealGrid(true);
+  });
+  btnProceed.addEventListener('click', startPhase2);
+
+  // ── PHASE 2 STARTEN ───────────────────────────────────────────────────────
+  function startPhase2() {
+    $('phase1').style.display = 'none';
+    $('phase2').style.display = 'block';
+    current = 0;
+    phase2Answered = false;
+    updateProgress();
+    showQuestion();
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  // ── EINZELBILD-QUIZ ────────────────────────────────────────────────────────
+  function showQuestion() {
+    const item = ITEMS[current];
+    const st   = questionStates[current];
+    phase2Answered = st.answered;
+
+    const img = $('quiz-img');
+    img.style.opacity = '0';
+    img.src = item.img;
+    img.alt = st.answered ? item.label : 'Rätselbild ' + (current + 1);
+    img.onload = () => { img.style.opacity = '1'; };
+    img.onerror = () => { img.style.opacity = '1'; };
+
+    $('question-num').textContent = `BILD ${current + 1} / ${ITEMS.length}`;
+    $('clue-text').style.display = 'none';
+
+    const inp = $('answer-input');
+    inp.value = st.inputValue || '';
+    inp.className = 'answer-input ' + (st.resultClass || '');
+    inp.disabled = st.answered;
+
+    const fc = $('feedback-card');
+    fc.style.display = 'none';
+    fc.className = 'feedback-card';
+
+    if (st.answered) {
+      inp.className = 'answer-input ' + st.resultClass;
+      showFeedback(current, false);
+    }
+
+    $('btn-check').disabled = st.answered;
+    $('btn-prev').disabled  = (current === 0);
+    $('btn-nav-next').disabled = (current === ITEMS.length - 1);
+    updateProgress();
+  }
+
+  function showFeedback(idx, animate) {
+    const item = ITEMS[idx];
+    const st   = questionStates[idx];
+    const fc   = $('feedback-card');
+    fc.className = 'feedback-card' + (st.pts > 0 ? '' : ' wrong');
+    if (animate) fc.style.animation = 'none', fc.offsetHeight, fc.style.animation = '';
+
+    $('fb-result').className = 'feedback-result ' + (st.pts > 0 ? 'correct' : 'wrong');
+    $('fb-result').textContent = st.pts > 0
+      ? `✅ Richtig! +${st.pts} Punkte`
+      : `❌ Der Monat war: ${item.monat}`;
+    $('fb-name').textContent  = item.label;
+    $('fb-clue').innerHTML    = item.clue;
+    $('fb-info').innerHTML    = item.info;
+
+    $('btn-next').style.display = (idx < ITEMS.length - 1) ? 'block' : 'none';
+    if (idx === ITEMS.length - 1) {
+      const endBtn = document.createElement('button');
+      endBtn.className = 'btn-next';
+      endBtn.textContent = '🏁 Auswertung anzeigen';
+      endBtn.onclick = showResults;
+      const existing = fc.querySelector('.btn-end');
+      if (!existing) { endBtn.classList.add('btn-end'); fc.appendChild(endBtn); }
+    }
+    fc.style.display = 'block';
+  }
+
+  async function checkAnswer() {
+    const raw = $('answer-input').value.trim();
+    if (!raw || phase2Answered) return;
+    $('btn-check').disabled = true;
+
+    const item = ITEMS[current];
+    const hash = await sha256(normalize(raw));
+    const correct = item.hashes.includes(hash);
+    const pts = correct ? PTS_EACH : 0;
+
+    questionStates[current] = {
+      answered: true, pts, resultClass: correct ? 'correct' : 'wrong', inputValue: raw
+    };
+    if (correct) totalScore += pts;
+    phase2Answered = true;
+
+    $('answer-input').className = 'answer-input ' + (correct ? 'correct' : 'wrong');
+    $('answer-input').disabled = true;
+    $('clue-text').style.display = 'none';
+
+    showFeedback(current, true);
+    updateProgress();
+  }
+
+  $('btn-check').addEventListener('click', checkAnswer);
+  $('answer-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkAnswer(); });
+  $('btn-next').addEventListener('click', () => {
+    if (current < ITEMS.length - 1) {
+      current++;
+      phase2Answered = false;
+      showQuestion();
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+  });
+  $('btn-prev').addEventListener('click', () => {
+    if (current > 0) { current--; showQuestion(); }
+  });
+  $('btn-nav-next').addEventListener('click', () => {
+    if (current < ITEMS.length - 1) { current++; showQuestion(); }
+  });
+
+  // ── GALERIE ────────────────────────────────────────────────────────────────
+  function openGallery()  { renderGallery(); $('gallery-overlay').classList.add('open'); }
+  function closeGallery() { $('gallery-overlay').classList.remove('open'); }
+  $('btn-gallery').addEventListener('click', openGallery);
+  $('btn-gallery-close').addEventListener('click', closeGallery);
+  $('gallery-overlay').addEventListener('click', e => { if (e.target === $('gallery-overlay')) closeGallery(); });
+
+  // ── ERGEBNISSE ─────────────────────────────────────────────────────────────
+  async function showResults() {
+    $('phase2').style.display = 'none';
+    const res = $('results-area');
+    res.style.display = 'block';
+    res.classList.add('fade-in');
+    window.scrollTo({top: 0, behavior: 'smooth'});
+
+    const score = totalScore;
+    const pct = Math.round(score / MAX_TOTAL * 100);
+    $('res-score').textContent = score;
+    $('res-max').textContent = `von ${MAX_TOTAL} möglichen Punkten (${pct} %)`;
+
+    let msg = '';
+    if (pct >= 90) msg = '🏆 Hervorragend! Du hast fast alle Monatsnamen entdeckt!';
+    else if (pct >= 70) msg = '🌟 Sehr gut! Du hast ein gutes Gespür für versteckte Wörter!';
+    else if (pct >= 50) msg = '👍 Gut gemacht! Manche Verstecke sind wirklich knifflig.';
+    else msg = '💡 Beim nächsten Mal findest du bestimmt noch mehr Monatsnamen!';
+    $('res-msg').textContent = msg;
+
+    if (revealUsed) {
+      $('xp-note').style.display = 'block';
+      $('xp-note').textContent = `ℹ️ XP-Wertung: Da du die Auflösung genutzt hast, zählt nur dein Ergebnis vor dem Hinweis (${lockedScore || 0} Punkte) für die XP.`;
+    }
+
+    const xpScore = revealUsed ? (lockedScore || 0) : score;
+    if (typeof window.kolosseumReport === 'function') {
+      window.kolosseumReport(xpScore, MAX_TOTAL, QUIZ_SLUG);
+    }
+
+    if (typeof window.leaderboardFetch === 'function') {
+      try {
+        const entries = await window.leaderboardFetch(QUIZ_SLUG);
+        renderLeaderboard(entries);
+      } catch(e) { console.warn('Bestenliste nicht verfügbar:', e); }
+    }
+  }
+
+  function renderLeaderboard(entries) {
+    const ul = $('lb-list');
+    ul.innerHTML = '';
+    if (!entries || !entries.length) {
+      ul.innerHTML = '<li style="color:var(--muted);font-size:0.85rem;">Noch keine Einträge.</li>';
+      return;
+    }
+    entries.slice(0, 10).forEach((e, i) => {
+      const li = document.createElement('li');
+      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i+1) + '.';
+      li.innerHTML = `<span class="lb-rank">${medal}</span><span class="lb-name">${e.name||'Unbekannt'}</span><span class="lb-pts">${e.score} Pkt.</span>`;
+      ul.appendChild(li);
+    });
+  }
+
+  $('btn-lb-save').addEventListener('click', async () => {
+    const name = $('lb-name').value.trim();
+    if (!name) return;
+    $('btn-lb-save').disabled = true;
+    const xpScore = revealUsed ? (lockedScore || 0) : totalScore;
+    try {
+      if (typeof window.leaderboardSave === 'function') {
+        await window.leaderboardSave(QUIZ_SLUG, name, xpScore);
+        const entries = await window.leaderboardFetch(QUIZ_SLUG);
+        renderLeaderboard(entries);
+      }
+    } catch(e) { console.warn('Eintragen fehlgeschlagen:', e); }
+  });
+
+  $('btn-retry').addEventListener('click', () => {
+    totalScore = 0; metaAnswered = false; metaCorrect = false;
+    lockedScore = null; revealUsed = false; metaWrongCount = 0;
+    current = 0; phase2Answered = false;
+    questionStates.forEach(q => { q.answered = false; q.pts = 0; q.resultClass = ''; q.inputValue = ''; });
+    $('results-area').style.display = 'none';
+    $('meta-input').value = ''; $('meta-input').disabled = false;
+    $('meta-input').className = 'answer-input';
+    $('meta-feedback').style.display = 'none';
+    $('btn-meta-check').style.display = '';
+    $('btn-meta-check').disabled = false;
+    $('btn-meta-reveal').style.display = 'none';
+    $('btn-proceed').style.display = 'none';
+    renderGrid(false);
+    $('phase1').style.display = 'block';
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  });
+
+  // ── BESTENLISTE POPUP ──────────────────────────────────────────────────────
+  $('btn-lb-popup').addEventListener('click', () => {
+    const w = window.open('', 'bestenliste', 'width=480,height=560,menubar=no,toolbar=no');
+    if (!w) return;
+    w.document.write(`<!DOCTYPE html><html lang="de"><head><meta charset="UTF-8">
+      <title>Bestenliste – Monatsnamen-Quiz</title>
+      <style>
+        body{font-family:Inter,sans-serif;background:#0f172a;color:#f1f5f9;padding:24px;}
+        h1{font-family:'Bebas Neue',sans-serif;letter-spacing:2px;font-size:1.8rem;color:#f59e0b;margin-bottom:20px;}
+        li{display:flex;gap:12px;padding:10px 14px;background:#1e293b;border-radius:10px;margin-bottom:8px;list-style:none;}
+        .rk{color:#f59e0b;font-weight:700;min-width:30px;} .sc{color:#f59e0b;font-weight:700;}
+        p{color:#94a3b8;}
+      </style></head><body>
+      <h1>🏆 Bestenliste</h1><p>Monatsnamen-Rebus-Quiz</p><ul id="lb"></ul>
+      <script>
+      async function load(){
+        const r=await fetch('https://kolosseum.lehrer-herrmann.de/api/leaderboard/monatsnamen-rebus?limit=10').catch(()=>null);
+        const ul=document.getElementById('lb');
+        if(!r||!r.ok){ul.innerHTML='<li><span>Bestenliste nicht verfügbar.</span></li>';return;}
+        const data=await r.json();
+        if(!data.length){ul.innerHTML='<li><span>Noch keine Einträge.</span></li>';return;}
+        data.forEach((e,i)=>{
+          const m=i===0?'🥇':i===1?'🥈':i===2?'🥉':(i+1)+'.';
+          const li=document.createElement('li');
+          li.innerHTML='<span class="rk">'+m+'</span><span style="flex:1">'+e.name+'</span><span class="sc">'+e.score+' Pkt.</span>';
+          ul.appendChild(li);
+        });
+      }
+      load();
+      <\/script></body></html>`);
+    w.document.close();
+  });
+
+  // ── HAMBURGER ─────────────────────────────────────────────────────────────
+  const ham = $('hamburger'), nav = $('navbar-links');
+  ham.addEventListener('click', () => {
+    const open = nav.classList.toggle('open');
+    ham.setAttribute('aria-expanded', open);
+  });
+
+  // ── FOOTER-JAHR ───────────────────────────────────────────────────────────
+  $('footer-jahr').textContent = new Date().getFullYear();
+
+})();
+</script>
+
+<script src="/js/supabase-config.js"></script>
+<script src="/js/supabase-leaderboard.js"></script>
+<script src="/js/kolosseum-prompt.js"></script>
+
+</body>
+</html>
