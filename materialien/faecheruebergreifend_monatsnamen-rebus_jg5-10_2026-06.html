@@ -341,10 +341,6 @@
              aria-label="Verbindendes Element eingeben">
       <button class="btn-check" id="btn-meta-check">Prüfen</button>
     </div>
-    <div class="meta-feedback" id="meta-feedback"></div>
-    <button class="btn-reveal" id="btn-meta-reveal" style="display:none">
-      💡 Hinweis / Auflösung anzeigen
-    </button>
     <button class="btn-proceed" id="btn-proceed" style="display:none">
       Weiter zu den Einzelrätseln →
     </button>
@@ -574,9 +570,6 @@
   let totalScore = 0;
   let metaAnswered = false;
   let metaCorrect  = false;
-  let lockedScore  = null; // gesperrter Wert vor Lösungsanzeige
-  let revealUsed   = false;
-  let metaWrongCount = 0;
 
   let current = 0;
   let phase2Answered = false;
@@ -645,104 +638,23 @@
   }
 
   // ── META-FRAGE (PHASE 1) ───────────────────────────────────────────────────
-  const metaInput   = $('meta-input');
-  const btnMetaChk  = $('btn-meta-check');
-  const metaFeedback= $('meta-feedback');
-  const btnMetaRev  = $('btn-meta-reveal');
-  const btnProceed  = $('btn-proceed');
+  const metaInput  = $('meta-input');
+  const btnMetaChk = $('btn-meta-check');
+  const btnProceed = $('btn-proceed');
+  let metaHash = null;
 
-  async function checkMeta() {
+  async function submitMeta() {
     const raw = metaInput.value.trim();
-    if (!raw) return;
+    if (!raw || metaAnswered) return;
+    metaHash = await sha256(normalize(raw));
+    metaAnswered = true;
+    metaInput.disabled = true;
     btnMetaChk.disabled = true;
-    const hash = await sha256(normalize(raw));
-    const correct = META_HASHES.has(hash);
-
-    metaFeedback.style.display = 'block';
-    if (correct) {
-      metaInput.classList.add('correct');
-      metaFeedback.className = 'meta-feedback';
-      metaFeedback.innerHTML = `
-        <div class="fb-result correct">✅ Richtig! +${MAX_META} Punkte</div>
-        <p>Genau – in jedem der 12 Bilder steckt ein <strong>Monatsname</strong>!
-           Manchmal im Vornamen, manchmal im Nachnamen, manchmal im Titel.</p>
-        <p style="margin-top:10px;color:var(--gold);font-size:0.88rem;">
-          ⚠️ <strong>Achtung:</strong> Wenn du jetzt zu den Einzelrätseln weitergehst,
-          kennst du bereits das Prinzip – das macht Phase 2 deutlich leichter.
-          Möchtest du das Quiz lieber hier beenden?
-        </p>
-        <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
-          <button id="btn-meta-finish"
-            style="padding:10px 22px;background:var(--surface2);border:1px solid var(--surface2);
-                   border-radius:var(--radius);color:var(--text);font-size:0.9rem;
-                   font-weight:600;cursor:pointer;flex:1;min-width:140px;">
-            🏁 Quiz beenden (${MAX_META} Pkt.)
-          </button>
-          <button id="btn-meta-continue"
-            style="padding:10px 22px;background:linear-gradient(135deg,var(--gold),var(--gold2));
-                   border:none;border-radius:var(--radius);color:#000;font-size:0.9rem;
-                   font-weight:700;cursor:pointer;flex:1;min-width:140px;">
-            Weiter zu Phase 2 →
-          </button>
-        </div>
-      `;
-      totalScore += MAX_META;
-      metaCorrect = true;
-      metaAnswered = true;
-      metaInput.disabled = true;
-      btnMetaChk.style.display = 'none';
-      btnMetaRev.style.display = 'none';
-
-      document.getElementById('btn-meta-finish').addEventListener('click', () => {
-        showResults();
-      });
-      document.getElementById('btn-meta-continue').addEventListener('click', () => {
-        startPhase2();
-      });
-    } else {
-      metaWrongCount++;
-      metaInput.classList.add('wrong');
-      metaFeedback.className = 'meta-feedback wrong';
-
-      let hint = 'Das stimmt leider nicht. Schau noch einmal genauer hin!';
-      if (metaWrongCount === 1) hint = 'Nicht ganz – schau auf die <em>Namen</em> der Personen und Dinge!';
-      if (metaWrongCount === 2) hint = 'Tipp: Manchmal steckt etwas direkt im Vor- oder Nachnamen…';
-      if (metaWrongCount >= 3) {
-        hint = 'Tipp: Es sind immer 12 davon im Kalender zu finden – eines pro Bild!';
-        btnMetaRev.style.display = 'block';
-      }
-
-      metaFeedback.innerHTML = `<div class="fb-result wrong">❌ Noch nicht ganz …</div><p>${hint}</p>`;
-      setTimeout(() => {
-        metaInput.classList.remove('wrong');
-        btnMetaChk.disabled = false;
-      }, 1200);
-    }
-  }
-
-  function revealGrid(lockScore) {
-    if (lockScore && lockedScore === null) lockedScore = totalScore;
-    renderGrid(true);
     btnProceed.style.display = 'block';
   }
 
-  btnMetaChk.addEventListener('click', checkMeta);
-  metaInput.addEventListener('keydown', e => { if (e.key === 'Enter') checkMeta(); });
-  btnMetaRev.addEventListener('click', () => {
-    if (lockedScore === null) lockedScore = totalScore;
-    revealUsed = true;
-    metaAnswered = true;
-    metaInput.disabled = true;
-    btnMetaChk.style.display = 'none';
-    btnMetaRev.style.display = 'none';
-    metaFeedback.style.display = 'block';
-    metaFeedback.className = 'meta-feedback wrong';
-    metaFeedback.innerHTML = `
-      <div class="fb-result wrong">💡 Auflösung: Monatsnamen</div>
-      <p>In jedem Bild steckt ein <strong>Monatsname</strong> – im Namen der Person, im Titel oder in der Bezeichnung. Jetzt weißt du das Geheimnis!</p>
-    `;
-    revealGrid(true);
-  });
+  btnMetaChk.addEventListener('click', submitMeta);
+  metaInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitMeta(); });
   btnProceed.addEventListener('click', startPhase2);
 
   // ── PHASE 2 STARTEN ───────────────────────────────────────────────────────
@@ -875,10 +787,25 @@
     res.classList.add('fade-in');
     window.scrollTo({top: 0, behavior: 'smooth'});
 
+    // Meta-Frage jetzt erst auswerten (kein Sofort-Feedback in Phase 1)
+    let metaPts = 0;
+    if (metaAnswered && metaHash !== null) {
+      metaCorrect = META_HASHES.has(metaHash);
+      if (metaCorrect) { metaPts = MAX_META; totalScore += MAX_META; }
+    }
+    const metaNote = metaAnswered
+      ? (metaCorrect
+          ? `✅ Verbindendes Element: <strong>Monatsnamen</strong> — richtig! +${MAX_META} Punkte`
+          : `❌ Verbindendes Element: leider falsch (Lösung: <strong>Monatsnamen</strong>)`)
+      : `— Verbindendes Element: nicht beantwortet`;
+
     const score = totalScore;
     const pct = Math.round(score / MAX_TOTAL * 100);
     $('res-score').textContent = score;
     $('res-max').textContent = `von ${MAX_TOTAL} möglichen Punkten (${pct} %)`;
+
+    $('xp-note').style.display = 'block';
+    $('xp-note').innerHTML = metaNote;
 
     let msg = '';
     if (pct >= 90) msg = '🏆 Hervorragend! Du hast fast alle Monatsnamen entdeckt!';
@@ -887,14 +814,8 @@
     else msg = '💡 Beim nächsten Mal findest du bestimmt noch mehr Monatsnamen!';
     $('res-msg').textContent = msg;
 
-    if (revealUsed) {
-      $('xp-note').style.display = 'block';
-      $('xp-note').textContent = `ℹ️ XP-Wertung: Da du die Auflösung genutzt hast, zählt nur dein Ergebnis vor dem Hinweis (${lockedScore || 0} Punkte) für die XP.`;
-    }
-
-    const xpScore = revealUsed ? (lockedScore || 0) : score;
     if (typeof window.kolosseumReport === 'function') {
-      window.kolosseumReport(xpScore, MAX_TOTAL, QUIZ_SLUG);
+      window.kolosseumReport(score, MAX_TOTAL, QUIZ_SLUG);
     }
 
     if (typeof window.leaderboardFetch === 'function') {
@@ -935,17 +856,13 @@
   });
 
   $('btn-retry').addEventListener('click', () => {
-    totalScore = 0; metaAnswered = false; metaCorrect = false;
-    lockedScore = null; revealUsed = false; metaWrongCount = 0;
+    totalScore = 0; metaAnswered = false; metaCorrect = false; metaHash = null;
     current = 0; phase2Answered = false;
     questionStates.forEach(q => { q.answered = false; q.pts = 0; q.resultClass = ''; q.inputValue = ''; });
     $('results-area').style.display = 'none';
     $('meta-input').value = ''; $('meta-input').disabled = false;
     $('meta-input').className = 'answer-input';
-    $('meta-feedback').style.display = 'none';
-    $('btn-meta-check').style.display = '';
     $('btn-meta-check').disabled = false;
-    $('btn-meta-reveal').style.display = 'none';
     $('btn-proceed').style.display = 'none';
     renderGrid(false);
     $('phase1').style.display = 'block';
