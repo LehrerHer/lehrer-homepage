@@ -664,7 +664,27 @@
       metaFeedback.className = 'meta-feedback';
       metaFeedback.innerHTML = `
         <div class="fb-result correct">✅ Richtig! +${MAX_META} Punkte</div>
-        <p>Genau – in jedem der 12 Bilder steckt ein <strong>Monatsname</strong>! Manchmal im Vornamen, manchmal im Nachnamen, manchmal im Titel.</p>
+        <p>Genau – in jedem der 12 Bilder steckt ein <strong>Monatsname</strong>!
+           Manchmal im Vornamen, manchmal im Nachnamen, manchmal im Titel.</p>
+        <p style="margin-top:10px;color:var(--gold);font-size:0.88rem;">
+          ⚠️ <strong>Achtung:</strong> Wenn du jetzt zu den Einzelrätseln weitergehst,
+          kennst du bereits das Prinzip – das macht Phase 2 deutlich leichter.
+          Möchtest du das Quiz lieber hier beenden?
+        </p>
+        <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
+          <button id="btn-meta-finish"
+            style="padding:10px 22px;background:var(--surface2);border:1px solid var(--surface2);
+                   border-radius:var(--radius);color:var(--text);font-size:0.9rem;
+                   font-weight:600;cursor:pointer;flex:1;min-width:140px;">
+            🏁 Quiz beenden (${MAX_META} Pkt.)
+          </button>
+          <button id="btn-meta-continue"
+            style="padding:10px 22px;background:linear-gradient(135deg,var(--gold),var(--gold2));
+                   border:none;border-radius:var(--radius);color:#000;font-size:0.9rem;
+                   font-weight:700;cursor:pointer;flex:1;min-width:140px;">
+            Weiter zu Phase 2 →
+          </button>
+        </div>
       `;
       totalScore += MAX_META;
       metaCorrect = true;
@@ -672,8 +692,13 @@
       metaInput.disabled = true;
       btnMetaChk.style.display = 'none';
       btnMetaRev.style.display = 'none';
-      btnProceed.style.display = 'block';
-      revealGrid(false);
+
+      document.getElementById('btn-meta-finish').addEventListener('click', () => {
+        showResults();
+      });
+      document.getElementById('btn-meta-continue').addEventListener('click', () => {
+        startPhase2();
+      });
     } else {
       metaWrongCount++;
       metaInput.classList.add('wrong');
