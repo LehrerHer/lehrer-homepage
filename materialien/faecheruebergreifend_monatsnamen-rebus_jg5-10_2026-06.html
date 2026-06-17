@@ -94,58 +94,32 @@
     }
     .hero-sub { color: var(--muted); font-size: 0.95rem; margin-top: 12px; }
 
-    /* PHASE 1: 12-BILDER-GRID */
-    #phase1 { display: block; }
-    .grid12 {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      max-width: 960px; margin: 0 auto 32px;
-      padding: 0 20px;
-    }
-    @media(max-width:700px){ .grid12 { grid-template-columns: repeat(3, 1fr); } }
-    @media(max-width:480px){ .grid12 { grid-template-columns: repeat(2, 1fr); } }
-    .grid-cell {
-      position: relative; background: var(--surface); border-radius: 12px;
-      overflow: hidden; aspect-ratio: 1;
-      border: 2px solid transparent; transition: border-color 0.3s;
-    }
-    .grid-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .grid-cell .cell-label {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      background: linear-gradient(transparent, rgba(0,0,0,0.85));
-      padding: 20px 8px 8px; font-size: 0.72rem; font-weight: 600;
-      color: transparent; transition: color 0.4s; text-align: center;
-      letter-spacing: 0.3px;
-    }
-    .grid-cell .cell-month {
-      position: absolute; top: 6px; right: 6px;
-      background: var(--gold); color: #0f172a;
-      font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 1px;
-      padding: 2px 10px; border-radius: 999px;
-      opacity: 0; transition: opacity 0.4s;
-    }
-    .grid-cell.revealed .cell-label { color: var(--text); }
-    .grid-cell.revealed .cell-month { opacity: 1; }
-    .grid-cell.correct-cell { border-color: var(--green); }
+    /* PROGRESS */
+    .progress-wrap { max-width: 640px; margin: 0 auto 28px; padding: 0 20px; }
+    .progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--muted); margin-bottom: 8px; }
+    .progress-bar-bg { height: 6px; background: var(--surface2); border-radius: 999px; overflow: hidden; }
+    .progress-bar { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); border-radius: 999px; transition: width 0.5s ease; width: 0%; }
+    .score-live { text-align: center; margin-bottom: 12px; font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 3px; color: var(--gold); }
 
-    .no-img-hint {
-      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
-      flex-direction: column; gap: 6px; padding: 8px; text-align: center;
-      background: var(--surface2); font-size: 0.72rem; color: var(--muted);
+    /* QUIZ AREA */
+    .quiz-card { max-width: 800px; margin: 0 auto 40px; padding: 0 20px; }
+    .image-box {
+      border-radius: var(--radius); overflow: hidden; background: var(--surface);
+      min-height: 280px; max-height: 60vh;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px; box-shadow: 0 8px 40px rgba(0,0,0,0.4);
     }
-    .no-img-hint .ni-month { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--gold); }
+    .image-box img { max-width: 100%; max-height: 60vh; width: auto; height: auto; object-fit: contain; }
+    @media(max-width:600px){ .image-box { max-height: 45vh; } .image-box img { max-height: 45vh; } }
+    .question-num { text-align: center; color: var(--muted); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
 
-    /* META-FRAGE (Phase 1) */
-    .meta-section {
-      max-width: 640px; margin: 0 auto 48px; padding: 0 20px; text-align: center;
-    }
-    .meta-question {
-      font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.3rem, 4vw, 2rem);
-      letter-spacing: 2px; color: var(--text); margin-bottom: 20px;
-    }
-    .meta-question span { color: var(--gold); }
-    .input-row { display: flex; gap: 12px; }
+    .nav-btns { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 12px; margin-bottom: 8px; }
+    .btn-nav { background: #1a1a2e; color: var(--text); border: 1px solid rgba(255,255,255,0.15); border-radius: 50%; width: 40px; height: 40px; font-size: 1.1rem; cursor: pointer; transition: background 0.2s, color 0.2s; display: flex; align-items: center; justify-content: center; }
+    .btn-nav:hover:not(:disabled) { background: var(--gold); color: #1a1a2e; }
+    .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+    .btn-gallery { background: transparent; color: var(--muted); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 6px 16px; font-size: 0.85rem; cursor: pointer; transition: background 0.2s, color 0.2s; }
+    .btn-gallery:hover { background: var(--gold); color: #1a1a2e; border-color: var(--gold); }
+
     .answer-input {
       flex: 1; padding: 14px 18px; background: var(--surface);
       border: 2px solid var(--surface2); border-radius: var(--radius);
@@ -164,59 +138,8 @@
     }
     .btn-check:hover { opacity: 0.9; transform: translateY(-1px); }
     .btn-check:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-    .meta-feedback {
-      margin-top: 16px; padding: 16px 20px;
-      background: var(--surface); border-radius: var(--radius);
-      border-left: 4px solid var(--green); display: none;
-      text-align: left; animation: slideIn 0.3s ease;
-    }
-    .meta-feedback.wrong { border-left-color: var(--red); }
-    .meta-feedback .fb-result { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
-    .meta-feedback .fb-result.correct { color: var(--green); }
-    .meta-feedback .fb-result.wrong   { color: var(--red); }
-    .meta-feedback p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; }
-    .btn-reveal {
-      margin-top: 16px; padding: 10px 24px;
-      background: transparent; border: 1px solid var(--surface2);
-      border-radius: var(--radius); color: var(--muted); font-size: 0.9rem;
-      cursor: pointer; transition: border-color 0.2s, color 0.2s;
-    }
-    .btn-reveal:hover { border-color: var(--gold); color: var(--gold); }
-    .btn-proceed {
-      display: block; width: 100%; margin-top: 20px; padding: 14px;
-      background: linear-gradient(135deg, var(--gold), var(--gold2));
-      color: #000; font-weight: 700; font-size: 1rem;
-      border: none; border-radius: var(--radius); cursor: pointer;
-      transition: opacity 0.2s;
-    }
-    .btn-proceed:hover { opacity: 0.9; }
 
-    /* PHASE 2: EINZELBILD-QUIZ */
-    #phase2 { display: none; }
-    .progress-wrap { max-width: 640px; margin: 0 auto 28px; padding: 0 20px; }
-    .progress-info { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--muted); margin-bottom: 8px; }
-    .progress-bar-bg { height: 6px; background: var(--surface2); border-radius: 999px; overflow: hidden; }
-    .progress-bar { height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2)); border-radius: 999px; transition: width 0.5s ease; width: 0%; }
-    .score-live { text-align: center; margin-bottom: 12px; font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 3px; color: var(--gold); }
-
-    .quiz-card { max-width: 800px; margin: 0 auto 40px; padding: 0 20px; }
-    .image-box {
-      border-radius: var(--radius); overflow: hidden; background: var(--surface);
-      min-height: 280px; max-height: 60vh;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 20px; box-shadow: 0 8px 40px rgba(0,0,0,0.4);
-    }
-    .image-box img { max-width: 100%; max-height: 60vh; width: auto; height: auto; object-fit: contain; }
-    @media(max-width:600px){ .image-box { max-height: 45vh; } .image-box img { max-height: 45vh; } }
-    .question-num { text-align: center; color: var(--muted); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px; }
-    .clue-text { text-align: center; font-size: 0.82rem; color: var(--muted); margin-bottom: 16px; font-style: italic; display: none; }
-
-    .nav-btns { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 12px; margin-bottom: 8px; }
-    .btn-nav { background: #1a1a2e; color: var(--text); border: 1px solid rgba(255,255,255,0.15); border-radius: 50%; width: 40px; height: 40px; font-size: 1.1rem; cursor: pointer; transition: background 0.2s, color 0.2s; display: flex; align-items: center; justify-content: center; }
-    .btn-nav:hover:not(:disabled) { background: var(--gold); color: #1a1a2e; }
-    .btn-nav:disabled { opacity: 0.3; cursor: not-allowed; }
-    .btn-gallery { background: transparent; color: var(--muted); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; padding: 6px 16px; font-size: 0.85rem; cursor: pointer; transition: background 0.2s, color 0.2s; }
-    .btn-gallery:hover { background: var(--gold); color: #1a1a2e; border-color: var(--gold); }
+    .input-row { display: flex; gap: 12px; }
 
     .feedback-card {
       margin-top: 20px; background: var(--surface); border-radius: var(--radius);
@@ -232,6 +155,73 @@
     .feedback-info { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
     .btn-next { display: block; width: 100%; margin-top: 16px; padding: 12px; background: var(--surface2); border: none; border-radius: var(--radius); color: var(--text); font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
     .btn-next:hover { background: var(--blue); }
+
+    /* BONUS SECTION */
+    #bonus-section { display: none; max-width: 960px; margin: 0 auto 48px; padding: 0 20px; }
+    .bonus-hero { text-align: center; padding: 32px 0 24px; }
+    .bonus-hero h2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.8rem, 5vw, 2.8rem); letter-spacing: 3px; margin-bottom: 8px; }
+    .bonus-hero p { color: var(--muted); font-size: 0.95rem; }
+
+    .grid12 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+    @media(max-width:700px){ .grid12 { grid-template-columns: repeat(3, 1fr); } }
+    @media(max-width:480px){ .grid12 { grid-template-columns: repeat(2, 1fr); } }
+    .grid-cell {
+      position: relative; background: var(--surface); border-radius: 12px;
+      overflow: hidden; aspect-ratio: 1;
+      border: 2px solid transparent; transition: border-color 0.3s;
+    }
+    .grid-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .grid-cell .cell-label {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+      padding: 20px 8px 8px; font-size: 0.72rem; font-weight: 600;
+      color: var(--text); text-align: center; letter-spacing: 0.3px;
+    }
+    .grid-cell .cell-month {
+      position: absolute; top: 6px; right: 6px;
+      background: var(--gold); color: #0f172a;
+      font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 1px;
+      padding: 2px 10px; border-radius: 999px;
+    }
+    .grid-cell.correct-cell { border-color: var(--green); }
+    .grid-cell.wrong-cell  { border-color: var(--red); }
+    .no-img-hint {
+      position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 6px; padding: 8px; text-align: center;
+      background: var(--surface2); font-size: 0.72rem; color: var(--muted);
+    }
+    .no-img-hint .ni-month { font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; color: var(--gold); }
+
+    .bonus-question {
+      text-align: center; margin-bottom: 20px;
+      font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.3rem, 4vw, 2rem);
+      letter-spacing: 2px; color: var(--text);
+    }
+    .bonus-question span { color: var(--gold); }
+    .bonus-input-wrap { max-width: 640px; margin: 0 auto; }
+    .btn-bonus-submit {
+      display: block; width: 100%; margin-top: 12px; padding: 14px;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      color: #000; font-weight: 700; font-size: 1rem;
+      border: none; border-radius: var(--radius); cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .btn-bonus-submit:hover { opacity: 0.9; }
+    .btn-bonus-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-to-results {
+      display: none; width: 100%; max-width: 640px; margin: 20px auto 0;
+      padding: 14px;
+      background: var(--surface2);
+      color: var(--text); font-weight: 700; font-size: 1rem;
+      border: none; border-radius: var(--radius); cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-to-results:hover { background: var(--blue); }
 
     /* GALLERY OVERLAY */
     .gallery-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.85); display: none; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 24px 16px; }
@@ -254,7 +244,7 @@
     .g-badge.wrong   { background: var(--red); }
 
     /* RESULTS */
-    .results {
+    #results-area {
       display: none; max-width: 640px; margin: 0 auto 60px;
       padding: 0 20px; text-align: center;
     }
@@ -267,7 +257,8 @@
     }
     .results-max { color: var(--muted); font-size: 1rem; margin-bottom: 16px; }
     .results-msg { font-size: 1rem; color: var(--muted); margin-bottom: 28px; line-height: 1.6; }
-    .xp-note { font-size: 0.82rem; color: var(--gold); margin-bottom: 20px; padding: 10px 16px; background: rgba(245,158,11,0.1); border-radius: 10px; border: 1px solid rgba(245,158,11,0.2); }
+    .xp-note { font-size: 0.82rem; color: var(--gold); margin-bottom: 12px; padding: 10px 16px; background: rgba(245,158,11,0.1); border-radius: 10px; border: 1px solid rgba(245,158,11,0.2); }
+    .bonus-note { font-size: 0.82rem; color: var(--muted); margin-bottom: 20px; padding: 10px 16px; background: var(--surface); border-radius: 10px; border: 1px solid var(--surface2); text-align: left; line-height: 1.6; }
     .lb-section { margin-top: 32px; text-align: left; }
     .lb-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 2px; margin-bottom: 16px; text-align: center; }
     .lb-input-row { display: flex; gap: 10px; margin-bottom: 20px; }
@@ -315,45 +306,21 @@
   </div>
 </nav>
 
-<!-- ═══════════════ PHASE 1: DAS GROSSE RÄTSEL ═══════════════ -->
-<div id="phase1">
-  <div class="hero">
-    <p class="eyebrow">Fächerübergreifendes Rätsel</p>
-    <h1>Es gibt ein verbindendes Element</h1>
-    <p class="hero-sub">12 Bilder · 1 Geheimnis · Was steckt drin?</p>
-    <button id="btn-lb-popup" type="button"
-      style="margin-top:14px;background:var(--gold);color:#0f172a;border:none;
-             border-radius:999px;padding:8px 20px;font-weight:700;font-size:0.85rem;
-             cursor:pointer;letter-spacing:0.5px;">
-      🏆 Bestenliste ansehen
-    </button>
-  </div>
-
-  <div class="grid12" id="grid12">
-    <!-- Wird per JS befüllt -->
-  </div>
-
-  <div class="meta-section">
-    <p class="meta-question">🔍 Was <span>verbindet</span> alle 12 Bilder?</p>
-    <div class="input-row">
-      <input type="text" id="meta-input" class="answer-input"
-             placeholder="Deine Antwort …" autocomplete="off" autocorrect="off"
-             aria-label="Verbindendes Element eingeben">
-      <button class="btn-check" id="btn-meta-check">Prüfen</button>
-    </div>
-    <button class="btn-proceed" id="btn-proceed" style="display:none">
-      Weiter zu den Einzelrätseln →
-    </button>
-  </div>
+<!-- ═══════════════ HERO ═══════════════ -->
+<div class="hero">
+  <p class="eyebrow">Fächerübergreifendes Rätsel</p>
+  <h1>Es gibt ein verbindendes Element</h1>
+  <p class="hero-sub">12 Bilder · 1 Geheimnis · Was steckt drin?</p>
+  <button id="btn-lb-popup" type="button"
+    style="margin-top:14px;background:var(--gold);color:#0f172a;border:none;
+           border-radius:999px;padding:8px 20px;font-weight:700;font-size:0.85rem;
+           cursor:pointer;letter-spacing:0.5px;">
+    🏆 Bestenliste ansehen
+  </button>
 </div>
 
-<!-- ═══════════════ PHASE 2: EINZELBILD-QUIZ ═══════════════ -->
-<div id="phase2">
-  <div class="hero" style="padding-top:32px;padding-bottom:16px;">
-    <p class="eyebrow">Phase 2 – Welcher Monat steckt im Namen?</p>
-    <h1 style="font-size:clamp(1.8rem,6vw,3rem)">Finde den versteckten Monat</h1>
-  </div>
-
+<!-- ═══════════════ QUIZ-BEREICH (Einzelbilder 1–12) ═══════════════ -->
+<div id="quiz-area">
   <div class="progress-wrap">
     <div class="progress-info">
       <span id="prog-text">Frage 1 von 12</span>
@@ -362,7 +329,7 @@
     <div class="progress-bar-bg"><div class="progress-bar" id="prog-bar"></div></div>
   </div>
 
-  <div class="quiz-card" id="quiz-area">
+  <div class="quiz-card">
     <div class="score-live" id="score-live">0 / 1200</div>
     <div class="image-box">
       <img id="quiz-img" alt="Rätselbild" style="transition:opacity 0.3s;">
@@ -373,10 +340,10 @@
       <button class="btn-nav" id="btn-nav-next" aria-label="Nächste Frage">→</button>
     </div>
     <div class="question-num" id="question-num">BILD 1 / 12</div>
-    <div class="clue-text" id="clue-text"></div>
     <div class="input-row">
       <input type="text" id="answer-input" class="answer-input"
-             placeholder="Welcher Monat? …" autocomplete="off" autocorrect="off">
+             placeholder="Welcher Monat? …" autocomplete="off" autocorrect="off"
+             aria-label="Monatsname eingeben">
       <button class="btn-check" id="btn-check">Prüfen</button>
     </div>
     <div class="feedback-card" id="feedback-card">
@@ -389,13 +356,37 @@
   </div>
 </div>
 
+<!-- ═══════════════ BONUS-SEKTION (nach Bild 12) ═══════════════ -->
+<div id="bonus-section">
+  <div class="bonus-hero">
+    <h2>⭐ Fast geschafft!</h2>
+    <p>Alle 12 Bilder beantwortet. Jetzt die große Abschlussfrage:</p>
+  </div>
+
+  <div class="grid12" id="bonus-grid12">
+    <!-- Wird per JS befüllt -->
+  </div>
+
+  <p class="bonus-question">🔍 Was <span>verbindet</span> alle 12 Bilder?</p>
+  <div class="bonus-input-wrap">
+    <div class="input-row">
+      <input type="text" id="bonus-input" class="answer-input"
+             placeholder="Deine Antwort …" autocomplete="off" autocorrect="off"
+             aria-label="Verbindendes Element eingeben">
+      <button class="btn-bonus-submit" id="btn-bonus-submit">Absenden</button>
+    </div>
+    <button class="btn-to-results" id="btn-to-results">🏁 Auswertung anzeigen</button>
+  </div>
+</div>
+
 <!-- ═══════════════ ERGEBNIS ═══════════════ -->
-<div class="results" id="results-area">
+<div id="results-area">
   <div class="results-title">Ergebnis</div>
   <div class="results-score" id="res-score">0</div>
   <div class="results-max" id="res-max">von 1500 möglichen Punkten</div>
   <div class="results-msg" id="res-msg"></div>
   <div class="xp-note" id="xp-note" style="display:none"></div>
+  <div class="bonus-note" id="bonus-note" style="display:none"></div>
 
   <div class="lb-section">
     <div class="lb-title">🏆 Bestenliste</div>
@@ -541,7 +532,7 @@
     }
   ];
 
-  // Akzeptierte Antworten für die Meta-Frage (Phase 1)
+  // Akzeptierte Antworten für die Bonusfrage (Meta-Frage)
   const META_HASHES = new Set([
     '94d96eaef1230f89859376692e2eaa65a8a3b4fe3870a8ae7425ddeace093264', // monate
     '53289ff7319393578bc7fc80937acbc0d1fd9a3f22c2ea0c53b3ddbea29eca74', // monatsnamen
@@ -550,10 +541,10 @@
     '49c9d38196a3beba7decb45557906e43218a9a23142ea5b3a57a3507a0087786', // monatsname
   ]);
 
-  const QUIZ_SLUG  = 'monatsnamen-rebus';
-  const MAX_META   = 300;
-  const PTS_EACH   = 100;
-  const MAX_TOTAL  = MAX_META + ITEMS.length * PTS_EACH; // 1500
+  const QUIZ_SLUG = 'monatsnamen-rebus';
+  const MAX_BONUS = 300;
+  const PTS_EACH  = 100;
+  const MAX_TOTAL = MAX_BONUS + ITEMS.length * PTS_EACH; // 1500
 
   // ── SHA-256 ────────────────────────────────────────────────────────────────
   async function sha256(str) {
@@ -566,123 +557,63 @@
       .trim();
   }
 
-  // ── STATE ──────────────────────────────────────────────────────────────────
-  let totalScore = 0;
-  let metaAnswered = false;
-  let metaCorrect  = false;
+  // ── Fisher-Yates Shuffle ───────────────────────────────────────────────────
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
 
+  // ── STATE ──────────────────────────────────────────────────────────────────
+  let SHUFFLED = [];     // Array der gemischten ITEMS-Indizes (0–11)
+  let totalScore = 0;
   let current = 0;
-  let phase2Answered = false;
-  const questionStates = ITEMS.map(() => ({
-    answered: false, pts: 0, resultClass: '', inputValue: ''
-  }));
+  let currentAnswered = false;
+  let questionStates = []; // indexed by SHUFFLED position (0–11)
+
+  // Bonus-Frage
+  let bonusAnswered = false;
+  let bonusHash = null;
+
+  function initState() {
+    SHUFFLED = shuffle(ITEMS.map((_, i) => i));
+    totalScore = 0;
+    current = 0;
+    currentAnswered = false;
+    bonusAnswered = false;
+    bonusHash = null;
+    questionStates = ITEMS.map(() => ({ answered: false, pts: 0, resultClass: '', inputValue: '' }));
+  }
 
   // ── HILFSFUNKTIONEN ────────────────────────────────────────────────────────
   function $(id){ return document.getElementById(id); }
 
   function updateProgress() {
     const done = questionStates.filter(q => q.answered).length;
-    $('prog-text').textContent = `Frage ${Math.min(done + 1, ITEMS.length)} von ${ITEMS.length}`;
+    $('prog-text').textContent = `Frage ${Math.min(current + 1, ITEMS.length)} von ${ITEMS.length}`;
     $('prog-score').textContent = `${totalScore} Punkte`;
     $('prog-bar').style.width = (done / ITEMS.length * 100) + '%';
-    $('score-live').textContent = `${totalScore} / ${MAX_META + questionStates.reduce((s,q)=>s+q.pts,0) + (ITEMS.length - questionStates.filter(q=>q.answered).length)*PTS_EACH}`;
-    $('score-live').textContent = `${totalScore} / ${MAX_TOTAL}`;
-  }
-
-  // ── PHASE 1: GRID RENDERN ─────────────────────────────────────────────────
-  function renderGrid(revealed) {
-    const grid = $('grid12');
-    grid.innerHTML = '';
-    ITEMS.forEach((item, i) => {
-      const cell = document.createElement('div');
-      cell.className = 'grid-cell' + (revealed ? ' revealed' : '') + (questionStates[i].pts > 0 ? ' correct-cell' : '');
-      cell.innerHTML = `
-        <img src="${item.img}" alt="${revealed ? item.label : 'Rätselbild ' + (i+1)}"
-             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-        <div class="no-img-hint" style="display:none">
-          <span>📷</span>
-          <span>Bild ${i+1}</span>
-          ${revealed ? `<span class="ni-month">${item.monat}</span>` : ''}
-        </div>
-        ${revealed ? `<div class="cell-label">${item.label}</div><div class="cell-month">${item.monat}</div>` : ''}
-      `;
-      grid.appendChild(cell);
-    });
-  }
-
-  renderGrid(false);
-
-  // ── GALLERY GRID RENDERN ───────────────────────────────────────────────────
-  function renderGallery() {
-    const gg = $('gallery-grid');
-    gg.innerHTML = '';
-    ITEMS.forEach((item, i) => {
-      const th = document.createElement('div');
-      th.className = 'gallery-thumb' + (i === current ? ' active' : '');
-      const st = questionStates[i];
-      const badge = st.answered ? `<div class="g-badge ${st.pts > 0 ? 'correct' : 'wrong'}"></div>` : '';
-      const label = st.answered ? item.monat : `Bild ${i+1}`;
-      th.innerHTML = `
-        <img src="${item.img}" alt="${label}"
-             onerror="this.style.display='none'">
-        ${badge}
-        <div class="g-label">${label}</div>
-      `;
-      th.addEventListener('click', () => {
-        current = i;
-        closeGallery();
-        showQuestion();
-      });
-      gg.appendChild(th);
-    });
-  }
-
-  // ── META-FRAGE (PHASE 1) ───────────────────────────────────────────────────
-  const metaInput  = $('meta-input');
-  const btnMetaChk = $('btn-meta-check');
-  const btnProceed = $('btn-proceed');
-  let metaHash = null;
-
-  async function submitMeta() {
-    const raw = metaInput.value.trim();
-    if (!raw || metaAnswered) return;
-    metaHash = await sha256(normalize(raw));
-    metaAnswered = true;
-    metaInput.disabled = true;
-    btnMetaChk.disabled = true;
-    btnProceed.style.display = 'block';
-  }
-
-  btnMetaChk.addEventListener('click', submitMeta);
-  metaInput.addEventListener('keydown', e => { if (e.key === 'Enter') submitMeta(); });
-  btnProceed.addEventListener('click', startPhase2);
-
-  // ── PHASE 2 STARTEN ───────────────────────────────────────────────────────
-  function startPhase2() {
-    $('phase1').style.display = 'none';
-    $('phase2').style.display = 'block';
-    current = 0;
-    phase2Answered = false;
-    updateProgress();
-    showQuestion();
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    $('score-live').textContent = `${totalScore} / ${ITEMS.length * PTS_EACH}`;
   }
 
   // ── EINZELBILD-QUIZ ────────────────────────────────────────────────────────
   function showQuestion() {
-    const item = ITEMS[current];
+    const origIdx = SHUFFLED[current];
+    const item = ITEMS[origIdx];
     const st   = questionStates[current];
-    phase2Answered = st.answered;
+    currentAnswered = st.answered;
 
     const img = $('quiz-img');
     img.style.opacity = '0';
     img.src = item.img;
     img.alt = st.answered ? item.label : 'Rätselbild ' + (current + 1);
-    img.onload = () => { img.style.opacity = '1'; };
+    img.onload  = () => { img.style.opacity = '1'; };
     img.onerror = () => { img.style.opacity = '1'; };
 
     $('question-num').textContent = `BILD ${current + 1} / ${ITEMS.length}`;
-    $('clue-text').style.display = 'none';
 
     const inp = $('answer-input');
     inp.value = st.inputValue || '';
@@ -692,9 +623,11 @@
     const fc = $('feedback-card');
     fc.style.display = 'none';
     fc.className = 'feedback-card';
+    // Entferne alten „Bonus"-Button falls vorhanden
+    const oldBonus = fc.querySelector('.btn-bonus-proceed');
+    if (oldBonus) oldBonus.remove();
 
     if (st.answered) {
-      inp.className = 'answer-input ' + st.resultClass;
       showFeedback(current, false);
     }
 
@@ -705,38 +638,48 @@
   }
 
   function showFeedback(idx, animate) {
-    const item = ITEMS[idx];
+    const origIdx = SHUFFLED[idx];
+    const item = ITEMS[origIdx];
     const st   = questionStates[idx];
     const fc   = $('feedback-card');
     fc.className = 'feedback-card' + (st.pts > 0 ? '' : ' wrong');
-    if (animate) fc.style.animation = 'none', fc.offsetHeight, fc.style.animation = '';
+    if (animate) { fc.style.animation = 'none'; fc.offsetHeight; fc.style.animation = ''; }
 
     $('fb-result').className = 'feedback-result ' + (st.pts > 0 ? 'correct' : 'wrong');
     $('fb-result').textContent = st.pts > 0
       ? `✅ Richtig! +${st.pts} Punkte`
       : `❌ Der Monat war: ${item.monat}`;
-    $('fb-name').textContent  = item.label;
-    $('fb-clue').innerHTML    = item.clue;
-    $('fb-info').innerHTML    = item.info;
+    $('fb-name').textContent = item.label;
+    $('fb-clue').innerHTML   = item.clue;
+    $('fb-info').innerHTML   = item.info;
 
-    $('btn-next').style.display = (idx < ITEMS.length - 1) ? 'block' : 'none';
-    if (idx === ITEMS.length - 1) {
-      const endBtn = document.createElement('button');
-      endBtn.className = 'btn-next';
-      endBtn.textContent = '🏁 Auswertung anzeigen';
-      endBtn.onclick = showResults;
-      const existing = fc.querySelector('.btn-end');
-      if (!existing) { endBtn.classList.add('btn-end'); fc.appendChild(endBtn); }
+    // btn-next: Weiter → oder nach letztem Bild: Zur Bonusfrage
+    const btnNext = $('btn-next');
+    if (idx < ITEMS.length - 1) {
+      btnNext.textContent = 'Weiter →';
+      btnNext.style.display = 'block';
+    } else {
+      btnNext.style.display = 'none';
+      // Bonus-Button einfügen
+      if (!fc.querySelector('.btn-bonus-proceed')) {
+        const bb = document.createElement('button');
+        bb.className = 'btn-next btn-bonus-proceed';
+        bb.textContent = '⭐ Weiter zur Bonusfrage';
+        bb.addEventListener('click', showBonusSection);
+        fc.appendChild(bb);
+      }
     }
+
     fc.style.display = 'block';
   }
 
   async function checkAnswer() {
     const raw = $('answer-input').value.trim();
-    if (!raw || phase2Answered) return;
+    if (!raw || currentAnswered) return;
     $('btn-check').disabled = true;
 
-    const item = ITEMS[current];
+    const origIdx = SHUFFLED[current];
+    const item = ITEMS[origIdx];
     const hash = await sha256(normalize(raw));
     const correct = item.hashes.includes(hash);
     const pts = correct ? PTS_EACH : 0;
@@ -745,11 +688,10 @@
       answered: true, pts, resultClass: correct ? 'correct' : 'wrong', inputValue: raw
     };
     if (correct) totalScore += pts;
-    phase2Answered = true;
+    currentAnswered = true;
 
     $('answer-input').className = 'answer-input ' + (correct ? 'correct' : 'wrong');
     $('answer-input').disabled = true;
-    $('clue-text').style.display = 'none';
 
     showFeedback(current, true);
     updateProgress();
@@ -757,14 +699,16 @@
 
   $('btn-check').addEventListener('click', checkAnswer);
   $('answer-input').addEventListener('keydown', e => { if (e.key === 'Enter') checkAnswer(); });
+
   $('btn-next').addEventListener('click', () => {
     if (current < ITEMS.length - 1) {
       current++;
-      phase2Answered = false;
+      currentAnswered = false;
       showQuestion();
-      window.scrollTo({top: 0, behavior: 'smooth'});
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   });
+
   $('btn-prev').addEventListener('click', () => {
     if (current > 0) { current--; showQuestion(); }
   });
@@ -773,39 +717,124 @@
   });
 
   // ── GALERIE ────────────────────────────────────────────────────────────────
+  function renderGallery() {
+    const gg = $('gallery-grid');
+    gg.innerHTML = '';
+    // Galerie zeigt SHUFFLED-Reihenfolge; unbeantwortet = "Bild X", beantwortet = Monatsname
+    SHUFFLED.forEach((origIdx, pos) => {
+      const item = ITEMS[origIdx];
+      const th = document.createElement('div');
+      th.className = 'gallery-thumb' + (pos === current ? ' active' : '');
+      const st = questionStates[pos];
+      const badge = st.answered
+        ? `<div class="g-badge ${st.pts > 0 ? 'correct' : 'wrong'}"></div>` : '';
+      const lbl = st.answered ? item.monat : `Bild ${pos + 1}`;
+      th.innerHTML = `
+        <img src="${item.img}" alt="${lbl}" onerror="this.style.display='none'">
+        ${badge}
+        <div class="g-label">${lbl}</div>
+      `;
+      th.addEventListener('click', () => {
+        current = pos;
+        closeGallery();
+        showQuestion();
+      });
+      gg.appendChild(th);
+    });
+  }
+
   function openGallery()  { renderGallery(); $('gallery-overlay').classList.add('open'); }
   function closeGallery() { $('gallery-overlay').classList.remove('open'); }
   $('btn-gallery').addEventListener('click', openGallery);
   $('btn-gallery-close').addEventListener('click', closeGallery);
-  $('gallery-overlay').addEventListener('click', e => { if (e.target === $('gallery-overlay')) closeGallery(); });
+  $('gallery-overlay').addEventListener('click', e => {
+    if (e.target === $('gallery-overlay')) closeGallery();
+  });
+
+  // ── BONUS-SEKTION ─────────────────────────────────────────────────────────
+  function renderBonusGrid() {
+    const grid = $('bonus-grid12');
+    grid.innerHTML = '';
+    // In der Bonus-Sektion werden die Bilder in der SHUFFLED-Reihenfolge angezeigt,
+    // mit Labels (da schon alle beantwortet)
+    SHUFFLED.forEach((origIdx, pos) => {
+      const item = ITEMS[origIdx];
+      const st = questionStates[pos];
+      const cell = document.createElement('div');
+      cell.className = 'grid-cell' + (st.pts > 0 ? ' correct-cell' : ' wrong-cell');
+      cell.innerHTML = `
+        <img src="${item.img}" alt="${item.label}"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="no-img-hint" style="display:none">
+          <span>📷</span>
+          <span>Bild ${pos + 1}</span>
+          <span class="ni-month">${item.monat}</span>
+        </div>
+        <div class="cell-label">${item.label}</div>
+        <div class="cell-month">${item.monat}</div>
+      `;
+      grid.appendChild(cell);
+    });
+  }
+
+  function showBonusSection() {
+    $('quiz-area').style.display = 'none';
+    renderBonusGrid();
+    $('bonus-section').style.display = 'block';
+    $('bonus-section').classList.add('fade-in');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  $('btn-bonus-submit').addEventListener('click', async () => {
+    if (bonusAnswered) return;
+    const raw = $('bonus-input').value.trim();
+    if (!raw) return;
+    bonusHash = await sha256(normalize(raw));
+    bonusAnswered = true;
+    $('bonus-input').disabled = true;
+    $('btn-bonus-submit').disabled = true;
+    $('btn-to-results').style.display = 'block';
+  });
+
+  $('bonus-input').addEventListener('keydown', async e => {
+    if (e.key === 'Enter') $('btn-bonus-submit').click();
+  });
+
+  $('btn-to-results').addEventListener('click', showResults);
 
   // ── ERGEBNISSE ─────────────────────────────────────────────────────────────
   async function showResults() {
-    $('phase2').style.display = 'none';
+    $('bonus-section').style.display = 'none';
     const res = $('results-area');
     res.style.display = 'block';
     res.classList.add('fade-in');
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    // Meta-Frage jetzt erst auswerten (kein Sofort-Feedback in Phase 1)
-    let metaPts = 0;
-    if (metaAnswered && metaHash !== null) {
-      metaCorrect = META_HASHES.has(metaHash);
-      if (metaCorrect) { metaPts = MAX_META; totalScore += MAX_META; }
+    // Bonusfrage jetzt auswerten
+    let bonusPts = 0;
+    let bonusCorrect = false;
+    if (bonusAnswered && bonusHash !== null) {
+      bonusCorrect = META_HASHES.has(bonusHash);
+      if (bonusCorrect) { bonusPts = MAX_BONUS; totalScore += MAX_BONUS; }
     }
-    const metaNote = metaAnswered
-      ? (metaCorrect
-          ? `✅ Verbindendes Element: <strong>Monatsnamen</strong> — richtig! +${MAX_META} Punkte`
-          : `❌ Verbindendes Element: leider falsch (Lösung: <strong>Monatsnamen</strong>)`)
-      : `— Verbindendes Element: nicht beantwortet`;
 
     const score = totalScore;
     const pct = Math.round(score / MAX_TOTAL * 100);
+
     $('res-score').textContent = score;
     $('res-max').textContent = `von ${MAX_TOTAL} möglichen Punkten (${pct} %)`;
 
-    $('xp-note').style.display = 'block';
-    $('xp-note').innerHTML = metaNote;
+    // Bonus-Ergebnis anzeigen
+    $('bonus-note').style.display = 'block';
+    if (!bonusAnswered) {
+      $('bonus-note').innerHTML = '⭐ Bonusfrage: nicht beantwortet';
+    } else if (bonusCorrect) {
+      $('bonus-note').innerHTML = `✅ Bonusfrage: <strong>Monatsnamen</strong> – richtig! +${MAX_BONUS} Bonuspunkte`;
+      $('bonus-note').style.color = 'var(--green)';
+    } else {
+      $('bonus-note').innerHTML = `❌ Bonusfrage: leider falsch. Lösung: <strong>Monatsnamen</strong>`;
+      $('bonus-note').style.color = 'var(--red)';
+    }
 
     let msg = '';
     if (pct >= 90) msg = '🏆 Hervorragend! Du hast fast alle Monatsnamen entdeckt!';
@@ -817,6 +846,8 @@
     if (typeof window.kolosseumReport === 'function') {
       window.kolosseumReport(score, MAX_TOTAL, QUIZ_SLUG);
     }
+    $('xp-note').style.display = 'block';
+    $('xp-note').textContent = `XP-Wertung basiert auf ${score} von ${MAX_TOTAL} Punkten.`;
 
     if (typeof window.leaderboardFetch === 'function') {
       try {
@@ -845,10 +876,9 @@
     const name = $('lb-name').value.trim();
     if (!name) return;
     $('btn-lb-save').disabled = true;
-    const xpScore = revealUsed ? (lockedScore || 0) : totalScore;
     try {
       if (typeof window.leaderboardSave === 'function') {
-        await window.leaderboardSave(QUIZ_SLUG, name, xpScore);
+        await window.leaderboardSave(QUIZ_SLUG, name, totalScore);
         const entries = await window.leaderboardFetch(QUIZ_SLUG);
         renderLeaderboard(entries);
       }
@@ -856,17 +886,17 @@
   });
 
   $('btn-retry').addEventListener('click', () => {
-    totalScore = 0; metaAnswered = false; metaCorrect = false; metaHash = null;
-    current = 0; phase2Answered = false;
-    questionStates.forEach(q => { q.answered = false; q.pts = 0; q.resultClass = ''; q.inputValue = ''; });
     $('results-area').style.display = 'none';
-    $('meta-input').value = ''; $('meta-input').disabled = false;
-    $('meta-input').className = 'answer-input';
-    $('btn-meta-check').disabled = false;
-    $('btn-proceed').style.display = 'none';
-    renderGrid(false);
-    $('phase1').style.display = 'block';
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    $('quiz-area').style.display = 'block';
+    $('bonus-section').style.display = 'none';
+    $('bonus-input').value = '';
+    $('bonus-input').disabled = false;
+    $('btn-bonus-submit').disabled = false;
+    $('btn-to-results').style.display = 'none';
+    initState();
+    updateProgress();
+    showQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
   // ── BESTENLISTE POPUP ──────────────────────────────────────────────────────
@@ -903,14 +933,19 @@
   });
 
   // ── HAMBURGER ─────────────────────────────────────────────────────────────
-  const ham = $('hamburger'), nav = $('navbar-links');
+  const ham = $('hamburger'), navLinks = $('navbar-links');
   ham.addEventListener('click', () => {
-    const open = nav.classList.toggle('open');
+    const open = navLinks.classList.toggle('open');
     ham.setAttribute('aria-expanded', open);
   });
 
   // ── FOOTER-JAHR ───────────────────────────────────────────────────────────
   $('footer-jahr').textContent = new Date().getFullYear();
+
+  // ── START ─────────────────────────────────────────────────────────────────
+  initState();
+  updateProgress();
+  showQuestion();
 
 })();
 </script>
