@@ -3,7 +3,7 @@ const rateLimit = require('express-rate-limit');
 const { db } = require('../db/database');
 const router = express.Router();
 
-const VALID_QUIZZES = ['stilmittel', 'literaturwissenschaft', 'rechtschreib', 'deutsch', 'erdkunde', 'fussball', 'monatsnamen'];
+const VALID_QUIZZES = ['stilmittel', 'literaturwissenschaft', 'rechtschreib', 'deutsch', 'erdkunde', 'fussball', 'monatsnamen', 'lehrer'];
 
 const limiter = rateLimit({ windowMs: 60 * 1000, max: 20, standardHeaders: true, legacyHeaders: false });
 
