@@ -1,0 +1,1829 @@
+<!--
+  Titel: Zahlo's Zahlen-Reise
+  Fach: Mathematik
+  Klasse/Niveau: Kita / Klasse 1–2
+  AB-Typ: Interaktives Lern-Spiel / Beobachtungshilfe
+  Erstellt: 2026-06-22
+  Quelle: HTML-Entwurf (Jan Herrmann)
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zahlo's Zahlen-Reise – Lernkolosseum</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== DESIGN-TOKENS ===== */
+:root {
+  --ocean-deep:   #0D3B66;
+  --ocean-mid:    #1565A0;
+  --ocean-light:  #7EC8E3;
+  --ocean-pale:   #D6EEF8;
+  --sun:          #FFD166;
+  --sun-dark:     #F4A70A;
+  --coral:        #FF8C8C;
+  --mint:         #6BD9A4;
+  --cream:        #FFF9F0;
+  --card-bg:      #FFFFFF;
+  --text-dark:    #1A2940;
+  --text-mid:     #3D5A80;
+  --text-light:   #6B8CAE;
+  --wave1:        #1E5799;
+  --wave2:        #2196D3;
+  --radius-lg:    20px;
+  --radius-xl:    32px;
+  --shadow-card:  0 8px 32px rgba(13,59,102,0.15);
+  --shadow-btn:   0 4px 16px rgba(13,59,102,0.25);
+  --font-display: 'Baloo 2', 'Segoe UI', system-ui, sans-serif;
+  --font-body:    'Nunito', 'Segoe UI', system-ui, sans-serif;
+  --transition:   0.25s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: linear-gradient(160deg, var(--ocean-deep) 0%, var(--ocean-mid) 50%, #1976D2 100%);
+  min-height: 100vh;
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+/* ===== BUBBLES BACKGROUND ===== */
+.bubbles {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+}
+.bubble {
+  position: absolute; border-radius: 50%;
+  background: rgba(126,200,227,0.08);
+  animation: floatUp linear infinite;
+}
+@keyframes floatUp {
+  0%   { transform: translateY(110vh) scale(1); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(-20px) scale(1.2); opacity: 0; }
+}
+
+/* ===== WRAPPER ===== */
+#app {
+  position: relative; z-index: 1;
+  max-width: 680px; margin: 0 auto;
+  padding: 16px 16px 40px;
+  min-height: 100vh;
+}
+
+/* ===== BACK-LINK-BAR ===== */
+.back-bar {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 8px;
+}
+.back-bar a {
+  font-family: var(--font-body);
+  font-size: 13px; font-weight: 700;
+  color: var(--ocean-light);
+  text-decoration: none;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(126,200,227,0.3);
+  border-radius: 100px;
+  padding: 6px 14px;
+  transition: all 0.2s;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.back-bar a:hover { background: rgba(255,255,255,0.2); color: white; }
+
+/* ===== SCREENS ===== */
+.screen { display: none; animation: fadeIn 0.4s ease; }
+.screen.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+
+/* ===== CARD ===== */
+.card {
+  background: var(--card-bg);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+  padding: 28px 24px;
+  margin-bottom: 16px;
+}
+.card-ocean {
+  background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean-mid) 100%);
+  color: white;
+}
+
+/* ===== LOGO / HEADER ===== */
+.logo-area {
+  text-align: center;
+  padding: 20px 0 8px;
+}
+.logo-site {
+  font-family: var(--font-body);
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--ocean-light); opacity: 0.85;
+  margin-bottom: 4px;
+}
+.logo-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 7vw, 40px);
+  font-weight: 800; color: white;
+  line-height: 1.1;
+  text-shadow: 0 3px 12px rgba(0,0,0,0.3);
+}
+.logo-subtitle {
+  font-family: var(--font-body);
+  font-size: 14px; color: var(--ocean-light);
+  margin-top: 4px;
+}
+
+/* ===== MASKOTTCHEN ===== */
+.maskottchen-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  margin: 12px 0;
+}
+.maskottchen {
+  font-size: 72px;
+  animation: bobbing 3s ease-in-out infinite;
+  display: block; line-height: 1;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+}
+@keyframes bobbing {
+  0%, 100% { transform: translateY(0) rotate(-3deg); }
+  50%       { transform: translateY(-10px) rotate(3deg); }
+}
+.sprechblase {
+  background: white;
+  border-radius: 18px 18px 18px 4px;
+  padding: 12px 18px;
+  max-width: 300px;
+  font-size: 15px; font-weight: 600;
+  color: var(--text-dark);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  margin-top: 8px;
+  position: relative;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ===== DISCLAIMER BOX ===== */
+.disclaimer-box {
+  background: #FFF3CD;
+  border: 2px solid #F4A70A;
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  font-size: 13px;
+  color: #6B4C00;
+  margin: 16px 0;
+  line-height: 1.5;
+}
+.disclaimer-box strong { color: #3D2A00; }
+.disclaimer-icon { font-size: 18px; margin-right: 6px; }
+
+/* ===== NAMENSFELD ===== */
+.input-group {
+  display: flex; flex-direction: column; gap: 6px;
+  margin: 16px 0;
+}
+.input-label {
+  font-weight: 700; font-size: 14px; color: var(--text-mid);
+}
+.name-input {
+  font-family: var(--font-display);
+  font-size: 20px; font-weight: 700;
+  border: 3px solid var(--ocean-pale);
+  border-radius: 14px;
+  padding: 12px 18px;
+  color: var(--text-dark);
+  width: 100%;
+  transition: border-color 0.2s;
+  outline: none;
+}
+.name-input:focus-visible { border-color: var(--ocean-light); box-shadow: 0 0 0 3px rgba(126,200,227,0.4); }
+
+/* ===== STATIONSAUSWAHL ===== */
+.stations-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin: 12px 0;
+}
+.station-toggle {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--ocean-pale);
+  border: 3px solid transparent;
+  border-radius: 14px;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-body);
+  font-size: 13px; font-weight: 700;
+  color: var(--ocean-deep);
+  text-align: left;
+  min-height: 60px;
+}
+.station-toggle:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
+.station-toggle.selected {
+  background: var(--ocean-deep); color: white;
+  border-color: var(--ocean-light);
+}
+.station-toggle .st-icon { font-size: 22px; flex-shrink: 0; }
+
+/* ===== BUTTONS ===== */
+.btn {
+  font-family: var(--font-display);
+  font-size: 18px; font-weight: 800;
+  border: none; cursor: pointer;
+  border-radius: var(--radius-lg);
+  padding: 16px 32px;
+  transition: transform var(--transition), box-shadow 0.2s;
+  min-height: 56px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%;
+}
+.btn:focus-visible { outline: 3px solid var(--sun); outline-offset: 3px; }
+.btn:active { transform: scale(0.96) !important; }
+.btn-primary {
+  background: linear-gradient(135deg, var(--sun) 0%, var(--sun-dark) 100%);
+  color: var(--ocean-deep);
+  box-shadow: var(--shadow-btn);
+}
+.btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(244,167,10,0.5); }
+.btn-secondary {
+  background: var(--ocean-pale);
+  color: var(--ocean-deep);
+  font-size: 15px;
+}
+.btn-icon {
+  background: rgba(255,255,255,0.15);
+  color: white;
+  font-size: 14px; padding: 10px 20px;
+  border-radius: 12px; width: auto;
+  border: 2px solid rgba(255,255,255,0.3);
+}
+.btn-icon:hover { background: rgba(255,255,255,0.25); }
+
+/* ===== TRAIL-KARTE (SIGNATURE ELEMENT) ===== */
+.trail-card {
+  background: linear-gradient(160deg, #0A2E52 0%, #0D3B66 40%, #0E4475 100%);
+  border-radius: var(--radius-xl);
+  padding: 20px;
+  margin-bottom: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+.trail-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Cpath d='M0,80 Q100,20 200,80 Q300,140 400,80' fill='none' stroke='rgba(126,200,227,0.06)' stroke-width='40'/%3E%3Cpath d='M0,140 Q100,80 200,140 Q300,200 400,140' fill='none' stroke='rgba(126,200,227,0.04)' stroke-width='30'/%3E%3C/svg%3E") center/cover no-repeat;
+  pointer-events: none;
+}
+.trail-title {
+  font-family: var(--font-display);
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--ocean-light); opacity: 0.7;
+  margin-bottom: 12px;
+  text-align: center;
+}
+.trail-stops {
+  display: flex; justify-content: center;
+  gap: 0; flex-wrap: wrap;
+  position: relative; z-index: 1;
+}
+.trail-stop {
+  display: flex; flex-direction: column; align-items: center;
+  position: relative;
+  flex: 0 0 auto;
+}
+.trail-stop-connector {
+  position: absolute; top: 22px; left: calc(50% + 22px);
+  width: calc(100% - 20px);
+  height: 3px;
+  background: rgba(126,200,227,0.2);
+  z-index: 0;
+}
+.trail-stop-connector.done { background: var(--sun); }
+.stop-dot {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(126,200,227,0.1);
+  border: 3px solid rgba(126,200,227,0.25);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+  transition: all 0.4s;
+  position: relative; z-index: 1;
+}
+.stop-dot.done {
+  background: var(--sun);
+  border-color: var(--sun-dark);
+  box-shadow: 0 0 20px rgba(255,209,102,0.6);
+}
+.stop-dot.active {
+  background: var(--ocean-light);
+  border-color: white;
+  box-shadow: 0 0 24px rgba(126,200,227,0.8);
+  animation: pulse-stop 1.5s ease-in-out infinite;
+}
+@keyframes pulse-stop {
+  0%, 100% { box-shadow: 0 0 16px rgba(126,200,227,0.6); }
+  50%       { box-shadow: 0 0 32px rgba(126,200,227,1.0); }
+}
+.stop-label {
+  font-size: 10px; font-weight: 700;
+  color: rgba(255,255,255,0.5);
+  margin-top: 6px; text-align: center;
+  max-width: 60px; line-height: 1.2;
+}
+.stop-label.active { color: var(--ocean-light); }
+.stop-label.done { color: var(--sun); }
+
+/* ===== SPIELBEREICH ===== */
+.station-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 16px;
+}
+.station-chip {
+  background: var(--ocean-deep); color: white;
+  font-family: var(--font-display);
+  font-size: 11px; font-weight: 700;
+  padding: 6px 14px; border-radius: 100px;
+  letter-spacing: 1px; text-transform: uppercase;
+  white-space: nowrap;
+}
+.station-progress {
+  flex: 1;
+  height: 8px; background: var(--ocean-pale);
+  border-radius: 100px; overflow: hidden;
+}
+.station-progress-bar {
+  height: 100%; background: linear-gradient(90deg, var(--ocean-light), var(--sun));
+  border-radius: 100px;
+  transition: width 0.5s ease;
+}
+
+/* ===== AUFGABEN-KARTE ===== */
+.aufgabe-karte {
+  background: white; border-radius: var(--radius-xl);
+  padding: 24px; margin-bottom: 16px;
+  box-shadow: var(--shadow-card);
+  text-align: center;
+}
+.aufgabe-prompt {
+  font-family: var(--font-display);
+  font-size: clamp(17px, 4.5vw, 22px);
+  font-weight: 700; color: var(--text-dark);
+  line-height: 1.4; margin-bottom: 20px;
+}
+.audio-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--ocean-pale);
+  border: 2px solid var(--ocean-light);
+  border-radius: 100px;
+  padding: 8px 18px;
+  font-family: var(--font-body);
+  font-size: 13px; font-weight: 700;
+  color: var(--ocean-deep);
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: all 0.2s;
+}
+.audio-btn:hover { background: var(--ocean-light); color: white; }
+.audio-btn:focus-visible { outline: 3px solid var(--sun); }
+
+/* ===== SUBITIZING DOTS ===== */
+.dot-display {
+  display: flex; justify-content: center;
+  flex-wrap: wrap; gap: 10px;
+  margin: 16px auto;
+  max-width: 220px;
+}
+.dot-item {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--ocean-deep);
+  box-shadow: 0 3px 8px rgba(13,59,102,0.4);
+}
+.dice-frame {
+  display: inline-block;
+  background: white; border: 4px solid var(--ocean-deep);
+  border-radius: 18px; padding: 16px;
+  margin: 8px auto;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+
+/* ===== ANTWORT-KNÖPFE ===== */
+.antwort-grid {
+  display: grid; gap: 12px;
+  margin: 16px 0;
+}
+.antwort-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+.antwort-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.antwort-btn {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 6vw, 36px);
+  font-weight: 800;
+  background: var(--ocean-pale);
+  border: 4px solid var(--ocean-pale);
+  border-radius: var(--radius-lg);
+  padding: 18px 8px;
+  cursor: pointer;
+  transition: all var(--transition);
+  color: var(--ocean-deep);
+  min-height: 80px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px;
+  line-height: 1.1;
+}
+.antwort-btn:focus-visible { outline: 3px solid var(--sun); outline-offset: 2px; }
+.antwort-btn:hover:not(:disabled) {
+  background: var(--ocean-light);
+  border-color: var(--ocean-mid);
+  color: white;
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(126,200,227,0.5);
+}
+.antwort-btn.correct {
+  background: var(--mint);
+  border-color: #3BB879;
+  color: white;
+  transform: scale(1.08);
+  box-shadow: 0 6px 24px rgba(107,217,164,0.6);
+}
+.antwort-btn.wrong {
+  background: #FFE4E4;
+  border-color: var(--coral);
+  color: #CC4444;
+  animation: shake 0.4s ease;
+}
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%       { transform: translateX(-6px); }
+  75%       { transform: translateX(6px); }
+}
+.antwort-btn:disabled { cursor: not-allowed; }
+.antwort-btn-sub { font-size: 13px; font-weight: 600; opacity: 0.7; }
+
+/* ===== EMOJI MENGE ===== */
+.emoji-menge {
+  font-size: 32px; letter-spacing: 4px;
+  margin: 12px auto;
+  display: block; text-align: center;
+  line-height: 1.4;
+}
+.emoji-menge-lg { font-size: 40px; }
+
+/* ===== ZWEI-GRUPPEN VERGLEICH ===== */
+.vergleich-wrap {
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center; gap: 8px;
+  margin: 12px 0;
+}
+.vergleich-gruppe {
+  background: var(--ocean-pale);
+  border-radius: var(--radius-lg);
+  padding: 16px 8px;
+  font-size: 28px; letter-spacing: 3px;
+  text-align: center; line-height: 1.5;
+  cursor: pointer;
+  transition: all var(--transition);
+  border: 4px solid transparent;
+  min-height: 80px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap;
+}
+.vergleich-gruppe:focus-visible { outline: 3px solid var(--sun); }
+.vergleich-gruppe:hover { background: var(--ocean-light); border-color: var(--ocean-mid); transform: scale(1.04); }
+.vergleich-gruppe.correct { background: var(--mint); border-color: #3BB879; }
+.vergleich-gruppe.wrong { background: #FFE4E4; border-color: var(--coral); }
+.vergleich-vs { font-size: 24px; font-weight: 800; color: var(--text-light); }
+
+/* ===== FEEDBACK ===== */
+.feedback-wrap {
+  text-align: center; padding: 8px 0;
+  animation: feedbackIn 0.35s var(--transition);
+}
+@keyframes feedbackIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: none; } }
+.feedback-icon { font-size: 44px; display: block; margin-bottom: 6px; }
+.feedback-text {
+  font-family: var(--font-display);
+  font-size: 18px; font-weight: 800;
+  color: var(--text-dark);
+}
+.feedback-sterne {
+  font-size: 28px; letter-spacing: 2px;
+  display: block; margin-top: 4px;
+}
+
+/* ===== ZWISCHEN-BELOHNUNG ===== */
+.belohnung-karte {
+  background: linear-gradient(135deg, var(--ocean-deep), #1565A0);
+  border-radius: var(--radius-xl);
+  padding: 40px 24px;
+  text-align: center; color: white;
+  box-shadow: var(--shadow-card);
+}
+.belohnung-sterne {
+  font-size: 48px; letter-spacing: 6px;
+  display: block; margin: 16px 0;
+  animation: starPop 0.6s var(--transition);
+}
+@keyframes starPop { from { transform: scale(0); } to { transform: scale(1); } }
+.belohnung-titel {
+  font-family: var(--font-display);
+  font-size: 28px; font-weight: 800;
+}
+.belohnung-sub {
+  font-size: 16px; color: var(--ocean-light);
+  margin-top: 8px;
+}
+
+/* ===== AUSWERTUNG ===== */
+.auswertung-kind {
+  background: linear-gradient(135deg, var(--ocean-deep), #1565A0);
+  border-radius: var(--radius-xl);
+  padding: 40px 24px; text-align: center; color: white;
+  margin-bottom: 16px;
+}
+.auswertung-pokal { font-size: 80px; display: block; margin-bottom: 8px; }
+.auswertung-name {
+  font-family: var(--font-display);
+  font-size: 26px; font-weight: 800;
+}
+.auswertung-score {
+  font-size: 18px; color: var(--ocean-light);
+  margin-top: 4px;
+}
+.auswertung-sterne { font-size: 40px; letter-spacing: 4px; margin-top: 12px; display: block; }
+
+.details-toggle-btn {
+  background: var(--ocean-pale);
+  border: none; border-radius: var(--radius-lg);
+  padding: 16px 24px;
+  font-family: var(--font-body); font-size: 15px; font-weight: 700;
+  color: var(--ocean-deep);
+  cursor: pointer; width: 100%;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+  transition: background 0.2s;
+}
+.details-toggle-btn:hover { background: #C5DFF0; }
+.details-toggle-btn:focus-visible { outline: 3px solid var(--sun); }
+
+.details-panel {
+  display: none; animation: fadeIn 0.3s ease;
+}
+.details-panel.open { display: block; }
+
+.disclaimer-auswertung {
+  background: #FFF3CD;
+  border: 2px solid var(--sun-dark);
+  border-radius: var(--radius-lg);
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  font-size: 13px; color: #6B4C00; line-height: 1.6;
+}
+.disclaimer-auswertung h3 {
+  font-size: 15px; color: #3D2A00; margin-bottom: 6px;
+}
+
+/* ===== AMPEL-BEREICHE ===== */
+.ampel-bereich {
+  background: white; border-radius: var(--radius-lg);
+  padding: 16px 18px; margin-bottom: 10px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.ampel-bereich-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+}
+.ampel-icon { font-size: 22px; flex-shrink: 0; }
+.ampel-bereich-titel {
+  font-family: var(--font-display);
+  font-size: 15px; font-weight: 700; color: var(--text-dark);
+  flex: 1;
+}
+.ampel-status {
+  font-size: 11px; font-weight: 700; padding: 4px 10px;
+  border-radius: 100px; letter-spacing: 1px; text-transform: uppercase;
+}
+.ampel-gruen { background: #D4F4E2; color: #1A7A45; }
+.ampel-gelb  { background: #FFF3CD; color: #8A5C00; }
+.ampel-rot   { background: #FFE4E4; color: #C0392B; }
+.ampel-balken-wrap {
+  height: 10px; background: var(--ocean-pale);
+  border-radius: 100px; overflow: hidden; margin-bottom: 4px;
+}
+.ampel-balken {
+  height: 100%; border-radius: 100px;
+  transition: width 1s ease;
+}
+.balken-gruen { background: linear-gradient(90deg, #6BD9A4, #2ECC71); }
+.balken-gelb  { background: linear-gradient(90deg, var(--sun), var(--sun-dark)); }
+.balken-rot   { background: linear-gradient(90deg, #FF8C8C, #E74C3C); }
+.ampel-detail { font-size: 12px; color: var(--text-light); }
+
+/* ===== NÄCHSTE SCHRITTE ===== */
+.naechste-schritte {
+  background: var(--ocean-pale);
+  border-radius: var(--radius-lg);
+  padding: 18px; margin-bottom: 16px;
+}
+.naechste-schritte h3 {
+  font-family: var(--font-display);
+  font-size: 16px; font-weight: 700; color: var(--ocean-deep);
+  margin-bottom: 12px;
+}
+.schritt-item {
+  display: flex; gap: 10px; margin-bottom: 10px;
+  font-size: 13px; color: var(--text-mid); line-height: 1.5;
+}
+.schritt-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+
+/* ===== ORDINAL AUFGABE ===== */
+.ordinal-reihe {
+  display: flex; justify-content: center; gap: 8px;
+  flex-wrap: wrap; margin: 12px 0;
+}
+.ordinal-item {
+  font-size: 36px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 12px;
+  border: 3px solid transparent;
+  transition: all 0.2s;
+  background: var(--ocean-pale);
+}
+.ordinal-item:hover { background: var(--ocean-light); transform: scale(1.1); }
+.ordinal-item:focus-visible { outline: 3px solid var(--sun); }
+.ordinal-item.correct { background: var(--mint); }
+.ordinal-item.wrong { background: #FFE4E4; }
+
+/* ===== ZERLEGE VISUAL ===== */
+.zerleg-wrap {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; margin: 12px 0; flex-wrap: wrap;
+}
+.zerleg-gruppe {
+  background: var(--ocean-pale);
+  border-radius: 14px; padding: 12px 16px;
+  font-size: 28px; text-align: center; min-width: 60px;
+  line-height: 1.4;
+}
+.zerleg-op {
+  font-family: var(--font-display);
+  font-size: 28px; font-weight: 800; color: var(--ocean-mid);
+}
+.zerleg-erg {
+  font-family: var(--font-display);
+  font-size: 36px; font-weight: 800; color: var(--ocean-deep);
+  background: #F0F8FF; border-radius: 14px;
+  padding: 8px 16px; border: 3px dashed var(--ocean-light);
+}
+
+/* ===== PRINT ===== */
+@media print {
+  body { background: white !important; }
+  .bubbles, .btn-primary, .btn-secondary, .details-toggle-btn,
+  .maskottchen-wrap, .logo-area, .trail-card, .back-bar { display: none !important; }
+  .card, .ampel-bereich, .naechste-schritte, .disclaimer-auswertung {
+    box-shadow: none; border: 1px solid #ddd;
+  }
+  .details-panel { display: block !important; }
+  * { color: black !important; background: white !important; }
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 420px) {
+  .stations-grid { grid-template-columns: 1fr; }
+  .antwort-grid.cols-3 { grid-template-columns: 1fr 1fr; }
+  .stop-label { font-size: 8px; max-width: 44px; }
+}
+
+/* ===== HELPER ===== */
+.text-center { text-align: center; }
+.mt-8  { margin-top: 8px; }
+.mt-16 { margin-top: 16px; }
+.mb-8  { margin-bottom: 8px; }
+.hidden { display: none !important; }
+.section-title {
+  font-family: var(--font-display);
+  font-size: 18px; font-weight: 800;
+  color: var(--text-dark); margin-bottom: 10px;
+}
+.divider {
+  height: 1px; background: var(--ocean-pale);
+  margin: 16px 0;
+}
+</style>
+</head>
+<body>
+
+<!-- ===== BUBBLES BACKGROUND ===== -->
+<div class="bubbles" id="bubbles"></div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+
+  <!-- Zurück-Link -->
+  <div class="back-bar no-print">
+    <a href="/fach-mathe.html">← Mathematik</a>
+  </div>
+
+  <!-- ====== SCREEN: START ====== -->
+  <div class="screen active" id="screen-start">
+    <div class="logo-area">
+      <div class="logo-site">🏛 Lernkolosseum</div>
+      <div class="logo-title">🐙 Zahlo's Zahlen-Reise</div>
+      <div class="logo-subtitle">Spielerische Beobachtungshilfe für Zahlen-Vorläuferkompetenzen</div>
+    </div>
+
+    <div class="maskottchen-wrap">
+      <span class="maskottchen">🐙</span>
+      <div class="sprechblase">Hallo! Ich bin Zahlo! Wollen wir zusammen auf Zahlen-Reise gehen? 🌊</div>
+    </div>
+
+    <div class="disclaimer-box">
+      <span class="disclaimer-icon">ℹ️</span><strong>Hinweis für Begleitpersonen:</strong>
+      Dieses Tool ist eine <strong>spielerische Beobachtungshilfe</strong> – kein normiertes Testverfahren und keine Diagnose. Es gibt Anlass, bestimmte Vorläuferkompetenzen genauer in den Blick zu nehmen. Eine Lernstörung (Dyskalkulie) kann nur durch geschulte Fachkräfte mit standardisierten Verfahren festgestellt werden.
+    </div>
+
+    <div class="card">
+      <div class="input-group">
+        <label class="input-label" for="kindName">👤 Wie heißt du?</label>
+        <input class="name-input" id="kindName" type="text" placeholder="Dein Name …" maxlength="30" autocomplete="off">
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-title">🗺 Welche Stationen sollen mitmachen?</div>
+      <div class="stations-grid" id="stations-grid">
+        <!-- wird per JS befüllt -->
+      </div>
+      <div style="margin-top:12px; font-size:12px; color:var(--text-light);">
+        Alle angehakt = Komplettdurchgang (~12 Minuten). Zum Abwählen einfach antippen.
+      </div>
+    </div>
+
+    <button class="btn btn-primary" id="btn-start" onclick="startReise()">
+      ⛵ Los geht's!
+    </button>
+    <div style="height:24px"></div>
+  </div>
+
+  <!-- ====== SCREEN: TRAIL-KARTE ====== -->
+  <div class="screen" id="screen-trail">
+    <div class="logo-area" style="padding:12px 0 4px">
+      <div class="logo-title" style="font-size:22px">🐙 Zahlo's Zahlen-Reise</div>
+    </div>
+    <div class="trail-card" id="trail-map">
+      <div class="trail-title">Deine Reiseroute</div>
+      <div class="trail-stops" id="trail-stops-container"></div>
+    </div>
+    <div class="maskottchen-wrap" style="margin:8px 0">
+      <span class="maskottchen" style="font-size:52px">🐙</span>
+      <div class="sprechblase" id="trail-sprechblase">Bereit? Dann starten wir! 🚀</div>
+    </div>
+    <button class="btn btn-primary" onclick="naechsteStation()">🌊 Weiter zur ersten Station!</button>
+    <div style="height:24px"></div>
+  </div>
+
+  <!-- ====== SCREEN: SPIEL ====== -->
+  <div class="screen" id="screen-spiel">
+    <div class="station-header">
+      <div class="station-chip" id="station-chip">Station 1</div>
+      <div class="station-progress">
+        <div class="station-progress-bar" id="station-progress-bar" style="width:0%"></div>
+      </div>
+      <button class="audio-btn" onclick="wiederholenAudio()" style="white-space:nowrap">🔊 Nochmal</button>
+    </div>
+
+    <div class="maskottchen-wrap" style="margin:0 0 8px">
+      <span class="maskottchen" style="font-size:44px">🐙</span>
+    </div>
+
+    <div class="aufgabe-karte" id="aufgabe-karte">
+      <!-- dynamisch -->
+    </div>
+
+    <div id="feedback-bereich" class="hidden">
+      <div class="feedback-wrap">
+        <span class="feedback-icon" id="feedback-icon">⭐</span>
+        <div class="feedback-text" id="feedback-text">Super gemacht!</div>
+        <span class="feedback-sterne" id="feedback-sterne"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SCREEN: ZWISCHEN-BELOHNUNG ====== -->
+  <div class="screen" id="screen-belohnung">
+    <div class="belohnung-karte">
+      <div class="maskottchen">🐙</div>
+      <span class="belohnung-sterne" id="bel-sterne">⭐⭐⭐</span>
+      <div class="belohnung-titel" id="bel-titel">Fantastisch!</div>
+      <div class="belohnung-sub" id="bel-sub">Station geschafft!</div>
+    </div>
+    <div style="height:16px"></div>
+    <button class="btn btn-primary" id="btn-weiter-belohnung" onclick="naechsteStation()">🌊 Weiter!</button>
+    <div style="height:24px"></div>
+  </div>
+
+  <!-- ====== SCREEN: AUSWERTUNG ====== -->
+  <div class="screen" id="screen-auswertung">
+    <div class="auswertung-kind">
+      <span class="auswertung-pokal">🏆</span>
+      <div class="auswertung-name" id="aus-name">Prima, Mia!</div>
+      <div class="auswertung-score" id="aus-score">Du hast alle Stationen gemeistert!</div>
+      <span class="auswertung-sterne" id="aus-sterne">⭐⭐⭐⭐⭐</span>
+    </div>
+
+    <button class="details-toggle-btn" onclick="toggleDetails()">
+      <span>📊 Auswertung für Begleitperson öffnen</span>
+      <span id="details-arrow">▼</span>
+    </button>
+
+    <div class="details-panel" id="details-panel">
+      <!-- Disclaimer -->
+      <div class="disclaimer-auswertung">
+        <h3>⚠️ Wichtiger Hinweis</h3>
+        Dieses Tool ist eine <strong>spielerische Beobachtungshilfe zu mathematischen Vorläuferkompetenzen</strong> –
+        kein standardisiertes, normiertes Messverfahren. Die Ergebnisse geben orientierende Hinweise darauf,
+        welche Bereiche gut entwickelt erscheinen und wo weitere Beobachtung sinnvoll sein könnte.
+        <strong>Eine Diagnose (z. B. Dyskalkulie/Rechenstörung) kann ausschließlich durch geschulte Fachkräfte
+        mit validierten Verfahren gestellt werden.</strong>
+        Einzelne Aufgaben können durch Tagesform, Ablenkung oder Missverständnisse beeinflusst sein.
+        Interpretieren Sie die Ampeln mit Bedacht und nutzen Sie sie als Gesprächsgrundlage, nicht als Urteil.
+      </div>
+
+      <!-- Zusammenfassung -->
+      <div class="card mb-8">
+        <div class="section-title">📋 Überblick</div>
+        <div id="aus-zusammenfassung" style="font-size:14px; color:var(--text-mid); line-height:1.6;"></div>
+      </div>
+
+      <!-- Ampeln -->
+      <div class="section-title" style="margin-bottom:8px">🚦 Bereiche im Überblick</div>
+      <div id="ampeln-container"></div>
+
+      <!-- Nächste Schritte -->
+      <div class="naechste-schritte">
+        <h3>🔭 Was jetzt?</h3>
+        <div id="naechste-schritte-inhalt"></div>
+      </div>
+
+      <!-- Druck-Button -->
+      <button class="btn btn-secondary" onclick="window.print()" style="margin-bottom:8px">
+        🖨️ Auswertung drucken / als PDF speichern
+      </button>
+    </div>
+
+    <div style="height:16px"></div>
+    <button class="btn btn-secondary" onclick="neustarten()">🔄 Nochmal spielen</button>
+    <div style="height:32px"></div>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+// =====================================================================
+// ZAHLO'S ZAHLEN-REISE – Spiellogik
+// =====================================================================
+
+// ===== SPEECH =====
+let voices = [];
+let speechVoice = null;
+
+function initVoices() {
+  voices = speechSynthesis.getVoices();
+  speechVoice = voices.find(v => v.lang.startsWith('de')) ||
+                voices.find(v => v.lang.startsWith('de-')) ||
+                voices[0] || null;
+}
+if (typeof speechSynthesis !== 'undefined') {
+  speechSynthesis.onvoiceschanged = initVoices;
+  initVoices();
+}
+
+function speak(text, cb) {
+  if (!('speechSynthesis' in window) || !text) { if(cb) setTimeout(cb,400); return; }
+  speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'de-DE';
+  if (speechVoice) utt.voice = speechVoice;
+  utt.rate = 0.85;
+  utt.pitch = 1.1;
+  if (cb) utt.onend = cb;
+  // Workaround: kleine Verzögerung für iOS/Android
+  setTimeout(() => speechSynthesis.speak(utt), 80);
+}
+
+let letzterText = '';
+function sprecheAufgabe(text) {
+  letzterText = text;
+  speak(text);
+}
+function wiederholenAudio() {
+  speak(letzterText);
+}
+
+// ===== STATIONEN-DEFINITIONEN =====
+const STATIONEN_DEF = [
+  {
+    id: 'subitizing',
+    name: 'Mengen blitzen',
+    icon: '🎲',
+    beschreibung: 'Simultanerfassung (Subitizing)',
+    aufgaben: generiere_subitizing()
+  },
+  {
+    id: 'ziffern',
+    name: 'Zahlen hören',
+    icon: '🔢',
+    beschreibung: 'Ziffernerkennung & Zahlbegriff',
+    aufgaben: generiere_ziffern()
+  },
+  {
+    id: 'mengenzahl',
+    name: 'Menge & Zahl',
+    icon: '🍎',
+    beschreibung: 'Mengen-Zahl-Zuordnung',
+    aufgaben: generiere_mengenzahl()
+  },
+  {
+    id: 'vergleich',
+    name: 'Mehr oder weniger?',
+    icon: '⚖️',
+    beschreibung: 'Mengenvergleich (Zahlensinn/ANS)',
+    aufgaben: generiere_vergleich()
+  },
+  {
+    id: 'kardinalitaet',
+    name: 'Zählen',
+    icon: '🐸',
+    beschreibung: 'Zählkompetenz & Kardinalität',
+    aufgaben: generiere_kardinalitaet()
+  },
+  {
+    id: 'zahlenreihe',
+    name: 'Zahlenreihe',
+    icon: '↔️',
+    beschreibung: 'Ordinalität: Vorgänger & Nachfolger',
+    aufgaben: generiere_zahlenreihe()
+  },
+  {
+    id: 'zerlegung',
+    name: 'Zusammenzählen',
+    icon: '➕',
+    beschreibung: 'Teil-Ganzes / Zerlegung bis 10',
+    aufgaben: generiere_zerlegung()
+  }
+];
+
+// ===== AUFGABEN-GENERATOREN =====
+function mische(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i],a[j]] = [a[j],a[i]];
+  }
+  return a;
+}
+function zufallAus(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
+function emojiFuerZahl(n, emoji) {
+  return Array(n).fill(emoji).join('');
+}
+const EMOJI_SETS = [
+  ['🍎','🍊','🍋','🍇','🍓'],
+  ['🐱','🐶','🐸','🐼','🐨'],
+  ['⭐','🌙','☀️','🌈','🌸'],
+  ['🚗','🚂','✈️','🚀','🛸'],
+  ['🌺','🌻','🌷','🌼','🍀']
+];
+
+function generiere_subitizing() {
+  // Subitizing: 1-5 Punkte, kurz gezeigt
+  const aufgaben = [];
+  const zahlen = mische([1,2,3,4,5,1,2,3,4,5]).slice(0,5);
+  zahlen.forEach(n => {
+    const falsche = mische([1,2,3,4,5].filter(x=>x!==n)).slice(0,2);
+    const optionen = mische([n,...falsche]);
+    aufgaben.push({
+      typ: 'subitizing',
+      richtig: n,
+      optionen,
+      text: `Schau genau! Wie viele Punkte siehst du?`
+    });
+  });
+  return aufgaben;
+}
+
+function generiere_ziffern() {
+  const aufgaben = [];
+  const zahlen = mische([1,2,3,4,5,6,7,8,9,10]).slice(0,5);
+  const zahlenworte = ['null','eins','zwei','drei','vier','fünf','sechs','sieben','acht','neun','zehn'];
+  zahlen.forEach(n => {
+    const falsche = mische([1,2,3,4,5,6,7,8,9,10].filter(x=>x!==n)).slice(0,2);
+    const optionen = mische([n,...falsche]);
+    aufgaben.push({
+      typ: 'ziffern',
+      richtig: n,
+      optionen,
+      text: `Welche Zahl ist ${zahlenworte[n]}?`,
+      sprechText: `Welche Zahl ist die ${zahlenworte[n]}? Tippe auf die richtige Zahl!`
+    });
+  });
+  return aufgaben;
+}
+
+function generiere_mengenzahl() {
+  const aufgaben = [];
+  const set = zufallAus(EMOJI_SETS);
+  const paare = [
+    {menge:3, emoji: set[0]},
+    {menge:5, emoji: set[1]},
+    {menge:2, emoji: set[2]},
+    {menge:4, emoji: set[3]},
+    {menge:7, emoji: set[0]},
+  ];
+  mische(paare).slice(0,5).forEach(p => {
+    const richtungsWahl = Math.random() > 0.5 ? 'menge2zahl' : 'zahl2menge';
+    if (richtungsWahl === 'menge2zahl') {
+      const falsche = mische([1,2,3,4,5,6,7,8,9,10].filter(x=>x!==p.menge)).slice(0,2);
+      const optionen = mische([p.menge,...falsche]);
+      aufgaben.push({
+        typ: 'mengenzahl_m2z',
+        richtig: p.menge,
+        emoji: p.emoji,
+        anzahl: p.menge,
+        optionen,
+        text: `Wie viele ${p.emoji} sind das?`,
+        sprechText: `Schau dir die ${p.emoji} an. Welche Zahl passt dazu?`
+      });
+    } else {
+      // Zahl → richtige Menge
+      const mengen = [p.menge-1>0?p.menge-1:p.menge+2, p.menge, p.menge+1>10?p.menge-2:p.menge+1];
+      const optMengen = mische(mengen.filter(x=>x>0));
+      aufgaben.push({
+        typ: 'mengenzahl_z2m',
+        richtig: p.menge,
+        emoji: p.emoji,
+        optMengen,
+        text: `Die Zahl ist ${p.menge}. Welche Menge passt?`,
+        sprechText: `Die Zahl ist ${p.menge}. Welche Gruppe von ${p.emoji} passt dazu?`
+      });
+    }
+  });
+  return aufgaben;
+}
+
+function generiere_vergleich() {
+  const aufgaben = [];
+  const set = zufallAus(EMOJI_SETS);
+  const paare = [
+    {a:3,b:5},{a:7,b:4},{a:2,b:6},{a:5,b:3},{a:8,b:6}
+  ];
+  mische(paare).slice(0,5).forEach(({a,b}) => {
+    const groesser = a > b ? 'links' : 'rechts';
+    aufgaben.push({
+      typ: 'vergleich',
+      a, b, groesser,
+      emoji: set[0],
+      text: `Wo sind mehr ${set[0]}? Tippe auf die größere Gruppe!`,
+      sprechText: `Wo sind mehr ${set[0]}? Tippe auf die größere Gruppe!`
+    });
+  });
+  return aufgaben;
+}
+
+function generiere_kardinalitaet() {
+  const aufgaben = [];
+  const set = zufallAus(EMOJI_SETS);
+  // Normale Zählaufgaben
+  [4,6,3,7,5].forEach((n,i) => {
+    const falsche = mische([1,2,3,4,5,6,7,8,9].filter(x=>x!==n)).slice(0,2);
+    const optionen = mische([n,...falsche]);
+    aufgaben.push({
+      typ: 'kardinalitaet',
+      richtig: n,
+      emoji: set[i%set.length],
+      anzahl: n,
+      optionen,
+      text: `Zähl die ${set[i%set.length]}! Wie viele sind das?`,
+      sprechText: `Zähl die Tiere! Wie viele sind das? Tippe die richtige Zahl.`
+    });
+  });
+  return aufgaben;
+}
+
+function generiere_zahlenreihe() {
+  const aufgaben = [];
+  // Nachfolger
+  [[3,'nach'],[6,'nach'],[4,'nach']].forEach(([n,richtung]) => {
+    const richtig = n+1;
+    const falsche = mische([n-1,n,n+2].filter(x=>x>=0&&x<=11&&x!==richtig)).slice(0,2);
+    const optionen = mische([richtig,...falsche]);
+    aufgaben.push({
+      typ: 'zahlenreihe',
+      richtig, basis: n, richtung,
+      optionen,
+      text: `Welche Zahl kommt nach der ${n}?`,
+      sprechText: `Welche Zahl kommt nach der ${n}? Tippe auf die richtige Zahl!`
+    });
+  });
+  // Vorgänger
+  [[5,'vor'],[8,'vor']].forEach(([n,richtung]) => {
+    const richtig = n-1;
+    const falsche = mische([n-2,n,n+1].filter(x=>x>=0&&x<=11&&x!==richtig)).slice(0,2);
+    const optionen = mische([richtig,...falsche]);
+    aufgaben.push({
+      typ: 'zahlenreihe',
+      richtig, basis: n, richtung,
+      optionen,
+      text: `Welche Zahl kommt vor der ${n}?`,
+      sprechText: `Welche Zahl kommt vor der ${n}? Tippe auf die richtige Zahl!`
+    });
+  });
+  return aufgaben;
+}
+
+function generiere_zerlegung() {
+  const aufgaben = [];
+  const addPaare = [[3,2],[4,3],[5,2],[2,4],[3,4]];
+  addPaare.forEach(([a,b]) => {
+    const richtig = a+b;
+    const falsche = mische([richtig-1,richtig+1,richtig+2,richtig-2].filter(x=>x>0&&x<=10&&x!==richtig)).slice(0,2);
+    const optionen = mische([richtig,...falsche]);
+    aufgaben.push({
+      typ: 'zerlegung',
+      a, b, richtig, optionen,
+      text: `${a} und ${b} – wie viele zusammen?`,
+      sprechText: `Schau: hier sind ${a} und hier sind ${b}. Wie viele sind es zusammen?`
+    });
+  });
+  return aufgaben;
+}
+
+// ===== SPIEL-ZUSTAND =====
+let state = {
+  kindName: '',
+  aktiveStationen: [],
+  stationIndex: 0,
+  aufgabeIndex: 0,
+  ergebnisse: {},   // stationId -> { richtig, falsch, versuche[] }
+  gesamtSterne: 0,
+  antwortGesperrt: false
+};
+
+// ===== BUBBLES ERZEUGEN =====
+function erzeugeBubbles() {
+  const container = document.getElementById('bubbles');
+  for (let i = 0; i < 12; i++) {
+    const b = document.createElement('div');
+    b.className = 'bubble';
+    const size = 20 + Math.random()*60;
+    b.style.cssText = `width:${size}px;height:${size}px;left:${Math.random()*100}%;animation-duration:${8+Math.random()*12}s;animation-delay:${Math.random()*10}s;`;
+    container.appendChild(b);
+  }
+}
+
+// ===== SCREENS =====
+function zeigeScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+// ===== START-SCREEN =====
+function initStart() {
+  const grid = document.getElementById('stations-grid');
+  grid.innerHTML = '';
+  STATIONEN_DEF.forEach(st => {
+    const btn = document.createElement('button');
+    btn.className = 'station-toggle selected';
+    btn.dataset.id = st.id;
+    btn.innerHTML = `<span class="st-icon">${st.icon}</span><span>${st.name}</span>`;
+    btn.onclick = () => {
+      btn.classList.toggle('selected');
+    };
+    btn.setAttribute('role','checkbox');
+    btn.setAttribute('aria-checked','true');
+    grid.appendChild(btn);
+  });
+}
+
+function startReise() {
+  const name = document.getElementById('kindName').value.trim();
+  state.kindName = name || 'Lernzwerg';
+  const gewaehlt = [...document.querySelectorAll('.station-toggle.selected')].map(b => b.dataset.id);
+  if (gewaehlt.length === 0) {
+    speak('Bitte wähle mindestens eine Station aus!');
+    alert('Bitte wähle mindestens eine Station aus!');
+    return;
+  }
+  state.aktiveStationen = STATIONEN_DEF.filter(s => gewaehlt.includes(s.id));
+  // Initialisiere Ergebnisse
+  state.aktiveStationen.forEach(st => {
+    state.ergebnisse[st.id] = { richtig: 0, falsch: 0, gesamt: 0 };
+  });
+  state.stationIndex = 0;
+  state.aufgabeIndex = 0;
+  state.gesamtSterne = 0;
+  state.antwortGesperrt = false;
+  bauTrail();
+  speak(`Hallo ${state.kindName}! Ich bin Zahlo, deine Reisebegleiterin! Wir machen ${state.aktiveStationen.length} Stationen. Bist du bereit?`);
+  zeigeScreen('screen-trail');
+}
+
+// ===== TRAIL =====
+function bauTrail() {
+  const container = document.getElementById('trail-stops-container');
+  container.innerHTML = '';
+  state.aktiveStationen.forEach((st, i) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'trail-stop';
+    wrap.id = `trail-stop-${i}`;
+    if (i < state.aktiveStationen.length-1) {
+      const conn = document.createElement('div');
+      conn.className = 'trail-stop-connector';
+      conn.id = `trail-conn-${i}`;
+      wrap.appendChild(conn);
+    }
+    const dot = document.createElement('div');
+    dot.className = 'stop-dot' + (i===0?' active':'');
+    dot.id = `stop-dot-${i}`;
+    dot.textContent = st.icon;
+    wrap.appendChild(dot);
+    const label = document.createElement('div');
+    label.className = 'stop-label' + (i===0?' active':'');
+    label.id = `stop-label-${i}`;
+    label.textContent = st.name;
+    wrap.appendChild(label);
+    container.appendChild(wrap);
+  });
+}
+
+function aktualisiereTrail() {
+  state.aktiveStationen.forEach((st, i) => {
+    const dot = document.getElementById(`stop-dot-${i}`);
+    const label = document.getElementById(`stop-label-${i}`);
+    const conn = document.getElementById(`trail-conn-${i}`);
+    dot.className = 'stop-dot' + (i < state.stationIndex ? ' done' : i === state.stationIndex ? ' active' : '');
+    label.className = 'stop-label' + (i < state.stationIndex ? ' done' : i === state.stationIndex ? ' active' : '');
+    if (conn && i < state.stationIndex) conn.classList.add('done');
+  });
+}
+
+// ===== STATION STARTEN =====
+function naechsteStation() {
+  if (state.stationIndex >= state.aktiveStationen.length) {
+    zeigeAuswertung();
+    return;
+  }
+  aktualisiereTrail();
+  state.aufgabeIndex = 0;
+  state.antwortGesperrt = false;
+  naechsteAufgabe();
+}
+
+// ===== AUFGABE ANZEIGEN =====
+function naechsteAufgabe() {
+  const station = state.aktiveStationen[state.stationIndex];
+  const aufgaben = station.aufgaben;
+  if (state.aufgabeIndex >= aufgaben.length) {
+    zeigeBelohnung();
+    return;
+  }
+  const aufgabe = aufgaben[state.aufgabeIndex];
+  const chip = document.getElementById('station-chip');
+  chip.textContent = `${station.icon} ${station.name}`;
+  const progress = ((state.aufgabeIndex) / aufgaben.length) * 100;
+  document.getElementById('station-progress-bar').style.width = progress + '%';
+  document.getElementById('feedback-bereich').classList.add('hidden');
+  state.antwortGesperrt = false;
+  renderAufgabe(aufgabe);
+  zeigeScreen('screen-spiel');
+  sprecheAufgabe(aufgabe.sprechText || aufgabe.text);
+}
+
+// ===== AUFGABE RENDERN =====
+function renderAufgabe(aufgabe) {
+  const karte = document.getElementById('aufgabe-karte');
+  karte.innerHTML = '';
+
+  const prompt = document.createElement('div');
+  prompt.className = 'aufgabe-prompt';
+  prompt.textContent = aufgabe.text;
+  karte.appendChild(prompt);
+
+  const audioBtn = document.createElement('button');
+  audioBtn.className = 'audio-btn';
+  audioBtn.innerHTML = '🔊 Nochmal hören';
+  audioBtn.onclick = wiederholenAudio;
+  karte.appendChild(audioBtn);
+
+  switch(aufgabe.typ) {
+    case 'subitizing':     renderSubitizing(karte, aufgabe); break;
+    case 'ziffern':        renderZiffern(karte, aufgabe); break;
+    case 'mengenzahl_m2z': renderMengeZuZahl(karte, aufgabe); break;
+    case 'mengenzahl_z2m': renderZahlZuMenge(karte, aufgabe); break;
+    case 'vergleich':      renderVergleich(karte, aufgabe); break;
+    case 'kardinalitaet':  renderKardinalitaet(karte, aufgabe); break;
+    case 'zahlenreihe':    renderZahlenreihe(karte, aufgabe); break;
+    case 'zerlegung':      renderZerlegung(karte, aufgabe); break;
+  }
+}
+
+// --- Subitizing ---
+let subitizingTimeout = null;
+function renderSubitizing(karte, aufgabe) {
+  const n = aufgabe.richtig;
+  const diceFrame = document.createElement('div');
+  diceFrame.className = 'dice-frame';
+  const dots = document.createElement('div');
+  dots.className = 'dot-display';
+  dots.id = 'subz-dots';
+  // Würfelförmige Anordnung für 1-5
+  const anordnungen = {
+    1: [[1,1]],
+    2: [[0,0],[2,2]],
+    3: [[0,0],[1,1],[2,2]],
+    4: [[0,0],[0,2],[2,0],[2,2]],
+    5: [[0,0],[0,2],[1,1],[2,0],[2,2]]
+  };
+  const positionen = anordnungen[n] || Array(n).fill(null);
+  if (anordnungen[n]) {
+    dots.style.cssText = 'display:grid;grid-template-columns:repeat(3,36px);grid-template-rows:repeat(3,36px);gap:6px;width:auto;';
+    const grid = Array(9).fill(null);
+    positionen.forEach(([r,c]) => { grid[r*3+c] = true; });
+    grid.forEach(filled => {
+      const cell = document.createElement('div');
+      if (filled) {
+        cell.className = 'dot-item';
+        cell.style.borderRadius = '50%';
+      }
+      dots.appendChild(cell);
+    });
+  } else {
+    for(let i=0;i<n;i++) {
+      const d = document.createElement('div');
+      d.className = 'dot-item';
+      dots.appendChild(d);
+    }
+  }
+  diceFrame.appendChild(dots);
+
+  // Erst versteckt zeigen, dann aufdecken
+  const coverDiv = document.createElement('div');
+  coverDiv.style.cssText = 'text-align:center;font-size:13px;color:var(--text-light);margin:8px 0;';
+  coverDiv.id = 'subz-hinweis';
+
+  const blitzBtn = document.createElement('button');
+  blitzBtn.className = 'btn btn-primary';
+  blitzBtn.style.cssText = 'margin:8px auto;max-width:220px;font-size:16px;';
+  blitzBtn.textContent = '⚡ Zeig mir die Punkte!';
+  blitzBtn.id = 'blitz-btn';
+
+  const antwortDiv = document.createElement('div');
+  antwortDiv.className = 'antwort-grid cols-3';
+  antwortDiv.id = 'subz-antwort';
+  aufgabe.optionen.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'antwort-btn';
+    btn.textContent = opt;
+    btn.onclick = () => pruefeAntwort(opt, aufgabe.richtig, antwortDiv);
+    antwortDiv.appendChild(btn);
+  });
+
+  // Punkte zunächst verstecken
+  diceFrame.style.opacity = '0';
+  karte.appendChild(coverDiv);
+  karte.appendChild(blitzBtn);
+  karte.appendChild(diceFrame);
+  karte.appendChild(antwortDiv);
+  antwortDiv.style.display = 'none';
+
+  blitzBtn.onclick = () => {
+    blitzBtn.disabled = true;
+    diceFrame.style.opacity = '1';
+    diceFrame.style.transition = 'opacity 0.1s';
+    coverDiv.textContent = 'Schau schnell! ⚡';
+
+    // Nur kurz zeigen: 1200ms
+    if (subitizingTimeout) clearTimeout(subitizingTimeout);
+    subitizingTimeout = setTimeout(() => {
+      diceFrame.style.opacity = '0';
+      coverDiv.textContent = 'Wie viele waren es? Tippe die Zahl!';
+      antwortDiv.style.display = 'grid';
+      speak('Wie viele waren es?');
+    }, 1200);
+  };
+}
+
+// --- Ziffern ---
+function renderZiffern(karte, aufgabe) {
+  const grid = document.createElement('div');
+  grid.className = 'antwort-grid cols-3';
+  aufgabe.optionen.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'antwort-btn';
+    btn.textContent = opt;
+    btn.onclick = () => pruefeAntwort(opt, aufgabe.richtig, grid);
+    grid.appendChild(btn);
+  });
+  karte.appendChild(grid);
+}
+
+// --- Menge → Zahl ---
+function renderMengeZuZahl(karte, aufgabe) {
+  const mengeDiv = document.createElement('div');
+  mengeDiv.className = 'emoji-menge';
+  mengeDiv.textContent = emojiFuerZahl(aufgabe.anzahl, aufgabe.emoji);
+  karte.appendChild(mengeDiv);
+  const grid = document.createElement('div');
+  grid.className = 'antwort-grid cols-3';
+  aufgabe.optionen.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'antwort-btn';
+    btn.textContent = opt;
+    btn.onclick = () => pruefeAntwort(opt, aufgabe.richtig, grid);
+    grid.appendChild(btn);
+  });
+  karte.appendChild(grid);
+}
+
+// --- Zahl → Menge ---
+function renderZahlZuMenge(karte, aufgabe) {
+  const zahlDiv = document.createElement('div');
+  zahlDiv.style.cssText = 'font-family:var(--font-display);font-size:64px;font-weight:900;color:var(--ocean-deep);text-align:center;margin:8px 0;';
+  zahlDiv.textContent = aufgabe.richtig;
+  karte.appendChild(zahlDiv);
+  const grid = document.createElement('div');
+  grid.className = 'antwort-grid cols-3';
+  aufgabe.optMengen.forEach(n => {
+    const btn = document.createElement('button');
+    btn.className = 'antwort-btn';
+    btn.style.fontSize = '20px';
+    btn.textContent = emojiFuerZahl(n, aufgabe.emoji);
+    btn.onclick = () => pruefeAntwort(n, aufgabe.richtig, grid);
+    grid.appendChild(btn);
+  });
+  karte.appendChild(grid);
+}
+
+// --- Vergleich ---
+function renderVergleich(karte, aufgabe) {
+  const wrap = document.createElement('div');
+  wrap.className = 'vergleich-wrap';
+  const gruppeA = document.createElement('div');
+  gruppeA.className = 'vergleich-gruppe';
+  gruppeA.setAttribute('tabindex','0');
+  gruppeA.textContent = emojiFuerZahl(aufgabe.a, aufgabe.emoji);
+  const vs = document.createElement('div');
+  vs.className = 'vergleich-vs';
+  vs.textContent = '?';
+  const gruppeB = document.createElement('div');
+  gruppeB.className = 'vergleich-gruppe';
+  gruppeB.setAttribute('tabindex','0');
+  gruppeB.textContent = emojiFuerZahl(aufgabe.b, aufgabe.emoji);
+
+  function check(wahl) {
+    if (state.antwortGesperrt) return;
+    const istRichtig = wahl === aufgabe.groesser;
+    if (istRichtig) { gruppeA.classList.add(wahl==='links'?'correct':''); gruppeB.classList.add(wahl==='rechts'?'correct':''); }
+    pruefeAntwortBool(istRichtig);
+  }
+
+  gruppeA.onclick = () => check('links');
+  gruppeB.onclick = () => check('rechts');
+  gruppeA.onkeydown = e => { if(e.key==='Enter'||e.key===' ') check('links'); };
+  gruppeB.onkeydown = e => { if(e.key==='Enter'||e.key===' ') check('rechts'); };
+  wrap.appendChild(gruppeA);
+  wrap.appendChild(vs);
+  wrap.appendChild(gruppeB);
+  karte.appendChild(wrap);
+}
+
+// --- Kardinalität ---
+function renderKardinalitaet(karte, aufgabe) {
+  const mengeDiv = document.createElement('div');
+  mengeDiv.className = 'emoji-menge emoji-menge-lg';
+  mengeDiv.textContent = emojiFuerZahl(aufgabe.anzahl, aufgabe.emoji);
+  karte.appendChild(mengeDiv);
+  const grid = document.createElement('div');
+  grid.className = 'antwort-grid cols-3';
+  aufgabe.optionen.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'antwort-btn';
+    btn.textContent = opt;
+    btn.onclick = () => pruefeAntwort(opt, aufgabe.richtig, grid);
+    grid.appendChild(btn);
+  });
+  karte.appendChild(grid);
+}
+
+// --- Zahlenreihe ---
+function renderZahlenreihe(karte, aufgabe) {
+  // Zeige die Reihe mit Lücke
+  const reiheDiv = document.createElement('div');
+  reiheDiv.style.cssText = 'display:flex;align-items:center;justify-content:center;gap:8px;margin:12px 0;flex-wrap:wrap;';
+  const start = aufgabe.richtung === 'nach' ? Math.max(1, aufgabe.basis-1) : Math.max(1, aufgabe.basis-2);
+  for (let i = start; i <= start+3; i++) {
+    const el = document.createElement('div');
+    el.style.cssText = 'font-family:var(--font-display);font-size:32px;font-weight:800;color:var(--ocean-deep);background:var(--ocean-pale);border-radius:12px;padding:8px 14px;min-width:52px;text-align:center;';
+    if (i === aufgabe.richtig) {
+      el.textContent = '?';
+      el.style.background = 'var(--sun)';
+      el.style.color = 'var(--ocean-deep)';
+    } else {
+      el.textContent = i;
+    }
+    reiheDiv.appendChild(el);
+  }
+  karte.appendChild(reiheDiv);
+  const grid = document.createElement('div');
+  grid.className = 'antwort-grid cols-3';
+  aufgabe.optionen.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'antwort-btn';
+    btn.textContent = opt;
+    btn.onclick = () => pruefeAntwort(opt, aufgabe.richtig, grid);
+    grid.appendChild(btn);
+  });
+  karte.appendChild(grid);
+}
+
+// --- Zerlegung ---
+function renderZerlegung(karte, aufgabe) {
+  const wrap = document.createElement('div');
+  wrap.className = 'zerleg-wrap';
+  const gA = document.createElement('div');
+  gA.className = 'zerleg-gruppe';
+  gA.innerHTML = emojiFuerZahl(aufgabe.a,'🔵') + `<br><span style="font-size:16px;font-weight:700;color:var(--text-mid)">${aufgabe.a}</span>`;
+  const op = document.createElement('div');
+  op.className = 'zerleg-op';
+  op.textContent = '+';
+  const gB = document.createElement('div');
+  gB.className = 'zerleg-gruppe';
+  gB.innerHTML = emojiFuerZahl(aufgabe.b,'🔴') + `<br><span style="font-size:16px;font-weight:700;color:var(--text-mid)">${aufgabe.b}</span>`;
+  const eq = document.createElement('div');
+  eq.className = 'zerleg-op';
+  eq.textContent = '=';
+  const erg = document.createElement('div');
+  erg.className = 'zerleg-erg';
+  erg.textContent = '?';
+  wrap.append(gA, op, gB, eq, erg);
+  karte.appendChild(wrap);
+  const grid = document.createElement('div');
+  grid.className = 'antwort-grid cols-3';
+  aufgabe.optionen.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'antwort-btn';
+    btn.textContent = opt;
+    btn.onclick = () => {
+      erg.textContent = opt;
+      pruefeAntwort(opt, aufgabe.richtig, grid);
+    };
+    grid.appendChild(btn);
+  });
+  karte.appendChild(grid);
+}
+
+// ===== ANTWORT PRÜFEN =====
+function pruefeAntwort(wahl, richtig, grid) {
+  if (state.antwortGesperrt) return;
+  state.antwortGesperrt = true;
+  const istRichtig = wahl == richtig;
+  pruefeAntwortBool(istRichtig, grid, wahl, richtig);
+}
+
+function pruefeAntwortBool(istRichtig, grid, wahl, richtig) {
+  if (state.antwortGesperrt && !istRichtig && grid === undefined) {
+    // Vergleich-Pfad
+    state.antwortGesperrt = true;
+  }
+  state.antwortGesperrt = true;
+
+  const station = state.aktiveStationen[state.stationIndex];
+  const erg = state.ergebnisse[station.id];
+  erg.gesamt++;
+
+  if (grid && wahl !== undefined) {
+    [...grid.querySelectorAll('button')].forEach(btn => {
+      btn.disabled = true;
+      if (btn.textContent == richtig) btn.classList.add('correct');
+      else if (btn.textContent == wahl) btn.classList.add('wrong');
+    });
+  }
+
+  if (istRichtig) {
+    erg.richtig++;
+    state.gesamtSterne++;
+    zeigeFeedback(true);
+    speak(zufallAus([
+      'Super gemacht!',
+      'Toll! Das war richtig!',
+      'Wunderbar! Weiter so!',
+      'Ja, genau! Klasse!'
+    ]), () => {
+      setTimeout(() => { state.aufgabeIndex++; naechsteAufgabe(); }, 500);
+    });
+  } else {
+    erg.falsch++;
+    zeigeFeedback(false);
+    speak(zufallAus([
+      'Gut probiert! Weiter geht\'s!',
+      'Fast! Beim nächsten Mal klappt\'s!',
+      'Nicht ganz, aber du versuchst es tapfer!'
+    ]), () => {
+      setTimeout(() => { state.aufgabeIndex++; naechsteAufgabe(); }, 500);
+    });
+  }
+}
+
+function zeigeFeedback(richtig) {
+  const fb = document.getElementById('feedback-bereich');
+  const icon = document.getElementById('feedback-icon');
+  const text = document.getElementById('feedback-text');
+  const sterne = document.getElementById('feedback-sterne');
+  fb.classList.remove('hidden');
+  if (richtig) {
+    icon.textContent = zufallAus(['⭐','🌟','✨','🎉']);
+    text.textContent = zufallAus(['Super!','Toll!','Richtig!','Klasse!','Wunderbar!']);
+    sterne.textContent = '⭐'.repeat(Math.min(state.gesamtSterne, 5));
+  } else {
+    icon.textContent = '💪';
+    text.textContent = 'Gut probiert!';
+    sterne.textContent = '';
+  }
+}
+
+// ===== ZWISCHENBELOHNUNG =====
+function zeigeBelohnung() {
+  const station = state.aktiveStationen[state.stationIndex];
+  const erg = state.ergebnisse[station.id];
+  const quote = erg.richtig / erg.gesamt;
+  const titel = quote >= 0.8 ? '⭐ Super gemacht!' : quote >= 0.5 ? '💪 Weiter so!' : '🌊 Toll versucht!';
+  const sub = `„${station.name}" abgeschlossen! ${erg.richtig} von ${erg.gesamt} geschafft.`;
+  const sterne = '⭐'.repeat(Math.max(1, Math.round(quote * 3)));
+
+  document.getElementById('bel-titel').textContent = titel;
+  document.getElementById('bel-sub').textContent = sub;
+  document.getElementById('bel-sterne').textContent = sterne;
+
+  state.stationIndex++;
+  const istLetzte = state.stationIndex >= state.aktiveStationen.length;
+  const weiterBtn = document.getElementById('btn-weiter-belohnung');
+  weiterBtn.textContent = istLetzte ? '🏆 Zur Auswertung!' : '🌊 Weiter!';
+  weiterBtn.onclick = () => {
+    if (istLetzte) { zeigeAuswertung(); }
+    else { aktualisiereTrail(); naechsteStation(); }
+  };
+
+  speak(`${titel} ${sub}`);
+  zeigeScreen('screen-belohnung');
+}
+
+// ===== AUSWERTUNG =====
+function zeigeAuswertung() {
+  const name = state.kindName;
+  document.getElementById('aus-name').textContent = `Geschafft, ${name}! 🎉`;
+  const stationCount = state.aktiveStationen.length;
+  document.getElementById('aus-score').textContent = `Du hast ${stationCount} Station${stationCount!==1?'en':''} gemeistert!`;
+  const sterne = '⭐'.repeat(Math.min(state.gesamtSterne, 10));
+  document.getElementById('aus-sterne').textContent = sterne || '⭐';
+
+  // Zusammenfassung
+  let gesamtRichtig = 0, gesamtGesamt = 0;
+  state.aktiveStationen.forEach(st => {
+    const e = state.ergebnisse[st.id];
+    gesamtRichtig += e.richtig;
+    gesamtGesamt  += e.gesamt;
+  });
+  const gesamtQuote = gesamtGesamt > 0 ? gesamtRichtig / gesamtGesamt : 0;
+  const zusammenfassung = document.getElementById('aus-zusammenfassung');
+  zusammenfassung.innerHTML = `
+    <strong>${name}</strong> hat ${stationCount} Bereiche durchgespielt und dabei <strong>${gesamtRichtig} von ${gesamtGesamt} Aufgaben</strong> beim ersten Versuch richtig beantwortet
+    (${Math.round(gesamtQuote*100)} %).
+    Die folgende Übersicht zeigt, welche Bereiche sicher erscheinen und wo weiteres Beobachten sinnvoll sein könnte.
+    <br><br><em>Beachten Sie den Disclaimer oben: Diese Übersicht ersetzt keine fachliche Einschätzung.</em>
+  `;
+
+  // Ampeln
+  const ampeln = document.getElementById('ampeln-container');
+  ampeln.innerHTML = '';
+  state.aktiveStationen.forEach(st => {
+    const e = state.ergebnisse[st.id];
+    const q = e.gesamt > 0 ? e.richtig / e.gesamt : 0;
+    const {status, klasse, balkenKlasse, hinweis} = ampelBewertung(q, st.id);
+    const div = document.createElement('div');
+    div.className = 'ampel-bereich';
+    div.innerHTML = `
+      <div class="ampel-bereich-header">
+        <span class="ampel-icon">${st.icon}</span>
+        <span class="ampel-bereich-titel">${st.name}<br><small style="font-weight:400;color:var(--text-light)">${st.beschreibung}</small></span>
+        <span class="ampel-status ${klasse}">${status}</span>
+      </div>
+      <div class="ampel-balken-wrap">
+        <div class="ampel-balken ${balkenKlasse}" style="width:${Math.round(q*100)}%"></div>
+      </div>
+      <div class="ampel-detail">${e.richtig} von ${e.gesamt} Aufgaben richtig (${Math.round(q*100)} %) – ${hinweis}</div>
+    `;
+    ampeln.appendChild(div);
+  });
+
+  // Nächste Schritte
+  bauNaechsteSchritte(gesamtQuote);
+
+  speak(`Wunderbar ${name}! Du hast alle Stationen abgeschlossen. Ich bin so stolz auf dich!`);
+  zeigeScreen('screen-auswertung');
+}
+
+function ampelBewertung(q, stationId) {
+  const erklaerungen = {
+    subitizing:   'Punkte sofort erkennen (bis 5), ohne zählen zu müssen.',
+    ziffern:      'Gesprochene Zahlen mit der Ziffer verbinden.',
+    mengenzahl:   'Menge und Ziffer einander zuordnen.',
+    vergleich:    'Erkennen, welche Gruppe größer/kleiner ist.',
+    kardinalitaet:'Menge korrekt auszählen und das Ergebnis benennen.',
+    zahlenreihe:  'Vorgänger und Nachfolger einer Zahl kennen.',
+    zerlegung:    'Zwei Mengen zusammenzählen (bis 10).'
+  };
+  const basis = erklaerungen[stationId] || '';
+  if (q >= 0.75) return {
+    status: 'sicher', klasse: 'ampel-gruen', balkenKlasse: 'balken-gruen',
+    hinweis: `Dieser Bereich erscheint gut entwickelt. ${basis}`
+  };
+  if (q >= 0.4) return {
+    status: 'beobachten', klasse: 'ampel-gelb', balkenKlasse: 'balken-gelb',
+    hinweis: `Teils sicher, teils unsicher. Weitere Beobachtung empfohlen. ${basis}`
+  };
+  return {
+    status: 'Förderung prüfen', klasse: 'ampel-rot', balkenKlasse: 'balken-rot',
+    hinweis: `Dieser Bereich war schwierig. Bitte im Alltag beobachten und mit Fachkräften besprechen. ${basis}`
+  };
+}
+
+function bauNaechsteSchritte(quote) {
+  const container = document.getElementById('naechste-schritte-inhalt');
+  const schritte = [];
+  if (quote >= 0.75) {
+    schritte.push({icon:'🎮', text:'<strong>Spielerisch weiterüben:</strong> Brettspiele mit Zahlen (z. B. „Zählen & Würfeln"), Fingerspiele, tägliches Abzählen beim Tisch decken, im Alltag Mengen benennen lassen.'});
+    schritte.push({icon:'👩‍🏫', text:'<strong>Austausch mit Lehrkraft:</strong> Beim nächsten Elterngespräch ruhig erwähnen – die Beobachtungen können ein guter Gesprächsanlass sein.'});
+  } else if (quote >= 0.5) {
+    schritte.push({icon:'🎮', text:'<strong>Gezielt spielerisch üben:</strong> Gesellschaftsspiele wie „Zählwürfelspiele", Mengen legen mit Bausteinen, Zahlenlieder und Abzählreime täglich wiederholen.'});
+    schritte.push({icon:'👩‍🏫', text:'<strong>Gespräch mit Klassenlehrkraft:</strong> Die Ergebnisse als Gesprächsgrundlage mitbringen. Gemeinsam überlegen, ob Förderstunden sinnvoll sind.'});
+    schritte.push({icon:'🔍', text:'<strong>Beobachtung im Alltag:</strong> Achten Sie, ob Ihr Kind beim Zählen, Vergleichen oder Zuordnen immer wieder zögert oder Strategien wechselt.'});
+  } else {
+    schritte.push({icon:'🎮', text:'<strong>Spielerisch fördern:</strong> Konkrete Materialien (Bausteine, Perlen, Wendeplättchen) zum täglichen Zählen und Legen nutzen. Zahlenreime und Fingerrechnen täglich einbauen.'});
+    schritte.push({icon:'👩‍🏫', text:'<strong>Gespräch mit Klassen- und Förderlehrkraft:</strong> Bitte sprechen Sie aktiv an, was Ihr Kind beim Spielen gezeigt hat. Lehrkräfte können gezieltere Förderung einleiten.'});
+    schritte.push({icon:'📋', text:'<strong>Standardisierte Abklärung:</strong> Bei wiederholten Auffälligkeiten empfehlen sich validierte Verfahren wie <strong>MARKO-D</strong> oder <strong>ZAREKI-K</strong>, durchgeführt durch Beratungslehrkräfte, schulpsychologischen Dienst oder Lerntherapeutinnen/-therapeuten.'});
+    schritte.push({icon:'💙', text:'<strong>Keine Panik:</strong> Vorläuferkompetenzen lassen sich mit gezielter Förderung gut stärken. Dieses Tool gibt nur erste Hinweise – eine Fachkraft kann das Bild schärfen.'});
+  }
+  container.innerHTML = schritte.map(s => `
+    <div class="schritt-item">
+      <span class="schritt-icon">${s.icon}</span>
+      <span>${s.text}</span>
+    </div>
+  `).join('');
+}
+
+function toggleDetails() {
+  const panel = document.getElementById('details-panel');
+  const arrow = document.getElementById('details-arrow');
+  const isOpen = panel.classList.toggle('open');
+  arrow.textContent = isOpen ? '▲' : '▼';
+  if (isOpen) panel.scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+// ===== NEUSTART =====
+function neustarten() {
+  state = {
+    kindName: '', aktiveStationen: [], stationIndex: 0,
+    aufgabeIndex: 0, ergebnisse: {}, gesamtSterne: 0, antwortGesperrt: false
+  };
+  // Regeneriere Aufgaben
+  STATIONEN_DEF[0].aufgaben = generiere_subitizing();
+  STATIONEN_DEF[1].aufgaben = generiere_ziffern();
+  STATIONEN_DEF[2].aufgaben = generiere_mengenzahl();
+  STATIONEN_DEF[3].aufgaben = generiere_vergleich();
+  STATIONEN_DEF[4].aufgaben = generiere_kardinalitaet();
+  STATIONEN_DEF[5].aufgaben = generiere_zahlenreihe();
+  STATIONEN_DEF[6].aufgaben = generiere_zerlegung();
+  initStart();
+  zeigeScreen('screen-start');
+  speak('Willkommen zurück! Bereit für eine neue Reise?');
+}
+
+// ===== INIT =====
+document.addEventListener('DOMContentLoaded', () => {
+  erzeugeBubbles();
+  initStart();
+  speak('Hallo! Ich bin Zahlo die Krake! Willkommen zu Zahlo\'s Zahlen-Reise! Tippe auf Los geht\'s, wenn du bereit bist!');
+});
+</script>
+</body>
+</html>
