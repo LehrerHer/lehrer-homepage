@@ -113,7 +113,26 @@ main { max-width: 860px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
   .input-row input { min-width: unset; }
   .results-score { font-size: 3rem; }
 }
-</style>
+
+    /* === GALERIE-OVERLAY === */
+    .gallery-overlay { position: fixed; inset: 0; z-index: 500; background: rgba(0,0,0,0.88); display: none; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 24px 16px; }
+    .gallery-overlay.open { display: flex; }
+    .gallery-container { background: #1a2540; border-radius: 16px; max-width: 860px; width: 100%; padding: 24px; box-shadow: 0 8px 40px rgba(0,0,0,.6); }
+    .gallery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .gallery-header h2 { color: #e0a32e; font-size: 1.2rem; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+    @media(max-width: 600px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media(max-width: 380px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+    .gallery-thumb { position: relative; background: rgba(255,255,255,0.06); border-radius: 8px; overflow: hidden; cursor: pointer; transition: transform .15s, box-shadow .15s; }
+    .gallery-thumb:hover { transform: scale(1.05); box-shadow: 0 4px 16px rgba(0,0,0,.5); }
+    .gallery-thumb.active { outline: 2px solid #e0a32e; }
+    .gallery-thumb.solved { outline: 2px solid #2ecc71; }
+    .gallery-thumb img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; }
+    .gallery-thumb .g-nr { font-size: 0.7rem; color: #aab8cc; text-align: center; padding: 3px 4px 5px; }
+    .gallery-thumb .g-solved-name { font-size: 0.68rem; color: #2ecc71; text-align: center; padding: 0 3px 4px; line-height: 1.2; }
+    .btn-close-gallery { background: none; border: 1px solid rgba(255,255,255,0.3); color: #fff; border-radius: 8px; padding: 6px 14px; cursor: pointer; font-size: 0.9rem; }
+    .btn-close-gallery:hover { background: rgba(255,255,255,0.1); }
+    </style>
 </head>
 <body>
 
@@ -157,6 +176,7 @@ main { max-width: 860px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
     </div>
     <div class="nav-btns">
       <button class="btn btn-sol" id="btn-sol">💡 Lösung</button>
+      <button class="btn" id="btn-gallery" style="background:rgba(255,255,255,0.08);color:#aab8cc;">⊞ Alle</button>
       <button class="btn btn-next" id="btn-next" style="display:none">Weiter →</button>
       <div class="score-inline" id="score-inline"></div>
     </div>
@@ -310,44 +330,44 @@ const LABELS = [
   "Völler"
 ];
 const INFOS = [
-  {"fach": "Mathematik", "seit": "2015", "highlights": ["Klassenleitung 7c", "Mathe-AG"]},
-  {"fach": "Deutsch", "seit": "2012", "highlights": ["Leseprojekte", "Schülerzeitung"]},
-  {"fach": "Kunst", "seit": "2018", "highlights": ["Kunstprojekte", "Theater-AG"]},
-  {"fach": "Philosophie / Werte & Normen", "seit": "2010", "highlights": ["Ethik-Debatten", "Klassenleitung"]},
-  {"fach": "Erdkunde", "seit": "2014", "highlights": ["Exkursionen", "Umwelt-AG"]},
-  {"fach": "Biologie", "seit": "2016", "highlights": ["Natur-Projekte", "Schulgarten"]},
-  {"fach": "Sport", "seit": "2013", "highlights": ["Sportfest", "Fußball-AG"]},
-  {"fach": "Englisch", "seit": "2019", "highlights": ["Sprachreisen", "Drama-Club"]},
-  {"fach": "Musik", "seit": "2017", "highlights": ["Chor", "Musical-AG"]},
-  {"fach": "Geschichte", "seit": "2011", "highlights": ["Geschichts-AG", "Exkursionen"]},
-  {"fach": "Chemie", "seit": "2015", "highlights": ["Schüler-Experimente", "Chemie-Olympiade"]},
-  {"fach": "Deutsch / Geschichte", "seit": "2020", "highlights": ["Lernkolosseum", "Blog-Projekt"]},
-  {"fach": "Physik", "seit": "2009", "highlights": ["Physik-AG", "Technik-Projekte"]},
-  {"fach": "Informatik", "seit": "2016", "highlights": ["Coding-AG", "Roboter-AG"]},
-  {"fach": "Mathematik", "seit": "2014", "highlights": ["Mathe-Olympiade", "Förderunterricht"]},
-  {"fach": "Sport / Biologie", "seit": "2018", "highlights": ["Sportfest", "Schwimm-AG"]},
-  {"fach": "Deutsch", "seit": "2017", "highlights": ["Leseförderung", "Debattierclub"]},
-  {"fach": "Wipo", "seit": "2013", "highlights": ["Schülerfirma", "WiPo-Projekte"]},
-  {"fach": "Religion", "seit": "2012", "highlights": ["Sozialprojekte", "Schulseelsorge"]},
-  {"fach": "Englisch", "seit": "2015", "highlights": ["Austauschprogramme", "Englisch-Theater"]},
-  {"fach": "Musik / Kunst", "seit": "2016", "highlights": ["Schulkonzert", "Kunstausstellung"]},
-  {"fach": "Erdkunde", "seit": "2014", "highlights": ["See-Projekte", "Umwelt-AG"]},
-  {"fach": "Geschichte / Politik", "seit": "2011", "highlights": ["Projekttage", "Schülerrat"]},
-  {"fach": "Mathematik / Physik", "seit": "2010", "highlights": ["Förderunterricht", "MINT-AG"]},
-  {"fach": "Deutsch / Englisch", "seit": "2019", "highlights": ["Lektüreprojekte", "Sprachkurse"]},
-  {"fach": "Sport", "seit": "2013", "highlights": ["Sportfest", "Leichtathletik-AG"]},
-  {"fach": "Mathematik", "seit": "2008", "highlights": ["Mathe-AG", "Klassenleitung"]},
-  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"]},
-  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"]},
-  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"]},
-  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"]},
-  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"]},
-  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"]},
-  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"]},
-  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"]},
-  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"]},
-  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"]},
-  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"]}
+  {"fach": "Mathematik", "seit": "2015", "highlights": ["Klassenleitung 7c", "Mathe-AG"], "kuenstler": "Getuar"},
+  {"fach": "Deutsch", "seit": "2012", "highlights": ["Leseprojekte", "Schülerzeitung"], "kuenstler": "Claude & Canva"},
+  {"fach": "Kunst", "seit": "2018", "highlights": ["Kunstprojekte", "Theater-AG"], "kuenstler": "Claude & Canva"},
+  {"fach": "Philosophie / Werte & Normen", "seit": "2010", "highlights": ["Ethik-Debatten", "Klassenleitung"], "kuenstler": "Claude & Canva"},
+  {"fach": "Erdkunde", "seit": "2014", "highlights": ["Exkursionen", "Umwelt-AG"], "kuenstler": "Claude & Canva"},
+  {"fach": "Biologie", "seit": "2016", "highlights": ["Natur-Projekte", "Schulgarten"], "kuenstler": "Claude & Canva"},
+  {"fach": "Sport", "seit": "2013", "highlights": ["Sportfest", "Fußball-AG"], "kuenstler": "Tayler"},
+  {"fach": "Englisch", "seit": "2019", "highlights": ["Sprachreisen", "Drama-Club"], "kuenstler": "9f"},
+  {"fach": "Musik", "seit": "2017", "highlights": ["Chor", "Musical-AG"], "kuenstler": "Lionel"},
+  {"fach": "Geschichte", "seit": "2011", "highlights": ["Geschichts-AG", "Exkursionen"], "kuenstler": "Berg (9f)"},
+  {"fach": "Chemie", "seit": "2015", "highlights": ["Schüler-Experimente", "Chemie-Olympiade"], "kuenstler": "Claude & Canva"},
+  {"fach": "Deutsch / Geschichte", "seit": "2020", "highlights": ["Lernkolosseum", "Blog-Projekt"], "kuenstler": "Wjatscheslaw"},
+  {"fach": "Physik", "seit": "2009", "highlights": ["Physik-AG", "Technik-Projekte"], "kuenstler": "Giuzida"},
+  {"fach": "Informatik", "seit": "2016", "highlights": ["Coding-AG", "Roboter-AG"], "kuenstler": "Claude & Canva"},
+  {"fach": "Mathematik", "seit": "2014", "highlights": ["Mathe-Olympiade", "Förderunterricht"], "kuenstler": "Claude & Canva"},
+  {"fach": "Sport / Biologie", "seit": "2018", "highlights": ["Sportfest", "Schwimm-AG"], "kuenstler": "Maximilian"},
+  {"fach": "Deutsch", "seit": "2017", "highlights": ["Leseförderung", "Debattierclub"], "kuenstler": "9f"},
+  {"fach": "Wipo", "seit": "2013", "highlights": ["Schülerfirma", "WiPo-Projekte"], "kuenstler": "Karo"},
+  {"fach": "Religion", "seit": "2012", "highlights": ["Sozialprojekte", "Schulseelsorge"], "kuenstler": "Claude & Canva"},
+  {"fach": "Englisch", "seit": "2015", "highlights": ["Austauschprogramme", "Englisch-Theater"], "kuenstler": "Claude & Canva"},
+  {"fach": "Musik / Kunst", "seit": "2016", "highlights": ["Schulkonzert", "Kunstausstellung"], "kuenstler": "Franziska"},
+  {"fach": "Erdkunde", "seit": "2014", "highlights": ["See-Projekte", "Umwelt-AG"], "kuenstler": "Jan Herrmann"},
+  {"fach": "Geschichte / Politik", "seit": "2011", "highlights": ["Projekttage", "Schülerrat"], "kuenstler": "Claude & Canva"},
+  {"fach": "Mathematik / Physik", "seit": "2010", "highlights": ["Förderunterricht", "MINT-AG"], "kuenstler": "John"},
+  {"fach": "Deutsch / Englisch", "seit": "2019", "highlights": ["Lektüreprojekte", "Sprachkurse"], "kuenstler": "Elisabeth"},
+  {"fach": "Sport", "seit": "2013", "highlights": ["Sportfest", "Leichtathletik-AG"], "kuenstler": "Anja"},
+  {"fach": "Mathematik", "seit": "2008", "highlights": ["Mathe-AG", "Klassenleitung"], "kuenstler": "9f"},
+  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"], "kuenstler": "Jan Herrmann"},
+  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"], "kuenstler": "9f"},
+  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"], "kuenstler": "Claude & Canva"},
+  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"], "kuenstler": "Jan Herrmann"},
+  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"], "kuenstler": "9f"},
+  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"], "kuenstler": "Jan Herrmann"},
+  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"], "kuenstler": "Jan Herrmann"},
+  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"], "kuenstler": "Jan Herrmann"},
+  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"], "kuenstler": "Jan Herrmann"},
+  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"], "kuenstler": "Jan Herrmann"},
+  {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"], "kuenstler": "Jan Herrmann"}
 ];
 const N = IMAGES.length;
 
@@ -445,6 +465,7 @@ async function checkAnswer() {
     score++;
     inp.classList.add('correct');
     fb.textContent = '✅ Richtig!';
+    solvedNames[i] = LABELS[i];
     fb.className = 'feedback ok';
   } else {
     inp.classList.add('wrong');
@@ -467,9 +488,10 @@ function toggleSolution() {
     }
     sb.classList.add('visible');
     document.getElementById('sol-name').textContent = LABELS[i];
+    solvedNames[i] = LABELS[i];
     const info = INFOS[i];
     document.getElementById('sol-detail').innerHTML =
-      `📚 ${info.fach} &nbsp;·&nbsp; 🗓️ seit ${info.seit}<br>🌟 ${info.highlights.join(' · ')}`;
+      `📚 ${info.fach} &nbsp;·&nbsp; 🗓️ seit ${info.seit}<br>🌟 ${info.highlights.join(' · ')}<br>🎨 Bild von: ${info.kuenstler}`;
     document.getElementById('sol-warning').textContent =
       solShownFirst ? '⚠️ Nach Lösungsanzeige werden keine XP gewertet.' : '';
     document.getElementById('btn-sol').textContent = '👁 Eigene Antwort';
@@ -569,6 +591,46 @@ document.getElementById('btn-board').addEventListener('click', openLeaderboard);
 document.getElementById('btn-retry').addEventListener('click', startQuiz);
 
 startQuiz();
+// ── GALERIE ───────────────────────────────────────────────────────────────────
+const solvedNames = {}; // idx -> label, filled when answer correct or solution shown
+
+function buildGallery() {
+  const grid = document.getElementById('gallery-grid');
+  grid.innerHTML = '';
+  for (let k = 0; k < N; k++) {
+    const i = order[k]; // show in quiz order
+    const thumb = document.createElement('div');
+    const isCurrent = (k === idx);
+    const isSolved = solvedNames[i] != null;
+    thumb.className = 'gallery-thumb' + (isCurrent ? ' active' : '') + (isSolved ? ' solved' : '');
+    const nameHtml = isSolved
+      ? `<div class="g-solved-name">${LABELS[i]}</div>`
+      : `<div class="g-nr">${k + 1}</div>`;
+    thumb.innerHTML = `<img src="${imgURLs[i]}" alt="Bild ${k+1}">${nameHtml}`;
+    thumb.addEventListener('click', () => {
+      idx = k;
+      loadCard();
+      hideGallery();
+    });
+    grid.appendChild(thumb);
+  }
+}
+
+function showGallery() {
+  buildGallery();
+  document.getElementById('gallery-overlay').classList.add('open');
+}
+
+function hideGallery() {
+  document.getElementById('gallery-overlay').classList.remove('open');
+}
+
+document.getElementById('btn-gallery').addEventListener('click', showGallery);
+document.getElementById('btn-close-gallery').addEventListener('click', hideGallery);
+document.getElementById('gallery-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('gallery-overlay')) hideGallery();
+});
+
 </script>
 
 <script src="/js/supabase-config.js"></script>
