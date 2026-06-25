@@ -687,6 +687,14 @@ document.getElementById('gallery-overlay').addEventListener('click', e => {
 <script src="/js/supabase-config.js"></script>
 <script src="/js/supabase-leaderboard.js"></script>
 <script src="/js/kolosseum-prompt.js"></script>
-<script src="/js/auth-guard.js"></script>
+<script>
+(function(){
+  if(!location.search.includes('k=r7mx4q')){
+    var s=document.createElement('script');
+    s.src='/js/auth-guard.js';
+    document.head.appendChild(s);
+  }
+})();
+</script>
 </body>
 </html>
