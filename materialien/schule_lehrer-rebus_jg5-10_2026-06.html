@@ -132,7 +132,23 @@ main { max-width: 860px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
     .gallery-thumb .g-solved-name { font-size: 0.68rem; color: #2ecc71; text-align: center; padding: 0 3px 4px; line-height: 1.2; }
     .btn-close-gallery { background: none; border: 1px solid rgba(255,255,255,0.3); color: #fff; border-radius: 8px; padding: 6px 14px; cursor: pointer; font-size: 0.9rem; }
     .btn-close-gallery:hover { background: rgba(255,255,255,0.1); }
-    </style>
+    
+/* TIPPS */
+.card-body { display: flex; gap: 1.2rem; align-items: flex-start; margin-bottom: 1rem; }
+.card-body .card-img-wrap { flex: 0 0 auto; width: min(55%, 340px); margin-bottom: 0; }
+.tipps-panel { flex: 1 1 0; display: flex; flex-direction: column; gap: .6rem; padding-top: .3rem; }
+.tipp-btn { display: flex; align-items: center; gap: .5rem; background: #f0f4f8; border: 1.5px solid #c4d8ee; border-radius: 8px; padding: .55rem .8rem; cursor: pointer; font-family: inherit; font-size: .88rem; color: var(--blau); transition: background .15s; text-align: left; width: 100%; }
+.tipp-btn:hover { background: #e2ecf7; }
+.tipp-btn.revealed { border-color: var(--hell); background: #edf5ff; }
+.tipp-btn .tipp-label { font-weight: 700; white-space: nowrap; }
+.tipp-btn .tipp-value { color: #1e3a5f; font-weight: 600; margin-left: auto; font-size: 1rem; display: none; }
+.tipp-btn.revealed .tipp-value { display: inline; }
+.tipp-btn.empty { opacity: .4; cursor: default; pointer-events: none; }
+@media (max-width: 560px) {
+  .card-body { flex-direction: column; }
+  .card-body .card-img-wrap { width: 100%; }
+}
+</style>
 </head>
 <body>
 
@@ -172,8 +188,27 @@ main { max-width: 860px; margin: 0 auto; padding: 1.5rem 1rem 4rem; }
 
   <div class="quiz-card" id="card" style="display:none">
     <div class="card-meta" id="card-meta"></div>
-    <div class="card-img-wrap">
-      <img id="card-img" src="" alt="Rebus-Bild" class="card-img">
+    <div class="card-body">
+      <div class="card-img-wrap">
+        <img id="card-img" src="" alt="Rebus-Bild" class="card-img">
+      </div>
+      <div class="tipps-panel">
+        <button class="tipp-btn" id="tipp-0" onclick="revealTipp(0)">
+          <span class="tipp-label">👤 Tipp 1</span>
+          <span style="font-size:.8rem;color:#8aa;margin-left:.4rem">Geschlecht</span>
+          <span class="tipp-value" id="tipp-val-0"></span>
+        </button>
+        <button class="tipp-btn" id="tipp-1" onclick="revealTipp(1)">
+          <span class="tipp-label">🔤 Tipp 2</span>
+          <span style="font-size:.8rem;color:#8aa;margin-left:.4rem">Anfangsbuchstabe</span>
+          <span class="tipp-value" id="tipp-val-1"></span>
+        </button>
+        <button class="tipp-btn" id="tipp-2" onclick="revealTipp(2)">
+          <span class="tipp-label">💡 Tipp 3</span>
+          <span style="font-size:.8rem;color:#8aa;margin-left:.4rem">Extratipp</span>
+          <span class="tipp-value" id="tipp-val-2"></span>
+        </button>
+      </div>
     </div>
     <div class="input-row">
       <input type="text" id="answer" placeholder="Nachname eingeben …" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Antwort eingeben">
@@ -420,7 +455,57 @@ const INFOS = [
   {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"], "kuenstler": "Jan Herrmann"},
   {"fach": "Fach", "seit": "20xx", "highlights": ["OBS Spelle"], "kuenstler": "Jan Herrmann"}
 ];
-const N = IMAGES.length;
+
+const TIPPS = [
+  ["", "A", ""],
+  ["", "B", ""],
+  ["", "B", ""],
+  ["", "D", ""],
+  ["", "D", ""],
+  ["", "E", ""],
+  ["", "F", ""],
+  ["", "L", ""],
+  ["", "P", ""],
+  ["", "G", ""],
+  ["", "G", ""],
+  ["", "H", ""],
+  ["", "S", ""],
+  ["", "H", ""],
+  ["", "K", ""],
+  ["", "K", ""],
+  ["", "L", ""],
+  ["", "M", ""],
+  ["", "O", ""],
+  ["", "R", ""],
+  ["", "R", ""],
+  ["", "S", ""],
+  ["", "S", ""],
+  ["", "K", ""],
+  ["", "K", ""],
+  ["", "K", ""],
+  ["", "H", ""],
+  ["", "H", ""],
+  ["", "B", ""],
+  ["", "B", ""],
+  ["", "R", ""],
+  ["", "M", ""],
+  ["", "D", ""],
+  ["", "H", ""],
+  ["", "H", ""],
+  ["", "L", ""],
+  ["", "R", ""],
+  ["", "V", ""],
+  ["", "H", ""],
+  ["", "A", ""],
+  ["", "S", ""],
+  ["", "S", ""],
+  ["", "W", ""],
+  ["", "P", ""],
+  ["", "N", ""],
+  ["", "A", ""],
+  ["", "A", ""],
+  ["", "S", ""]
+];const N = IMAGES.length;
 
 function b64toURL(b64) {
   try {
@@ -464,6 +549,30 @@ function shuffle(arr) {
   return arr;
 }
 
+function revealTipp(n) {
+  const i = order[idx];
+  const val = TIPPS[i][n];
+  if (!val) return;
+  const btn = document.getElementById('tipp-' + n);
+  btn.classList.add('revealed');
+  document.getElementById('tipp-val-' + n).textContent = val;
+}
+
+function resetTipps() {
+  for (let n = 0; n < 3; n++) {
+    const btn = document.getElementById('tipp-' + n);
+    btn.classList.remove('revealed');
+    document.getElementById('tipp-val-' + n).textContent = '';
+  }
+  // Update empty state
+  const i = order[idx];
+  for (let n = 0; n < 3; n++) {
+    const btn = document.getElementById('tipp-' + n);
+    btn.classList.toggle('empty', !TIPPS[i][n]);
+  }
+}
+
+
 function startQuiz() {
   order = shuffle([...Array(N).keys()]);
   idx = 0; score = 0; lockedScore = null; solShownFirst = false;
@@ -489,6 +598,7 @@ async function loadCard() {
   sb.classList.remove('visible');
   document.getElementById('btn-next').style.display = 'none';
   document.getElementById('btn-sol').textContent = '💡 Lösung';
+  resetTipps();
   document.getElementById('score-inline').textContent = `${score}/${idx} richtig`;
   document.getElementById('answer').focus();
 }
