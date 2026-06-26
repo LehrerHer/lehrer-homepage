@@ -1,6 +1,96 @@
 {
   "materialien": [
     {
+      "id": "1782086400001",
+      "titel": "Zahlo's Zahlen-Reise (Kl. 1–2)",
+      "beschreibung": "Spielerisches Mathe-Abenteuer: Zahlen bis 20 lernen und üben",
+      "icon": "🔢",
+      "url": "materialien/mathe_zahlos-zahlen-reise_jg1-2_2026-06.html",
+      "seite": "mathe",
+      "datum": "2026-06-22"
+    },
+    {
+      "id": "1782086400000",
+      "titel": "Lehrer*innenrätsel OBS Spelle (Jg. 5–10)",
+      "beschreibung": "Erkennst du die Lehrkräfte der OBS Spelle? Rebus-Quiz mit Bestenliste",
+      "icon": "🧩",
+      "url": "materialien/schule_lehrer-rebus_jg5-10_2026-06.html",
+      "seite": "faecheruebergreifend",
+      "datum": "2026-06-22"
+    },
+    {
+      "id": "1781654400000",
+      "titel": "Monatsnamen-Rebus – Es gibt ein verbindendes Element (Jg. 5–10)",
+      "beschreibung": "Welches Wort verbindet die Bilder? Rätsel-Quiz zu den Monatsnamen",
+      "icon": "🧩",
+      "url": "materialien/faecheruebergreifend_monatsnamen-rebus_jg5-10_2026-06.html",
+      "seite": "faecheruebergreifend",
+      "datum": "2026-06-17"
+    },
+    {
+      "id": "1780790400000",
+      "titel": "Satzglieder & Zeitformen – Klasse 4",
+      "beschreibung": "Satzglieder farbig markieren und Zeitformen bestimmen – interaktives Übungsblatt",
+      "icon": "📝",
+      "url": "materialien/deutsch_satzglieder-zeitformen_kl4_2026-06.html",
+      "seite": "deutsch",
+      "datum": "2026-06-07"
+    },
+    {
+      "id": "1780704000000",
+      "titel": "Käfer-Quiz – Bilderraten (Jg. 5–10)",
+      "beschreibung": "12 Käfer, Filmklassiker und Legenden – Bilderraten mit XP & Bestenliste",
+      "icon": "🪲",
+      "url": "materialien/allgemein_kaefer-quiz_jg5-10_2026-06.html",
+      "seite": "faecheruebergreifend",
+      "datum": "2026-06-06"
+    },
+    {
+      "id": "1780272000004",
+      "titel": "Eulis Lese-Reise (Kl. 1–2)",
+      "beschreibung": "7 Hör-Spiele zu Reimen, Silben und Lauten – ohne Lesen, Eule Euli liest alles vor",
+      "icon": "🦉",
+      "url": "materialien/deutsch_eulis-lese-reise_jg1-2_2026-06.html",
+      "seite": "deutsch",
+      "datum": "2026-06-01"
+    },
+    {
+      "id": "1780272000003",
+      "titel": "WM 2026 – Bilderquiz (Jg. 5–10)",
+      "beschreibung": "Spieler, Länder, Regeln, Orte – teste dein WM-Wissen",
+      "icon": "🏆",
+      "url": "materialien/sport_wm2026-bilderquiz_jg5-10_2026-06.html",
+      "seite": "sport",
+      "datum": "2026-06-01"
+    },
+    {
+      "id": "1780272000002",
+      "titel": "Wintersport-Legenden – Quiz (Jg. 5–10)",
+      "beschreibung": "Erkennst du die berühmten Wintersportler*innen? Bilderraten mit XP & Bestenliste",
+      "icon": "🎿",
+      "url": "materialien/sport_wintersport-legenden_jg5-10_2026-06.html",
+      "seite": "sport",
+      "datum": "2026-06-01"
+    },
+    {
+      "id": "1780272000001",
+      "titel": "Fußball-Rebus-Quiz (Jg. 5–10)",
+      "beschreibung": "Errate die Fußballstars! 12 Rätselbilder · 3 Bonusfragen · max. 1500 Punkte",
+      "icon": "⚽",
+      "url": "materialien/sport_fussball-rebus_jg5-10_2026-06.html",
+      "seite": "sport",
+      "datum": "2026-06-01"
+    },
+    {
+      "id": "1780272000000",
+      "titel": "Masken-Quiz – Bilderraten (Jg. 5–10)",
+      "beschreibung": "12 berühmte Masken aus Popkultur, Film, Geschichte und Musik",
+      "icon": "🎭",
+      "url": "materialien/kultur_masken-quiz_jg5-10_2026-06-2.html",
+      "seite": "faecheruebergreifend",
+      "datum": "2026-06-01"
+    },
+    {
       "id": "1748476800002",
       "titel": "Stumme Karte – Niedersachsen (Jg. 5–10)",
       "beschreibung": "Alle Landkreise & kreisfreien Städte zuordnen – 3 Schwierigkeitsstufen, XP & Bestenliste",
@@ -100,6 +190,15 @@
       "datum": "2026-05-11"
     },
     {
+      "id": "1778284800000",
+      "titel": "Rechenblatt – Schriftliche Grundrechenarten (Kl. 4/5)",
+      "beschreibung": "Schriftliche Addition, Subtraktion, Multiplikation und Division zum Üben",
+      "icon": "➗",
+      "url": "materialien/mathe_rechenblatt_klasse45_2026-05.html",
+      "seite": "mathe",
+      "datum": "2026-05-09"
+    },
+    {
       "id": "1746518400000",
       "titel": "Das Drama – Präsentation (Jg. 10)",
       "beschreibung": "Interaktive PPP: Gattungen, Dreieck nach Freytag, Textbeispiel »Auf hoher See« (Mrozek) – 25 Folien",
@@ -109,10 +208,37 @@
       "datum": "2026-05-06"
     },
     {
+      "id": "1777852800000",
+      "titel": "Rechenblatt bis 1000 – Klasse 2",
+      "beschreibung": "Übungsblatt: Rechnen bis 1000 für Klasse 2",
+      "icon": "➗",
+      "url": "materialien/rechenblatt_klasse2_bis1000.html",
+      "seite": "mathe",
+      "datum": "2026-05-04"
+    },
+    {
+      "id": "1777593600000",
+      "titel": "Böhmen & Prag – Geschichte und Lage (Kl. 10)",
+      "beschreibung": "Begleit-Arbeitsblatt zur Prag-Einheit: Geografische Lage und Geschichte Böhmens",
+      "icon": "🏛️",
+      "url": "materialien/geschichte_ab1_prag_stunde1_2026-05.html",
+      "seite": "geschichte",
+      "datum": "2026-05-01"
+    },
+    {
+      "id": "1776211200000",
+      "titel": "Aesop – Die Schildkröte und der Hase",
+      "beschreibung": "Lesetext und interaktive Aufgaben zur Fabel von Aesop",
+      "icon": "🐢",
+      "url": "materialien/arbeitsblatt_AB Aesop Die Schildkröte und der Hase_2026-04.html",
+      "seite": "deutsch",
+      "datum": "2026-04-15"
+    },
+    {
       "id": "1773397473161",
       "titel": "Aufbau Interpretationsaufsatz Literatur",
       "beschreibung": "Neue Version mit Klarstellungen zur Lyrikanalyse",
-      "icon": "ð",
+      "icon": "📄",
       "url": "pdfs/W_Aufbau_Interpretationsaufsatz_Literatur_V2.pdf",
       "seite": "deutsch",
       "datum": "2026-03-13"
