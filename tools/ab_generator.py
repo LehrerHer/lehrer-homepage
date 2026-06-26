@@ -152,9 +152,25 @@ def extract_filename(text: str, fallback: str) -> str:
     return fallback
 
 
+def sync_inhalte_json(html_path: Path) -> None:
+    """Ruft sync-materialien.py auf, um inhalte.json zu aktualisieren."""
+    sync_script = ROOT / "tools" / "sync-materialien.py"
+    result = subprocess.run(
+        [sys.executable, str(sync_script)],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+    )
+    if result.stdout:
+        for line in result.stdout.strip().splitlines():
+            print(f"  sync: {line}")
+    if result.returncode != 0 and result.stderr:
+        print(f"  ⚠ sync-materialien: {result.stderr.strip()}")
+
+
 def git_commit_push(html_path: Path) -> None:
     rel = str(html_path.relative_to(ROOT))
-    subprocess.run(["git", "add", rel], cwd=ROOT, check=True)
+    subprocess.run(["git", "add", rel, "inhalte.json"], cwd=ROOT, check=True)
     subprocess.run(
         ["git", "commit", "-m", f"AB: {html_path.name} automatisch generiert"],
         cwd=ROOT,
@@ -205,8 +221,9 @@ def process_file(path: Path, client: anthropic.Anthropic) -> None:
             print(f"  ℹ {stripped}")
 
     try:
+        sync_inhalte_json(out_path)
         git_commit_push(out_path)
-        print(f"  → Git: committed & pushed")
+        print(f"  → Git: committed & pushed (inkl. inhalte.json)")
     except subprocess.CalledProcessError as e:
         print(f"  ⚠ Git-Fehler: {e}\n    HTML wurde lokal gespeichert, manueller Push nötig.")
 
