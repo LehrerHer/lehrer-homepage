@@ -337,6 +337,37 @@
 
 
     <!-- ========================================================
+         UPLOAD-FEED – Alle Materialien chronologisch
+         Öffentlich · Quelle: inhalte.json + Kolosseum-API
+         ======================================================== -->
+    <section id="upload-feed">
+        <div class="container">
+
+            <h2 class="section-titel">Neue Uploads</h2>
+            <p class="section-untertitel">Alle Arbeitsblätter, Quizze, Rätsel und Materialien – immer chronologisch, neueste zuerst.</p>
+
+            <div id="uf-filter" class="uf-filter" role="group" aria-label="Nach Typ filtern">
+                <button class="uf-filter-btn dm-filter-btn aktiv" data-typ="alle">Alle</button>
+                <button class="uf-filter-btn dm-filter-btn" data-typ="Arbeitsblatt">Arbeitsblätter</button>
+                <button class="uf-filter-btn dm-filter-btn" data-typ="Quiz">Quizze</button>
+                <button class="uf-filter-btn dm-filter-btn" data-typ="Rätsel">Rätsel</button>
+                <button class="uf-filter-btn dm-filter-btn" data-typ="Präsentation">Präsentationen</button>
+                <button class="uf-filter-btn dm-filter-btn" data-typ="Material">Material</button>
+            </div>
+
+            <div id="uf-liste" class="uf-liste" aria-live="polite">
+                <p class="uf-laden">⏳ Lade Uploads …</p>
+            </div>
+
+            <div id="uf-mehr" style="display:none; text-align:center; margin-top:1.5rem">
+                <button class="uf-mehr-btn" id="uf-mehr-btn">Mehr laden</button>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- ========================================================
          GLADIATOREN-KAMPF TEASER – immer öffentlich sichtbar
          ======================================================== -->
     <section id="gladiatoren-teaser" class="gladiatoren-teaser" aria-labelledby="gladiatoren-teaser-titel">
@@ -828,6 +859,7 @@
     <script src="js/supabase-config.js"></script>
     <!-- Was ist neu? – automatische Neuigkeiten-Übersicht -->
     <script src="js/was-ist-neu.js"></script>
+    <script src="js/upload-feed.js"></script>
     <script src="js/arena-bar.js"></script>
     <script src="js/kolosseum-login-widget.js"></script>
     <script src="js/homepage-gate.js"></script>
