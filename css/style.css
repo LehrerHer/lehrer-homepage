@@ -2745,6 +2745,170 @@ footer {
 
 
 /* ================================================================
+   UPLOAD-FEED – Chronologische Materialien-Übersicht
+   ================================================================ */
+
+#upload-feed {
+    padding: 60px 0 64px;
+    background: var(--farbe-hintergrund);
+}
+
+.uf-filter {
+    display: flex;
+    gap: .45rem;
+    flex-wrap: wrap;
+    margin: 1.25rem 0 1.75rem;
+}
+
+.uf-laden,
+.uf-leer {
+    color: var(--farbe-text-hell);
+    font-size: .95rem;
+    padding: 1rem 0;
+}
+
+.uf-liste {
+    display: flex;
+    flex-direction: column;
+    gap: .6rem;
+}
+
+.uf-item {
+    display: grid;
+    grid-template-columns: 6rem 2.2rem 1fr auto;
+    align-items: center;
+    gap: .75rem 1rem;
+    background: #fff;
+    border: 1.5px solid var(--farbe-rahmen);
+    border-radius: var(--radius);
+    padding: .85rem 1.1rem;
+    text-decoration: none;
+    color: var(--farbe-text);
+    transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+.uf-item:hover {
+    border-color: var(--farbe-akzent);
+    box-shadow: 0 4px 14px rgba(74,158,218,.13);
+    transform: translateY(-1px);
+}
+
+.uf-datum {
+    font-size: .78rem;
+    color: var(--farbe-text-hell);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    text-align: right;
+}
+
+.uf-icon {
+    font-size: 1.35rem;
+    text-align: center;
+    line-height: 1;
+}
+
+.uf-content {
+    min-width: 0;
+}
+
+.uf-titel {
+    font-size: .95rem;
+    font-weight: 600;
+    color: var(--farbe-primaer);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.uf-item:hover .uf-titel {
+    color: var(--farbe-akzent);
+}
+
+.uf-beschr {
+    font-size: .8rem;
+    color: var(--farbe-text-hell);
+    margin-top: .15rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.uf-badges {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: .3rem;
+    flex-shrink: 0;
+}
+
+.uf-typ {
+    font-size: .72rem;
+    font-weight: 700;
+    padding: .18rem .55rem;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.uf-typ-ab      { background: #E6F1FB; color: #0C447C; }
+.uf-typ-quiz    { background: #FFF3CD; color: #7A4800; }
+.uf-typ-raetsel { background: #EDE7F6; color: #4527A0; }
+.uf-typ-ppp     { background: #E8F5E9; color: #1B5E20; }
+.uf-typ-mat     { background: #F3F3F3; color: #555;    }
+
+.uf-fach {
+    font-size: .72rem;
+    color: var(--farbe-text-hell);
+    white-space: nowrap;
+}
+
+.uf-mehr-btn {
+    padding: .6rem 2rem;
+    background: var(--farbe-primaer);
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    font-size: .9rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background var(--transition);
+}
+
+.uf-mehr-btn:hover {
+    background: var(--farbe-primaer-hell);
+}
+
+@media (max-width: 768px) {
+    .uf-item {
+        grid-template-columns: 5.5rem 1.8rem 1fr;
+        grid-template-rows: auto auto;
+    }
+    .uf-badges {
+        grid-column: 1 / -1;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-end;
+        gap: .4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .uf-item {
+        grid-template-columns: 1.8rem 1fr;
+        grid-template-rows: auto auto auto;
+    }
+    .uf-datum {
+        grid-column: 1 / -1;
+        text-align: left;
+    }
+    .uf-badges {
+        grid-column: 1 / -1;
+        justify-content: flex-start;
+    }
+}
+
+
+/* ================================================================
    LEGAL-SEITEN (impressum.html, datenschutz.html)
    ================================================================ */
 
