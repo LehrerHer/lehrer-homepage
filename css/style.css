@@ -2123,7 +2123,8 @@ footer {
    LERNKOLOSSEUM – Herrmanns Lernwelt
    ================================================================ */
 
-.lernkolosseum-section {
+.lernkolosseum-section,
+#lernkolosseum {
     background: linear-gradient(160deg, #0d1b2a 0%, #1e2d45 50%, #0f2237 100%);
     padding: 72px 0 80px;
     position: relative;
@@ -2206,7 +2207,8 @@ footer {
 }
 
 /* === GLADIATOREN-KAMPF TEASER === */
-.gladiatoren-teaser {
+.gladiatoren-teaser,
+#gladiatoren-teaser {
     position: relative;
     overflow: hidden;
     background: #0d1b2a;
