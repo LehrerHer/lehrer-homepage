@@ -121,6 +121,56 @@
   }
   #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
+  /* ── GEMEINSCHAFTSLISTE ── */
+  .gb-wrapper {
+    max-width: 1200px; margin: 0 auto; padding: 0 12px 12px;
+  }
+  .gb-trenner {
+    display: flex; align-items: center; gap: 14px;
+    font-size: 1.15rem; font-weight: 800; color: #0d4a62;
+    margin-bottom: 8px;
+  }
+  .gb-trenner::before, .gb-trenner::after {
+    content: ''; flex: 1; height: 2px; background: #c8dde8;
+  }
+  .gb-sub {
+    text-align: center; font-size: .86rem; color: #5e7b8a;
+    margin-bottom: 20px; max-width: 680px; margin-left: auto; margin-right: auto;
+  }
+  .gb-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 14px;
+  }
+  @media (max-width: 680px) { .gb-grid { grid-template-columns: 1fr; } }
+  .gb-section {
+    background: #fff; border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08); overflow: hidden;
+  }
+  .gb-titel {
+    font-size: .95rem; font-weight: 800; color: #0d4a62;
+    padding: 11px 16px 9px; border-bottom: 1px solid #d5e6ee;
+    background: #f1f8fb;
+  }
+  .gb-liste { list-style: none; }
+  .gb-item {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 10px; padding: 9px 14px; border-bottom: 1px solid #eef4f7;
+    font-size: .88rem;
+  }
+  .gb-item:last-child { border-bottom: none; }
+  .gb-name { flex: 1; line-height: 1.4; }
+  .gb-note {
+    display: block; font-size: .77rem; color: #7c97a5;
+    font-style: italic; margin-top: 1px;
+  }
+  .gb-badge {
+    font-size: .76rem; font-weight: 700; border-radius: 999px;
+    padding: 4px 11px; white-space: nowrap; flex-shrink: 0;
+    border: 1.5px dashed; cursor: pointer; transition: opacity .15s, transform .1s;
+    font-family: inherit; margin-top: 1px;
+  }
+  .gb-badge:hover { opacity: .8; transform: scale(1.04); }
+
   /* ── INSPIRATION ── */
   .inspiration-wrapper {
     max-width: 1200px; margin: 48px auto 0; padding: 0 12px 60px;
@@ -254,6 +304,13 @@
   <div class="stats-bar" id="stats-bar"></div>
   <div class="familien-grid" id="familien-grid"></div>
 </main>
+
+<!-- ── GEMEINSCHAFTSLISTE ── -->
+<div class="gb-wrapper">
+  <div class="gb-trenner">🤝 Gemeinsam – einmal für alle</div>
+  <p class="gb-sub">Diese Dinge brauchen wir nur <strong>einmal</strong> für die ganze Gruppe. Klickt auf „noch offen" um eine Familie zuzuweisen — Klick wiederholen zum Wechseln.</p>
+  <div id="gemeinschaft-grid" class="gb-grid"></div>
+</div>
 
 <!-- ── INSPIRATION ── -->
 <div class="inspiration-wrapper">
@@ -490,15 +547,66 @@
     { id: 'spiele',   name: 'Spiele',    emoji: '🎲' },
     { id: 'kinder',   name: 'Kinder',    emoji: '🧸' },
     { id: 'medizin',  name: 'Medizin',   emoji: '💊' },
+    { id: 'anreise',  name: 'Anreise',   emoji: '🚗' },
     { id: 'sonstiges',name: 'Sonstiges', emoji: '📦' },
+  ];
+
+  // ── Gemeinschaftsliste (feste Items, nur Zuweisung wird gespeichert) ──────
+  const GEMEINSCHAFT = [
+    { id: 'pool', titel: '🏊 Pool & Wasser', items: [
+      { id: 'sup',      name: 'SUP / Stand-up-Paddle',         note: 'Wer hat Dachbox / Platz im Auto?' },
+      { id: 'pumpe',    name: 'Elektrische Luftpumpe',          note: '' },
+      { id: 'luftmatz', name: 'Große Luftmatratzen & Schwimmtiere', note: '1–2 reichen für alle' },
+      { id: 'nudeln',   name: 'Poolnudeln-Set',                 note: '' },
+      { id: 'wasserball',name:'Wasserball + Tauchringe',         note: '' },
+      { id: 'sonnenschirm',name:'Strandmuschel / Sonnenschirm', note: 'Für gemeinsame Strandtage' },
+    ]},
+    { id: 'sport', titel: '⚽ Sport & Draußen', items: [
+      { id: 'fussball',  name: 'Fußball + Ballpumpe',           note: 'Bei 9 Kindern Pflicht 😄' },
+      { id: 'tennis',    name: 'Tennisbälle (mind. 12 Stück)',  note: 'Die verschwinden schnell' },
+      { id: 'schlaeger', name: 'Tennisschläger für Kinder',     note: '' },
+      { id: 'huetchen',  name: 'Hütchen + Leibchen',            note: 'Für das große Kinderturnier 🏆' },
+      { id: 'federball', name: 'Federball / Spikeball / Frisbee', note: '' },
+      { id: 'boule',     name: 'Boule-Set',                     note: 'Für die Erwachsenen-Abendrunde' },
+    ]},
+    { id: 'spiele', titel: '🎲 Spieleabende', items: [
+      { id: 'wizard',   name: 'Wizard / Skull King',            note: 'Skaliert super für große Runden' },
+      { id: 'justone',  name: 'Just One / Codenames',           note: 'Geht mit fast beliebig vielen' },
+      { id: 'werwolf',  name: 'Werwolf-Karten',                 note: '9 Kinder + 8 Erwachsene = perfekte Dorfgröße' },
+      { id: 'uno',      name: 'Kartenspiele / UNO',             note: 'Für die Kinder' },
+    ]},
+    { id: 'kueche', titel: '🍖 Küche, Grill & Haushalt', items: [
+      { id: 'grillzange',name: 'Grillzange + Grillanzünder',    note: 'Falls Grill am Haus vorhanden' },
+      { id: 'kaffee',    name: 'Kaffee-Großpackung',            note: 'Welche Maschine steht im Haus?' },
+      { id: 'folie',     name: 'Alufolie + Frischhaltefolie + Gefrierbeutel', note: '' },
+      { id: 'spueli',    name: 'Spülmaschinentabs + Spülmittel',note: 'Großpackung' },
+      { id: 'muell',     name: 'Müllbeutel-Vorrat',             note: '' },
+      { id: 'einkauf',   name: 'Großeinkauf Tag 1',             note: 'Wer zuerst ankommt: Wasser + Frühstück für alle' },
+    ]},
+    { id: 'technik', titel: '🧰 Technik & Notfall', items: [
+      { id: 'apotheke',  name: 'Erweiterte Reiseapotheke',      note: 'Ergänzung zur Familienapotheke' },
+      { id: 'seeigel',   name: 'Essig + Pinzette',              note: 'Seeigel-Erste-Hilfe – rettet den Urlaub!' },
+      { id: 'werkzeug',  name: 'Werkzeug-Set + Panzertape',     note: '' },
+      { id: 'kabel',     name: 'Outdoor-Verlängerungskabel + Mehrfachstecker', note: '' },
+      { id: 'box',       name: 'Bluetooth-Box (die große)',      note: '' },
+      { id: 'kuehlbox',  name: 'Kühlboxen für Strandtage',      note: '2–3 für die ganze Gruppe' },
+    ]},
+    { id: 'maut', titel: '🚗 Maut – wer kümmert sich?', items: [
+      { id: 'at-vignette', name: '🇦🇹 Österreich 2-Monats-Vignette (32 €)',  note: 'Bis 30. Juni kaufen! shop.asfinag.at – gilt für Hin- + Rückfahrt' },
+      { id: 'si-vignette', name: '🇸🇮 Slowenien 7-Tage-Vignette (16 €)',     note: 'Kurz vor Abfahrt kaufen, ans Kennzeichen gebunden' },
+      { id: 'at-tauern',   name: '🇦🇹 Tauernautobahn Sondermaut (15 €)',     note: 'Zahlt jedes Auto selbst an der Mautstelle' },
+      { id: 'at-karawank', name: '🇦🇹 Karawankentunnel (7,50 € × 2)',        note: 'Hin + Rück, jedes Auto zahlt selbst' },
+      { id: 'hr-maut',     name: '🇭🇷 Kroatien A1 Zagreb–Split (~45–50 € ges.)', note: 'Kreditkarte an Mautstationen, kein Vorregistrieren nötig' },
+    ]},
   ];
 
   let state = leerenState();
   let speichernTimer = null;
 
   function leerenState() {
-    const s = {};
+    const s = { gemeinschaft: {} };
     FAMILIEN.forEach(f => { s[f.id] = {}; RUBRIKEN.forEach(r => { s[f.id][r.id] = []; }); });
+    GEMEINSCHAFT.forEach(kat => kat.items.forEach(it => { s.gemeinschaft[kat.id + '-' + it.id] = null; }));
     return s;
   }
 
@@ -511,6 +619,9 @@
         }
       });
     });
+    if (remote.gemeinschaft && typeof remote.gemeinschaft === 'object') {
+      Object.assign(state.gemeinschaft, remote.gemeinschaft);
+    }
   }
 
   // ── Server-Kommunikation ────────────────────────────────────────────────
@@ -578,12 +689,44 @@
       .map(([key, liste]) => ({ key, liste }));
   }
 
+  // ── Gemeinschaftsliste rendern ──────────────────────────────────────────
+  const FAM_COLORS = {
+    huette:  { bg: '#ddeef8', color: '#1a5f8a', border: '#2a9fd6', label: 'Fam. Hütte 🏠' },
+    berg:    { bg: '#d8f0e4', color: '#2d6a4f', border: '#52b788', label: 'Fam. Berg ⛰️'  },
+    hellern: { bg: '#fde8d0', color: '#7b3f00', border: '#e8851a', label: 'Fam. Hellern 🌻'},
+  };
+  const FAM_ORDER = ['huette', 'berg', 'hellern'];
+
+  function renderGemeinschaft() {
+    GEMEINSCHAFT.forEach(kat => {
+      kat.items.forEach(it => {
+        const key = kat.id + '-' + it.id;
+        const el = document.getElementById('gb-' + key);
+        if (!el) return;
+        const who = state.gemeinschaft[key] || null;
+        if (who && FAM_COLORS[who]) {
+          const c = FAM_COLORS[who];
+          el.style.background = c.bg;
+          el.style.color = c.color;
+          el.style.borderColor = c.border;
+          el.textContent = '✓ ' + c.label;
+        } else {
+          el.style.background = '#FDECE7';
+          el.style.color = '#c0392b';
+          el.style.borderColor = '#E86A4F';
+          el.textContent = 'noch offen';
+        }
+      });
+    });
+  }
+
   // ── Rendering ───────────────────────────────────────────────────────────
   function render() {
     const duplikate = duplikateErmitteln();
     const dupSet = new Set(duplikate.map(d => d.key));
     renderWarnungen(duplikate);
     renderStats();
+    renderGemeinschaft();
     FAMILIEN.forEach(fam => {
       RUBRIKEN.forEach(rub => {
         const el = document.getElementById(`liste-${fam.id}-${rub.id}`);
@@ -653,8 +796,46 @@
     });
   }
 
+  // ── Gemeinschaftsliste aufbauen (einmalig) ──────────────────────────────
+  function aufbauenGemeinschaft() {
+    const wrap = document.getElementById('gemeinschaft-grid');
+    if (!wrap) return;
+    GEMEINSCHAFT.forEach(kat => {
+      const sec = document.createElement('section');
+      sec.className = 'gb-section';
+      sec.innerHTML = `<h3 class="gb-titel">${kat.titel}</h3>`;
+      const ul = document.createElement('ul');
+      ul.className = 'gb-liste';
+      kat.items.forEach(it => {
+        const key = kat.id + '-' + it.id;
+        const li = document.createElement('li');
+        li.className = 'gb-item';
+        li.innerHTML = `
+          <span class="gb-name">${esc(it.name)}${it.note ? `<span class="gb-note">${esc(it.note)}</span>` : ''}</span>
+          <button class="gb-badge" id="gb-${key}" data-key="${key}" title="Klicken zum Zuweisen">noch offen</button>`;
+        ul.appendChild(li);
+      });
+      sec.appendChild(ul);
+      wrap.appendChild(sec);
+    });
+  }
+
   // ── Events ──────────────────────────────────────────────────────────────
   function eventsRegistrieren() {
+    // Gemeinschaftsliste: Klick zyklisch durch Familien
+    const gbGrid = document.getElementById('gemeinschaft-grid');
+    if (gbGrid) {
+      gbGrid.addEventListener('click', e => {
+        const btn = e.target.closest('.gb-badge');
+        if (!btn) return;
+        const key = btn.dataset.key;
+        const cur = state.gemeinschaft[key] || null;
+        const idx = FAM_ORDER.indexOf(cur);
+        state.gemeinschaft[key] = idx < FAM_ORDER.length - 1 ? FAM_ORDER[idx + 1] : null;
+        renderGemeinschaft(); speichernPlanen();
+      });
+    }
+
     document.getElementById('familien-grid').addEventListener('click', e => {
       const delBtn = e.target.closest('.del-btn');
       if (delBtn) {
@@ -719,6 +900,7 @@
 
   // ── Init ─────────────────────────────────────────────────────────────────
   aufbauen();
+  aufbauenGemeinschaft();
   eventsRegistrieren();
   laden();
   setInterval(stiller_refresh, 30_000);
