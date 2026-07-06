@@ -1,0 +1,1922 @@
+<!--
+  Titel: Die Spur der Bohne – Expedition durch vier Perspektiven
+  Fach: Fächerübergreifend (Erdkunde · Geschichte · Wirtschaft · Politik)
+  Klasse/Niveau: Jahrgang 9/10
+  AB-Typ: Feldtagebuch-Projekt (Materialanalyse, Quellenarbeit, Sortierübungen, Selbsteinschätzung, Urteilsbildung)
+  Erstellt: 2026-07
+  Quelle: Manuell bereitgestellter Entwurf (Jan Herrmann)
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Die Spur der Bohne – Expedition durch vier Perspektiven</title>
+<style>
+/* ============================================================
+   DIE SPUR DER BOHNE – Feldtagebuch-Design
+   Vanilla CSS · keine externen Abhängigkeiten
+   ============================================================ */
+:root{
+  --papier:#F5EFDF;
+  --papier-dunkel:#EDE4CC;
+  --karte:#FBF7EC;
+  --tinte:#2E2A24;
+  --tinte-hell:#6B6353;
+  --linie:#D8CDB4;
+  --geo:#4A6741;
+  --geo-hell:#E4EADF;
+  --hist:#8B5E3C;
+  --hist-hell:#EFE4D8;
+  --wirt:#B08A2E;
+  --wirt-hell:#F2EAD2;
+  --pol:#A93F35;
+  --pol-hell:#F1DEDB;
+  --gruen:#4A6741;
+  --gelb:#C9A227;
+  --rot:#A93F35;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --mono:"Courier New",Courier,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+body{
+  font-family:var(--serif);
+  color:var(--tinte);
+  background:var(--papier);
+  background-image:
+    radial-gradient(ellipse at 20% 10%, rgba(139,94,60,0.05), transparent 55%),
+    radial-gradient(ellipse at 85% 90%, rgba(74,103,65,0.05), transparent 55%);
+  line-height:1.65;
+  min-height:100vh;
+}
+main{max-width:900px;margin:0 auto;padding:0 1.2rem 5rem}
+
+/* ---------- Kopf: Tagebuchdeckel ---------- */
+header.deckel{
+  text-align:center;
+  padding:2.6rem 1rem 1.6rem;
+  border-bottom:3px double var(--linie);
+  max-width:900px;margin:0 auto;
+}
+.deckel .eyebrow{
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--tinte-hell);
+}
+.deckel h1{
+  font-size:clamp(2rem,5.5vw,3.1rem);
+  font-weight:600;letter-spacing:.01em;margin:.35rem 0 .3rem;
+}
+.deckel h1 .bohne{display:inline-block;transform:rotate(-8deg)}
+.deckel .untertitel{
+  font-style:italic;color:var(--tinte-hell);font-size:1.02rem;
+}
+.deckel .koordinaten{
+  font-family:var(--mono);font-size:.75rem;color:var(--tinte-hell);
+  margin-top:.7rem;letter-spacing:.08em;
+}
+
+/* ---------- Navigation: Registerreiter ---------- */
+nav.register{
+  position:sticky;top:0;z-index:50;
+  background:var(--papier);
+  border-bottom:1px solid var(--linie);
+  max-width:900px;margin:0 auto;
+  display:flex;flex-wrap:wrap;gap:.35rem;
+  padding:.6rem .6rem .0rem;
+}
+nav.register button{
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.05em;
+  border:1px solid var(--linie);border-bottom:none;
+  border-radius:8px 8px 0 0;
+  background:var(--papier-dunkel);color:var(--tinte-hell);
+  padding:.5rem .8rem .55rem;cursor:pointer;
+  transition:background .15s,color .15s;
+  position:relative;top:1px;
+}
+nav.register button:hover{background:var(--karte)}
+nav.register button[aria-selected="true"]{
+  background:var(--karte);color:var(--tinte);font-weight:bold;
+  border-color:var(--tinte-hell);
+}
+nav.register button .haken{color:var(--gruen);margin-left:.3rem}
+nav.register button:focus-visible,
+button:focus-visible,input:focus-visible{
+  outline:2px solid var(--tinte);outline-offset:2px;
+}
+
+/* ---------- Seiten (Tabs) ---------- */
+section.seite{display:none;padding-top:1.8rem}
+section.seite.aktiv{display:block;animation:einblenden .35s ease}
+@keyframes einblenden{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ---------- Allgemeine Bausteine ---------- */
+.blatt{
+  background:var(--karte);
+  border:1px solid var(--linie);
+  border-radius:4px;
+  box-shadow:2px 3px 0 rgba(46,42,36,.06);
+  padding:1.4rem 1.5rem;
+  margin-bottom:1.4rem;
+}
+.blatt h2{font-size:1.5rem;margin-bottom:.4rem}
+.blatt h3{font-size:1.12rem;margin:.2rem 0 .5rem}
+.etikett{
+  display:inline-block;font-family:var(--mono);font-size:.72rem;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:#fff;padding:.18rem .55rem;border-radius:2px;margin-bottom:.55rem;
+}
+.modul-geo .etikett{background:var(--geo)}
+.modul-hist .etikett{background:var(--hist)}
+.modul-wirt .etikett{background:var(--wirt)}
+.modul-pol .etikett{background:var(--pol)}
+.modul-geo{border-top:5px solid var(--geo)}
+.modul-hist{border-top:5px solid var(--hist)}
+.modul-wirt{border-top:5px solid var(--wirt)}
+.modul-pol{border-top:5px solid var(--pol)}
+
+.ichsatz{
+  border-left:4px solid var(--tinte);
+  background:var(--papier-dunkel);
+  padding:.75rem 1rem;font-style:italic;margin:.9rem 0 1.1rem;
+}
+.ichsatz strong{font-style:normal;font-family:var(--mono);font-size:.75rem;
+  letter-spacing:.15em;text-transform:uppercase;display:block;margin-bottom:.2rem;color:var(--tinte-hell)}
+
+.hinweis{
+  font-size:.9rem;color:var(--tinte-hell);font-style:italic;margin:.5rem 0;
+}
+.quellenangabe{font-family:var(--mono);font-size:.72rem;color:var(--tinte-hell);margin-top:.5rem}
+
+/* Aufgabenkarten */
+.aufgabe{
+  border:1px dashed var(--linie);border-radius:4px;
+  padding:1rem 1.1rem;margin:1rem 0;background:rgba(255,255,255,.35);
+}
+.aufgabe .nr{
+  font-family:var(--mono);font-size:.75rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--tinte-hell);display:block;margin-bottom:.25rem;
+}
+.wegwahl{display:flex;gap:.4rem;margin:.6rem 0 .7rem;flex-wrap:wrap}
+.wegwahl button{
+  font-family:var(--mono);font-size:.75rem;letter-spacing:.05em;
+  border:1px solid var(--linie);background:var(--papier);
+  padding:.35rem .7rem;border-radius:20px;cursor:pointer;color:var(--tinte-hell);
+}
+.wegwahl button[aria-pressed="true"]{
+  background:var(--tinte);color:var(--karte);border-color:var(--tinte);
+}
+.weg{display:none;padding:.3rem 0}
+.weg.aktiv{display:block}
+.weg p+p{margin-top:.5rem}
+
+/* Impulse (minimale Hilfe) */
+details.impuls{
+  margin:.55rem 0 0;border:1px solid var(--linie);border-radius:4px;
+  background:var(--papier);
+}
+details.impuls summary{
+  cursor:pointer;font-family:var(--mono);font-size:.78rem;
+  letter-spacing:.06em;padding:.45rem .7rem;color:var(--tinte-hell);
+  list-style:none;
+}
+details.impuls summary::before{content:"➳ ";}
+details.impuls summary::-webkit-details-marker{display:none}
+details.impuls[open] summary{border-bottom:1px dashed var(--linie);color:var(--tinte)}
+details.impuls .inhalt{padding:.55rem .8rem;font-size:.93rem}
+
+/* Selbstkontrolle / MC */
+.mc-frage{margin:.9rem 0;padding:.9rem 1rem;border:1px solid var(--linie);border-radius:4px;background:rgba(255,255,255,.4)}
+.mc-frage p.f{font-weight:bold;margin-bottom:.5rem}
+.mc-frage label{display:block;padding:.3rem .4rem;border-radius:4px;cursor:pointer}
+.mc-frage label:hover{background:var(--papier-dunkel)}
+.mc-frage input{margin-right:.5rem}
+.mc-frage .pruefen{
+  margin-top:.5rem;font-family:var(--mono);font-size:.8rem;
+  border:1px solid var(--tinte);background:var(--karte);
+  padding:.35rem .8rem;border-radius:3px;cursor:pointer;
+}
+.mc-frage .pruefen:hover{background:var(--papier-dunkel)}
+.mc-feedback{margin-top:.5rem;font-size:.92rem;display:none;padding:.5rem .7rem;border-radius:4px}
+.mc-feedback.richtig{display:block;background:var(--geo-hell);border-left:4px solid var(--gruen)}
+.mc-feedback.falsch{display:block;background:var(--pol-hell);border-left:4px solid var(--rot)}
+
+/* Musterantwort */
+details.muster{margin:.9rem 0;border:1px solid var(--tinte-hell);border-radius:4px;background:var(--papier)}
+details.muster summary{
+  cursor:pointer;padding:.55rem .8rem;font-family:var(--mono);font-size:.8rem;
+  letter-spacing:.08em;list-style:none;
+}
+details.muster summary::before{content:"🔍 "}
+details.muster summary::-webkit-details-marker{display:none}
+details.muster .inhalt{padding:.6rem .9rem .9rem;font-size:.94rem;border-top:1px dashed var(--linie)}
+details.muster .inhalt p+p{margin-top:.5rem}
+
+/* Ampel */
+.ampel{
+  margin-top:1.2rem;padding:1rem 1.1rem;border:2px solid var(--linie);
+  border-radius:4px;background:var(--papier-dunkel);
+}
+.ampel p.frage{font-weight:bold;margin-bottom:.6rem}
+.ampel .lichter{display:flex;gap:.6rem;flex-wrap:wrap}
+.ampel .lichter button{
+  display:flex;align-items:center;gap:.5rem;
+  border:2px solid transparent;border-radius:30px;
+  background:var(--karte);padding:.45rem .9rem;cursor:pointer;
+  font-family:var(--serif);font-size:.92rem;
+}
+.ampel .punkt{width:16px;height:16px;border-radius:50%;display:inline-block;flex:none}
+.ampel .p-gruen{background:var(--gruen)}
+.ampel .p-gelb{background:var(--gelb)}
+.ampel .p-rot{background:var(--rot)}
+.ampel button[aria-pressed="true"]{border-color:var(--tinte);font-weight:bold}
+.ampel .reflexion{font-size:.88rem;font-style:italic;color:var(--tinte-hell);margin-top:.6rem;display:none}
+.ampel .reflexion.sichtbar{display:block}
+
+/* Sortierübungen (Zeitstrahl & Kette) */
+.sortier-liste{list-style:none;counter-reset:pos;margin:.8rem 0}
+.sortier-liste li{
+  display:flex;align-items:center;gap:.6rem;
+  border:1px solid var(--linie);border-radius:4px;background:var(--karte);
+  padding:.55rem .7rem;margin-bottom:.45rem;
+}
+.sortier-liste li .txt{flex:1;font-size:.95rem}
+.sortier-liste li .jahr{
+  font-family:var(--mono);font-size:.8rem;background:var(--papier-dunkel);
+  padding:.1rem .45rem;border-radius:3px;white-space:nowrap;
+}
+.jahre-aus .jahr{display:none}
+.sortier-liste li .pfeile{display:flex;flex-direction:column;gap:.15rem}
+.sortier-liste li .pfeile button{
+  border:1px solid var(--linie);background:var(--papier);
+  border-radius:3px;width:30px;height:24px;cursor:pointer;font-size:.75rem;line-height:1;
+}
+.sortier-liste li .pfeile button:hover{background:var(--papier-dunkel)}
+.sortier-liste li.korrekt{border-color:var(--gruen);background:var(--geo-hell)}
+.sortier-liste li.falsch{border-color:var(--rot);background:var(--pol-hell)}
+.sortier-buttons{display:flex;gap:.6rem;flex-wrap:wrap;margin:.5rem 0}
+.sortier-buttons button{
+  font-family:var(--mono);font-size:.8rem;border:1px solid var(--tinte);
+  background:var(--karte);padding:.4rem .8rem;border-radius:3px;cursor:pointer;
+}
+.sortier-buttons button:hover{background:var(--papier-dunkel)}
+.sortier-ergebnis{font-size:.92rem;margin:.4rem 0;font-style:italic}
+
+/* Klimatabelle */
+.tab-scroll{overflow-x:auto;margin:.8rem 0}
+table.klima{border-collapse:collapse;font-size:.82rem;min-width:640px;width:100%}
+table.klima caption{
+  text-align:left;font-family:var(--mono);font-size:.75rem;
+  letter-spacing:.1em;color:var(--tinte-hell);padding-bottom:.35rem;
+}
+table.klima th,table.klima td{
+  border:1px solid var(--linie);padding:.3rem .45rem;text-align:center;
+}
+table.klima th{background:var(--papier-dunkel);font-family:var(--mono);font-size:.72rem}
+table.klima td:first-child,table.klima th:first-child{text-align:left;white-space:nowrap}
+table.klima tr.stadt td:first-child{font-weight:bold}
+
+/* Steckbrief */
+.steckbrief{
+  border:1px solid var(--linie);background:var(--papier);
+  padding:.9rem 1.1rem;border-radius:4px;margin:.8rem 0;
+}
+.steckbrief h4{font-family:var(--mono);font-size:.78rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--tinte-hell);margin-bottom:.4rem}
+.steckbrief ul{margin-left:1.1rem;font-size:.93rem}
+
+/* Quellen */
+.quelle{
+  background:var(--papier);border:1px solid var(--linie);border-radius:2px;
+  padding:1rem 1.2rem;margin:.9rem 0;position:relative;
+  font-size:.95rem;
+}
+.quelle::before{
+  content:attr(data-label);
+  position:absolute;top:-11px;left:12px;
+  background:var(--hist);color:#fff;font-family:var(--mono);
+  font-size:.68rem;letter-spacing:.15em;padding:.15rem .5rem;border-radius:2px;
+}
+.quelle p{font-style:italic}
+.quelle p+p{margin-top:.5rem}
+.methodenkasten{
+  border:2px solid var(--hist);border-radius:4px;padding:.9rem 1.1rem;margin:.9rem 0;
+  background:var(--hist-hell);
+}
+.methodenkasten h4{font-family:var(--mono);font-size:.78rem;letter-spacing:.15em;
+  text-transform:uppercase;margin-bottom:.4rem}
+.methodenkasten ul{margin-left:1.1rem;font-size:.93rem}
+
+/* Preis-Schätzer & Balken */
+.preis-werkzeug{margin:.9rem 0;padding:1rem;border:1px solid var(--linie);border-radius:4px;background:rgba(255,255,255,.4)}
+.preis-zeile{display:grid;grid-template-columns:minmax(130px,1fr) minmax(120px,2fr) 64px;gap:.6rem;align-items:center;margin-bottom:.5rem}
+.preis-zeile label{font-size:.88rem}
+.preis-zeile input[type=range]{width:100%;accent-color:var(--wirt)}
+.preis-zeile .wert{font-family:var(--mono);font-size:.82rem;text-align:right;white-space:nowrap}
+.preis-summe{font-family:var(--mono);font-size:.85rem;margin:.5rem 0;padding:.4rem .6rem;border-radius:3px;background:var(--papier-dunkel)}
+.preis-summe.ok{background:var(--geo-hell)}
+.preis-summe.zuviel{background:var(--pol-hell)}
+.balken-vergleich{margin-top:1rem;display:none}
+.balken-vergleich.sichtbar{display:block}
+.balken{display:flex;height:42px;border-radius:4px;overflow:hidden;border:1px solid var(--linie);margin:.35rem 0 .8rem}
+.balken div{display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--mono);font-size:.68rem;min-width:0;overflow:hidden;white-space:nowrap}
+.balken-titel{font-family:var(--mono);font-size:.75rem;letter-spacing:.1em;color:var(--tinte-hell)}
+.legende{display:flex;flex-wrap:wrap;gap:.5rem 1rem;font-size:.82rem;margin-top:.4rem}
+.legende span{display:flex;align-items:center;gap:.35rem}
+.legende i{width:12px;height:12px;border-radius:2px;display:inline-block;flex:none}
+.aufdecken-btn{
+  font-family:var(--mono);font-size:.8rem;border:1px solid var(--tinte);
+  background:var(--wirt-hell);padding:.45rem .9rem;border-radius:3px;cursor:pointer;margin-top:.4rem;
+}
+.aufdecken-btn:hover{background:var(--papier-dunkel)}
+
+/* Positionskarten */
+.positionen{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.9rem;margin:.9rem 0}
+.positionskarte{
+  border:1px solid var(--linie);border-top:4px solid var(--pol);
+  border-radius:4px;background:var(--karte);padding:.9rem 1rem;
+  box-shadow:2px 2px 0 rgba(46,42,36,.05);
+}
+.positionskarte h4{font-size:1rem;margin-bottom:.1rem}
+.positionskarte .wer{font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--tinte-hell);display:block;margin-bottom:.4rem}
+.positionskarte p.kern{font-style:italic;margin-bottom:.45rem}
+.positionskarte ul{margin-left:1.05rem;font-size:.88rem}
+
+/* Übersicht: Karte & Stationskarten */
+.expedition-karte{margin:.5rem 0 1.2rem}
+.expedition-karte svg{width:100%;height:auto;display:block}
+.station-marker{cursor:pointer}
+.station-marker circle.aussen{transition:r .15s}
+.station-marker:hover circle.aussen,.station-marker:focus circle.aussen{r:21}
+.station-marker:focus{outline:none}
+.station-marker:focus-visible circle.aussen{stroke:var(--tinte);stroke-width:3}
+.stations-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.9rem;margin-top:1rem}
+.stations-karte{
+  border:1px solid var(--linie);border-radius:4px;background:var(--karte);
+  padding:.9rem 1rem;cursor:pointer;text-align:left;font-family:var(--serif);
+  box-shadow:2px 2px 0 rgba(46,42,36,.05);position:relative;
+  transition:transform .12s;
+}
+.stations-karte:hover{transform:translateY(-2px)}
+.stations-karte .fach{font-family:var(--mono);font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:#fff;padding:.12rem .45rem;border-radius:2px;display:inline-block;margin-bottom:.4rem}
+.stations-karte h3{font-size:1.05rem;margin-bottom:.25rem}
+.stations-karte p{font-size:.85rem;color:var(--tinte-hell)}
+.stempel{
+  position:absolute;top:.5rem;right:.55rem;width:52px;height:52px;
+  border:2.5px solid var(--pol);border-radius:50%;
+  display:none;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:.5rem;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--pol);transform:rotate(-14deg);text-align:center;line-height:1.15;
+  opacity:.85;
+}
+.stempel.sichtbar{display:flex;animation:stempeln .35s ease-out}
+@keyframes stempeln{
+  0%{transform:rotate(-14deg) scale(1.7);opacity:0}
+  70%{transform:rotate(-14deg) scale(.92);opacity:.9}
+  100%{transform:rotate(-14deg) scale(1);opacity:.85}
+}
+
+/* Abschluss: Produktwahl */
+.produkte{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.9rem;margin:.9rem 0}
+.produkt{
+  border:1px solid var(--linie);border-radius:4px;background:var(--karte);
+  padding:.9rem 1rem;box-shadow:2px 2px 0 rgba(46,42,36,.05);
+}
+.produkt h4{font-size:1.02rem;margin-bottom:.3rem}
+.produkt p{font-size:.88rem;color:var(--tinte-hell);margin-bottom:.5rem}
+.produkt details{font-size:.86rem}
+.produkt details summary{cursor:pointer;font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;color:var(--tinte-hell)}
+.produkt details ul{margin:.4rem 0 .2rem 1.1rem}
+.produkt .waehlen{
+  margin-top:.6rem;font-family:var(--mono);font-size:.75rem;
+  border:1px solid var(--tinte);background:var(--papier);
+  padding:.35rem .7rem;border-radius:3px;cursor:pointer;width:100%;
+}
+.produkt .waehlen[aria-pressed="true"]{background:var(--tinte);color:var(--karte)}
+.produktwahl-status{font-style:italic;margin:.6rem 0}
+
+/* Fortschritt im Kopfbereich der Übersicht */
+.fortschritt{
+  font-family:var(--mono);font-size:.8rem;letter-spacing:.06em;
+  color:var(--tinte-hell);margin:.6rem 0 0;
+}
+
+/* Fußzeile */
+footer{
+  max-width:900px;margin:0 auto;padding:1.2rem;text-align:center;
+  font-family:var(--mono);font-size:.72rem;color:var(--tinte-hell);
+  border-top:1px solid var(--linie);
+}
+
+@media (max-width:560px){
+  .blatt{padding:1.1rem 1rem}
+  .preis-zeile{grid-template-columns:1fr;gap:.15rem}
+  .preis-zeile .wert{text-align:left}
+}
+
+/* ---------- Login-Overlay ---------- */
+.login-overlay{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(46,42,36,.88);
+  display:flex;align-items:center;justify-content:center;
+  padding:1rem;
+}
+.login-overlay.versteckt{display:none}
+.login-karte{
+  background:var(--karte);
+  border:2px solid var(--linie);
+  border-top:6px solid var(--hist);
+  border-radius:4px;
+  box-shadow:5px 8px 0 rgba(46,42,36,.18);
+  padding:2.2rem 2.4rem 2rem;
+  max-width:440px;width:100%;
+  text-align:center;
+  position:relative;
+}
+.login-stempel{
+  position:absolute;top:-18px;left:50%;transform:translateX(-50%);
+  background:var(--hist);color:#fff;
+  font-family:var(--mono);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;
+  padding:.22rem .8rem;border-radius:2px;
+}
+.login-karte h2{font-size:1.85rem;margin:.6rem 0 .2rem}
+.login-karte .login-sub{
+  font-style:italic;color:var(--tinte-hell);margin-bottom:1.2rem;font-size:.95rem
+}
+.login-karte label.login-label{
+  display:block;font-family:var(--mono);font-size:.75rem;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--tinte-hell);margin-bottom:.4rem;text-align:left;
+}
+.login-karte input[type=text]{
+  width:100%;font-family:var(--serif);font-size:1.1rem;
+  border:1px solid var(--linie);border-radius:3px;
+  padding:.6rem .8rem;background:var(--papier);color:var(--tinte);
+  text-align:center;margin-bottom:.9rem;
+}
+.login-karte input[type=text]:focus{
+  outline:2px solid var(--hist);outline-offset:1px;
+}
+.login-wiederkehr{
+  background:var(--hist-hell);border:1px solid var(--hist);
+  border-radius:4px;padding:.75rem .9rem;margin-bottom:.8rem;text-align:left;
+}
+.login-wiederkehr p{font-size:.88rem;font-style:italic;color:var(--tinte-hell);margin-bottom:.5rem}
+.login-wiederkehr .btn-gruppe{display:flex;gap:.5rem;flex-wrap:wrap}
+.login-btn{
+  font-family:var(--mono);font-size:.8rem;letter-spacing:.04em;
+  border:1px solid var(--tinte);border-radius:3px;padding:.5rem 1rem;
+  cursor:pointer;
+}
+.login-btn.primaer{background:var(--tinte);color:var(--karte)}
+.login-btn.primaer:hover{opacity:.88}
+.login-btn.sekundaer{background:var(--karte);color:var(--tinte)}
+.login-btn.sekundaer:hover{background:var(--papier-dunkel)}
+
+/* ---------- User-Indikator in der Navigation ---------- */
+.nav-user{
+  margin-left:auto;display:flex;align-items:center;gap:.4rem;
+  font-family:var(--mono);font-size:.73rem;color:var(--tinte-hell);
+  padding:.4rem .3rem;
+}
+.nav-user span{max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-user button{
+  font-family:var(--mono);font-size:.68rem;
+  border:1px solid var(--linie);background:var(--papier-dunkel);
+  border-radius:3px;padding:.2rem .5rem;cursor:pointer;color:var(--tinte-hell);
+  white-space:nowrap;
+}
+.nav-user button:hover{background:var(--papier)}
+</style>
+</head>
+<body>
+
+<!-- ================================================================
+     LOGIN-OVERLAY
+================================================================ -->
+<div class="login-overlay versteckt" id="login-overlay" role="dialog" aria-modal="true" aria-labelledby="login-titel">
+  <div class="login-karte">
+    <span class="login-stempel">Feldtagebuch · GSW 9/10</span>
+    <h2 id="login-titel">Die Spur der Bohne</h2>
+    <p class="login-sub">Eine Expedition in vier Stationen</p>
+    <p id="login-kolo-hinweis" style="font-size:.82rem;color:var(--tinte-hell);margin-bottom:.8rem">
+      Kein Kolosseum-Account gefunden –
+      <a href="https://kolosseum.lehrer-herrmann.de" style="color:var(--hist)">jetzt einloggen</a>
+      für geräteübergreifenden Fortschritt.
+    </p>
+    <label class="login-label" for="login-name">Wer erkundet heute?</label>
+    <input type="text" id="login-name" placeholder="Dein Vorname" maxlength="40" autocomplete="off" spellcheck="false">
+    <div class="login-wiederkehr" id="login-wiederkehr" style="display:none">
+      <p id="login-info"></p>
+      <div class="btn-gruppe">
+        <button class="login-btn primaer" id="login-weiter">Weitermachen ↗</button>
+        <button class="login-btn sekundaer" id="login-neu">Neu beginnen</button>
+      </div>
+    </div>
+    <div id="login-neu-bereich">
+      <button class="login-btn primaer" id="login-start" style="width:100%">Expedition starten →</button>
+    </div>
+  </div>
+</div>
+
+<header class="deckel">
+  <p class="eyebrow">Feldtagebuch · GSW · Jahrgang 9/10</p>
+  <h1>Die Spur der B<span class="bohne">o</span>hne</h1>
+  <p class="untertitel">Eine Expedition in vier Stationen – von der Plantage in Ghana bis ins Supermarktregal in Osnabrück</p>
+  <p class="koordinaten">6°41′ N, 1°37′ W (Kumasi) — 52°16′ N, 8°03′ O (Osnabrück)</p>
+</header>
+
+<nav class="register" role="tablist" aria-label="Stationen der Expedition">
+  <button role="tab" id="tab-start" aria-selected="true" data-ziel="start">⌂ Expeditionskarte</button>
+  <button role="tab" id="tab-geo" aria-selected="false" data-ziel="geo">1 · Geografie</button>
+  <button role="tab" id="tab-hist" aria-selected="false" data-ziel="hist">2 · Geschichte</button>
+  <button role="tab" id="tab-wirt" aria-selected="false" data-ziel="wirt">3 · Wirtschaft</button>
+  <button role="tab" id="tab-pol" aria-selected="false" data-ziel="pol">4 · Politik</button>
+  <button role="tab" id="tab-ende" aria-selected="false" data-ziel="ende">✎ Expeditionsbericht</button>
+  <div class="nav-user" id="nav-user" aria-live="polite">
+    <span id="nav-user-name"></span>
+    <button id="nav-wechseln" title="Andere Person anmelden">⇄ wechseln</button>
+  </div>
+</nav>
+
+<main>
+
+<!-- ================================================================
+     ÜBERSICHT / EXPEDITIONSKARTE
+================================================================ -->
+<section class="seite aktiv" id="seite-start" role="tabpanel" aria-labelledby="tab-start">
+  <div class="blatt">
+    <h2>Willkommen im Feldtagebuch</h2>
+    <p>Du hältst einen Schokoriegel in der Hand. 1,50 €. Aber welche Reise steckt dahinter?
+    Auf dieser Expedition folgst du der Spur einer Kakaobohne – von der Plantage in Ghana
+    bis ins Supermarktregal in Osnabrück. Vier Stationen warten auf dich. An jeder Station
+    schaust du mit einer anderen Fachbrille auf dieselbe Bohne.</p>
+    <p style="margin-top:.6rem"><strong>So arbeitest du:</strong> Wähle deine Stationen in beliebiger Reihenfolge –
+    allein oder mit einer Lernpartnerin oder einem Lernpartner. Jede Station schaffst du in etwa ein bis zwei Lernzeiten.
+    Bei jeder Aufgabe entscheidest du selbst: <em>Basisweg</em> (mit mehr Unterstützung) oder
+    <em>Expeditionsweg</em> (offener und anspruchsvoller). Wenn du nicht weiterkommst, öffne zuerst
+    einen Impuls, bevor du deine Lernbegleitung fragst.</p>
+    <p class="fortschritt" id="fortschritt">Gesammelte Stempel: 0 von 4</p>
+  </div>
+
+  <div class="blatt expedition-karte" aria-label="Expeditionskarte mit vier Stationen">
+    <svg viewBox="0 0 860 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Karte der Expedition: vier Stationen entlang eines Weges von Ghana nach Osnabrück">
+      <!-- Hintergrund-Deko -->
+      <defs>
+        <pattern id="raster" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M40 0 H0 V40" fill="none" stroke="#D8CDB4" stroke-width=".5" opacity=".5"/>
+        </pattern>
+      </defs>
+      <rect width="860" height="340" fill="url(#raster)"/>
+      <!-- Kompassrose -->
+      <g transform="translate(795,50)" opacity=".55">
+        <circle r="26" fill="none" stroke="#6B6353" stroke-width="1"/>
+        <path d="M0,-24 L5,0 L0,24 L-5,0 Z" fill="#6B6353"/>
+        <text y="-30" text-anchor="middle" font-family="Courier New" font-size="11" fill="#6B6353">N</text>
+      </g>
+      <!-- Route -->
+      <path d="M 90 270 C 200 150, 300 300, 420 210 S 620 80, 760 150"
+            fill="none" stroke="#8B5E3C" stroke-width="2.5" stroke-dasharray="8 7" stroke-linecap="round"/>
+      <!-- Start- und Zielbeschriftung -->
+      <text x="60" y="305" font-family="Courier New" font-size="12" fill="#6B6353">Plantage bei Kumasi</text>
+      <text x="690" y="120" font-family="Courier New" font-size="12" fill="#6B6353">Osnabrück</text>
+      <!-- Stationen -->
+      <g class="station-marker" data-ziel="geo" tabindex="0" role="button" aria-label="Station 1: Am Äquator – Geografie">
+        <circle class="aussen" cx="90" cy="270" r="18" fill="#4A6741"/>
+        <circle cx="90" cy="270" r="18" fill="none" stroke="#2E2A24" stroke-width="1.2"/>
+        <text x="90" y="275" text-anchor="middle" font-family="Courier New" font-size="14" fill="#fff">1</text>
+        <text x="90" y="240" text-anchor="middle" font-family="Courier New" font-size="12" fill="#2E2A24">Am Äquator</text>
+        <text class="karten-stempel" data-stempel="geo" x="118" y="262" font-size="16" visibility="hidden">✔</text>
+      </g>
+      <g class="station-marker" data-ziel="hist" tabindex="0" role="button" aria-label="Station 2: Spuren der Vergangenheit – Geschichte">
+        <circle class="aussen" cx="300" cy="255" r="18" fill="#8B5E3C"/>
+        <circle cx="300" cy="255" r="18" fill="none" stroke="#2E2A24" stroke-width="1.2"/>
+        <text x="300" y="260" text-anchor="middle" font-family="Courier New" font-size="14" fill="#fff">2</text>
+        <text x="300" y="295" text-anchor="middle" font-family="Courier New" font-size="12" fill="#2E2A24">Spuren der Vergangenheit</text>
+        <text class="karten-stempel" data-stempel="hist" x="328" y="247" font-size="16" visibility="hidden">✔</text>
+      </g>
+      <g class="station-marker" data-ziel="wirt" tabindex="0" role="button" aria-label="Station 3: Der Weg des Geldes – Wirtschaft">
+        <circle class="aussen" cx="480" cy="185" r="18" fill="#B08A2E"/>
+        <circle cx="480" cy="185" r="18" fill="none" stroke="#2E2A24" stroke-width="1.2"/>
+        <text x="480" y="190" text-anchor="middle" font-family="Courier New" font-size="14" fill="#fff">3</text>
+        <text x="480" y="155" text-anchor="middle" font-family="Courier New" font-size="12" fill="#2E2A24">Der Weg des Geldes</text>
+        <text class="karten-stempel" data-stempel="wirt" x="508" y="177" font-size="16" visibility="hidden">✔</text>
+      </g>
+      <g class="station-marker" data-ziel="pol" tabindex="0" role="button" aria-label="Station 4: Der Verhandlungstisch – Politik">
+        <circle class="aussen" cx="760" cy="150" r="18" fill="#A93F35"/>
+        <circle cx="760" cy="150" r="18" fill="none" stroke="#2E2A24" stroke-width="1.2"/>
+        <text x="760" y="155" text-anchor="middle" font-family="Courier New" font-size="14" fill="#fff">4</text>
+        <text x="760" y="185" text-anchor="middle" font-family="Courier New" font-size="12" fill="#2E2A24">Der Verhandlungstisch</text>
+        <text class="karten-stempel" data-stempel="pol" x="788" y="142" font-size="16" visibility="hidden">✔</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="stations-grid">
+    <button class="stations-karte" data-ziel="geo">
+      <span class="fach" style="background:var(--geo)">Geografie</span>
+      <h3>Am Äquator</h3>
+      <p>Warum wächst Kakao in Ghana – aber nicht bei uns?</p>
+      <span class="stempel" data-stempel="geo">Station<br>erkundet</span>
+    </button>
+    <button class="stations-karte" data-ziel="hist">
+      <span class="fach" style="background:var(--hist)">Geschichte</span>
+      <h3>Spuren der Vergangenheit</h3>
+      <p>Was hat Schokolade mit Kolonialismus zu tun?</p>
+      <span class="stempel" data-stempel="hist">Station<br>erkundet</span>
+    </button>
+    <button class="stations-karte" data-ziel="wirt">
+      <span class="fach" style="background:var(--wirt)">Wirtschaft</span>
+      <h3>Der Weg des Geldes</h3>
+      <p>Wer verdient wie viel an einem 1,50-€-Riegel?</p>
+      <span class="stempel" data-stempel="wirt">Station<br>erkundet</span>
+    </button>
+    <button class="stations-karte" data-ziel="pol">
+      <span class="fach" style="background:var(--pol)">Politik</span>
+      <h3>Der Verhandlungstisch</h3>
+      <p>Braucht es ein Gesetz für faire Lieferketten?</p>
+      <span class="stempel" data-stempel="pol">Station<br>erkundet</span>
+    </button>
+  </div>
+
+  <div class="blatt" style="margin-top:1.4rem">
+    <h3>Dein Ziel</h3>
+    <p>Am Ende der Expedition erstellst du einen <strong>Expeditionsbericht</strong> in einem Format deiner Wahl –
+    Infografik, Podcast, Plakat, Kommentar oder ein eigener Vorschlag. Empfehlung: Sammle mindestens
+    zwei Stempel, bevor du mit dem Bericht startest. Den Bereich findest du oben unter „✎ Expeditionsbericht".</p>
+    <p class="hinweis">Hinweis: Deine Eingaben werden in dieser Version nicht dauerhaft gespeichert. Notiere
+    wichtige Ergebnisse in deinem Heft oder deinem digitalen Feldtagebuch.</p>
+  </div>
+</section>
+
+<!-- ================================================================
+     MODUL 1 · GEOGRAFIE
+================================================================ -->
+<section class="seite" id="seite-geo" role="tabpanel" aria-labelledby="tab-geo">
+  <div class="blatt modul-geo">
+    <span class="etikett">Station 1 · Geografie</span>
+    <h2>Am Äquator</h2>
+    <div class="ichsatz">
+      <strong>Das nehme ich mit</strong>
+      „Ich kann erklären, warum Kakao nur in bestimmten Regionen der Erde wächst,
+      und die Klimabedingungen in Ghana mit denen in Osnabrück vergleichen."
+    </div>
+
+    <h3>Material A · Der Kakaogürtel</h3>
+    <p>Kakao wächst fast ausschließlich in einem schmalen Band rund um den Äquator –
+    zwischen etwa 23° nördlicher und 23° südlicher Breite. Man nennt dieses Band den
+    <strong>Kakaogürtel</strong>. Die wichtigsten Anbauländer liegen in Westafrika
+    (Elfenbeinküste, Ghana, Nigeria, Kamerun), in Südostasien (Indonesien) und in
+    Lateinamerika (Ecuador, Brasilien). Allein die Elfenbeinküste und Ghana liefern
+    zusammen mehr als die Hälfte des Kakaos weltweit.</p>
+
+    <div class="steckbrief">
+      <h4>Steckbrief · Der Kakaobaum ist eine Diva</h4>
+      <ul>
+        <li>Temperatur: ganzjährig 21–32 °C, niemals unter 16 °C</li>
+        <li>Niederschlag: mindestens 1 200 mm pro Jahr, möglichst gleichmäßig verteilt</li>
+        <li>Hohe Luftfeuchtigkeit, keine langen Trockenzeiten</li>
+        <li>Braucht Schatten größerer Bäume – er wächst im „Unterholz" des Regenwalds</li>
+        <li>Erste Ernte erst nach ca. 4–5 Jahren</li>
+      </ul>
+    </div>
+
+    <h3>Material B · Klimadaten im Vergleich</h3>
+    <div class="tab-scroll">
+      <table class="klima">
+        <caption>Monatsmittelwerte (gerundete Richtwerte)</caption>
+        <tr><th></th><th>Jan</th><th>Feb</th><th>Mär</th><th>Apr</th><th>Mai</th><th>Jun</th><th>Jul</th><th>Aug</th><th>Sep</th><th>Okt</th><th>Nov</th><th>Dez</th><th>Jahr</th></tr>
+        <tr class="stadt"><td colspan="14">Kumasi (Ghana), ca. 270 m ü. M.</td></tr>
+        <tr><td>Temperatur (°C)</td><td>27</td><td>28</td><td>28</td><td>28</td><td>27</td><td>26</td><td>25</td><td>25</td><td>26</td><td>26</td><td>27</td><td>27</td><td>≈ 26,7</td></tr>
+        <tr><td>Niederschlag (mm)</td><td>17</td><td>60</td><td>130</td><td>140</td><td>180</td><td>220</td><td>120</td><td>75</td><td>170</td><td>190</td><td>95</td><td>30</td><td>≈ 1 430</td></tr>
+        <tr class="stadt"><td colspan="14">Osnabrück (Deutschland), ca. 65 m ü. M.</td></tr>
+        <tr><td>Temperatur (°C)</td><td>2</td><td>2</td><td>5</td><td>9</td><td>13</td><td>16</td><td>18</td><td>18</td><td>14</td><td>10</td><td>6</td><td>3</td><td>≈ 9,7</td></tr>
+        <tr><td>Niederschlag (mm)</td><td>70</td><td>55</td><td>65</td><td>45</td><td>60</td><td>70</td><td>80</td><td>75</td><td>65</td><td>65</td><td>65</td><td>75</td><td>≈ 790</td></tr>
+      </table>
+    </div>
+    <p class="quellenangabe">Datenbasis: langjährige Klimamittel, gerundet und didaktisch vereinfacht.</p>
+
+    <!-- Aufgabe 1 -->
+    <div class="aufgabe">
+      <span class="nr">Aufgabe 1 · Den Kakaogürtel verorten</span>
+      <div class="wegwahl" role="group" aria-label="Weg wählen">
+        <button aria-pressed="true" data-weg="basis">Basisweg</button>
+        <button aria-pressed="false" data-weg="exped">Expeditionsweg</button>
+      </div>
+      <div class="weg aktiv" data-weg="basis">
+        <p>Nenne drei Anbauländer aus dem Kakaogürtel. Begründe mithilfe des Steckbriefs
+        in zwei bis drei Sätzen, warum diese Länder für den Kakaoanbau geeignet sind.</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Schau dir an, wo die genannten Länder auf einer Weltkarte oder in deinem Atlas liegen. Was haben sie gemeinsam?</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Vergleiche die Lage der Länder mit den Bedingungen aus dem Steckbrief: Welche Temperatur- und Niederschlagswerte findet der Kakaobaum dort vor?</div></details>
+      </div>
+      <div class="weg" data-weg="exped">
+        <p>Prüfe die These: <em>„Durch den Klimawandel könnte Kakao bald auch in Südeuropa wachsen."</em>
+        Nimm begründet Stellung – nutze dafür den Steckbrief und dein Wissen über das Klima am Mittelmeer.</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Es wird am Mittelmeer wärmer – aber reicht Wärme allein? Gehe alle Bedingungen aus dem Steckbrief einzeln durch.</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Denke besonders an den Sommer am Mittelmeer: Wie sieht es dort mit Regen und Luftfeuchtigkeit aus?</div></details>
+      </div>
+    </div>
+
+    <!-- Aufgabe 2 -->
+    <div class="aufgabe">
+      <span class="nr">Aufgabe 2 · Klimavergleich Kumasi – Osnabrück</span>
+      <div class="wegwahl" role="group" aria-label="Weg wählen">
+        <button aria-pressed="true" data-weg="basis">Basisweg</button>
+        <button aria-pressed="false" data-weg="exped">Expeditionsweg</button>
+      </div>
+      <div class="weg aktiv" data-weg="basis">
+        <p>Werte die Klimatabelle mit diesen Leitfragen aus und notiere deine Antworten:</p>
+        <p>a) Welcher ist der wärmste und der kälteste Monat in Kumasi? Und in Osnabrück?<br>
+        b) Wie stark schwankt die Temperatur im Jahresverlauf – hier und dort?<br>
+        c) Wie verteilt sich der Niederschlag über das Jahr?</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Rechne für beide Städte die Differenz zwischen wärmstem und kältestem Monat aus. Was fällt auf?</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">In Kumasi gibt es keine kalten Monate – aber gibt es dafür trockene und feuchte Zeiten? Vergleiche z. B. Januar und Juni.</div></details>
+      </div>
+      <div class="weg" data-weg="exped">
+        <p>Zeichne aus den Daten für <strong>beide</strong> Orte je ein Klimadiagramm
+        (auf Papier oder digital, z. B. in einer Tabellen-App auf deinem iPad).
+        Formuliere anschließend die zwei entscheidenden Unterschiede in eigenen Worten.</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Ein Klimadiagramm zeigt Temperatur als Linie und Niederschlag als Säulen. Beschrifte beide Achsen.</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">„Entscheidend" heißt: Welche zwei Unterschiede erklären am besten, warum Kakao nur an einem der beiden Orte wächst?</div></details>
+      </div>
+    </div>
+
+    <!-- Aufgabe 3 -->
+    <div class="aufgabe">
+      <span class="nr">Aufgabe 3 · Transfer</span>
+      <div class="wegwahl" role="group" aria-label="Weg wählen">
+        <button aria-pressed="true" data-weg="basis">Basisweg</button>
+        <button aria-pressed="false" data-weg="exped">Expeditionsweg</button>
+      </div>
+      <div class="weg aktiv" data-weg="basis">
+        <p>Erkläre in drei Sätzen, warum in Osnabrück kein Kakao wächst.
+        Nutze dabei mindestens zwei Werte aus der Klimatabelle als Beleg.</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Beginne mit der wichtigsten Bedingung aus dem Steckbrief, die Osnabrück am deutlichsten verfehlt.</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Ein Beleg-Satz könnte so beginnen: „Im Januar liegt die Durchschnittstemperatur in Osnabrück bei nur … °C, der Kakaobaum braucht aber …"</div></details>
+      </div>
+      <div class="weg" data-weg="exped">
+        <p>Denke einen Schritt weiter: <em>Was bedeutet es für ein Land wie Ghana,
+        wenn ein wichtiges Exportprodukt nur dort wachsen kann – und fast nirgendwo sonst?</em>
+        Notiere zwei Chancen und zwei Risiken. (Diese Frage nimmst du mit zur Station „Der Weg des Geldes".)</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Chance: Wer etwas Seltenes hat, kann es verkaufen. Aber wer legt eigentlich den Preis fest?</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Risiko: Was passiert mit Ghana, wenn der Weltmarktpreis für Kakao fällt – oder wenn eine Ernte durch Wetter oder Krankheiten ausfällt?</div></details>
+      </div>
+    </div>
+
+    <h3>Selbstkontrolle</h3>
+    <div class="mc-frage" data-mc="geo-1">
+      <p class="f">1 · Der Kakaogürtel liegt …</p>
+      <label><input type="radio" name="geo-1" value="a"> … rund um den Nordpol, weil Kakao Kälte braucht.</label>
+      <label><input type="radio" name="geo-1" value="b"> … in einem Band rund um den Äquator, etwa zwischen 23° Nord und 23° Süd.</label>
+      <label><input type="radio" name="geo-1" value="c"> … ausschließlich in Südamerika.</label>
+      <button class="pruefen" data-richtig="b">Antwort prüfen</button>
+      <div class="mc-feedback"></div>
+    </div>
+    <div class="mc-frage" data-mc="geo-2">
+      <p class="f">2 · Lies aus der Klimatabelle ab: Wie groß ist der Unterschied zwischen dem wärmsten und dem kältesten Monat in Kumasi ungefähr?</p>
+      <label><input type="radio" name="geo-2" value="a"> Etwa 3 °C – es ist das ganze Jahr über ähnlich warm.</label>
+      <label><input type="radio" name="geo-2" value="b"> Etwa 16 °C – ähnlich wie in Osnabrück.</label>
+      <label><input type="radio" name="geo-2" value="c"> Etwa 30 °C – die Jahreszeiten sind extrem.</label>
+      <button class="pruefen" data-richtig="a">Antwort prüfen</button>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <details class="muster">
+      <summary>Musterantwort zu Aufgabe 2 (Basisweg) anzeigen</summary>
+      <div class="inhalt">
+        <p>In Kumasi ist es das ganze Jahr über etwa gleich warm: Der wärmste Monat (Februar/März, ca. 28 °C)
+        und der kühlste Monat (Juli/August, ca. 25 °C) liegen nur rund 3 °C auseinander. In Osnabrück dagegen
+        schwankt die Temperatur stark – vom Januar (ca. 2 °C) bis zum Juli (ca. 18 °C) sind es rund 16 °C Unterschied.</p>
+        <p>Beim Niederschlag ist es umgekehrt: In Osnabrück regnet es das ganze Jahr über ziemlich gleichmäßig
+        (etwa 45–80 mm pro Monat). In Kumasi gibt es dagegen feuchte Zeiten (z. B. Juni mit ca. 220 mm) und
+        eine kurze Trockenzeit (z. B. Januar mit nur ca. 17 mm) – insgesamt fällt dort mit rund 1 430 mm aber
+        fast doppelt so viel Regen wie in Osnabrück.</p>
+        <p><em>Vergleiche: Hast du die Schwankungen bei Temperatur und Niederschlag erkannt und mit Zahlen belegt?</em></p>
+      </div>
+    </details>
+
+    <div class="ampel" data-modul="geo">
+      <p class="frage">Ampel-Check: Wie sicher fühlst du dich beim Ziel dieser Station?</p>
+      <div class="lichter">
+        <button data-farbe="gruen"><span class="punkt p-gruen"></span> Ich kann es erklären</button>
+        <button data-farbe="gelb"><span class="punkt p-gelb"></span> Ich kann es teilweise</button>
+        <button data-farbe="rot"><span class="punkt p-rot"></span> Ich brauche Unterstützung</button>
+      </div>
+      <p class="reflexion" data-r="gruen">Stark! Notiere in einem Satz, was dir am meisten geholfen hat – das ist dein Merksatz fürs Feldtagebuch.</p>
+      <p class="reflexion" data-r="gelb">Gut unterwegs. Notiere, welcher Teil noch unsicher ist, und öffne dazu noch einmal die Impulse oder die Musterantwort.</p>
+      <p class="reflexion" data-r="rot">Kein Problem – dafür ist die Expedition da. Notiere deine konkrete Frage und bring sie ins nächste Gespräch mit deiner Lernbegleitung mit.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     MODUL 2 · GESCHICHTE
+================================================================ -->
+<section class="seite" id="seite-hist" role="tabpanel" aria-labelledby="tab-hist">
+  <div class="blatt modul-hist">
+    <span class="etikett">Station 2 · Geschichte</span>
+    <h2>Spuren der Vergangenheit</h2>
+    <div class="ichsatz">
+      <strong>Das nehme ich mit</strong>
+      „Ich kann an Quellen zeigen, wie der Kakaohandel mit dem Kolonialismus verbunden war,
+      und Ereignisse in eine zeitliche Ordnung bringen."
+    </div>
+
+    <p>Ghana hieß bis 1957 „Goldküste" – und war eine britische Kolonie. Genau in dieser Zeit
+    wurde das Gebiet zum größten Kakaoexporteur der Welt. Zufall? Um das zu klären, brauchst du
+    das wichtigste Werkzeug der Geschichtswissenschaft: <strong>Quellen</strong> – und einen kritischen Blick darauf.</p>
+
+    <div class="methodenkasten">
+      <h4>Methodenkasten · Quellen befragen</h4>
+      <ul>
+        <li><strong>Wer</strong> hat die Quelle verfasst? In welcher Rolle?</li>
+        <li><strong>Wann</strong> und <strong>wo</strong> ist sie entstanden?</li>
+        <li><strong>Für wen</strong> wurde sie geschrieben?</li>
+        <li><strong>Mit welcher Absicht</strong>? Was will der Verfasser erreichen?</li>
+        <li><strong>Was fehlt?</strong> Welche Perspektive kommt nicht vor?</li>
+      </ul>
+    </div>
+
+    <h3>Material A · Zwei Stimmen aus derselben Zeit</h3>
+    <div class="quelle" data-label="Quelle A">
+      <p>„Der Fortschritt an der Goldküste ist unverkennbar. Unsere Gesellschaft hat Straßen und
+      eine Eisenbahn bis in das Landesinnere gebaut, sodass die Kakaoernte nun zügig die Häfen erreicht.
+      Die Eingeborenen lernen unter unserer Anleitung geordnete Arbeit und verlässlichen Handel.
+      Die Ausfuhr von Kakao hat sich binnen zehn Jahren vervielfacht – zum Wohle des Empire
+      und, wie ich meine, auch zu ihrem eigenen."</p>
+      <p class="quellenangabe">Aus dem Bericht eines britischen Handelsvertreters an seine Handelsgesellschaft,
+      Goldküste, um 1905. Didaktisch bearbeitete und gekürzte Fassung nach zeitgenössischen Berichten.</p>
+    </div>
+    <div class="quelle" data-label="Quelle B">
+      <p>„Die Bauern erhalten für ihre Säcke einen Preis, den die Aufkäufer der Gesellschaften
+      untereinander festlegen – widersprechen können sie nicht, denn andere Käufer gibt es nicht.
+      Wer die Kopfsteuer nicht zahlen kann, muss sie beim Straßen- und Bahnbau abarbeiten.
+      Ich habe Träger gesehen, darunter halbe Kinder, die tagelang schwere Lasten zu den
+      Sammelstellen schleppten, für einen Lohn, der kaum für das Essen reicht."</p>
+      <p class="quellenangabe">Aus dem Bericht eines europäischen Missionars über seine Reise durch
+      das Kakao-Anbaugebiet, um 1905. Didaktisch bearbeitete und gekürzte Fassung nach zeitgenössischen Berichten.</p>
+    </div>
+
+    <!-- Aufgabe 1 -->
+    <div class="aufgabe">
+      <span class="nr">Aufgabe 1 · Quellenarbeit</span>
+      <div class="wegwahl" role="group" aria-label="Weg wählen">
+        <button aria-pressed="true" data-weg="basis">Basisweg</button>
+        <button aria-pressed="false" data-weg="exped">Expeditionsweg</button>
+      </div>
+      <div class="weg aktiv" data-weg="basis">
+        <p>Erschließe <strong>Quelle A</strong> Schritt für Schritt mit dem Methodenkasten.
+        Beantworte jede der fünf Fragen in einem kurzen Satz in deinem Feldtagebuch.</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Zur Frage „Mit welcher Absicht?": An wen schreibt der Verfasser – und wovon hängt vermutlich sein Erfolg (und sein Gehalt) ab?</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Zur Frage „Was fehlt?": Wessen Sicht auf Eisenbahn, Arbeit und Handel kommt in Quelle A überhaupt nicht vor?</div></details>
+      </div>
+      <div class="weg" data-weg="exped">
+        <p>Vergleiche <strong>beide Quellen</strong>: An welchen Stellen widersprechen sie sich?
+        Erkläre die Widersprüche mithilfe des Methodenkastens – wie kommt es, dass zwei Menschen
+        dieselbe Zeit so unterschiedlich beschreiben?</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Beide erwähnen die Eisenbahn und die Arbeit. Stelle die Aussagen in einer Tabelle direkt gegenüber.</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Frage bei beiden: Wem nützt es, wenn seine Darstellung geglaubt wird? Beachte: Auch Quelle B ist eine Perspektive – von außen, nicht von den Bauern selbst.</div></details>
+      </div>
+    </div>
+
+    <!-- Aufgabe 2: Zeitstrahl -->
+    <div class="aufgabe">
+      <span class="nr">Aufgabe 2 · Der Zeitstrahl der Bohne</span>
+      <div class="wegwahl" role="group" aria-label="Weg wählen">
+        <button aria-pressed="true" data-weg="basis">Basisweg (mit Jahreszahlen)</button>
+        <button aria-pressed="false" data-weg="exped">Expeditionsweg (ohne Jahreszahlen)</button>
+      </div>
+      <p>Bringe die sieben Ereigniskarten mit den Pfeiltasten in die richtige zeitliche Reihenfolge –
+      das älteste Ereignis nach oben. Prüfe anschließend deine Lösung.</p>
+      <ol class="sortier-liste" id="zeitstrahl" aria-label="Zeitstrahl zum Sortieren"></ol>
+      <div class="sortier-buttons">
+        <button id="zeitstrahl-pruefen">Reihenfolge prüfen</button>
+        <button id="zeitstrahl-mischen">Neu mischen</button>
+      </div>
+      <p class="sortier-ergebnis" id="zeitstrahl-ergebnis"></p>
+      <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Zwei Anker helfen: Kakao kam lange vor der Kolonialzeit nach Europa – und Ghanas Unabhängigkeit liegt nach den Weltkriegen.</div></details>
+      <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Überlege logisch: Erst muss es Tafelschokolade geben, bevor die Nachfrage nach Kakao riesig wird – und erst danach lohnt sich der Anbau im großen Stil.</div></details>
+    </div>
+
+    <!-- Aufgabe 3 -->
+    <div class="aufgabe">
+      <span class="nr">Aufgabe 3 · Ein Urteil vorbereiten</span>
+      <div class="wegwahl" role="group" aria-label="Weg wählen">
+        <button aria-pressed="true" data-weg="basis">Basisweg</button>
+        <button aria-pressed="false" data-weg="exped">Expeditionsweg</button>
+      </div>
+      <div class="weg aktiv" data-weg="basis">
+        <p>Vervollständige die folgenden Satzanfänge in deinem Feldtagebuch – belege jeweils mit einer Stelle aus den Quellen:</p>
+        <p>a) „Der Kakaohandel um 1900 war ungerecht organisiert, weil …"<br>
+        b) „Die Kolonialmacht profitierte, indem …"<br>
+        c) „Aus Quelle A allein würde man das nicht erfahren, denn …"</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Für a) und b): In Quelle B steckt beides – schau auf Preise und auf die Kopfsteuer.</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">„Belegen" heißt: Nimm ein kurzes Zitat oder eine konkrete Information aus der Quelle in deinen Satz auf.</div></details>
+      </div>
+      <div class="weg" data-weg="exped">
+        <p>Schreibe einen Kurztext (ca. 10 Sätze): <em>„Welche Spuren der Kolonialzeit erkennst du im
+        heutigen Kakaohandel?"</em> Nutze dein Wissen aus den Quellen und dem Zeitstrahl.
+        (Wenn du Station 3 schon bearbeitet hast: Die Preisverteilung liefert dir ein starkes Argument.)</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Vergleiche: Wer baute damals an, wer verarbeitete und verkaufte? Und wie ist diese Aufteilung heute?</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Fachleute nennen solche fortbestehenden Strukturen „koloniale Kontinuitäten". Prüfe: Passt der Begriff zu dem, was du beobachtest – oder hat sich Entscheidendes geändert?</div></details>
+      </div>
+    </div>
+
+    <h3>Selbstkontrolle</h3>
+    <div class="mc-frage" data-mc="hist-1">
+      <p class="f">1 · Warum fragt man bei einer Quelle zuerst, wer sie verfasst hat und mit welcher Absicht?</p>
+      <label><input type="radio" name="hist-1" value="a"> Weil alte Texte sonst zu schwer zu lesen sind.</label>
+      <label><input type="radio" name="hist-1" value="b"> Weil jede Quelle aus einer Perspektive geschrieben ist und Interessen des Verfassers enthalten kann.</label>
+      <label><input type="radio" name="hist-1" value="c"> Weil nur berühmte Verfasser zuverlässige Quellen schreiben.</label>
+      <button class="pruefen" data-richtig="b">Antwort prüfen</button>
+      <div class="mc-feedback"></div>
+    </div>
+    <div class="mc-frage" data-mc="hist-2">
+      <p class="f">2 · In welchem Jahr wurde Ghana unabhängig – als erstes Land Subsahara-Afrikas, das die Kolonialherrschaft beendete?</p>
+      <label><input type="radio" name="hist-2" value="a"> 1902</label>
+      <label><input type="radio" name="hist-2" value="b"> 1957</label>
+      <label><input type="radio" name="hist-2" value="c"> 1992</label>
+      <button class="pruefen" data-richtig="b">Antwort prüfen</button>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <details class="muster">
+      <summary>Musterantwort zu Aufgabe 1 (Expeditionsweg) anzeigen</summary>
+      <div class="inhalt">
+        <p>Die Quellen widersprechen sich vor allem in zwei Punkten. Erstens bei der Arbeit: Quelle A spricht
+        von „geordneter Arbeit", die die Menschen „lernen" – Quelle B beschreibt dagegen Zwang (Abarbeiten der
+        Kopfsteuer) und sehr niedrige Löhne, sogar bei Kindern. Zweitens beim Nutzen: Quelle A behauptet, der
+        Handel nütze „auch" den Einheimischen – Quelle B zeigt, dass die Bauern die Preise nicht mitbestimmen können.</p>
+        <p>Erklären lassen sich die Widersprüche über die Verfasser: Der Handelsvertreter schreibt an seine eigene
+        Gesellschaft – er will Erfolge melden, von denen seine Stellung abhängt. Der Missionar schreibt als
+        Außenstehender, der die Zustände kritisch dokumentiert. Wichtig bleibt: Beide sind Europäer. Die Sicht
+        der ghanaischen Bäuerinnen und Bauern selbst fehlt in beiden Quellen – das muss ein Urteil berücksichtigen.</p>
+      </div>
+    </details>
+
+    <div class="ampel" data-modul="hist">
+      <p class="frage">Ampel-Check: Wie sicher fühlst du dich beim Ziel dieser Station?</p>
+      <div class="lichter">
+        <button data-farbe="gruen"><span class="punkt p-gruen"></span> Ich kann es erklären</button>
+        <button data-farbe="gelb"><span class="punkt p-gelb"></span> Ich kann es teilweise</button>
+        <button data-farbe="rot"><span class="punkt p-rot"></span> Ich brauche Unterstützung</button>
+      </div>
+      <p class="reflexion" data-r="gruen">Stark! Notiere in einem Satz, woran du eine einseitige Quelle künftig erkennst.</p>
+      <p class="reflexion" data-r="gelb">Gut unterwegs. Welcher Schritt des Methodenkastens fällt dir noch schwer? Notiere ihn.</p>
+      <p class="reflexion" data-r="rot">Kein Problem. Notiere deine konkrete Frage zu den Quellen und besprich sie mit deiner Lernbegleitung.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     MODUL 3 · WIRTSCHAFT
+================================================================ -->
+<section class="seite" id="seite-wirt" role="tabpanel" aria-labelledby="tab-wirt">
+  <div class="blatt modul-wirt">
+    <span class="etikett">Station 3 · Wirtschaft</span>
+    <h2>Der Weg des Geldes</h2>
+    <div class="ichsatz">
+      <strong>Das nehme ich mit</strong>
+      „Ich kann die Wertschöpfungskette eines Schokoriegels beschreiben und beurteilen,
+      wie fair der Preis von 1,50 € verteilt ist."
+    </div>
+
+    <h3>Material A · Von der Bohne zum Riegel</h3>
+    <p>Bis aus einer Kakaobohne ein Schokoriegel wird, durchläuft sie viele Stationen. Bei jeder
+    Station kommt Arbeit hinzu – und der Wert des Produkts steigt. Diese Kette von Arbeitsschritten
+    nennt man <strong>Wertschöpfungskette</strong>. Wer an welcher Stelle der Kette sitzt, entscheidet
+    darüber, wie viel vom Endpreis dort hängen bleibt.</p>
+
+    <!-- Aufgabe 1: Kette sortieren -->
+    <div class="aufgabe">
+      <span class="nr">Aufgabe 1 · Die Kette rekonstruieren</span>
+      <div class="wegwahl" role="group" aria-label="Weg wählen">
+        <button aria-pressed="true" data-weg="basis">Basisweg</button>
+        <button aria-pressed="false" data-weg="exped">Expeditionsweg</button>
+      </div>
+      <p>Bringe die sieben Stationen der Wertschöpfungskette mit den Pfeiltasten in die richtige
+      Reihenfolge – vom Anfang der Kette (oben) bis zum Ende (unten). Prüfe dann deine Lösung.</p>
+      <ol class="sortier-liste" id="kette" aria-label="Wertschöpfungskette zum Sortieren"></ol>
+      <div class="sortier-buttons">
+        <button id="kette-pruefen">Reihenfolge prüfen</button>
+        <button id="kette-mischen">Neu mischen</button>
+      </div>
+      <p class="sortier-ergebnis" id="kette-ergebnis"></p>
+      <div class="weg aktiv" data-weg="basis">
+        <p>Notiere anschließend zu jeder Station einen Satz: Was passiert hier – und was wird dadurch wertvoller?</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Starte ganz am Anfang: Was muss passieren, bevor überhaupt eine Bohne geerntet werden kann?</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Fermentieren und Trocknen passiert noch auf oder nahe der Farm – das Rösten und Mahlen dagegen meist in großen Fabriken. Wo stehen diese Fabriken wohl?</div></details>
+      </div>
+      <div class="weg" data-weg="exped">
+        <p>Überlege nach dem Sortieren: An welcher Stelle der Kette steigt der Wert am stärksten –
+        und warum ausgerechnet dort? Notiere eine begründete Vermutung, bevor du zu Aufgabe 2 gehst.</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Frage dich bei jeder Station: Wie leicht könnte jemand anderes diesen Schritt übernehmen? Je schwerer ersetzbar, desto mehr bleibt dort hängen.</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Denke an Markennamen, Werbung und Rezepturen: Wo in der Kette entstehen sie – und was machen sie mit dem Preis?</div></details>
+      </div>
+    </div>
+
+    <!-- Aufgabe 2: Preis-Schätzer -->
+    <div class="aufgabe">
+      <span class="nr">Aufgabe 2 · 1,50 € zerlegen</span>
+      <div class="wegwahl" role="group" aria-label="Weg wählen">
+        <button aria-pressed="true" data-weg="basis">Basisweg</button>
+        <button aria-pressed="false" data-weg="exped">Expeditionsweg</button>
+      </div>
+      <div class="weg aktiv" data-weg="basis">
+        <p>Schätze zuerst, dann prüfe: Verteile die 1,50 € mit den Reglern auf die sechs Beteiligten.
+        Decke danach die tatsächliche Verteilung auf und beantworte: <strong>Wie viel Cent erreichen die
+        Kakaobäuerinnen und -bauern? Was überrascht dich am meisten?</strong></p>
+      </div>
+      <div class="weg" data-weg="exped">
+        <p>Schätze zuerst mit den Reglern, decke dann auf – und erkläre anschließend die größte Abweichung
+        zwischen deiner Schätzung und der Wirklichkeit: <strong>Warum hast du dich dort vertan? Und warum
+        ist die tatsächliche Verteilung so, wie sie ist?</strong> Formuliere zwei Erklärungshypothesen.</p>
+      </div>
+
+      <div class="preis-werkzeug" id="preis-werkzeug">
+        <p class="balken-titel">Deine Schätzung (Ziel: zusammen 1,50 €)</p>
+        <div id="preis-regler"></div>
+        <p class="preis-summe" id="preis-summe">Summe deiner Schätzung: 0,00 €</p>
+        <button class="aufdecken-btn" id="preis-aufdecken">Tatsächliche Verteilung aufdecken</button>
+        <div class="balken-vergleich" id="balken-vergleich">
+          <p class="balken-titel">Deine Schätzung</p>
+          <div class="balken" id="balken-schaetzung"></div>
+          <p class="balken-titel">Tatsächliche Verteilung (Richtwerte)</p>
+          <div class="balken" id="balken-echt"></div>
+          <div class="legende" id="preis-legende"></div>
+          <p class="quellenangabe">Richtwerte für eine konventionelle Milchschokolade, vereinfacht nach Studien
+          zur Kakao-Wertschöpfung (u. a. Cocoa Barometer). Je nach Produkt und Jahr schwanken die Anteile.</p>
+        </div>
+      </div>
+      <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Denke daran: Auch der Staat verdient mit (Mehrwertsteuer) – und der Supermarkt hat Miete, Personal und Gewinn einzurechnen.</div></details>
+      <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Zum Erklären hilft Aufgabe 1: Wer in der Kette ist leicht austauschbar, wer nicht? Millionen Farmen verkaufen an wenige große Aufkäufer – was macht das mit der Verhandlungsmacht?</div></details>
+    </div>
+
+    <!-- Aufgabe 3 -->
+    <div class="aufgabe">
+      <span class="nr">Aufgabe 3 · Fairness beurteilen</span>
+      <div class="wegwahl" role="group" aria-label="Weg wählen">
+        <button aria-pressed="true" data-weg="basis">Basisweg</button>
+        <button aria-pressed="false" data-weg="exped">Expeditionsweg</button>
+      </div>
+      <div class="weg aktiv" data-weg="basis">
+        <p>„Fairtrade-Schokolade kostet mehr – lohnt sich das?" Lege in deinem Feldtagebuch eine
+        Pro-/Contra-Tabelle an und sortiere diese Argumentkarten ein. Ergänze ein eigenes Argument:</p>
+        <p style="font-size:.92rem">
+        ▸ Bäuerinnen und Bauern erhalten einen garantierten Mindestpreis.<br>
+        ▸ Auch bei Fairtrade kommt nur ein Teil des Aufpreises auf der Farm an.<br>
+        ▸ Nicht jede Familie kann sich teurere Schokolade leisten.<br>
+        ▸ Der Mindestpreis schützt, wenn der Weltmarktpreis abstürzt.<br>
+        ▸ Siegel sind für Verbraucher:innen schwer zu durchschauen.<br>
+        ▸ Prämien finanzieren Schulen und Brunnen in den Anbaugemeinden.</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Prüfe jede Karte: Aus wessen Sicht ist das ein Vorteil oder Nachteil – aus Sicht der Bäuerin oder der Käuferin?</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Ein eigenes Argument findest du über die Preisverteilung aus Aufgabe 2: Was würde ein höherer Bäuer:innen-Anteil am Gesamtpreis wirklich kosten?</div></details>
+      </div>
+      <div class="weg" data-weg="exped">
+        <p>Schreibe ein begründetes Kurzurteil (ca. 8 Sätze) zur Frage <em>„Fairtrade-Schokolade kaufen –
+        lohnt sich das?"</em> mit mindestens zwei Argumenten für deine Position und einem ernst genommenen Gegenargument.</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Lege zuerst dein Kriterium fest: Beurteilst du nach Wirkung für die Bäuer:innen, nach Kosten für Käufer:innen – oder nach etwas Drittem?</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Ein Gegenargument „ernst nehmen" heißt: es fair wiedergeben und dann begründen, warum dein Argument trotzdem schwerer wiegt.</div></details>
+      </div>
+    </div>
+
+    <h3>Selbstkontrolle</h3>
+    <div class="mc-frage" data-mc="wirt-1">
+      <p class="f">1 · Was beschreibt der Begriff „Wertschöpfungskette"?</p>
+      <label><input type="radio" name="wirt-1" value="a"> Die Kette der Arbeitsschritte, bei denen ein Produkt Stufe für Stufe wertvoller wird.</label>
+      <label><input type="radio" name="wirt-1" value="b"> Eine Liste aller Zutaten eines Produkts.</label>
+      <label><input type="radio" name="wirt-1" value="c"> Die Transportroute eines Produkts von A nach B.</label>
+      <button class="pruefen" data-richtig="a">Antwort prüfen</button>
+      <div class="mc-feedback"></div>
+    </div>
+    <div class="mc-frage" data-mc="wirt-2">
+      <p class="f">2 · Wie viel von einem 1,50-€-Riegel erreicht ungefähr die Kakaobäuerinnen und -bauern?</p>
+      <label><input type="radio" name="wirt-2" value="a"> Rund 75 Cent – also die Hälfte.</label>
+      <label><input type="radio" name="wirt-2" value="b"> Rund 10 Cent – also etwa 7 Prozent.</label>
+      <label><input type="radio" name="wirt-2" value="c"> Rund 40 Cent – also etwa ein Viertel.</label>
+      <button class="pruefen" data-richtig="b">Antwort prüfen</button>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <details class="muster">
+      <summary>Musterantwort zu Aufgabe 3 (Expeditionsweg) anzeigen – als ein mögliches Urteil</summary>
+      <div class="inhalt">
+        <p>Mein Kriterium ist die Wirkung für die Menschen am Anfang der Kette. Daran gemessen lohnt sich
+        Fairtrade-Schokolade: Der garantierte Mindestpreis schützt die Familien, wenn der Weltmarktpreis
+        einbricht – genau das Risiko, das entsteht, wenn ein Land stark von einem einzigen Exportprodukt
+        abhängt. Außerdem finanzieren die Prämien Gemeinschaftsprojekte wie Schulen, die allen im Dorf nützen.</p>
+        <p>Das stärkste Gegenargument nehme ich ernst: Auch bei Fairtrade kommt nur ein Teil des Aufpreises
+        auf der Farm an, und der Bäuer:innen-Anteil am Gesamtpreis bleibt klein. Das stimmt – aber ein
+        garantierter, etwas höherer Preis ist für eine Familie ein echter Unterschied, auch wenn er das
+        System nicht komplett verändert. Deshalb komme ich zu dem Urteil: Fairtrade ist kein Allheilmittel,
+        aber ein sinnvoller Schritt – solange politische Regeln fehlen, die für die ganze Branche gelten.</p>
+        <p><em>Wichtig: Das ist ein mögliches Urteil, nicht das „richtige". Entscheidend ist, dass Kriterium,
+        Argumente und Gegenargument klar erkennbar sind.</em></p>
+      </div>
+    </details>
+
+    <div class="ampel" data-modul="wirt">
+      <p class="frage">Ampel-Check: Wie sicher fühlst du dich beim Ziel dieser Station?</p>
+      <div class="lichter">
+        <button data-farbe="gruen"><span class="punkt p-gruen"></span> Ich kann es erklären</button>
+        <button data-farbe="gelb"><span class="punkt p-gelb"></span> Ich kann es teilweise</button>
+        <button data-farbe="rot"><span class="punkt p-rot"></span> Ich brauche Unterstützung</button>
+      </div>
+      <p class="reflexion" data-r="gruen">Stark! Notiere die eine Zahl aus dieser Station, die du dir merken willst – und warum.</p>
+      <p class="reflexion" data-r="gelb">Gut unterwegs. Kette oder Preisverteilung – was ist noch wackelig? Notiere es für dein nächstes Coaching.</p>
+      <p class="reflexion" data-r="rot">Kein Problem. Starte beim nächsten Mal mit der Ketten-Übung und hole dir dann einen Impuls dazu.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     MODUL 4 · POLITIK
+================================================================ -->
+<section class="seite" id="seite-pol" role="tabpanel" aria-labelledby="tab-pol">
+  <div class="blatt modul-pol">
+    <span class="etikett">Station 4 · Politik</span>
+    <h2>Der Verhandlungstisch</h2>
+    <div class="ichsatz">
+      <strong>Das nehme ich mit</strong>
+      „Ich kann verschiedene Positionen zum Lieferkettengesetz vergleichen
+      und ein eigenes begründetes Urteil fällen."
+    </div>
+
+    <h3>Material A · Worum geht es?</h3>
+    <p>Seit 2023 gilt in Deutschland das <strong>Lieferkettensorgfaltspflichtengesetz</strong> – kurz:
+    Lieferkettengesetz. Es verpflichtet große Unternehmen, auf Menschenrechte und Umweltschutz zu achten,
+    und zwar nicht nur im eigenen Betrieb, sondern entlang ihrer Lieferkette – also z. B. auch bei
+    Kakao-Zulieferern in Ghana. Bei Verstößen drohen Bußgelder. Auf EU-Ebene wurde eine ähnliche Regelung
+    für ganz Europa beschlossen; über deren genaue Ausgestaltung wird politisch weiter gerungen.</p>
+    <p class="hinweis">Vereinfachte Darstellung. Die Regeln werden politisch laufend weiterentwickelt –
+    recherchiere für den aktuellen Stand z. B. bei der Bundeszentrale für politische Bildung.</p>
+
+    <h3>Material B · Vier Stimmen am Verhandlungstisch</h3>
+    <div class="positionen">
+      <div class="positionskarte">
+        <span class="wer">Position 1 · Unternehmerverband</span>
+        <h4>„Gut gemeint, aber eine Bürokratie-Lawine"</h4>
+        <p class="kern">Das Gesetz überfordert Unternehmen und schadet dem Standort Deutschland.</p>
+        <ul>
+          <li>Die Dokumentationspflichten kosten viel Geld und Personal – das trifft am Ende auch kleinere Zulieferer.</li>
+          <li>Firmen aus Ländern ohne solche Gesetze haben einen Wettbewerbsvorteil; manche Unternehmen ziehen sich lieber ganz aus schwierigen Ländern zurück.</li>
+        </ul>
+      </div>
+      <div class="positionskarte">
+        <span class="wer">Position 2 · Menschenrechtsorganisation</span>
+        <h4>„Ein Anfang – aber viel zu zahnlos"</h4>
+        <p class="kern">Das Gesetz geht nicht weit genug, um Ausbeutung wirklich zu stoppen.</p>
+        <ul>
+          <li>Es gilt nur für sehr große Unternehmen – viele Firmen sind gar nicht erfasst.</li>
+          <li>Betroffene, etwa Kakaobauernfamilien, können vor deutschen Gerichten kaum selbst auf Schadensersatz klagen; Kontrollen sind selten.</li>
+        </ul>
+      </div>
+      <div class="positionskarte">
+        <span class="wer">Position 3 · Kakaobäuerin aus Ghana</span>
+        <h4>„Was ändert sich für uns – konkret?"</h4>
+        <p class="kern">Papier aus Europa hilft nur, wenn am Ende mehr Geld und Sicherheit auf der Farm ankommen.</p>
+        <ul>
+          <li>Wenn Konzerne nur Formulare von uns verlangen, aber die gleichen niedrigen Preise zahlen, ändert sich nichts.</li>
+          <li>Es könnte sogar schaden: Wer die neuen Nachweise nicht liefern kann, verliert vielleicht seinen Abnehmer.</li>
+        </ul>
+      </div>
+      <div class="positionskarte">
+        <span class="wer">Position 4 · Verbraucher in Deutschland</span>
+        <h4>„Verantwortung ja – aber wer bezahlt sie?"</h4>
+        <p class="kern">Faire Lieferketten sind richtig, dürfen aber nicht allein auf die Kund:innen abgewälzt werden.</p>
+        <ul>
+          <li>Ich kann im Supermarkt nicht jede Lieferkette selbst prüfen – dafür braucht es verlässliche Regeln.</li>
+          <li>Wenn Produkte teurer werden, trifft das Familien mit wenig Geld am stärksten.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Aufgabe 1 -->
+    <div class="aufgabe">
+      <span class="nr">Aufgabe 1 · Positionen erfassen</span>
+      <div class="wegwahl" role="group" aria-label="Weg wählen">
+        <button aria-pressed="true" data-weg="basis">Basisweg</button>
+        <button aria-pressed="false" data-weg="exped">Expeditionsweg</button>
+      </div>
+      <div class="weg aktiv" data-weg="basis">
+        <p>Lege in deinem Feldtagebuch ein Raster mit vier Zeilen an. Halte zu jeder Positionskarte
+        die Kernaussage in <strong>einem</strong> eigenen Satz fest – ohne abzuschreiben.</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Ein guter Kernsatz beantwortet: Ist die Person eher für oder gegen das Gesetz – und was ist ihr wichtigster Grund?</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Achtung bei Position 2 und 3: Beide klingen kritisch – aber kritisieren sie das Gesetz aus derselben Richtung?</div></details>
+      </div>
+      <div class="weg" data-weg="exped">
+        <p>Erstelle das Raster mit einer zusätzlichen Spalte „Interesse": Welche Interessen stecken
+        hinter jeder Position? Wovon hängt das Wohl der jeweiligen Gruppe ab?</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Frage bei jeder Karte: Was hätte diese Gruppe zu gewinnen, was zu verlieren, wenn das Gesetz verschärft würde?</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Interessen sind nicht automatisch verwerflich – auch die Menschenrechtsorganisation „will" etwas. Formuliere neutral.</div></details>
+      </div>
+    </div>
+
+    <!-- Aufgabe 2 -->
+    <div class="aufgabe">
+      <span class="nr">Aufgabe 2 · Positionen ins Gespräch bringen</span>
+      <div class="wegwahl" role="group" aria-label="Weg wählen">
+        <button aria-pressed="true" data-weg="basis">Basisweg</button>
+        <button aria-pressed="false" data-weg="exped">Expeditionsweg</button>
+      </div>
+      <div class="weg aktiv" data-weg="basis">
+        <p>Wähle zwei Positionskarten aus, zwischen denen du den stärksten Konflikt siehst.
+        Benenne den Konflikt in zwei Sätzen: <em>„… will vor allem …, während … befürchtet, dass …"</em></p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Ein starker Konflikt liegt vor, wenn die Wünsche der einen Seite die Befürchtungen der anderen direkt auslösen.</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Probiere Position 1 gegen Position 2 – oder den überraschenderen Konflikt zwischen Position 2 und 3.</div></details>
+      </div>
+      <div class="weg" data-weg="exped">
+        <p>Schreibe einen fiktiven Kurz-Dialog (6–8 Sätze) zwischen zwei Positionen deiner Wahl –
+        z. B. als Wortwechsel in einer Talkshow. Beide Seiten sollen ihr stärkstes Argument unterbringen
+        und einmal direkt aufeinander reagieren.</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">„Direkt reagieren" heißt: Die zweite Person greift ein Wort oder Argument der ersten auf – und dreht es um oder entkräftet es.</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Lass beide Seiten stark sein. Ein Dialog, in dem eine Seite nur verliert, ist kein echter Verhandlungstisch.</div></details>
+      </div>
+    </div>
+
+    <!-- Aufgabe 3 -->
+    <div class="aufgabe">
+      <span class="nr">Aufgabe 3 · Dein Urteil</span>
+      <div class="wegwahl" role="group" aria-label="Weg wählen">
+        <button aria-pressed="true" data-weg="basis">Basisweg</button>
+        <button aria-pressed="false" data-weg="exped">Expeditionsweg</button>
+      </div>
+      <p><strong>So geht begründetes Urteilen:</strong> ① Kriterium nennen (Woran misst du?) →
+      ② Argumente abwägen (auch die Gegenseite!) → ③ Position beziehen.</p>
+      <div class="weg aktiv" data-weg="basis">
+        <p>Baue dein Urteil mit diesem Gerüst in deinem Feldtagebuch:</p>
+        <p>„Für mich ist am wichtigsten, dass … (Kriterium).<br>
+        Dafür spricht … (Argument 1). Außerdem … (Argument 2).<br>
+        Allerdings muss man bedenken, dass … (Gegenargument aus einer der Karten).<br>
+        Trotzdem/Deshalb komme ich zu dem Urteil: Das Lieferkettengesetz sollte … (beibehalten / verschärft / vereinfacht / abgeschafft) werden, weil …"</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Mögliche Kriterien: Wirkung für die Menschen im Anbauland, Kosten für Unternehmen, Verlässlichkeit für Verbraucher:innen. Wähle eins.</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Das Gegenargument nimmst du am besten von der Position, die deinem Urteil am stärksten widerspricht.</div></details>
+      </div>
+      <div class="weg" data-weg="exped">
+        <p>Schreibe ein freies Urteil (ca. 10–12 Sätze) zur Frage <em>„Braucht es ein (schärferes)
+        Lieferkettengesetz?"</em>. Pflicht: ein klar benanntes Kriterium und mindestens eine Gegenposition,
+        die du ernsthaft aufgreifst, bevor du sie entkräftest oder ihr teilweise recht gibst.</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Die stärkste Gegenposition ist oft Position 3: Nützt das Gesetz den Menschen, um die es geht, wirklich? Wenn du dafür bist, musst du hierauf antworten.</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">„Teilweise recht geben" ist erlaubt und stark: Du kannst für das Gesetz sein und trotzdem eine Schwäche zugeben – sag dann, wie sie behoben werden könnte.</div></details>
+      </div>
+    </div>
+
+    <h3>Selbstkontrolle</h3>
+    <div class="mc-frage" data-mc="pol-1">
+      <p class="f">1 · Was regelt das deutsche Lieferkettengesetz im Kern?</p>
+      <label><input type="radio" name="pol-1" value="a"> Es legt einen Mindestpreis für Kakao auf dem Weltmarkt fest.</label>
+      <label><input type="radio" name="pol-1" value="b"> Es verbietet den Import von Schokolade aus Westafrika.</label>
+      <label><input type="radio" name="pol-1" value="c"> Es verpflichtet große Unternehmen, in ihren Lieferketten auf Menschenrechte und Umweltschutz zu achten.</label>
+      <button class="pruefen" data-richtig="c">Antwort prüfen</button>
+      <div class="mc-feedback"></div>
+    </div>
+    <div class="mc-frage" data-mc="pol-2">
+      <p class="f">2 · Welche Aussage passt zu Position 3 (Kakaobäuerin)?</p>
+      <label><input type="radio" name="pol-2" value="a"> Das Gesetz ist überflüssig, weil es in Ghana keine Probleme gibt.</label>
+      <label><input type="radio" name="pol-2" value="b"> Das Gesetz hilft nur, wenn dadurch tatsächlich mehr Geld und Sicherheit auf den Farmen ankommen.</label>
+      <label><input type="radio" name="pol-2" value="c"> Das Gesetz sollte auch für kleine deutsche Handwerksbetriebe gelten.</label>
+      <button class="pruefen" data-richtig="b">Antwort prüfen</button>
+      <div class="mc-feedback"></div>
+    </div>
+
+    <details class="muster">
+      <summary>Beispiel-Urteil anzeigen – ausdrücklich als ein mögliches Urteil, nicht als „richtige Meinung"</summary>
+      <div class="inhalt">
+        <p>Mein Kriterium ist die Wirkung für die Menschen am Anfang der Lieferkette. Daran gemessen halte
+        ich das Lieferkettengesetz für richtig – aber verbesserungsbedürftig. Dafür spricht: Ohne
+        verbindliche Regeln bleibt Verantwortung freiwillig, und die Preisverteilung beim Schokoriegel zeigt,
+        wie wenig Freiwilligkeit bisher bewirkt hat. Außerdem entlastet ein Gesetz die Verbraucher:innen,
+        die im Supermarkt nicht jede Lieferkette selbst prüfen können (Position 4).</p>
+        <p>Die stärkste Gegenposition kommt aber von der Kakaobäuerin: Wenn das Gesetz nur Formulare erzeugt
+        und Konzerne sich im Zweifel ganz zurückziehen, kann es den Betroffenen sogar schaden. Dieses Argument
+        nehme ich ernst – es spricht aus meiner Sicht jedoch nicht gegen das Gesetz, sondern für seine
+        Verbesserung: etwa durch Unterstützung der Zulieferer bei den Nachweisen und durch Regeln, die faire
+        Einkaufspreise einbeziehen. Deshalb lautet mein Urteil: beibehalten und gezielt nachschärfen.</p>
+      </div>
+    </details>
+
+    <div class="ampel" data-modul="pol">
+      <p class="frage">Ampel-Check: Wie sicher fühlst du dich beim Ziel dieser Station?</p>
+      <div class="lichter">
+        <button data-farbe="gruen"><span class="punkt p-gruen"></span> Ich kann es erklären</button>
+        <button data-farbe="gelb"><span class="punkt p-gelb"></span> Ich kann es teilweise</button>
+        <button data-farbe="rot"><span class="punkt p-rot"></span> Ich brauche Unterstützung</button>
+      </div>
+      <p class="reflexion" data-r="gruen">Stark! Notiere: Welches Argument der Gegenseite fandest du am schwersten zu entkräften?</p>
+      <p class="reflexion" data-r="gelb">Gut unterwegs. Positionen verstehen oder selbst urteilen – wo hakt es noch? Notiere es.</p>
+      <p class="reflexion" data-r="rot">Kein Problem. Starte beim nächsten Mal mit dem Basisweg von Aufgabe 1 und dem Urteils-Gerüst.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================
+     ABSCHLUSS · EXPEDITIONSBERICHT
+================================================================ -->
+<section class="seite" id="seite-ende" role="tabpanel" aria-labelledby="tab-ende">
+  <div class="blatt">
+    <span class="etikett" style="background:var(--tinte)">Abschluss</span>
+    <h2>Dein Expeditionsbericht</h2>
+    <p id="ende-status" class="fortschritt">Gesammelte Stempel: 0 von 4</p>
+    <p style="margin-top:.6rem">Zeit, deine Expedition auszuwerten. Wähle <strong>ein</strong> Format
+    und verarbeite darin Erkenntnisse aus <strong>mindestens zwei Stationen</strong>. Empfehlung:
+    Starte erst, wenn du mindestens zwei Stempel gesammelt hast. Sprich Umfang und Abgabe mit
+    deiner Lernbegleitung ab.</p>
+    <p class="produktwahl-status" id="produktwahl-status">Noch kein Format gewählt.</p>
+
+    <div class="produkte">
+      <div class="produkt">
+        <h4>📊 Infografik</h4>
+        <p>„Die Reise der Bohne auf einen Blick" – eine Seite, die die Spur der Bohne visuell erzählt.</p>
+        <details><summary>Das gehört hinein</summary>
+          <ul>
+            <li>Der Weg der Bohne als roter Faden (Karte, Kette oder Zeitachse)</li>
+            <li>Mindestens drei aussagekräftige Zahlen mit kurzer Einordnung</li>
+            <li>Erkenntnisse aus mindestens zwei Stationen, klar erkennbar</li>
+            <li>Quellenhinweis und eine Überschrift, die neugierig macht</li>
+          </ul>
+        </details>
+        <button class="waehlen" data-produkt="Infografik" aria-pressed="false">Dieses Format wählen</button>
+      </div>
+      <div class="produkt">
+        <h4>🎙 Podcast</h4>
+        <p>3–5 Minuten Audio – z. B. ein fiktives Interview mit einer Kakaobäuerin oder eine Reportage.</p>
+        <details><summary>Das gehört hinein</summary>
+          <ul>
+            <li>Ein Einstieg, der in 20 Sekunden klar macht, worum es geht</li>
+            <li>Fachbegriffe aus mindestens zwei Stationen, verständlich erklärt</li>
+            <li>Mindestens eine Perspektive, die nicht deine eigene ist</li>
+            <li>Ein Schluss mit deiner begründeten Einschätzung</li>
+          </ul>
+        </details>
+        <button class="waehlen" data-produkt="Podcast" aria-pressed="false">Dieses Format wählen</button>
+      </div>
+      <div class="produkt">
+        <h4>🖼 Plakat</h4>
+        <p>Ein Plakat für den Marktplatz oder das Lernbüro – informieren und zum Nachdenken bringen.</p>
+        <details><summary>Das gehört hinein</summary>
+          <ul>
+            <li>Eine Kernbotschaft, die man in 5 Sekunden erfasst</li>
+            <li>Inhalte aus mindestens zwei Stationen (z. B. Preisverteilung + Klima)</li>
+            <li>Lesbare Gestaltung: wenig Text, klare Hierarchie, Bild oder Diagramm</li>
+            <li>Quellenhinweis am unteren Rand</li>
+          </ul>
+        </details>
+        <button class="waehlen" data-produkt="Plakat" aria-pressed="false">Dieses Format wählen</button>
+      </div>
+      <div class="produkt">
+        <h4>✍ Kommentar</h4>
+        <p>Ein Meinungstext im Zeitungsstil: „1,50 € – ein fairer Preis?" (ca. 300–400 Wörter).</p>
+        <details><summary>Das gehört hinein</summary>
+          <ul>
+            <li>Ein Einstieg mit Haltung – der Leser soll deine Position schnell erkennen</li>
+            <li>Mindestens zwei Argumente, gestützt auf Fakten aus den Stationen</li>
+            <li>Eine Gegenposition, die du ernst nimmst</li>
+            <li>Ein pointierter Schlusssatz</li>
+          </ul>
+        </details>
+        <button class="waehlen" data-produkt="Kommentar" aria-pressed="false">Dieses Format wählen</button>
+      </div>
+      <div class="produkt">
+        <h4>💡 Eigener Vorschlag</h4>
+        <p>Video, Ausstellungsstück, Quiz für andere Lernpartner:innen … – deine Idee.</p>
+        <details><summary>So gehst du vor</summary>
+          <ul>
+            <li>Beschreibe deine Idee in zwei bis drei Sätzen</li>
+            <li>Kläre mit deiner Lernbegleitung: Was sind die Mindestbausteine?</li>
+            <li>Auch hier gilt: Inhalte aus mindestens zwei Stationen</li>
+          </ul>
+        </details>
+        <button class="waehlen" data-produkt="Eigener Vorschlag" aria-pressed="false">Dieses Format wählen</button>
+      </div>
+    </div>
+
+    <div class="blatt" style="background:var(--papier-dunkel);margin-top:1rem">
+      <h3>Rückmelde-Kriterien (für dich und deine Lernbegleitung)</h3>
+      <p style="font-size:.94rem">
+      ① <strong>Fachlichkeit:</strong> Sind die Informationen korrekt und mit den Materialien der Stationen belegt?<br>
+      ② <strong>Vernetzung:</strong> Sind mindestens zwei Fachperspektiven erkennbar verbunden?<br>
+      ③ <strong>Urteilskraft:</strong> Wird eine eigene, begründete Position sichtbar – inklusive Gegenperspektive?<br>
+      ④ <strong>Form:</strong> Passt die Gestaltung zum gewählten Format und zur Zielgruppe?</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  Die Spur der Bohne · GSW 9/10 · Feldtagebuch-Werkstattmaterial · lehrer-herrmann.de
+</footer>
+
+<script>
+/* ============================================================
+   KONFIGURATION
+   API_BASE: Kolosseum-Backend auf eigener Subdomain – wie bei den
+   anderen Quizzen (js/kolosseum-prompt.js) per Cross-Origin-Fetch
+   mit credentials:'include' angesprochen (CORS s. kolosseum/server.js).
+   ============================================================ */
+const API_BASE = 'https://kolosseum.lehrer-herrmann.de/api';
+
+/* ============================================================
+   MODUS: 'kolosseum' (Server-Session) | 'lokal' (localStorage)
+   Wird in initSession() gesetzt.
+   ============================================================ */
+let MODUS       = 'lokal';
+let currentUser = null;   /* lokal: Vorname; kolosseum: userId als String */
+
+/* ============================================================
+   STATE  –  ampel, stempel, produkt
+   ============================================================ */
+const STATE = {
+  ampel:   { geo:null, hist:null, wirt:null, pol:null },
+  stempel: { geo:false, hist:false, wirt:false, pol:false },
+  produkt: null
+};
+
+/* ============================================================
+   SPEICHERN (mode-aware, debounced für Server-Requests)
+   ============================================================ */
+let _saveTimer = null;
+function speichereState(){
+  clearTimeout(_saveTimer);
+  if(MODUS === 'kolosseum'){
+    /* 800 ms Debounce: nicht bei jedem Klick einen Request abschicken */
+    _saveTimer = setTimeout(_speichereAufServer, 800);
+  } else {
+    _speichereLokal();
+  }
+}
+
+function _speichereLokal(){
+  if(!currentUser) return;
+  try{
+    localStorage.setItem('sdb_v1_'+currentUser, JSON.stringify({
+      ampel:   STATE.ampel,
+      stempel: STATE.stempel,
+      produkt: STATE.produkt
+    }));
+  }catch(e){ console.warn('[sdb] localStorage Fehler:', e); }
+}
+
+async function _speichereAufServer(){
+  try{
+    await fetch(API_BASE+'/sdb/progress', {
+      method:      'POST',
+      credentials: 'include',
+      headers:     { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        stempel: STATE.stempel,
+        ampel:   STATE.ampel,
+        produkt: STATE.produkt
+      })
+    });
+  }catch(e){ console.warn('[sdb] Server-Speichern Fehler:', e); }
+}
+
+/* ============================================================
+   LADEN (lokal)
+   ============================================================ */
+function _ladeLokal(name){
+  try{
+    const raw = localStorage.getItem('sdb_v1_'+name);
+    if(!raw) return false;
+    const s = JSON.parse(raw);
+    Object.assign(STATE.ampel,   s.ampel   || {});
+    Object.assign(STATE.stempel, s.stempel || {});
+    STATE.produkt = s.produkt || null;
+    return true;
+  }catch(e){ return false; }
+}
+
+function _hatLokalenStand(name){
+  try{ return localStorage.getItem('sdb_v1_'+name) !== null; }
+  catch(e){ return false; }
+}
+
+function _lokaleStempelAnzahl(name){
+  try{
+    const raw = localStorage.getItem('sdb_v1_'+name);
+    if(!raw) return 0;
+    return Object.values(JSON.parse(raw).stempel||{}).filter(Boolean).length;
+  }catch(e){ return 0; }
+}
+
+/* ============================================================
+   LADEN (Server)
+   ============================================================ */
+async function _ladeVomServer(){
+  try{
+    const res = await fetch(API_BASE+'/sdb/progress', { credentials:'include' });
+    if(!res.ok) return;
+    const d = await res.json();
+    if(d.stempel) Object.assign(STATE.stempel, d.stempel);
+    if(d.ampel)   Object.assign(STATE.ampel,   d.ampel);
+    if(d.produkt) STATE.produkt = d.produkt;
+  }catch(e){ console.warn('[sdb] Server-Laden Fehler:', e); }
+}
+
+/* ============================================================
+   STATE ANWENDEN (UI wiederherstellen)
+   ============================================================ */
+function wendeStateAuf(){
+  document.querySelectorAll('.ampel').forEach(ampel=>{
+    const farbe = STATE.ampel[ampel.dataset.modul];
+    if(!farbe) return;
+    ampel.querySelectorAll('.lichter button').forEach(k=>{
+      k.setAttribute('aria-pressed', String(k.dataset.farbe===farbe));
+    });
+    ampel.querySelectorAll('.reflexion').forEach(r=>{
+      r.classList.toggle('sichtbar', r.dataset.r===farbe);
+    });
+  });
+  aktualisiereStempel();
+  if(STATE.produkt){
+    document.querySelectorAll('.produkt .waehlen').forEach(btn=>{
+      const ist = btn.dataset.produkt===STATE.produkt;
+      btn.setAttribute('aria-pressed', String(ist));
+      btn.textContent = ist ? '✔ Gewähltes Format':'Dieses Format wählen';
+    });
+    document.getElementById('produktwahl-status').textContent=
+      'Dein gewähltes Format: '+STATE.produkt+'. Kläre die Details mit deiner Lernbegleitung.';
+  }
+}
+
+/* ============================================================
+   SESSION-INITIALISIERUNG
+   Läuft sofort beim Seitenaufruf:
+   1. Kolosseum-Session prüfen (GET /api/auth/me)
+   2a. Eingeloggt → Kolosseum-Modus, Fortschritt vom Server laden
+   2b. Nicht eingeloggt → Lokal-Modus, Login-Overlay anzeigen
+   ============================================================ */
+const loginOverlay = document.getElementById('login-overlay');
+const navUserName  = document.getElementById('nav-user-name');
+
+async function initSession(){
+  try{
+    const res = await fetch(API_BASE+'/auth/me', {
+      credentials: 'include',
+      signal: AbortSignal.timeout(4000)  /* max. 4 s warten */
+    });
+    if(res.ok){
+      const user = await res.json();
+      /* ── Kolosseum-Modus ── */
+      MODUS       = 'kolosseum';
+      currentUser = String(user.id);
+      navUserName.textContent = '🔐 '+(user.nick || 'Eingeloggt');
+      document.getElementById('nav-wechseln').title = 'Im Kolosseum abmelden';
+      await _ladeVomServer();
+      wendeStateAuf();
+      return;  /* Overlay bleibt versteckt */
+    }
+  }catch(e){
+    /* Netzwerkfehler, Timeout oder kein Backend → Lokal-Modus */
+  }
+  /* ── Lokal-Modus: Overlay einblenden ── */
+  loginOverlay.classList.remove('versteckt');
+  setTimeout(()=>document.getElementById('login-name').focus(), 80);
+}
+
+/* ============================================================
+   LOKAL-LOGIN-FLOW  (nur im Lokal-Modus aktiv)
+   ============================================================ */
+const loginNameEl = document.getElementById('login-name');
+const loginWieder = document.getElementById('login-wiederkehr');
+const loginNeuBer = document.getElementById('login-neu-bereich');
+const loginInfoEl = document.getElementById('login-info');
+
+function aktualisiereLoginHinweis(){
+  const name = loginNameEl.value.trim().toLowerCase();
+  if(name.length < 2){
+    loginWieder.style.display='none';
+    loginNeuBer.style.display='block';
+    return;
+  }
+  if(_hatLokalenStand(name)){
+    const n = _lokaleStempelAnzahl(name);
+    loginInfoEl.textContent = 'Gespeicherter Stand gefunden: '+n+' von 4 Stempeln.';
+    loginWieder.style.display='block';
+    loginNeuBer.style.display='none';
+  }else{
+    loginWieder.style.display='none';
+    loginNeuBer.style.display='block';
+  }
+}
+loginNameEl.addEventListener('input', aktualisiereLoginHinweis);
+
+function starteLokalenSession(name, neuStart){
+  MODUS       = 'lokal';
+  currentUser = name.trim().toLowerCase();
+  if(!neuStart){
+    _ladeLokal(currentUser);
+  }else{
+    STATE.ampel   = {geo:null,hist:null,wirt:null,pol:null};
+    STATE.stempel = {geo:false,hist:false,wirt:false,pol:false};
+    STATE.produkt = null;
+    _speichereLokal();
+  }
+  navUserName.textContent = '💾 '+name.trim();
+  loginOverlay.classList.add('versteckt');
+  wendeStateAuf();
+  loginNameEl.value = '';
+}
+
+document.getElementById('login-start').addEventListener('click',()=>{
+  const name = loginNameEl.value.trim();
+  if(!name){loginNameEl.focus();return;}
+  starteLokalenSession(name, true);
+});
+document.getElementById('login-weiter').addEventListener('click',()=>{
+  const name = loginNameEl.value.trim();
+  if(!name){loginNameEl.focus();return;}
+  starteLokalenSession(name, false);
+});
+document.getElementById('login-neu').addEventListener('click',()=>{
+  const name = loginNameEl.value.trim();
+  if(!name){loginNameEl.focus();return;}
+  if(confirm('Sicher? Der bisherige Fortschritt von „'+name+'" wird gelöscht und du fängst von vorn an.')){
+    starteLokalenSession(name, true);
+  }
+});
+loginNameEl.addEventListener('keydown',e=>{
+  if(e.key!=='Enter') return;
+  const name = loginNameEl.value.trim();
+  if(!name) return;
+  _hatLokalenStand(name.toLowerCase())
+    ? starteLokalenSession(name, false)
+    : starteLokalenSession(name, true);
+});
+
+/* ============================================================
+   BENUTZER WECHSELN (mode-aware)
+   ============================================================ */
+document.getElementById('nav-wechseln').addEventListener('click',()=>{
+  if(MODUS === 'kolosseum'){
+    /* Im Kolosseum abmelden → zur Login-Seite */
+    window.location.href = 'https://kolosseum.lehrer-herrmann.de';
+  }else{
+    /* Lokal: Overlay wieder einblenden */
+    loginWieder.style.display='none';
+    loginNeuBer.style.display='block';
+    loginOverlay.classList.remove('versteckt');
+    setTimeout(()=>loginNameEl.focus(), 80);
+  }
+});
+
+/* ---------- Tab-Navigation ---------- */
+const tabs = document.querySelectorAll('nav.register button');
+const seiten = document.querySelectorAll('section.seite');
+function zeigeSeite(ziel){
+  seiten.forEach(s=>s.classList.toggle('aktiv', s.id==='seite-'+ziel));
+  tabs.forEach(t=>t.setAttribute('aria-selected', String(t.dataset.ziel===ziel)));
+  window.scrollTo({top:0});
+}
+tabs.forEach(t=>t.addEventListener('click',()=>zeigeSeite(t.dataset.ziel)));
+document.querySelectorAll('.station-marker,.stations-karte').forEach(el=>{
+  el.addEventListener('click',()=>zeigeSeite(el.dataset.ziel));
+  el.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();zeigeSeite(el.dataset.ziel);}
+  });
+});
+
+/* ---------- Weg-Umschalter (Basis/Expedition) ---------- */
+document.querySelectorAll('.aufgabe').forEach(aufgabe=>{
+  const knoepfe = aufgabe.querySelectorAll('.wegwahl button');
+  knoepfe.forEach(k=>{
+    k.addEventListener('click',()=>{
+      knoepfe.forEach(x=>x.setAttribute('aria-pressed', String(x===k)));
+      aufgabe.querySelectorAll('.weg').forEach(w=>{
+        w.classList.toggle('aktiv', w.dataset.weg===k.dataset.weg);
+      });
+      /* Sonderfall Zeitstrahl: Jahreszahlen ein-/ausblenden */
+      const liste = aufgabe.querySelector('#zeitstrahl');
+      if(liste){ liste.classList.toggle('jahre-aus', k.dataset.weg==='exped'); }
+    });
+  });
+});
+
+/* ---------- Multiple Choice ---------- */
+document.querySelectorAll('.mc-frage').forEach(frage=>{
+  const btn = frage.querySelector('.pruefen');
+  const fb  = frage.querySelector('.mc-feedback');
+  btn.addEventListener('click',()=>{
+    const gewaehlt = frage.querySelector('input:checked');
+    if(!gewaehlt){
+      fb.className='mc-feedback falsch';
+      fb.textContent='Wähle zuerst eine Antwort aus.';
+      return;
+    }
+    if(gewaehlt.value===btn.dataset.richtig){
+      fb.className='mc-feedback richtig';
+      fb.textContent='✔ Richtig! Trag dir das als gesichert ins Feldtagebuch ein.';
+    }else{
+      fb.className='mc-feedback falsch';
+      fb.textContent='✘ Noch nicht ganz. Schau noch einmal ins Material dieser Station und versuche es erneut.';
+    }
+  });
+});
+
+/* ---------- Ampel & Stempel ---------- */
+function aktualisiereStempel(){
+  const n = Object.values(STATE.stempel).filter(Boolean).length;
+  document.getElementById('fortschritt').textContent = 'Gesammelte Stempel: '+n+' von 4';
+  document.getElementById('ende-status').textContent  = 'Gesammelte Stempel: '+n+' von 4';
+  Object.keys(STATE.stempel).forEach(m=>{
+    document.querySelectorAll('.stempel[data-stempel="'+m+'"]').forEach(el=>{
+      el.classList.toggle('sichtbar', STATE.stempel[m]);
+    });
+    document.querySelectorAll('.karten-stempel[data-stempel="'+m+'"]').forEach(el=>{
+      el.setAttribute('visibility', STATE.stempel[m] ? 'visible':'hidden');
+      el.setAttribute('fill','#A93F35');
+    });
+  });
+}
+document.querySelectorAll('.ampel').forEach(ampel=>{
+  const modul = ampel.dataset.modul;
+  const knoepfe = ampel.querySelectorAll('.lichter button');
+  knoepfe.forEach(k=>{
+    k.addEventListener('click',()=>{
+      STATE.ampel[modul]=k.dataset.farbe;
+      STATE.stempel[modul]=true;             /* Station gilt als erkundet, sobald selbst eingeschätzt */
+      knoepfe.forEach(x=>x.setAttribute('aria-pressed', String(x===k)));
+      ampel.querySelectorAll('.reflexion').forEach(r=>{
+        r.classList.toggle('sichtbar', r.dataset.r===k.dataset.farbe);
+      });
+      aktualisiereStempel();
+      speichereState();
+    });
+  });
+});
+
+/* ---------- Sortierübungen (Zeitstrahl & Kette) ---------- */
+function baueSortierUebung(cfg){
+  const liste = document.getElementById(cfg.id);
+  let daten;
+  function render(){
+    liste.innerHTML='';
+    daten.forEach((eintrag,i)=>{
+      const li=document.createElement('li');
+      const txt=document.createElement('span');
+      txt.className='txt';txt.textContent=eintrag.text;
+      li.appendChild(txt);
+      if(eintrag.jahr){
+        const j=document.createElement('span');
+        j.className='jahr';j.textContent=eintrag.jahr;
+        li.appendChild(j);
+      }
+      const pf=document.createElement('span');pf.className='pfeile';
+      const hoch=document.createElement('button');
+      hoch.textContent='▲';hoch.setAttribute('aria-label','„'+eintrag.text+'" nach oben verschieben');
+      hoch.disabled=(i===0);
+      hoch.addEventListener('click',()=>{[daten[i-1],daten[i]]=[daten[i],daten[i-1]];render();});
+      const runter=document.createElement('button');
+      runter.textContent='▼';runter.setAttribute('aria-label','„'+eintrag.text+'" nach unten verschieben');
+      runter.disabled=(i===daten.length-1);
+      runter.addEventListener('click',()=>{[daten[i+1],daten[i]]=[daten[i],daten[i+1]];render();});
+      pf.appendChild(hoch);pf.appendChild(runter);
+      li.appendChild(pf);
+      liste.appendChild(li);
+    });
+    document.getElementById(cfg.id+'-ergebnis').textContent='';
+  }
+  function mischen(){
+    daten=[...cfg.eintraege];
+    do{
+      for(let i=daten.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [daten[i],daten[j]]=[daten[j],daten[i]];
+      }
+    }while(daten.every((e,i)=>e.pos===i)); /* nie schon fertig sortiert starten */
+    render();
+  }
+  document.getElementById(cfg.id+'-pruefen').addEventListener('click',()=>{
+    let richtig=0;
+    liste.querySelectorAll('li').forEach((li,i)=>{
+      const ok=(daten[i].pos===i);
+      li.classList.toggle('korrekt',ok);
+      li.classList.toggle('falsch',!ok);
+      if(ok)richtig++;
+    });
+    const erg=document.getElementById(cfg.id+'-ergebnis');
+    erg.textContent = (richtig===daten.length)
+      ? '✔ Alles richtig sortiert – Reihenfolge sitzt!'
+      : richtig+' von '+daten.length+' Karten stehen an der richtigen Stelle. Grün markierte stimmen schon – versuche es weiter!';
+  });
+  document.getElementById(cfg.id+'-mischen').addEventListener('click',mischen);
+  mischen();
+}
+
+baueSortierUebung({
+  id:'zeitstrahl',
+  eintraege:[
+    {pos:0, jahr:'1528',    text:'Spanische Eroberer bringen Kakao aus Mittelamerika nach Europa – zunächst als Luxusgetränk für Reiche.'},
+    {pos:1, jahr:'1847',    text:'In England wird die erste Tafelschokolade hergestellt – Schokolade wird zum Massenprodukt, die Nachfrage nach Kakao explodiert.'},
+    {pos:2, jahr:'1874',    text:'Großbritannien erklärt die Goldküste (das heutige Ghana) offiziell zur Kronkolonie.'},
+    {pos:3, jahr:'um 1911', text:'Die Goldküste wird zum größten Kakaoexporteur der Welt – Gewinne und Verarbeitung liegen überwiegend in europäischer Hand.'},
+    {pos:4, jahr:'1957',    text:'Ghana wird unabhängig – als erstes Land Subsahara-Afrikas beendet es die Kolonialherrschaft.'},
+    {pos:5, jahr:'1992',    text:'In Deutschland startet das Fairtrade-Siegel: Verbraucher:innen können gezielt fairer gehandelte Produkte kaufen.'},
+    {pos:6, jahr:'2023',    text:'In Deutschland tritt das Lieferkettengesetz in Kraft – große Unternehmen müssen auf Menschenrechte in ihren Lieferketten achten.'}
+  ]
+});
+
+baueSortierUebung({
+  id:'kette',
+  eintraege:[
+    {pos:0, text:'Anbau & Pflege: Kakaobäume pflanzen, jahrelang pflegen und vor Krankheiten schützen.'},
+    {pos:1, text:'Ernte & Fermentation: Früchte per Hand ernten, Bohnen fermentieren und in der Sonne trocknen.'},
+    {pos:2, text:'Aufkauf & Export: Zwischenhändler kaufen die Säcke auf; der Rohkakao wird verschifft.'},
+    {pos:3, text:'Verarbeitung: In Fabriken (meist in Europa) werden die Bohnen geröstet und zu Kakaomasse, -butter und -pulver gemahlen.'},
+    {pos:4, text:'Herstellung: Der Hersteller produziert aus Kakaomasse, Zucker und Milchpulver den Riegel – Rezeptur, Marke und Werbung inklusive.'},
+    {pos:5, text:'Handel & Logistik: Großhandel und Transport bringen die Riegel in die Läden.'},
+    {pos:6, text:'Verkauf: Der Supermarkt legt den Riegel für 1,50 € ins Regal – inklusive Mehrwertsteuer für den Staat.'}
+  ]
+});
+
+/* ---------- Preis-Schätzer (Modul 3) ---------- */
+const PREIS_SEGMENTE = [
+  {name:'Kakaobäuer:innen',            farbe:'#4A6741', echt:10},
+  {name:'Zwischenhandel & Transport',  farbe:'#8B5E3C', echt:12},
+  {name:'Verarbeitung (Mahlen, Rösten)',farbe:'#B08A2E', echt:11},
+  {name:'Hersteller & Marke (inkl. Werbung)', farbe:'#A93F35', echt:53},
+  {name:'Einzelhandel',                farbe:'#5B6E8C', echt:54},
+  {name:'Mehrwertsteuer',              farbe:'#6B6353', echt:10}
+]; /* echt in Cent, Summe = 150 */
+
+const reglerWrap = document.getElementById('preis-regler');
+PREIS_SEGMENTE.forEach((seg,i)=>{
+  const zeile=document.createElement('div');zeile.className='preis-zeile';
+  const label=document.createElement('label');
+  label.textContent=seg.name;label.setAttribute('for','regler-'+i);
+  const input=document.createElement('input');
+  input.type='range';input.min='0';input.max='150';input.step='1';input.value='25';
+  input.id='regler-'+i;
+  const wert=document.createElement('span');wert.className='wert';
+  input.addEventListener('input',()=>{wert.textContent=(input.value/100).toFixed(2).replace('.',',')+' €';summe();});
+  wert.textContent='0,25 €';
+  zeile.appendChild(label);zeile.appendChild(input);zeile.appendChild(wert);
+  reglerWrap.appendChild(zeile);
+});
+function summe(){
+  const werte=[...reglerWrap.querySelectorAll('input')].map(i=>parseInt(i.value,10));
+  const s=werte.reduce((a,b)=>a+b,0);
+  const el=document.getElementById('preis-summe');
+  el.textContent='Summe deiner Schätzung: '+(s/100).toFixed(2).replace('.',',')+' € '+(s===150?'✔':'(Ziel: 1,50 €)');
+  el.className='preis-summe '+(s===150?'ok':(s>150?'zuviel':''));
+  return werte;
+}
+summe();
+document.getElementById('preis-aufdecken').addEventListener('click',()=>{
+  const geschaetzt=summe();
+  const sGes=geschaetzt.reduce((a,b)=>a+b,0)||1;
+  const bS=document.getElementById('balken-schaetzung');
+  const bE=document.getElementById('balken-echt');
+  bS.innerHTML='';bE.innerHTML='';
+  PREIS_SEGMENTE.forEach((seg,i)=>{
+    const dS=document.createElement('div');
+    dS.style.background=seg.farbe;
+    dS.style.width=(geschaetzt[i]/sGes*100)+'%';
+    dS.textContent=geschaetzt[i]>=12?(geschaetzt[i]+' ct'):'';
+    dS.title=seg.name+': '+geschaetzt[i]+' Cent (deine Schätzung)';
+    bS.appendChild(dS);
+    const dE=document.createElement('div');
+    dE.style.background=seg.farbe;
+    dE.style.width=(seg.echt/150*100)+'%';
+    dE.textContent=seg.echt>=12?(seg.echt+' ct'):'';
+    dE.title=seg.name+': '+seg.echt+' Cent (Richtwert)';
+    bE.appendChild(dE);
+  });
+  const leg=document.getElementById('preis-legende');
+  leg.innerHTML='';
+  PREIS_SEGMENTE.forEach(seg=>{
+    const sp=document.createElement('span');
+    const ic=document.createElement('i');ic.style.background=seg.farbe;
+    sp.appendChild(ic);sp.appendChild(document.createTextNode(seg.name+' ('+seg.echt+' ct)'));
+    leg.appendChild(sp);
+  });
+  document.getElementById('balken-vergleich').classList.add('sichtbar');
+});
+
+/* ---------- Produktwahl (Abschluss) ---------- */
+document.querySelectorAll('.produkt .waehlen').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    STATE.produkt=btn.dataset.produkt;
+    document.querySelectorAll('.produkt .waehlen').forEach(b=>{
+      b.setAttribute('aria-pressed', String(b===btn));
+      b.textContent = (b===btn)?'✔ Gewähltes Format':'Dieses Format wählen';
+    });
+    document.getElementById('produktwahl-status').textContent=
+      'Dein gewähltes Format: '+STATE.produkt+'. Kläre die Details mit deiner Lernbegleitung.';
+    speichereState();
+  });
+});
+
+/* ============================================================
+   START – Session prüfen, dann Modus festlegen
+   ============================================================ */
+initSession();
+</script>
+</body>
+</html>
