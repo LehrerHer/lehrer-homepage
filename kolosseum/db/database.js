@@ -86,6 +86,18 @@ db.exec(`
   )
 `);
 
+// Spur der Bohne: Lernfortschritt (Ampel-Einschätzung, Stationsstempel, Produktwahl)
+db.exec(`
+  CREATE TABLE IF NOT EXISTS sdb_progress (
+    student_id INTEGER PRIMARY KEY,
+    stempel    TEXT    NOT NULL DEFAULT '{}',
+    ampel      TEXT    NOT NULL DEFAULT '{}',
+    produkt    TEXT,
+    updated_at TEXT    NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+  )
+`);
+
 // Session-Store für express-session auf Basis von better-sqlite3
 class SQLiteSessionStore {
   constructor(session) {
