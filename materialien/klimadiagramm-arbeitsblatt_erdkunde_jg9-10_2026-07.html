@@ -1,0 +1,188 @@
+<!--
+  Titel: Klimadiagramme zeichnen – Kumasi & Osnabrück
+  Fach: Erdkunde
+  Klasse/Niveau: Jahrgang 9/10
+  AB-Typ: Druckvorlage (leere Diagrammraster zum Selbstzeichnen)
+  Erstellt: 2026-07
+  Quelle: Begleitmaterial zu „Die Spur der Bohne" (Station 1 · Geografie)
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Klimadiagramme zeichnen – Arbeitsblatt</title>
+<style>
+:root{
+  --tinte:#2E2A24;
+  --tinte-hell:#6B6353;
+  --linie:#D8CDB4;
+  --papier:#F5EFDF;
+  --karte:#FBF7EC;
+  --geo:#4A6741;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --mono:"Courier New",Courier,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:var(--serif);color:var(--tinte);background:var(--papier);
+  line-height:1.6;padding:1.4rem;
+}
+main{max-width:900px;margin:0 auto}
+h1{font-size:1.7rem;margin-bottom:.3rem}
+p.sub{font-style:italic;color:var(--tinte-hell);margin-bottom:1rem}
+.druck-btn{
+  font-family:var(--mono);font-size:.8rem;border:1px solid var(--geo);color:var(--geo);
+  background:var(--karte);padding:.5rem 1rem;border-radius:3px;cursor:pointer;margin-bottom:1.2rem;
+}
+.druck-btn:hover{background:#E4EADF}
+.namensfeld{
+  display:flex;gap:1.5rem;flex-wrap:wrap;font-family:var(--mono);font-size:.85rem;
+  border:1px solid var(--linie);border-radius:4px;padding:.7rem 1rem;margin-bottom:1.2rem;
+  background:var(--karte);
+}
+.namensfeld span{border-bottom:1px solid var(--tinte);min-width:160px;display:inline-block}
+
+.anleitung{
+  border:1px solid var(--linie);border-radius:4px;background:var(--karte);
+  padding:1rem 1.2rem;margin-bottom:1.4rem;
+}
+.anleitung h2{font-size:1.05rem;margin-bottom:.5rem}
+.anleitung ul{margin-left:1.2rem;font-size:.92rem}
+.anleitung li{margin-bottom:.2rem}
+
+.tab-scroll{overflow-x:auto;margin-bottom:1.4rem}
+table.klima{border-collapse:collapse;font-size:.78rem;min-width:640px;width:100%}
+table.klima caption{
+  text-align:left;font-family:var(--mono);font-size:.72rem;
+  letter-spacing:.08em;color:var(--tinte-hell);padding-bottom:.3rem;
+}
+table.klima th,table.klima td{border:1px solid var(--linie);padding:.28rem .4rem;text-align:center}
+table.klima th{background:#EDE4CC;font-family:var(--mono);font-size:.68rem}
+table.klima td:first-child,table.klima th:first-child{text-align:left;white-space:nowrap}
+table.klima tr.stadt td:first-child{font-weight:bold}
+
+.diagramm-block{
+  border:1px solid var(--linie);border-radius:4px;background:var(--karte);
+  padding:1rem 1.1rem 1.3rem;margin-bottom:1.4rem;page-break-inside:avoid;
+}
+.diagramm-block h2{font-size:1.1rem;margin-bottom:.15rem}
+.diagramm-block p.hinweis{font-size:.82rem;color:var(--tinte-hell);margin-bottom:.6rem;font-style:italic}
+.diagramm-block svg{width:100%;height:auto;display:block}
+
+.legende-zeichnen{
+  display:flex;gap:1.4rem;flex-wrap:wrap;font-size:.82rem;margin-top:.6rem;
+}
+.legende-zeichnen span{display:flex;align-items:center;gap:.4rem}
+.legende-zeichnen i{width:22px;height:0;border-top:3px solid;display:inline-block}
+.legende-zeichnen i.balken{height:12px;border-top:none;border-radius:2px}
+
+@media print{
+  body{padding:0}
+  .druck-btn{display:none}
+  .diagramm-block{box-shadow:none}
+}
+</style>
+</head>
+<body>
+<main>
+  <h1>Klimadiagramme zeichnen</h1>
+  <p class="sub">Arbeitsblatt zu „Die Spur der Bohne" – Station 1 · Geografie · Methoden-Aufgabe M</p>
+
+  <button class="druck-btn" onclick="window.print()">🖶 Drucken</button>
+
+  <div class="namensfeld">
+    <span>Name: <span style="display:inline-block;min-width:140px">&nbsp;</span></span>
+    <span>Klasse: <span style="display:inline-block;min-width:80px">&nbsp;</span></span>
+    <span>Datum: <span style="display:inline-block;min-width:100px">&nbsp;</span></span>
+  </div>
+
+  <div class="anleitung">
+    <h2>So gehst du vor</h2>
+    <ul>
+      <li>Zeichne für <strong>beide</strong> Orte je ein Klimadiagramm in die vorbereiteten Raster unten.</li>
+      <li><strong>Temperatur</strong> (linke Achse, °C) als <strong>rote Linie</strong> – verbinde die zwölf Monatswerte.</li>
+      <li><strong>Niederschlag</strong> (rechte Achse, mm) als <strong>blaue Säulen</strong> – ein Balken pro Monat.</li>
+      <li>Beide Diagramme nutzen denselben Maßstab (0–30 °C bzw. 0–250 mm) – nur so sind sie vergleichbar.</li>
+      <li>Trage die Werte aus der Tabelle unten ein. Vergiss Titel und Legende nicht.</li>
+    </ul>
+  </div>
+
+  <div class="tab-scroll">
+    <table class="klima">
+      <caption>Monatsmittelwerte (gerundete Richtwerte) – dieselben Daten wie im digitalen Feldtagebuch</caption>
+      <tr><th></th><th>Jan</th><th>Feb</th><th>Mär</th><th>Apr</th><th>Mai</th><th>Jun</th><th>Jul</th><th>Aug</th><th>Sep</th><th>Okt</th><th>Nov</th><th>Dez</th></tr>
+      <tr class="stadt"><td colspan="13">Kumasi (Ghana), ca. 270 m ü. M.</td></tr>
+      <tr><td>Temperatur (°C)</td><td>27</td><td>28</td><td>28</td><td>28</td><td>27</td><td>26</td><td>25</td><td>25</td><td>26</td><td>26</td><td>27</td><td>27</td></tr>
+      <tr><td>Niederschlag (mm)</td><td>17</td><td>60</td><td>130</td><td>140</td><td>180</td><td>220</td><td>120</td><td>75</td><td>170</td><td>190</td><td>95</td><td>30</td></tr>
+      <tr class="stadt"><td colspan="13">Osnabrück (Deutschland), ca. 65 m ü. M.</td></tr>
+      <tr><td>Temperatur (°C)</td><td>2</td><td>2</td><td>5</td><td>9</td><td>13</td><td>16</td><td>18</td><td>18</td><td>14</td><td>10</td><td>6</td><td>3</td></tr>
+      <tr><td>Niederschlag (mm)</td><td>70</td><td>55</td><td>65</td><td>45</td><td>60</td><td>70</td><td>80</td><td>75</td><td>65</td><td>65</td><td>65</td><td>75</td></tr>
+    </table>
+  </div>
+
+  <div class="diagramm-block" id="block-kumasi">
+    <h2>Klimadiagramm · Kumasi (Ghana)</h2>
+    <p class="hinweis">Trage die 12 Monatswerte ein: rote Linie = Temperatur, blaue Säulen = Niederschlag.</p>
+  </div>
+
+  <div class="diagramm-block" id="block-osnabrueck">
+    <h2>Klimadiagramm · Osnabrück (Deutschland)</h2>
+    <p class="hinweis">Gleicher Maßstab wie oben – nur so sind beide Diagramme direkt vergleichbar.</p>
+  </div>
+</main>
+
+<script>
+/* Zeichnet ein leeres Diagrammraster (Achsen + Gitternetz) als SVG.
+   Temperatur-Skala 0–30 °C (5er-Schritte), Niederschlag-Skala 0–250 mm (25er-Schritte) –
+   für beide Orte identisch, damit die Diagramme vergleichbar bleiben. */
+function zeichneRaster(containerId) {
+  const W = 760, H = 380;
+  const links = 46, rechts = 46, oben = 16, unten = 34;
+  const breite = W - links - rechts, hoehe = H - oben - unten;
+  const monate = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+  const tMax = 30, nMax = 250;
+
+  let svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Leeres Klimadiagramm-Raster">`;
+
+  /* Horizontale Gitterlinien + linke (Temperatur) und rechte (Niederschlag) Achsenbeschriftung */
+  for (let t = 0; t <= tMax; t += 5) {
+    const y = oben + hoehe - (t / tMax) * hoehe;
+    const n = Math.round((t / tMax) * nMax);
+    svg += `<line x1="${links}" y1="${y}" x2="${links+breite}" y2="${y}" stroke="#D8CDB4" stroke-width="1"/>`;
+    svg += `<text x="${links-8}" y="${y+3}" text-anchor="end" font-family="Courier New" font-size="10" fill="#A93F35">${t}</text>`;
+    svg += `<text x="${links+breite+8}" y="${y+3}" text-anchor="start" font-family="Courier New" font-size="10" fill="#2d5fa0">${n}</text>`;
+  }
+
+  /* Vertikale Linien je Monat + Monatsbeschriftung */
+  const spalte = breite / monate.length;
+  monate.forEach((m, i) => {
+    const x = links + i * spalte;
+    svg += `<line x1="${x}" y1="${oben}" x2="${x}" y2="${oben+hoehe}" stroke="#D8CDB4" stroke-width="1"/>`;
+    svg += `<text x="${x + spalte/2}" y="${oben+hoehe+18}" text-anchor="middle" font-family="Courier New" font-size="11" fill="#2E2A24">${m}</text>`;
+  });
+  svg += `<line x1="${links+breite}" y1="${oben}" x2="${links+breite}" y2="${oben+hoehe}" stroke="#D8CDB4" stroke-width="1"/>`;
+
+  /* Rahmen */
+  svg += `<rect x="${links}" y="${oben}" width="${breite}" height="${hoehe}" fill="none" stroke="#2E2A24" stroke-width="1.4"/>`;
+
+  /* Achsentitel */
+  svg += `<text x="${links}" y="${oben-4}" font-family="Courier New" font-size="10" fill="#A93F35">°C</text>`;
+  svg += `<text x="${links+breite}" y="${oben-4}" text-anchor="end" font-family="Courier New" font-size="10" fill="#2d5fa0">mm</text>`;
+
+  svg += `</svg>`;
+
+  document.getElementById(containerId).insertAdjacentHTML('beforeend', svg);
+  document.getElementById(containerId).insertAdjacentHTML('beforeend',
+    `<div class="legende-zeichnen">
+       <span><i style="border-color:#A93F35"></i> Temperatur (°C) – Linie, rot</span>
+       <span><i class="balken" style="background:#2d5fa0"></i> Niederschlag (mm) – Säulen, blau</span>
+     </div>`);
+}
+
+zeichneRaster('block-kumasi');
+zeichneRaster('block-osnabrueck');
+</script>
+</body>
+</html>
