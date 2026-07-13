@@ -492,6 +492,65 @@ footer{
   white-space:nowrap;
 }
 .nav-user button:hover{background:var(--papier)}
+/* ---------- Browser-Eingabe ---------- */
+.browser-eingabe{margin-top:.9rem;border-top:1px dashed var(--linie);padding-top:.65rem}
+.eingabe-toggle-btn{
+  font-family:var(--mono);font-size:.77rem;letter-spacing:.06em;
+  border:1px solid var(--geo);color:var(--geo);background:var(--karte);
+  padding:.35rem .8rem;border-radius:20px;cursor:pointer;
+}
+.modul-hist .eingabe-toggle-btn{border-color:var(--hist);color:var(--hist)}
+.modul-wirt .eingabe-toggle-btn{border-color:var(--wirt);color:var(--wirt)}
+.modul-pol  .eingabe-toggle-btn{border-color:var(--pol);color:var(--pol)}
+.eingabe-toggle-btn:hover{background:var(--geo-hell)}
+.eingabe-body{margin-top:.55rem}
+.antwort-feld{
+  width:100%;min-height:88px;
+  font-family:var(--serif);font-size:.95rem;line-height:1.65;
+  border:1px solid var(--linie);border-radius:3px;
+  background:rgba(255,255,255,.72);color:var(--tinte);
+  padding:.6rem .8rem;resize:vertical;
+}
+.antwort-feld:focus{outline:2px solid var(--geo);outline-offset:1px}
+.eingabe-aktionen{display:flex;gap:.45rem;align-items:center;margin-top:.4rem;flex-wrap:wrap}
+.pruefe-btn{
+  font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;
+  border:1px solid var(--tinte);background:var(--tinte);color:var(--karte);
+  padding:.35rem .8rem;border-radius:3px;cursor:pointer;
+}
+.pruefe-btn:hover{opacity:.85}
+.loeschen-btn{
+  font-family:var(--mono);font-size:.77rem;
+  border:1px solid var(--linie);background:var(--karte);color:var(--tinte-hell);
+  padding:.35rem .7rem;border-radius:3px;cursor:pointer;
+}
+.loeschen-btn:hover{background:var(--papier-dunkel)}
+.wort-zaehler{
+  font-family:var(--mono);font-size:.72rem;color:var(--tinte-hell);margin-left:auto
+}
+/* Feedback */
+.eingabe-feedback-inner{
+  margin-top:.65rem;border-radius:4px;padding:.75rem 1rem;font-size:.9rem
+}
+.fb-gruen{background:var(--geo-hell);border-left:4px solid var(--gruen)}
+.fb-gelb {background:var(--wirt-hell);border-left:4px solid var(--gelb)}
+.fb-rot  {background:var(--pol-hell); border-left:4px solid var(--rot)}
+.fb-kopf{font-weight:bold;margin-bottom:.45rem}
+.fb-meta{font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--tinte-hell);margin:.5rem 0 .2rem}
+.fb-liste{list-style:none;margin-left:.2rem}
+.fb-liste li{padding:.12rem 0;font-size:.87rem}
+.fb-ok  li{color:var(--gruen)}
+.fb-leer li{color:var(--rot)}
+.fb-tipp{margin-top:.5rem;font-size:.87rem;border-top:1px dashed var(--linie);padding-top:.4rem}
+.fb-rs  {margin-top:.3rem;font-size:.8rem;font-style:italic;color:var(--tinte-hell)}
+/* Methoden-Aufgabe M: Analyse-Fragen */
+.methode-analyse{border-top:1px dashed var(--linie);margin-top:1rem;padding-top:.6rem}
+.methode-frage{
+  margin-bottom:.6rem;border:1px solid var(--linie);border-radius:4px;
+  padding:.7rem .9rem;background:rgba(255,255,255,.35);
+}
+.methode-frage p{font-size:.92rem;margin-bottom:.3rem}
 </style>
 </head>
 <body>
@@ -701,8 +760,60 @@ footer{
     </div>
     <p class="quellenangabe">Datenbasis: langjährige Klimamittel, gerundet und didaktisch vereinfacht.</p>
 
+    <!-- Methoden-Aufgabe M -->
+    <div class="aufgabe" data-geo-id="m" style="border-color:var(--geo);background:var(--geo-hell)">
+      <span class="nr" style="color:var(--geo)">Methoden-Aufgabe M · Klimadiagramme zeichnen
+        <span style="font-weight:normal;font-style:italic"> – erledige diese Aufgabe, bevor du mit Aufgabe 1 beginnst</span>
+      </span>
+      <p>Klimadiagramme sind das wichtigste Werkzeug der Klimaforschung. Sie zeigen auf einen Blick,
+      wie sich Temperatur und Niederschlag über ein Jahr verteilen – und machen zwei sehr
+      unterschiedliche Orte direkt vergleichbar. Deine Aufgabe: Erstelle je ein Klimadiagramm
+      für Kumasi und für Osnabrück, bevor du die Aufgaben 1–3 bearbeitest.</p>
+
+      <p style="margin-top:.6rem"><strong>Wähle deinen Weg:</strong></p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin:.7rem 0">
+        <div style="border:1px solid var(--linie);border-radius:4px;padding:.8rem;background:rgba(255,255,255,.55)">
+          <p style="font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--geo);margin-bottom:.4rem">✎ &nbsp;Auf Papier zeichnen</p>
+          <p style="font-size:.92rem">Lade das Arbeitsblatt herunter oder hol dir ein ausgedrucktes Exemplar bei der Lernbegleitung. Nutze einen roten Stift für die Temperaturkurve und einen blauen für die Niederschlagssäulen.</p>
+          <a href="klimadiagramm-arbeitsblatt_erdkunde_jg9-10_2026-07.html" target="_blank"
+             style="display:inline-block;margin-top:.6rem;font-family:var(--mono);font-size:.78rem;
+             border:1px solid var(--geo);color:var(--geo);padding:.35rem .7rem;border-radius:3px;
+             text-decoration:none;background:var(--karte)">
+            ↓ Arbeitsblatt öffnen / drucken
+          </a>
+        </div>
+        <div style="border:1px solid var(--linie);border-radius:4px;padding:.8rem;background:rgba(255,255,255,.55)">
+          <p style="font-family:var(--mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--geo);margin-bottom:.4rem">📱 &nbsp;Digital auf dem iPad</p>
+          <p style="font-size:.92rem">Öffne <strong>Numbers</strong> (vorinstalliert) und lege eine Tabelle mit den Monatsdaten an. Markiere die Werte, tippe auf „Diagramm einfügen" → „Kombiniert" (Linie + Balken). Benenne beide Achsen.</p>
+          <p style="font-size:.82rem;font-style:italic;color:var(--tinte-hell);margin-top:.4rem">Alternative: Erstelle das Diagramm in einer anderen App deiner Wahl – kläre kurz mit der Lernbegleitung ab, ob sie passt.</p>
+        </div>
+      </div>
+
+      <p style="font-size:.92rem;margin-top:.3rem"><strong>Achte dabei auf:</strong></p>
+      <ul style="margin:.4rem 0 .5rem 1.2rem;font-size:.92rem">
+        <li>Linke Achse: Temperatur in °C · Rechte Achse: Niederschlag in mm</li>
+        <li>Temperaturkurve = Linie (roter Stift / rote Farbe)</li>
+        <li>Niederschlag = Balken / Säulen (blauer Stift / blaue Farbe)</li>
+        <li>Titel, Maßeinheiten und Legende nicht vergessen</li>
+        <li>Beide Diagramme im <strong>gleichen Maßstab</strong> zeichnen – nur dann kann man sie vergleichen</li>
+      </ul>
+
+      <details class="impuls"><summary>Impuls 1 – Welche Werte kommen auf welche Achse?</summary>
+        <div class="inhalt">Die Temperaturdaten (z. B. 27, 28, 28 …) kommen auf die linke Achse. Die Niederschlagsdaten (z. B. 17, 60, 130 …) kommen auf die rechte Achse. Die Monate (Jan–Dez) bilden die untere (waagerechte) Achse.</div>
+      </details>
+      <details class="impuls"><summary>Impuls 2 – Wie viel Platz muss die Achse für Kumasi haben?</summary>
+        <div class="inhalt">Der höchste Niederschlagswert für Kumasi ist 220 mm (im Juni). Deine rechte Achse muss also mindestens bis 220 mm, besser bis 250 mm reichen. Für die Temperatur reicht eine Skala von 0 bis 30 °C für beide Städte.</div>
+      </details>
+
+      <div style="margin-top:.8rem;padding:.6rem .8rem;background:var(--papier);border:1px dashed var(--linie);border-radius:4px;font-size:.88rem">
+        <strong>Wenn du fertig bist:</strong> Lege deine Diagramme neben das Gerät – du brauchst sie für Aufgabe 2.
+        Fotografiere sie oder schreibe deine Beobachtungen direkt ins Feldtagebuch.
+      </div>
+    </div>
+
     <!-- Aufgabe 1 -->
-    <div class="aufgabe">
+    <div class="aufgabe" data-geo-id="a1">
       <span class="nr">Aufgabe 1 · Den Kakaogürtel verorten</span>
       <div class="wegwahl" role="group" aria-label="Weg wählen">
         <button aria-pressed="true" data-weg="basis">Basisweg</button>
@@ -723,31 +834,36 @@ footer{
     </div>
 
     <!-- Aufgabe 2 -->
-    <div class="aufgabe">
+    <div class="aufgabe" data-geo-id="a2">
       <span class="nr">Aufgabe 2 · Klimavergleich Kumasi – Osnabrück</span>
       <div class="wegwahl" role="group" aria-label="Weg wählen">
         <button aria-pressed="true" data-weg="basis">Basisweg</button>
         <button aria-pressed="false" data-weg="exped">Expeditionsweg</button>
       </div>
       <div class="weg aktiv" data-weg="basis">
-        <p>Werte die Klimatabelle mit diesen Leitfragen aus und notiere deine Antworten:</p>
+        <p>Werte die Klimatabelle mit diesen Leitfragen aus und notiere deine Antworten im Feldtagebuch:</p>
         <p>a) Welcher ist der wärmste und der kälteste Monat in Kumasi? Und in Osnabrück?<br>
-        b) Wie stark schwankt die Temperatur im Jahresverlauf – hier und dort?<br>
-        c) Wie verteilt sich der Niederschlag über das Jahr?</p>
-        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Rechne für beide Städte die Differenz zwischen wärmstem und kältestem Monat aus. Was fällt auf?</div></details>
-        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">In Kumasi gibt es keine kalten Monate – aber gibt es dafür trockene und feuchte Zeiten? Vergleiche z. B. Januar und Juni.</div></details>
+        b) Wie stark schwankt die Temperatur im Jahresverlauf – hier und dort? Rechne die Differenz aus.<br>
+        c) Wie verteilt sich der Niederschlag über das Jahr? Gibt es in Kumasi besonders feuchte und besonders trockene Monate?<br>
+        d) Wie viel Regen fällt in Kumasi insgesamt im Jahr? Und in Osnabrück? Vergleiche die Jahressummen.</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Für b): Differenz = höchster Wert minus niedrigster Wert. Schau dir die Ergebnisse für beide Städte an. Was fällt auf?</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">Für c): Gibt es Monate mit weniger als 50 mm in Kumasi? Wie viele sind das – und wann liegen sie im Jahr?</div></details>
       </div>
       <div class="weg" data-weg="exped">
-        <p>Zeichne aus den Daten für <strong>beide</strong> Orte je ein Klimadiagramm
-        (auf Papier oder digital, z. B. in einer Tabellen-App auf deinem iPad).
-        Formuliere anschließend die zwei entscheidenden Unterschiede in eigenen Worten.</p>
-        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">Ein Klimadiagramm zeigt Temperatur als Linie und Niederschlag als Säulen. Beschrifte beide Achsen.</div></details>
-        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">„Entscheidend" heißt: Welche zwei Unterschiede erklären am besten, warum Kakao nur an einem der beiden Orte wächst?</div></details>
+        <p>Nimm deine fertigen Klimadiagramme aus der Methoden-Aufgabe zur Hand.
+        Formuliere auf Basis deiner Diagramme und der Tabelle die <strong>drei entscheidenden Unterschiede</strong>
+        zwischen den Klimaten von Kumasi und Osnabrück. Erkläre dabei jeweils, was der Unterschied
+        für den Kakaoanbau bedeutet.</p>
+        <p style="margin-top:.5rem">Gehe anschließend einen Schritt weiter:
+        Welches der beiden Diagramme würde ein Klimaforscher als „ausgeglichener" bezeichnen –
+        und was meint er damit?</p>
+        <details class="impuls"><summary>Impuls 1</summary><div class="inhalt">„Entscheidend" heißt: Welche Unterschiede erklären am besten, warum Kakao nur in Kumasi wächst und nicht in Osnabrück? Schaue auf Temperatur UND Niederschlag.</div></details>
+        <details class="impuls"><summary>Impuls 2</summary><div class="inhalt">„Ausgeglichen" beschreibt, wie stark ein Wert (Temperatur oder Niederschlag) über das Jahr schwankt. Je kleiner die Schwankung, desto ausgeglichener das Klima.</div></details>
       </div>
     </div>
 
     <!-- Aufgabe 3 -->
-    <div class="aufgabe">
+    <div class="aufgabe" data-geo-id="a3">
       <span class="nr">Aufgabe 3 · Transfer</span>
       <div class="wegwahl" role="group" aria-label="Weg wählen">
         <button aria-pressed="true" data-weg="basis">Basisweg</button>
@@ -1914,9 +2030,266 @@ document.querySelectorAll('.produkt .waehlen').forEach(btn=>{
 });
 
 /* ============================================================
+   BROWSER-EINGABE: STATION 1 GEOGRAFIE
+   Rein keyword-basiertes Feedback – kein API-Aufruf.
+   Erwartungen (Aspekte) sind als Schlüsselwort-Gruppen hinterlegt.
+   ============================================================ */
+const GEO_FEEDBACK = {
+
+  /* ── Methoden-Aufgabe M · Analyse nach dem Zeichnen ── */
+  'm-a1': {
+    min: 15,
+    aspekte: [
+      { label: 'Beide Städte verglichen',            kw: ['kumasi','osnabrück'] },
+      { label: 'Schwankung / Differenz thematisiert', kw: ['schwank','differenz','unterschied','kaum','gering','stark'] },
+      { label: 'Konkrete Gradangaben',               kw: ['3 °','16 °','3°','16°','grad','°c'] },
+    ],
+    tipp: 'Berechne und nenne die Temperaturdifferenz (höchster − niedrigster Monat) für BEIDE Städte mit konkreten Zahlen.'
+  },
+  'm-a2': {
+    min: 15,
+    aspekte: [
+      { label: 'Regenzeit oder Trockenzeit benannt', kw: ['regenzeit','trockenzeit','feucht','trocken'] },
+      { label: 'Monat mit viel Niederschlag',        kw: ['juni','mai','oktober','april','september'] },
+      { label: 'Monat mit wenig Niederschlag',       kw: ['januar','dezember','febr'] },
+    ],
+    tipp: 'Nenne konkrete Monate mit vielen und wenigen mm Niederschlag – und gib Zahlenwerte an.'
+  },
+  'm-a3': {
+    min: 12,
+    aspekte: [
+      { label: 'Konkreter Monat genannt',            kw: ['januar','februar','dezember','november','dez','jan'] },
+      { label: 'Begründung mit Niederschlag',        kw: ['trocken','wenig','niederschlag','regen','mm','17','dürre','wasser'] },
+      { label: 'Bezug zum Kakaobaum',                kw: ['kakao','pflanze','baum','wächst','wachstum'] },
+    ],
+    tipp: 'Nenne den Monat, gib seinen Niederschlagswert an und erkläre, was das für den Kakaobaum bedeutet.'
+  },
+  'm-a4': {
+    min: 25,
+    aspekte: [
+      { label: 'Klare Position bezogen',             kw: ['nicht','falsch','teils','zum teil','jedoch','aber','richtig','stimmt'] },
+      { label: 'Niederschlag als Unterschied',       kw: ['niederschlag','regen','regenzeit','trockenzeit','trocken'] },
+      { label: 'Beleg aus den Diagrammdaten',        kw: ['mm','°c','grad','januar','juni','august','oktober','220','17'] },
+    ],
+    tipp: 'Der Händler hat bei der Temperatur teilweise Recht – beim Niederschlag liegt er falsch. Belege beides mit konkreten Werten.'
+  },
+
+  /* ── Aufgabe 1 ── */
+  'a1-basis': {
+    min: 25,
+    aspekte: [
+      { label: 'Mind. zwei Anbauländer genannt',       kw: ['ghana','elfenbeinküste','nigeria','kamerun','brasilien','ecuador','indonesien'], min2: true },
+      { label: 'Temperaturbedingung erwähnt',          kw: ['temperatur','warm','heiß','hitze','grad','°c'] },
+      { label: 'Niederschlag oder Feuchtigkeit',       kw: ['niederschlag','regen','feucht','feuchtigkeit','wasser','mm'] },
+      { label: 'Begründung / Verknüpfung mit Steckbrief', kw: ['weil','denn','da ','steckbrief','bedingung','braucht','benötigt','erfüllt','geeignet'] },
+    ],
+    tipp: 'Nenne mindestens zwei Länder und begründe ihre Eignung mit konkreten Werten aus dem Steckbrief (z. B. „Ghana liegt im Kakaogürtel, hat … °C und … mm, der Kakaobaum braucht …").'
+  },
+  'a1-exped': {
+    min: 45,
+    aspekte: [
+      { label: 'Position zur These klar',             kw: ['nein','ja ','nicht möglich','möglich','falsch','stimmt','teils','unmöglich','denkbar'] },
+      { label: 'Mittelmeer / Südeuropa erwähnt',      kw: ['mittelmeer','spanien','italien','griechenland','portugal','südeuropa'] },
+      { label: 'Niederschlag als Hauptproblem',       kw: ['niederschlag','regen','trocken','trockenzeit','feucht','feuchtigkeit','1200','mm'] },
+      { label: 'Steckbrief als Grundlage',            kw: ['steckbrief','bedingung','braucht','mindestens','1200','21 °','32 °','benötigt'] },
+      { label: 'Differenziertes Urteil',              kw: ['aber','obwohl','jedoch','trotzdem','allein','nicht nur','reicht nicht','nicht reicht'] },
+    ],
+    tipp: 'Gehe ALLE Steckbrief-Bedingungen durch – nicht nur die Temperatur. Am Mittelmeer fehlt vor allem der ganzjährige Regen und die Luftfeuchtigkeit im Sommer.'
+  },
+
+  /* ── Aufgabe 2 ── */
+  'a2-basis': {
+    min: 45,
+    aspekte: [
+      { label: 'Wärmsten Monat für Kumasi benannt',   kw: ['februar','märz','april','28'] },
+      { label: 'Wärmsten Monat für Osnabrück benannt',kw: ['juli','august','18'] },
+      { label: 'Temperaturdifferenz beschrieben',      kw: ['differenz','schwankung','schwankt','3 °','16 °','3°','16°','unterschied'] },
+      { label: 'Niederschlagsverteilung beschrieben',  kw: ['regenzeit','trockenzeit','gleichmäßig','ungleich','verteilt','feucht','trocken'] },
+      { label: 'Zahlenwerte aus der Tabelle',          kw: ['220','17','80','70','1430','790','mm'] },
+    ],
+    tipp: 'Beantworte alle vier Leitfragen a–d vollständig und belege jede Aussage mit mindestens einem Zahlenwert aus der Klimatabelle.'
+  },
+  'a2-exped': {
+    min: 55,
+    aspekte: [
+      { label: 'Drei Unterschiede erkennbar strukturiert', kw: ['erstens','zweitens','drittens','1.','2.','3.','außerdem','zudem','darüber hinaus','unterschied'] },
+      { label: 'Temperaturkonstanz thematisiert',          kw: ['konstant','stabil','gleichmäßig','kaum schwankt','wenig schwankt','ausgeglichen','gering'] },
+      { label: 'Niederschlag / Regenzeit',                 kw: ['regenzeit','trockenzeit','niederschlag','1430','790','220','regen'] },
+      { label: 'Bezug zum Kakaoanbau',                     kw: ['kakao','anbau','wächst','pflanze','gedeiht','geeignet','bedingung','baum'] },
+      { label: '„Ausgeglichen" erklärt',                   kw: ['ausgeglichen','schwankung','schwankt','veränder','gering','stabil'] },
+    ],
+    tipp: 'Strukturiere mit Signalwörtern (Erstens … / Zweitens … / Drittens …). Erkläre bei jedem Punkt, was genau der Unterschied ist UND was er für den Kakaoanbau bedeutet.'
+  },
+
+  /* ── Aufgabe 3 ── */
+  'a3-basis': {
+    min: 30,
+    aspekte: [
+      { label: 'Temperatur als Hauptproblem',         kw: ['temperatur','grad','°c','kalt','kälte','niedrig','kühl','winter'] },
+      { label: 'Konkreter Zahlenwert',                kw: ['2 °','2°','18 °','18°','jan','feb','dez','winter','−','minus'] },
+      { label: 'Bezug zum Steckbrief-Mindestwert',    kw: ['16','21','32','steckbrief','mindestens','benötigt','braucht'] },
+      { label: 'Begründungs-Satz (weil / denn / da)', kw: ['weil','denn','da ','deshalb','daher','darum','wegen'] },
+    ],
+    tipp: 'Nenne den Hauptgrund (zu kalt), belege ihn mit einem konkreten Temperaturwert aus der Tabelle und erkläre den Zusammenhang mit dem Steckbrief-Mindestwert (z. B. 16 °C).'
+  },
+  'a3-exped': {
+    min: 55,
+    aspekte: [
+      { label: 'Mind. eine Chance formuliert',         kw: ['chance','vorteil','profit','einnahme','exportier','verkauf','preis','einzigartig','selten','export'] },
+      { label: 'Mind. ein Risiko formuliert',          kw: ['risiko','nachteil','abhängig','verlust','preisverfall','ernte','klimawandel','krankheit','ausfall','fällt'] },
+      { label: 'Preis / Verhandlungsmacht erwähnt',    kw: ['preis','weltmarkt','verhandl','bestimmt','diktiert','käufer','angebot','nachfrage'] },
+      { label: 'Vorausschauendes / wirtschaftliches Denken', kw: ['wirtschaft','langfristig','abhängigkeit','station','wenn','falls','könnte','würde'] },
+    ],
+    tipp: 'Denke wirtschaftlich: Wer profitiert davon, wenn ein Produkt selten ist (Chance)? Was passiert, wenn die Ernte einbricht oder der Preis fällt (Risiko)?'
+  },
+};
+
+/* ── Hilfsfunktion: Schlüsselwort-Match ── */
+function _kw(textL, kw, min2) {
+  const treffer = kw.filter(k => textL.includes(k));
+  return min2 ? treffer.length >= 2 : treffer.length > 0;
+}
+
+/* ── Feedback rendern ── */
+function _zeigeGeoFeedback(id, text, container) {
+  const daten = GEO_FEEDBACK[id];
+  if (!daten) return;
+  const textL  = text.toLowerCase();
+  const woerter = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+
+  container.innerHTML = '';
+
+  if (woerter < daten.min) {
+    container.innerHTML = `<div class="eingabe-feedback-inner fb-gelb">
+      <p class="fb-kopf">Die Antwort ist noch sehr kurz (${woerter} ${woerter===1?'Wort':'Wörter'}).</p>
+      <p style="font-size:.88rem">Versuche, in vollständigen Sätzen zu antworten – eine gute Antwort hat mindestens ${daten.min} Wörter.</p>
+    </div>`;
+    return;
+  }
+
+  const ergebnisse = daten.aspekte.map(a => ({
+    label: a.label,
+    ok: _kw(textL, a.kw, a.min2)
+  }));
+  const n_ok    = ergebnisse.filter(e => e.ok).length;
+  const quote   = n_ok / ergebnisse.length;
+  const farbe   = quote >= 0.76 ? 'gruen' : (quote >= 0.4 ? 'gelb' : 'rot');
+  const kopftext = {
+    gruen: `Sehr gut – ${n_ok} von ${ergebnisse.length} Aspekten erkannt!`,
+    gelb:  `Gut auf dem Weg – ${n_ok} von ${ergebnisse.length} Aspekten vorhanden.`,
+    rot:   `Noch ${ergebnisse.length - n_ok} von ${ergebnisse.length} Aspekten fehlen.`
+  }[farbe];
+
+  const okHTML    = ergebnisse.filter(e =>  e.ok).map(e => `<li>✓ ${e.label}</li>`).join('');
+  const leerHTML  = ergebnisse.filter(e => !e.ok).map(e => `<li>→ ${e.label}</li>`).join('');
+
+  container.innerHTML = `<div class="eingabe-feedback-inner fb-${farbe}">
+    <p class="fb-kopf">${kopftext}</p>
+    ${okHTML   ? `<p class="fb-meta">Das ist schon drin:</p><ul class="fb-liste fb-ok">${okHTML}</ul>` : ''}
+    ${leerHTML ? `<p class="fb-meta">Das könnte noch fehlen:</p><ul class="fb-liste fb-leer">${leerHTML}</ul>` : ''}
+    <p class="fb-tipp"><strong>Inhaltlicher Tipp:</strong> ${daten.tipp}</p>
+    <p class="fb-rs">Rechtschreibung: Dein Browser markiert Tippfehler mit einer roten Wellenlinie direkt im Eingabefeld. Korrigiere markierte Wörter vor dem Abgeben.</p>
+  </div>`;
+}
+
+/* ── Eingabe-UI erzeugen ── */
+function _erstelleEingabeUI(parent, checkId) {
+  const wrap = document.createElement('div');
+  wrap.className = 'browser-eingabe';
+  wrap.innerHTML = `
+    <button class="eingabe-toggle-btn" aria-expanded="false">✏ Antwort im Browser eintippen</button>
+    <div class="eingabe-body" style="display:none">
+      <textarea class="antwort-feld" spellcheck="true" lang="de"
+        placeholder="Schreibe deine Antwort hier – der Browser prüft die Rechtschreibung (rote Wellenlinie)."></textarea>
+      <div class="eingabe-aktionen">
+        <button class="pruefe-btn">Inhalt prüfen</button>
+        <button class="loeschen-btn">Löschen</button>
+        <span class="wort-zaehler">0 Wörter</span>
+      </div>
+      <div class="feedback-ziel"></div>
+    </div>`;
+
+  const toggleBtn  = wrap.querySelector('.eingabe-toggle-btn');
+  const body       = wrap.querySelector('.eingabe-body');
+  const ta         = wrap.querySelector('.antwort-feld');
+  const zaehler    = wrap.querySelector('.wort-zaehler');
+  const pruefeBtn  = wrap.querySelector('.pruefe-btn');
+  const loeschenBtn= wrap.querySelector('.loeschen-btn');
+  const fziel      = wrap.querySelector('.feedback-ziel');
+
+  toggleBtn.addEventListener('click', () => {
+    const offen = body.style.display === 'none';
+    body.style.display = offen ? 'block' : 'none';
+    toggleBtn.setAttribute('aria-expanded', String(offen));
+    if (offen) ta.focus();
+  });
+
+  ta.addEventListener('input', () => {
+    const n = ta.value.trim().split(/\s+/).filter(w=>w.length>0).length;
+    zaehler.textContent = n + (n===1 ? ' Wort' : ' Wörter');
+    fziel.innerHTML = '';
+  });
+
+  pruefeBtn.addEventListener('click', () => {
+    _zeigeGeoFeedback(checkId, ta.value, fziel);
+    fziel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  });
+
+  loeschenBtn.addEventListener('click', () => {
+    if (!ta.value || confirm('Eingabe löschen?')) {
+      ta.value = '';
+      zaehler.textContent = '0 Wörter';
+      fziel.innerHTML = '';
+    }
+  });
+
+  parent.appendChild(wrap);
+}
+
+/* ── Initialisierung für alle Geo-Aufgaben ── */
+function initialisiereGeoEingaben() {
+  /* Aufgaben 1–3: Textarea am Ende jedes .weg-Divs einfügen */
+  document.querySelectorAll('#seite-geo .aufgabe[data-geo-id]').forEach(aufgabe => {
+    const gid = aufgabe.dataset.geoId;
+    aufgabe.querySelectorAll('.weg').forEach(weg => {
+      const checkId = gid + '-' + weg.dataset.weg;
+      if (GEO_FEEDBACK[checkId]) _erstelleEingabeUI(weg, checkId);
+    });
+  });
+
+  /* Methoden-Aufgabe M: Analyse-Fragen als Browser-Input anhängen */
+  const mDiv = document.querySelector('#seite-geo .aufgabe[data-geo-id="m"]');
+  if (!mDiv) return;
+
+  const aDiv = document.createElement('div');
+  aDiv.className = 'methode-analyse';
+  aDiv.innerHTML = `
+    <p style="font-family:var(--mono);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;
+       color:var(--geo);margin-bottom:.5rem">✏ Auswertung im Browser – nach dem Zeichnen</p>
+    <p style="font-size:.9rem;margin-bottom:.7rem">Wenn du beide Diagramme fertig hast, beantworte
+    die vier Auswertungsfragen hier – alternativ auch auf dem Arbeitsblatt.</p>`;
+
+  [
+    { id:'m-a1', text:'1. Wie stark schwankt die Temperatur in Kumasi und in Osnabrück im Jahresverlauf? Berechne und vergleiche die Differenz.' },
+    { id:'m-a2', text:'2. Gibt es in Kumasi eine Regenzeit und eine Trockenzeit? In welchen Monaten regnet es besonders viel, in welchen besonders wenig?' },
+    { id:'m-a3', text:'3. In welchem Monat haben Kakaobäume in Kumasi es wahrscheinlich am schwersten – und warum? Begründe mit einem Wert aus deinem Diagramm.' },
+    { id:'m-a4', text:'4. (Expeditionsweg) Ein Händler sagt: „Das Wetter in Kumasi ist das ganze Jahr über ungefähr gleich." Stimmt das? Begründe mit Blick auf dein Diagramm.' },
+  ].forEach(frage => {
+    const f = document.createElement('div');
+    f.className = 'methode-frage';
+    f.innerHTML = `<p>${frage.text}</p>`;
+    _erstelleEingabeUI(f, frage.id);
+    aDiv.appendChild(f);
+  });
+
+  mDiv.appendChild(aDiv);
+}
+
+/* ============================================================
    START – Session prüfen, dann Modus festlegen
    ============================================================ */
 initSession();
+initialisiereGeoEingaben();
 </script>
 </body>
 </html>

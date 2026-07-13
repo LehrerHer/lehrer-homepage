@@ -1,0 +1,416 @@
+<!--
+  Titel: Klimadiagramme zeichnen – Kumasi & Osnabrück
+  Fach: Erdkunde
+  Klasse/Niveau: Jahrgang 9/10
+  AB-Typ: Druckvorlage (vorgezeichnete Diagrammraster zum Selbstzeichnen)
+  Erstellt: 2026-07
+  Quelle: Begleitmaterial zu „Die Spur der Bohne" (Station 1 · Geografie)
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Klimadiagramme zeichnen – Kumasi & Osnabrück</title>
+<style>
+/* ============================================================
+   DRUCKOPTIMIERTES ARBEITSBLATT – A4 Hochformat
+   ============================================================ */
+@page { size: A4 portrait; margin: 14mm 16mm 14mm 16mm; }
+
+*{ box-sizing:border-box; margin:0; padding:0; }
+
+body{
+  font-family:"Palatino Linotype",Palatino,Georgia,serif;
+  font-size:10pt;
+  color:#2E2A24;
+  background:#fff;
+  max-width:178mm;
+  margin:0 auto;
+  padding:6mm 0;
+}
+
+/* Kopfzeile */
+.kopf{
+  display:flex; align-items:flex-end; justify-content:space-between;
+  border-bottom:2px solid #2E2A24;
+  padding-bottom:3mm; margin-bottom:4mm;
+}
+.kopf .titel h1{ font-size:14pt; font-weight:600; letter-spacing:.01em; }
+.kopf .titel p{ font-size:8pt; color:#6B6353; margin-top:1mm; font-style:italic; }
+.kopf .meta{ text-align:right; font-size:8.5pt; color:#6B6353; line-height:1.8; }
+.kopf .meta span{ display:block; border-bottom:1px solid #ccc; min-width:52mm; padding-bottom:.5mm; margin-bottom:1mm; }
+
+/* Methodenkasten */
+.methode{
+  border:1.5px solid #8B5E3C;
+  border-radius:3px;
+  background:#FBF7EC;
+  padding:3mm 4mm;
+  margin-bottom:5mm;
+  font-size:8.5pt;
+}
+.methode h2{
+  font-size:8pt; letter-spacing:.18em; text-transform:uppercase;
+  color:#8B5E3C; margin-bottom:2mm; font-family:"Courier New",monospace;
+}
+.methode p{ line-height:1.55; margin-bottom:1.5mm; }
+.methode ul{ margin-left:4mm; line-height:1.6; }
+.methode ul li{ margin-bottom:.5mm; }
+
+/* Diagramm-Block */
+.diagramm-block{
+  margin-bottom:6mm;
+  break-inside:avoid;
+}
+.diagramm-block h3{
+  font-size:11pt; font-weight:600; margin-bottom:2mm;
+  border-left:4px solid #4A6741; padding-left:2.5mm;
+}
+.diagramm-block.osna h3{ border-color:#5B6E8C; }
+.diagramm-legende{
+  display:flex; gap:6mm; font-size:7.5pt; margin-bottom:1.5mm;
+  color:#6B6353;
+}
+.diagramm-legende span{ display:flex; align-items:center; gap:1.5mm; }
+.leg-linie{ width:8mm; height:0; border-top:2px solid #A93F35; }
+.leg-balken{ width:5mm; height:3mm; background:#5B6E8C; opacity:.5; }
+
+/* SVG Wrapper */
+.svg-wrap{
+  width:100%;
+  border:1px solid #D8CDB4;
+  background:#FDFAF4;
+  border-radius:2px;
+  overflow:hidden;
+}
+.svg-wrap svg{ display:block; width:100%; height:auto; }
+
+/* Datentabelle unter Diagramm */
+.datentab{
+  margin-top:2mm;
+  font-size:7pt;
+  color:#6B6353;
+  width:100%;
+  border-collapse:collapse;
+}
+.datentab td, .datentab th{
+  border:1px solid #e0d8c8;
+  padding:1mm 1.5mm;
+  text-align:center;
+}
+.datentab th{
+  background:#F2EACC;
+  font-family:"Courier New",monospace;
+  font-size:6.5pt;
+  letter-spacing:.05em;
+}
+.datentab td:first-child{ text-align:left; font-style:italic; }
+
+/* Analysefragen */
+.fragen{
+  border:1.5px solid #2E2A24;
+  border-radius:3px;
+  padding:3mm 4mm;
+  margin-top:5mm;
+  break-inside:avoid;
+}
+.fragen h2{
+  font-size:8pt; letter-spacing:.18em; text-transform:uppercase;
+  font-family:"Courier New",monospace; margin-bottom:3mm;
+}
+.frage-item{
+  margin-bottom:4mm;
+}
+.frage-item p{ margin-bottom:1mm; line-height:1.5; font-size:8.5pt; }
+.schreibzeile{
+  border-bottom:1px solid #aaa;
+  min-height:5mm;
+  margin-bottom:1.5mm;
+}
+
+/* Fußzeile */
+.fusszeile{
+  margin-top:4mm;
+  font-size:7pt;
+  color:#aaa;
+  text-align:center;
+  border-top:1px solid #e0d8c8;
+  padding-top:2mm;
+  font-family:"Courier New",monospace;
+}
+
+/* Druckknopf (nur am Bildschirm) */
+.druckknopf-leiste{
+  text-align:center;
+  padding:8mm 0 4mm;
+}
+.druckknopf-leiste button{
+  font-family:"Courier New",monospace;
+  font-size:9pt;
+  border:1.5px solid #2E2A24;
+  background:#fff;
+  padding:3mm 7mm;
+  border-radius:3px;
+  cursor:pointer;
+  margin:0 2mm;
+}
+.druckknopf-leiste button:hover{ background:#F5EFDF; }
+
+@media print{
+  .druckknopf-leiste{ display:none; }
+  body{ padding:0; }
+}
+</style>
+</head>
+<body>
+
+<div class="druckknopf-leiste">
+  <button onclick="window.print()">🖨 Seite drucken / als PDF speichern</button>
+  <button onclick="window.close()">✕ Schließen</button>
+</div>
+
+<!-- KOPFZEILE -->
+<div class="kopf">
+  <div class="titel">
+    <h1>Klimadiagramme zeichnen</h1>
+    <p>Station 1 · Geografie · „Die Spur der Bohne"</p>
+  </div>
+  <div class="meta">
+    <span>Name: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    <span>Datum: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+  </div>
+</div>
+
+<!-- METHODENKASTEN -->
+<div class="methode">
+  <h2>Methode · So entsteht ein Klimadiagramm</h2>
+  <p>Ein Klimadiagramm zeigt, wie Temperatur und Niederschlag an einem Ort über das Jahr verteilt sind.
+  In einem Diagramm stecken deshalb zwei Informationen gleichzeitig:</p>
+  <ul>
+    <li><strong>Temperaturkurve (rote Linie):</strong> Trage für jeden Monat einen Punkt
+    auf der linken Temperaturachse (°C) ein und verbinde alle Punkte mit einer fließenden Linie.</li>
+    <li><strong>Niederschlagssäulen (blaue Balken):</strong> Zeichne für jeden Monat einen
+    Balken bis zur entsprechenden Höhe auf der rechten Niederschlagsachse (mm). Fülle ihn leicht aus.</li>
+    <li><strong>Beschriften nicht vergessen:</strong> Titel, Achsenbeschriftungen, Maßeinheiten und eine Legende.</li>
+  </ul>
+  <p style="margin-top:1.5mm">Die Daten findest du in der Klimatab­elle unten. Nutze einen roten und einen blauen Stift.</p>
+</div>
+
+<!-- DIAGRAMM 1: KUMASI -->
+<div class="diagramm-block">
+  <h3>Diagramm 1 · Kumasi (Ghana) – 6° N, ca. 270 m ü. M.</h3>
+  <div class="diagramm-legende">
+    <span><span class="leg-linie"></span> Temperatur (°C), linke Achse</span>
+    <span><span class="leg-balken"></span> Niederschlag (mm), rechte Achse</span>
+  </div>
+  <div class="svg-wrap">
+    <!--
+      Plotbereich: x 58–520, y 12–192  (Breite 462, Höhe 180)
+      12 Monate → Spaltenbreite 38.5 px, Mitte bei 58 + n*38.5 + 19.25
+      Temp-Achse links:  0°C=192, 5°C=162, 10°C=132, 15°C=102, 20°C=72, 25°C=42, 30°C=12
+      Niederschlag rechts: 0mm=192, 50mm=156, 100mm=120, 150mm=84, 200mm=48, 250mm=12
+    -->
+    <svg viewBox="0 0 580 220" xmlns="http://www.w3.org/2000/svg" aria-label="Leeres Klimadiagramm-Raster für Kumasi">
+      <!-- Hintergrund -->
+      <rect x="58" y="12" width="462" height="180" fill="#FEFCF6" stroke="#D8CDB4" stroke-width=".8"/>
+      <!-- Horizontale Rasterlinien (Temperatur je 5°C) -->
+      <line x1="58" y1="192" x2="520" y2="192" stroke="#D8CDB4" stroke-width=".6"/>
+      <line x1="58" y1="162" x2="520" y2="162" stroke="#D8CDB4" stroke-width=".6"/>
+      <line x1="58" y1="132" x2="520" y2="132" stroke="#D8CDB4" stroke-width=".6"/>
+      <line x1="58" y1="102" x2="520" y2="102" stroke="#D8CDB4" stroke-width=".6"/>
+      <line x1="58" y1="72"  x2="520" y2="72"  stroke="#D8CDB4" stroke-width=".6"/>
+      <line x1="58" y1="42"  x2="520" y2="42"  stroke="#D8CDB4" stroke-width=".6"/>
+      <line x1="58" y1="12"  x2="520" y2="12"  stroke="#D8CDB4" stroke-width=".6"/>
+      <!-- Vertikale Rasterlinien (Monatsgrenzen) -->
+      <line x1="58"  y1="12" x2="58"  y2="192" stroke="#D8CDB4" stroke-width=".8"/>
+      <line x1="96.5" y1="12" x2="96.5" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="135" y1="12" x2="135" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="173.5" y1="12" x2="173.5" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="212" y1="12" x2="212" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="250.5" y1="12" x2="250.5" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="289" y1="12" x2="289" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="327.5" y1="12" x2="327.5" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="366" y1="12" x2="366" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="404.5" y1="12" x2="404.5" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="443" y1="12" x2="443" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="481.5" y1="12" x2="481.5" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="520" y1="12" x2="520" y2="192" stroke="#D8CDB4" stroke-width=".8"/>
+      <!-- Achsen -->
+      <line x1="58" y1="12" x2="58" y2="200" stroke="#2E2A24" stroke-width="1.2"/>
+      <line x1="58" y1="200" x2="520" y2="200" stroke="#2E2A24" stroke-width="1.2"/>
+      <line x1="520" y1="12" x2="520" y2="200" stroke="#2E2A24" stroke-width="1.2"/>
+      <!-- Temp-Achse Beschriftung links (°C) -->
+      <text x="52" y="195" text-anchor="end" font-size="8" fill="#A93F35" font-family="Courier New">0</text>
+      <text x="52" y="165" text-anchor="end" font-size="8" fill="#A93F35" font-family="Courier New">5</text>
+      <text x="52" y="135" text-anchor="end" font-size="8" fill="#A93F35" font-family="Courier New">10</text>
+      <text x="52" y="105" text-anchor="end" font-size="8" fill="#A93F35" font-family="Courier New">15</text>
+      <text x="52" y="75"  text-anchor="end" font-size="8" fill="#A93F35" font-family="Courier New">20</text>
+      <text x="52" y="45"  text-anchor="end" font-size="8" fill="#A93F35" font-family="Courier New">25</text>
+      <text x="52" y="15"  text-anchor="end" font-size="8" fill="#A93F35" font-family="Courier New">30</text>
+      <!-- Achsentitel links -->
+      <text transform="rotate(-90,12,102)" x="12" y="102" text-anchor="middle" font-size="8" fill="#A93F35" font-family="Courier New">Temperatur (°C)</text>
+      <!-- Niederschlag-Achse rechts (mm) -->
+      <text x="525" y="195" text-anchor="start" font-size="8" fill="#4A6E9A" font-family="Courier New">0</text>
+      <text x="525" y="159" text-anchor="start" font-size="8" fill="#4A6E9A" font-family="Courier New">50</text>
+      <text x="525" y="123" text-anchor="start" font-size="8" fill="#4A6E9A" font-family="Courier New">100</text>
+      <text x="525" y="87"  text-anchor="start" font-size="8" fill="#4A6E9A" font-family="Courier New">150</text>
+      <text x="525" y="51"  text-anchor="start" font-size="8" fill="#4A6E9A" font-family="Courier New">200</text>
+      <text x="525" y="15"  text-anchor="start" font-size="8" fill="#4A6E9A" font-family="Courier New">250</text>
+      <!-- Achsentitel rechts -->
+      <text transform="rotate(90,570,102)" x="570" y="102" text-anchor="middle" font-size="8" fill="#4A6E9A" font-family="Courier New">Niederschlag (mm)</text>
+      <!-- Monatsbezeichnungen (Mitte jeder Spalte) -->
+      <!-- Spaltenbreite 38.5, Mitte: 58 + n*38.5 + 19.25 -->
+      <text x="77"   y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Jan</text>
+      <text x="115.5" y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Feb</text>
+      <text x="154"  y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Mär</text>
+      <text x="192.5" y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Apr</text>
+      <text x="231"  y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Mai</text>
+      <text x="269.5" y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Jun</text>
+      <text x="308"  y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Jul</text>
+      <text x="346.5" y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Aug</text>
+      <text x="385"  y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Sep</text>
+      <text x="423.5" y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Okt</text>
+      <text x="462"  y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Nov</text>
+      <text x="500.5" y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Dez</text>
+    </svg>
+  </div>
+  <!-- Datentabelle zur Orientierung -->
+  <table class="datentab">
+    <tr>
+      <th>Kumasi (Ghana)</th>
+      <th>Jan</th><th>Feb</th><th>Mär</th><th>Apr</th><th>Mai</th><th>Jun</th>
+      <th>Jul</th><th>Aug</th><th>Sep</th><th>Okt</th><th>Nov</th><th>Dez</th>
+    </tr>
+    <tr>
+      <td>Temperatur (°C)</td>
+      <td>27</td><td>28</td><td>28</td><td>28</td><td>27</td><td>26</td>
+      <td>25</td><td>25</td><td>26</td><td>26</td><td>27</td><td>27</td>
+    </tr>
+    <tr>
+      <td>Niederschlag (mm)</td>
+      <td>17</td><td>60</td><td>130</td><td>140</td><td>180</td><td>220</td>
+      <td>120</td><td>75</td><td>170</td><td>190</td><td>95</td><td>30</td>
+    </tr>
+  </table>
+</div>
+
+<!-- DIAGRAMM 2: OSNABRÜCK -->
+<div class="diagramm-block osna">
+  <h3>Diagramm 2 · Osnabrück (Deutschland) – 52° N, ca. 65 m ü. M.</h3>
+  <div class="diagramm-legende">
+    <span><span class="leg-linie"></span> Temperatur (°C), linke Achse</span>
+    <span><span class="leg-balken"></span> Niederschlag (mm), rechte Achse</span>
+  </div>
+  <div class="svg-wrap">
+    <!-- Identisches Raster wie Kumasi für direkten Vergleich -->
+    <svg viewBox="0 0 580 220" xmlns="http://www.w3.org/2000/svg" aria-label="Leeres Klimadiagramm-Raster für Osnabrück">
+      <rect x="58" y="12" width="462" height="180" fill="#FEFCF6" stroke="#D8CDB4" stroke-width=".8"/>
+      <line x1="58" y1="192" x2="520" y2="192" stroke="#D8CDB4" stroke-width=".6"/>
+      <line x1="58" y1="162" x2="520" y2="162" stroke="#D8CDB4" stroke-width=".6"/>
+      <line x1="58" y1="132" x2="520" y2="132" stroke="#D8CDB4" stroke-width=".6"/>
+      <line x1="58" y1="102" x2="520" y2="102" stroke="#D8CDB4" stroke-width=".6"/>
+      <line x1="58" y1="72"  x2="520" y2="72"  stroke="#D8CDB4" stroke-width=".6"/>
+      <line x1="58" y1="42"  x2="520" y2="42"  stroke="#D8CDB4" stroke-width=".6"/>
+      <line x1="58" y1="12"  x2="520" y2="12"  stroke="#D8CDB4" stroke-width=".6"/>
+      <line x1="58"  y1="12" x2="58"  y2="192" stroke="#D8CDB4" stroke-width=".8"/>
+      <line x1="96.5" y1="12" x2="96.5" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="135" y1="12" x2="135" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="173.5" y1="12" x2="173.5" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="212" y1="12" x2="212" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="250.5" y1="12" x2="250.5" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="289" y1="12" x2="289" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="327.5" y1="12" x2="327.5" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="366" y1="12" x2="366" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="404.5" y1="12" x2="404.5" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="443" y1="12" x2="443" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="481.5" y1="12" x2="481.5" y2="192" stroke="#E0D8C8" stroke-width=".4"/>
+      <line x1="520" y1="12" x2="520" y2="192" stroke="#D8CDB4" stroke-width=".8"/>
+      <line x1="58" y1="12" x2="58" y2="200" stroke="#2E2A24" stroke-width="1.2"/>
+      <line x1="58" y1="200" x2="520" y2="200" stroke="#2E2A24" stroke-width="1.2"/>
+      <line x1="520" y1="12" x2="520" y2="200" stroke="#2E2A24" stroke-width="1.2"/>
+      <text x="52" y="195" text-anchor="end" font-size="8" fill="#A93F35" font-family="Courier New">0</text>
+      <text x="52" y="165" text-anchor="end" font-size="8" fill="#A93F35" font-family="Courier New">5</text>
+      <text x="52" y="135" text-anchor="end" font-size="8" fill="#A93F35" font-family="Courier New">10</text>
+      <text x="52" y="105" text-anchor="end" font-size="8" fill="#A93F35" font-family="Courier New">15</text>
+      <text x="52" y="75"  text-anchor="end" font-size="8" fill="#A93F35" font-family="Courier New">20</text>
+      <text x="52" y="45"  text-anchor="end" font-size="8" fill="#A93F35" font-family="Courier New">25</text>
+      <text x="52" y="15"  text-anchor="end" font-size="8" fill="#A93F35" font-family="Courier New">30</text>
+      <text transform="rotate(-90,12,102)" x="12" y="102" text-anchor="middle" font-size="8" fill="#A93F35" font-family="Courier New">Temperatur (°C)</text>
+      <text x="525" y="195" text-anchor="start" font-size="8" fill="#4A6E9A" font-family="Courier New">0</text>
+      <text x="525" y="159" text-anchor="start" font-size="8" fill="#4A6E9A" font-family="Courier New">50</text>
+      <text x="525" y="123" text-anchor="start" font-size="8" fill="#4A6E9A" font-family="Courier New">100</text>
+      <text x="525" y="87"  text-anchor="start" font-size="8" fill="#4A6E9A" font-family="Courier New">150</text>
+      <text x="525" y="51"  text-anchor="start" font-size="8" fill="#4A6E9A" font-family="Courier New">200</text>
+      <text x="525" y="15"  text-anchor="start" font-size="8" fill="#4A6E9A" font-family="Courier New">250</text>
+      <text transform="rotate(90,570,102)" x="570" y="102" text-anchor="middle" font-size="8" fill="#4A6E9A" font-family="Courier New">Niederschlag (mm)</text>
+      <text x="77"   y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Jan</text>
+      <text x="115.5" y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Feb</text>
+      <text x="154"  y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Mär</text>
+      <text x="192.5" y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Apr</text>
+      <text x="231"  y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Mai</text>
+      <text x="269.5" y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Jun</text>
+      <text x="308"  y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Jul</text>
+      <text x="346.5" y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Aug</text>
+      <text x="385"  y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Sep</text>
+      <text x="423.5" y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Okt</text>
+      <text x="462"  y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Nov</text>
+      <text x="500.5" y="212" text-anchor="middle" font-size="8" fill="#2E2A24" font-family="Courier New">Dez</text>
+    </svg>
+  </div>
+  <table class="datentab">
+    <tr>
+      <th>Osnabrück (Deutschland)</th>
+      <th>Jan</th><th>Feb</th><th>Mär</th><th>Apr</th><th>Mai</th><th>Jun</th>
+      <th>Jul</th><th>Aug</th><th>Sep</th><th>Okt</th><th>Nov</th><th>Dez</th>
+    </tr>
+    <tr>
+      <td>Temperatur (°C)</td>
+      <td>2</td><td>2</td><td>5</td><td>9</td><td>13</td><td>16</td>
+      <td>18</td><td>18</td><td>14</td><td>10</td><td>6</td><td>3</td>
+    </tr>
+    <tr>
+      <td>Niederschlag (mm)</td>
+      <td>70</td><td>55</td><td>65</td><td>45</td><td>60</td><td>70</td>
+      <td>80</td><td>75</td><td>65</td><td>65</td><td>65</td><td>75</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ANALYSEFRAGEN -->
+<div class="fragen">
+  <h2>Nach dem Zeichnen · Kurze Auswertung</h2>
+
+  <div class="frage-item">
+    <p><strong>1.</strong> Vergleiche die Temperaturkurven beider Städte: Wie stark schwankt die Temperatur in Kumasi und in Osnabrück im Jahresverlauf?</p>
+    <div class="schreibzeile"></div>
+    <div class="schreibzeile"></div>
+  </div>
+
+  <div class="frage-item">
+    <p><strong>2.</strong> Gibt es in Kumasi eine Regenzeit und eine Trockenzeit? Wenn ja: In welchen Monaten regnet es besonders viel und in welchen besonders wenig?</p>
+    <div class="schreibzeile"></div>
+    <div class="schreibzeile"></div>
+  </div>
+
+  <div class="frage-item">
+    <p><strong>3.</strong> Markiere im Diagramm für Kumasi mit einem Pfeil den Monat, in dem die Kakaobäume es am schwersten haben – und begründe deine Wahl in einem Satz.</p>
+    <div class="schreibzeile"></div>
+    <div class="schreibzeile"></div>
+  </div>
+
+  <div class="frage-item">
+    <p><strong>4.</strong> <em>(Expeditionsweg)</em> &nbsp;Ein Lebensmittelhändler sagt: „Das Wetter in Kumasi ist das ganze Jahr über ungefähr gleich." Hat er recht? Widersprich oder stimme zu – mit Blick auf dein Diagramm.</p>
+    <div class="schreibzeile"></div>
+    <div class="schreibzeile"></div>
+    <div class="schreibzeile"></div>
+  </div>
+</div>
+
+<div class="fusszeile">
+  Die Spur der Bohne · Station 1 · Geografie · Feldtagebuch-Werkstattmaterial · lehrer-herrmann.de
+</div>
+
+</body>
+</html>
