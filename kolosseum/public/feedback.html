@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback-Notizen – Lernkolosseum</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="/css/style.css?v=20260615c">
+  <style>
+    /* === FEEDBACK-NOTIZEN LAYOUT === */
+    .fb-wrap { max-width: 720px; margin: 0 auto; }
+    .fb-wrap h1 { margin-bottom: 0.25rem; }
+    .fb-hinweis { color: rgba(0,0,0,0.55); font-size: 0.9rem; margin-bottom: 1.5rem; }
+    textarea#fb-text { min-height: 220px; resize: vertical; font-family: inherit; }
+    .fb-ergebnis { margin-top: 1.25rem; }
+    .fb-ergebnis ul { margin: 0.5rem 0 0 1.25rem; }
+    .fb-ergebnis .fb-warnung { color: #b45309; }
+    .fb-error { color: #dc2626; margin-top: 0.75rem; }
+    .fb-import-card { margin-top: 2rem; }
+    .fb-import-card p { font-size: 0.9rem; color: rgba(0,0,0,0.6); }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+      <a href="https://lehrer-herrmann.de" class="navbar-logo">lehrer-herrmann.de</a>
+      <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="navbar-links" id="navbar-links">
+        <li><a href="https://lehrer-herrmann.de/#was-ist-neu">Was ist neu?</a></li>
+        <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+        <li class="navbar-gb-trenner" aria-hidden="true"><span class="navbar-gb-label">Geschützter Bereich</span></li>
+        <li><a href="/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+        <li><a href="https://lehrer-herrmann.de/blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+        <li><a href="https://lehrer-herrmann.de/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+      </ul>
+      <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+    </div>
+  </nav>
+
+  <main class="container fb-wrap" style="padding-bottom: 3rem;">
+    <h1>📝 Feedback-Notizen</h1>
+    <p class="fb-hinweis">
+      Diktat zu einer Lernzeit eingeben – der Text wird automatisch nach Lernpartner:in
+      aufgeteilt und in deren Notizen-Historie gespeichert.
+    </p>
+
+    <div class="card">
+      <form id="fb-form" novalidate>
+        <div class="form-group">
+          <label for="fb-gruppe">Gruppe</label>
+          <select id="fb-gruppe" required></select>
+        </div>
+        <div class="form-group">
+          <label for="fb-text">Diktat</label>
+          <textarea id="fb-text" placeholder="Text hier hineindiktieren oder einfügen …" required></textarea>
+        </div>
+        <div class="fb-error" id="fb-error" role="alert" aria-live="polite"></div>
+        <button type="submit" class="btn btn-primary" id="fb-submit">Verarbeiten</button>
+      </form>
+
+      <div class="fb-ergebnis" id="fb-ergebnis" style="display:none;"></div>
+    </div>
+
+    <div class="card fb-import-card">
+      <h2>Lernpartner:innen importieren</h2>
+      <p>CSV-Datei mit den Spalten <code>Vorname</code>, <code>Nachname</code>, <code>Gruppe</code> hochladen. Unbekannte Gruppen werden automatisch angelegt.</p>
+      <form id="fb-import-form" novalidate>
+        <div class="form-group">
+          <label for="fb-import-file">CSV-Datei</label>
+          <input type="file" id="fb-import-file" accept=".csv,text/csv" required>
+        </div>
+        <div class="fb-error" id="fb-import-error" role="alert" aria-live="polite"></div>
+        <button type="submit" class="btn btn-primary" id="fb-import-submit">Importieren</button>
+      </form>
+      <div id="fb-import-ergebnis"></div>
+    </div>
+  </main>
+
+  <script>
+    async function init() {
+      const meRes = await fetch('/api/auth/me');
+      if (!meRes.ok) { window.location.href = '/login.html'; return; }
+      await ladeGruppen();
+    }
+
+    async function ladeGruppen() {
+      const select = document.getElementById('fb-gruppe');
+      try {
+        const res = await fetch('/api/feedback/groups');
+        const gruppen = await res.json();
+        select.innerHTML = gruppen.length
+          ? gruppen.map(g => `<option value="${g.id}">${g.name}</option>`).join('')
+          : '<option value="">Keine Gruppen vorhanden</option>';
+      } catch {
+        select.innerHTML = '<option value="">Gruppen konnten nicht geladen werden</option>';
+      }
+    }
+
+    document.getElementById('fb-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById('fb-error');
+      const ergebnisEl = document.getElementById('fb-ergebnis');
+      const btn = document.getElementById('fb-submit');
+      errEl.textContent = '';
+      ergebnisEl.style.display = 'none';
+
+      const groupId = document.getElementById('fb-gruppe').value;
+      const text = document.getElementById('fb-text').value;
+
+      if (!groupId) { errEl.textContent = 'Bitte eine Gruppe auswählen.'; return; }
+      if (!text.trim()) { errEl.textContent = 'Bitte einen Text eingeben.'; return; }
+
+      btn.disabled = true; btn.textContent = 'Verarbeite …';
+      try {
+        const res = await fetch('/api/feedback/process', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, group_id: Number(groupId) })
+        });
+        const data = await res.json();
+        if (!res.ok) { errEl.textContent = data.error || 'Fehler bei der Verarbeitung.'; return; }
+
+        const namen = data.gespeichert.map(g => g.name);
+        let html = `<p><strong>Gespeichert für:</strong> ${namen.length ? namen.join(', ') : '(niemand erkannt)'}</p>`;
+        if (data.nicht_zugeordnet && data.nicht_zugeordnet.length) {
+          html += `<p class="fb-warnung">⚠️ Nicht zugeordnet:</p><ul>` +
+            data.nicht_zugeordnet.map(n => `<li>${n.student_name}: ${n.text}</li>`).join('') +
+            `</ul>`;
+        }
+        ergebnisEl.innerHTML = html;
+        ergebnisEl.style.display = 'block';
+        document.getElementById('fb-text').value = '';
+      } catch {
+        errEl.textContent = 'Verbindungsfehler.';
+      } finally {
+        btn.disabled = false; btn.textContent = 'Verarbeiten';
+      }
+    });
+
+    document.getElementById('fb-import-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById('fb-import-error');
+      const ergebnisEl = document.getElementById('fb-import-ergebnis');
+      const btn = document.getElementById('fb-import-submit');
+      errEl.textContent = '';
+      ergebnisEl.textContent = '';
+
+      const fileInput = document.getElementById('fb-import-file');
+      if (!fileInput.files.length) { errEl.textContent = 'Bitte eine Datei auswählen.'; return; }
+
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+
+      btn.disabled = true; btn.textContent = 'Importiere …';
+      try {
+        const res = await fetch('/api/feedback/students/import', { method: 'POST', body: formData });
+        const data = await res.json();
+        if (!res.ok) { errEl.textContent = data.error || 'Fehler beim Import.'; return; }
+
+        ergebnisEl.textContent =
+          `${data.created_students} Lernpartner:in(nen) angelegt, ${data.created_groups} neue Gruppe(n), ${data.skipped} übersprungen.`;
+        fileInput.value = '';
+        await ladeGruppen();
+      } catch {
+        errEl.textContent = 'Verbindungsfehler.';
+      } finally {
+        btn.disabled = false; btn.textContent = 'Importieren';
+      }
+    });
+
+    init().catch(console.error);
+  </script>
+  <script src="/js/arena-bar.js"></script>
+  <script src="/js/main.js?v=20260615c"></script>
+  <script src="/js/kolosseum-login-widget.js"></script>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+      <nav class="site-footer-links" aria-label="Rechtliche Links">
+        <a href="https://lehrer-herrmann.de/impressum.html">Impressum</a>
+        <a href="https://lehrer-herrmann.de/datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

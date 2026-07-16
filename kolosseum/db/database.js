@@ -98,6 +98,39 @@ db.exec(`
   )
 `);
 
+// Feedback-Notizen: Lernbegleiter diktiert Text über eine Lernzeit, Claude teilt ihn
+// nach Lernpartner:in auf (Minimalversion – ohne Kategorien/Tags, siehe CLAUDE.md-Briefing)
+db.exec(`
+  CREATE TABLE IF NOT EXISTS feedback_groups (
+    id   INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    type TEXT NOT NULL
+  );
+  CREATE TABLE IF NOT EXISTS feedback_students (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name TEXT NOT NULL,
+    last_name  TEXT NOT NULL,
+    group_id   INTEGER REFERENCES feedback_groups(id) ON DELETE SET NULL
+  );
+  CREATE TABLE IF NOT EXISTS feedback_raw_inputs (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    full_text  TEXT NOT NULL,
+    group_id   INTEGER REFERENCES feedback_groups(id) ON DELETE SET NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+  CREATE TABLE IF NOT EXISTS feedback_notes (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id   INTEGER NOT NULL REFERENCES feedback_students(id) ON DELETE CASCADE,
+    group_id     INTEGER REFERENCES feedback_groups(id) ON DELETE SET NULL,
+    date         TEXT NOT NULL,
+    text         TEXT NOT NULL,
+    raw_input_id INTEGER REFERENCES feedback_raw_inputs(id) ON DELETE SET NULL,
+    created_at   TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_feedback_notes_student ON feedback_notes(student_id);
+  CREATE INDEX IF NOT EXISTS idx_feedback_students_group ON feedback_students(group_id);
+`);
+
 // Session-Store für express-session auf Basis von better-sqlite3
 class SQLiteSessionStore {
   constructor(session) {
