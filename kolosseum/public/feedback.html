@@ -7,6 +7,8 @@
   <meta name="robots" content="noindex, nofollow">
   <link rel="stylesheet" href="/css/style.css?v=20260615c">
   <style>
+    .admin-nav { background: #12122a; }
+
     /* === FEEDBACK-NOTIZEN LAYOUT === */
     .fb-wrap { max-width: 720px; margin: 0 auto; }
     .fb-wrap h1 { margin-bottom: 0.25rem; }
@@ -37,6 +39,18 @@
         <li><a href="https://lehrer-herrmann.de/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
       </ul>
       <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+    </div>
+  </nav>
+
+  <nav class="nav admin-nav">
+    <a href="/admin/dashboard.html" class="nav-brand">⚙️ Admin</a>
+    <div class="nav-links">
+      <a href="/admin/dashboard.html">Dashboard</a>
+      <a href="/admin/schueler.html">Schüler</a>
+      <a href="/admin/quiz.html">Quizze</a>
+      <a href="/feedback.html" class="active">Feedback</a>
+      <button id="logout-btn" class="btn btn-ghost nav-action" style="font-size:.85rem">Ausloggen</button>
+      <a href="https://lehrer-herrmann.de" style="color:rgba(255,255,255,0.45);font-size:0.8rem;text-decoration:none;margin-left:0.5rem" title="Zur Homepage">🏠 Homepage</a>
     </div>
   </nav>
 
@@ -85,6 +99,11 @@
       if (!meRes.ok) { window.location.href = '/admin/'; return; }
       await ladeGruppen();
     }
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await fetch('/api/auth/admin/logout', { method: 'POST' });
+      window.location.href = '/admin/index.html';
+    });
 
     async function ladeGruppen() {
       const select = document.getElementById('fb-gruppe');
