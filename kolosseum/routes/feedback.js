@@ -51,6 +51,19 @@ router.get('/groups', (req, res) => {
   res.json(groups);
 });
 
+// GET /api/feedback/groups/:id/students – Lernpartner:innen einer Gruppe
+router.get('/groups/:id/students', (req, res) => {
+  const groupId = Number(req.params.id);
+  const group = db.prepare('SELECT id FROM feedback_groups WHERE id = ?').get(groupId);
+  if (!group) return res.status(404).json({ error: 'Gruppe nicht gefunden.' });
+
+  const students = db.prepare(
+    'SELECT id, first_name, last_name FROM feedback_students WHERE group_id = ? ORDER BY last_name, first_name'
+  ).all(groupId);
+
+  res.json(students);
+});
+
 // POST /api/feedback/process – Diktat per Claude nach Lernpartner:in aufteilen und speichern
 router.post('/process', limiter, async (req, res) => {
   const { text, group_id } = req.body;
