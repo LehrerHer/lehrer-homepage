@@ -9,20 +9,18 @@ const express = require('express');
 const rateLimit = require('express-rate-limit');
 const multer = require('multer');
 const { db } = require('../db/database');
-const { requireStudent } = require('../middleware/auth');
+const { requireAdmin } = require('../middleware/auth');
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 2 * 1024 * 1024 } });
 
-router.use(requireStudent);
+router.use(requireAdmin);
 
 const limiter = rateLimit({
   windowMs: 10 * 60 * 1000, // 10 Minuten
   max: 20,
   standardHeaders: true,
   legacyHeaders: false,
-  keyGenerator: (req) =>
-    req.session?.studentId ? `student:${req.session.studentId}` : req.ip || 'unknown',
   message: { error: 'Zu viele Anfragen. Bitte warte 10 Minuten.' }
 });
 
