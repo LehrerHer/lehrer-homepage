@@ -81,8 +81,8 @@
 
   <script>
     async function init() {
-      const meRes = await fetch('/api/auth/me');
-      if (!meRes.ok) { window.location.href = '/login.html'; return; }
+      const meRes = await fetch('/api/auth/admin/check');
+      if (!meRes.ok) { window.location.href = '/admin/'; return; }
       await ladeGruppen();
     }
 
