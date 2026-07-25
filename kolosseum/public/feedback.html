@@ -18,6 +18,14 @@
     .fb-error { color: #dc2626; margin-top: 0.75rem; }
     .fb-import-card { margin-top: 2rem; }
     .fb-import-card p { font-size: 0.9rem; color: rgba(0,0,0,0.6); }
+    .fb-view-card { margin-top: 2rem; }
+    .fb-view-liste { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem; }
+    .fb-view-btn { padding: 0.4rem 0.9rem; font-size: 0.9rem; }
+    .fb-view-btn.active { background: var(--c1); color: #fff; }
+    .fb-notizen { margin-top: 1.25rem; }
+    .fb-notiz-liste { list-style: none; margin: 0.75rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+    .fb-notiz-liste li { border-left: 3px solid var(--c2); padding: 0.4rem 0.75rem; background: rgba(0,0,0,0.03); border-radius: 4px; }
+    .fb-notiz-datum { display: block; font-size: 0.8rem; color: rgba(0,0,0,0.5); margin-bottom: 0.15rem; }
   </style>
 </head>
 <body>
@@ -77,26 +85,49 @@
       </form>
       <div id="fb-import-ergebnis"></div>
     </div>
+
+    <div class="card fb-view-card">
+      <h2>Notizen ansehen</h2>
+      <div class="form-group">
+        <label for="fb-view-gruppe">Gruppe</label>
+        <select id="fb-view-gruppe"></select>
+      </div>
+      <div class="fb-error" id="fb-view-error" role="alert" aria-live="polite"></div>
+      <div class="fb-view-liste" id="fb-view-liste"></div>
+      <div class="fb-notizen" id="fb-view-notizen"></div>
+    </div>
   </main>
 
   <script>
+    function escapeHtml(str) {
+      const div = document.createElement('div');
+      div.textContent = str ?? '';
+      return div.innerHTML;
+    }
+
     async function init() {
       const meRes = await fetch('/api/auth/me');
       if (!meRes.ok) { window.location.href = '/login.html'; return; }
       await ladeGruppen();
+      await ladeGruppenView();
     }
 
-    async function ladeGruppen() {
-      const select = document.getElementById('fb-gruppe');
+    async function ladeGruppenOptionen(select) {
       try {
         const res = await fetch('/api/feedback/groups');
         const gruppen = await res.json();
         select.innerHTML = gruppen.length
-          ? gruppen.map(g => `<option value="${g.id}">${g.name}</option>`).join('')
+          ? gruppen.map(g => `<option value="${g.id}">${escapeHtml(g.name)}</option>`).join('')
           : '<option value="">Keine Gruppen vorhanden</option>';
+        return gruppen;
       } catch {
         select.innerHTML = '<option value="">Gruppen konnten nicht geladen werden</option>';
+        return [];
       }
+    }
+
+    async function ladeGruppen() {
+      await ladeGruppenOptionen(document.getElementById('fb-gruppe'));
     }
 
     document.getElementById('fb-form').addEventListener('submit', async (e) => {
@@ -123,16 +154,20 @@
         const data = await res.json();
         if (!res.ok) { errEl.textContent = data.error || 'Fehler bei der Verarbeitung.'; return; }
 
-        const namen = data.gespeichert.map(g => g.name);
+        const namen = data.gespeichert.map(g => escapeHtml(g.name));
         let html = `<p><strong>Gespeichert für:</strong> ${namen.length ? namen.join(', ') : '(niemand erkannt)'}</p>`;
         if (data.nicht_zugeordnet && data.nicht_zugeordnet.length) {
           html += `<p class="fb-warnung">⚠️ Nicht zugeordnet:</p><ul>` +
-            data.nicht_zugeordnet.map(n => `<li>${n.student_name}: ${n.text}</li>`).join('') +
+            data.nicht_zugeordnet.map(n => `<li>${escapeHtml(n.student_name)}: ${escapeHtml(n.text)}</li>`).join('') +
             `</ul>`;
         }
         ergebnisEl.innerHTML = html;
         ergebnisEl.style.display = 'block';
         document.getElementById('fb-text').value = '';
+
+        if (Number(groupId) === Number(document.getElementById('fb-view-gruppe').value)) {
+          ladeLernpartner(groupId);
+        }
       } catch {
         errEl.textContent = 'Verbindungsfehler.';
       } finally {
@@ -164,10 +199,71 @@
           `${data.created_students} Lernpartner:in(nen) angelegt, ${data.created_groups} neue Gruppe(n), ${data.skipped} übersprungen.`;
         fileInput.value = '';
         await ladeGruppen();
+        await ladeGruppenView();
       } catch {
         errEl.textContent = 'Verbindungsfehler.';
       } finally {
         btn.disabled = false; btn.textContent = 'Importieren';
+      }
+    });
+
+    async function ladeGruppenView() {
+      const select = document.getElementById('fb-view-gruppe');
+      const gruppen = await ladeGruppenOptionen(select);
+      document.getElementById('fb-view-notizen').innerHTML = '';
+      if (gruppen.length) {
+        await ladeLernpartner(select.value);
+      } else {
+        document.getElementById('fb-view-liste').innerHTML = '';
+      }
+    }
+
+    async function ladeLernpartner(groupId) {
+      const listeEl = document.getElementById('fb-view-liste');
+      const errEl = document.getElementById('fb-view-error');
+      errEl.textContent = '';
+      document.getElementById('fb-view-notizen').innerHTML = '';
+      if (!groupId) { listeEl.innerHTML = ''; return; }
+
+      listeEl.textContent = 'Lade …';
+      try {
+        const res = await fetch(`/api/feedback/groups/${groupId}/students`);
+        const students = await res.json();
+        if (!res.ok) { listeEl.innerHTML = ''; errEl.textContent = students.error || 'Fehler beim Laden.'; return; }
+
+        listeEl.innerHTML = students.length
+          ? students.map(s => `<button type="button" class="btn fb-view-btn" data-id="${s.id}">${escapeHtml(s.first_name)} ${escapeHtml(s.last_name)}</button>`).join('')
+          : '<p>Keine Lernpartner:innen in dieser Gruppe.</p>';
+      } catch {
+        listeEl.innerHTML = '';
+        errEl.textContent = 'Verbindungsfehler.';
+      }
+    }
+
+    document.getElementById('fb-view-gruppe').addEventListener('change', (e) => ladeLernpartner(e.target.value));
+
+    document.getElementById('fb-view-liste').addEventListener('click', async (e) => {
+      const btn = e.target.closest('.fb-view-btn');
+      if (!btn) return;
+
+      document.querySelectorAll('.fb-view-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const notizenEl = document.getElementById('fb-view-notizen');
+      notizenEl.textContent = 'Lade …';
+      try {
+        const res = await fetch(`/api/feedback/students/${btn.dataset.id}/notes`);
+        const data = await res.json();
+        if (!res.ok) { notizenEl.textContent = data.error || 'Fehler beim Laden.'; return; }
+
+        const name = `${escapeHtml(data.student.first_name)} ${escapeHtml(data.student.last_name)}`;
+        notizenEl.innerHTML = `<h3>${name}</h3>` + (data.notes.length
+          ? '<ul class="fb-notiz-liste">' + data.notes.map(n =>
+              `<li><span class="fb-notiz-datum">${escapeHtml(n.date)}</span>${escapeHtml(n.text)}</li>`
+            ).join('') + '</ul>'
+          : '<p>Noch keine Notizen.</p>');
+      } catch {
+        notizenEl.textContent = 'Verbindungsfehler.';
       }
     });
 
