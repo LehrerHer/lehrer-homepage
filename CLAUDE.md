@@ -451,7 +451,8 @@ Wichtige CSS-Klassen (ab 2026-05):
 - **Immer auf dem zugewiesenen Feature-Branch arbeiten.** Branch-Schema: `claude/<beschreibung>-<session-id>`. Falls noch nicht lokal vorhanden: `git checkout -b claude/<beschreibung>-<id>`.
 - **Kein `git reset --hard main`**, kein Merge von `main` in den Feature-Branch ohne explizite Nutzeraufforderung.
 - **Kein Force-Push auf `main`** — unter keinen Umständen.
-- Nach Abschluss: Feature-Branch pushen (`git push -u origin <branch>`), dann den Nutzer fragen, ob gemergt werden soll. **Nie selbst mergen**, außer auf ausdrückliche Aufforderung.
+- Nach Abschluss: Feature-Branch pushen (`git push -u origin <branch>`), **danach automatisch selbst einen Pull Request erstellen** (kein manuelles Erstellen über GitHub durch Jan nötig).
+- **Vor dem Mergen den Nutzer fragen** ("Soll ich das jetzt mergen?"), damit er bei Bedarf noch eingreifen kann — er muss den Diff aber nicht aktiv prüfen. Antwortet er zustimmend (oder widerspricht nicht), **den PR selbst mergen** (nicht mehr Jan über GitHub überlassen). Bei Zweifeln oder Widerspruch: nicht mergen.
 - Commit-Befehl immer mit `-c user.email="jan@lehrer-herrmann.de" -c user.name="Jan Herrmann"`
 - Commit-Nachrichten auf Deutsch oder Englisch
 
