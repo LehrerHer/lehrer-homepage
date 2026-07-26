@@ -102,7 +102,7 @@ db.exec(`
 `);
 
 // Feedback-Notizen: Lernbegleiter diktiert Text über eine Lernzeit, Claude teilt ihn
-// nach Lernpartner:in auf (Minimalversion – ohne Kategorien/Tags, siehe CLAUDE.md-Briefing)
+// nach Lernpartner:in auf und ordnet jedem Abschnitt eine Kategorie zu (siehe CLAUDE.md-Briefing)
 db.exec(`
   CREATE TABLE IF NOT EXISTS feedback_groups (
     id   INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -133,6 +133,12 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_feedback_notes_student ON feedback_notes(student_id);
   CREATE INDEX IF NOT EXISTS idx_feedback_students_group ON feedback_students(group_id);
 `);
+
+// Migration: Kategorie pro Notiz-Abschnitt (Fachlich/Sozial/Verhalten/Verbindlichkeit)
+const feedbackNotesCols = db.prepare('PRAGMA table_info(feedback_notes)').all().map(c => c.name);
+if (!feedbackNotesCols.includes('category')) {
+  db.exec('ALTER TABLE feedback_notes ADD COLUMN category TEXT');
+}
 
 // Session-Store für express-session auf Basis von better-sqlite3
 class SQLiteSessionStore {

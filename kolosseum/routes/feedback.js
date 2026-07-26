@@ -1,8 +1,8 @@
 /* ============================================================
-   FEEDBACK-NOTIZEN – Minimalversion
+   FEEDBACK-NOTIZEN
    Der Lernbegleiter diktiert freien Text zu einer Lernzeit; Claude
-   teilt ihn nach Lernpartner:in auf und legt die Abschnitte in deren
-   Notizen-Historie ab. Kategorien/Tags folgen später (siehe CLAUDE.md).
+   teilt ihn nach Lernpartner:in auf, ordnet jedem Abschnitt eine
+   Kategorie zu und legt ihn in deren Notizen-Historie ab.
    ============================================================ */
 
 const express = require('express');
@@ -24,8 +24,16 @@ const limiter = rateLimit({
   message: { error: 'Zu viele Anfragen. Bitte warte 10 Minuten.' }
 });
 
+const CATEGORIES = ['Fachlich', 'Sozial', 'Verhalten', 'Verbindlichkeit'];
+
 function normalize(s) {
   return (s || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+}
+
+// Ordnet eine von Claude gelieferte Kategorie der festen Kategorienliste zu
+function matchCategory(raw) {
+  const n = normalize(raw);
+  return CATEGORIES.find(c => normalize(c) === n) || null;
 }
 
 // Ordnet einen von Claude gelieferten Namen der Lernpartner:innen-Liste der Gruppe zu
@@ -95,9 +103,14 @@ router.post('/process', limiter, async (req, res) => {
   const systemPrompt =
     'Du bekommst einen diktierten Text eines Lehrers über eine Unterrichtsstunde sowie eine Liste ' +
     'von Schülernamen dieser Gruppe. Teile den Text in Abschnitte auf, die jeweils genau einem ' +
-    'Schüler zugeordnet werden können. Gib NUR JSON zurück, ohne Markdown-Codeblock, im Format: ' +
-    '[{"student_name": "...", "text": "..."}]. Wenn ein Name nicht eindeutig aus der Liste ' +
-    'zuordenbar ist, nutze trotzdem den wahrscheinlichsten Treffer.';
+    'Schüler zugeordnet werden können. Ordne jedem Abschnitt zusätzlich GENAU EINE der folgenden ' +
+    'Kategorien zu: "Fachlich" (fachliche Leistungen, Lernfortschritt, Mitarbeit im Fach), ' +
+    '"Sozial" (Umgang mit Mitschüler:innen, Zusammenarbeit, Konflikte), "Verhalten" (Verhalten im ' +
+    'Unterricht, Aufmerksamkeit, Störungen), "Verbindlichkeit" (Zuverlässigkeit, erledigte Aufgaben, ' +
+    'Pünktlichkeit, Absprachen). Gib NUR JSON zurück, ohne Markdown-Codeblock, im Format: ' +
+    '[{"student_name": "...", "category": "...", "text": "..."}]. Wenn ein Name nicht eindeutig aus ' +
+    'der Liste zuordenbar ist, nutze trotzdem den wahrscheinlichsten Treffer. Wenn eine Kategorie ' +
+    'nicht eindeutig ist, wähle die am ehesten passende.';
   const userPrompt = `Schülerliste dieser Gruppe: ${namenListe}\n\nDiktierter Text:\n${text.trim()}`;
 
   let segments;
@@ -150,16 +163,18 @@ router.post('/process', limiter, async (req, res) => {
       const segText = (segment?.text || '').trim();
       if (!segText) continue;
 
+      const category = matchCategory(segment?.category);
+
       const match = matchStudent(segment?.student_name, students);
       if (!match) {
-        nichtZugeordnet.push({ student_name: segment?.student_name || '(unbekannt)', text: segText });
+        nichtZugeordnet.push({ student_name: segment?.student_name || '(unbekannt)', category, text: segText });
         continue;
       }
 
       db.prepare(
-        "INSERT INTO feedback_notes (student_id, group_id, date, text, raw_input_id, created_at) VALUES (?, ?, ?, ?, ?, datetime('now'))"
-      ).run(match.id, groupId, heute, segText, rawInputId);
-      gespeichert.push({ student_id: match.id, name: `${match.first_name} ${match.last_name}` });
+        "INSERT INTO feedback_notes (student_id, group_id, date, text, category, raw_input_id, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now'))"
+      ).run(match.id, groupId, heute, segText, category, rawInputId);
+      gespeichert.push({ student_id: match.id, name: `${match.first_name} ${match.last_name}`, category });
     }
 
     return rawInputId;
@@ -179,7 +194,7 @@ router.get('/students/:id/notes', (req, res) => {
   if (!student) return res.status(404).json({ error: 'Lernpartner:in nicht gefunden.' });
 
   const notes = db.prepare(
-    'SELECT id, date, text, group_id, created_at FROM feedback_notes WHERE student_id = ? ORDER BY date DESC, created_at DESC'
+    'SELECT id, date, text, category, group_id, created_at FROM feedback_notes WHERE student_id = ? ORDER BY date DESC, created_at DESC'
   ).all(id);
 
   res.json({ student, notes });
