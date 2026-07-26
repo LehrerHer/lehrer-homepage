@@ -230,7 +230,7 @@ Der Footer erscheint ebenfalls **auf jeder Seite** als **schwebende Karte**
 (`.footer-inner`). Er enthält:
 
 - **Links:** Bildmarke (`.footer-logo` / `.footer-logo-img`) + `© [aktuelles Jahr] Jan Herrmann` (zusammengefasst in `.footer-marke`) | `Impressum` | `Datenschutz`
-- **Rechts:** `Eingeloggt als [Avatarname], Rang [XP]` — und (nahezu unsichtbar) ein funktionierender Link zu `/kolosseum/public/admin/`, mit minimalem Kontrast. Wenn kein Nutzer eingeloggt ist: unsichtbar / leer.
+- **Rechts:** `Eingeloggt als [Avatarname], Rang [XP]` — und (nahezu unsichtbar) ein funktionierender Link zu `https://kolosseum.lehrer-herrmann.de/admin/`, mit minimalem Kontrast. Wenn kein Nutzer eingeloggt ist: stattdessen ein kleines, diskretes „⚙"-Zeichen (`#admin-footer-link`) mit gleich niedrigem Kontrast — immer klickbar, aber bewusst kaum wahrnehmbar.
 
 Das Copyright-Jahr wird dynamisch via `id="footer-jahr"` gesetzt; das Footer-Logo
 wird auf Alt-Seiten vom `navbar-enhancer` ergänzt (beides in `js/main.js`).
