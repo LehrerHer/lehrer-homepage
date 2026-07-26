@@ -67,6 +67,48 @@ router.get('/groups', (req, res) => {
   res.json(groups);
 });
 
+// POST /api/feedback/groups – neue Gruppe manuell anlegen
+router.post('/groups', (req, res) => {
+  const name = (req.body?.name || '').trim();
+  const type = (req.body?.type || '').trim();
+
+  if (!name) return res.status(400).json({ error: 'Gruppenname erforderlich.' });
+  if (!type) return res.status(400).json({ error: 'Gruppentyp erforderlich.' });
+
+  const exists = db.prepare('SELECT id FROM feedback_groups WHERE name = ?').get(name);
+  if (exists) return res.status(409).json({ error: 'Eine Gruppe mit diesem Namen existiert bereits.' });
+
+  const { lastInsertRowid } = db.prepare(
+    'INSERT INTO feedback_groups (name, type) VALUES (?, ?)'
+  ).run(name, type);
+
+  res.status(201).json({ id: lastInsertRowid, name, type });
+});
+
+// POST /api/feedback/students – neue*n Lernpartner:in manuell zu einer Gruppe hinzufügen
+router.post('/students', (req, res) => {
+  const groupId = Number(req.body?.group_id);
+  const firstName = (req.body?.first_name || '').trim();
+  const lastName = (req.body?.last_name || '').trim();
+
+  if (!groupId) return res.status(400).json({ error: 'Gruppe erforderlich.' });
+  if (!firstName || !lastName) return res.status(400).json({ error: 'Vorname und Nachname erforderlich.' });
+
+  const group = db.prepare('SELECT id FROM feedback_groups WHERE id = ?').get(groupId);
+  if (!group) return res.status(404).json({ error: 'Gruppe nicht gefunden.' });
+
+  const exists = db.prepare(
+    'SELECT id FROM feedback_students WHERE first_name = ? AND last_name = ? AND group_id = ?'
+  ).get(firstName, lastName, groupId);
+  if (exists) return res.status(409).json({ error: 'Diese Person ist in dieser Gruppe bereits vorhanden.' });
+
+  const { lastInsertRowid } = db.prepare(
+    'INSERT INTO feedback_students (first_name, last_name, group_id) VALUES (?, ?, ?)'
+  ).run(firstName, lastName, groupId);
+
+  res.status(201).json({ id: lastInsertRowid, first_name: firstName, last_name: lastName, group_id: groupId });
+});
+
 // GET /api/feedback/groups/:id/students – Lernpartner:innen einer Gruppe
 router.get('/groups/:id/students', (req, res) => {
   const groupId = Number(req.params.id);
