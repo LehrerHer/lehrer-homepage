@@ -27,6 +27,9 @@
     .btn-xp  { background: var(--c3); color: #fff; }
     .btn-pw  { background: var(--c4); color: #fff; }
     .btn-del { background: var(--c1); color: #fff; }
+    .btn-admin      { background: #e2e8f0; color: var(--ink); }
+    .btn-admin.on   { background: #1e3a5f; color: #fff; }
+    .admin-pill { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; background: #1e3a5f; color: #fff; }
 
     /* Modal */
     .modal-bg {
@@ -95,11 +98,12 @@
             <th>XP</th>
             <th>Level</th>
             <th>Abzeichen</th>
+            <th>Admin</th>
             <th>Aktionen</th>
           </tr>
         </thead>
         <tbody id="students-body">
-          <tr><td colspan="8" class="text-soft">Wird geladen…</td></tr>
+          <tr><td colspan="9" class="text-soft">Wird geladen…</td></tr>
         </tbody>
       </table>
     </div>
@@ -192,7 +196,7 @@
     function renderTable(students) {
       const tbody = document.getElementById('students-body');
       if (!students.length) {
-        tbody.innerHTML = '<tr><td colspan="7" class="text-soft">Noch keine Schüler angelegt.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" class="text-soft">Noch keine Schüler angelegt.</td></tr>';
         return;
       }
       tbody.innerHTML = students.map(s => `
@@ -204,10 +208,12 @@
           <td><strong>${s.xp}</strong></td>
           <td><span class="level-pill">Lvl ${levelIndex(s.xp)} ${levelName(s.xp)}</span></td>
           <td class="badge-count">${s.badges.length} / 8</td>
+          <td>${s.is_admin ? '<span class="admin-pill">⚙️ Admin</span>' : '<span class="text-soft">–</span>'}</td>
           <td>
             <div class="actions">
               <button class="btn-sm btn-xp"  onclick="openXP(${s.id}, '${s.nick}')">XP</button>
               <button class="btn-sm btn-pw"  onclick="openPIN(${s.id}, '${s.nick}')">PIN</button>
+              <button class="btn-sm btn-admin${s.is_admin ? ' on' : ''}" onclick="toggleAdmin(${s.id}, '${s.nick}', ${s.is_admin ? 'true' : 'false'})">${s.is_admin ? 'Admin entziehen' : 'Zu Admin machen'}</button>
               <button class="btn-sm btn-del" onclick="deleteStudent(${s.id}, '${s.nick}')">Löschen</button>
             </div>
           </td>
@@ -313,6 +319,22 @@
     document.getElementById('pin-new').addEventListener('input', e => {
       e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
     });
+
+    // Adminrechte vergeben/entziehen
+    async function toggleAdmin(id, nick, currentlyAdmin) {
+      const frage = currentlyAdmin
+        ? `"${nick}" die Admin-Rechte entziehen?`
+        : `"${nick}" zum Admin machen? Mit diesem Konto kann man sich künftig auch im Admin-Bereich anmelden.`;
+      if (!confirm(frage)) return;
+
+      const res = await fetch(`/api/admin/students/${id}/admin`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ is_admin: !currentlyAdmin }),
+      });
+      if (!res.ok) { alert('Fehler beim Ändern der Adminrechte.'); return; }
+      await loadStudents();
+    }
 
     // Schüler löschen
     async function deleteStudent(id, nick) {

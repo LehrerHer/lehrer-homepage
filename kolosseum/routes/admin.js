@@ -26,7 +26,7 @@ router.get('/stats', (req, res) => {
 // GET /api/admin/students
 router.get('/students', (req, res) => {
   const students = db.prepare(`
-    SELECT s.id, s.nick, s.xp, s.email, s.created_at, s.last_active,
+    SELECT s.id, s.nick, s.xp, s.email, s.created_at, s.last_active, s.is_admin,
            sn.real_name, sn.class
     FROM students s
     LEFT JOIN student_names sn ON sn.student_id = s.id
@@ -108,6 +108,18 @@ router.patch('/students/:id/pin', async (req, res) => {
   const pin_hash = await bcrypt.hash(pin, 10);
   db.prepare('UPDATE students SET pin_hash = ? WHERE id = ?').run(pin_hash, id);
   res.json({ ok: true });
+});
+
+// PATCH /api/admin/students/:id/admin – Adminrechte für diesen Schüler-Account vergeben/entziehen
+router.patch('/students/:id/admin', (req, res) => {
+  const id = Number(req.params.id);
+  const isAdmin = req.body.is_admin ? 1 : 0;
+
+  const student = db.prepare('SELECT id FROM students WHERE id = ?').get(id);
+  if (!student) return res.status(404).json({ error: 'Schüler nicht gefunden.' });
+
+  db.prepare('UPDATE students SET is_admin = ? WHERE id = ?').run(isAdmin, id);
+  res.json({ ok: true, is_admin: !!isAdmin });
 });
 
 // DELETE /api/admin/students/:id
