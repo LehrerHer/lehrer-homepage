@@ -9,6 +9,12 @@ const router = express.Router();
 
 router.use(requireAdmin);
 
+// Admin-Accounts brauchen ein stärkeres Passwort als die 4-stellige Schüler-PIN
+function isStrongPassword(pw) {
+  return typeof pw === 'string' && pw.length >= 8 && /[a-z]/.test(pw) && /[A-Z]/.test(pw) && /\d/.test(pw);
+}
+const STRONG_PW_ERROR = 'Passwort muss mind. 8 Zeichen lang sein und Groß-/Kleinschreibung sowie eine Zahl enthalten.';
+
 // GET /api/admin/stats
 router.get('/stats', (req, res) => {
   const totalStudents  = db.prepare('SELECT COUNT(*) as c FROM students').get().c;
@@ -96,14 +102,19 @@ router.post('/students/:id/badges', (req, res) => {
   res.json({ ok: true, isNew });
 });
 
-// PATCH /api/admin/students/:id/pin
+// PATCH /api/admin/students/:id/pin – bei Admin-Accounts gilt die starke Passwort-Policy
 router.patch('/students/:id/pin', async (req, res) => {
   const id  = Number(req.params.id);
   const pin = String(req.body.pin ?? '');
-  if (!/^\d{4}$/.test(pin)) return res.status(400).json({ error: 'PIN muss genau 4 Ziffern haben.' });
 
-  const student = db.prepare('SELECT id FROM students WHERE id = ?').get(id);
+  const student = db.prepare('SELECT id, is_admin FROM students WHERE id = ?').get(id);
   if (!student) return res.status(404).json({ error: 'Schüler nicht gefunden.' });
+
+  if (student.is_admin) {
+    if (!isStrongPassword(pin)) return res.status(400).json({ error: STRONG_PW_ERROR });
+  } else if (!/^\d{4}$/.test(pin)) {
+    return res.status(400).json({ error: 'PIN muss genau 4 Ziffern haben.' });
+  }
 
   const pin_hash = await bcrypt.hash(pin, 10);
   db.prepare('UPDATE students SET pin_hash = ? WHERE id = ?').run(pin_hash, id);
@@ -111,15 +122,25 @@ router.patch('/students/:id/pin', async (req, res) => {
 });
 
 // PATCH /api/admin/students/:id/admin – Adminrechte für diesen Schüler-Account vergeben/entziehen
-router.patch('/students/:id/admin', (req, res) => {
+// Beim Vergeben ist ein starkes Passwort (statt der 4-stelligen PIN) erforderlich.
+router.patch('/students/:id/admin', async (req, res) => {
   const id = Number(req.params.id);
-  const isAdmin = req.body.is_admin ? 1 : 0;
+  const grant = !!req.body.is_admin;
 
   const student = db.prepare('SELECT id FROM students WHERE id = ?').get(id);
   if (!student) return res.status(404).json({ error: 'Schüler nicht gefunden.' });
 
-  db.prepare('UPDATE students SET is_admin = ? WHERE id = ?').run(isAdmin, id);
-  res.json({ ok: true, is_admin: !!isAdmin });
+  if (grant) {
+    const password = String(req.body.password ?? '');
+    if (!isStrongPassword(password)) return res.status(400).json({ error: STRONG_PW_ERROR });
+
+    const pin_hash = await bcrypt.hash(password, 10);
+    db.prepare('UPDATE students SET is_admin = 1, pin_hash = ? WHERE id = ?').run(pin_hash, id);
+  } else {
+    db.prepare('UPDATE students SET is_admin = 0 WHERE id = ?').run(id);
+  }
+
+  res.json({ ok: true, is_admin: grant });
 });
 
 // DELETE /api/admin/students/:id

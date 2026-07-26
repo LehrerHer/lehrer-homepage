@@ -146,13 +146,36 @@
       <form id="pin-form" novalidate>
         <input type="hidden" id="pin-student-id">
         <div class="form-group">
-          <label>Neue PIN (4 Ziffern) *</label>
-          <input type="text" id="pin-new" placeholder="z. B. 4782" maxlength="4" inputmode="numeric" required autocomplete="off">
+          <label id="pin-label">Neue PIN (4 Ziffern) *</label>
+          <input type="text" id="pin-new" placeholder="z. B. 4782" maxlength="4" inputmode="numeric" required autocomplete="off" data-mode="pin">
         </div>
         <div class="form-error" id="pin-error"></div>
         <div class="modal-footer">
           <button type="button" class="btn btn-sm btn-cancel" id="pin-cancel">Abbrechen</button>
           <button type="submit" class="btn btn-primary btn-sm">Speichern</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Admin-Rechte vergeben -->
+  <div class="modal-bg" id="admin-pw-modal">
+    <div class="modal">
+      <h2 id="admin-pw-modal-title">Zu Admin machen</h2>
+      <form id="admin-pw-form" novalidate>
+        <input type="hidden" id="admin-pw-student-id">
+        <p style="font-size:.85rem;color:var(--ink-soft);margin-bottom:1rem">
+          Admin-Accounts brauchen ein stärkeres Passwort als die Schüler-PIN:
+          mind. 8 Zeichen, Groß- und Kleinschreibung sowie mind. eine Zahl.
+        </p>
+        <div class="form-group">
+          <label>Neues Passwort *</label>
+          <input type="password" id="admin-pw-new" placeholder="mind. 8 Zeichen, z. B. Klasse8bSpelle" minlength="8" required autocomplete="new-password">
+        </div>
+        <div class="form-error" id="admin-pw-error"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-cancel" id="admin-pw-cancel">Abbrechen</button>
+          <button type="submit" class="btn btn-primary btn-sm">Admin-Rechte vergeben</button>
         </div>
       </form>
     </div>
@@ -288,13 +311,32 @@
       await loadStudents();
     });
 
-    // PIN setzen
+    // PIN/Passwort setzen (Admin-Accounts: starkes Passwort statt 4-stelliger PIN)
     function openPIN(id, nick) {
+      const student = studentsData.find(s => s.id === id);
+      const isAdmin = !!(student && student.is_admin);
+      const input = document.getElementById('pin-new');
+      const label = document.getElementById('pin-label');
+
       document.getElementById('pin-student-id').value = id;
-      document.getElementById('pin-modal-title').textContent = `PIN setzen – ${nick}`;
+      document.getElementById('pin-modal-title').textContent = `${isAdmin ? 'Passwort' : 'PIN'} setzen – ${nick}`;
       document.getElementById('pin-error').textContent = '';
       document.getElementById('pin-form').reset();
       document.getElementById('pin-student-id').value = id;
+
+      if (isAdmin) {
+        input.type = 'password';
+        input.dataset.mode = 'password';
+        input.removeAttribute('maxlength');
+        input.placeholder = 'mind. 8 Zeichen, Groß-/Kleinschreibung, Zahl';
+        label.textContent = 'Neues Passwort *';
+      } else {
+        input.type = 'text';
+        input.dataset.mode = 'pin';
+        input.setAttribute('maxlength', '4');
+        input.placeholder = 'z. B. 4782';
+        label.textContent = 'Neue PIN (4 Ziffern) *';
+      }
       openModal('pin-modal');
     }
 
@@ -315,26 +357,53 @@
       closeModal('pin-modal');
     });
 
-    // PIN: nur Ziffern (PIN-Modal)
+    // PIN: nur Ziffern (PIN-Modal) – gilt nicht im Passwort-Modus (Admin-Accounts)
     document.getElementById('pin-new').addEventListener('input', e => {
-      e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+      if (e.target.dataset.mode === 'pin') {
+        e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+      }
     });
 
-    // Adminrechte vergeben/entziehen
+    // Adminrechte vergeben (mit starkem Passwort) / entziehen
     async function toggleAdmin(id, nick, currentlyAdmin) {
-      const frage = currentlyAdmin
-        ? `"${nick}" die Admin-Rechte entziehen?`
-        : `"${nick}" zum Admin machen? Mit diesem Konto kann man sich künftig auch im Admin-Bereich anmelden.`;
-      if (!confirm(frage)) return;
+      if (currentlyAdmin) {
+        if (!confirm(`"${nick}" die Admin-Rechte entziehen?`)) return;
+        const res = await fetch(`/api/admin/students/${id}/admin`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ is_admin: false }),
+        });
+        if (!res.ok) { alert('Fehler beim Ändern der Adminrechte.'); return; }
+        await loadStudents();
+        return;
+      }
 
-      const res = await fetch(`/api/admin/students/${id}/admin`, {
+      document.getElementById('admin-pw-student-id').value = id;
+      document.getElementById('admin-pw-modal-title').textContent = `Zu Admin machen – ${nick}`;
+      document.getElementById('admin-pw-error').textContent = '';
+      document.getElementById('admin-pw-form').reset();
+      openModal('admin-pw-modal');
+    }
+
+    document.getElementById('admin-pw-cancel').addEventListener('click', () => closeModal('admin-pw-modal'));
+
+    document.getElementById('admin-pw-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const errEl    = document.getElementById('admin-pw-error');
+      const id       = document.getElementById('admin-pw-student-id').value;
+      const password = document.getElementById('admin-pw-new').value;
+
+      const res  = await fetch(`/api/admin/students/${id}/admin`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ is_admin: !currentlyAdmin }),
+        body: JSON.stringify({ is_admin: true, password }),
       });
-      if (!res.ok) { alert('Fehler beim Ändern der Adminrechte.'); return; }
+      const data = await res.json();
+      if (!res.ok) { errEl.textContent = data.error; return; }
+
+      closeModal('admin-pw-modal');
       await loadStudents();
-    }
+    });
 
     // Schüler löschen
     async function deleteStudent(id, nick) {
