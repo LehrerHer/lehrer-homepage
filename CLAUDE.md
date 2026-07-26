@@ -230,7 +230,7 @@ Der Footer erscheint ebenfalls **auf jeder Seite** als **schwebende Karte**
 (`.footer-inner`). Er enthält:
 
 - **Links:** Bildmarke (`.footer-logo` / `.footer-logo-img`) + `© [aktuelles Jahr] Jan Herrmann` (zusammengefasst in `.footer-marke`) | `Impressum` | `Datenschutz`
-- **Rechts:** `Eingeloggt als [Avatarname], Rang [XP]` — und (nahezu unsichtbar) ein funktionierender Link zu `/kolosseum/public/admin/`, mit minimalem Kontrast. Wenn kein Nutzer eingeloggt ist: unsichtbar / leer.
+- **Rechts:** `Eingeloggt als [Avatarname], Rang [XP]` — und (nahezu unsichtbar) ein funktionierender Link zu `https://kolosseum.lehrer-herrmann.de/admin/`, mit minimalem Kontrast. Wenn kein Nutzer eingeloggt ist: stattdessen ein kleines, diskretes „⚙"-Zeichen (`#admin-footer-link`) mit gleich niedrigem Kontrast — immer klickbar, aber bewusst kaum wahrnehmbar.
 
 Das Copyright-Jahr wird dynamisch via `id="footer-jahr"` gesetzt; das Footer-Logo
 wird auf Alt-Seiten vom `navbar-enhancer` ergänzt (beides in `js/main.js`).
@@ -451,7 +451,8 @@ Wichtige CSS-Klassen (ab 2026-05):
 - **Immer auf dem zugewiesenen Feature-Branch arbeiten.** Branch-Schema: `claude/<beschreibung>-<session-id>`. Falls noch nicht lokal vorhanden: `git checkout -b claude/<beschreibung>-<id>`.
 - **Kein `git reset --hard main`**, kein Merge von `main` in den Feature-Branch ohne explizite Nutzeraufforderung.
 - **Kein Force-Push auf `main`** — unter keinen Umständen.
-- Nach Abschluss: Feature-Branch pushen (`git push -u origin <branch>`), dann den Nutzer fragen, ob gemergt werden soll. **Nie selbst mergen**, außer auf ausdrückliche Aufforderung.
+- Nach Abschluss: Feature-Branch pushen (`git push -u origin <branch>`), **danach automatisch selbst einen Pull Request erstellen** (kein manuelles Erstellen über GitHub durch Jan nötig).
+- **Vor dem Mergen den Nutzer fragen** ("Soll ich das jetzt mergen?"), damit er bei Bedarf noch eingreifen kann — er muss den Diff aber nicht aktiv prüfen. Antwortet er zustimmend (oder widerspricht nicht), **den PR selbst mergen** (nicht mehr Jan über GitHub überlassen). Bei Zweifeln oder Widerspruch: nicht mergen.
 - Commit-Befehl immer mit `-c user.email="jan@lehrer-herrmann.de" -c user.name="Jan Herrmann"`
 - Commit-Nachrichten auf Deutsch oder Englisch
 
