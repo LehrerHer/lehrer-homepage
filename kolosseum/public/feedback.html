@@ -121,6 +121,46 @@
       <div id="fb-import-ergebnis"></div>
     </div>
 
+    <div class="card fb-manual-card">
+      <h2>Gruppe / Lernpartner:in manuell anlegen</h2>
+
+      <form id="fb-group-form" novalidate>
+        <div class="form-group">
+          <label for="fb-new-gruppe-name">Neue Gruppe</label>
+          <input type="text" id="fb-new-gruppe-name" placeholder="z. B. Lernbüro Mathe 8b" required>
+        </div>
+        <div class="form-group">
+          <label for="fb-new-gruppe-typ">Typ</label>
+          <select id="fb-new-gruppe-typ">
+            <option value="Lernbüro">Lernbüro</option>
+            <option value="Werkstatt">Werkstatt</option>
+            <option value="Fach">Fach</option>
+          </select>
+        </div>
+        <div class="fb-error" id="fb-group-error" role="alert" aria-live="polite"></div>
+        <button type="submit" class="btn btn-primary" id="fb-group-submit">Gruppe anlegen</button>
+      </form>
+
+      <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid rgba(0,0,0,0.1);">
+
+      <form id="fb-student-form" novalidate>
+        <div class="form-group">
+          <label for="fb-new-student-gruppe">Gruppe</label>
+          <select id="fb-new-student-gruppe" required></select>
+        </div>
+        <div class="form-group">
+          <label for="fb-new-student-vorname">Vorname</label>
+          <input type="text" id="fb-new-student-vorname" required>
+        </div>
+        <div class="form-group">
+          <label for="fb-new-student-nachname">Nachname</label>
+          <input type="text" id="fb-new-student-nachname" required>
+        </div>
+        <div class="fb-error" id="fb-student-error" role="alert" aria-live="polite"></div>
+        <button type="submit" class="btn btn-primary" id="fb-student-submit">Lernpartner:in hinzufügen</button>
+      </form>
+    </div>
+
     <div class="card fb-view-card">
       <h2>Notizen ansehen</h2>
       <div class="form-group">
@@ -150,6 +190,7 @@
       if (!meRes.ok) { window.location.href = '/admin/'; return; }
       await ladeGruppen();
       await ladeGruppenView();
+      await ladeNeueStudentGruppen();
       await ladeZuKlaeren();
     }
 
@@ -174,6 +215,16 @@
 
     async function ladeGruppen() {
       await ladeGruppenOptionen(document.getElementById('fb-gruppe'));
+    }
+
+    async function ladeNeueStudentGruppen() {
+      await ladeGruppenOptionen(document.getElementById('fb-new-student-gruppe'));
+    }
+
+    async function alleGruppenSelectsAktualisieren() {
+      await ladeGruppen();
+      await ladeGruppenView();
+      await ladeNeueStudentGruppen();
     }
 
     document.getElementById('fb-form').addEventListener('submit', async (e) => {
@@ -245,12 +296,76 @@
         ergebnisEl.textContent =
           `${data.created_students} Lernpartner:in(nen) angelegt, ${data.created_groups} neue Gruppe(n), ${data.skipped} übersprungen.`;
         fileInput.value = '';
-        await ladeGruppen();
-        await ladeGruppenView();
+        await alleGruppenSelectsAktualisieren();
       } catch {
         errEl.textContent = 'Verbindungsfehler.';
       } finally {
         btn.disabled = false; btn.textContent = 'Importieren';
+      }
+    });
+
+    document.getElementById('fb-group-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById('fb-group-error');
+      const btn = document.getElementById('fb-group-submit');
+      errEl.textContent = '';
+
+      const name = document.getElementById('fb-new-gruppe-name').value.trim();
+      const type = document.getElementById('fb-new-gruppe-typ').value;
+      if (!name) { errEl.textContent = 'Bitte einen Gruppennamen eingeben.'; return; }
+
+      btn.disabled = true; btn.textContent = 'Lege an …';
+      try {
+        const res = await fetch('/api/feedback/groups', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, type })
+        });
+        const data = await res.json();
+        if (!res.ok) { errEl.textContent = data.error || 'Fehler beim Anlegen.'; return; }
+
+        document.getElementById('fb-new-gruppe-name').value = '';
+        await alleGruppenSelectsAktualisieren();
+      } catch {
+        errEl.textContent = 'Verbindungsfehler.';
+      } finally {
+        btn.disabled = false; btn.textContent = 'Gruppe anlegen';
+      }
+    });
+
+    document.getElementById('fb-student-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errEl = document.getElementById('fb-student-error');
+      const btn = document.getElementById('fb-student-submit');
+      errEl.textContent = '';
+
+      const groupId = document.getElementById('fb-new-student-gruppe').value;
+      const vorname = document.getElementById('fb-new-student-vorname').value.trim();
+      const nachname = document.getElementById('fb-new-student-nachname').value.trim();
+
+      if (!groupId) { errEl.textContent = 'Bitte eine Gruppe auswählen.'; return; }
+      if (!vorname || !nachname) { errEl.textContent = 'Bitte Vor- und Nachname eingeben.'; return; }
+
+      btn.disabled = true; btn.textContent = 'Füge hinzu …';
+      try {
+        const res = await fetch('/api/feedback/students', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ group_id: Number(groupId), first_name: vorname, last_name: nachname })
+        });
+        const data = await res.json();
+        if (!res.ok) { errEl.textContent = data.error || 'Fehler beim Hinzufügen.'; return; }
+
+        document.getElementById('fb-new-student-vorname').value = '';
+        document.getElementById('fb-new-student-nachname').value = '';
+        studentsCache.delete(Number(groupId));
+        if (Number(groupId) === Number(document.getElementById('fb-view-gruppe').value)) {
+          await ladeLernpartner(groupId);
+        }
+      } catch {
+        errEl.textContent = 'Verbindungsfehler.';
+      } finally {
+        btn.disabled = false; btn.textContent = 'Lernpartner:in hinzufügen';
       }
     });
 
