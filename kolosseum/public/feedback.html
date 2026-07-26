@@ -26,6 +26,12 @@
     .fb-notiz-liste { list-style: none; margin: 0.75rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
     .fb-notiz-liste li { border-left: 3px solid var(--c2); padding: 0.4rem 0.75rem; background: rgba(0,0,0,0.03); border-radius: 4px; }
     .fb-notiz-datum { display: block; font-size: 0.8rem; color: rgba(0,0,0,0.5); margin-bottom: 0.15rem; }
+    .fb-kategorie { display: inline-block; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; padding: 0.1rem 0.5rem; border-radius: 999px; margin-right: 0.4rem; }
+    .fb-kategorie[data-kategorie="Fachlich"] { background: #dbeafe; color: #1e40af; }
+    .fb-kategorie[data-kategorie="Sozial"] { background: #dcfce7; color: #166534; }
+    .fb-kategorie[data-kategorie="Verhalten"] { background: #fef3c7; color: #92400e; }
+    .fb-kategorie[data-kategorie="Verbindlichkeit"] { background: #ede9fe; color: #5b21b6; }
+    .fb-kategorie[data-kategorie=""] { background: #e5e7eb; color: #4b5563; }
   </style>
 </head>
 <body>
@@ -105,6 +111,11 @@
       return div.innerHTML;
     }
 
+    function kategorieBadge(kategorie) {
+      const k = kategorie || '';
+      return `<span class="fb-kategorie" data-kategorie="${escapeHtml(k)}">${escapeHtml(k || 'Unklar')}</span>`;
+    }
+
     async function init() {
       const meRes = await fetch('/api/auth/me');
       if (!meRes.ok) { window.location.href = '/login.html'; return; }
@@ -154,11 +165,13 @@
         const data = await res.json();
         if (!res.ok) { errEl.textContent = data.error || 'Fehler bei der Verarbeitung.'; return; }
 
-        const namen = data.gespeichert.map(g => escapeHtml(g.name));
-        let html = `<p><strong>Gespeichert für:</strong> ${namen.length ? namen.join(', ') : '(niemand erkannt)'}</p>`;
+        const eintraege = data.gespeichert.map(g => `${kategorieBadge(g.category)}${escapeHtml(g.name)}`);
+        let html = `<p><strong>Gespeichert für:</strong></p><ul>` +
+          (eintraege.length ? eintraege.map(e => `<li>${e}</li>`).join('') : '<li>(niemand erkannt)</li>') +
+          `</ul>`;
         if (data.nicht_zugeordnet && data.nicht_zugeordnet.length) {
           html += `<p class="fb-warnung">⚠️ Nicht zugeordnet:</p><ul>` +
-            data.nicht_zugeordnet.map(n => `<li>${escapeHtml(n.student_name)}: ${escapeHtml(n.text)}</li>`).join('') +
+            data.nicht_zugeordnet.map(n => `<li>${kategorieBadge(n.category)}${escapeHtml(n.student_name)}: ${escapeHtml(n.text)}</li>`).join('') +
             `</ul>`;
         }
         ergebnisEl.innerHTML = html;
@@ -259,7 +272,7 @@
         const name = `${escapeHtml(data.student.first_name)} ${escapeHtml(data.student.last_name)}`;
         notizenEl.innerHTML = `<h3>${name}</h3>` + (data.notes.length
           ? '<ul class="fb-notiz-liste">' + data.notes.map(n =>
-              `<li><span class="fb-notiz-datum">${escapeHtml(n.date)}</span>${escapeHtml(n.text)}</li>`
+              `<li><span class="fb-notiz-datum">${escapeHtml(n.date)} ${kategorieBadge(n.category)}</span>${escapeHtml(n.text)}</li>`
             ).join('') + '</ul>'
           : '<p>Noch keine Notizen.</p>');
       } catch {
