@@ -213,6 +213,14 @@
     border-radius:8px;
     overflow:hidden;
     text-align:center;
+    cursor:pointer;
+    transition:transform .12s, box-shadow .12s;
+  }
+  .gallery-item:hover, .gallery-item:focus-visible{
+    transform:translateY(-2px);
+    box-shadow:0 4px 14px rgba(74,56,38,0.25);
+    outline:2px solid var(--accent-dark);
+    outline-offset:2px;
   }
   .gallery-item img{
     width:100%;
@@ -596,16 +604,33 @@ function openGallery(returnTo){
     const p = PERSONS[personIdx];
     const item=document.createElement('div');
     item.className='gallery-item';
+    item.setAttribute('role','button');
+    item.setAttribute('tabindex','0');
+    item.setAttribute('aria-label','Zu Rätsel '+(i+1)+' springen');
     const img=document.createElement('img');
     img.src='data:image/jpeg;base64,'+p.img;
+    img.alt='';
     const num=document.createElement('div');
     num.className='num';
-    num.textContent='Bild '+(i+1);
+    const res = results[i];
+    num.textContent='Bild '+(i+1)+(res ? (res.correct ? ' ✅' : ' ❌') : '');
     item.appendChild(img);
     item.appendChild(num);
+    item.addEventListener('click', ()=>jumpToIndex(i));
+    item.addEventListener('keydown', function(e){
+      if(e.key==='Enter' || e.key===' '){ e.preventDefault(); jumpToIndex(i); }
+    });
     grid.appendChild(item);
   });
   galleryOverlay.classList.remove('hidden');
+}
+function jumpToIndex(i){
+  galleryOverlay.classList.add('hidden');
+  startScreen.classList.add('hidden');
+  finalScreen.classList.add('hidden');
+  quizScreen.classList.remove('hidden');
+  currentIndex = i;
+  showQuestion();
 }
 document.getElementById('btnPreviewFromStart').addEventListener('click', ()=>openGallery('start'));
 document.getElementById('btnPreviewFromQuiz').addEventListener('click', ()=>openGallery('quiz'));
