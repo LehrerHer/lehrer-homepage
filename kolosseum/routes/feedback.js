@@ -36,19 +36,27 @@ function matchCategory(raw) {
   return CATEGORIES.find(c => normalize(c) === n) || null;
 }
 
-// Ordnet einen von Claude gelieferten Namen der Lernpartner:innen-Liste der Gruppe zu
+// Ordnet einen von Claude gelieferten Namen der Lernpartner:innen-Liste der Gruppe zu.
+// Gibt NIE eine geratene Zuordnung zurück: bei 0 oder >1 Treffern ist eine manuelle
+// Klärung nötig (type "none"/"ambiguous"), damit nie versehentlich die falsche Person
+// eine Notiz bekommt (z. B. bei zwei gleichnamigen Lernpartner:innen in der Gruppe).
 function matchStudent(name, students) {
   const n = normalize(name);
-  if (!n) return null;
+  if (!n) return { type: 'none', candidates: [] };
 
-  let hit = students.find(s => normalize(`${s.first_name} ${s.last_name}`) === n);
-  if (hit) return hit;
+  const exact = students.filter(s => normalize(`${s.first_name} ${s.last_name}`) === n);
+  if (exact.length === 1) return { type: 'match', student: exact[0] };
+  if (exact.length > 1) return { type: 'ambiguous', candidates: exact };
 
-  return students.find(s => {
+  const partial = students.filter(s => {
     const vorname = normalize(s.first_name);
     const nachname = normalize(s.last_name);
     return (vorname && n.includes(vorname)) || (nachname && n.includes(nachname));
-  }) || null;
+  });
+  if (partial.length === 1) return { type: 'match', student: partial[0] };
+  if (partial.length > 1) return { type: 'ambiguous', candidates: partial };
+
+  return { type: 'none', candidates: [] };
 }
 
 // GET /api/feedback/groups
@@ -107,9 +115,12 @@ router.post('/process', limiter, async (req, res) => {
     'Kategorien zu: "Fachlich" (fachliche Leistungen, Lernfortschritt, Mitarbeit im Fach), ' +
     '"Sozial" (Umgang mit Mitschüler:innen, Zusammenarbeit, Konflikte), "Verhalten" (Verhalten im ' +
     'Unterricht, Aufmerksamkeit, Störungen), "Verbindlichkeit" (Zuverlässigkeit, erledigte Aufgaben, ' +
-    'Pünktlichkeit, Absprachen). Gib NUR JSON zurück, ohne Markdown-Codeblock, im Format: ' +
-    '[{"student_name": "...", "category": "...", "text": "..."}]. Wenn ein Name nicht eindeutig aus ' +
-    'der Liste zuordenbar ist, nutze trotzdem den wahrscheinlichsten Treffer. Wenn eine Kategorie ' +
+    'Pünktlichkeit, Absprachen). Gib im Feld "student_name" GENAU den Namen so wieder, wie er im ' +
+    'Text erwähnt wurde (z. B. nur den Vornamen, falls nur dieser genannt wurde) – erfinde oder ' +
+    'ergänze den Namen NICHT und entscheide NICHT selbst, welche Person aus der Liste gemeint ist, ' +
+    'falls der genannte Name mehrdeutig sein könnte (z. B. weil es zwei Personen mit ähnlichem ' +
+    'Namen gibt) – das übernimmt eine andere Stelle. Gib NUR JSON zurück, ohne Markdown-Codeblock, ' +
+    'im Format: [{"student_name": "...", "category": "...", "text": "..."}]. Wenn eine Kategorie ' +
     'nicht eindeutig ist, wähle die am ehesten passende.';
   const userPrompt = `Schülerliste dieser Gruppe: ${namenListe}\n\nDiktierter Text:\n${text.trim()}`;
 
@@ -152,7 +163,7 @@ router.post('/process', limiter, async (req, res) => {
 
   const heute = new Date().toISOString().slice(0, 10);
   const gespeichert = [];
-  const nichtZugeordnet = [];
+  const zuKlaeren = [];
 
   const speichern = db.transaction(() => {
     const { lastInsertRowid: rawInputId } = db.prepare(
@@ -164,17 +175,28 @@ router.post('/process', limiter, async (req, res) => {
       if (!segText) continue;
 
       const category = matchCategory(segment?.category);
+      const result = matchStudent(segment?.student_name, students);
 
-      const match = matchStudent(segment?.student_name, students);
-      if (!match) {
-        nichtZugeordnet.push({ student_name: segment?.student_name || '(unbekannt)', category, text: segText });
+      if (result.type === 'match') {
+        db.prepare(
+          "INSERT INTO feedback_notes (student_id, group_id, date, text, category, raw_input_id, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now'))"
+        ).run(result.student.id, groupId, heute, segText, category, rawInputId);
+        gespeichert.push({ student_id: result.student.id, name: `${result.student.first_name} ${result.student.last_name}`, category });
         continue;
       }
 
-      db.prepare(
-        "INSERT INTO feedback_notes (student_id, group_id, date, text, category, raw_input_id, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now'))"
-      ).run(match.id, groupId, heute, segText, category, rawInputId);
-      gespeichert.push({ student_id: match.id, name: `${match.first_name} ${match.last_name}`, category });
+      // Mehrdeutig oder gar nicht erkannt: NICHT automatisch zuordnen, sondern zur
+      // manuellen Klärung ablegen (feedback_pending_notes) – keine Rate-Zuordnung.
+      const { lastInsertRowid: pendingId } = db.prepare(
+        "INSERT INTO feedback_pending_notes (group_id, date, text, category, mentioned_name, candidate_student_ids, raw_input_id, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, datetime('now'))"
+      ).run(groupId, heute, segText, category, segment?.student_name || null, JSON.stringify(result.candidates.map(c => c.id)), rawInputId);
+      zuKlaeren.push({
+        pending_id: pendingId,
+        mentioned_name: segment?.student_name || '(unbekannt)',
+        category,
+        text: segText,
+        kandidaten: result.candidates.map(c => ({ id: c.id, name: `${c.first_name} ${c.last_name}` }))
+      });
     }
 
     return rawInputId;
@@ -182,7 +204,59 @@ router.post('/process', limiter, async (req, res) => {
 
   const rawInputId = speichern();
 
-  res.json({ ok: true, raw_input_id: rawInputId, gespeichert, nicht_zugeordnet: nichtZugeordnet });
+  res.json({ ok: true, raw_input_id: rawInputId, gespeichert, zu_klaeren: zuKlaeren });
+});
+
+// GET /api/feedback/pending – offene, noch nicht zugeordnete Notiz-Abschnitte
+// (optional gefiltert nach group_id; sonst gruppenübergreifend)
+router.get('/pending', (req, res) => {
+  const groupId = req.query.group_id ? Number(req.query.group_id) : null;
+  const rows = groupId
+    ? db.prepare(
+        `SELECT p.id, p.group_id, g.name AS group_name, p.date, p.text, p.category,
+                p.mentioned_name, p.candidate_student_ids, p.created_at
+         FROM feedback_pending_notes p JOIN feedback_groups g ON g.id = p.group_id
+         WHERE p.group_id = ? ORDER BY p.created_at DESC`
+      ).all(groupId)
+    : db.prepare(
+        `SELECT p.id, p.group_id, g.name AS group_name, p.date, p.text, p.category,
+                p.mentioned_name, p.candidate_student_ids, p.created_at
+         FROM feedback_pending_notes p JOIN feedback_groups g ON g.id = p.group_id
+         ORDER BY p.created_at DESC`
+      ).all();
+
+  res.json(rows.map(r => ({ ...r, candidate_student_ids: JSON.parse(r.candidate_student_ids || '[]') })));
+});
+
+// POST /api/feedback/pending/:id/resolve – offene Zuordnung klären:
+// entweder { student_id } (speichert die Notiz für diese Person) oder { discard: true } (verwirft sie)
+router.post('/pending/:id/resolve', (req, res) => {
+  const id = Number(req.params.id);
+  const pending = db.prepare('SELECT * FROM feedback_pending_notes WHERE id = ?').get(id);
+  if (!pending) return res.status(404).json({ error: 'Offene Zuordnung nicht gefunden.' });
+
+  if (req.body?.discard) {
+    db.prepare('DELETE FROM feedback_pending_notes WHERE id = ?').run(id);
+    return res.json({ ok: true, discarded: true });
+  }
+
+  const studentId = Number(req.body?.student_id);
+  if (!studentId) return res.status(400).json({ error: 'student_id oder discard erforderlich.' });
+
+  const student = db.prepare(
+    'SELECT id, first_name, last_name FROM feedback_students WHERE id = ? AND group_id = ?'
+  ).get(studentId, pending.group_id);
+  if (!student) return res.status(400).json({ error: 'Ungültige Lernpartner:in für diese Gruppe.' });
+
+  const speichern = db.transaction(() => {
+    db.prepare(
+      "INSERT INTO feedback_notes (student_id, group_id, date, text, category, raw_input_id, created_at) VALUES (?, ?, ?, ?, ?, ?, datetime('now'))"
+    ).run(student.id, pending.group_id, pending.date, pending.text, pending.category, pending.raw_input_id);
+    db.prepare('DELETE FROM feedback_pending_notes WHERE id = ?').run(id);
+  });
+  speichern();
+
+  res.json({ ok: true, student: { id: student.id, name: `${student.first_name} ${student.last_name}` } });
 });
 
 // GET /api/feedback/students/:id/notes – chronologische Notizen-Historie

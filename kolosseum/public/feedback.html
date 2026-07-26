@@ -34,6 +34,12 @@
     .fb-kategorie[data-kategorie="Verhalten"] { background: #fef3c7; color: #92400e; }
     .fb-kategorie[data-kategorie="Verbindlichkeit"] { background: #ede9fe; color: #5b21b6; }
     .fb-kategorie[data-kategorie=""] { background: #e5e7eb; color: #4b5563; }
+    .fb-zuklaeren-card { margin-top: 2rem; }
+    .fb-zuklaeren-item { border: 1px solid rgba(0,0,0,0.12); border-radius: 6px; padding: 0.75rem; margin-top: 0.75rem; background: #fffbeb; }
+    .fb-zuklaeren-meta { font-size: 0.85rem; color: rgba(0,0,0,0.6); margin-bottom: 0.4rem; }
+    .fb-zuklaeren-text { margin: 0 0 0.6rem; }
+    .fb-zuklaeren-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+    .fb-zuklaeren-select { flex: 1 1 200px; min-width: 180px; }
   </style>
 </head>
 <body>
@@ -92,6 +98,15 @@
       <div class="fb-ergebnis" id="fb-ergebnis" style="display:none;"></div>
     </div>
 
+    <div class="card fb-zuklaeren-card">
+      <h2>⚠️ Zu klären</h2>
+      <p class="fb-hinweis" style="margin-bottom:0;">
+        Diese Abschnitte konnten nicht sicher zugeordnet werden (unbekannter oder mehrdeutiger Name)
+        und wurden <strong>nicht</strong> gespeichert, bis du sie hier manuell klärst.
+      </p>
+      <div id="fb-zuklaeren-liste"></div>
+    </div>
+
     <div class="card fb-import-card">
       <h2>Lernpartner:innen importieren</h2>
       <p>CSV-Datei mit den Spalten <code>Vorname</code>, <code>Nachname</code>, <code>Gruppe</code> hochladen. Unbekannte Gruppen werden automatisch angelegt.</p>
@@ -135,6 +150,7 @@
       if (!meRes.ok) { window.location.href = '/admin/'; return; }
       await ladeGruppen();
       await ladeGruppenView();
+      await ladeZuKlaeren();
     }
 
     document.getElementById('logout-btn').addEventListener('click', async () => {
@@ -186,12 +202,10 @@
 
         const eintraege = data.gespeichert.map(g => `${kategorieBadge(g.category)}${escapeHtml(g.name)}`);
         let html = `<p><strong>Gespeichert für:</strong></p><ul>` +
-          (eintraege.length ? eintraege.map(e => `<li>${e}</li>`).join('') : '<li>(niemand erkannt)</li>') +
+          (eintraege.length ? eintraege.map(e => `<li>${e}</li>`).join('') : '<li>(niemand automatisch zugeordnet)</li>') +
           `</ul>`;
-        if (data.nicht_zugeordnet && data.nicht_zugeordnet.length) {
-          html += `<p class="fb-warnung">⚠️ Nicht zugeordnet:</p><ul>` +
-            data.nicht_zugeordnet.map(n => `<li>${kategorieBadge(n.category)}${escapeHtml(n.student_name)}: ${escapeHtml(n.text)}</li>`).join('') +
-            `</ul>`;
+        if (data.zu_klaeren && data.zu_klaeren.length) {
+          html += `<p class="fb-warnung">⚠️ ${data.zu_klaeren.length} Abschnitt(e) benötigen eine manuelle Zuordnung – siehe „Zu klären" oben.</p>`;
         }
         ergebnisEl.innerHTML = html;
         ergebnisEl.style.display = 'block';
@@ -200,6 +214,7 @@
         if (Number(groupId) === Number(document.getElementById('fb-view-gruppe').value)) {
           ladeLernpartner(groupId);
         }
+        await ladeZuKlaeren();
       } catch {
         errEl.textContent = 'Verbindungsfehler.';
       } finally {
@@ -296,6 +311,113 @@
           : '<p>Noch keine Notizen.</p>');
       } catch {
         notizenEl.textContent = 'Verbindungsfehler.';
+      }
+    });
+
+    const studentsCache = new Map(); // group_id -> Lernpartner:innen dieser Gruppe
+
+    async function studentsFuerGruppe(groupId) {
+      if (!studentsCache.has(groupId)) {
+        try {
+          const res = await fetch(`/api/feedback/groups/${groupId}/students`);
+          studentsCache.set(groupId, res.ok ? await res.json() : []);
+        } catch {
+          studentsCache.set(groupId, []);
+        }
+      }
+      return studentsCache.get(groupId);
+    }
+
+    function zuKlaerenItemHtml(item, students) {
+      const sortiert = [...students].sort((a, b) => {
+        const aKand = item.candidate_student_ids.includes(a.id) ? 0 : 1;
+        const bKand = item.candidate_student_ids.includes(b.id) ? 0 : 1;
+        return aKand - bKand;
+      });
+      const optionen = sortiert.map(s => {
+        const stern = item.candidate_student_ids.includes(s.id) ? '★ ' : '';
+        return `<option value="${s.id}">${stern}${escapeHtml(s.first_name)} ${escapeHtml(s.last_name)}</option>`;
+      }).join('');
+
+      return `
+        <div class="fb-zuklaeren-item" data-pending-id="${item.id}">
+          <div class="fb-zuklaeren-meta">
+            ${kategorieBadge(item.category)}<strong>${escapeHtml(item.group_name)}</strong> · erkannt: „${escapeHtml(item.mentioned_name || '–')}"
+          </div>
+          <p class="fb-zuklaeren-text">${escapeHtml(item.text)}</p>
+          <div class="fb-zuklaeren-actions">
+            <select class="fb-zuklaeren-select">
+              <option value="">– Lernpartner:in wählen –</option>
+              ${optionen}
+            </select>
+            <button type="button" class="btn btn-primary fb-zuklaeren-zuordnen">Zuordnen</button>
+            <button type="button" class="btn fb-zuklaeren-verwerfen">Verwerfen</button>
+          </div>
+        </div>`;
+    }
+
+    async function ladeZuKlaeren() {
+      const listeEl = document.getElementById('fb-zuklaeren-liste');
+      listeEl.textContent = 'Lade …';
+      try {
+        const res = await fetch('/api/feedback/pending');
+        const items = await res.json();
+        if (!res.ok) { listeEl.textContent = items.error || 'Fehler beim Laden.'; return; }
+        if (!items.length) { listeEl.innerHTML = '<p>Keine offenen Zuordnungen.</p>'; return; }
+
+        const teile = [];
+        for (const item of items) {
+          const students = await studentsFuerGruppe(item.group_id);
+          teile.push(zuKlaerenItemHtml(item, students));
+        }
+        listeEl.innerHTML = teile.join('');
+      } catch {
+        listeEl.textContent = 'Verbindungsfehler.';
+      }
+    }
+
+    async function resolvePending(pendingId, body) {
+      try {
+        const res = await fetch(`/api/feedback/pending/${pendingId}/resolve`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          alert(data.error || 'Fehler beim Klären.');
+          return false;
+        }
+        return true;
+      } catch {
+        alert('Verbindungsfehler.');
+        return false;
+      }
+    }
+
+    document.getElementById('fb-zuklaeren-liste').addEventListener('click', async (e) => {
+      const item = e.target.closest('.fb-zuklaeren-item');
+      if (!item) return;
+      const pendingId = item.dataset.pendingId;
+
+      if (e.target.classList.contains('fb-zuklaeren-verwerfen')) {
+        if (!confirm('Diesen Abschnitt wirklich verwerfen? Er wird dann nicht gespeichert.')) return;
+        if (await resolvePending(pendingId, { discard: true })) await ladeZuKlaeren();
+        return;
+      }
+
+      if (e.target.classList.contains('fb-zuklaeren-zuordnen')) {
+        const select = item.querySelector('.fb-zuklaeren-select');
+        const studentId = select.value;
+        if (!studentId) { select.focus(); return; }
+
+        if (await resolvePending(pendingId, { student_id: Number(studentId) })) {
+          await ladeZuKlaeren();
+          const aktiverBtn = document.querySelector('.fb-view-btn.active');
+          if (aktiverBtn && Number(aktiverBtn.dataset.id) === Number(studentId)) {
+            aktiverBtn.click();
+          }
+        }
       }
     });
 

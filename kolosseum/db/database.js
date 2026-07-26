@@ -140,6 +140,24 @@ if (!feedbackNotesCols.includes('category')) {
   db.exec('ALTER TABLE feedback_notes ADD COLUMN category TEXT');
 }
 
+// Feedback-Notizen: Abschnitte mit unklarer oder mehrdeutiger Namenszuordnung landen hier
+// statt automatisch (und ggf. falsch) einer Person zugeordnet zu werden – Auflösung durch
+// den Lernbegleiter über POST /api/feedback/pending/:id/resolve.
+db.exec(`
+  CREATE TABLE IF NOT EXISTS feedback_pending_notes (
+    id                    INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id              INTEGER REFERENCES feedback_groups(id) ON DELETE CASCADE,
+    date                  TEXT NOT NULL,
+    text                  TEXT NOT NULL,
+    category              TEXT,
+    mentioned_name        TEXT,
+    candidate_student_ids TEXT NOT NULL DEFAULT '[]',
+    raw_input_id          INTEGER REFERENCES feedback_raw_inputs(id) ON DELETE SET NULL,
+    created_at            TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_feedback_pending_group ON feedback_pending_notes(group_id);
+`);
+
 // Session-Store für express-session auf Basis von better-sqlite3
 class SQLiteSessionStore {
   constructor(session) {
