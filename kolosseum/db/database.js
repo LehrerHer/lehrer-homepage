@@ -54,6 +54,9 @@ const studentCols = db.prepare('PRAGMA table_info(students)').all().map(c => c.n
 if (!studentCols.includes('coins')) {
   db.exec('ALTER TABLE students ADD COLUMN coins INTEGER DEFAULT 0');
 }
+if (!studentCols.includes('is_admin')) {
+  db.exec('ALTER TABLE students ADD COLUMN is_admin INTEGER DEFAULT 0');
+}
 
 // Münz-Log und Shop-Inventar (per CREATE IF NOT EXISTS in schema.sql angelegt,
 // aber hier nochmals abgesichert)

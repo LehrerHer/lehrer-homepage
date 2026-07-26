@@ -33,6 +33,7 @@ router.post('/login', loginLimiter, async (req, res) => {
 
   req.session.studentId = student.id;
   req.session.nick = student.nick;
+  if (student.is_admin) req.session.isAdmin = true;
 
   res.json({ ok: true, nick: student.nick, redirect: '/profil.html' });
 });

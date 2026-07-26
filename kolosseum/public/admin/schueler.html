@@ -27,6 +27,9 @@
     .btn-xp  { background: var(--c3); color: #fff; }
     .btn-pw  { background: var(--c4); color: #fff; }
     .btn-del { background: var(--c1); color: #fff; }
+    .btn-admin      { background: #e2e8f0; color: var(--ink); }
+    .btn-admin.on   { background: #1e3a5f; color: #fff; }
+    .admin-pill { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; background: #1e3a5f; color: #fff; }
 
     /* Modal */
     .modal-bg {
@@ -95,11 +98,12 @@
             <th>XP</th>
             <th>Level</th>
             <th>Abzeichen</th>
+            <th>Admin</th>
             <th>Aktionen</th>
           </tr>
         </thead>
         <tbody id="students-body">
-          <tr><td colspan="8" class="text-soft">Wird geladen…</td></tr>
+          <tr><td colspan="9" class="text-soft">Wird geladen…</td></tr>
         </tbody>
       </table>
     </div>
@@ -142,13 +146,36 @@
       <form id="pin-form" novalidate>
         <input type="hidden" id="pin-student-id">
         <div class="form-group">
-          <label>Neue PIN (4 Ziffern) *</label>
-          <input type="text" id="pin-new" placeholder="z. B. 4782" maxlength="4" inputmode="numeric" required autocomplete="off">
+          <label id="pin-label">Neue PIN (4 Ziffern) *</label>
+          <input type="text" id="pin-new" placeholder="z. B. 4782" maxlength="4" inputmode="numeric" required autocomplete="off" data-mode="pin">
         </div>
         <div class="form-error" id="pin-error"></div>
         <div class="modal-footer">
           <button type="button" class="btn btn-sm btn-cancel" id="pin-cancel">Abbrechen</button>
           <button type="submit" class="btn btn-primary btn-sm">Speichern</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: Admin-Rechte vergeben -->
+  <div class="modal-bg" id="admin-pw-modal">
+    <div class="modal">
+      <h2 id="admin-pw-modal-title">Zu Admin machen</h2>
+      <form id="admin-pw-form" novalidate>
+        <input type="hidden" id="admin-pw-student-id">
+        <p style="font-size:.85rem;color:var(--ink-soft);margin-bottom:1rem">
+          Admin-Accounts brauchen ein stärkeres Passwort als die Schüler-PIN:
+          mind. 8 Zeichen, Groß- und Kleinschreibung sowie mind. eine Zahl.
+        </p>
+        <div class="form-group">
+          <label>Neues Passwort *</label>
+          <input type="password" id="admin-pw-new" placeholder="mind. 8 Zeichen, z. B. Klasse8bSpelle" minlength="8" required autocomplete="new-password">
+        </div>
+        <div class="form-error" id="admin-pw-error"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-sm btn-cancel" id="admin-pw-cancel">Abbrechen</button>
+          <button type="submit" class="btn btn-primary btn-sm">Admin-Rechte vergeben</button>
         </div>
       </form>
     </div>
@@ -192,7 +219,7 @@
     function renderTable(students) {
       const tbody = document.getElementById('students-body');
       if (!students.length) {
-        tbody.innerHTML = '<tr><td colspan="7" class="text-soft">Noch keine Schüler angelegt.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="9" class="text-soft">Noch keine Schüler angelegt.</td></tr>';
         return;
       }
       tbody.innerHTML = students.map(s => `
@@ -204,10 +231,12 @@
           <td><strong>${s.xp}</strong></td>
           <td><span class="level-pill">Lvl ${levelIndex(s.xp)} ${levelName(s.xp)}</span></td>
           <td class="badge-count">${s.badges.length} / 8</td>
+          <td>${s.is_admin ? '<span class="admin-pill">⚙️ Admin</span>' : '<span class="text-soft">–</span>'}</td>
           <td>
             <div class="actions">
               <button class="btn-sm btn-xp"  onclick="openXP(${s.id}, '${s.nick}')">XP</button>
               <button class="btn-sm btn-pw"  onclick="openPIN(${s.id}, '${s.nick}')">PIN</button>
+              <button class="btn-sm btn-admin${s.is_admin ? ' on' : ''}" onclick="toggleAdmin(${s.id}, '${s.nick}', ${s.is_admin ? 'true' : 'false'})">${s.is_admin ? 'Admin entziehen' : 'Zu Admin machen'}</button>
               <button class="btn-sm btn-del" onclick="deleteStudent(${s.id}, '${s.nick}')">Löschen</button>
             </div>
           </td>
@@ -282,13 +311,32 @@
       await loadStudents();
     });
 
-    // PIN setzen
+    // PIN/Passwort setzen (Admin-Accounts: starkes Passwort statt 4-stelliger PIN)
     function openPIN(id, nick) {
+      const student = studentsData.find(s => s.id === id);
+      const isAdmin = !!(student && student.is_admin);
+      const input = document.getElementById('pin-new');
+      const label = document.getElementById('pin-label');
+
       document.getElementById('pin-student-id').value = id;
-      document.getElementById('pin-modal-title').textContent = `PIN setzen – ${nick}`;
+      document.getElementById('pin-modal-title').textContent = `${isAdmin ? 'Passwort' : 'PIN'} setzen – ${nick}`;
       document.getElementById('pin-error').textContent = '';
       document.getElementById('pin-form').reset();
       document.getElementById('pin-student-id').value = id;
+
+      if (isAdmin) {
+        input.type = 'password';
+        input.dataset.mode = 'password';
+        input.removeAttribute('maxlength');
+        input.placeholder = 'mind. 8 Zeichen, Groß-/Kleinschreibung, Zahl';
+        label.textContent = 'Neues Passwort *';
+      } else {
+        input.type = 'text';
+        input.dataset.mode = 'pin';
+        input.setAttribute('maxlength', '4');
+        input.placeholder = 'z. B. 4782';
+        label.textContent = 'Neue PIN (4 Ziffern) *';
+      }
       openModal('pin-modal');
     }
 
@@ -309,9 +357,52 @@
       closeModal('pin-modal');
     });
 
-    // PIN: nur Ziffern (PIN-Modal)
+    // PIN: nur Ziffern (PIN-Modal) – gilt nicht im Passwort-Modus (Admin-Accounts)
     document.getElementById('pin-new').addEventListener('input', e => {
-      e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+      if (e.target.dataset.mode === 'pin') {
+        e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+      }
+    });
+
+    // Adminrechte vergeben (mit starkem Passwort) / entziehen
+    async function toggleAdmin(id, nick, currentlyAdmin) {
+      if (currentlyAdmin) {
+        if (!confirm(`"${nick}" die Admin-Rechte entziehen?`)) return;
+        const res = await fetch(`/api/admin/students/${id}/admin`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ is_admin: false }),
+        });
+        if (!res.ok) { alert('Fehler beim Ändern der Adminrechte.'); return; }
+        await loadStudents();
+        return;
+      }
+
+      document.getElementById('admin-pw-student-id').value = id;
+      document.getElementById('admin-pw-modal-title').textContent = `Zu Admin machen – ${nick}`;
+      document.getElementById('admin-pw-error').textContent = '';
+      document.getElementById('admin-pw-form').reset();
+      openModal('admin-pw-modal');
+    }
+
+    document.getElementById('admin-pw-cancel').addEventListener('click', () => closeModal('admin-pw-modal'));
+
+    document.getElementById('admin-pw-form').addEventListener('submit', async e => {
+      e.preventDefault();
+      const errEl    = document.getElementById('admin-pw-error');
+      const id       = document.getElementById('admin-pw-student-id').value;
+      const password = document.getElementById('admin-pw-new').value;
+
+      const res  = await fetch(`/api/admin/students/${id}/admin`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ is_admin: true, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) { errEl.textContent = data.error; return; }
+
+      closeModal('admin-pw-modal');
+      await loadStudents();
     });
 
     // Schüler löschen
