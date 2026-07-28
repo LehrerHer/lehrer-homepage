@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Der Block der Wahrheit — Wizard Scoreboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --parchment: #e9d9ae;
+    --parchment-dark: #d9c48d;
+    --ink: #2b1b0e;
+    --wood: #3e2412;
+    --wood-deep: #24140a;
+    --gold: #b8892b;
+    --gold-bright: #d9ab4a;
+    --blue: #1b3a6b;   /* Menschen */
+    --green: #1e4d2b;  /* Elfen */
+    --red: #6b1f1f;    /* Zwerge */
+    --yellow: #a97a1a; /* Riesen */
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0; padding:0; min-height:100vh;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(255,220,150,0.08), transparent 60%),
+      radial-gradient(ellipse at 80% 100%, rgba(0,0,0,0.4), transparent 60%),
+      var(--wood-deep);
+    background-color:#1c0f07;
+    font-family:'EB Garamond', serif;
+    color:var(--ink);
+  }
+  .stage{
+    max-width:900px; margin:0 auto; padding:18px 12px 60px;
+  }
+  h1{
+    font-family:'Cinzel Decorative', 'Cinzel', serif;
+    text-align:center;
+    color:var(--gold-bright);
+    font-size:clamp(1.4rem, 5vw, 2.4rem);
+    letter-spacing:1px;
+    margin:14px 0 2px;
+    text-shadow: 0 0 10px rgba(217,171,74,0.35), 0 2px 0 #000;
+  }
+  .subtitle{
+    text-align:center; color:#c9b48a; font-style:italic; margin-bottom:18px;
+    font-size:0.95rem;
+  }
+  .seal{
+    width:64px;height:64px;margin:0 auto 6px; border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 60%, #7a5316 100%);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.6), inset 0 0 10px rgba(0,0,0,0.4);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cinzel Decorative',serif; font-weight:900; color:#3e2412; font-size:1.6rem;
+  }
+
+  .parchment-panel{
+    background:
+      linear-gradient(rgba(0,0,0,0.02), rgba(0,0,0,0.02)),
+      var(--parchment);
+    border:2px solid var(--wood);
+    border-radius:8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.55), inset 0 0 60px rgba(120,90,40,0.25);
+    padding:16px;
+    margin-bottom:18px;
+    position:relative;
+  }
+  .parchment-panel::before{
+    content:""; position:absolute; inset:6px; border:1px solid rgba(62,36,18,0.35);
+    border-radius:5px; pointer-events:none;
+  }
+
+  /* SETUP */
+  .setup-row{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:12px;}
+  .setup-row label{ font-weight:600; color:var(--wood); }
+  select, input[type=text], input[type=number]{
+    font-family:'EB Garamond', serif; font-size:1rem;
+    background:#f4e9c9; border:1px solid var(--wood); border-radius:4px;
+    padding:6px 8px; color:var(--ink);
+  }
+  .name-list{ display:flex; flex-direction:column; gap:8px; margin:10px 0;}
+  .name-list input{ width:100%; }
+  .rune-btn{
+    font-family:'Cinzel', serif; font-weight:700; letter-spacing:0.5px;
+    background:linear-gradient(180deg, var(--gold-bright), var(--gold));
+    color:#2b1b0e; border:1px solid #6e4a12; border-radius:6px;
+    padding:9px 16px; cursor:pointer;
+    box-shadow: 0 3px 0 #5a3c10, 0 5px 8px rgba(0,0,0,0.4);
+  }
+  .rune-btn:active{ transform:translateY(2px); box-shadow:0 1px 0 #5a3c10; }
+  .rune-btn.secondary{
+    background:linear-gradient(180deg,#7a5a34,#5a3c1e); color:#f0dcae; border-color:#3e2412;
+    box-shadow: 0 3px 0 #2b1b0e, 0 5px 8px rgba(0,0,0,0.4);
+  }
+  .rune-btn.small{ padding:5px 10px; font-size:0.85rem; }
+  .btn-row{ display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;}
+
+  /* BOARD */
+  .board-header{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;
+    margin-bottom:10px;
+  }
+  .round-info{ font-family:'Cinzel', serif; color:var(--wood); font-weight:700; }
+  table{ width:100%; border-collapse:collapse; }
+  th, td{ border:1px solid rgba(62,36,18,0.4); padding:6px 4px; text-align:center; font-size:0.9rem;}
+  thead th{
+    background:var(--wood); color:var(--gold-bright); font-family:'Cinzel',serif;
+    font-weight:700; letter-spacing:0.5px; padding:8px 4px;
+  }
+  tbody tr:nth-child(even){ background:rgba(62,36,18,0.06); }
+  .round-num{ font-family:'Cinzel',serif; font-weight:700; color:var(--wood); background:rgba(62,36,18,0.12);}
+  .cell-inputs{ display:flex; gap:4px; justify-content:center; align-items:center; flex-wrap:nowrap;}
+  .cell-inputs input{
+    width:38px; padding:3px 2px; text-align:center; font-size:0.9rem;
+  }
+  .cell-inputs .lbl{ font-size:0.65rem; color:#6b4a20; }
+  .score-total{ font-weight:700; font-size:1rem; }
+  .active-round td{ background:rgba(217,171,74,0.18) !important; }
+  .locked td.round-num{ color:#8a7350; }
+
+  .players-head span{ display:block; font-size:0.75rem; font-weight:400; opacity:0.85; }
+
+  .leaderboard{
+    display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:6px;
+  }
+  .player-badge{
+    font-family:'Cinzel', serif; font-weight:700; color:#f4e9c9;
+    padding:6px 14px; border-radius:20px; font-size:0.95rem;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15), 0 2px 6px rgba(0,0,0,0.5);
+  }
+
+  .footer-note{ text-align:center; color:#a88f66; font-size:0.8rem; margin-top:10px; font-style:italic;}
+  .hidden{ display:none !important; }
+
+  @media (max-width:560px){
+    th, td{ font-size:0.78rem; padding:4px 2px;}
+    .cell-inputs input{ width:30px; }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="seal">W</div>
+  <h1>Der Block der Wahrheit</h1>
+  <div class="subtitle">Punkteblock für Wizard — geführt vom Vertrauten der Lehrlinge</div>
+
+  <!-- SETUP PANEL -->
+  <div class="parchment-panel" id="setupPanel">
+    <div class="setup-row">
+      <label for="playerCount">Anzahl Lehrlinge:</label>
+      <select id="playerCount">
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5" selected>5</option>
+        <option value="6">6</option>
+      </select>
+      <button class="rune-btn small" id="applyCount" type="button">Übernehmen</button>
+    </div>
+    <div class="name-list" id="nameList"></div>
+    <div class="btn-row">
+      <button class="rune-btn" id="startGame" type="button">Spiel beginnen</button>
+    </div>
+  </div>
+
+  <!-- GAME PANEL -->
+  <div class="parchment-panel hidden" id="gamePanel">
+    <div class="board-header">
+      <div class="round-info" id="roundInfo">Stichrunde 1 von 12</div>
+      <button class="rune-btn secondary small" id="newGameBtn" type="button">Neues Spiel</button>
+    </div>
+    <div style="overflow-x:auto;">
+      <table id="scoreTable">
+        <thead>
+          <tr>
+            <th>Runde</th>
+            <th id="playersHeadRow" colspan="1"></th>
+          </tr>
+        </thead>
+        <tbody id="scoreBody"></tbody>
+      </table>
+    </div>
+    <div class="leaderboard" id="leaderboard"></div>
+    <div class="footer-note">Vorhersage (V) tippen, nach dem letzten Stich das Ergebnis (S) eintragen — der Rest rechnet sich von selbst.</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const colors = ['#1b3a6b','#1e4d2b','#6b1f1f','#a97a1a','#5a3c8e','#8e5a1e'];
+  const STORAGE_KEY = 'wizard-scoreboard-save';
+  const roundsByCount = {3:20, 4:15, 5:12, 6:10}; // 60 Karten / Spieleranzahl
+  let players = [];
+  let data = [];
+  let totalRounds = 0;
+  let storageOK = false;
+  try{
+    const testKey = '__wizard_test__';
+    localStorage.setItem(testKey, '1');
+    localStorage.removeItem(testKey);
+    storageOK = true;
+  }catch(e){
+    storageOK = false;
+    console.warn('Browser-Speicher nicht verfuegbar (z.B. in einer Sandbox-Vorschau). Spielstand wird nicht gespeichert.');
+  }
+
+  function saveGame(){
+    if(!storageOK) return;
+    try{
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({players, totalRounds, data}));
+    }catch(e){ storageOK = false; }
+  }
+
+  function clearSave(){
+    if(!storageOK) return;
+    try{ localStorage.removeItem(STORAGE_KEY); }catch(e){}
+  }
+
+  function loadSavedGame(){
+    if(!storageOK) return null;
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return null;
+      return JSON.parse(raw);
+    }catch(e){ return null; }
+  }
+
+  const setupPanel = document.getElementById('setupPanel');
+  const gamePanel = document.getElementById('gamePanel');
+  const nameList = document.getElementById('nameList');
+  const playerCountSel = document.getElementById('playerCount');
+  const applyCountBtn = document.getElementById('applyCount');
+  const startBtn = document.getElementById('startGame');
+  const newGameBtn = document.getElementById('newGameBtn');
+  const scoreBody = document.getElementById('scoreBody');
+  const playersHeadRow = document.getElementById('playersHeadRow');
+  const roundInfo = document.getElementById('roundInfo');
+  const leaderboard = document.getElementById('leaderboard');
+
+  function renderNameInputs(){
+    const n = parseInt(playerCountSel.value,10);
+    nameList.innerHTML = '';
+    for(let i=0;i<n;i++){
+      const wrap = document.createElement('div');
+      const inp = document.createElement('input');
+      inp.type = 'text';
+      inp.placeholder = 'Name Lehrling ' + (i+1);
+      inp.value = (players[i] && players[i].name) ? players[i].name : '';
+      inp.dataset.idx = i;
+      wrap.appendChild(inp);
+      nameList.appendChild(wrap);
+    }
+  }
+
+  applyCountBtn.addEventListener('click', renderNameInputs);
+  renderNameInputs();
+
+  startBtn.addEventListener('click', function(){
+    const inputs = nameList.querySelectorAll('input');
+    players = [];
+    inputs.forEach((inp, i)=>{
+      const name = inp.value.trim() || ('Lehrling ' + (i+1));
+      players.push({name: name, color: colors[i % colors.length]});
+    });
+    const n = players.length;
+    totalRounds = roundsByCount[n];
+    data = Array.from({length: totalRounds}, () =>
+      players.map(()=>({pred:null, actual:null}))
+    );
+    buildTableHead();
+    buildTableBody();
+    updateLeaderboard();
+    saveGame();
+    setupPanel.classList.add('hidden');
+    gamePanel.classList.remove('hidden');
+  });
+
+  newGameBtn.addEventListener('click', function(){
+    if(!confirm('Aktuellen Spielstand wirklich löschen und neu beginnen?')) return;
+    clearSave();
+    players = []; data = []; totalRounds = 0;
+    gamePanel.classList.add('hidden');
+    setupPanel.classList.remove('hidden');
+  });
+
+  function restoreGame(saved){
+    players = saved.players;
+    totalRounds = saved.totalRounds;
+    data = saved.data;
+    playerCountSel.value = String(players.length);
+    renderNameInputs();
+    buildTableHead();
+    buildTableBody();
+    updateLeaderboard();
+    setupPanel.classList.add('hidden');
+    gamePanel.classList.remove('hidden');
+  }
+
+  const saved = loadSavedGame();
+  if(saved && saved.players && saved.players.length && saved.data && saved.data.length){
+    restoreGame(saved);
+  }
+
+  function buildTableHead(){
+    playersHeadRow.colSpan = players.length;
+    playersHeadRow.innerHTML = '';
+    const tr = playersHeadRow.parentElement;
+    tr.innerHTML = '<th>Runde</th>';
+    players.forEach(p=>{
+      const th = document.createElement('th');
+      th.style.background = p.color;
+      th.innerHTML = p.name + '<span>V · S · Pkt</span>';
+      tr.appendChild(th);
+    });
+  }
+
+  function calcScore(pred, actual){
+    if(pred === null || actual === null) return null;
+    if(pred === actual) return 20 + 10*actual;
+    return -10 * Math.abs(pred - actual);
+  }
+
+  function runningTotal(playerIdx, uptoRound){
+    let total = 0;
+    for(let r=0;r<=uptoRound;r++){
+      const s = calcScore(data[r][playerIdx].pred, data[r][playerIdx].actual);
+      if(s !== null) total += s;
+    }
+    return total;
+  }
+
+  let allInputs = []; // flache Liste aller Zahlenfelder in Reihenfolge, für Auto-Sprung
+
+  function isEntryComplete(value, max){
+    if(value === '' || value === null) return false;
+    const digits = String(value);
+    const maxDigits = String(max).length;
+    if(digits.length >= maxDigits) return true;
+    const nextMin = parseInt(digits + '0', 10);
+    if(nextMin > max) return true;
+    return false;
+  }
+
+  function focusNext(input){
+    const idx = allInputs.indexOf(input);
+    if(idx === -1) return;
+    const next = allInputs[idx+1];
+    if(next){ next.focus(); next.select(); }
+  }
+
+  function buildTableBody(){
+    scoreBody.innerHTML = '';
+    allInputs = [];
+    for(let r=0;r<totalRounds;r++){
+      const tr = document.createElement('tr');
+      tr.dataset.round = r;
+      const cardsThisRound = r+1;
+      const tdRound = document.createElement('td');
+      tdRound.className = 'round-num';
+      tdRound.textContent = cardsThisRound;
+      tr.appendChild(tdRound);
+
+      players.forEach((p, pi)=>{
+        const td = document.createElement('td');
+        const wrap = document.createElement('div');
+        wrap.className = 'cell-inputs';
+
+        const predInp = document.createElement('input');
+        predInp.type = 'number'; predInp.min='0'; predInp.max=String(cardsThisRound);
+        predInp.title='Vorhersage';
+        predInp.value = data[r][pi].pred === null ? '' : data[r][pi].pred;
+
+        const actInp = document.createElement('input');
+        actInp.type='number'; actInp.min='0'; actInp.max=String(cardsThisRound);
+        actInp.title='Erhaltene Stiche';
+        actInp.value = data[r][pi].actual === null ? '' : data[r][pi].actual;
+
+        const scoreSpan = document.createElement('span');
+        scoreSpan.className='score-total';
+
+        function refreshScore(){
+          const total = runningTotal(pi, r);
+          scoreSpan.textContent = (data[r][pi].pred!==null && data[r][pi].actual!==null)
+            ? total : '';
+          updateLeaderboard();
+          saveGame();
+        }
+
+        predInp.addEventListener('input', ()=>{
+          const v = predInp.value === '' ? null : parseInt(predInp.value,10);
+          data[r][pi].pred = (v===null || isNaN(v)) ? null : v;
+          refreshScore();
+          if(isEntryComplete(predInp.value, cardsThisRound)) focusNext(predInp);
+        });
+        actInp.addEventListener('input', ()=>{
+          const v = actInp.value === '' ? null : parseInt(actInp.value,10);
+          data[r][pi].actual = (v===null || isNaN(v)) ? null : v;
+          refreshScore();
+          if(isEntryComplete(actInp.value, cardsThisRound)) focusNext(actInp);
+        });
+
+        wrap.appendChild(predInp);
+        wrap.appendChild(actInp);
+        td.appendChild(wrap);
+        td.appendChild(scoreSpan);
+        tr.appendChild(td);
+        refreshScore();
+        allInputs.push(predInp, actInp);
+      });
+
+      scoreBody.appendChild(tr);
+    }
+    updateActiveRound();
+    scoreBody.addEventListener('input', updateActiveRound);
+  }
+
+  function updateActiveRound(){
+    let currentRound = 0;
+    for(let r=0;r<totalRounds;r++){
+      const complete = data[r].every(d => d.pred!==null && d.actual!==null);
+      if(!complete){ currentRound = r; break; }
+      currentRound = r+1;
+    }
+    if(currentRound >= totalRounds) currentRound = totalRounds-1;
+    roundInfo.textContent = 'Stichrunde ' + (currentRound+1) + ' von ' + totalRounds;
+    Array.from(scoreBody.children).forEach((tr,i)=>{
+      tr.classList.toggle('active-round', i===currentRound);
+    });
+  }
+
+  function updateLeaderboard(){
+    leaderboard.innerHTML='';
+    const totals = players.map((p,pi)=>({name:p.name, color:p.color, total: runningTotal(pi, totalRounds-1)}));
+    totals.sort((a,b)=> b.total - a.total);
+    totals.forEach(t=>{
+      const span = document.createElement('span');
+      span.className='player-badge';
+      span.style.background = t.color;
+      span.textContent = t.name + ': ' + t.total;
+      leaderboard.appendChild(span);
+    });
+  }
+})();
+</script>
+</body>
+</html>
