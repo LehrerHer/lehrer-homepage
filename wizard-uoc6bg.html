@@ -81,7 +81,9 @@
     padding:6px 8px; color:var(--ink);
   }
   .name-list{ display:flex; flex-direction:column; gap:8px; margin:10px 0;}
-  .name-list input{ width:100%; }
+  .name-row{ display:flex; gap:6px; align-items:center; }
+  .name-row input{ flex:1; }
+  .name-row .remove-player-btn{ flex-shrink:0; padding:5px 10px; }
   .rune-btn{
     font-family:'Cinzel', serif; font-weight:700; letter-spacing:0.5px;
     background:linear-gradient(180deg, var(--gold-bright), var(--gold));
@@ -148,17 +150,10 @@
 
   <!-- SETUP PANEL -->
   <div class="parchment-panel" id="setupPanel">
-    <div class="setup-row">
-      <label for="playerCount">Anzahl Lehrlinge:</label>
-      <select id="playerCount">
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5" selected>5</option>
-        <option value="6">6</option>
-      </select>
-      <button class="rune-btn small" id="applyCount" type="button">Übernehmen</button>
-    </div>
     <div class="name-list" id="nameList"></div>
+    <div class="btn-row">
+      <button class="rune-btn secondary small" id="addPlayerBtn" type="button">+ Lehrling hinzufügen</button>
+    </div>
     <div class="btn-row">
       <button class="rune-btn" id="startGame" type="button">Spiel beginnen</button>
     </div>
@@ -191,9 +186,11 @@
   const colors = ['#1b3a6b','#1e4d2b','#6b1f1f','#a97a1a','#5a3c8e','#8e5a1e'];
   const STORAGE_KEY = 'wizard-scoreboard-save';
   const roundsByCount = {3:20, 4:15, 5:12, 6:10}; // 60 Karten / Spieleranzahl
+  const MIN_PLAYERS = 3, MAX_PLAYERS = 6;
   let players = [];
   let data = [];
   let totalRounds = 0;
+  let playerSlots = MIN_PLAYERS;
   let storageOK = false;
   try{
     const testKey = '__wizard_test__';
@@ -229,8 +226,7 @@
   const setupPanel = document.getElementById('setupPanel');
   const gamePanel = document.getElementById('gamePanel');
   const nameList = document.getElementById('nameList');
-  const playerCountSel = document.getElementById('playerCount');
-  const applyCountBtn = document.getElementById('applyCount');
+  const addPlayerBtn = document.getElementById('addPlayerBtn');
   const startBtn = document.getElementById('startGame');
   const newGameBtn = document.getElementById('newGameBtn');
   const scoreBody = document.getElementById('scoreBody');
@@ -239,21 +235,39 @@
   const leaderboard = document.getElementById('leaderboard');
 
   function renderNameInputs(){
-    const n = parseInt(playerCountSel.value,10);
     nameList.innerHTML = '';
-    for(let i=0;i<n;i++){
+    for(let i=0;i<playerSlots;i++){
       const wrap = document.createElement('div');
+      wrap.className = 'name-row';
       const inp = document.createElement('input');
       inp.type = 'text';
       inp.placeholder = 'Name Lehrling ' + (i+1);
       inp.value = (players[i] && players[i].name) ? players[i].name : '';
       inp.dataset.idx = i;
       wrap.appendChild(inp);
+      if(playerSlots > MIN_PLAYERS){
+        const rm = document.createElement('button');
+        rm.type = 'button';
+        rm.className = 'rune-btn small secondary remove-player-btn';
+        rm.textContent = '✕';
+        rm.setAttribute('aria-label', 'Lehrling entfernen');
+        rm.addEventListener('click', ()=>{
+          playerSlots--;
+          renderNameInputs();
+        });
+        wrap.appendChild(rm);
+      }
       nameList.appendChild(wrap);
     }
+    addPlayerBtn.disabled = playerSlots >= MAX_PLAYERS;
   }
 
-  applyCountBtn.addEventListener('click', renderNameInputs);
+  addPlayerBtn.addEventListener('click', function(){
+    if(playerSlots < MAX_PLAYERS){
+      playerSlots++;
+      renderNameInputs();
+    }
+  });
   renderNameInputs();
 
   startBtn.addEventListener('click', function(){
@@ -288,7 +302,7 @@
     players = saved.players;
     totalRounds = saved.totalRounds;
     data = saved.data;
-    playerCountSel.value = String(players.length);
+    playerSlots = players.length;
     renderNameInputs();
     buildTableHead();
     buildTableBody();
@@ -361,6 +375,9 @@
       tdRound.textContent = cardsThisRound;
       tr.appendChild(tdRound);
 
+      const rowPredInputs = [];
+      const rowActInputs = [];
+
       players.forEach((p, pi)=>{
         const td = document.createElement('td');
         const wrap = document.createElement('div');
@@ -406,9 +423,11 @@
         td.appendChild(scoreSpan);
         tr.appendChild(td);
         refreshScore();
-        allInputs.push(predInp, actInp);
+        rowPredInputs.push(predInp);
+        rowActInputs.push(actInp);
       });
 
+      allInputs.push(...rowPredInputs, ...rowActInputs);
       scoreBody.appendChild(tr);
     }
     updateActiveRound();
