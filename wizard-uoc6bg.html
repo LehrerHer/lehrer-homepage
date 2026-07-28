@@ -88,7 +88,7 @@
     font-family:'Cinzel', serif; font-weight:700; letter-spacing:0.5px;
     background:linear-gradient(180deg, var(--gold-bright), var(--gold));
     color:#2b1b0e; border:1px solid #6e4a12; border-radius:6px;
-    padding:9px 16px; cursor:pointer;
+    padding:9px 16px; cursor:pointer; touch-action:manipulation;
     box-shadow: 0 3px 0 #5a3c10, 0 5px 8px rgba(0,0,0,0.4);
   }
   .rune-btn:active{ transform:translateY(2px); box-shadow:0 1px 0 #5a3c10; }
@@ -115,7 +115,7 @@
   .round-num{ font-family:'Cinzel',serif; font-weight:700; color:var(--wood); background:rgba(62,36,18,0.12);}
   .cell-inputs{ display:flex; gap:4px; justify-content:center; align-items:center; flex-wrap:nowrap;}
   .cell-inputs input{
-    width:38px; padding:3px 2px; text-align:center; font-size:0.9rem;
+    width:38px; padding:3px 2px; text-align:center; font-size:16px;
   }
   .cell-inputs .lbl{ font-size:0.65rem; color:#6b4a20; }
   .score-total{ font-weight:700; font-size:1rem; }
@@ -360,7 +360,11 @@
     const idx = allInputs.indexOf(input);
     if(idx === -1) return;
     const next = allInputs[idx+1];
-    if(next){ next.focus(); next.select(); }
+    if(next){
+      next.focus();
+      // Firefox wirft bei type="number" einen InvalidStateError für select()
+      try{ next.select(); }catch(e){}
+    }
   }
 
   function buildTableBody(){
