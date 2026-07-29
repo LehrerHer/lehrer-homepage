@@ -25,10 +25,13 @@
   html,body{
     margin:0; padding:0; min-height:100vh;
     background:
+      repeating-linear-gradient(45deg, rgba(217,171,74,0.05) 0 1px, transparent 1px 36px),
+      repeating-linear-gradient(-45deg, rgba(217,171,74,0.05) 0 1px, transparent 1px 36px),
       radial-gradient(ellipse at 20% 0%, rgba(255,220,150,0.08), transparent 60%),
       radial-gradient(ellipse at 80% 100%, rgba(0,0,0,0.4), transparent 60%),
       var(--wood-deep);
     background-color:#1c0f07;
+    background-attachment:fixed;
     font-family:'EB Garamond', serif;
     color:var(--ink);
   }
@@ -45,15 +48,34 @@
     text-shadow: 0 0 10px rgba(217,171,74,0.35), 0 2px 0 #000;
   }
   .subtitle{
-    text-align:center; color:#c9b48a; font-style:italic; margin-bottom:18px;
+    text-align:center; color:#c9b48a; font-style:italic; margin-bottom:10px;
     font-size:0.95rem;
   }
   .seal{
     width:64px;height:64px;margin:0 auto 6px; border-radius:50%;
     background:radial-gradient(circle at 35% 30%, var(--gold-bright), var(--gold) 60%, #7a5316 100%);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.6), inset 0 0 10px rgba(0,0,0,0.4);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.6), inset 0 0 10px rgba(0,0,0,0.4), 0 0 0 4px rgba(217,171,74,0.15);
     display:flex;align-items:center;justify-content:center;
     font-family:'Cinzel Decorative',serif; font-weight:900; color:#3e2412; font-size:1.6rem;
+  }
+
+  /* Die vier Wizard-Fraktionen als kleine Zier-Leiste */
+  .suit-strip{
+    display:flex; justify-content:center; gap:8px; flex-wrap:wrap; margin:0 0 14px;
+  }
+  .suit-chip{
+    font-family:'Cinzel', serif; font-size:0.7rem; font-weight:600; letter-spacing:0.3px;
+    padding:4px 11px; border-radius:20px; color:#f4e9c9; white-space:nowrap;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.15), 0 2px 5px rgba(0,0,0,0.4);
+  }
+  .suit-chip.suit-blue{ background:linear-gradient(180deg,#2c539c,var(--blue)); }
+  .suit-chip.suit-green{ background:linear-gradient(180deg,#2e7a41,var(--green)); }
+  .suit-chip.suit-red{ background:linear-gradient(180deg,#963030,var(--red)); }
+  .suit-chip.suit-yellow{ background:linear-gradient(180deg,#c99a2e,var(--yellow)); color:#2b1b0e; }
+
+  .ornament-divider{
+    text-align:center; color:var(--gold); font-size:1.1rem; letter-spacing:6px;
+    margin:0 0 16px; opacity:0.75;
   }
 
   .parchment-panel{
@@ -70,6 +92,12 @@
   .parchment-panel::before{
     content:""; position:absolute; inset:6px; border:1px solid rgba(62,36,18,0.35);
     border-radius:5px; pointer-events:none;
+  }
+  .parchment-panel::after{
+    content:""; position:absolute; top:0; right:0; width:22px; height:22px;
+    background:linear-gradient(135deg, transparent 50%, rgba(62,36,18,0.28) 51%);
+    border-radius:0 6px 0 8px;
+    pointer-events:none;
   }
 
   /* SETUP */
@@ -147,6 +175,13 @@
   <div class="seal">W</div>
   <h1>Der Block der Wahrheit</h1>
   <div class="subtitle">Punkteblock für Wizard — geführt vom Vertrauten der Lehrlinge</div>
+  <div class="suit-strip">
+    <span class="suit-chip suit-blue">🧑 Menschen</span>
+    <span class="suit-chip suit-green">🧝 Elfen</span>
+    <span class="suit-chip suit-red">⛏️ Zwerge</span>
+    <span class="suit-chip suit-yellow">🏔️ Riesen</span>
+  </div>
+  <div class="ornament-divider" aria-hidden="true">✦ ❦ ✦</div>
 
   <!-- SETUP PANEL -->
   <div class="parchment-panel" id="setupPanel">
@@ -168,9 +203,8 @@
     <div style="overflow-x:auto;">
       <table id="scoreTable">
         <thead>
-          <tr>
+          <tr id="playersHeadTr">
             <th>Runde</th>
-            <th id="playersHeadRow" colspan="1"></th>
           </tr>
         </thead>
         <tbody id="scoreBody"></tbody>
@@ -230,7 +264,7 @@
   const startBtn = document.getElementById('startGame');
   const newGameBtn = document.getElementById('newGameBtn');
   const scoreBody = document.getElementById('scoreBody');
-  const playersHeadRow = document.getElementById('playersHeadRow');
+  const playersHeadTr = document.getElementById('playersHeadTr');
   const roundInfo = document.getElementById('roundInfo');
   const leaderboard = document.getElementById('leaderboard');
 
@@ -317,15 +351,12 @@
   }
 
   function buildTableHead(){
-    playersHeadRow.colSpan = players.length;
-    playersHeadRow.innerHTML = '';
-    const tr = playersHeadRow.parentElement;
-    tr.innerHTML = '<th>Runde</th>';
+    playersHeadTr.innerHTML = '<th>Runde</th>';
     players.forEach(p=>{
       const th = document.createElement('th');
       th.style.background = p.color;
       th.innerHTML = p.name + '<span>V · S · Pkt</span>';
-      tr.appendChild(th);
+      playersHeadTr.appendChild(th);
     });
   }
 
@@ -454,13 +485,14 @@
 
   function updateLeaderboard(){
     leaderboard.innerHTML='';
+    const medals = ['🥇','🥈','🥉'];
     const totals = players.map((p,pi)=>({name:p.name, color:p.color, total: runningTotal(pi, totalRounds-1)}));
     totals.sort((a,b)=> b.total - a.total);
-    totals.forEach(t=>{
+    totals.forEach((t,i)=>{
       const span = document.createElement('span');
       span.className='player-badge';
       span.style.background = t.color;
-      span.textContent = t.name + ': ' + t.total;
+      span.textContent = (medals[i] ? medals[i] + ' ' : '') + t.name + ': ' + t.total;
       leaderboard.appendChild(span);
     });
   }
