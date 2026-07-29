@@ -217,6 +217,21 @@
 
 <script>
 (function(){
+  function showFatalError(err){
+    console.error(err);
+    let banner = document.getElementById('fatalErrorBanner');
+    if(!banner){
+      banner = document.createElement('div');
+      banner.id = 'fatalErrorBanner';
+      banner.style.cssText = 'position:fixed;top:0;left:0;right:0;background:#6b1f1f;color:#fff;'
+        + 'padding:10px 14px;font-family:sans-serif;font-size:0.85rem;z-index:9999;text-align:center;';
+      document.body.prepend(banner);
+    }
+    const msg = (err && err.message) ? err.message : String(err);
+    banner.textContent = 'Es ist ein Fehler aufgetreten: ' + msg + ' — bitte einen Screenshot davon senden.';
+  }
+  window.addEventListener('error', function(e){ showFatalError(e.error || e.message); });
+
   const colors = ['#1b3a6b','#1e4d2b','#6b1f1f','#a97a1a','#5a3c8e','#8e5a1e'];
   const STORAGE_KEY = 'wizard-scoreboard-save';
   const roundsByCount = {3:20, 4:15, 5:12, 6:10}; // 60 Karten / Spieleranzahl
@@ -225,6 +240,7 @@
   let data = [];
   let totalRounds = 0;
   let playerSlots = MIN_PLAYERS;
+  let allInputs = []; // flache Liste aller Zahlenfelder in Reihenfolge, für Auto-Sprung
   let storageOK = false;
   try{
     const testKey = '__wizard_test__';
@@ -347,7 +363,18 @@
 
   const saved = loadSavedGame();
   if(saved && saved.players && saved.players.length && saved.data && saved.data.length){
-    restoreGame(saved);
+    try{
+      restoreGame(saved);
+    }catch(err){
+      // Beschädigter/inkompatibler Spielstand: nicht in der Eingabe hängen bleiben,
+      // sondern gespeicherten Stand verwerfen und frisch starten.
+      showFatalError(err);
+      clearSave();
+      players = []; data = []; totalRounds = 0; playerSlots = MIN_PLAYERS;
+      setupPanel.classList.remove('hidden');
+      gamePanel.classList.add('hidden');
+      renderNameInputs();
+    }
   }
 
   function buildTableHead(){
@@ -374,8 +401,6 @@
     }
     return total;
   }
-
-  let allInputs = []; // flache Liste aller Zahlenfelder in Reihenfolge, für Auto-Sprung
 
   function isEntryComplete(value, max){
     if(value === '' || value === null) return false;
