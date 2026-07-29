@@ -146,9 +146,23 @@
     width:38px; padding:3px 2px; text-align:center; font-size:16px;
   }
   .cell-inputs .lbl{ font-size:0.65rem; color:#6b4a20; }
+  .cell-inputs input.invalid{
+    border-color:#8a1f1f; background:#f8dede;
+    box-shadow:0 0 0 2px rgba(138,31,31,0.35);
+  }
   .score-total{ font-weight:700; font-size:1rem; }
   .active-round td{ background:rgba(217,171,74,0.18) !important; }
   .locked td.round-num{ color:#8a7350; }
+
+  .dealer-cell{ background:rgba(184,137,43,0.18); }
+  .dealer-tag{
+    display:block; font-size:0.6rem; font-weight:700; color:var(--wood);
+    letter-spacing:0.4px; text-transform:uppercase; margin-bottom:2px;
+  }
+  .forbidden-hint{
+    display:block; font-size:0.62rem; font-weight:700; color:#8a1f1f;
+    margin-top:2px; min-height:0.9em;
+  }
 
   .players-head span{ display:block; font-size:0.75rem; font-weight:400; opacity:0.85; }
 
@@ -211,7 +225,7 @@
       </table>
     </div>
     <div class="leaderboard" id="leaderboard"></div>
-    <div class="footer-note">Vorhersage (V) tippen, nach dem letzten Stich das Ergebnis (S) eintragen — der Rest rechnet sich von selbst.</div>
+    <div class="footer-note">Vorhersage (V) tippen, nach dem letzten Stich das Ergebnis (S) eintragen — der Rest rechnet sich von selbst. Der Geber (goldene Spalte) tippt zuletzt und darf die angezeigte Zahl nicht sagen.</div>
   </div>
 </div>
 
@@ -430,16 +444,53 @@
       const tr = document.createElement('tr');
       tr.dataset.round = r;
       const cardsThisRound = r+1;
+      // Geber rotiert jede Runde; die Vorhersage beginnt links vom Geber,
+      // der Geber selbst tippt immer als Letzter.
+      const dealerIdx = r % players.length;
       const tdRound = document.createElement('td');
       tdRound.className = 'round-num';
       tdRound.textContent = cardsThisRound;
       tr.appendChild(tdRound);
 
-      const rowPredInputs = [];
+      const predInputsByIdx = [];
       const rowActInputs = [];
+      const refreshScoreByIdx = [];
+      let dealerHintEl = null;
+
+      // Verbotszahl-Regel: die Summe aller Vorhersagen darf nicht der
+      // Kartenzahl der Runde entsprechen -- bindend fuer den, der zuletzt
+      // tippt (den Geber). Zeigt an, was der Geber nicht tippen darf, und
+      // macht eine verbotene Eingabe ungueltig.
+      function refreshDealerConstraint(){
+        let sumOthers = 0;
+        let allOthersFilled = true;
+        players.forEach((p, pi)=>{
+          if(pi === dealerIdx) return;
+          const v = data[r][pi].pred;
+          if(v === null) allOthersFilled = false;
+          else sumOthers += v;
+        });
+        const forbidden = cardsThisRound - sumOthers;
+        const forbiddenActive = allOthersFilled && forbidden >= 0 && forbidden <= cardsThisRound;
+        if(dealerHintEl){
+          dealerHintEl.textContent = forbiddenActive ? ('nicht ' + forbidden) : '';
+        }
+        let dealerOk = true;
+        const dv = data[r][dealerIdx].pred;
+        if(dv !== null && forbiddenActive && dv === forbidden){
+          dealerOk = false;
+          data[r][dealerIdx].pred = null;
+        }
+        const dealerInput = predInputsByIdx[dealerIdx];
+        if(dealerInput) dealerInput.classList.toggle('invalid', !dealerOk);
+        if(refreshScoreByIdx[dealerIdx]) refreshScoreByIdx[dealerIdx]();
+        return dealerOk;
+      }
 
       players.forEach((p, pi)=>{
         const td = document.createElement('td');
+        const isDealer = pi === dealerIdx;
+        if(isDealer) td.classList.add('dealer-cell');
         const wrap = document.createElement('div');
         wrap.className = 'cell-inputs';
 
@@ -463,31 +514,61 @@
           updateLeaderboard();
           saveGame();
         }
+        refreshScoreByIdx[pi] = refreshScore;
 
         predInp.addEventListener('input', ()=>{
-          const v = predInp.value === '' ? null : parseInt(predInp.value,10);
-          data[r][pi].pred = (v===null || isNaN(v)) ? null : v;
+          const raw = predInp.value;
+          const v = raw === '' ? null : parseInt(raw,10);
+          const rangeOk = v===null || (!isNaN(v) && v>=0 && v<=cardsThisRound);
+          data[r][pi].pred = rangeOk ? v : null;
+          predInp.classList.toggle('invalid', v!==null && !rangeOk);
           refreshScore();
-          if(isEntryComplete(predInp.value, cardsThisRound)) focusNext(predInp);
+          const dealerOk = refreshDealerConstraint();
+          const blockedByDealerRule = isDealer && !dealerOk;
+          if(rangeOk && !blockedByDealerRule && isEntryComplete(raw, cardsThisRound)) focusNext(predInp);
         });
         actInp.addEventListener('input', ()=>{
-          const v = actInp.value === '' ? null : parseInt(actInp.value,10);
-          data[r][pi].actual = (v===null || isNaN(v)) ? null : v;
+          const raw = actInp.value;
+          const v = raw === '' ? null : parseInt(raw,10);
+          const rangeOk = v===null || (!isNaN(v) && v>=0 && v<=cardsThisRound);
+          data[r][pi].actual = rangeOk ? v : null;
+          actInp.classList.toggle('invalid', v!==null && !rangeOk);
           refreshScore();
-          if(isEntryComplete(actInp.value, cardsThisRound)) focusNext(actInp);
+          if(rangeOk && isEntryComplete(raw, cardsThisRound)) focusNext(actInp);
         });
+
+        if(isDealer){
+          const dealerTag = document.createElement('span');
+          dealerTag.className = 'dealer-tag';
+          dealerTag.textContent = 'Geber';
+          td.appendChild(dealerTag);
+        }
 
         wrap.appendChild(predInp);
         wrap.appendChild(actInp);
         td.appendChild(wrap);
+
+        if(isDealer){
+          dealerHintEl = document.createElement('span');
+          dealerHintEl.className = 'forbidden-hint';
+          td.appendChild(dealerHintEl);
+        }
+
         td.appendChild(scoreSpan);
         tr.appendChild(td);
         refreshScore();
-        rowPredInputs.push(predInp);
+        predInputsByIdx[pi] = predInp;
         rowActInputs.push(actInp);
       });
 
-      allInputs.push(...rowPredInputs, ...rowActInputs);
+      refreshDealerConstraint();
+
+      const rowPredInputsRotated = [];
+      for(let i=1;i<=players.length;i++){
+        rowPredInputsRotated.push(predInputsByIdx[(dealerIdx + i) % players.length]);
+      }
+
+      allInputs.push(...rowPredInputsRotated, ...rowActInputs);
       scoreBody.appendChild(tr);
     }
     updateActiveRound();
