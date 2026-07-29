@@ -447,6 +447,19 @@
   function buildTableBody(){
     scoreBody.innerHTML = '';
     allInputs = [];
+    const predInputsByRow = [];
+    const dealerIdxByRow = [];
+
+    // Sind alle Felder einer Runde ausgefuellt, springt der Cursor ins
+    // Vorhersage-Feld des Gebers der naechsten Runde (statt in Spalte 0).
+    function focusNextRoundDealer(r){
+      const nextRow = r + 1;
+      if(nextRow >= totalRounds) return;
+      const nextDealerIdx = dealerIdxByRow[nextRow];
+      const nextInp = predInputsByRow[nextRow] && predInputsByRow[nextRow][nextDealerIdx];
+      if(nextInp) focusInput(nextInp);
+    }
+
     for(let r=0;r<totalRounds;r++){
       const tr = document.createElement('tr');
       tr.dataset.round = r;
@@ -554,7 +567,7 @@
             else{
               const firstEmptyAct = nextEmptyCol(-1, 'actual');
               if(firstEmptyAct !== -1) focusInput(actInputsByIdx[firstEmptyAct]);
-              else focusNext(predInp);
+              else focusNextRoundDealer(r);
             }
           }
         });
@@ -568,7 +581,7 @@
           if(rangeOk && isEntryComplete(raw, cardsThisRound)){
             const nextCol = nextEmptyCol(pi, 'actual');
             if(nextCol !== -1) focusInput(actInputsByIdx[nextCol]);
-            else focusNext(actInp);
+            else focusNextRoundDealer(r);
           }
         });
 
@@ -597,8 +610,11 @@
 
       refreshLastBidderConstraint(-1);
 
-      // Fallback-Reihenfolge fuer den Sprung zur naechsten Runde, wenn
-      // diese Runde bereits vollstaendig ausgefuellt ist.
+      predInputsByRow[r] = predInputsByIdx;
+      dealerIdxByRow[r] = dealerIdx;
+
+      // Fallback-Reihenfolge fuer den Sprung zur naechsten Runde, falls
+      // kein Geber-Feld der naechsten Runde ermittelt werden kann.
       allInputs.push(...predInputsByIdx, ...actInputsByIdx);
       scoreBody.appendChild(tr);
     }
