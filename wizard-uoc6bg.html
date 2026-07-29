@@ -431,15 +431,17 @@
     return false;
   }
 
+  function focusInput(el){
+    if(!el) return;
+    el.focus();
+    // Firefox wirft bei type="number" einen InvalidStateError für select()
+    try{ el.select(); }catch(e){}
+  }
+
   function focusNext(input){
     const idx = allInputs.indexOf(input);
     if(idx === -1) return;
-    const next = allInputs[idx+1];
-    if(next){
-      next.focus();
-      // Firefox wirft bei type="number" einen InvalidStateError für select()
-      try{ next.select(); }catch(e){}
-    }
+    focusInput(allInputs[idx+1]);
   }
 
   function buildTableBody(){
@@ -449,8 +451,7 @@
       const tr = document.createElement('tr');
       tr.dataset.round = r;
       const cardsThisRound = r+1;
-      // Geber rotiert jede Runde; die Vorhersage beginnt links vom Geber,
-      // der Geber selbst tippt immer als Letzter.
+      // Geber rotiert jede Runde (nur zur Anzeige/Info, keine erzwungene Reihenfolge).
       const dealerIdx = r % players.length;
       const tdRound = document.createElement('td');
       tdRound.className = 'round-num';
@@ -458,38 +459,55 @@
       tr.appendChild(tdRound);
 
       const predInputsByIdx = [];
-      const rowActInputs = [];
+      const actInputsByIdx = [];
+      const hintElByIdx = [];
       const refreshScoreByIdx = [];
-      let dealerHintEl = null;
 
-      // Verbotszahl-Regel: die Summe aller Vorhersagen darf nicht der
-      // Kartenzahl der Runde entsprechen -- bindend fuer den, der zuletzt
-      // tippt (den Geber). Zeigt an, was der Geber nicht tippen darf, und
-      // macht eine verbotene Eingabe ungueltig.
-      function refreshDealerConstraint(){
-        let sumOthers = 0;
-        let allOthersFilled = true;
+      // Naechstes noch leeres Feld dieser Runde suchen, im Kreis ab der
+      // gerade bearbeiteten Spalte -- so landet der Cursor immer im
+      // naechsten offenen Feld, egal bei welcher Spalte man zu tippen
+      // beginnt (z.B. nicht zwingend bei Spalte 0).
+      function nextEmptyCol(fromCol, kind){
+        for(let step=1; step<=players.length; step++){
+          const c = (fromCol + step) % players.length;
+          if(data[r][c][kind] === null) return c;
+        }
+        return -1;
+      }
+
+      // Verbotszahl-Regel: Die Summe aller Vorhersagen darf nicht der
+      // Kartenzahl der Runde entsprechen. Das betrifft immer nur den
+      // Lehrling, der als Letzter noch keinen Tipp abgegeben hat --
+      // sobald genau einer offen ist, zeigt dessen Kaestchen die
+      // verbotene Zahl. Wird sie trotzdem eingetippt, wird sie verworfen.
+      function refreshLastBidderConstraint(editedPi){
+        const emptyCols = [];
+        let sumFilled = 0;
         players.forEach((p, pi)=>{
-          if(pi === dealerIdx) return;
           const v = data[r][pi].pred;
-          if(v === null) allOthersFilled = false;
-          else sumOthers += v;
+          if(v === null) emptyCols.push(pi); else sumFilled += v;
         });
-        const forbidden = cardsThisRound - sumOthers;
-        const forbiddenActive = allOthersFilled && forbidden >= 0 && forbidden <= cardsThisRound;
-        if(dealerHintEl){
-          dealerHintEl.textContent = forbiddenActive ? ('nicht ' + forbidden) : '';
+
+        hintElByIdx.forEach(el => { if(el) el.textContent=''; });
+
+        if(emptyCols.length === 1){
+          const forbidden = cardsThisRound - sumFilled;
+          const onlyCol = emptyCols[0];
+          if(forbidden >= 0 && forbidden <= cardsThisRound && hintElByIdx[onlyCol]){
+            hintElByIdx[onlyCol].textContent = 'nicht ' + forbidden;
+          }
+          return true;
         }
-        let dealerOk = true;
-        const dv = data[r][dealerIdx].pred;
-        if(dv !== null && forbiddenActive && dv === forbidden){
-          dealerOk = false;
-          data[r][dealerIdx].pred = null;
+
+        if(editedPi >= 0 && emptyCols.length === 0 && sumFilled === cardsThisRound){
+          // Regelverstoss: Summe aller Vorhersagen entspricht der Kartenzahl.
+          data[r][editedPi].pred = null;
+          if(predInputsByIdx[editedPi]) predInputsByIdx[editedPi].classList.add('invalid');
+          if(refreshScoreByIdx[editedPi]) refreshScoreByIdx[editedPi]();
+          return false;
         }
-        const dealerInput = predInputsByIdx[dealerIdx];
-        if(dealerInput) dealerInput.classList.toggle('invalid', !dealerOk);
-        if(refreshScoreByIdx[dealerIdx]) refreshScoreByIdx[dealerIdx]();
-        return dealerOk;
+
+        return true;
       }
 
       players.forEach((p, pi)=>{
@@ -528,9 +546,17 @@
           data[r][pi].pred = rangeOk ? v : null;
           predInp.classList.toggle('invalid', v!==null && !rangeOk);
           refreshScore();
-          const dealerOk = refreshDealerConstraint();
-          const blockedByDealerRule = isDealer && !dealerOk;
-          if(rangeOk && !blockedByDealerRule && isEntryComplete(raw, cardsThisRound)) focusNext(predInp);
+          const sumRuleOk = rangeOk ? refreshLastBidderConstraint(pi) : true;
+          if(!rangeOk || !sumRuleOk){ refreshScore(); return; }
+          if(isEntryComplete(raw, cardsThisRound)){
+            const nextCol = nextEmptyCol(pi, 'pred');
+            if(nextCol !== -1) focusInput(predInputsByIdx[nextCol]);
+            else{
+              const firstEmptyAct = nextEmptyCol(-1, 'actual');
+              if(firstEmptyAct !== -1) focusInput(actInputsByIdx[firstEmptyAct]);
+              else focusNext(predInp);
+            }
+          }
         });
         actInp.addEventListener('input', ()=>{
           const raw = actInp.value;
@@ -539,7 +565,11 @@
           data[r][pi].actual = rangeOk ? v : null;
           actInp.classList.toggle('invalid', v!==null && !rangeOk);
           refreshScore();
-          if(rangeOk && isEntryComplete(raw, cardsThisRound)) focusNext(actInp);
+          if(rangeOk && isEntryComplete(raw, cardsThisRound)){
+            const nextCol = nextEmptyCol(pi, 'actual');
+            if(nextCol !== -1) focusInput(actInputsByIdx[nextCol]);
+            else focusNext(actInp);
+          }
         });
 
         if(isDealer){
@@ -553,25 +583,23 @@
         wrap.appendChild(actInp);
         td.appendChild(wrap);
 
-        if(isDealer){
-          dealerHintEl = document.createElement('span');
-          dealerHintEl.className = 'forbidden-hint';
-          td.appendChild(dealerHintEl);
-        }
+        const hintEl = document.createElement('span');
+        hintEl.className = 'forbidden-hint';
+        td.appendChild(hintEl);
+        hintElByIdx[pi] = hintEl;
 
         td.appendChild(scoreSpan);
         tr.appendChild(td);
         refreshScore();
         predInputsByIdx[pi] = predInp;
-        rowActInputs.push(actInp);
+        actInputsByIdx[pi] = actInp;
       });
 
-      refreshDealerConstraint();
+      refreshLastBidderConstraint(-1);
 
-      // Cursor springt beim Tippen immer strikt nach rechts zum naechsten
-      // Lehrling (Spaltenreihenfolge) -- die Geber-/Verbotszahl-Regel oben
-      // gilt unabhaengig davon, in welcher Reihenfolge getippt wird.
-      allInputs.push(...predInputsByIdx, ...rowActInputs);
+      // Fallback-Reihenfolge fuer den Sprung zur naechsten Runde, wenn
+      // diese Runde bereits vollstaendig ausgefuellt ist.
+      allInputs.push(...predInputsByIdx, ...actInputsByIdx);
       scoreBody.appendChild(tr);
     }
     updateActiveRound();
