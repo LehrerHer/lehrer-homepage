@@ -299,6 +299,9 @@
   const leaderboard = document.getElementById('leaderboard');
 
   function renderNameInputs(){
+    // Bereits getippte Namen sichern, bevor die Felder neu aufgebaut werden
+    // (z.B. beim Hinzufuegen/Entfernen eines Lehrlings) -- sonst gehen sie verloren.
+    const existingValues = Array.from(nameList.querySelectorAll('input')).map(inp => inp.value);
     nameList.innerHTML = '';
     for(let i=0;i<playerSlots;i++){
       const wrap = document.createElement('div');
@@ -306,7 +309,9 @@
       const inp = document.createElement('input');
       inp.type = 'text';
       inp.placeholder = 'Name Lehrling ' + (i+1);
-      inp.value = (players[i] && players[i].name) ? players[i].name : '';
+      inp.value = existingValues[i] !== undefined
+        ? existingValues[i]
+        : ((players[i] && players[i].name) ? players[i].name : '');
       inp.dataset.idx = i;
       wrap.appendChild(inp);
       if(playerSlots > MIN_PLAYERS){
@@ -563,12 +568,10 @@
 
       refreshDealerConstraint();
 
-      const rowPredInputsRotated = [];
-      for(let i=1;i<=players.length;i++){
-        rowPredInputsRotated.push(predInputsByIdx[(dealerIdx + i) % players.length]);
-      }
-
-      allInputs.push(...rowPredInputsRotated, ...rowActInputs);
+      // Cursor springt beim Tippen immer strikt nach rechts zum naechsten
+      // Lehrling (Spaltenreihenfolge) -- die Geber-/Verbotszahl-Regel oben
+      // gilt unabhaengig davon, in welcher Reihenfolge getippt wird.
+      allInputs.push(...predInputsByIdx, ...rowActInputs);
       scoreBody.appendChild(tr);
     }
     updateActiveRound();
