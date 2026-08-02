@@ -76,7 +76,6 @@
     }
     .btn-challenge:hover  { transform: translateY(-1px); }
     .btn-challenge:disabled { opacity: .45; cursor: default; transform: none; }
-    .btn-challenge.gesendet { background: var(--c3); }
 
     @media (max-width: 600px) {
       .rangliste-table th:nth-child(3),
@@ -140,6 +139,7 @@
     <div class="page-header">
       <h1>🏆 Gladiatorenrangliste</h1>
       <p>Die stärksten Gladiatoren im Kolosseum</p>
+      <p id="angriffe-hinweis" style="font-weight:700;color:var(--c1);margin-top:.5rem"></p>
     </div>
 
     <div class="card rangliste-wrap">
@@ -184,21 +184,25 @@
         if (!meRes.ok) { window.location.href = '/login.html'; return; }
         const me = await meRes.json();
 
-        const [ranglRes, challengeRes] = await Promise.all([
+        const [ranglRes, uebersichtRes] = await Promise.all([
           fetch('/api/students/rangliste'),
-          fetch('/api/arena/herausforderungen'),
+          fetch('/api/arena/uebersicht'),
         ]);
         if (!ranglRes.ok) return;
         const students = await ranglRes.json();
 
-        // Pending-Status der eigenen Herausforderungen vorausladen
-        var pendingGegnerIds = new Set();
-        var limitReached = false;
-        if (challengeRes.ok) {
-          const cd = await challengeRes.json();
-          const pendingOut = cd.ausgehend.filter(c => c.status === 'pending');
-          pendingOut.forEach(c => pendingGegnerIds.add(c.an_id));
-          limitReached = pendingOut.length >= 3;
+        var angriffeUebrig = 4;
+        if (uebersichtRes.ok) {
+          const ud = await uebersichtRes.json();
+          angriffeUebrig = ud.angriffeUebrig;
+        }
+        var limitReached = angriffeUebrig <= 0;
+
+        const hinweis = document.getElementById('angriffe-hinweis');
+        if (hinweis) {
+          hinweis.textContent = limitReached
+            ? 'Du hast dein Tageslimit von 4 Angriffen erreicht – morgen geht’s weiter!'
+            : `Noch ${angriffeUebrig} von 4 Angriffen heute übrig.`;
         }
 
         const tbody = document.getElementById('rangliste-body');
@@ -223,12 +227,10 @@
           var challengeBtn;
           if (isMe) {
             challengeBtn = '<td></td>';
-          } else if (pendingGegnerIds.has(s.id)) {
-            challengeBtn = `<td style="text-align:right"><button class="btn-challenge gesendet" disabled>⏳ Ausstehend</button></td>`;
           } else if (limitReached) {
-            challengeBtn = `<td style="text-align:right"><button class="btn-challenge" disabled title="Du hast bereits 3 offene Herausforderungen">🔒 Limit</button></td>`;
+            challengeBtn = `<td style="text-align:right"><button class="btn-challenge" disabled title="Tageslimit erreicht">🔒 Limit</button></td>`;
           } else {
-            challengeBtn = `<td style="text-align:right"><button class="btn-challenge" data-id="${s.id}" data-nick="${escHtml(s.nick)}">⚔️ Herausfordern</button></td>`;
+            challengeBtn = `<td style="text-align:right"><button class="btn-challenge" data-id="${s.id}" data-nick="${escHtml(s.nick)}">⚔️ Angreifen</button></td>`;
           }
 
           return `
@@ -243,27 +245,19 @@
           `;
         }).join('');
 
-        // Challenge-Buttons verknüpfen (nur aktive)
+        // Angriff-Buttons verknüpfen (nur aktive) – Kampf wird sofort berechnet
         tbody.querySelectorAll('.btn-challenge:not([disabled])').forEach(btn => {
           btn.addEventListener('click', async () => {
             btn.disabled = true;
-            btn.textContent = '⏳';
+            btn.textContent = '⚔️ …';
             const r = await fetch('/api/arena/herausforderung', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ gegnerId: Number(btn.dataset.id) }),
             });
             if (r.ok) {
-              btn.textContent = '✅ Gesendet!';
-              btn.classList.add('gesendet');
-              // Alle anderen aktiven Buttons auf "Limit" setzen wenn jetzt 3 erreicht
-              pendingGegnerIds.add(Number(btn.dataset.id));
-              if (pendingGegnerIds.size >= 3) {
-                tbody.querySelectorAll('.btn-challenge:not([disabled])').forEach(b => {
-                  b.disabled = true;
-                  b.textContent = '🔒 Limit';
-                });
-              }
+              const { kampfId } = await r.json();
+              window.location.href = `/kampf.html?id=${kampfId}`;
             } else {
               const err = await r.json().catch(() => ({}));
               btn.textContent = '⚠️ ' + (err.error || 'Fehler');

@@ -159,8 +159,6 @@
       transition: transform var(--transition), opacity var(--transition);
     }
     .ch-btn:hover { transform: translateY(-1px); }
-    .ch-btn-annehmen { background: var(--c3); color: #fff; }
-    .ch-btn-ablehnen { background: rgba(0,0,0,.08); color: var(--ink-soft); }
     .ch-btn-replay   { background: var(--c4); color: #fff; text-decoration: none;
                        display: inline-flex; align-items: center; }
     .ch-status-badge {
@@ -169,15 +167,7 @@
     }
     .ch-status-badge.gewonnen { background: rgba(78,205,196,.18); color: #0d9488; }
     .ch-status-badge.verloren { background: rgba(255,107,107,.15); color: #b91c1c; }
-    .ch-status-badge.pending  { background: rgba(163,139,250,.18); color: #7c3aed; }
     .ch-leer { color: var(--ink-soft); font-size: .9rem; text-align: center; padding: .75rem; }
-    .challenge-count-badge {
-      display: inline-flex; align-items: center; justify-content: center;
-      background: var(--c1); color: #fff;
-      border-radius: 50%; width: 20px; height: 20px;
-      font-size: .72rem; font-weight: 800;
-      margin-left: .35rem; vertical-align: middle;
-    }
 
     /* === XP-POTENZIAL === */
     .xpp-filter {
@@ -353,32 +343,10 @@
           </div>
         </div>
 
-        <!-- Herausforderungen -->
+        <!-- Kämpfe -->
         <div class="card" id="herausforderungen-card">
-          <h2 style="font-size:1.3rem; margin-bottom:1rem;">
-            ⚔️ Herausforderungen
-            <span class="challenge-count-badge" id="challenge-badge" style="display:none">!</span>
-          </h2>
-
-          <!-- Eingehende -->
-          <div style="margin-bottom:1rem">
-            <div style="font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:.5rem">
-              Eingehend
-            </div>
-            <div class="challenge-list" id="challenges-eingehend">
-              <div class="ch-leer">Wird geladen…</div>
-            </div>
-          </div>
-
-          <!-- Ausgehende (pending) -->
-          <div style="margin-bottom:1rem" id="challenges-ausgehend-wrap">
-            <div style="font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:.5rem">
-              Ausgehend
-            </div>
-            <div class="challenge-list" id="challenges-ausgehend">
-              <div class="ch-leer">Wird geladen…</div>
-            </div>
-          </div>
+          <h2 style="font-size:1.3rem; margin-bottom:.35rem;">⚔️ Kämpfe</h2>
+          <div class="text-soft" id="angriffe-status" style="font-size:.85rem;margin-bottom:1rem">Wird geladen…</div>
 
           <!-- Letzte Kämpfe -->
           <div>
@@ -392,7 +360,7 @@
 
           <div style="margin-top:1rem;text-align:right">
             <a href="/rangliste.html" class="btn btn-primary" style="font-size:.85rem;padding:.55rem 1.2rem">
-              ⚔️ Jetzt herausfordern →
+              ⚔️ Jetzt angreifen →
             </a>
           </div>
         </div>
@@ -556,106 +524,15 @@
     }
 
     async function ladeHerausforderungen(meinId) {
-      const res = await fetch('/api/arena/herausforderungen');
+      const res = await fetch('/api/arena/uebersicht');
       if (!res.ok) return;
-      const { eingehend, ausgehend, meineKaempfe } = await res.json();
+      const { angriffeUebrig, maxAngriffeProTag, meineKaempfe } = await res.json();
 
-      // Badge
-      const badge = document.getElementById('challenge-badge');
-      if (eingehend.length > 0) {
-        badge.textContent = eingehend.length;
-        badge.style.display = '';
-      } else {
-        badge.style.display = 'none';
-      }
-
-      // Ausgehende (pending) Herausforderungen
-      const pendingAusgehend = ausgehend.filter(c => c.status === 'pending');
-      const ausEl = document.getElementById('challenges-ausgehend');
-      const ausWrap = document.getElementById('challenges-ausgehend-wrap');
-      if (!pendingAusgehend.length) {
-        ausWrap.style.display = 'none';
-      } else {
-        ausWrap.style.display = '';
-        ausEl.innerHTML = pendingAusgehend.map(c => `
-          <div class="challenge-item" id="ch-aus-item-${c.id}">
-            <div class="ch-info">
-              <div class="ch-nick">⚔️ ${escHtml(c.an_nick)}</div>
-              <div class="ch-xp">Wartet auf Annahme…</div>
-            </div>
-            <div class="ch-btns">
-              <span class="ch-status-badge pending">⏳ Ausstehend</span>
-              <button class="ch-btn ch-btn-ablehnen" data-id="${c.id}">↩ Zurückziehen</button>
-            </div>
-          </div>
-        `).join('');
-
-        ausEl.querySelectorAll('.ch-btn-ablehnen').forEach(btn => {
-          btn.addEventListener('click', async () => {
-            btn.disabled = true;
-            const r = await fetch(`/api/arena/herausforderung/${btn.dataset.id}/zurueckziehen`, { method: 'POST' });
-            if (r.ok) {
-              const item = document.getElementById(`ch-aus-item-${btn.dataset.id}`);
-              if (item) item.remove();
-              if (!ausEl.querySelector('.challenge-item')) {
-                ausWrap.style.display = 'none';
-              }
-            } else {
-              btn.disabled = false;
-            }
-          });
-        });
-      }
-
-      // Eingehende Herausforderungen
-      const einEl = document.getElementById('challenges-eingehend');
-      if (!eingehend.length) {
-        einEl.innerHTML = '<div class="ch-leer">Keine offenen Herausforderungen.</div>';
-      } else {
-        einEl.innerHTML = eingehend.map(c => `
-          <div class="challenge-item" id="ch-item-${c.id}">
-            <div class="ch-info">
-              <div class="ch-nick">⚔️ ${escHtml(c.von_nick)}</div>
-              <div class="ch-xp">${c.von_xp} XP · fordert dich heraus!</div>
-            </div>
-            <div class="ch-btns">
-              <button class="ch-btn ch-btn-annehmen" data-id="${c.id}">✅ Annehmen</button>
-              <button class="ch-btn ch-btn-ablehnen" data-id="${c.id}">❌</button>
-            </div>
-          </div>
-        `).join('');
-
-        einEl.querySelectorAll('.ch-btn-annehmen').forEach(btn => {
-          btn.addEventListener('click', async () => {
-            btn.disabled = true;
-            btn.textContent = '⏳';
-            const r = await fetch(`/api/arena/herausforderung/${btn.dataset.id}/annehmen`, { method: 'POST' });
-            if (r.ok) {
-              const { kampfId } = await r.json();
-              window.location.href = `/kampf.html?id=${kampfId}`;
-            } else {
-              btn.textContent = '✅ Annehmen';
-              btn.disabled = false;
-            }
-          });
-        });
-
-        einEl.querySelectorAll('.ch-btn-ablehnen').forEach(btn => {
-          btn.addEventListener('click', async () => {
-            btn.disabled = true;
-            const r = await fetch(`/api/arena/herausforderung/${btn.dataset.id}/ablehnen`, { method: 'POST' });
-            if (r.ok) {
-              const item = document.getElementById(`ch-item-${btn.dataset.id}`);
-              if (item) item.remove();
-              if (!einEl.querySelector('.challenge-item')) {
-                einEl.innerHTML = '<div class="ch-leer">Keine offenen Herausforderungen.</div>';
-              }
-            } else {
-              btn.disabled = false;
-            }
-          });
-        });
-      }
+      // Tageslimit-Status
+      const statusEl = document.getElementById('angriffe-status');
+      statusEl.textContent = angriffeUebrig > 0
+        ? `Noch ${angriffeUebrig} von ${maxAngriffeProTag} Angriffen heute übrig.`
+        : `Tageslimit erreicht – morgen geht's weiter!`;
 
       // Letzte Kämpfe
       const kaempfeEl = document.getElementById('challenges-kaempfe');

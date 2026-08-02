@@ -70,7 +70,8 @@ CREATE TABLE IF NOT EXISTS quiz_results (
   FOREIGN KEY (quiz_id) REFERENCES quizzes(id) ON DELETE CASCADE
 );
 
--- Vorbereitung Wettkämpfe (Architektur – noch nicht aktiv)
+-- Arena-Kämpfe: werden sofort berechnet (status ist immer 'completed'),
+-- max. 4 Angriffe pro Tag und Angreifer (siehe routes/arena.js)
 CREATE TABLE IF NOT EXISTS challenges (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   challenger_id INTEGER NOT NULL,

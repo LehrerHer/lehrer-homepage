@@ -3,7 +3,7 @@ const express = require('express');
 const session = require('express-session');
 const path = require('path');
 
-const { db, SQLiteSessionStore } = require('./db/database');
+const { SQLiteSessionStore } = require('./db/database');
 const authRoutes     = require('./routes/auth');
 const studentRoutes  = require('./routes/students');
 const adminRoutes    = require('./routes/admin');
@@ -95,16 +95,6 @@ app.get('/', (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Lernkolosseum läuft auf http://localhost:${PORT}`);
-
-  // Abgelaufene Herausforderungen bereinigen (24h-Timeout)
-  function bereinigePendingChallenges() {
-    const r = db.prepare(
-      "DELETE FROM challenges WHERE status = 'pending' AND created_at < datetime('now', '-24 hours')"
-    ).run();
-    if (r.changes > 0) console.log(`[Arena] ${r.changes} abgelaufene Herausforderung(en) gelöscht.`);
-  }
-  bereinigePendingChallenges();
-  setInterval(bereinigePendingChallenges, 60 * 60 * 1000);
 });
 
 module.exports = app;
