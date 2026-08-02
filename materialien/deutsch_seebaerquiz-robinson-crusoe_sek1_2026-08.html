@@ -1,0 +1,456 @@
+<!--
+  Titel: Was ein Seebär alles wissen muss – Quiz zu Robinson Crusoe (Kapitel 1–3)
+  Fach: Deutsch (Lektürearbeit), Sekundarstufe I
+  Klasse/Niveau: Sekundarstufe I (nicht klassenspezifisch angegeben)
+  AB-Typ: Multiple Choice
+  Erstellt: 2026-08-02
+  Quelle: Materialien und Kopiervorlagen zu Daniel Defoe, Robinson Crusoe, Hase und Igel Verlag, Garching b. München (S. 14–17)
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Was ein Seebär alles wissen muss – lehrer-herrmann.de</title>
+<style>
+  :root{
+    --primary:#1e3a5f;
+    --accent:#4a9eda;
+    --correct:#2ecc71;
+    --error:#e74c3c;
+    --bg:#f4f6f7;
+    --card:#ffffff;
+    --radius:8px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:system-ui, sans-serif;
+    background:var(--bg);
+    color:#222;
+    line-height:1.5;
+  }
+  .ab-container{
+    max-width:800px;
+    margin:0 auto;
+    padding:16px;
+  }
+  .ab-header{
+    background:var(--primary);
+    color:#fff;
+    padding:20px;
+    border-radius:var(--radius);
+    margin-bottom:20px;
+  }
+  .ab-header h1{
+    margin:0 0 8px 0;
+    font-size:1.5rem;
+  }
+  .ab-meta{
+    margin:0;
+    font-size:0.9rem;
+    opacity:0.9;
+  }
+  .intro-card{
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:16px 20px;
+    margin-bottom:20px;
+    border-left:6px solid var(--accent);
+  }
+  .question-card{
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:16px 20px;
+    margin-bottom:14px;
+    box-shadow:0 1px 3px rgba(0,0,0,0.08);
+  }
+  .question-title{
+    font-weight:600;
+    margin-bottom:10px;
+    display:flex;
+    gap:8px;
+  }
+  .q-number{
+    color:var(--accent);
+    font-weight:700;
+  }
+  .options label{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    padding:10px 12px;
+    border-radius:var(--radius);
+    margin-bottom:8px;
+    cursor:pointer;
+    border:1px solid #e0e4e6;
+    font-size:1rem;
+    min-height:44px;
+  }
+  .options label:active,
+  .options label:focus-within{
+    border-color:var(--accent);
+  }
+  .options input[type="radio"]{
+    width:20px;
+    height:20px;
+    flex-shrink:0;
+    margin-top:2px;
+    accent-color:var(--accent);
+  }
+  .feedback{
+    margin-top:10px;
+    padding:10px 12px;
+    border-radius:var(--radius);
+    font-size:0.95rem;
+    display:none;
+  }
+  .feedback.correct{
+    background:rgba(46,204,113,0.15);
+    color:#1d7a44;
+    border-left:4px solid var(--correct);
+    display:block;
+  }
+  .feedback.incorrect{
+    background:rgba(231,76,60,0.12);
+    color:#a83224;
+    border-left:4px solid var(--error);
+    display:block;
+  }
+  .options label.correct-choice{
+    border-color:var(--correct);
+    background:rgba(46,204,113,0.08);
+  }
+  .options label.incorrect-choice{
+    border-color:var(--error);
+    background:rgba(231,76,60,0.08);
+  }
+  .btn{
+    font-family:inherit;
+    font-size:1rem;
+    min-height:44px;
+    padding:12px 20px;
+    border-radius:var(--radius);
+    border:none;
+    cursor:pointer;
+    font-weight:600;
+  }
+  .btn-check{
+    background:var(--accent);
+    color:#fff;
+  }
+  .btn-check:disabled{
+    background:#b7cfe0;
+    cursor:default;
+  }
+  .btn-reset{
+    background:var(--primary);
+    color:#fff;
+  }
+  .section-actions{
+    display:flex;
+    justify-content:center;
+    margin:20px 0;
+  }
+  .score-card{
+    background:var(--primary);
+    color:#fff;
+    border-radius:var(--radius);
+    padding:20px;
+    text-align:center;
+    margin:24px 0;
+    display:none;
+  }
+  .score-card.visible{display:block;}
+  .score-number{
+    font-size:2rem;
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  .xp-note{
+    font-size:0.85rem;
+    opacity:0.85;
+    margin-top:10px;
+  }
+  .zuordnung-card{
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:16px 20px;
+    margin-bottom:20px;
+  }
+  .zuordnung-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:12px;
+  }
+  @media (max-width:480px){
+    .zuordnung-grid{grid-template-columns:1fr;}
+  }
+  .zuordnung-item{
+    border:1px solid #e0e4e6;
+    border-radius:var(--radius);
+    padding:10px;
+  }
+  .zuordnung-item label{
+    display:block;
+    font-size:0.9rem;
+    margin-bottom:4px;
+    font-weight:600;
+  }
+  .zuordnung-item input[type="text"]{
+    width:100%;
+    font-size:16px;
+    padding:10px;
+    border-radius:var(--radius);
+    border:1px solid #ccc;
+    min-height:44px;
+  }
+  details{
+    background:#f0f4f6;
+    border-radius:var(--radius);
+    padding:10px 14px;
+    margin-top:14px;
+  }
+  summary{
+    cursor:pointer;
+    font-weight:600;
+    color:var(--primary);
+    min-height:44px;
+    display:flex;
+    align-items:center;
+  }
+  .hinweis{
+    font-size:0.9rem;
+    color:#555;
+    margin-top:8px;
+  }
+  .ab-footer{
+    display:flex;
+    justify-content:center;
+    padding:20px 0 40px 0;
+  }
+</style>
+</head>
+<body>
+<div class="ab-container">
+
+  <header class="ab-header">
+    <h1>Was ein Seebär alles wissen muss</h1>
+    <p class="ab-meta">Fach: Deutsch (Lektüre Robinson Crusoe) · Sekundarstufe I · Kapitel 1–3 · 2026-08</p>
+  </header>
+
+  <div class="intro-card">
+    <strong>Quiz für Seeleute und solche, die es werden wollen</strong>
+    <p>Kreuze bei jeder Frage die richtige Antwort an und klicke danach auf „Prüfen". Du erhältst sofort eine Rückmeldung. Am Ende siehst du deine Gesamtpunktzahl.</p>
+    <p style="margin-bottom:0;">⚔️ Wenn du <strong>alle 28 Fragen korrekt</strong> beantwortest, erhältst du <strong>100 Kampferfahrung (XP)</strong> für deinen Gladiator!</p>
+  </div>
+
+  <main id="quiz-main"></main>
+
+  <div class="section-actions">
+    <button class="btn btn-check" id="check-all-btn">Alle Antworten prüfen</button>
+  </div>
+
+  <div class="score-card" id="score-card">
+    <div class="score-number" id="score-number">0 / 28</div>
+    <div id="score-text"></div>
+    <div class="xp-note" id="xp-note"></div>
+  </div>
+
+  <section class="zuordnung-card">
+    <h2 style="color:var(--primary); font-size:1.1rem; margin-top:0;">Zusatzaufgabe: Fachbegriffe den Zeichnungen zuordnen</h2>
+    <p>Welche Fachbegriffe aus dem Quiz passen zu den zehn Zeichnungen auf S. 17? Trage sie ein. Achtung: Eine Zeichnung passt zu keinem Begriff aus dem Quiz – welche ist das?</p>
+    <div class="zuordnung-grid" id="zuordnung-grid"></div>
+    <details>
+      <summary>Musterlösung anzeigen</summary>
+      <p class="hinweis">Diese Musterlösung wurde von der Lehrkraft noch nicht ergänzt. Bitte mit den Originalzeichnungen (S. 17) abgleichen und hier eintragen.</p>
+    </details>
+  </section>
+
+  <footer class="ab-footer">
+    <button class="btn btn-reset" id="reset-btn">↺ Neu starten</button>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var WORKSHEET_ID = "deutsch-seebaerquiz-robinson-crusoe";
+  var WORKSHEET_TITEL = "Was ein Seebär alles wissen muss – Quiz zu Robinson Crusoe";
+  var WORKSHEET_XP = 100;
+
+  // Jede Frage: text, options[4], correctIndex (0-3), explanation
+  var questions = [
+    {q:"1. Was macht man mit Musketen?", options:["die Segel befestigen","das Essen würzen","schießen","seinen Kopf bedecken"], correct:2, explain:"Musketen sind Feuerwaffen – man schießt mit ihnen."},
+    {q:"2. Was meint der Seemann, wenn er von Backbord spricht?", options:["die Schiffsküche","die linke Schiffsseite, wenn man mit dem Gesicht in Fahrtrichtung steht","den Teil der Bordwand, der sich unter Wasser befindet","die rechte Schiffsseite, wenn man mit dem Gesicht in Fahrtrichtung steht"], correct:1, explain:"Backbord ist immer die linke Seite in Fahrtrichtung gesehen, Steuerbord die rechte."},
+    {q:"3. Was ist eine Barkasse?", options:["Vogelart","Kanone","Beiboot eines hochseetüchtigen Schiffes","portugiesische Münze"], correct:2, explain:"Die Barkasse war ursprünglich das größte Beiboot eines Schiffes."},
+    {q:"4. Wo findet man auf einem dreimastigen Schiff den Besanmast?", options:["ganz vorne","ganz hinten","in der Mitte","überhaupt nicht"], correct:1, explain:"Der Besanmast ist der hinterste Mast eines Schiffes."},
+    {q:"5. Wozu braucht der Seemann ein Besteck?", options:["um Segel zu nähen","um das Deck sauber zu halten","um Lecks abzudichten","um den Standort des Schiffes zu bestimmen"], correct:3, explain:"„Besteck“ bezeichnet in der Seefahrt die Standortbestimmung des Schiffes – nicht Essbesteck."},
+    {q:"6. Welche Funktion hat der Bootsmann auf einem Schiff?", options:["Unteroffizier und direkter Vorgesetzter der einfachen Matrosen","Schiffszimmermann, der die Beiboote repariert","Posten, der bei den Rettungsbooten Wache hält","Eigentümer des Schiffes"], correct:0, explain:"Der Bootsmann ist ein Unteroffizier mit Aufsicht über die Decksmannschaft."},
+    {q:"7. Was ist eine Brigg?", options:["stürmischer Wind aus Nordosten","dreimastiges Segelschiff","Eisscholle im Nordmeer","altmodische Kanone"], correct:1, explain:"Achtung, Lehrkraft: Eine Brigg ist eigentlich ein zweimastiges Segelschiff – keine der vier Antworten trifft das exakt. Bitte diese Frage vor dem Einsatz prüfen (siehe Rückmeldung unten)."},
+    {q:"8. Was bezeichnet man als Brise?", options:["oberstes Segel am Großmast","Halstuch des Kapitäns","Robbenart","kräftiger, günstiger Wind"], correct:3, explain:"Eine Brise ist ein angenehmer, mäßiger bis kräftiger Wind."},
+    {q:"9. Was ist eine Fregatte?", options:["großes, bewaffnetes Kriegsschiff","Ehefrau des Kapitäns","Firma, der das Schiff gehört","kleines Rettungsboot"], correct:0, explain:"Die Fregatte ist ein großes, bewaffnetes Kriegsschiff."},
+    {q:"10. Wie lang ist die englische Maßeinheit „Fuß“?", options:["ca. 2 Meter","ca. 50 Zentimeter","ca. 30 Zentimeter","ca. 4 Zentimeter"], correct:2, explain:"1 Fuß (foot) entspricht genau 30,48 cm."},
+    {q:"11. In welcher Einheit bestimmt man die geografische Breite und Länge?", options:["Grad, Minuten und Sekunden","Stunden, Minuten und Sekunden","Dezimeter, Zentimeter und Millimeter","Bites und Bytes"], correct:0, explain:"Geografische Koordinaten werden in Grad, Minuten und Sekunden angegeben."},
+    {q:"12. Warum freut sich der Matrose über die Heuer?", options:["weil sie ein günstiger Wind ist, der das Schiff schneller ans Ziel bringt","weil sie eine besonders anmutige und schön anzuschauende Delfinart ist","weil sie das Geld ist, das er als Bezahlung für seine Arbeit bekommt","weil sie sein freier Tag ist, an dem er ausschlafen darf"], correct:2, explain:"Die Heuer ist der Lohn, den ein Seemann für seine Arbeit an Bord erhält."},
+    {q:"13. Was bezeichnet man als Jolle?", options:["Jacke aus wasserdichtem Stoff","mittelgroßes Rumfass","Piratenflagge mit Totenkopf","kleines Beiboot"], correct:3, explain:"Die Jolle ist ein kleines Beiboot bzw. kleines Ruder- oder Segelboot."},
+    {q:"14. Wo befinden sich die Kanarischen Inseln?", options:["vor der Ostküste Afrikas","im Pazifik, vor der chinesischen Küste","mitten im Atlantik, genau auf halber Strecke zwischen Europa und Nordamerika","vor der nordwestafrikanischen Küste"], correct:3, explain:"Die Kanarischen Inseln liegen im Atlantik vor der nordwestafrikanischen Küste."},
+    {q:"15. Wo liegen die Karibischen Inseln?", options:["im Atlantik, vor der Nordostküste Südamerikas","südlich vom Kap der Guten Hoffnung","nördlich des Nordpolarkreises","im Mittelmeer, östlich von Zypern"], correct:0, explain:"Die Karibischen Inseln liegen im Atlantik vor der Nordostküste Südamerikas (Karibisches Meer)."},
+    {q:"16. Welches Teil des Schiffes ist der Kiel?", options:["Laderaum","Grundbalken des Schiffes","Wohnraum des Kapitäns","Halterung des Steuerrades"], correct:1, explain:"Der Kiel ist der tragende Grundbalken, auf dem der Schiffsrumpf aufgebaut ist."},
+    {q:"17. Wozu braucht man ein Lot?", options:["um sich gegen Feinde wehren zu können","damit jeder die Kommandos hört","um die Wassertiefe zu messen","um Trinkwasser aufzubewahren"], correct:2, explain:"Mit dem Lot (Senkblei an einer Leine) wird die Wassertiefe gemessen."},
+    {q:"18. Was ist ein Maat?", options:["der Küste vorgelagertes Felsenriff","Krummsäbel der Piraten","Signalflagge","Unteroffizier auf einem Schiff"], correct:3, explain:"Der Maat ist ein Unteroffiziersdienstgrad an Bord."},
+    {q:"19. Was ist ein Maure?", options:["Nordafrikaner","Teil der Bordwand","Vogel","plötzlich aufziehender Sturm"], correct:0, explain:"Als Mauren wurden muslimische Nordafrikaner bezeichnet – im Roman wird Robinson von maurischen Seeräubern gefangen genommen."},
+    {q:"20. Was tut man, wenn man die Segel refft?", options:["Man flickt sie.","Man rollt sie zusammen.","Man bemalt sie.","Man kontrolliert, ob sie noch ganz sind."], correct:1, explain:"Reffen bedeutet, die Segelfläche durch Zusammenrollen bzw. Zusammenbinden zu verkleinern."},
+    {q:"21. Was versteht man unter einer Reling?", options:["kleines, nur für Küstengewässer taugliches Fischerboot","Sandbank","unter Seeleuten beliebter Tanz","Geländer, das das Schiffsdeck begrenzt"], correct:3, explain:"Die Reling ist das Geländer am Rand des Schiffsdecks."},
+    {q:"22. Was bedeutet in der Seemannssprache das Wort Riemen?", options:["Ruder","Segel","Tau","Ankerkette"], correct:0, explain:"Ein Riemen ist ein langes Ruder, mit dem ein Boot fortbewegt wird."},
+    {q:"23. Was ist ein Rudergänger?", options:["Matrose, der dafür zu sorgen hat, dass die Ruder der Rettungsboote ganz sind","heruntergekommener, versoffener Seemann, der keine Arbeit mehr findet","Mann, der am Steuerruder steht","Neuling, der Seemann werden will"], correct:2, explain:"Der Rudergänger ist die Person, die das Steuerruder des Schiffes bedient."},
+    {q:"24. Wo arbeitet der Smutje?", options:["auf der Werft","in der Reederei","im Leuchtturm","in der Kombüse"], correct:3, explain:"Der Smutje ist der Schiffskoch, er arbeitet in der Kombüse (Schiffsküche)."},
+    {q:"25. Was ist die Takelage eines Schiffes?", options:["alles, was an den Masten befestigt ist","Kajüte des Kapitäns","Lagerraum für den Proviant","oberste Spitze des größten Mastes"], correct:0, explain:"Die Takelage umfasst Masten, Tauwerk (Wanten, Stagen) und Segelzubehör."},
+    {q:"26. Was versteht man unter Tide?", options:["felsige, gefährliche Küste","Gebiet mit sehr geringer Wassertiefe","Ebbe und Flut","vorderste Mauer des Hafens"], correct:2, explain:"Tide ist die seemännische Bezeichnung für die Gezeiten Ebbe und Flut."},
+    {q:"27. Was sind Wanten?", options:["Leuchttürme, die vor gefährlichen Küstenstellen warnen","strickleiterähnliche Seile, an denen die Matrosen in die Masten klettern","Inselgruppe im östlichen Mittelmeer","Kanonen, die Schiffe zum Schutz gegen Piraten an Bord haben"], correct:1, explain:"Wanten sind Taue zur seitlichen Abstützung der Masten, die oft als Strickleiter zum Aufentern dienen."},
+    {q:"28. Was tut ein Seemann, wenn er lenzt?", options:["Er wendet das Schiff.","Er verweigert den Befehl.","Er scheuert das Deck.","Er pumpt Wasser aus dem Schiff."], correct:3, explain:"Lenzen bedeutet, Wasser aus dem Schiffsrumpf herauszupumpen."}
+  ];
+
+  var zuordnungBegriffe = ["Musketen","Backbord/Steuerbord","Riemen","Heuer","Jolle/Barkasse","Rudergänger","Riemen","Tau","Wanten/Takelage","Reling/Netz"];
+
+  var mainEl = document.getElementById("quiz-main");
+  var xpGemeldet = false;
+
+  questions.forEach(function(item, qIndex){
+    var card = document.createElement("div");
+    card.className = "question-card";
+    card.setAttribute("data-qindex", qIndex);
+
+    var title = document.createElement("div");
+    title.className = "question-title";
+    title.textContent = item.q;
+    card.appendChild(title);
+
+    var optionsWrap = document.createElement("div");
+    optionsWrap.className = "options";
+
+    item.options.forEach(function(optText, optIndex){
+      var label = document.createElement("label");
+      var input = document.createElement("input");
+      input.type = "radio";
+      input.name = "q" + qIndex;
+      input.value = optIndex;
+      label.appendChild(input);
+      var span = document.createElement("span");
+      span.textContent = String.fromCharCode(65+optIndex) + ") " + optText;
+      label.appendChild(span);
+      optionsWrap.appendChild(label);
+    });
+
+    card.appendChild(optionsWrap);
+
+    var feedback = document.createElement("div");
+    feedback.className = "feedback";
+    feedback.setAttribute("data-feedback", qIndex);
+    card.appendChild(feedback);
+
+    mainEl.appendChild(card);
+  });
+
+  function checkAll(){
+    var scoreCount = 0;
+    var answeredCount = 0;
+
+    questions.forEach(function(item, qIndex){
+      var card = mainEl.querySelector('[data-qindex="'+qIndex+'"]');
+      var selected = card.querySelector('input[name="q'+qIndex+'"]:checked');
+      var labels = card.querySelectorAll(".options label");
+      var feedback = card.querySelector('[data-feedback="'+qIndex+'"]');
+
+      labels.forEach(function(l){ l.classList.remove("correct-choice","incorrect-choice"); });
+
+      if(!selected){
+        feedback.className = "feedback incorrect";
+        feedback.textContent = "Bitte wähle eine Antwort aus.";
+        return;
+      }
+      answeredCount++;
+      var selIndex = parseInt(selected.value, 10);
+      labels[item.correct].classList.add("correct-choice");
+
+      if(selIndex === item.correct){
+        scoreCount++;
+        feedback.className = "feedback correct";
+        feedback.textContent = "Richtig! " + item.explain;
+      } else {
+        labels[selIndex].classList.add("incorrect-choice");
+        feedback.className = "feedback incorrect";
+        feedback.textContent = "Leider falsch. " + item.explain;
+      }
+    });
+
+    var scoreCard = document.getElementById("score-card");
+    var scoreNumber = document.getElementById("score-number");
+    var scoreText = document.getElementById("score-text");
+    var xpNote = document.getElementById("xp-note");
+    scoreCard.classList.add("visible");
+    scoreNumber.textContent = scoreCount + " / " + questions.length;
+
+    var pct = scoreCount / questions.length;
+    var msg;
+    if(pct === 1) msg = "Perfekt! Du bist ein echter Seebär! ⚓";
+    else if(pct >= 0.75) msg = "Sehr gut! Du kennst dich schon gut mit der Seemannssprache aus.";
+    else if(pct >= 0.5) msg = "Solide! Schau dir die falschen Antworten noch einmal genau an.";
+    else msg = "Übe die Fachbegriffe noch etwas – dann klappt es beim nächsten Mal besser.";
+    scoreText.textContent = msg;
+
+    // XP nur für vollständige, korrekte Bearbeitung (alle 28 Fragen richtig)
+    if(answeredCount === questions.length && scoreCount === questions.length){
+      xpNote.textContent = "🏆 Alle Fragen richtig – 100 XP werden gutgeschrieben!";
+      if(!xpGemeldet){
+        xpGemeldet = true;
+        if(typeof window.worksheetComplete === "function"){
+          window.worksheetComplete(WORKSHEET_ID, WORKSHEET_TITEL, WORKSHEET_XP);
+        }
+      }
+    } else {
+      xpNote.textContent = "ℹ️ XP gibt es erst, wenn alle 28 Fragen korrekt beantwortet sind.";
+    }
+
+    document.getElementById("check-all-btn").disabled = true;
+  }
+
+  document.getElementById("check-all-btn").addEventListener("click", checkAll);
+
+  // Zuordnungsaufgabe (offen, nicht automatisch geprüft)
+  var zGrid = document.getElementById("zuordnung-grid");
+  for(var i=1;i<=10;i++){
+    var item = document.createElement("div");
+    item.className = "zuordnung-item";
+    var label = document.createElement("label");
+    label.setAttribute("for","zuordnung-"+i);
+    label.textContent = "Zeichnung " + i;
+    var input = document.createElement("input");
+    input.type = "text";
+    input.id = "zuordnung-" + i;
+    input.placeholder = "Fachbegriff eintragen";
+    item.appendChild(label);
+    item.appendChild(input);
+    zGrid.appendChild(item);
+  }
+
+  function resetAll(){
+    mainEl.querySelectorAll('input[type="radio"]').forEach(function(r){ r.checked = false; });
+    mainEl.querySelectorAll(".feedback").forEach(function(f){ f.className = "feedback"; f.textContent=""; });
+    mainEl.querySelectorAll(".options label").forEach(function(l){ l.classList.remove("correct-choice","incorrect-choice"); });
+    document.getElementById("score-card").classList.remove("visible");
+    document.getElementById("xp-note").textContent = "";
+    document.getElementById("check-all-btn").disabled = false;
+    zGrid.querySelectorAll('input[type="text"]').forEach(function(inp){ inp.value=""; });
+  }
+
+  document.getElementById("reset-btn").addEventListener("click", resetAll);
+
+})();
+</script>
+<script src="/js/worksheet-xp.js"></script>
+</body>
+</html>
