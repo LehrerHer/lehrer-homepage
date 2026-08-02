@@ -1,6 +1,15 @@
 {
   "materialien": [
     {
+      "id": "1785715200000",
+      "titel": "Seebären-Quiz – Robinson Crusoe (Sek I)",
+      "beschreibung": "Seemannssprache aus den Kapiteln 1–3 – 28 Fragen, 100 XP bei vollständig korrekter Bearbeitung",
+      "icon": "⚓",
+      "url": "materialien/deutsch_seebaerquiz-robinson-crusoe_sek1_2026-08.html",
+      "seite": "deutsch",
+      "datum": "2026-08-02"
+    },
+    {
       "id": "1783468800000",
       "titel": "Die Spur der Bohne – Feldtagebuch (Jg. 9/10)",
       "beschreibung": "Fächerübergreifende Expedition: Vom Kakaobaum bis zum Schokoriegel – Erdkunde, Geschichte, Wirtschaft & Politik",
