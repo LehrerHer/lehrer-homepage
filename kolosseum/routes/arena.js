@@ -47,6 +47,26 @@ function equippedItems(sid) {
   ).all(sid).map(r => r.item_id);
 }
 
+const MAX_ANGRIFFE_PRO_TAG = 4;
+const MUENZEN_BASIS = 15; // Münzen bei gleich starkem Gegner
+
+// Münzen für einen erfolgreichen Angriff: skaliert mit der relativen Stärke
+// des Gegners (gleiche log-Skalierung wie die Kampfstats). Gleich starker
+// Gegner -> 15 Münzen. Schwächere Gegner geben weniger, ab der Hälfte der
+// eigenen Stärke nichts mehr. Stärkere Gegner geben mehr (gedeckelt).
+function muenzenFuerSieg(eigeneXp, gegnerXp) {
+  const eigeneStaerke = Math.max(Math.pow(Math.max(eigeneXp, 0), 0.35), 1);
+  const gegnerStaerke = Math.max(Math.pow(Math.max(gegnerXp, 0), 0.35), 1);
+  const verhaeltnis = gegnerStaerke / eigeneStaerke;
+
+  if (verhaeltnis <= 0.5) return 0; // Gegner zu schwach – keine Münzen
+
+  if (verhaeltnis < 1) {
+    return Math.round(MUENZEN_BASIS * (verhaeltnis - 0.5) / 0.5);
+  }
+  return Math.round(MUENZEN_BASIS * Math.min(verhaeltnis, 3)); // gedeckelt bei 45
+}
+
 function kampfSimulieren(xpA, xpB, itemsA = [], itemsB = []) {
   const statA = kampfStats(xpA, itemsA);
   const statB = kampfStats(xpB, itemsB);
@@ -83,55 +103,67 @@ function kampfSimulieren(xpA, xpB, itemsA = [], itemsB = []) {
   };
 }
 
-// POST /api/arena/herausforderung – Gegner herausfordern
+// POST /api/arena/herausforderung – Gegner sofort angreifen (Kampf wird direkt berechnet)
 router.post('/herausforderung', requireStudent, (req, res) => {
-  const meinId  = req.session.studentId;
+  const meinId   = req.session.studentId;
   const gegnerId = Number(req.body.gegnerId);
 
   if (!gegnerId || isNaN(gegnerId)) return res.status(400).json({ error: 'Ungültige Gegner-ID.' });
-  if (gegnerId === meinId)           return res.status(400).json({ error: 'Du kannst dich nicht selbst herausfordern.' });
+  if (gegnerId === meinId)           return res.status(400).json({ error: 'Du kannst dich nicht selbst angreifen.' });
 
-  const gegner = db.prepare('SELECT id, nick FROM students WHERE id = ?').get(gegnerId);
+  const angreifer = db.prepare('SELECT id, nick, xp FROM students WHERE id = ?').get(meinId);
+  const gegner    = db.prepare('SELECT id, nick, xp FROM students WHERE id = ?').get(gegnerId);
   if (!gegner) return res.status(404).json({ error: 'Gladiator nicht gefunden.' });
 
-  const offen = db.prepare(
-    "SELECT id FROM challenges WHERE challenger_id = ? AND opponent_id = ? AND status = 'pending'"
-  ).get(meinId, gegnerId);
-  if (offen) return res.status(409).json({ error: 'Du hast diesen Gladiator bereits herausgefordert.' });
-
-  const anzahl = db.prepare(
-    "SELECT COUNT(*) AS n FROM challenges WHERE challenger_id = ? AND status = 'pending'"
+  const heute = db.prepare(
+    "SELECT COUNT(*) AS n FROM challenges WHERE challenger_id = ? AND date(created_at) = date('now')"
   ).get(meinId);
-  if (anzahl.n >= 3) return res.status(429).json({ error: 'Maximal 3 offene Herausforderungen erlaubt.' });
+  if (heute.n >= MAX_ANGRIFFE_PRO_TAG) {
+    return res.status(429).json({ error: `Du hast dein Tageslimit von ${MAX_ANGRIFFE_PRO_TAG} Angriffen erreicht. Versuch's morgen wieder!` });
+  }
 
-  const r = db.prepare(
-    "INSERT INTO challenges (challenger_id, opponent_id, status) VALUES (?, ?, 'pending')"
-  ).run(meinId, gegnerId);
+  const h_items = equippedItems(meinId);
+  const g_items = equippedItems(gegnerId);
+  const sim = kampfSimulieren(angreifer.xp, gegner.xp, h_items, g_items);
 
-  res.json({ ok: true, id: r.lastInsertRowid, gegnerNick: gegner.nick });
+  const angreiferGewinnt = sim.herausfordererGewinnt;
+  const gewinnerId = angreiferGewinnt ? meinId : gegnerId;
+  const muenzenAngreifer = angreiferGewinnt ? muenzenFuerSieg(angreifer.xp, gegner.xp) : 0;
+
+  const log = JSON.stringify({
+    runden:      sim.runden,
+    startHpA:    sim.startHpA, atkA: sim.atkA,
+    critChanceA: sim.critChanceA, dodgeChanceA: sim.dodgeChanceA,
+    startHpB:    sim.startHpB, atkB: sim.atkB,
+    critChanceB: sim.critChanceB, dodgeChanceB: sim.dodgeChanceB,
+    herausfordererGewinnt: sim.herausfordererGewinnt,
+    h_nick: angreifer.nick, g_nick: gegner.nick,
+    h_xp:   angreifer.xp,   g_xp:   gegner.xp,
+    muenzenAngreifer,
+  });
+
+  const kampfId = db.transaction(() => {
+    const r = db.prepare(
+      "INSERT INTO challenges (challenger_id, opponent_id, status, winner_id, battle_log) VALUES (?, ?, 'completed', ?, ?)"
+    ).run(meinId, gegnerId, gewinnerId, log);
+    if (muenzenAngreifer > 0) {
+      db.prepare('UPDATE students SET coins = COALESCE(coins, 0) + ? WHERE id = ?').run(muenzenAngreifer, meinId);
+      db.prepare('INSERT INTO coins_log (student_id, amount, reason) VALUES (?,?,?)')
+        .run(meinId, muenzenAngreifer, `⚔️ Angriff auf ${gegner.nick} erfolgreich`);
+    }
+    return r.lastInsertRowid;
+  })();
+
+  res.json({ ok: true, kampfId, gegnerNick: gegner.nick, gewonnen: angreiferGewinnt, muenzen: muenzenAngreifer });
 });
 
-// GET /api/arena/herausforderungen – eigene Challenges laden
-router.get('/herausforderungen', requireStudent, (req, res) => {
+// GET /api/arena/uebersicht – Tageslimit + letzte Kämpfe laden
+router.get('/uebersicht', requireStudent, (req, res) => {
   const id = req.session.studentId;
 
-  const eingehend = db.prepare(`
-    SELECT c.id, c.created_at,
-           h.nick AS von_nick, h.xp AS von_xp, h.id AS von_id
-    FROM challenges c
-    JOIN students h ON h.id = c.challenger_id
-    WHERE c.opponent_id = ? AND c.status = 'pending'
-    ORDER BY c.created_at DESC LIMIT 10
-  `).all(id);
-
-  const ausgehend = db.prepare(`
-    SELECT c.id, c.status, c.winner_id, c.created_at,
-           g.nick AS an_nick, g.id AS an_id
-    FROM challenges c
-    JOIN students g ON g.id = c.opponent_id
-    WHERE c.challenger_id = ? AND c.status IN ('pending','completed','declined')
-    ORDER BY c.created_at DESC LIMIT 10
-  `).all(id);
+  const heute = db.prepare(
+    "SELECT COUNT(*) AS n FROM challenges WHERE challenger_id = ? AND date(created_at) = date('now')"
+  ).get(id);
 
   const meineKaempfe = db.prepare(`
     SELECT c.id, c.winner_id, c.created_at,
@@ -144,91 +176,13 @@ router.get('/herausforderungen', requireStudent, (req, res) => {
     ORDER BY c.created_at DESC LIMIT 5
   `).all(id, id);
 
-  res.json({ eingehend, ausgehend, meineKaempfe, meinId: id });
-});
-
-// POST /api/arena/herausforderung/:id/annehmen – Kampf auflösen
-router.post('/herausforderung/:id/annehmen', requireStudent, (req, res) => {
-  const meinId = req.session.studentId;
-  const cId    = Number(req.params.id);
-
-  const c = db.prepare(`
-    SELECT c.*,
-           h.nick AS h_nick, h.xp AS h_xp,
-           g.nick AS g_nick, g.xp AS g_xp
-    FROM challenges c
-    JOIN students h ON h.id = c.challenger_id
-    JOIN students g ON g.id = c.opponent_id
-    WHERE c.id = ? AND c.opponent_id = ? AND c.status = 'pending'
-  `).get(cId, meinId);
-
-  if (!c) return res.status(404).json({ error: 'Herausforderung nicht gefunden.' });
-
-  const h_items = equippedItems(c.challenger_id);
-  const g_items = equippedItems(c.opponent_id);
-  const sim = kampfSimulieren(c.h_xp, c.g_xp, h_items, g_items);
-
-  const gewinnerId  = sim.herausfordererGewinnt ? c.challenger_id : c.opponent_id;
-  const verliererId = sim.herausfordererGewinnt ? c.opponent_id   : c.challenger_id;
-  const gewinnerNick  = sim.herausfordererGewinnt ? c.h_nick : c.g_nick;
-  const verliererNick = sim.herausfordererGewinnt ? c.g_nick : c.h_nick;
-
-  const muenzenG = 15;
-  const muenzenV = 3;
-
-  const log = JSON.stringify({
-    runden:      sim.runden,
-    startHpA:    sim.startHpA, atkA: sim.atkA,
-    critChanceA: sim.critChanceA, dodgeChanceA: sim.dodgeChanceA,
-    startHpB:    sim.startHpB, atkB: sim.atkB,
-    critChanceB: sim.critChanceB, dodgeChanceB: sim.dodgeChanceB,
-    herausfordererGewinnt: sim.herausfordererGewinnt,
-    h_nick: c.h_nick, g_nick: c.g_nick,
-    h_xp:   c.h_xp,   g_xp:   c.g_xp,
-    muenzenGewinner: muenzenG, muenzenVerlierer: muenzenV,
+  res.json({
+    angriffeHeute: heute.n,
+    angriffeUebrig: Math.max(0, MAX_ANGRIFFE_PRO_TAG - heute.n),
+    maxAngriffeProTag: MAX_ANGRIFFE_PRO_TAG,
+    meineKaempfe,
+    meinId: id,
   });
-
-  db.transaction(() => {
-    db.prepare("UPDATE challenges SET status='completed', winner_id=?, battle_log=? WHERE id=?")
-      .run(gewinnerId, log, cId);
-    // Münzen vergeben statt XP
-    db.prepare('UPDATE students SET coins = COALESCE(coins, 0) + ? WHERE id = ?').run(muenzenG, gewinnerId);
-    db.prepare('UPDATE students SET coins = COALESCE(coins, 0) + ? WHERE id = ?').run(muenzenV, verliererId);
-    db.prepare('INSERT INTO coins_log (student_id, amount, reason) VALUES (?,?,?)')
-      .run(gewinnerId, muenzenG, `⚔️ Kampf gewonnen gegen ${verliererNick}`);
-    db.prepare('INSERT INTO coins_log (student_id, amount, reason) VALUES (?,?,?)')
-      .run(verliererId, muenzenV, `⚔️ Tapfer gekämpft gegen ${gewinnerNick}`);
-  })();
-
-  res.json({ ok: true, kampfId: cId });
-});
-
-// POST /api/arena/herausforderung/:id/zurueckziehen – Herausforderung zurückziehen
-router.post('/herausforderung/:id/zurueckziehen', requireStudent, (req, res) => {
-  const meinId = req.session.studentId;
-  const cId    = Number(req.params.id);
-
-  const c = db.prepare(
-    "SELECT id FROM challenges WHERE id = ? AND challenger_id = ? AND status = 'pending'"
-  ).get(cId, meinId);
-  if (!c) return res.status(404).json({ error: 'Herausforderung nicht gefunden.' });
-
-  db.prepare("UPDATE challenges SET status = 'declined' WHERE id = ?").run(cId);
-  res.json({ ok: true });
-});
-
-// POST /api/arena/herausforderung/:id/ablehnen
-router.post('/herausforderung/:id/ablehnen', requireStudent, (req, res) => {
-  const meinId = req.session.studentId;
-  const cId    = Number(req.params.id);
-
-  const c = db.prepare(
-    "SELECT id FROM challenges WHERE id=? AND opponent_id=? AND status='pending'"
-  ).get(cId, meinId);
-  if (!c) return res.status(404).json({ error: 'Herausforderung nicht gefunden.' });
-
-  db.prepare("UPDATE challenges SET status='declined' WHERE id=?").run(cId);
-  res.json({ ok: true });
 });
 
 // GET /api/arena/kampf/:id – Kampfergebnis/Replay-Daten

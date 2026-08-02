@@ -50,14 +50,6 @@
     '}',
     '.ab-btn-sm-ghost{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);}',
     '.ab-btn-sm-primary{background:var(--c4,#4361ee);color:#fff;}',
-    '.ab-challenge-badge{',
-      'display:inline-flex;align-items:center;justify-content:center;',
-      'background:#ff4444;color:#fff;border-radius:50%;',
-      'width:16px;height:16px;font-size:.65rem;font-weight:800;',
-      'margin-left:4px;vertical-align:middle;',
-      'animation:ab-badge-pulse 1.2s ease-in-out infinite;',
-    '}',
-    '@keyframes ab-badge-pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.25);}}',
     'body{padding-bottom:40px;}',
     '@media(max-width:480px){.ab-desc{display:none;}}',
   ].join('');
@@ -91,17 +83,6 @@
               if (!sd) return;
               var chip = document.getElementById('ab-coins-chip');
               if (chip) chip.textContent = '🪙 ' + (sd.coins || 0);
-            })
-            .catch(function () {});
-
-          // Offene Herausforderungen prüfen
-          fetch('/api/arena/herausforderungen')
-            .then(function (cr) { return cr.ok ? cr.json() : null; })
-            .then(function (cd) {
-              if (!cd || !cd.eingehend || !cd.eingehend.length) return;
-              var link = document.getElementById('ab-profil-link');
-              if (!link) return;
-              link.innerHTML = 'Profil <span class="ab-challenge-badge">' + cd.eingehend.length + '</span>';
             })
             .catch(function () {});
         });

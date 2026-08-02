@@ -514,7 +514,7 @@
       const { startHpA, startHpB, atkA, atkB, runden,
               critChanceA = 0.20, dodgeChanceA = 0.12,
               critChanceB = 0.20, dodgeChanceB = 0.12,
-              herausfordererGewinnt, muenzenGewinner, muenzenVerlierer } = log;
+              herausfordererGewinnt, muenzenAngreifer = 0 } = log;
 
       const hTitel  = getTitel(h_items);
       const gTitel  = getTitel(g_items);
@@ -633,10 +633,12 @@
         svgB.innerHTML = '<div style="font-size:3.5rem">⚔️</div>';
       }
 
+      const binAngreifer = meinId === h_id;
+
       return { startHpA, startHpB, atkA, atkB, runden,
                critChanceA, dodgeChanceA, critChanceB, dodgeChanceB,
-               herausfordererGewinnt, muenzenGewinner, muenzenVerlierer,
-               h_nick, g_nick, winner_id, meinId, istGewinner,
+               herausfordererGewinnt, muenzenAngreifer,
+               h_nick, g_nick, winner_id, meinId, istGewinner, binAngreifer,
                hEffekt, gEffekt };
     }
 
@@ -740,7 +742,7 @@
 
     // ── Ergebnis anzeigen ─────────────────────────────────────────────────────
 
-    function zeigeErgebnis(herausfordererGewinnt, h_nick, g_nick, istGewinner, muenzenGewinner, muenzenVerlierer) {
+    function zeigeErgebnis(herausfordererGewinnt, h_nick, g_nick, istGewinner, binAngreifer, muenzenAngreifer) {
       const overlay   = document.getElementById('result-overlay');
       const trophy    = document.getElementById('result-trophy');
       const headline  = document.getElementById('result-headline');
@@ -763,16 +765,33 @@
         ? (gewinnerNick === h_nick ? g_nick : h_nick)
         : (gewinnerNick === g_nick ? h_nick : g_nick);
 
-      if (istGewinner) {
-        trophy.textContent   = '🏆';
-        headline.textContent = 'Sieg!';
-        sub.textContent      = `Du hast ${verliererNick} besiegt!`;
-        xpEl.textContent     = `+${muenzenGewinner} 🪙 Münzen`;
+      if (binAngreifer) {
+        // Ich habe angegriffen
+        if (istGewinner) {
+          trophy.textContent   = '🏆';
+          headline.textContent = 'Sieg!';
+          sub.textContent      = `Du hast ${verliererNick} besiegt!`;
+          xpEl.textContent     = muenzenAngreifer > 0
+            ? `+${muenzenAngreifer} 🪙 Münzen`
+            : 'Der Gegner war zu schwach für eine Belohnung.';
+        } else {
+          trophy.textContent   = '😔';
+          headline.textContent = 'Niederlage';
+          sub.textContent      = `${gewinnerNick} ist diesmal stärker – kämpfe weiter!`;
+          xpEl.textContent     = '';
+        }
       } else {
-        trophy.textContent   = '😔';
-        headline.textContent = 'Niederlage';
-        sub.textContent      = `${gewinnerNick} ist diesmal stärker – kämpfe weiter!`;
-        xpEl.textContent     = `+${muenzenVerlierer} 🪙 Münzen für deinen Mut`;
+        // Ich wurde angegriffen
+        if (istGewinner) {
+          trophy.textContent   = '🛡️';
+          headline.textContent = 'Verteidigt!';
+          sub.textContent      = `Du hast den Angriff von ${verliererNick} abgewehrt!`;
+        } else {
+          trophy.textContent   = '💀';
+          headline.textContent = 'Angegriffen!';
+          sub.textContent      = `${gewinnerNick} hat dich besiegt.`;
+        }
+        xpEl.textContent = '';
       }
 
       const counter = document.getElementById('round-counter');
@@ -847,16 +866,16 @@
       await intro(data.h_nick, data.g_nick, arena.hEffekt, arena.gEffekt);
 
       const { startHpA, startHpB, runden, herausfordererGewinnt,
-              muenzenGewinner, muenzenVerlierer, h_nick, g_nick,
+              muenzenAngreifer, h_nick, g_nick,
               critChanceA, dodgeChanceA, critChanceB, dodgeChanceB,
-              winner_id, meinId, istGewinner } = arena;
+              winner_id, meinId, istGewinner, binAngreifer } = arena;
 
       for (const runde of runden) {
         await spieleRunde(runde, startHpA, startHpB, h_nick, g_nick);
       }
 
       await sleep(600);
-      zeigeErgebnis(herausfordererGewinnt, h_nick, g_nick, istGewinner, muenzenGewinner, muenzenVerlierer);
+      zeigeErgebnis(herausfordererGewinnt, h_nick, g_nick, istGewinner, binAngreifer, muenzenAngreifer);
     }
 
     document.getElementById('logout-btn').addEventListener('click', async () => {
