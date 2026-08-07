@@ -4,7 +4,7 @@ const { db } = require('../db/database');
 
 const router = express.Router();
 const SECRET = process.env.GEO_ABI2002_SECRET || 'geo-abi2002-klassentreffen';
-const FELDER = ['vorname', 'nachname', 'strasse', 'plz', 'wohnort', 'vorwahl', 'telefonnummer', 'email'];
+const FELDER = ['vorname', 'nachname', 'maedchenname', 'strasse', 'plz', 'wohnort', 'telefonnummer', 'email'];
 
 function checkSecret(req, res, next) {
   if (req.headers['x-geo-abi2002-secret'] !== SECRET) {
@@ -19,7 +19,7 @@ const limiter = rateLimit({ windowMs: 60 * 1000, max: 30, standardHeaders: true,
 router.get('/', checkSecret, (req, res) => {
   try {
     const rows = db.prepare(
-      `SELECT id, vorname, nachname, strasse, plz, wohnort, vorwahl, telefonnummer, email, updated_at
+      `SELECT id, vorname, nachname, maedchenname, strasse, plz, wohnort, telefonnummer, email, updated_at
        FROM geo_abi2002 ORDER BY id`
     ).all();
     res.json(rows);
@@ -52,9 +52,9 @@ router.put('/:id', checkSecret, limiter, (req, res) => {
   try {
     db.prepare(
       `UPDATE geo_abi2002
-       SET vorname = ?, nachname = ?, strasse = ?, plz = ?, wohnort = ?, vorwahl = ?, telefonnummer = ?, email = ?, updated_at = CURRENT_TIMESTAMP
+       SET vorname = ?, nachname = ?, maedchenname = ?, strasse = ?, plz = ?, wohnort = ?, telefonnummer = ?, email = ?, updated_at = CURRENT_TIMESTAMP
        WHERE id = ?`
-    ).run(werte.vorname, werte.nachname, werte.strasse, werte.plz, werte.wohnort, werte.vorwahl, werte.telefonnummer, werte.email, id);
+    ).run(werte.vorname, werte.nachname, werte.maedchenname, werte.strasse, werte.plz, werte.wohnort, werte.telefonnummer, werte.email, id);
     res.json({ ok: true });
   } catch (e) {
     console.error('Geo-Abi2002 PUT Fehler:', e);

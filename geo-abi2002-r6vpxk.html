@@ -21,15 +21,26 @@
     --radius: 10px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 60px; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif; color: var(--text); min-height: 100vh; padding-bottom: 60px;
+    background-color: var(--bg);
+    background-image: url('img/bgmainxxl.gif');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: cover;
+    background-attachment: fixed;
+  }
 
   header {
     background: linear-gradient(135deg, var(--primaer) 0%, var(--primaer-hell) 100%);
-    color: #fff; padding: 28px 20px 20px; text-align: center;
+    color: #fff; padding: 22px 20px 20px; text-align: center;
     position: sticky; top: 0; z-index: 100; box-shadow: 0 3px 16px rgba(0,0,0,0.18);
   }
+  header .banner-logo { max-width: 340px; width: 100%; height: auto; display: block; margin: 0 auto 10px; }
   header h1 { font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 800; }
-  header p { font-size: 0.9rem; opacity: 0.85; margin-top: 6px; }
+  header .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+  header p { font-size: 0.9rem; opacity: 0.85; margin-top: 6px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  header p .stern { color: #f5c518; font-size: 0.8rem; }
   #sync-status { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; margin-top: 10px; opacity: 0.85; }
   #sync-dot { width: 8px; height: 8px; border-radius: 50%; background: #aaa; transition: background 0.3s; }
   #sync-dot.ok { background: var(--gruen); }
@@ -96,8 +107,9 @@
 <body>
 
 <header>
-  <h1>🎓 Geo Abijahrgang 2002 – Kontaktliste</h1>
-  <p>Trag deine Adresse und Kontaktdaten ein – alle sehen die Liste live.</p>
+  <img src="img/Abistars%20header.png" alt="ABISTARS 2002" class="banner-logo">
+  <h1 class="sr-only">Geo Abijahrgang 2002 – Kontaktliste</h1>
+  <p><span class="stern" aria-hidden="true">★</span>Trag deine Adresse und Kontaktdaten ein – alle sehen die Liste live.<span class="stern" aria-hidden="true">★</span></p>
   <div id="sync-status"><span id="sync-dot"></span><span id="sync-text">Verbindet…</span></div>
 </header>
 
@@ -110,8 +122,8 @@
     <table>
       <thead>
         <tr>
-          <th>Vorname</th><th>Name</th><th>Straße</th><th>PLZ</th><th>Wohnort</th>
-          <th>Vorwahl</th><th>Telefonnummer</th><th>E-Mail</th><th></th>
+          <th>Vorname</th><th>Name</th><th>Mädchenname</th><th>Straße</th><th>PLZ</th><th>Wohnort</th>
+          <th>Telefonnummer</th><th>E-Mail</th><th></th>
         </tr>
       </thead>
       <tbody id="tabellen-koerper">
@@ -128,8 +140,8 @@
   const API     = 'https://kolosseum.lehrer-herrmann.de/api/geo-abi2002';
   const SECRET  = 'geo-abi2002-klassentreffen';
   const HEADERS = { 'Content-Type': 'application/json', 'x-geo-abi2002-secret': SECRET };
-  const SPALTEN = ['vorname', 'nachname', 'strasse', 'plz', 'wohnort', 'vorwahl', 'telefonnummer', 'email'];
-  const LABELS  = { vorname: 'Vorname', nachname: 'Name', strasse: 'Straße', plz: 'PLZ', wohnort: 'Wohnort', vorwahl: 'Vorwahl', telefonnummer: 'Telefonnummer', email: 'E-Mail' };
+  const SPALTEN = ['vorname', 'nachname', 'maedchenname', 'strasse', 'plz', 'wohnort', 'telefonnummer', 'email'];
+  const LABELS  = { vorname: 'Vorname', nachname: 'Name', maedchenname: 'Mädchenname', strasse: 'Straße', plz: 'PLZ', wohnort: 'Wohnort', telefonnummer: 'Telefonnummer', email: 'E-Mail' };
 
   let zeilen = [];
   let bearbeiteId = null;
@@ -158,15 +170,10 @@
       const res = await fetch(API, { headers: HEADERS });
       if (!res.ok) throw new Error(res.status);
       const daten = await res.json();
-      if (bearbeiteId == null) {
-        zeilen = daten;
-        render();
-      } else {
-        // Während des Bearbeitens: Daten im Hintergrund aktualisieren, aber die gerade
-        // bearbeitete Zeile nicht überschreiben, damit keine Eingabe verloren geht.
-        zeilen = daten.map(z => z.id === bearbeiteId ? (zeilen.find(a => a.id === bearbeiteId) || z) : z);
-        render();
-      }
+      zeilen = daten;
+      // Während des Bearbeitens wird die Tabelle nicht neu gerendert, damit die gerade
+      // eingetippten Werte nicht durch das automatische Nachladen überschrieben werden.
+      if (bearbeiteId == null) render();
       syncStatus('ok', 'Verbunden · ' + zeilen.length + ' Einträge');
     } catch (e) {
       syncStatus('err', 'Keine Verbindung – bitte neu laden');
@@ -175,7 +182,7 @@
 
   function zeileHtml(z) {
     const istBearbeitet = z.id === bearbeiteId;
-    const istLeer = !z.nachname && !z.strasse && !z.plz && !z.wohnort && !z.vorwahl && !z.telefonnummer && !z.email;
+    const istLeer = !z.nachname && !z.maedchenname && !z.strasse && !z.plz && !z.wohnort && !z.telefonnummer && !z.email;
     const klassen = [istLeer && !istBearbeitet ? 'leere-zeile' : ''].filter(Boolean).join(' ');
 
     if (istBearbeitet) {
