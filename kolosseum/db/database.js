@@ -165,15 +165,34 @@ db.exec(`
     id            INTEGER PRIMARY KEY AUTOINCREMENT,
     vorname       TEXT NOT NULL,
     nachname      TEXT NOT NULL DEFAULT '',
+    maedchenname  TEXT NOT NULL DEFAULT '',
     strasse       TEXT NOT NULL DEFAULT '',
     plz           TEXT NOT NULL DEFAULT '',
     wohnort       TEXT NOT NULL DEFAULT '',
-    vorwahl       TEXT NOT NULL DEFAULT '',
     telefonnummer TEXT NOT NULL DEFAULT '',
     email         TEXT NOT NULL DEFAULT '',
     updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP
   )
 `);
+
+// Migration: Mädchenname-Spalte nachrüsten + Vorwahl in Telefonnummer zusammenführen
+// (betrifft die bereits live geseedete Tabelle aus der ersten Version dieser Seite)
+const geoAbiCols = db.prepare('PRAGMA table_info(geo_abi2002)').all().map(c => c.name);
+if (!geoAbiCols.includes('maedchenname')) {
+  db.exec("ALTER TABLE geo_abi2002 ADD COLUMN maedchenname TEXT NOT NULL DEFAULT ''");
+}
+if (geoAbiCols.includes('vorwahl')) {
+  const zeilenMitVorwahl = db.prepare("SELECT id, vorwahl, telefonnummer FROM geo_abi2002 WHERE vorwahl != ''").all();
+  const updateTel = db.prepare('UPDATE geo_abi2002 SET telefonnummer = ? WHERE id = ?');
+  zeilenMitVorwahl.forEach((z) => {
+    updateTel.run([z.vorwahl, z.telefonnummer].filter(Boolean).join(' ').trim(), z.id);
+  });
+  try {
+    db.exec('ALTER TABLE geo_abi2002 DROP COLUMN vorwahl');
+  } catch (e) {
+    console.error('Konnte vorwahl-Spalte nicht entfernen (ältere SQLite-Version?):', e);
+  }
+}
 
 if (db.prepare('SELECT COUNT(*) AS n FROM geo_abi2002').get().n === 0) {
   const geoAbiStartliste = [
@@ -182,14 +201,14 @@ if (db.prepare('SELECT COUNT(*) AS n FROM geo_abi2002').get().n === 0) {
     'Matthias', 'Niklas', 'Anne-Catharine', 'Ann-Kathrien', 'Daniel', 'Adrian',
     'Meike', 'Jan Thomas', 'Sonja', 'Jenny', 'Christoph', 'Anja', 'Anna-Lea',
     'Christiane',
-    { vorname: 'Imke', nachname: 'zur Lage', strasse: 'Carl-von-Ossietzky Str.', plz: '49082', wohnort: 'Osnabrück', vorwahl: '0176', telefonnummer: '24725996', email: 'imkezurlage@gmail.com' },
+    { vorname: 'Imke', nachname: 'zur Lage', strasse: 'Carl-von-Ossietzky Str.', plz: '49082', wohnort: 'Osnabrück', telefonnummer: '0176 24725996', email: 'imkezurlage@gmail.com' },
     'Janna', 'Janina', 'Pascal', 'Lena', 'Christina', 'Cornelia', 'Jule-Fee',
     'Jeremy', 'Nikola', 'Verena', 'Bea', 'Verena', 'Alexandra', 'Jens', 'Rene',
     'Kirsten', 'Kristina', 'Stefan', 'Linus', 'Jona', 'Mathias', 'Michiko',
     'Jan', 'Ayla', 'Sebastian',
   ];
   const insertGeoAbiZeile = db.prepare(
-    `INSERT INTO geo_abi2002 (vorname, nachname, strasse, plz, wohnort, vorwahl, telefonnummer, email)
+    `INSERT INTO geo_abi2002 (vorname, nachname, maedchenname, strasse, plz, wohnort, telefonnummer, email)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
   );
   const geoAbiSeed = db.transaction((eintraege) => {
@@ -197,7 +216,7 @@ if (db.prepare('SELECT COUNT(*) AS n FROM geo_abi2002').get().n === 0) {
       if (typeof e === 'string') {
         insertGeoAbiZeile.run(e, '', '', '', '', '', '', '');
       } else {
-        insertGeoAbiZeile.run(e.vorname, e.nachname || '', e.strasse || '', e.plz || '', e.wohnort || '', e.vorwahl || '', e.telefonnummer || '', e.email || '');
+        insertGeoAbiZeile.run(e.vorname, e.nachname || '', e.maedchenname || '', e.strasse || '', e.plz || '', e.wohnort || '', e.telefonnummer || '', e.email || '');
       }
     });
   });

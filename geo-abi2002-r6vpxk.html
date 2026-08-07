@@ -110,8 +110,8 @@
     <table>
       <thead>
         <tr>
-          <th>Vorname</th><th>Name</th><th>Straße</th><th>PLZ</th><th>Wohnort</th>
-          <th>Vorwahl</th><th>Telefonnummer</th><th>E-Mail</th><th></th>
+          <th>Vorname</th><th>Name</th><th>Mädchenname</th><th>Straße</th><th>PLZ</th><th>Wohnort</th>
+          <th>Telefonnummer</th><th>E-Mail</th><th></th>
         </tr>
       </thead>
       <tbody id="tabellen-koerper">
@@ -128,8 +128,8 @@
   const API     = 'https://kolosseum.lehrer-herrmann.de/api/geo-abi2002';
   const SECRET  = 'geo-abi2002-klassentreffen';
   const HEADERS = { 'Content-Type': 'application/json', 'x-geo-abi2002-secret': SECRET };
-  const SPALTEN = ['vorname', 'nachname', 'strasse', 'plz', 'wohnort', 'vorwahl', 'telefonnummer', 'email'];
-  const LABELS  = { vorname: 'Vorname', nachname: 'Name', strasse: 'Straße', plz: 'PLZ', wohnort: 'Wohnort', vorwahl: 'Vorwahl', telefonnummer: 'Telefonnummer', email: 'E-Mail' };
+  const SPALTEN = ['vorname', 'nachname', 'maedchenname', 'strasse', 'plz', 'wohnort', 'telefonnummer', 'email'];
+  const LABELS  = { vorname: 'Vorname', nachname: 'Name', maedchenname: 'Mädchenname', strasse: 'Straße', plz: 'PLZ', wohnort: 'Wohnort', telefonnummer: 'Telefonnummer', email: 'E-Mail' };
 
   let zeilen = [];
   let bearbeiteId = null;
@@ -158,15 +158,10 @@
       const res = await fetch(API, { headers: HEADERS });
       if (!res.ok) throw new Error(res.status);
       const daten = await res.json();
-      if (bearbeiteId == null) {
-        zeilen = daten;
-        render();
-      } else {
-        // Während des Bearbeitens: Daten im Hintergrund aktualisieren, aber die gerade
-        // bearbeitete Zeile nicht überschreiben, damit keine Eingabe verloren geht.
-        zeilen = daten.map(z => z.id === bearbeiteId ? (zeilen.find(a => a.id === bearbeiteId) || z) : z);
-        render();
-      }
+      zeilen = daten;
+      // Während des Bearbeitens wird die Tabelle nicht neu gerendert, damit die gerade
+      // eingetippten Werte nicht durch das automatische Nachladen überschrieben werden.
+      if (bearbeiteId == null) render();
       syncStatus('ok', 'Verbunden · ' + zeilen.length + ' Einträge');
     } catch (e) {
       syncStatus('err', 'Keine Verbindung – bitte neu laden');
@@ -175,7 +170,7 @@
 
   function zeileHtml(z) {
     const istBearbeitet = z.id === bearbeiteId;
-    const istLeer = !z.nachname && !z.strasse && !z.plz && !z.wohnort && !z.vorwahl && !z.telefonnummer && !z.email;
+    const istLeer = !z.nachname && !z.maedchenname && !z.strasse && !z.plz && !z.wohnort && !z.telefonnummer && !z.email;
     const klassen = [istLeer && !istBearbeitet ? 'leere-zeile' : ''].filter(Boolean).join(' ');
 
     if (istBearbeitet) {
