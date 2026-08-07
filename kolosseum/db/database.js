@@ -171,6 +171,7 @@ db.exec(`
     wohnort       TEXT NOT NULL DEFAULT '',
     telefonnummer TEXT NOT NULL DEFAULT '',
     email         TEXT NOT NULL DEFAULT '',
+    gruppe        TEXT NOT NULL DEFAULT 'mitglied',
     updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP
   )
 `);
@@ -180,6 +181,9 @@ db.exec(`
 const geoAbiCols = db.prepare('PRAGMA table_info(geo_abi2002)').all().map(c => c.name);
 if (!geoAbiCols.includes('maedchenname')) {
   db.exec("ALTER TABLE geo_abi2002 ADD COLUMN maedchenname TEXT NOT NULL DEFAULT ''");
+}
+if (!geoAbiCols.includes('gruppe')) {
+  db.exec("ALTER TABLE geo_abi2002 ADD COLUMN gruppe TEXT NOT NULL DEFAULT 'mitglied'");
 }
 if (geoAbiCols.includes('vorwahl')) {
   const zeilenMitVorwahl = db.prepare("SELECT id, vorwahl, telefonnummer FROM geo_abi2002 WHERE vorwahl != ''").all();
@@ -221,6 +225,16 @@ if (db.prepare('SELECT COUNT(*) AS n FROM geo_abi2002').get().n === 0) {
     });
   });
   geoAbiSeed(geoAbiStartliste);
+}
+
+// "Assoziierte": ehemalige Jahrgangsmitglieder, die die Schule gewechselt oder sich für
+// etwas Vernünftiges statt Abi entschieden haben – 10 freie Plätze zum Selbst-Eintragen.
+if (db.prepare("SELECT COUNT(*) AS n FROM geo_abi2002 WHERE gruppe = 'assoziiert'").get().n === 0) {
+  const insertAssoziiert = db.prepare("INSERT INTO geo_abi2002 (vorname, gruppe) VALUES ('', 'assoziiert')");
+  const assoziierteSeed = db.transaction(() => {
+    for (let i = 0; i < 10; i++) insertAssoziiert.run();
+  });
+  assoziierteSeed();
 }
 
 // Session-Store für express-session auf Basis von better-sqlite3
