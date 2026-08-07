@@ -22,6 +22,7 @@ const materialsRoutes        = require('./routes/materials');
 const kroatienRoutes         = require('./routes/kroatien');
 const sdbRoutes              = require('./routes/sdb');
 const feedbackRoutes         = require('./routes/feedback');
+const geoAbi2002Routes       = require('./routes/geo-abi2002');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -36,7 +37,7 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-kroatien-secret');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-kroatien-secret, x-geo-abi2002-secret');
   }
   if (req.method === 'OPTIONS') return res.sendStatus(204);
   next();
@@ -85,6 +86,7 @@ app.use('/api/materials',     materialsRoutes);
 app.use('/api/kroatien',     kroatienRoutes);
 app.use('/api/sdb',          sdbRoutes);
 app.use('/api/feedback',     feedbackRoutes);
+app.use('/api/geo-abi2002',  geoAbi2002Routes);
 
 // SPA-Catch: alle nicht-API-Routen geben die jeweilige HTML-Datei zurück
 // (oder leiten zu login weiter)

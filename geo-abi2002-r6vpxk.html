@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Geo Abijahrgang 2002 – Kontaktliste</title>
+<style>
+  :root {
+    --primaer: #1e3a5f;
+    --primaer-hell: #2d6a9f;
+    --akzent: #4a9eda;
+    --bg: #f4f6f9;
+    --weiss: #ffffff;
+    --text: #222;
+    --text-hell: #64748b;
+    --rahmen: #e2e8f0;
+    --gruen: #2ecc71;
+    --rot: #e74c3c;
+    --schatten: 0 2px 12px rgba(0,0,0,0.08);
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 60px; }
+
+  header {
+    background: linear-gradient(135deg, var(--primaer) 0%, var(--primaer-hell) 100%);
+    color: #fff; padding: 28px 20px 20px; text-align: center;
+    position: sticky; top: 0; z-index: 100; box-shadow: 0 3px 16px rgba(0,0,0,0.18);
+  }
+  header h1 { font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 800; }
+  header p { font-size: 0.9rem; opacity: 0.85; margin-top: 6px; }
+  #sync-status { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; margin-top: 10px; opacity: 0.85; }
+  #sync-dot { width: 8px; height: 8px; border-radius: 50%; background: #aaa; transition: background 0.3s; }
+  #sync-dot.ok { background: var(--gruen); }
+  #sync-dot.err { background: var(--rot); }
+  #sync-dot.busy { background: #f5c518; }
+
+  main { max-width: 1100px; margin: 24px auto; padding: 0 14px; }
+
+  .hinweis {
+    background: #fff8e1; border: 1px solid #f0d98c; border-radius: var(--radius);
+    padding: 12px 16px; font-size: 0.85rem; color: #6b5713; margin-bottom: 18px;
+  }
+
+  .tabelle-karte {
+    background: var(--weiss); border-radius: var(--radius); box-shadow: var(--schatten);
+    overflow-x: auto;
+  }
+  table { width: 100%; border-collapse: collapse; min-width: 900px; }
+  thead th {
+    text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--text-hell); padding: 12px 10px; border-bottom: 2px solid var(--rahmen); white-space: nowrap;
+  }
+  tbody td { padding: 8px 10px; border-bottom: 1px solid var(--rahmen); font-size: 0.9rem; vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr.eigene-zeile { background: #eef6ff; }
+  tbody tr.leere-zeile td:not(.spalte-vorname):not(.spalte-aktion) { color: var(--text-hell); }
+
+  .zell-input {
+    width: 100%; min-width: 90px; padding: 6px 8px; border: 1px solid var(--akzent);
+    border-radius: 6px; font-size: 0.85rem; font-family: inherit;
+  }
+  .zell-input:focus { outline: 2px solid var(--akzent); outline-offset: 1px; }
+
+  .btn { padding: 7px 14px; border-radius: 8px; border: none; font-size: 0.8rem; font-weight: 700; cursor: pointer; white-space: nowrap; transition: transform 0.1s; }
+  .btn:active { transform: scale(0.96); }
+  .btn-bearbeiten { background: var(--akzent); color: #fff; }
+  .btn-speichern { background: var(--gruen); color: #fff; margin-right: 6px; }
+  .btn-abbrechen { background: #e2e8f0; color: var(--text); }
+
+  #toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--primaer); color: #fff; padding: 12px 22px; border-radius: 8px;
+    font-size: 0.9rem; opacity: 0; pointer-events: none; transition: all 0.3s; box-shadow: var(--schatten); z-index: 999;
+  }
+  #toast.zeigen { opacity: 1; transform: translateX(-50%) translateY(0); }
+  #toast.fehler { background: var(--rot); }
+
+  @media (max-width: 720px) {
+    .tabelle-karte { box-shadow: none; background: none; overflow-x: visible; }
+    table, thead, tbody, tr, td { display: block; width: 100%; min-width: 0; }
+    thead { display: none; }
+    tbody tr {
+      background: var(--weiss); border-radius: var(--radius); box-shadow: var(--schatten);
+      margin-bottom: 14px; padding: 10px 14px;
+    }
+    tbody td { border-bottom: none; padding: 6px 0; display: flex; justify-content: space-between; gap: 10px; align-items: center; }
+    tbody td::before { content: attr(data-label); font-size: 0.72rem; text-transform: uppercase; color: var(--text-hell); font-weight: 700; flex-shrink: 0; }
+    tbody td.spalte-vorname { font-weight: 800; font-size: 1.05rem; }
+    tbody td.spalte-vorname::before { content: ''; }
+    .zell-input { max-width: 60%; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🎓 Geo Abijahrgang 2002 – Kontaktliste</h1>
+  <p>Trag deine Adresse und Kontaktdaten ein – alle sehen die Liste live.</p>
+  <div id="sync-status"><span id="sync-dot"></span><span id="sync-text">Verbindet…</span></div>
+</header>
+
+<main>
+  <div class="hinweis">
+    ℹ️ Diese Liste ist nur über diesen Link erreichbar. Jede*r mit dem Link kann Einträge lesen und bearbeiten – bitte den Link nur innerhalb des Jahrgangs weitergeben.
+  </div>
+
+  <div class="tabelle-karte">
+    <table>
+      <thead>
+        <tr>
+          <th>Vorname</th><th>Name</th><th>Straße</th><th>PLZ</th><th>Wohnort</th>
+          <th>Vorwahl</th><th>Telefonnummer</th><th>E-Mail</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="tabellen-koerper">
+        <tr><td colspan="9" style="text-align:center;padding:30px;color:var(--text-hell)">Lädt…</td></tr>
+      </tbody>
+    </table>
+  </div>
+</main>
+
+<div id="toast"></div>
+
+<script>
+(function () {
+  const API     = 'https://kolosseum.lehrer-herrmann.de/api/geo-abi2002';
+  const SECRET  = 'geo-abi2002-klassentreffen';
+  const HEADERS = { 'Content-Type': 'application/json', 'x-geo-abi2002-secret': SECRET };
+  const SPALTEN = ['vorname', 'nachname', 'strasse', 'plz', 'wohnort', 'vorwahl', 'telefonnummer', 'email'];
+  const LABELS  = { vorname: 'Vorname', nachname: 'Name', strasse: 'Straße', plz: 'PLZ', wohnort: 'Wohnort', vorwahl: 'Vorwahl', telefonnummer: 'Telefonnummer', email: 'E-Mail' };
+
+  let zeilen = [];
+  let bearbeiteId = null;
+  let ladeTimer = null;
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function syncStatus(modus, text) {
+    document.getElementById('sync-dot').className = modus;
+    document.getElementById('sync-text').textContent = text;
+  }
+
+  function toast(text, istFehler) {
+    const el = document.getElementById('toast');
+    el.textContent = text;
+    el.className = 'zeigen' + (istFehler ? ' fehler' : '');
+    clearTimeout(el._timer);
+    el._timer = setTimeout(() => { el.className = ''; }, 2600);
+  }
+
+  async function laden(stumm) {
+    if (!stumm) syncStatus('busy', 'Lädt…');
+    try {
+      const res = await fetch(API, { headers: HEADERS });
+      if (!res.ok) throw new Error(res.status);
+      const daten = await res.json();
+      if (bearbeiteId == null) {
+        zeilen = daten;
+        render();
+      } else {
+        // Während des Bearbeitens: Daten im Hintergrund aktualisieren, aber die gerade
+        // bearbeitete Zeile nicht überschreiben, damit keine Eingabe verloren geht.
+        zeilen = daten.map(z => z.id === bearbeiteId ? (zeilen.find(a => a.id === bearbeiteId) || z) : z);
+        render();
+      }
+      syncStatus('ok', 'Verbunden · ' + zeilen.length + ' Einträge');
+    } catch (e) {
+      syncStatus('err', 'Keine Verbindung – bitte neu laden');
+    }
+  }
+
+  function zeileHtml(z) {
+    const istBearbeitet = z.id === bearbeiteId;
+    const istLeer = !z.nachname && !z.strasse && !z.plz && !z.wohnort && !z.vorwahl && !z.telefonnummer && !z.email;
+    const klassen = [istLeer && !istBearbeitet ? 'leere-zeile' : ''].filter(Boolean).join(' ');
+
+    if (istBearbeitet) {
+      const felder = SPALTEN.map(sp =>
+        `<td data-label="${esc(LABELS[sp])}"><input class="zell-input" data-feld="${sp}" value="${esc(z[sp])}" maxlength="100"></td>`
+      ).join('');
+      return `<tr class="${klassen}" data-id="${z.id}">${felder}
+        <td class="spalte-aktion" data-label="">
+          <button class="btn btn-speichern" data-aktion="speichern" data-id="${z.id}">✅ Speichern</button>
+          <button class="btn btn-abbrechen" data-aktion="abbrechen">Abbrechen</button>
+        </td></tr>`;
+    }
+
+    const zellen = SPALTEN.map(sp =>
+      `<td class="${sp === 'vorname' ? 'spalte-vorname' : ''}" data-label="${esc(LABELS[sp])}">${esc(z[sp]) || (sp === 'vorname' ? '' : '–')}</td>`
+    ).join('');
+    return `<tr class="${klassen}" data-id="${z.id}">${zellen}
+      <td class="spalte-aktion" data-label="">
+        <button class="btn btn-bearbeiten" data-aktion="bearbeiten" data-id="${z.id}">✏️ Bearbeiten</button>
+      </td></tr>`;
+  }
+
+  function render() {
+    const koerper = document.getElementById('tabellen-koerper');
+    if (!zeilen.length) {
+      koerper.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--text-hell)">Noch keine Einträge.</td></tr>';
+      return;
+    }
+    koerper.innerHTML = zeilen.map(zeileHtml).join('');
+  }
+
+  async function speichern(id) {
+    const zeile = document.querySelector('tr[data-id="' + id + '"]');
+    if (!zeile) return;
+    const werte = {};
+    zeile.querySelectorAll('[data-feld]').forEach(inp => { werte[inp.dataset.feld] = inp.value; });
+
+    if (!werte.vorname || !werte.vorname.trim()) {
+      toast('Vorname darf nicht leer sein.', true);
+      return;
+    }
+
+    try {
+      const res = await fetch(API + '/' + id, { method: 'PUT', headers: HEADERS, body: JSON.stringify(werte) });
+      if (!res.ok) throw new Error(res.status);
+      bearbeiteId = null;
+      toast('Gespeichert ✅');
+      await laden(true);
+    } catch (e) {
+      toast('Speichern fehlgeschlagen – bitte erneut versuchen.', true);
+    }
+  }
+
+  document.getElementById('tabellen-koerper').addEventListener('click', (ev) => {
+    const btn = ev.target.closest('button[data-aktion]');
+    if (!btn) return;
+    const aktion = btn.dataset.aktion;
+
+    if (aktion === 'bearbeiten') {
+      bearbeiteId = parseInt(btn.dataset.id, 10);
+      render();
+      const erstesFeld = document.querySelector('tr[data-id="' + bearbeiteId + '"] .zell-input');
+      if (erstesFeld) erstesFeld.focus();
+    } else if (aktion === 'abbrechen') {
+      bearbeiteId = null;
+      render();
+    } else if (aktion === 'speichern') {
+      speichern(parseInt(btn.dataset.id, 10));
+    }
+  });
+
+  laden();
+  ladeTimer = setInterval(() => laden(true), 8000);
+  window.addEventListener('beforeunload', () => clearInterval(ladeTimer));
+})();
+</script>
+
+</body>
+</html>
