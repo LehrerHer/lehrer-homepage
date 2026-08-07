@@ -21,15 +21,26 @@
     --radius: 10px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 60px; }
+  body {
+    font-family: system-ui, -apple-system, sans-serif; color: var(--text); min-height: 100vh; padding-bottom: 60px;
+    background-color: var(--bg);
+    background-image: url('img/bgmainxxl.gif');
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: cover;
+    background-attachment: fixed;
+  }
 
   header {
     background: linear-gradient(135deg, var(--primaer) 0%, var(--primaer-hell) 100%);
-    color: #fff; padding: 28px 20px 20px; text-align: center;
+    color: #fff; padding: 22px 20px 20px; text-align: center;
     position: sticky; top: 0; z-index: 100; box-shadow: 0 3px 16px rgba(0,0,0,0.18);
   }
+  header .banner-logo { max-width: 340px; width: 100%; height: auto; display: block; margin: 0 auto 10px; }
   header h1 { font-size: clamp(1.2rem, 4vw, 1.8rem); font-weight: 800; }
-  header p { font-size: 0.9rem; opacity: 0.85; margin-top: 6px; }
+  header .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+  header p { font-size: 0.9rem; opacity: 0.85; margin-top: 6px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+  header p .stern { color: #f5c518; font-size: 0.8rem; }
   #sync-status { display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; margin-top: 10px; opacity: 0.85; }
   #sync-dot { width: 8px; height: 8px; border-radius: 50%; background: #aaa; transition: background 0.3s; }
   #sync-dot.ok { background: var(--gruen); }
@@ -96,8 +107,9 @@
 <body>
 
 <header>
-  <h1>🎓 Geo Abijahrgang 2002 – Kontaktliste</h1>
-  <p>Trag deine Adresse und Kontaktdaten ein – alle sehen die Liste live.</p>
+  <img src="img/Abistars%20header.png" alt="ABISTARS 2002" class="banner-logo">
+  <h1 class="sr-only">Geo Abijahrgang 2002 – Kontaktliste</h1>
+  <p><span class="stern" aria-hidden="true">★</span>Trag deine Adresse und Kontaktdaten ein – alle sehen die Liste live.<span class="stern" aria-hidden="true">★</span></p>
   <div id="sync-status"><span id="sync-dot"></span><span id="sync-text">Verbindet…</span></div>
 </header>
 
