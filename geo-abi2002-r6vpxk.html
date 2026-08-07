@@ -47,7 +47,7 @@
   #sync-dot.err { background: var(--rot); }
   #sync-dot.busy { background: #f5c518; }
 
-  main { max-width: 1100px; margin: 24px auto; padding: 0 14px; }
+  main { max-width: min(1700px, 96vw); margin: 24px auto; padding: 0 14px; }
 
   .hinweis {
     background: #fff8e1; border: 1px solid #f0d98c; border-radius: var(--radius);
@@ -297,6 +297,13 @@
   }
   kopfHoeheSetzen();
   window.addEventListener('resize', kopfHoeheSetzen);
+
+  // Fokussiertes Eingabefeld horizontal in die Mitte scrollen, damit bei der breiten
+  // Tabelle immer noch eine weitere Spalte rechts (und links) daneben sichtbar bleibt.
+  document.getElementById('tabellen-koerper').addEventListener('focusin', (ev) => {
+    const feld = ev.target.closest('.zell-input');
+    if (feld) feld.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  });
 
   laden();
   ladeTimer = setInterval(() => laden(true), 8000);

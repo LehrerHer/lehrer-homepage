@@ -241,6 +241,27 @@ if (db.prepare("SELECT COUNT(*) AS n FROM geo_abi2002 WHERE gruppe = 'assoziiert
   assoziierteSeed();
 }
 
+// Sortier-Position für gezielte Einfügungen (z. B. "Johannes zwischen Janina und Lena")
+// unabhängig von der Insert-Reihenfolge/id. Bestehende Zeilen behalten ihre bisherige
+// Reihenfolge, da position beim Nachrüsten mit der id vorbelegt wird.
+const geoAbiColsPos = db.prepare('PRAGMA table_info(geo_abi2002)').all().map(c => c.name);
+if (!geoAbiColsPos.includes('position')) {
+  db.exec('ALTER TABLE geo_abi2002 ADD COLUMN position REAL');
+  db.exec('UPDATE geo_abi2002 SET position = id WHERE position IS NULL');
+}
+
+// Johannes zwischen Janina und Lena einfügen (einmalig)
+if (!db.prepare("SELECT id FROM geo_abi2002 WHERE vorname = 'Johannes' AND gruppe = 'mitglied'").get()) {
+  const janina = db.prepare("SELECT position FROM geo_abi2002 WHERE vorname = 'Janina' AND gruppe = 'mitglied'").get();
+  if (janina) {
+    const naechste = db.prepare(
+      'SELECT MIN(position) AS pos FROM geo_abi2002 WHERE gruppe = ? AND position > ?'
+    ).get('mitglied', janina.position);
+    const neuePosition = naechste && naechste.pos != null ? (janina.position + naechste.pos) / 2 : janina.position + 0.5;
+    db.prepare("INSERT INTO geo_abi2002 (vorname, gruppe, position) VALUES ('Johannes', 'mitglied', ?)").run(neuePosition);
+  }
+}
+
 // Session-Store für express-session auf Basis von better-sqlite3
 class SQLiteSessionStore {
   constructor(session) {
