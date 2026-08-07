@@ -67,6 +67,12 @@
   tbody tr:last-child td { border-bottom: none; }
   tbody tr.eigene-zeile { background: #eef6ff; }
   tbody tr.leere-zeile td:not(.spalte-vorname):not(.spalte-aktion) { color: var(--text-hell); }
+  .platz-frei { color: var(--text-hell); font-style: italic; font-weight: 400; }
+
+  tr.gruppen-trenner td {
+    background: linear-gradient(135deg, var(--primaer) 0%, var(--primaer-hell) 100%);
+    color: #fff; font-weight: 700; text-align: center; padding: 12px 16px; font-size: 0.82rem; border-bottom: none;
+  }
 
   .zell-input {
     width: 100%; min-width: 90px; padding: 6px 8px; border: 1px solid var(--akzent);
@@ -101,6 +107,11 @@
     tbody td.spalte-vorname { font-weight: 800; font-size: 1.05rem; }
     tbody td.spalte-vorname::before { content: ''; }
     .zell-input { max-width: 60%; }
+    tbody tr.gruppen-trenner { background: none; box-shadow: none; padding: 0; margin-bottom: 10px; }
+    tbody tr.gruppen-trenner td {
+      display: block; border-radius: var(--radius); text-align: center;
+      background: linear-gradient(135deg, var(--primaer) 0%, var(--primaer-hell) 100%); color: #fff;
+    }
   }
 </style>
 </head>
@@ -196,13 +207,20 @@
         </td></tr>`;
     }
 
-    const zellen = SPALTEN.map(sp =>
-      `<td class="${sp === 'vorname' ? 'spalte-vorname' : ''}" data-label="${esc(LABELS[sp])}">${esc(z[sp]) || (sp === 'vorname' ? '' : '–')}</td>`
-    ).join('');
+    const zellen = SPALTEN.map((sp) => {
+      const wert = esc(z[sp]);
+      let inhalt = wert || (sp === 'vorname' ? '<span class="platz-frei">frei – bitte eintragen</span>' : '–');
+      return `<td class="${sp === 'vorname' ? 'spalte-vorname' : ''}" data-label="${esc(LABELS[sp])}">${inhalt}</td>`;
+    }).join('');
     return `<tr class="${klassen}" data-id="${z.id}">${zellen}
       <td class="spalte-aktion" data-label="">
         <button class="btn btn-bearbeiten" data-aktion="bearbeiten" data-id="${z.id}">✏️ Bearbeiten</button>
       </td></tr>`;
+  }
+
+  function gruppenTrennerHtml(gruppe) {
+    if (gruppe !== 'assoziiert') return '';
+    return '<tr class="gruppen-trenner"><td colspan="9">🎓 Assoziierte – ehemalige Jahrgangsmitglieder, die die Schule gewechselt oder sich für etwas Vernünftiges statt Abi entschieden haben</td></tr>';
   }
 
   function render() {
@@ -211,7 +229,16 @@
       koerper.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--text-hell)">Noch keine Einträge.</td></tr>';
       return;
     }
-    koerper.innerHTML = zeilen.map(zeileHtml).join('');
+    let html = '';
+    let letzteGruppe = null;
+    zeilen.forEach((z) => {
+      if (z.gruppe !== letzteGruppe) {
+        html += gruppenTrennerHtml(z.gruppe);
+        letzteGruppe = z.gruppe;
+      }
+      html += zeileHtml(z);
+    });
+    koerper.innerHTML = html;
   }
 
   async function speichern(id) {

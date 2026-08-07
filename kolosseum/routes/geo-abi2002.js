@@ -19,7 +19,7 @@ const limiter = rateLimit({ windowMs: 60 * 1000, max: 30, standardHeaders: true,
 router.get('/', checkSecret, (req, res) => {
   try {
     const rows = db.prepare(
-      `SELECT id, vorname, nachname, maedchenname, strasse, plz, wohnort, telefonnummer, email, updated_at
+      `SELECT id, vorname, nachname, maedchenname, strasse, plz, wohnort, telefonnummer, email, gruppe, updated_at
        FROM geo_abi2002 ORDER BY id`
     ).all();
     res.json(rows);
