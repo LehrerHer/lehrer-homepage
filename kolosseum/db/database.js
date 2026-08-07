@@ -158,6 +158,52 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_feedback_pending_group ON feedback_pending_notes(group_id);
 `);
 
+// Geo Abijahrgang 2002: Kontaktliste fürs Klassentreffen – kein Login,
+// Zugriff nur über Geheimlink + Shared-Secret-Header (siehe routes/geo-abi2002.js)
+db.exec(`
+  CREATE TABLE IF NOT EXISTS geo_abi2002 (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
+    vorname       TEXT NOT NULL,
+    nachname      TEXT NOT NULL DEFAULT '',
+    strasse       TEXT NOT NULL DEFAULT '',
+    plz           TEXT NOT NULL DEFAULT '',
+    wohnort       TEXT NOT NULL DEFAULT '',
+    vorwahl       TEXT NOT NULL DEFAULT '',
+    telefonnummer TEXT NOT NULL DEFAULT '',
+    email         TEXT NOT NULL DEFAULT '',
+    updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP
+  )
+`);
+
+if (db.prepare('SELECT COUNT(*) AS n FROM geo_abi2002').get().n === 0) {
+  const geoAbiStartliste = [
+    'Nina', 'Yvonne', 'Anna', 'Angela', 'Geeske', 'Helle', 'Vanessa', 'Julian',
+    'Wiebke', 'Alexander', 'Robert', 'Anna-Carina', 'Katja', 'Thomas', 'Gesche',
+    'Matthias', 'Niklas', 'Anne-Catharine', 'Ann-Kathrien', 'Daniel', 'Adrian',
+    'Meike', 'Jan Thomas', 'Sonja', 'Jenny', 'Christoph', 'Anja', 'Anna-Lea',
+    'Christiane',
+    { vorname: 'Imke', nachname: 'zur Lage', strasse: 'Carl-von-Ossietzky Str.', plz: '49082', wohnort: 'Osnabrück', vorwahl: '0176', telefonnummer: '24725996', email: 'imkezurlage@gmail.com' },
+    'Janna', 'Janina', 'Pascal', 'Lena', 'Christina', 'Cornelia', 'Jule-Fee',
+    'Jeremy', 'Nikola', 'Verena', 'Bea', 'Verena', 'Alexandra', 'Jens', 'Rene',
+    'Kirsten', 'Kristina', 'Stefan', 'Linus', 'Jona', 'Mathias', 'Michiko',
+    'Jan', 'Ayla', 'Sebastian',
+  ];
+  const insertGeoAbiZeile = db.prepare(
+    `INSERT INTO geo_abi2002 (vorname, nachname, strasse, plz, wohnort, vorwahl, telefonnummer, email)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+  );
+  const geoAbiSeed = db.transaction((eintraege) => {
+    eintraege.forEach((e) => {
+      if (typeof e === 'string') {
+        insertGeoAbiZeile.run(e, '', '', '', '', '', '', '');
+      } else {
+        insertGeoAbiZeile.run(e.vorname, e.nachname || '', e.strasse || '', e.plz || '', e.wohnort || '', e.vorwahl || '', e.telefonnummer || '', e.email || '');
+      }
+    });
+  });
+  geoAbiSeed(geoAbiStartliste);
+}
+
 // Session-Store für express-session auf Basis von better-sqlite3
 class SQLiteSessionStore {
   constructor(session) {
