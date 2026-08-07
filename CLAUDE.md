@@ -664,3 +664,49 @@ Nach der HTML-Ausgabe kurz angeben:
 - Welche Inhalte nicht eindeutig erkannt werden konnten
 - Ob Musterlösungen fehlen und nachgereicht werden sollten
 - Ob Annahmen über das Niveau getroffen wurden
+
+---
+
+## Fertige Quiz-HTML-Dateien hochladen (z. B. Rebus-Quiz-Generator)
+
+Für manche Materialien nutzt Jan Herrmann externe, lokal im Browser laufende Generator-Tools
+(z. B. den **Rebus-Quiz-Generator**), die bereits eine fertige, eigenständige HTML-Datei im
+lehrer-herrmann.de-Format erzeugen – inklusive optionaler Bestenlisten-/Kolosseum-Integration
+über `js/kolosseum-prompt.js`, `js/supabase-leaderboard.js` und `js/supabase-config.js`. Diese
+Datei wird **direkt im Chat an Claude Code hochgeladen** (nicht von Jan selbst ins Repo
+eingepflegt).
+
+**Verbindlicher Ablauf, wenn eine fertige Quiz-HTML-Datei hochgeladen wird:**
+
+1. **Datei ablegen** in `materialien/`. Dateiname möglichst an die Konvention
+   `fach_thema_klasse_JJJJ-MM.html` anpassen (Titel/Thema aus dem Generator-Inhalt ableiten,
+   falls kein Fach/Klasse erkennbar ist, sinnvolle Platzhalter wählen und im Workflow-Hinweis
+   nennen).
+2. **Prüfen, ob Bestenliste/Kolosseum aktiviert ist**: im HTML nach `kolosseumReport(`,
+   `leaderboardSave(` / `leaderboardFetch(` bzw. den Script-Includes `supabase-config.js` /
+   `supabase-leaderboard.js` / `kolosseum-prompt.js` suchen. Wenn vorhanden, die dort
+   verwendete **Quiz-ID** notieren (identischer String in allen Aufrufen, z. B.
+   `'familien-rebus'`).
+3. **Falls Bestenliste/Kolosseum aktiv → Quiz-ID in BEIDEN Backend-Whitelists registrieren**
+   (ohne diesen Schritt bleibt die Bestenliste leer bzw. wird kein XP vergeben – **und zwar
+   ohne sichtbare Fehlermeldung** für die Schüler*innen):
+   - `kolosseum/routes/leaderboard.js` → Array `VALID_QUIZZES`: die Quiz-ID ergänzen.
+   - `kolosseum/routes/external.js` → Array `VALID_SLUGS` **und** Objekt `QUIZ_LABELS`: die
+     Quiz-ID exakt (vollständiger String) plus ein sprechendes Label für den XP-Log ergänzen.
+   - **Hintergrund (beide Prüfungen sind unabhängig voneinander, deshalb immer beide
+     ergänzen):** `js/supabase-leaderboard.js` leitet für die Bestenliste die Basis-ID vor dem
+     ersten Bindestrich ab (`quiz.split('-')[0]`) und prüft diese per `startsWith` gegen
+     `VALID_QUIZZES` – die volle Quiz-ID trotzdem 1:1 eintragen, nicht auf zufällige
+     Präfix-Treffer verlassen. `js/kolosseum-prompt.js` → `POST /api/external/submit` prüft
+     dagegen die **volle** Quiz-ID exakt (kein Präfix-Matching) gegen `VALID_SLUGS`.
+4. **Verlinken** auf der passenden `fach-<fach>.html` in der Kategorie „Quizze".
+5. Optional: Eintrag in `neuigkeiten.json` bzw. `inhalte.json` für die „Was ist neu?"-Sektion,
+   falls gewünscht.
+6. **Falls Bestenliste/Kolosseum NICHT aktiviert ist**: Schritt 3 entfällt vollständig – die
+   Datei läuft komplett unabhängig vom Backend.
+7. **Git-Workflow wie immer** (siehe Abschnitt „Git — PFLICHTREGELN FÜR CLAUDE"): auf dem
+   zugewiesenen Feature-Branch arbeiten, committen, pushen, PR erstellen. Die
+   Backend-Whitelist-Änderungen (Schritt 3) gehören in denselben Commit/PR wie die neue
+   Materialdatei, da `kolosseum/` Teil desselben Repos ist. Nach dem Merge auf `main` deployt
+   der GitHub-Webhook automatisch (`git reset --hard origin/main && pm2 restart kolosseum`) –
+   kein manueller SSH-Schritt nötig.
