@@ -20,7 +20,7 @@ router.get('/', checkSecret, (req, res) => {
   try {
     const rows = db.prepare(
       `SELECT id, vorname, nachname, maedchenname, strasse, plz, wohnort, telefonnummer, social, email, gruppe, updated_at
-       FROM geo_abi2002 ORDER BY id`
+       FROM geo_abi2002 ORDER BY position, id`
     ).all();
     res.json(rows);
   } catch (e) {
