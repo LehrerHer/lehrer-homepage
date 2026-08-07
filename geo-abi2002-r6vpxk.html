@@ -298,6 +298,13 @@
   kopfHoeheSetzen();
   window.addEventListener('resize', kopfHoeheSetzen);
 
+  // Fokussiertes Eingabefeld horizontal in die Mitte scrollen, damit bei der breiten
+  // Tabelle immer noch eine weitere Spalte rechts (und links) daneben sichtbar bleibt.
+  document.getElementById('tabellen-koerper').addEventListener('focusin', (ev) => {
+    const feld = ev.target.closest('.zell-input');
+    if (feld) feld.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  });
+
   laden();
   ladeTimer = setInterval(() => laden(true), 8000);
   window.addEventListener('beforeunload', () => clearInterval(ladeTimer));
