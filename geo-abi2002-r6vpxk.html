@@ -134,11 +134,11 @@
       <thead>
         <tr>
           <th>Vorname</th><th>Name</th><th>Mädchenname</th><th>Straße</th><th>PLZ</th><th>Wohnort</th>
-          <th>Telefonnummer</th><th>E-Mail</th><th></th>
+          <th>Telefonnummer</th><th>ICQ/Insta/TikTok/usw.</th><th>E-Mail</th><th></th>
         </tr>
       </thead>
       <tbody id="tabellen-koerper">
-        <tr><td colspan="9" style="text-align:center;padding:30px;color:var(--text-hell)">Lädt…</td></tr>
+        <tr><td colspan="10" style="text-align:center;padding:30px;color:var(--text-hell)">Lädt…</td></tr>
       </tbody>
     </table>
   </div>
@@ -151,8 +151,8 @@
   const API     = 'https://kolosseum.lehrer-herrmann.de/api/geo-abi2002';
   const SECRET  = 'geo-abi2002-klassentreffen';
   const HEADERS = { 'Content-Type': 'application/json', 'x-geo-abi2002-secret': SECRET };
-  const SPALTEN = ['vorname', 'nachname', 'maedchenname', 'strasse', 'plz', 'wohnort', 'telefonnummer', 'email'];
-  const LABELS  = { vorname: 'Vorname', nachname: 'Name', maedchenname: 'Mädchenname', strasse: 'Straße', plz: 'PLZ', wohnort: 'Wohnort', telefonnummer: 'Telefonnummer', email: 'E-Mail' };
+  const SPALTEN = ['vorname', 'nachname', 'maedchenname', 'strasse', 'plz', 'wohnort', 'telefonnummer', 'social', 'email'];
+  const LABELS  = { vorname: 'Vorname', nachname: 'Name', maedchenname: 'Mädchenname', strasse: 'Straße', plz: 'PLZ', wohnort: 'Wohnort', telefonnummer: 'Telefonnummer', social: 'ICQ/Insta/TikTok/usw.', email: 'E-Mail' };
 
   let zeilen = [];
   let bearbeiteId = null;
@@ -193,7 +193,7 @@
 
   function zeileHtml(z) {
     const istBearbeitet = z.id === bearbeiteId;
-    const istLeer = !z.nachname && !z.maedchenname && !z.strasse && !z.plz && !z.wohnort && !z.telefonnummer && !z.email;
+    const istLeer = !z.nachname && !z.maedchenname && !z.strasse && !z.plz && !z.wohnort && !z.telefonnummer && !z.social && !z.email;
     const klassen = [istLeer && !istBearbeitet ? 'leere-zeile' : ''].filter(Boolean).join(' ');
 
     if (istBearbeitet) {
@@ -220,13 +220,13 @@
 
   function gruppenTrennerHtml(gruppe) {
     if (gruppe !== 'assoziiert') return '';
-    return '<tr class="gruppen-trenner"><td colspan="9">🎓 Assoziierte – ehemalige Jahrgangsmitglieder, die die Schule gewechselt oder sich für etwas Vernünftiges statt Abi entschieden haben</td></tr>';
+    return '<tr class="gruppen-trenner"><td colspan="10">🎓 Assoziierte – ehemalige Jahrgangsmitglieder, die die Schule gewechselt oder sich für etwas Vernünftiges statt Abi entschieden haben</td></tr>';
   }
 
   function render() {
     const koerper = document.getElementById('tabellen-koerper');
     if (!zeilen.length) {
-      koerper.innerHTML = '<tr><td colspan="9" style="text-align:center;padding:30px;color:var(--text-hell)">Noch keine Einträge.</td></tr>';
+      koerper.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:30px;color:var(--text-hell)">Noch keine Einträge.</td></tr>';
       return;
     }
     let html = '';
