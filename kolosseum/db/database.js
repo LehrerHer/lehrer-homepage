@@ -170,6 +170,7 @@ db.exec(`
     plz           TEXT NOT NULL DEFAULT '',
     wohnort       TEXT NOT NULL DEFAULT '',
     telefonnummer TEXT NOT NULL DEFAULT '',
+    social        TEXT NOT NULL DEFAULT '',
     email         TEXT NOT NULL DEFAULT '',
     gruppe        TEXT NOT NULL DEFAULT 'mitglied',
     updated_at    DATETIME DEFAULT CURRENT_TIMESTAMP
@@ -184,6 +185,9 @@ if (!geoAbiCols.includes('maedchenname')) {
 }
 if (!geoAbiCols.includes('gruppe')) {
   db.exec("ALTER TABLE geo_abi2002 ADD COLUMN gruppe TEXT NOT NULL DEFAULT 'mitglied'");
+}
+if (!geoAbiCols.includes('social')) {
+  db.exec("ALTER TABLE geo_abi2002 ADD COLUMN social TEXT NOT NULL DEFAULT ''");
 }
 if (geoAbiCols.includes('vorwahl')) {
   const zeilenMitVorwahl = db.prepare("SELECT id, vorwahl, telefonnummer FROM geo_abi2002 WHERE vorwahl != ''").all();
