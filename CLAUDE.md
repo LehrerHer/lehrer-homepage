@@ -676,6 +676,18 @@ lehrer-herrmann.de-Format erzeugen – inklusive optionaler Bestenlisten-/Koloss
 Datei wird **direkt im Chat an Claude Code hochgeladen** (nicht von Jan selbst ins Repo
 eingepflegt).
 
+**Mechaniken im generierten Quiz (Stand 2026-08, rein client-seitig, ändern nichts am
+Ablauf unten):** Der Rebus-Quiz-Generator kann pro Rätsel zusätzlich Folgendes einbetten –
+beim Sichten/Anpassen einer hochgeladenen Datei nicht mit einem Fehler verwechseln:
+- **Mehrere Versuche pro Frage** (`MAX_ATTEMPTS`-Konstante im Script, 1–6): Bei falscher
+  Antwort darf erneut geraten werden; die möglichen Punkte halbieren sich nach jedem
+  Fehlversuch (`multiplier`-Variable).
+- **Optionaler Tipp-Button pro Bild** (`info.tipp` in `INFOS`): kostet beim Aufdecken
+  genauso viel wie ein Fehlversuch (einmalige Halbierung).
+- **Zufällig gewähltes Farbschema pro Quiz** (`--gold`/`--gold2`/`--blue` in `:root`,
+  Werte aus einer festen Themenliste im Generator): sorgt dafür, dass nicht alle Rätsel
+  optisch identisch wirken; der dunkle Hintergrund (`--bg`/`--surface`) bleibt immer gleich.
+
 **Verbindlicher Ablauf, wenn eine fertige Quiz-HTML-Datei hochgeladen wird:**
 
 1. **Datei ablegen** in `materialien/`. Dateiname möglichst an die Konvention
