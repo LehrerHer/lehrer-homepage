@@ -160,6 +160,17 @@ body {
 }
 .hervorhebung strong { color: #8a5c00; }
 
+/* ── VORWISSEN-LINK ── */
+.km-vorwissen-link {
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  background: #eef4f8;
+  border-radius: 7px;
+  font-size: 13.5px;
+  color: var(--text-hell);
+}
+.km-vorwissen-link a { color: var(--primaer-hell); font-weight: 600; }
+
 /* ── AUFGABEN-BLOCK ── */
 .aufgaben-block { background: var(--karte); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: var(--schatten); }
 .aufgaben-block h3 {
@@ -171,6 +182,38 @@ body {
 .aufgabe:last-child { margin-bottom: 0; }
 .aufgabe-text { font-size: 15px; margin-bottom: 8px; }
 .aufgabe-text strong { color: var(--primaer); }
+.aufgabe-text a { color: var(--primaer-hell); font-weight: 600; }
+
+/* ── BEISPIEL-KÄSTEN (Segment 1) ── */
+.beispiel-kaesten { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 620px) { .beispiel-kaesten { grid-template-columns: 1fr; } }
+.beispiel-kasten {
+  background: var(--hintergrund);
+  border: 1.5px solid var(--rahmen);
+  border-left: 4px solid var(--rahmen);
+  border-radius: 7px;
+  padding: 12px 14px;
+  transition: border-color .18s;
+}
+.beispiel-kasten.art-chatbot { border-left-color: var(--akzent); }
+.beispiel-kasten.art-bild { border-left-color: #e0a32e; }
+.beispiel-kasten.art-sprache { border-left-color: var(--erfolg); }
+.beispiel-nr {
+  display: inline-block; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--text-hell); margin-bottom: 6px;
+}
+.beispiel-kasten input[type="text"] {
+  width: 100%; border: 1.5px solid var(--rahmen); border-radius: 6px;
+  padding: 8px 10px; font-family: inherit; font-size: 14px; color: var(--text);
+  background: #fff; margin-bottom: 8px;
+}
+.beispiel-kasten input[type="text"]:focus { outline: none; border-color: var(--akzent); box-shadow: 0 0 0 3px rgba(74,158,218,.15); }
+.beispiel-kasten select {
+  width: 100%; border: 1.5px solid var(--rahmen); border-radius: 6px;
+  padding: 7px 9px; font-family: inherit; font-size: 13.5px; color: var(--text);
+  background: #fff;
+}
+.beispiel-kasten select:focus { outline: none; border-color: var(--akzent); }
 
 .antwort-label {
   display: block; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
@@ -304,6 +347,7 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
     <div class="section-kicker">Segment 1 · Einstieg</div>
     <h2>Was ist eigentlich „KI"?</h2>
     <p class="lead">Nicht alles, was „KI" heißt, funktioniert gleich – drei Arten begegnen dir am häufigsten.</p>
+    <p class="km-vorwissen-link">🧩 Kennst du das schon? Schau dir das Beispiel <a href="https://www.demoki.info/klemmbaustein-intelligenz/" target="_blank" rel="noopener">„Klemmbaustein-Intelligenz" von demoki.info</a> an – vielleicht kennst du es schon aus den letzten Jahren.</p>
   </div>
 
   <div class="arten-grid">
@@ -326,10 +370,38 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
 
   <div class="aufgaben-block">
     <h3>✏️ Aufgabe</h3>
-    <div class="aufgabe">
-      <p class="aufgabe-text">Nenne <strong>drei Beispiele</strong> aus deinem Alltag, wo dir KI schon begegnet ist (auch wenn du es vielleicht gar nicht bewusst wahrgenommen hast). Ordne sie einer der drei Arten zu.</p>
-      <span class="antwort-label">Meine Beispiele:</span>
-      <textarea data-km-track placeholder="1. … → Chatbot / Bild-KI / Sprachassistent&#10;2. …&#10;3. …" rows="4"></textarea>
+    <p class="aufgabe-text">Nenne <strong>drei Beispiele</strong> aus deinem Alltag, wo dir KI schon begegnet ist (auch wenn du es vielleicht gar nicht bewusst wahrgenommen hast). Schreibe pro Kasten ein Beispiel hinein und ordne es danach einer KI-Art zu.</p>
+    <div class="beispiel-kaesten">
+      <div class="beispiel-kasten" id="km-s0-box1">
+        <span class="beispiel-nr">Beispiel 1</span>
+        <input type="text" id="km-s0-b1-text" data-km-persist placeholder="z. B. Netflix schlägt mir Filme vor …">
+        <select id="km-s0-b1-art" data-km-persist>
+          <option value="">KI-Art wählen …</option>
+          <option value="chatbot">💬 Chatbot</option>
+          <option value="bild">🖼️ Bild-KI</option>
+          <option value="sprache">🔊 Sprachassistent</option>
+        </select>
+      </div>
+      <div class="beispiel-kasten" id="km-s0-box2">
+        <span class="beispiel-nr">Beispiel 2</span>
+        <input type="text" id="km-s0-b2-text" data-km-persist placeholder="z. B. Siri stellt mir einen Wecker …">
+        <select id="km-s0-b2-art" data-km-persist>
+          <option value="">KI-Art wählen …</option>
+          <option value="chatbot">💬 Chatbot</option>
+          <option value="bild">🖼️ Bild-KI</option>
+          <option value="sprache">🔊 Sprachassistent</option>
+        </select>
+      </div>
+      <div class="beispiel-kasten" id="km-s0-box3">
+        <span class="beispiel-nr">Beispiel 3</span>
+        <input type="text" id="km-s0-b3-text" data-km-persist placeholder="z. B. Ein KI-generiertes Bild in einer App …">
+        <select id="km-s0-b3-art" data-km-persist>
+          <option value="">KI-Art wählen …</option>
+          <option value="chatbot">💬 Chatbot</option>
+          <option value="bild">🖼️ Bild-KI</option>
+          <option value="sprache">🔊 Sprachassistent</option>
+        </select>
+      </div>
     </div>
   </div>
 
@@ -363,8 +435,9 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
     <h3>✏️ Aufgabe – Probiere selbst</h3>
     <div class="aufgabe">
       <p class="aufgabe-text">Gib der KI den Satzanfang <strong>„Der Fußball rollte über das ___"</strong> ein und lass sie ihn vervollständigen. Frag sie danach: <strong>„Wie hast du entschieden, welches Wort du nimmst?"</strong></p>
+      <p class="aufgabe-text">Du brauchst dafür kein eigenes Konto – diese KIs kannst du <strong>ohne Anmeldung</strong> nutzen: <a href="https://duckduckgo.com/aichat" target="_blank" rel="noopener">DuckDuckGo AI-Chat</a> oder <a href="https://copilot.microsoft.com" target="_blank" rel="noopener">Microsoft Copilot</a>.</p>
       <span class="antwort-label">Was hat dich an der Antwort überrascht oder bestätigt? (2–3 Sätze)</span>
-      <textarea data-km-track placeholder="Mich hat überrascht/bestätigt, dass …" rows="4"></textarea>
+      <textarea id="km-s1-t1" data-km-persist placeholder="Mich hat überrascht/bestätigt, dass …" rows="4"></textarea>
     </div>
   </div>
 
@@ -404,7 +477,7 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
     <div class="aufgabe">
       <p class="aufgabe-text">Frag die KI nach etwas sehr Speziellem, das sie vermutlich nicht genau wissen kann (z. B. „Nenne mir drei Fakten über [ein Ereignis an eurer Schule, ein sehr kleines lokales Thema, ein erfundener Name]"). Prüfe die Antwort.</p>
       <span class="antwort-label">Erkennst du erfundene Details? Woran hast du sie erkannt?</span>
-      <textarea data-km-track placeholder="Ich erkenne erfundene Details daran, dass …" rows="4"></textarea>
+      <textarea id="km-s2-t1" data-km-persist placeholder="Ich erkenne erfundene Details daran, dass …" rows="4"></textarea>
     </div>
   </div>
 
@@ -456,16 +529,16 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
     <div class="aufgabe">
       <p class="aufgabe-text">Nimm ein Thema, das dich interessiert. Schreibe zuerst einen <strong>„schlechten" Prompt</strong> (kurz, unklar) und lass die KI antworten.</p>
       <span class="antwort-label">Mein schlechter Prompt:</span>
-      <textarea data-km-track placeholder="z. B. „Erzähl was über Fußball"" rows="2"></textarea>
+      <textarea id="km-s3-t1" data-km-persist placeholder="z. B. „Erzähl was über Fußball"" rows="2"></textarea>
     </div>
     <div class="aufgabe">
       <p class="aufgabe-text">Verbessere den Prompt dann mit den vier Bausteinen.</p>
       <span class="antwort-label">Mein verbesserter Prompt:</span>
-      <textarea data-km-track placeholder="Was + Länge + Für wen + Zusatzwunsch …" rows="3"></textarea>
+      <textarea id="km-s3-t2" data-km-persist placeholder="Was + Länge + Für wen + Zusatzwunsch …" rows="3"></textarea>
     </div>
     <div class="aufgabe">
       <span class="antwort-label">Welche Antwort war besser – und warum?</span>
-      <textarea data-km-track placeholder="Die verbesserte Antwort war besser, weil …" rows="3"></textarea>
+      <textarea id="km-s3-t3" data-km-persist placeholder="Die verbesserte Antwort war besser, weil …" rows="3"></textarea>
     </div>
   </div>
 
@@ -512,15 +585,15 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
     <p class="aufgabe-text" style="margin-bottom:14px;">Beantworte kurz (schriftlich oder im Gespräch mit deiner Lernbegleitung):</p>
     <div class="aufgabe">
       <p class="aufgabe-text"><strong>1.</strong> Nenne einen Grund, warum du eine KI-Antwort immer gegenprüfen solltest.</p>
-      <textarea data-km-check placeholder="Ich sollte gegenprüfen, weil …" rows="2"></textarea>
+      <textarea id="km-s4-c1" data-km-persist placeholder="Ich sollte gegenprüfen, weil …" rows="2"></textarea>
     </div>
     <div class="aufgabe">
       <p class="aufgabe-text"><strong>2.</strong> Was macht einen guten Prompt aus? (Nenne mind. 2 Bausteine)</p>
-      <textarea data-km-check placeholder="Ein guter Prompt enthält …" rows="2"></textarea>
+      <textarea id="km-s4-c2" data-km-persist placeholder="Ein guter Prompt enthält …" rows="2"></textarea>
     </div>
     <div class="aufgabe">
       <p class="aufgabe-text"><strong>3.</strong> Nenne eine Regel aus den Leitgedanken, die auch für KI-Nutzung gilt.</p>
-      <textarea data-km-check placeholder="Zum Beispiel …" rows="2"></textarea>
+      <textarea id="km-s4-c3" data-km-persist placeholder="Zum Beispiel …" rows="2"></textarea>
     </div>
   </div>
 
@@ -542,35 +615,104 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
 
 <script>
 (function() {
-  var aktuell = 0;
   var gesamt = 5;
-  var erledigt = [false, false, false, false, false];
   var tabs = document.querySelectorAll('.nav-tab');
   var sections = document.querySelectorAll('.section');
+  var STORAGE_KEY = 'km-modul-a-antworten';
 
-  function render() {
+  /* ── ANTWORTEN SPEICHERN / WIEDERHERSTELLEN ── */
+  function feldWert(el) { return el.value; }
+  function feldWertSetzen(el, wert) { el.value = wert; }
+
+  function antwortenSpeichern() {
+    var daten = {};
+    document.querySelectorAll('[data-km-persist]').forEach(function(el) {
+      if (el.id) daten[el.id] = feldWert(el);
+    });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(daten)); } catch (e) {}
+  }
+
+  function antwortenWiederherstellen() {
+    var roh;
+    try { roh = localStorage.getItem(STORAGE_KEY); } catch (e) { return; }
+    if (!roh) return;
+    var daten;
+    try { daten = JSON.parse(roh); } catch (e) { return; }
+    Object.keys(daten).forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) feldWertSetzen(el, daten[id]);
+    });
+    aktualisiereBeispielKaesten();
+  }
+
+  document.addEventListener('input', function(e) {
+    if (e.target.matches('[data-km-persist]')) antwortenSpeichern();
+  });
+  document.addEventListener('change', function(e) {
+    if (e.target.matches('[data-km-persist]')) {
+      antwortenSpeichern();
+      if (e.target.matches('.beispiel-kasten select')) aktualisiereBeispielKaesten();
+    }
+  });
+
+  function aktualisiereBeispielKaesten() {
+    document.querySelectorAll('.beispiel-kasten').forEach(function(kasten) {
+      var select = kasten.querySelector('select');
+      kasten.classList.remove('art-chatbot', 'art-bild', 'art-sprache');
+      if (select && select.value) kasten.classList.add('art-' + select.value);
+    });
+  }
+
+  /* ── SEGMENT-NAVIGATION MIT BROWSER-VERLAUF ── */
+  var aktuell = 0;
+  var erledigt = [false, false, false, false, false];
+
+  function segmentAusHash() {
+    var m = /segment-(\d)/.exec(location.hash);
+    var i = m ? (parseInt(m[1], 10) - 1) : 0;
+    return (i >= 0 && i < gesamt) ? i : 0;
+  }
+
+  function render(scrollen) {
+    erledigt = erledigt.map(function(_, i) { return i < aktuell; });
     tabs.forEach(function(t, i) {
       t.classList.toggle('active', i === aktuell);
-      t.classList.toggle('done', erledigt[i] && i !== aktuell);
+      t.classList.toggle('done', erledigt[i]);
     });
     sections.forEach(function(s, i) { s.classList.toggle('active', i === aktuell); });
     document.getElementById('pFill').style.width = Math.round(((aktuell + 1) / gesamt) * 100) + '%';
     document.getElementById('pLabel').textContent = 'Segment ' + (aktuell + 1) + ' von ' + gesamt;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (scrollen !== false) window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  window.km_go = function(i) { aktuell = i; render(); };
-  window.km_next = function(i) { erledigt[i] = true; aktuell = i + 1; render(); };
+  function gehe(i, verlaufSchreiben) {
+    aktuell = i;
+    render();
+    if (verlaufSchreiben !== false) {
+      history.pushState({ segment: i }, '', '#segment-' + (i + 1));
+    }
+  }
+
+  window.km_go = function(i) { gehe(i); };
+  window.km_next = function(i) { gehe(i + 1); };
+
+  window.addEventListener('popstate', function(e) {
+    aktuell = (e.state && typeof e.state.segment === 'number') ? e.state.segment : segmentAusHash();
+    render(false);
+  });
 
   window.km_abschluss = function() {
-    erledigt[4] = true;
     render();
     document.getElementById('abschlussHinweis').classList.add('sichtbar');
     document.getElementById('btnAbschluss').textContent = '✓ Modul A abgeschlossen';
     document.getElementById('btnAbschluss').disabled = true;
+    antwortenSpeichern();
   };
 
-  render();
+  antwortenWiederherstellen();
+  aktuell = segmentAusHash();
+  history.replaceState({ segment: aktuell }, '', '#segment-' + (aktuell + 1));
+  render(false);
 })();
 </script>
 
