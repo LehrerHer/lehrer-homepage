@@ -160,6 +160,77 @@ body {
 }
 .hervorhebung strong { color: #8a5c00; }
 
+/* ── VORWISSEN-LINK ── */
+.km-vorwissen-link {
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  background: #eef4f8;
+  border-radius: 7px;
+  font-size: 13.5px;
+  color: var(--text-hell);
+}
+.km-vorwissen-link a { color: var(--primaer-hell); font-weight: 600; }
+
+/* ── HALLUZINATION-COMIC ── */
+.hallu-comic {
+  background: var(--karte); border-radius: var(--radius); box-shadow: var(--schatten);
+  padding: 10px; margin-bottom: 14px;
+}
+.hallu-comic img { display: block; width: 100%; height: auto; border-radius: 5px; }
+
+/* ── HILFEVORHANG ── */
+.hilfevorhang { margin-bottom: 14px; }
+.hilfe-btn {
+  width: 100%; text-align: left; background: #f0ece4; border: 1.5px dashed #c8bead;
+  border-radius: 7px; padding: 10px 14px; font-family: inherit; font-size: 14px;
+  color: var(--primaer-hell); cursor: pointer; transition: background .18s;
+}
+.hilfe-btn:hover { background: #e8e2d6; }
+.hilfe-content {
+  display: none; margin-top: 8px; padding: 14px 16px; background: #eef4f8;
+  border-radius: 7px; font-size: 14.5px; color: #1a3050; line-height: 1.7;
+  border-left: 3px solid var(--primaer-hell);
+}
+.hilfe-content.offen { display: block; animation: fadeIn .25s ease; }
+
+/* ── PROMPT-BAUSTEINE (Bonusaufgabe) ── */
+.prompt-baustein { margin-bottom: 14px; }
+.prompt-baustein:last-of-type { margin-bottom: 8px; }
+.prompt-tag {
+  display: inline-block; font-family: ui-monospace, "SF Mono", Consolas, monospace;
+  font-size: 12.5px; font-weight: 700; color: var(--primaer); background: var(--hintergrund);
+  border: 1px solid var(--rahmen); border-radius: 5px; padding: 2px 7px; margin-right: 8px;
+}
+.prompt-hinweis { font-size: 13px; color: var(--text-hell); }
+.prompt-baustein textarea { margin-top: 6px; min-height: 56px; }
+.prompt-vorschau {
+  background: var(--primaer); color: #dbe9f7; border-radius: 7px; padding: 14px 16px;
+  font-family: ui-monospace, "SF Mono", Consolas, monospace; font-size: 12.5px;
+  line-height: 1.7; white-space: pre-wrap; word-break: break-word; overflow-x: auto; margin: 0;
+}
+
+/* ── ZUSAMMENFASSUNG (Segment 6) ── */
+.zf-gruppe { margin-bottom: 18px; }
+.zf-gruppe:last-child { margin-bottom: 0; }
+.zf-gruppe h4 {
+  font-size: 13px; letter-spacing: .5px; text-transform: uppercase; color: var(--text-hell);
+  margin: 0 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--rahmen);
+}
+.zf-item { margin-bottom: 10px; }
+.zf-item:last-child { margin-bottom: 0; }
+.zf-frage { font-size: 14px; font-weight: 600; color: var(--primaer); margin-bottom: 2px; }
+.zf-antwort { font-size: 14.5px; color: var(--text); white-space: pre-wrap; }
+.zf-antwort.zf-leer { color: var(--text-hell); font-style: italic; }
+.km-name-feld { margin-bottom: 14px; }
+.km-name-feld label { display: block; font-size: 13px; color: var(--text-hell); margin-bottom: 5px; }
+.km-name-feld input[type="text"] {
+  width: 100%; max-width: 320px; border: 1.5px solid var(--rahmen); border-radius: 7px;
+  padding: 9px 12px; font-family: inherit; font-size: 15px; color: var(--text); background: #fbfcfd;
+}
+.km-name-feld input[type="text"]:focus { outline: none; border-color: var(--akzent); box-shadow: 0 0 0 3px rgba(74,158,218,.15); }
+.btn-download { background: var(--erfolg); color: #fff; }
+.btn-download:hover { background: #27ae60; }
+
 /* ── AUFGABEN-BLOCK ── */
 .aufgaben-block { background: var(--karte); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: var(--schatten); }
 .aufgaben-block h3 {
@@ -171,6 +242,38 @@ body {
 .aufgabe:last-child { margin-bottom: 0; }
 .aufgabe-text { font-size: 15px; margin-bottom: 8px; }
 .aufgabe-text strong { color: var(--primaer); }
+.aufgabe-text a { color: var(--primaer-hell); font-weight: 600; }
+
+/* ── BEISPIEL-KÄSTEN (Segment 1) ── */
+.beispiel-kaesten { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 620px) { .beispiel-kaesten { grid-template-columns: 1fr; } }
+.beispiel-kasten {
+  background: var(--hintergrund);
+  border: 1.5px solid var(--rahmen);
+  border-left: 4px solid var(--rahmen);
+  border-radius: 7px;
+  padding: 12px 14px;
+  transition: border-color .18s;
+}
+.beispiel-kasten.art-chatbot { border-left-color: var(--akzent); }
+.beispiel-kasten.art-bild { border-left-color: #e0a32e; }
+.beispiel-kasten.art-sprache { border-left-color: var(--erfolg); }
+.beispiel-nr {
+  display: inline-block; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--text-hell); margin-bottom: 6px;
+}
+.beispiel-kasten input[type="text"] {
+  width: 100%; border: 1.5px solid var(--rahmen); border-radius: 6px;
+  padding: 8px 10px; font-family: inherit; font-size: 14px; color: var(--text);
+  background: #fff; margin-bottom: 8px;
+}
+.beispiel-kasten input[type="text"]:focus { outline: none; border-color: var(--akzent); box-shadow: 0 0 0 3px rgba(74,158,218,.15); }
+.beispiel-kasten select {
+  width: 100%; border: 1.5px solid var(--rahmen); border-radius: 6px;
+  padding: 7px 9px; font-family: inherit; font-size: 13.5px; color: var(--text);
+  background: #fff;
+}
+.beispiel-kasten select:focus { outline: none; border-color: var(--akzent); }
 
 .antwort-label {
   display: block; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
@@ -271,7 +374,7 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
       <span class="km-badge">📖 Selbstlernmodul</span>
       <span class="km-badge">⏱ ca. 40–50 Min.</span>
       <span class="km-badge">💻 iPad-optimiert</span>
-      <span class="km-badge">✓ 5 Segmente</span>
+      <span class="km-badge">✓ 6 Segmente</span>
     </div>
     <div class="km-pflicht">
       🔒 <strong>Pflichtvoraussetzung:</strong> Dieses Modul musst du durcharbeiten, bevor du frei zwischen den Werkstatt-Modulen B, C und D wählen darfst.
@@ -282,7 +385,7 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
 <!-- FORTSCHRITT -->
 <div class="progress-wrap">
   <div class="progress-track"><div class="progress-fill" id="pFill"></div></div>
-  <div class="progress-label" id="pLabel">Segment 1 von 5</div>
+  <div class="progress-label" id="pLabel">Segment 1 von 6</div>
 </div>
 
 <div class="container">
@@ -293,6 +396,7 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
       <button class="nav-tab" onclick="km_go(2)">3. Halluzination</button>
       <button class="nav-tab" onclick="km_go(3)">4. Prompting</button>
       <button class="nav-tab" onclick="km_go(4)">5. Regeln &amp; Check</button>
+      <button class="nav-tab" onclick="km_go(5)">6. Zusammenfassung</button>
     </div>
   </div>
 
@@ -304,6 +408,7 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
     <div class="section-kicker">Segment 1 · Einstieg</div>
     <h2>Was ist eigentlich „KI"?</h2>
     <p class="lead">Nicht alles, was „KI" heißt, funktioniert gleich – drei Arten begegnen dir am häufigsten.</p>
+    <p class="km-vorwissen-link">🧩 Kennst du das schon? Schau dir das Beispiel <a href="https://www.demoki.info/klemmbaustein-intelligenz/" target="_blank" rel="noopener">„Klemmbaustein-Intelligenz" von demoki.info</a> an – vielleicht kennst du es schon aus den letzten Jahren.</p>
   </div>
 
   <div class="arten-grid">
@@ -326,10 +431,38 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
 
   <div class="aufgaben-block">
     <h3>✏️ Aufgabe</h3>
-    <div class="aufgabe">
-      <p class="aufgabe-text">Nenne <strong>drei Beispiele</strong> aus deinem Alltag, wo dir KI schon begegnet ist (auch wenn du es vielleicht gar nicht bewusst wahrgenommen hast). Ordne sie einer der drei Arten zu.</p>
-      <span class="antwort-label">Meine Beispiele:</span>
-      <textarea data-km-track placeholder="1. … → Chatbot / Bild-KI / Sprachassistent&#10;2. …&#10;3. …" rows="4"></textarea>
+    <p class="aufgabe-text">Nenne <strong>drei Beispiele</strong> aus deinem Alltag, wo dir KI schon begegnet ist (auch wenn du es vielleicht gar nicht bewusst wahrgenommen hast). Schreibe pro Kasten ein Beispiel hinein und ordne es danach einer KI-Art zu.</p>
+    <div class="beispiel-kaesten">
+      <div class="beispiel-kasten" id="km-s0-box1">
+        <span class="beispiel-nr">Beispiel 1</span>
+        <input type="text" id="km-s0-b1-text" data-km-persist placeholder="z. B. Netflix schlägt mir Filme vor …">
+        <select id="km-s0-b1-art" data-km-persist>
+          <option value="">KI-Art wählen …</option>
+          <option value="chatbot">💬 Chatbot</option>
+          <option value="bild">🖼️ Bild-KI</option>
+          <option value="sprache">🔊 Sprachassistent</option>
+        </select>
+      </div>
+      <div class="beispiel-kasten" id="km-s0-box2">
+        <span class="beispiel-nr">Beispiel 2</span>
+        <input type="text" id="km-s0-b2-text" data-km-persist placeholder="z. B. Siri stellt mir einen Wecker …">
+        <select id="km-s0-b2-art" data-km-persist>
+          <option value="">KI-Art wählen …</option>
+          <option value="chatbot">💬 Chatbot</option>
+          <option value="bild">🖼️ Bild-KI</option>
+          <option value="sprache">🔊 Sprachassistent</option>
+        </select>
+      </div>
+      <div class="beispiel-kasten" id="km-s0-box3">
+        <span class="beispiel-nr">Beispiel 3</span>
+        <input type="text" id="km-s0-b3-text" data-km-persist placeholder="z. B. Ein KI-generiertes Bild in einer App …">
+        <select id="km-s0-b3-art" data-km-persist>
+          <option value="">KI-Art wählen …</option>
+          <option value="chatbot">💬 Chatbot</option>
+          <option value="bild">🖼️ Bild-KI</option>
+          <option value="sprache">🔊 Sprachassistent</option>
+        </select>
+      </div>
     </div>
   </div>
 
@@ -363,8 +496,9 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
     <h3>✏️ Aufgabe – Probiere selbst</h3>
     <div class="aufgabe">
       <p class="aufgabe-text">Gib der KI den Satzanfang <strong>„Der Fußball rollte über das ___"</strong> ein und lass sie ihn vervollständigen. Frag sie danach: <strong>„Wie hast du entschieden, welches Wort du nimmst?"</strong></p>
+      <p class="aufgabe-text">Du brauchst dafür kein eigenes Konto – diese KIs kannst du <strong>ohne Anmeldung</strong> nutzen: <a href="https://duckduckgo.com/aichat" target="_blank" rel="noopener">DuckDuckGo AI-Chat</a> oder <a href="https://copilot.microsoft.com" target="_blank" rel="noopener">Microsoft Copilot</a>.</p>
       <span class="antwort-label">Was hat dich an der Antwort überrascht oder bestätigt? (2–3 Sätze)</span>
-      <textarea data-km-track placeholder="Mich hat überrascht/bestätigt, dass …" rows="4"></textarea>
+      <textarea id="km-s1-t1" data-km-persist placeholder="Mich hat überrascht/bestätigt, dass …" rows="4"></textarea>
     </div>
   </div>
 
@@ -384,6 +518,10 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
     <p class="lead">Überzeugend klingen ≠ richtig liegen.</p>
   </div>
 
+  <div class="hallu-comic">
+    <img src="/img/ki-halluzination-comic.png" alt="Comic „Der selbstsichere Schwätzer" in 6 Panels: Eine Schülerin fragt eine KI nach der Gründung einer Universität mit Quellenangabe. Die KI berechnet nur das wahrscheinlichste nächste Wort und erfindet Details, die plausibel klingen. Sie antwortet selbstbewusst mit einer erfundenen Quelle. Die Schülerin prüft die Antwort nach und findet per Suchmaschine die richtige, abweichende Information. Lehre: KI-Antworten bei Fakten, Zahlen und Quellen immer nachprüfen.">
+  </div>
+
   <div class="info-box">
     <h3>👻 Was ist eine „Halluzination"?</h3>
     <p>Eine KI kann sehr überzeugend klingen – und trotzdem komplett falsch liegen. Das nennt man <strong>„Halluzination"</strong>: Die KI erfindet Fakten, Zitate, Quellen oder Zahlen, die es gar nicht gibt. Sie tut das nicht absichtlich und merkt es auch nicht selbst – sie berechnet einfach, was plausibel klingt (siehe Segment 2).</p>
@@ -399,12 +537,19 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
     <strong>Die wichtigste Regel:</strong> Bei allem, was du von einer KI übernehmen willst (Fakten, Daten, Zitate, Quellen) – immer gegenprüfen, z. B. mit einer zweiten Quelle oder eigenem Wissen.
   </div>
 
+  <div class="hilfevorhang">
+    <button class="hilfe-btn" onclick="km_toggleHilfe(this)">🎭 Hilfe: Zeig mir ein Beispiel</button>
+    <div class="hilfe-content">
+      <p><strong>Beispiel:</strong> Frag eine KI z. B. nach dem Aktenzeichen und der Begründung eines sehr speziellen (frei erfundenen) Gerichtsurteils, etwa „Nenne mir Aktenzeichen und Begründung des Urteils Meyer gegen Schulze vor dem Amtsgericht Lingen von 2019". Häufig erfindet die KI ein vollständig plausibel klingendes Aktenzeichen (z. B. „14 C 233/19"), ein Datum, einen Richternamen und sogar eine Urteilsbegründung – <strong>obwohl es dieses Urteil gar nicht gibt.</strong> Genau das ist eine Halluzination: Form und Ton wirken seriös und amtlich, der Inhalt ist komplett erfunden.</p>
+    </div>
+  </div>
+
   <div class="aufgaben-block">
     <h3>✏️ Aufgabe</h3>
     <div class="aufgabe">
       <p class="aufgabe-text">Frag die KI nach etwas sehr Speziellem, das sie vermutlich nicht genau wissen kann (z. B. „Nenne mir drei Fakten über [ein Ereignis an eurer Schule, ein sehr kleines lokales Thema, ein erfundener Name]"). Prüfe die Antwort.</p>
       <span class="antwort-label">Erkennst du erfundene Details? Woran hast du sie erkannt?</span>
-      <textarea data-km-track placeholder="Ich erkenne erfundene Details daran, dass …" rows="4"></textarea>
+      <textarea id="km-s2-t1" data-km-persist placeholder="Ich erkenne erfundene Details daran, dass …" rows="4"></textarea>
     </div>
   </div>
 
@@ -453,20 +598,54 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
 
   <div class="aufgaben-block">
     <h3>✏️ Aufgabe</h3>
+    <p class="aufgabe-text">Du brauchst kein eigenes Konto – diese KIs kannst du <strong>ohne Anmeldung</strong> nutzen: <a href="https://duckduckgo.com/aichat" target="_blank" rel="noopener">DuckDuckGo AI-Chat</a> oder <a href="https://copilot.microsoft.com" target="_blank" rel="noopener">Microsoft Copilot</a>.</p>
     <div class="aufgabe">
       <p class="aufgabe-text">Nimm ein Thema, das dich interessiert. Schreibe zuerst einen <strong>„schlechten" Prompt</strong> (kurz, unklar) und lass die KI antworten.</p>
       <span class="antwort-label">Mein schlechter Prompt:</span>
-      <textarea data-km-track placeholder="z. B. „Erzähl was über Fußball"" rows="2"></textarea>
+      <textarea id="km-s3-t1" data-km-persist placeholder="z. B. „Erzähl was über Fußball"" rows="2"></textarea>
     </div>
     <div class="aufgabe">
       <p class="aufgabe-text">Verbessere den Prompt dann mit den vier Bausteinen.</p>
       <span class="antwort-label">Mein verbesserter Prompt:</span>
-      <textarea data-km-track placeholder="Was + Länge + Für wen + Zusatzwunsch …" rows="3"></textarea>
+      <textarea id="km-s3-t2" data-km-persist placeholder="Was + Länge + Für wen + Zusatzwunsch …" rows="3"></textarea>
     </div>
     <div class="aufgabe">
       <span class="antwort-label">Welche Antwort war besser – und warum?</span>
-      <textarea data-km-track placeholder="Die verbesserte Antwort war besser, weil …" rows="3"></textarea>
+      <textarea id="km-s3-t3" data-km-persist placeholder="Die verbesserte Antwort war besser, weil …" rows="3"></textarea>
     </div>
+  </div>
+
+  <div class="aufgaben-block">
+    <h3>🌟 Bonusaufgabe – Ein Profi-Prompt</h3>
+    <p class="aufgabe-text">Profis bauen richtig gute Prompts oft in klar benannten Abschnitten auf. Fülle die folgenden Bausteine zu einem Thema deiner Wahl aus – unten siehst du die Vorschau deines fertigen Profi-Prompts.</p>
+
+    <div class="prompt-baustein">
+      <span class="prompt-tag">&lt;role&gt;</span><span class="prompt-hinweis">Wer die KI sein soll, mit konkreter Expertise</span>
+      <textarea id="km-s3-role" data-km-persist rows="2" placeholder="Du bist ein erfahrener …"></textarea>
+    </div>
+    <div class="prompt-baustein">
+      <span class="prompt-tag">&lt;context&gt;</span><span class="prompt-hinweis">Hintergrundinformationen zur Aufgabe</span>
+      <textarea id="km-s3-context" data-km-persist rows="2" placeholder="Ich arbeite gerade an …"></textarea>
+    </div>
+    <div class="prompt-baustein">
+      <span class="prompt-tag">&lt;task&gt;</span><span class="prompt-hinweis">Die eigentliche Aufgabe, in logische Schritte unterteilt</span>
+      <textarea id="km-s3-task" data-km-persist rows="3" placeholder="1. … 2. … 3. …"></textarea>
+    </div>
+    <div class="prompt-baustein">
+      <span class="prompt-tag">&lt;constraints&gt;</span><span class="prompt-hinweis">Einschränkungen und Grenzen</span>
+      <textarea id="km-s3-constraints" data-km-persist rows="2" placeholder="Nicht länger als …, keine Fachbegriffe, …"></textarea>
+    </div>
+    <div class="prompt-baustein">
+      <span class="prompt-tag">&lt;output_format&gt;</span><span class="prompt-hinweis">Genaue Beschreibung des gewünschten Formats</span>
+      <textarea id="km-s3-outputformat" data-km-persist rows="2" placeholder="Tabelle mit 3 Spalten, Stichpunkte, …"></textarea>
+    </div>
+    <div class="prompt-baustein">
+      <span class="prompt-tag">&lt;edge_cases&gt;</span><span class="prompt-hinweis">Umgang mit Sonderfällen</span>
+      <textarea id="km-s3-edgecases" data-km-persist rows="2" placeholder="Was soll die KI tun, wenn …?"></textarea>
+    </div>
+
+    <span class="antwort-label">Vorschau deines Profi-Prompts:</span>
+    <pre class="prompt-vorschau" id="promptVorschau">Noch keine Angaben – fülle oben mindestens ein Feld aus.</pre>
   </div>
 
   <div class="nav-buttons">
@@ -489,7 +668,7 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
     <h3>📱 Die drei Leitgedanken zur iPad-Nutzung gelten auch hier</h3>
     <ol class="regel-liste" style="list-style:none;">
       <li><span class="regel-nr">1</span><span class="regel-text">Störe niemanden durch die Nutzung deines iPads.</span></li>
-      <li><span class="regel-nr">2</span><span class="regel-text">Setze das iPad nur ein, wenn es dir beim Lernen hilft – nutze KI nicht ziellos.</span></li>
+      <li><span class="regel-nr">2</span><span class="regel-text">Setze das iPad nur ein, wenn es dir beim Lernen hilft – nutze KI niemals ziellos.</span></li>
       <li><span class="regel-nr">3</span><span class="regel-text">Beachte auch im Umgang mit KI unser Schulleitbild.</span></li>
     </ol>
   </div>
@@ -512,28 +691,53 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
     <p class="aufgabe-text" style="margin-bottom:14px;">Beantworte kurz (schriftlich oder im Gespräch mit deiner Lernbegleitung):</p>
     <div class="aufgabe">
       <p class="aufgabe-text"><strong>1.</strong> Nenne einen Grund, warum du eine KI-Antwort immer gegenprüfen solltest.</p>
-      <textarea data-km-check placeholder="Ich sollte gegenprüfen, weil …" rows="2"></textarea>
+      <textarea id="km-s4-c1" data-km-persist placeholder="Ich sollte gegenprüfen, weil …" rows="2"></textarea>
     </div>
     <div class="aufgabe">
       <p class="aufgabe-text"><strong>2.</strong> Was macht einen guten Prompt aus? (Nenne mind. 2 Bausteine)</p>
-      <textarea data-km-check placeholder="Ein guter Prompt enthält …" rows="2"></textarea>
+      <textarea id="km-s4-c2" data-km-persist placeholder="Ein guter Prompt enthält …" rows="2"></textarea>
     </div>
     <div class="aufgabe">
       <p class="aufgabe-text"><strong>3.</strong> Nenne eine Regel aus den Leitgedanken, die auch für KI-Nutzung gilt.</p>
-      <textarea data-km-check placeholder="Zum Beispiel …" rows="2"></textarea>
+      <textarea id="km-s4-c3" data-km-persist placeholder="Zum Beispiel …" rows="2"></textarea>
     </div>
   </div>
 
   <div class="nav-buttons">
     <button class="btn btn-outline" onclick="km_go(3)">← Zurück</button>
-    <button class="btn btn-primary" id="btnAbschluss" onclick="km_abschluss()">Modul A abschließen</button>
+    <button class="btn btn-primary" onclick="km_next(4)">Weiter: Meine Antworten →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+  SEGMENT 6 – ZUSAMMENFASSUNG
+════════════════════════════════ -->
+<div class="section" id="s5">
+  <div class="section-header">
+    <div class="section-kicker">Segment 6 · Abschluss</div>
+    <h2>Meine Antworten</h2>
+    <p class="lead">Alle deine Antworten aus dem Modul auf einen Blick – zeig sie deiner Lernbegleitung oder lade sie als Datei herunter.</p>
+  </div>
+
+  <div class="aufgaben-block">
+    <div class="km-name-feld">
+      <label for="km-schueler-name">Dein Name (optional, für die Datei):</label>
+      <input type="text" id="km-schueler-name" data-km-persist placeholder="Vorname Nachname">
+    </div>
+    <div id="zusammenfassungInhalt"><!-- wird per JS gefüllt --></div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-outline" onclick="km_go(4)">← Zurück</button>
+    <button class="btn btn-primary btn-download" onclick="km_download()">📄 Antworten als Textdatei herunterladen</button>
   </div>
 
   <div class="abschluss-card" style="margin-top:20px;">
     <h2>🎉 Geschafft!</h2>
-    <p>Du hast die Einführungseinheit der KI-Werkstatt durchgearbeitet. Zeig deiner Lernbegleitung deinen ausgefüllten Abschlusscheck – erst danach kannst du frei aus den Werkstatt-Modulen B, C und D wählen.</p>
+    <p>Du hast die Einführungseinheit der KI-Werkstatt durchgearbeitet. Lade deine Antworten herunter und zeig sie deiner Lernbegleitung – erst danach kannst du frei aus den Werkstatt-Modulen B, C und D wählen.</p>
+    <button class="btn btn-primary" id="btnAbschluss" onclick="km_abschluss()">Modul A abschließen</button>
     <div class="abschluss-check" id="abschlussHinweis">
-      <p>✔️ Deine Antworten stehen oben in den drei Feldern des Abschluschecks. Zeig diese Seite deiner Lernbegleitung, damit sie das Modul als erledigt vermerken kann.</p>
+      <p>✔️ Geschafft! Zeig diese Seite oder die heruntergeladene Datei deiner Lernbegleitung, damit sie das Modul als erledigt vermerken kann.</p>
     </div>
   </div>
 </div>
@@ -542,35 +746,246 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
 
 <script>
 (function() {
-  var aktuell = 0;
-  var gesamt = 5;
-  var erledigt = [false, false, false, false, false];
+  var gesamt = 6;
   var tabs = document.querySelectorAll('.nav-tab');
   var sections = document.querySelectorAll('.section');
+  var STORAGE_KEY = 'km-modul-a-antworten';
+  var ART_LABEL = { chatbot: '💬 Chatbot', bild: '🖼️ Bild-KI', sprache: '🔊 Sprachassistent' };
 
-  function render() {
+  /* ── ANTWORTEN SPEICHERN / WIEDERHERSTELLEN ── */
+  function feldWert(el) { return el.value; }
+  function feldWertSetzen(el, wert) { el.value = wert; }
+
+  function antwortenSpeichern() {
+    var daten = {};
+    document.querySelectorAll('[data-km-persist]').forEach(function(el) {
+      if (el.id) daten[el.id] = feldWert(el);
+    });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(daten)); } catch (e) {}
+  }
+
+  function antwortenWiederherstellen() {
+    var roh;
+    try { roh = localStorage.getItem(STORAGE_KEY); } catch (e) { return; }
+    if (!roh) return;
+    var daten;
+    try { daten = JSON.parse(roh); } catch (e) { return; }
+    Object.keys(daten).forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) feldWertSetzen(el, daten[id]);
+    });
+    aktualisiereBeispielKaesten();
+    aktualisierePromptVorschau();
+  }
+
+  document.addEventListener('input', function(e) {
+    if (e.target.matches('[data-km-persist]')) {
+      antwortenSpeichern();
+      aktualisierePromptVorschau();
+    }
+  });
+  document.addEventListener('change', function(e) {
+    if (e.target.matches('[data-km-persist]')) {
+      antwortenSpeichern();
+      if (e.target.matches('.beispiel-kasten select')) aktualisiereBeispielKaesten();
+    }
+  });
+
+  function aktualisiereBeispielKaesten() {
+    document.querySelectorAll('.beispiel-kasten').forEach(function(kasten) {
+      var select = kasten.querySelector('select');
+      kasten.classList.remove('art-chatbot', 'art-bild', 'art-sprache');
+      if (select && select.value) kasten.classList.add('art-' + select.value);
+    });
+  }
+
+  /* ── HILFEVORHANG (Segment 3) ── */
+  window.km_toggleHilfe = function(btn) {
+    var content = btn.nextElementSibling;
+    var offen = content.classList.toggle('offen');
+    btn.textContent = offen ? '🎭 Hilfe verbergen' : '🎭 Hilfe: Zeig mir ein Beispiel';
+  };
+
+  /* ── PROMPT-VORSCHAU (Bonusaufgabe Segment 4) ── */
+  var PROMPT_TAGS = [
+    ['role', 'km-s3-role'],
+    ['context', 'km-s3-context'],
+    ['task', 'km-s3-task'],
+    ['constraints', 'km-s3-constraints'],
+    ['output_format', 'km-s3-outputformat'],
+    ['edge_cases', 'km-s3-edgecases']
+  ];
+  function aktualisierePromptVorschau() {
+    var el = document.getElementById('promptVorschau');
+    if (!el) return;
+    var zeilen = [];
+    PROMPT_TAGS.forEach(function(t) {
+      var feld = document.getElementById(t[1]);
+      var wert = feld ? feld.value.trim() : '';
+      if (wert) zeilen.push('<' + t[0] + '>\n' + wert + '\n</' + t[0] + '>');
+    });
+    el.textContent = zeilen.length ? zeilen.join('\n\n') : 'Noch keine Angaben – fülle oben mindestens ein Feld aus.';
+  }
+
+  /* ── ZUSAMMENFASSUNG & TXT-DOWNLOAD (Segment 6) ── */
+  var FRAGEN = [
+    { label: 'Segment 1 – Was ist eigentlich „KI"?', items: [
+      { frage: 'Beispiel 1', felder: ['km-s0-b1-text', 'km-s0-b1-art'], typ: 'beispiel' },
+      { frage: 'Beispiel 2', felder: ['km-s0-b2-text', 'km-s0-b2-art'], typ: 'beispiel' },
+      { frage: 'Beispiel 3', felder: ['km-s0-b3-text', 'km-s0-b3-art'], typ: 'beispiel' }
+    ]},
+    { label: 'Segment 2 – Wie „lernt" ein Sprachmodell?', items: [
+      { frage: 'Was hat dich an der Antwort überrascht oder bestätigt?', felder: ['km-s1-t1'] }
+    ]},
+    { label: 'Segment 3 – Warum halluziniert KI?', items: [
+      { frage: 'Erkennst du erfundene Details? Woran hast du sie erkannt?', felder: ['km-s2-t1'] }
+    ]},
+    { label: 'Segment 4 – Prompting-Basics', items: [
+      { frage: 'Mein schlechter Prompt', felder: ['km-s3-t1'] },
+      { frage: 'Mein verbesserter Prompt', felder: ['km-s3-t2'] },
+      { frage: 'Welche Antwort war besser – und warum?', felder: ['km-s3-t3'] },
+      { frage: 'Bonusaufgabe – <role>', felder: ['km-s3-role'] },
+      { frage: 'Bonusaufgabe – <context>', felder: ['km-s3-context'] },
+      { frage: 'Bonusaufgabe – <task>', felder: ['km-s3-task'] },
+      { frage: 'Bonusaufgabe – <constraints>', felder: ['km-s3-constraints'] },
+      { frage: 'Bonusaufgabe – <output_format>', felder: ['km-s3-outputformat'] },
+      { frage: 'Bonusaufgabe – <edge_cases>', felder: ['km-s3-edgecases'] }
+    ]},
+    { label: 'Segment 5 – Werkstatt-Regeln & Abschlusscheck', items: [
+      { frage: '1. Nenne einen Grund, warum du eine KI-Antwort immer gegenprüfen solltest.', felder: ['km-s4-c1'] },
+      { frage: '2. Was macht einen guten Prompt aus?', felder: ['km-s4-c2'] },
+      { frage: '3. Nenne eine Regel aus den Leitgedanken, die auch für KI-Nutzung gilt.', felder: ['km-s4-c3'] }
+    ]}
+  ];
+
+  function sammleAntworten() {
+    return FRAGEN.map(function(gruppe) {
+      return {
+        label: gruppe.label,
+        items: gruppe.items.map(function(item) {
+          var antwort;
+          if (item.typ === 'beispiel') {
+            var textEl = document.getElementById(item.felder[0]);
+            var artEl = document.getElementById(item.felder[1]);
+            var text = textEl ? textEl.value.trim() : '';
+            var artLabel = (artEl && ART_LABEL[artEl.value]) || '';
+            antwort = text ? (text + (artLabel ? ' → ' + artLabel : '')) : '';
+          } else {
+            var el = document.getElementById(item.felder[0]);
+            antwort = el ? el.value.trim() : '';
+          }
+          return { frage: item.frage, antwort: antwort };
+        })
+      };
+    });
+  }
+
+  function htmlEscape(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function renderZusammenfassung() {
+    var ziel = document.getElementById('zusammenfassungInhalt');
+    if (!ziel) return;
+    var gruppen = sammleAntworten();
+    var html = gruppen.map(function(g) {
+      var items = g.items.map(function(it) {
+        var leer = !it.antwort;
+        return '<div class="zf-item"><div class="zf-frage">' + htmlEscape(it.frage) + '</div>' +
+          '<div class="zf-antwort' + (leer ? ' zf-leer' : '') + '">' +
+          htmlEscape(leer ? '(noch nicht beantwortet)' : it.antwort) + '</div></div>';
+      }).join('');
+      return '<div class="zf-gruppe"><h4>' + htmlEscape(g.label) + '</h4>' + items + '</div>';
+    }).join('');
+    ziel.innerHTML = html;
+  }
+
+  function erzeugeTxt() {
+    var gruppen = sammleAntworten();
+    var nameEl = document.getElementById('km-schueler-name');
+    var name = nameEl ? nameEl.value.trim() : '';
+    var zeilen = [];
+    zeilen.push('KI-Werkstatt – Modul A: Einführungseinheit');
+    if (name) zeilen.push('Name: ' + name);
+    zeilen.push('Datum: ' + new Date().toLocaleDateString('de-DE'));
+    zeilen.push('');
+    gruppen.forEach(function(g) {
+      zeilen.push('=== ' + g.label + ' ===');
+      g.items.forEach(function(it) {
+        zeilen.push('Frage: ' + it.frage);
+        zeilen.push('Antwort: ' + (it.antwort || '(noch nicht beantwortet)'));
+        zeilen.push('');
+      });
+    });
+    return zeilen.join('\n');
+  }
+
+  window.km_download = function() {
+    var text = erzeugeTxt();
+    var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var nameEl = document.getElementById('km-schueler-name');
+    var name = nameEl ? nameEl.value.trim().replace(/[^a-zA-Z0-9äöüÄÖÜß_-]+/g, '-') : '';
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'ki-werkstatt-modul-a' + (name ? '_' + name : '') + '.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
+  };
+
+  /* ── SEGMENT-NAVIGATION MIT BROWSER-VERLAUF ── */
+  var aktuell = 0;
+  var erledigt = [false, false, false, false, false, false];
+
+  function segmentAusHash() {
+    var m = /segment-(\d)/.exec(location.hash);
+    var i = m ? (parseInt(m[1], 10) - 1) : 0;
+    return (i >= 0 && i < gesamt) ? i : 0;
+  }
+
+  function render(scrollen) {
+    erledigt = erledigt.map(function(_, i) { return i < aktuell; });
     tabs.forEach(function(t, i) {
       t.classList.toggle('active', i === aktuell);
-      t.classList.toggle('done', erledigt[i] && i !== aktuell);
+      t.classList.toggle('done', erledigt[i]);
     });
     sections.forEach(function(s, i) { s.classList.toggle('active', i === aktuell); });
     document.getElementById('pFill').style.width = Math.round(((aktuell + 1) / gesamt) * 100) + '%';
     document.getElementById('pLabel').textContent = 'Segment ' + (aktuell + 1) + ' von ' + gesamt;
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (aktuell === 5) renderZusammenfassung();
+    if (scrollen !== false) window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  window.km_go = function(i) { aktuell = i; render(); };
-  window.km_next = function(i) { erledigt[i] = true; aktuell = i + 1; render(); };
+  function gehe(i, verlaufSchreiben) {
+    aktuell = i;
+    render();
+    if (verlaufSchreiben !== false) {
+      history.pushState({ segment: i }, '', '#segment-' + (i + 1));
+    }
+  }
+
+  window.km_go = function(i) { gehe(i); };
+  window.km_next = function(i) { gehe(i + 1); };
+
+  window.addEventListener('popstate', function(e) {
+    aktuell = (e.state && typeof e.state.segment === 'number') ? e.state.segment : segmentAusHash();
+    render(false);
+  });
 
   window.km_abschluss = function() {
-    erledigt[4] = true;
     render();
     document.getElementById('abschlussHinweis').classList.add('sichtbar');
     document.getElementById('btnAbschluss').textContent = '✓ Modul A abgeschlossen';
     document.getElementById('btnAbschluss').disabled = true;
+    antwortenSpeichern();
   };
 
-  render();
+  antwortenWiederherstellen();
+  aktuell = segmentAusHash();
+  history.replaceState({ segment: aktuell }, '', '#segment-' + (aktuell + 1));
+  render(false);
 })();
 </script>
 
