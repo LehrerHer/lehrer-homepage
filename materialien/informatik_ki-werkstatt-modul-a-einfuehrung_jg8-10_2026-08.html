@@ -1,0 +1,591 @@
+<!--
+  Titel: KI-Werkstatt – Modul A: Einführungseinheit
+  Fach: Informatik (Werkstatt „KI für Schüler*innen")
+  Klasse/Niveau: Jahrgang 8–10
+  AB-Typ: Gemischt (Lesetext + offene Reflexionsaufgaben, Selbstlernmodul)
+  Erstellt: 2026-08-13
+  Quelle: Manuell erstellt (Auftrag Jan Herrmann)
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>KI-Werkstatt – Modul A: Einführungseinheit</title>
+<style>
+:root {
+  --primaer: #1e3a5f;
+  --primaer-hell: #2d6a9f;
+  --akzent: #4a9eda;
+  --erfolg: #2ecc71;
+  --fehler: #e74c3c;
+  --hintergrund: #f4f6f7;
+  --karte: #ffffff;
+  --text: #23303f;
+  --text-hell: #64748b;
+  --rahmen: #dbe3ea;
+  --radius: 8px;
+  --schatten: 0 2px 10px rgba(30,58,95,0.08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--hintergrund);
+  color: var(--text);
+  line-height: 1.65;
+  -webkit-text-size-adjust: 100%;
+}
+
+.container { max-width: 800px; margin: 0 auto; padding: 0 18px 70px; }
+
+/* ── HERO ── */
+.km-hero {
+  background: linear-gradient(135deg, var(--primaer) 0%, var(--primaer-hell) 100%);
+  padding: 34px 20px 26px;
+  color: #fff;
+}
+.km-hero-inner { max-width: 800px; margin: 0 auto; }
+.km-kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.3);
+  padding: 3px 12px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+.km-hero h1 { font-size: clamp(24px, 5vw, 34px); margin: 0 0 8px; line-height: 1.2; }
+.km-hero p.km-sub { margin: 0 0 16px; color: #cfe0f2; font-size: 15px; }
+.km-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+.km-badge {
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.25);
+  font-size: 12px;
+  padding: 4px 11px;
+  border-radius: 20px;
+}
+.km-pflicht {
+  margin-top: 18px;
+  background: rgba(255,255,255,.12);
+  border-left: 4px solid #ffd166;
+  padding: 10px 14px;
+  border-radius: 0 6px 6px 0;
+  font-size: 14px;
+}
+
+/* ── FORTSCHRITT ── */
+.progress-wrap { background: #0f2540; padding: 10px 20px 14px; }
+.progress-track { max-width: 800px; margin: 0 auto; background: rgba(255,255,255,.14); border-radius: 3px; height: 5px; overflow: hidden; }
+.progress-fill { height: 100%; background: var(--akzent); border-radius: 3px; transition: width .4s ease; width: 14%; }
+.progress-label { max-width: 800px; margin: 6px auto 0; text-align: right; font-size: 11px; color: #9fb6cf; }
+
+/* ── TABS ── */
+.nav-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 16px 0 0; }
+.nav-scroll::-webkit-scrollbar { display: none; }
+.nav-tabs { display: flex; gap: 6px; width: max-content; }
+.nav-tab {
+  flex-shrink: 0;
+  background: var(--karte);
+  border: 1.5px solid var(--rahmen);
+  border-radius: 7px;
+  padding: 7px 14px;
+  font-size: 12.5px;
+  color: var(--text-hell);
+  cursor: pointer;
+  transition: all .18s;
+  white-space: nowrap;
+}
+.nav-tab.active { background: var(--primaer); border-color: var(--primaer); color: #fff; }
+.nav-tab.done { border-color: var(--erfolg); color: #1e8449; }
+.nav-tab.done::before { content: '✓ '; }
+
+/* ── SECTIONS ── */
+.section { display: none; padding-top: 18px; animation: fadeIn .25s ease; }
+.section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
+
+.section-header {
+  background: var(--karte);
+  border-radius: var(--radius);
+  padding: 20px 22px 16px;
+  margin-bottom: 16px;
+  border-left: 5px solid var(--akzent);
+  box-shadow: var(--schatten);
+}
+.section-kicker { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-hell); margin-bottom: 6px; }
+.section-header h2 { font-size: clamp(19px, 4vw, 25px); margin: 0 0 6px; color: var(--primaer); line-height: 1.25; }
+.section-header p.lead { margin: 0; color: var(--text-hell); font-size: 14.5px; }
+
+/* ── INFO-BOX ── */
+.info-box { background: var(--karte); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 14px; box-shadow: var(--schatten); }
+.info-box h3 { margin: 0 0 10px; font-size: 16.5px; color: var(--primaer); display: flex; align-items: center; gap: 8px; }
+.info-box p { margin: 0 0 10px; font-size: 15px; }
+.info-box p:last-child { margin-bottom: 0; }
+.info-box ul { margin: 0; padding-left: 20px; }
+.info-box li { margin-bottom: 6px; font-size: 15px; }
+
+/* ── KI-ARTEN KARTEN ── */
+.arten-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 14px; }
+@media (max-width: 620px) { .arten-grid { grid-template-columns: 1fr; } }
+.art-karte { background: var(--karte); border-radius: var(--radius); padding: 16px; box-shadow: var(--schatten); border-top: 4px solid var(--akzent); }
+.art-karte .art-icon { font-size: 26px; margin-bottom: 6px; display: block; }
+.art-karte h4 { margin: 0 0 6px; font-size: 15px; color: var(--primaer); }
+.art-karte p { margin: 0; font-size: 13.5px; color: var(--text-hell); }
+
+/* ── VERGLEICH GUT/SCHLECHT ── */
+.vergleich-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+@media (max-width: 560px) { .vergleich-grid { grid-template-columns: 1fr; } }
+.vgl-karte { border-radius: var(--radius); padding: 14px 16px; font-size: 14.5px; }
+.vgl-karte.schlecht { background: #fdecea; border: 1.5px solid #f1b3ac; }
+.vgl-karte.gut { background: #eafaf1; border: 1.5px solid #a3e4c1; }
+.vgl-karte .vgl-label { font-weight: 700; font-size: 12px; letter-spacing: .5px; text-transform: uppercase; margin-bottom: 6px; display: block; }
+.vgl-karte.schlecht .vgl-label { color: var(--fehler); }
+.vgl-karte.gut .vgl-label { color: #1e8449; }
+.vgl-karte .prompt-text { font-style: italic; }
+.vgl-karte .erklaerung { margin-top: 8px; color: var(--text-hell); font-size: 13.5px; }
+
+/* ── HERVORHEBUNG ── */
+.hervorhebung {
+  background: #fff8e6;
+  border-left: 4px solid #e0a32e;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 14px 18px;
+  margin-bottom: 14px;
+  font-size: 15px;
+}
+.hervorhebung strong { color: #8a5c00; }
+
+/* ── AUFGABEN-BLOCK ── */
+.aufgaben-block { background: var(--karte); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: var(--schatten); }
+.aufgaben-block h3 {
+  margin: 0 0 14px; font-size: 16px; color: var(--primaer);
+  padding-bottom: 10px; border-bottom: 2px solid var(--hintergrund);
+  display: flex; align-items: center; gap: 8px;
+}
+.aufgabe { margin-bottom: 20px; }
+.aufgabe:last-child { margin-bottom: 0; }
+.aufgabe-text { font-size: 15px; margin-bottom: 8px; }
+.aufgabe-text strong { color: var(--primaer); }
+
+.antwort-label {
+  display: block; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--text-hell); margin: 8px 0 5px;
+}
+textarea {
+  width: 100%;
+  border: 1.5px solid var(--rahmen);
+  border-radius: 7px;
+  padding: 11px 13px;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+  background: #fbfcfd;
+  resize: vertical;
+  min-height: 90px;
+  transition: border-color .18s, box-shadow .18s;
+}
+textarea:focus { outline: none; border-color: var(--akzent); box-shadow: 0 0 0 3px rgba(74,158,218,.15); }
+textarea::placeholder { color: #a7b3bf; font-style: italic; }
+.zeichen-zaehler { text-align: right; font-size: 11.5px; color: var(--text-hell); margin-top: 3px; }
+
+/* ── REGELN ── */
+.regel-liste { list-style: none; margin: 0; padding: 0; }
+.regel-liste li {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px 0; border-bottom: 1px dashed var(--rahmen);
+}
+.regel-liste li:last-child { border-bottom: none; }
+.regel-nr {
+  flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--primaer); color: #fff; font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; margin-top: 1px;
+}
+.regel-text { font-size: 15px; }
+.regel-text strong { color: var(--primaer); }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 11px 22px; border-radius: 7px; font-size: 14px; font-weight: 600;
+  cursor: pointer; border: none; transition: all .18s; font-family: inherit;
+}
+.btn-primary { background: var(--primaer); color: #fff; }
+.btn-primary:hover { background: var(--primaer-hell); }
+.btn-primary:disabled { background: #a9b7c4; cursor: not-allowed; }
+.btn-outline { background: transparent; color: var(--primaer); border: 2px solid var(--primaer); }
+.nav-buttons {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--rahmen); gap: 10px;
+}
+@media (max-width: 480px) { .nav-buttons { flex-direction: column-reverse; } .btn { width: 100%; justify-content: center; } }
+
+/* ── ABSCHLUSS ── */
+.abschluss-card {
+  background: linear-gradient(135deg, var(--primaer) 0%, var(--primaer-hell) 100%);
+  border-radius: var(--radius); padding: 30px 22px; text-align: center; color: #fff; margin-top: 6px;
+}
+.abschluss-card h2 { margin: 0 0 10px; font-size: 24px; }
+.abschluss-card p { color: #cfe0f2; font-size: 15px; margin: 0 0 16px; }
+.abschluss-check {
+  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25);
+  border-radius: 7px; padding: 14px 16px; text-align: left; margin-top: 16px; display: none;
+}
+.abschluss-check.sichtbar { display: block; animation: fadeIn .3s ease; }
+.abschluss-check p { color: #fff; margin: 0; font-size: 15px; }
+</style>
+<link rel="stylesheet" href="/css/style.css?v=20260615c">
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+        <a href="/index.html" class="navbar-logo">lehrer-herrmann.de</a>
+        <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="navbar-links" id="navbar-links">
+            <li><a href="/index.html#was-ist-neu">Was ist neu?</a></li>
+            <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+            <li class="navbar-gb-trenner" aria-hidden="true"><span class="navbar-gb-label">Geschützter Bereich</span></li>
+            <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+            <li><a href="/blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+            <li><a href="/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+        </ul>
+        <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="km-hero">
+  <div class="km-hero-inner">
+    <span class="km-kicker">KI-Werkstatt · Modul A</span>
+    <h1>Einführungseinheit: Wie funktioniert KI eigentlich?</h1>
+    <p class="km-sub">Selbstlern-Modul für die Werkstatt „KI für Schüler*innen" – Jahrgang 8–10</p>
+    <div class="km-badges">
+      <span class="km-badge">📖 Selbstlernmodul</span>
+      <span class="km-badge">⏱ ca. 40–50 Min.</span>
+      <span class="km-badge">💻 iPad-optimiert</span>
+      <span class="km-badge">✓ 5 Segmente</span>
+    </div>
+    <div class="km-pflicht">
+      🔒 <strong>Pflichtvoraussetzung:</strong> Dieses Modul musst du durcharbeiten, bevor du frei zwischen den Werkstatt-Modulen B, C und D wählen darfst.
+    </div>
+  </div>
+</div>
+
+<!-- FORTSCHRITT -->
+<div class="progress-wrap">
+  <div class="progress-track"><div class="progress-fill" id="pFill"></div></div>
+  <div class="progress-label" id="pLabel">Segment 1 von 5</div>
+</div>
+
+<div class="container">
+  <div class="nav-scroll">
+    <div class="nav-tabs" id="navTabs">
+      <button class="nav-tab active" onclick="km_go(0)">1. Was ist KI?</button>
+      <button class="nav-tab" onclick="km_go(1)">2. Wie „lernt" KI?</button>
+      <button class="nav-tab" onclick="km_go(2)">3. Halluzination</button>
+      <button class="nav-tab" onclick="km_go(3)">4. Prompting</button>
+      <button class="nav-tab" onclick="km_go(4)">5. Regeln &amp; Check</button>
+    </div>
+  </div>
+
+<!-- ════════════════════════════════
+  SEGMENT 1 – WAS IST KI?
+════════════════════════════════ -->
+<div class="section active" id="s0">
+  <div class="section-header">
+    <div class="section-kicker">Segment 1 · Einstieg</div>
+    <h2>Was ist eigentlich „KI"?</h2>
+    <p class="lead">Nicht alles, was „KI" heißt, funktioniert gleich – drei Arten begegnen dir am häufigsten.</p>
+  </div>
+
+  <div class="arten-grid">
+    <div class="art-karte">
+      <span class="art-icon">💬</span>
+      <h4>Chatbots</h4>
+      <p>z. B. ChatGPT, Claude, Gemini. Du schreibst eine Frage oder Aufgabe, die KI antwortet in Textform – erklärt, fasst zusammen, verbessert Texte. Sie „weiß" aber nichts wirklich, sie berechnet nur, welches Wort als Nächstes am wahrscheinlichsten passt.</p>
+    </div>
+    <div class="art-karte">
+      <span class="art-icon">🖼️</span>
+      <h4>Bild-KI</h4>
+      <p>z. B. Midjourney, DALL-E. Du beschreibst ein Bild in Worten, die KI erzeugt daraus eine Grafik. Diese Bilder sind komplett neu erstellt, keine Fotos – auch wenn sie täuschend echt aussehen können.</p>
+    </div>
+    <div class="art-karte">
+      <span class="art-icon">🔊</span>
+      <h4>Sprachassistenten</h4>
+      <p>z. B. Siri, Alexa. Verstehen gesprochene Sprache und führen einfache Befehle aus. Meist einfacher gebaut als Chatbots.</p>
+    </div>
+  </div>
+
+  <div class="aufgaben-block">
+    <h3>✏️ Aufgabe</h3>
+    <div class="aufgabe">
+      <p class="aufgabe-text">Nenne <strong>drei Beispiele</strong> aus deinem Alltag, wo dir KI schon begegnet ist (auch wenn du es vielleicht gar nicht bewusst wahrgenommen hast). Ordne sie einer der drei Arten zu.</p>
+      <span class="antwort-label">Meine Beispiele:</span>
+      <textarea data-km-track placeholder="1. … → Chatbot / Bild-KI / Sprachassistent&#10;2. …&#10;3. …" rows="4"></textarea>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <div></div>
+    <button class="btn btn-primary" onclick="km_next(0)">Weiter: Wie „lernt" KI? →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+  SEGMENT 2 – WIE LERNT EIN SPRACHMODELL?
+════════════════════════════════ -->
+<div class="section" id="s1">
+  <div class="section-header">
+    <div class="section-kicker">Segment 2 · Grundprinzip</div>
+    <h2>Wie „lernt" ein Sprachmodell?</h2>
+    <p class="lead">Muster statt Denken.</p>
+  </div>
+
+  <div class="info-box">
+    <h3>📚 Millionen Texte, aber kein Wissen</h3>
+    <p>Ein Sprachmodell hat vorher <strong>Millionen von Texten</strong> gelesen – Bücher, Webseiten, Artikel. Dabei hat es kein Wissen im menschlichen Sinn „gelernt", sondern <strong>Muster erkannt</strong>: Welches Wort folgt typischerweise auf welches?</p>
+    <p>Ein Vergleich: Stell dir vor, du hast noch nie „Guten ___" gehört, aber tausendmal gelesen, dass danach meistens „Morgen" oder „Tag" kommt. Du würdest richtig raten, ohne den Satz wirklich zu „verstehen". Genau so – nur viel komplexer – funktioniert ein Sprachmodell.</p>
+  </div>
+
+  <div class="hervorhebung">
+    <strong>Wichtig zu verstehen:</strong> Die KI „denkt" nicht wie ein Mensch, sie berechnet Wahrscheinlichkeiten. Sie hat keine eigene Meinung, kein Bewusstsein, keine Erfahrung – kann aber trotzdem sehr überzeugend klingen, auch wenn sie falsch liegt (dazu mehr in Segment 3).
+  </div>
+
+  <div class="aufgaben-block">
+    <h3>✏️ Aufgabe – Probiere selbst</h3>
+    <div class="aufgabe">
+      <p class="aufgabe-text">Gib der KI den Satzanfang <strong>„Der Fußball rollte über das ___"</strong> ein und lass sie ihn vervollständigen. Frag sie danach: <strong>„Wie hast du entschieden, welches Wort du nimmst?"</strong></p>
+      <span class="antwort-label">Was hat dich an der Antwort überrascht oder bestätigt? (2–3 Sätze)</span>
+      <textarea data-km-track placeholder="Mich hat überrascht/bestätigt, dass …" rows="4"></textarea>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-outline" onclick="km_go(0)">← Zurück</button>
+    <button class="btn btn-primary" onclick="km_next(1)">Weiter: Halluzination →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+  SEGMENT 3 – HALLUZINATION
+════════════════════════════════ -->
+<div class="section" id="s2">
+  <div class="section-header">
+    <div class="section-kicker">Segment 3 · Grenzen der KI</div>
+    <h2>Warum halluziniert KI?</h2>
+    <p class="lead">Überzeugend klingen ≠ richtig liegen.</p>
+  </div>
+
+  <div class="info-box">
+    <h3>👻 Was ist eine „Halluzination"?</h3>
+    <p>Eine KI kann sehr überzeugend klingen – und trotzdem komplett falsch liegen. Das nennt man <strong>„Halluzination"</strong>: Die KI erfindet Fakten, Zitate, Quellen oder Zahlen, die es gar nicht gibt. Sie tut das nicht absichtlich und merkt es auch nicht selbst – sie berechnet einfach, was plausibel klingt (siehe Segment 2).</p>
+    <h3 style="margin-top:16px;">❓ Warum passiert das?</h3>
+    <ul>
+      <li>Die KI hat kein „Wissen", das sie nachschlägt, sondern erzeugt Text auf Basis von Wahrscheinlichkeiten.</li>
+      <li>Bei sehr speziellen, seltenen oder neuen Fragen füllt sie Lücken mit plausibel klingenden, aber erfundenen Informationen.</li>
+      <li>Je selbstbewusster die Antwort klingt, desto weniger sagt das über ihre Richtigkeit aus.</li>
+    </ul>
+  </div>
+
+  <div class="hervorhebung">
+    <strong>Die wichtigste Regel:</strong> Bei allem, was du von einer KI übernehmen willst (Fakten, Daten, Zitate, Quellen) – immer gegenprüfen, z. B. mit einer zweiten Quelle oder eigenem Wissen.
+  </div>
+
+  <div class="aufgaben-block">
+    <h3>✏️ Aufgabe</h3>
+    <div class="aufgabe">
+      <p class="aufgabe-text">Frag die KI nach etwas sehr Speziellem, das sie vermutlich nicht genau wissen kann (z. B. „Nenne mir drei Fakten über [ein Ereignis an eurer Schule, ein sehr kleines lokales Thema, ein erfundener Name]"). Prüfe die Antwort.</p>
+      <span class="antwort-label">Erkennst du erfundene Details? Woran hast du sie erkannt?</span>
+      <textarea data-km-track placeholder="Ich erkenne erfundene Details daran, dass …" rows="4"></textarea>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-outline" onclick="km_go(1)">← Zurück</button>
+    <button class="btn btn-primary" onclick="km_next(2)">Weiter: Prompting-Basics →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+  SEGMENT 4 – PROMPTING-BASICS
+════════════════════════════════ -->
+<div class="section" id="s3">
+  <div class="section-header">
+    <div class="section-kicker">Segment 4 · Praxis</div>
+    <h2>Prompting-Basics</h2>
+    <p class="lead">Die Antwort einer KI hängt stark davon ab, <em>wie</em> du fragst.</p>
+  </div>
+
+  <div class="info-box">
+    <p>Ein guter Prompt (= Anfrage) macht den Unterschied zwischen einer unbrauchbaren und einer wirklich hilfreichen Antwort. Vergleiche diese zwei Prompts:</p>
+  </div>
+
+  <div class="vergleich-grid">
+    <div class="vgl-karte schlecht">
+      <span class="vgl-label">❌ Schwacher Prompt</span>
+      <span class="prompt-text">„Schreib was über Klimawandel"</span>
+      <div class="erklaerung">Die KI weiß nicht: Wie lang? Für wen? Welcher Aspekt? Das Ergebnis ist beliebig.</div>
+    </div>
+    <div class="vgl-karte gut">
+      <span class="vgl-label">✅ Guter Prompt</span>
+      <span class="prompt-text">„Erkläre mir in 5 Sätzen, für einen 14-Jährigen, warum der Klimawandel die Ozeane verändert. Nutze ein Alltagsbeispiel."</span>
+      <div class="erklaerung">Klar, konkret, mit Zielgruppe, Länge und Fokus.</div>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <h3>🧱 Vier Bausteine für einen guten Prompt</h3>
+    <ul>
+      <li><strong>Was</strong> genau soll die KI tun? (erklären, zusammenfassen, Ideen sammeln …)</li>
+      <li><strong>Wie ausführlich/lang</strong> soll die Antwort sein?</li>
+      <li><strong>Für wen</strong> ist die Antwort? (Vorwissen, Alter, Zweck)</li>
+      <li><strong>Zusätzliche Wünsche</strong> (Beispiele, bestimmter Ton, Format)</li>
+    </ul>
+  </div>
+
+  <div class="aufgaben-block">
+    <h3>✏️ Aufgabe</h3>
+    <div class="aufgabe">
+      <p class="aufgabe-text">Nimm ein Thema, das dich interessiert. Schreibe zuerst einen <strong>„schlechten" Prompt</strong> (kurz, unklar) und lass die KI antworten.</p>
+      <span class="antwort-label">Mein schlechter Prompt:</span>
+      <textarea data-km-track placeholder="z. B. „Erzähl was über Fußball"" rows="2"></textarea>
+    </div>
+    <div class="aufgabe">
+      <p class="aufgabe-text">Verbessere den Prompt dann mit den vier Bausteinen.</p>
+      <span class="antwort-label">Mein verbesserter Prompt:</span>
+      <textarea data-km-track placeholder="Was + Länge + Für wen + Zusatzwunsch …" rows="3"></textarea>
+    </div>
+    <div class="aufgabe">
+      <span class="antwort-label">Welche Antwort war besser – und warum?</span>
+      <textarea data-km-track placeholder="Die verbesserte Antwort war besser, weil …" rows="3"></textarea>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-outline" onclick="km_go(2)">← Zurück</button>
+    <button class="btn btn-primary" onclick="km_next(3)">Weiter: Regeln &amp; Check →</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+  SEGMENT 5 – REGELN & ABSCHLUSSCHECK
+════════════════════════════════ -->
+<div class="section" id="s4">
+  <div class="section-header">
+    <div class="section-kicker">Segment 5 · Verbindlich</div>
+    <h2>Werkstatt-Regeln &amp; Abschlusscheck</h2>
+    <p class="lead">Die KI-Werkstatt läuft nach den gleichen Grundsätzen wie der Rest der Friedensschule.</p>
+  </div>
+
+  <div class="info-box">
+    <h3>📱 Die drei Leitgedanken zur iPad-Nutzung gelten auch hier</h3>
+    <ol class="regel-liste" style="list-style:none;">
+      <li><span class="regel-nr">1</span><span class="regel-text">Störe niemanden durch die Nutzung deines iPads.</span></li>
+      <li><span class="regel-nr">2</span><span class="regel-text">Setze das iPad nur ein, wenn es dir beim Lernen hilft – nutze KI nicht ziellos.</span></li>
+      <li><span class="regel-nr">3</span><span class="regel-text">Beachte auch im Umgang mit KI unser Schulleitbild.</span></li>
+    </ol>
+  </div>
+
+  <div class="info-box">
+    <h3>🤝 Zusätzlich für die KI-Werkstatt (3V)</h3>
+    <ul>
+      <li><strong>Verantwortung:</strong> Du entscheidest, was du mit der KI machst – aber du bleibst verantwortlich für das Ergebnis. Eine KI-Antwort ungeprüft abzugeben zählt nicht als eigene Leistung.</li>
+      <li><strong>Verbindlichkeit:</strong> Was du dir für einen Termin vorgenommen hast, ziehst du durch – oder sprichst es an, wenn sich etwas ändert.</li>
+      <li><strong>Vertrauen:</strong> Wenn du unsicher bist, ob eine KI-Nutzung okay ist, frag – lieber einmal zu viel als eine Grenze überschreiten.</li>
+    </ul>
+  </div>
+
+  <div class="hervorhebung">
+    <strong>Faustregel:</strong> KI hilft dir beim Denken – sie denkt nicht für dich.
+  </div>
+
+  <div class="aufgaben-block">
+    <h3>✅ Abschlusscheck</h3>
+    <p class="aufgabe-text" style="margin-bottom:14px;">Beantworte kurz (schriftlich oder im Gespräch mit deiner Lernbegleitung):</p>
+    <div class="aufgabe">
+      <p class="aufgabe-text"><strong>1.</strong> Nenne einen Grund, warum du eine KI-Antwort immer gegenprüfen solltest.</p>
+      <textarea data-km-check placeholder="Ich sollte gegenprüfen, weil …" rows="2"></textarea>
+    </div>
+    <div class="aufgabe">
+      <p class="aufgabe-text"><strong>2.</strong> Was macht einen guten Prompt aus? (Nenne mind. 2 Bausteine)</p>
+      <textarea data-km-check placeholder="Ein guter Prompt enthält …" rows="2"></textarea>
+    </div>
+    <div class="aufgabe">
+      <p class="aufgabe-text"><strong>3.</strong> Nenne eine Regel aus den Leitgedanken, die auch für KI-Nutzung gilt.</p>
+      <textarea data-km-check placeholder="Zum Beispiel …" rows="2"></textarea>
+    </div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn btn-outline" onclick="km_go(3)">← Zurück</button>
+    <button class="btn btn-primary" id="btnAbschluss" onclick="km_abschluss()">Modul A abschließen</button>
+  </div>
+
+  <div class="abschluss-card" style="margin-top:20px;">
+    <h2>🎉 Geschafft!</h2>
+    <p>Du hast die Einführungseinheit der KI-Werkstatt durchgearbeitet. Zeig deiner Lernbegleitung deinen ausgefüllten Abschlusscheck – erst danach kannst du frei aus den Werkstatt-Modulen B, C und D wählen.</p>
+    <div class="abschluss-check" id="abschlussHinweis">
+      <p>✔️ Deine Antworten stehen oben in den drei Feldern des Abschluschecks. Zeig diese Seite deiner Lernbegleitung, damit sie das Modul als erledigt vermerken kann.</p>
+    </div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<script>
+(function() {
+  var aktuell = 0;
+  var gesamt = 5;
+  var erledigt = [false, false, false, false, false];
+  var tabs = document.querySelectorAll('.nav-tab');
+  var sections = document.querySelectorAll('.section');
+
+  function render() {
+    tabs.forEach(function(t, i) {
+      t.classList.toggle('active', i === aktuell);
+      t.classList.toggle('done', erledigt[i] && i !== aktuell);
+    });
+    sections.forEach(function(s, i) { s.classList.toggle('active', i === aktuell); });
+    document.getElementById('pFill').style.width = Math.round(((aktuell + 1) / gesamt) * 100) + '%';
+    document.getElementById('pLabel').textContent = 'Segment ' + (aktuell + 1) + ' von ' + gesamt;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  window.km_go = function(i) { aktuell = i; render(); };
+  window.km_next = function(i) { erledigt[i] = true; aktuell = i + 1; render(); };
+
+  window.km_abschluss = function() {
+    erledigt[4] = true;
+    render();
+    document.getElementById('abschlussHinweis').classList.add('sichtbar');
+    document.getElementById('btnAbschluss').textContent = '✓ Modul A abgeschlossen';
+    document.getElementById('btnAbschluss').disabled = true;
+  };
+
+  render();
+})();
+</script>
+
+<footer>
+    <div class="container footer-inner">
+        <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+        <nav class="footer-links" aria-label="Rechtliche Links">
+            <a href="/impressum.html">Impressum</a>
+            <a href="/datenschutz.html">Datenschutz</a>
+        </nav>
+        <a href="https://kolosseum.lehrer-herrmann.de/admin/" id="admin-footer-link" class="admin-footer-link" aria-label="Admin-Bereich">⚙</a>
+    </div>
+</footer>
+
+<script src="/js/main.js?v=20260615c"></script>
+<script src="/js/kolosseum-login-widget.js"></script>
+</body>
+</html>
