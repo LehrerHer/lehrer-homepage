@@ -171,32 +171,12 @@ body {
 }
 .km-vorwissen-link a { color: var(--primaer-hell); font-weight: 600; }
 
-/* ── HALLUZINATION-ILLUSTRATION ── */
-.hallu-illustration {
-  display: flex; align-items: center; justify-content: center; gap: 14px;
+/* ── HALLUZINATION-COMIC ── */
+.hallu-comic {
   background: var(--karte); border-radius: var(--radius); box-shadow: var(--schatten);
-  padding: 22px 18px; margin-bottom: 14px; flex-wrap: wrap;
+  padding: 10px; margin-bottom: 14px;
 }
-.hallu-box { position: relative; text-align: center; }
-.hallu-icon-kreis {
-  width: 64px; height: 64px; border-radius: 50%; background: var(--hintergrund);
-  border: 2px solid var(--rahmen); display: flex; align-items: center; justify-content: center;
-  font-size: 30px; margin: 0 auto 8px;
-}
-.hallu-box.ziel .hallu-icon-kreis { border-color: var(--fehler); background: #fdecea; }
-.hallu-label { font-size: 12px; color: var(--text-hell); max-width: 130px; }
-.hallu-sprechblase {
-  position: relative; background: var(--hintergrund); border: 1.5px solid var(--rahmen);
-  border-radius: 10px; padding: 8px 12px; font-size: 12px; color: var(--text);
-  font-style: italic; max-width: 170px; margin-bottom: 8px;
-}
-.hallu-warnbadge {
-  position: absolute; top: -8px; right: -8px; background: var(--fehler); color: #fff;
-  font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,.2);
-}
-.hallu-pfeil { font-size: 24px; color: var(--text-hell); }
-@media (max-width: 480px) { .hallu-pfeil { transform: rotate(90deg); } }
+.hallu-comic img { display: block; width: 100%; height: auto; border-radius: 5px; }
 
 /* ── HILFEVORHANG ── */
 .hilfevorhang { margin-bottom: 14px; }
@@ -538,18 +518,8 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
     <p class="lead">Überzeugend klingen ≠ richtig liegen.</p>
   </div>
 
-  <div class="hallu-illustration" role="img" aria-label="Illustration: Eine KI antwortet selbstbewusst mit einem angeblichen Gerichtsurteil samt Aktenzeichen – der Inhalt ist jedoch frei erfunden.">
-    <div class="hallu-box">
-      <div class="hallu-icon-kreis">🤖</div>
-      <div class="hallu-sprechblase">„Aktenzeichen 14 C 233/19 …"</div>
-      <div class="hallu-label">Die KI antwortet selbstbewusst</div>
-    </div>
-    <div class="hallu-pfeil">➜</div>
-    <div class="hallu-box ziel">
-      <div class="hallu-icon-kreis">📄</div>
-      <span class="hallu-warnbadge">❌ erfunden</span>
-      <div class="hallu-label">Klingt amtlich – existiert aber gar nicht</div>
-    </div>
+  <div class="hallu-comic">
+    <img src="/img/ki-halluzination-comic.png" alt="Comic „Der selbstsichere Schwätzer" in 6 Panels: Eine Schülerin fragt eine KI nach der Gründung einer Universität mit Quellenangabe. Die KI berechnet nur das wahrscheinlichste nächste Wort und erfindet Details, die plausibel klingen. Sie antwortet selbstbewusst mit einer erfundenen Quelle. Die Schülerin prüft die Antwort nach und findet per Suchmaschine die richtige, abweichende Information. Lehre: KI-Antworten bei Fakten, Zahlen und Quellen immer nachprüfen.">
   </div>
 
   <div class="info-box">
