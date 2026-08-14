@@ -1,0 +1,352 @@
+<!--
+  Titel: KI-Werkstatt – Modul C.1: KI als Lernpartner (Zusammenfassen/Erklären)
+  Fach: Informatik (Werkstatt „KI für Schüler*innen", Modul C – Praktische Tool-Anwendung)
+  Klasse/Niveau: Jahrgang 8–10
+  AB-Typ: Gemischt (Kurz-Input + Schritt-für-Schritt-Aufgabe + Reflexion)
+  Erstellt: 2026-08-14
+  Quelle: Manuell erstellt (Auftrag Jan Herrmann)
+  Voraussetzung: Modul A (Einführungseinheit) abgeschlossen
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>KI-Werkstatt – Modul C.1: KI als Lernpartner</title>
+<style>
+:root {
+  --primaer: #1e3a5f;
+  --primaer-hell: #2d6a9f;
+  --akzent: #4a9eda;
+  --erfolg: #2ecc71;
+  --fehler: #e74c3c;
+  --hintergrund: #f4f6f7;
+  --karte: #ffffff;
+  --text: #23303f;
+  --text-hell: #64748b;
+  --rahmen: #dbe3ea;
+  --radius: 8px;
+  --schatten: 0 2px 10px rgba(30,58,95,0.08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--hintergrund);
+  color: var(--text);
+  line-height: 1.65;
+  -webkit-text-size-adjust: 100%;
+}
+
+.container { max-width: 800px; margin: 0 auto; padding: 0 18px 70px; }
+
+/* ── HERO ── */
+.km-hero {
+  background: linear-gradient(135deg, var(--primaer) 0%, var(--primaer-hell) 100%);
+  padding: 34px 20px 26px;
+  color: #fff;
+}
+.km-hero-inner { max-width: 800px; margin: 0 auto; }
+.km-kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.3);
+  padding: 3px 12px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+.km-hero h1 { font-size: clamp(22px, 5vw, 32px); margin: 0 0 8px; line-height: 1.2; }
+.km-hero p.km-sub { margin: 0 0 16px; color: #cfe0f2; font-size: 15px; }
+.km-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+.km-badge {
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.25);
+  font-size: 12px;
+  padding: 4px 11px;
+  border-radius: 20px;
+}
+.km-voraussetzung {
+  margin-top: 18px;
+  background: rgba(255,255,255,.12);
+  border-left: 4px solid var(--erfolg);
+  padding: 10px 14px;
+  border-radius: 0 6px 6px 0;
+  font-size: 14px;
+}
+
+.container-top { padding-top: 22px; }
+
+/* ── INFO-BOX ── */
+.info-box { background: var(--karte); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 14px; box-shadow: var(--schatten); }
+.info-box h3 { margin: 0 0 10px; font-size: 16.5px; color: var(--primaer); display: flex; align-items: center; gap: 8px; }
+.info-box p { margin: 0 0 10px; font-size: 15px; }
+.info-box p:last-child { margin-bottom: 0; }
+
+/* ── AUFGABEN-BLOCK ── */
+.aufgaben-block { background: var(--karte); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: var(--schatten); }
+.aufgaben-block h3 {
+  margin: 0 0 14px; font-size: 16px; color: var(--primaer);
+  padding-bottom: 10px; border-bottom: 2px solid var(--hintergrund);
+  display: flex; align-items: center; gap: 8px;
+}
+.aufgabe-text { font-size: 15px; margin-bottom: 8px; }
+.aufgabe-text strong { color: var(--primaer); }
+.aufgabe-text a { color: var(--primaer-hell); font-weight: 600; }
+
+/* ── SCHRITTE ── */
+.schritt { display: flex; gap: 14px; margin-bottom: 22px; }
+.schritt:last-child { margin-bottom: 0; }
+.schritt-nr {
+  flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
+  background: var(--primaer); color: #fff; font-size: 14px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; margin-top: 1px;
+}
+.schritt-body { flex: 1; min-width: 0; }
+
+.antwort-label {
+  display: block; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--text-hell); margin: 8px 0 5px;
+}
+.hinweis-optional { font-size: 12px; color: var(--text-hell); font-style: italic; margin-left: 6px; }
+input[type="text"] {
+  width: 100%;
+  border: 1.5px solid var(--rahmen);
+  border-radius: 7px;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--text);
+  background: #fbfcfd;
+}
+input[type="text"]:focus { outline: none; border-color: var(--akzent); box-shadow: 0 0 0 3px rgba(74,158,218,.15); }
+textarea {
+  width: 100%;
+  border: 1.5px solid var(--rahmen);
+  border-radius: 7px;
+  padding: 11px 13px;
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+  background: #fbfcfd;
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color .18s, box-shadow .18s;
+}
+textarea:focus { outline: none; border-color: var(--akzent); box-shadow: 0 0 0 3px rgba(74,158,218,.15); }
+textarea::placeholder, input[type="text"]::placeholder { color: #a7b3bf; font-style: italic; }
+
+/* ── STOLPERFALLE ── */
+.stolperfalle {
+  background: #fdecea;
+  border-left: 4px solid var(--fehler);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  padding: 14px 18px;
+  margin-bottom: 14px;
+  font-size: 15px;
+}
+.stolperfalle h3 { margin: 0 0 8px; font-size: 16px; color: #b91c1c; display: flex; align-items: center; gap: 8px; }
+.stolperfalle strong { color: #b91c1c; }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 11px 22px; border-radius: 7px; font-size: 14px; font-weight: 600;
+  cursor: pointer; border: none; transition: all .18s; font-family: inherit;
+}
+.btn-primary { background: var(--primaer); color: #fff; }
+.btn-primary:hover { background: var(--primaer-hell); }
+.btn-primary:disabled { background: #a9b7c4; cursor: not-allowed; }
+
+/* ── ABSCHLUSS ── */
+.abschluss-card {
+  background: linear-gradient(135deg, var(--primaer) 0%, var(--primaer-hell) 100%);
+  border-radius: var(--radius); padding: 26px 22px; text-align: center; color: #fff; margin-top: 6px;
+}
+.abschluss-card h2 { margin: 0 0 10px; font-size: 22px; }
+.abschluss-card p { color: #cfe0f2; font-size: 15px; margin: 0 0 16px; }
+.abschluss-check {
+  background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.25);
+  border-radius: 7px; padding: 14px 16px; text-align: left; margin-top: 16px; display: none;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
+.abschluss-check.sichtbar { display: block; animation: fadeIn .3s ease; }
+.abschluss-check p { color: #fff; margin: 0; font-size: 15px; }
+</style>
+<link rel="stylesheet" href="/css/style.css?v=20260615c">
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+        <a href="/index.html" class="navbar-logo">lehrer-herrmann.de</a>
+        <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="navbar-links" id="navbar-links">
+            <li><a href="/index.html#was-ist-neu">Was ist neu?</a></li>
+            <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+            <li class="navbar-gb-trenner" aria-hidden="true"><span class="navbar-gb-label">Geschützter Bereich</span></li>
+            <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+            <li><a href="/blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+            <li><a href="/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+        </ul>
+        <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="km-hero">
+  <div class="km-hero-inner">
+    <span class="km-kicker">KI-Werkstatt · Modul C.1 von 11</span>
+    <h1>KI als Lernpartner: Zusammenfassen &amp; Erklären</h1>
+    <p class="km-sub">Praktische Tool-Anwendung – Jahrgang 8–10</p>
+    <div class="km-badges">
+      <span class="km-badge">⏱ ca. 15–20 Min.</span>
+      <span class="km-badge">🧩 Untermodul C.1</span>
+      <span class="km-badge">🔓 Frei wählbar</span>
+    </div>
+    <div class="km-voraussetzung">
+      ✅ <strong>Voraussetzung:</strong> Du hast Modul A (Einführungseinheit) bereits abgeschlossen.
+    </div>
+  </div>
+</div>
+
+<div class="container container-top">
+
+  <div class="info-box">
+    <h3>🎯 Lernziel</h3>
+    <p>Du kannst KI nutzen, um dir Lerninhalte verständlich zusammenfassen oder erklären zu lassen – ohne dass sie dir das Denken abnimmt.</p>
+  </div>
+
+  <div class="info-box">
+    <h3>💡 Kurz-Input</h3>
+    <p>KI kann dir helfen, wenn ein Text zu lang, ein Thema zu kompliziert oder eine Erklärung im Unterricht zu schnell war. Sie ersetzt aber nicht das eigene Verstehen – sie ist ein Werkzeug, um dir eine zweite Erklärung zu holen, wenn die erste nicht gereicht hat.</p>
+  </div>
+
+  <div class="aufgaben-block">
+    <h3>✏️ Schritt-für-Schritt-Aufgabe</h3>
+
+    <div class="schritt">
+      <span class="schritt-nr">1</span>
+      <div class="schritt-body">
+        <p class="aufgabe-text">Wähle ein Thema aus deinem aktuellen Lernplan, das du noch nicht ganz verstanden hast.</p>
+        <span class="antwort-label">Mein Thema:</span>
+        <input type="text" id="km-c1-thema" data-km-persist placeholder="z. B. Bruchrechnung, Photosynthese, Konjunktiv II …">
+      </div>
+    </div>
+
+    <div class="schritt">
+      <span class="schritt-nr">2</span>
+      <div class="schritt-body">
+        <p class="aufgabe-text">Lass dir das Thema von der KI in <strong>3–5 Sätzen</strong> erklären. Sag der KI dabei, für welche Klassenstufe/welches Vorwissen die Erklärung gedacht ist – so bekommst du eine passende Antwort.</p>
+        <p class="aufgabe-text">Du brauchst kein eigenes Konto – eine KI kannst du <strong>ohne Anmeldung</strong> nutzen: <a href="https://duckduckgo.com/aichat" target="_blank" rel="noopener">DuckDuckGo AI-Chat</a>.</p>
+        <span class="antwort-label">Was hat die KI erklärt? (kurze Notiz reicht)</span>
+        <textarea id="km-c1-erklaerung" data-km-persist placeholder="Die KI hat erklärt, dass …" rows="3"></textarea>
+      </div>
+    </div>
+
+    <div class="schritt">
+      <span class="schritt-nr">3</span>
+      <div class="schritt-body">
+        <p class="aufgabe-text">Verstehst du es immer noch nicht? Bitte die KI um ein anderes Beispiel oder einen Vergleich aus dem Alltag.<span class="hinweis-optional">(nur falls nötig)</span></p>
+        <span class="antwort-label">Das Alltagsbeispiel/der Vergleich war:</span>
+        <textarea id="km-c1-vergleich" data-km-persist placeholder="Ein Vergleich, der geholfen hat, war …" rows="3"></textarea>
+      </div>
+    </div>
+
+    <div class="schritt">
+      <span class="schritt-nr">4</span>
+      <div class="schritt-body">
+        <p class="aufgabe-text">Erkläre das Thema danach <strong>in eigenen Worten</strong> – ohne bei der KI-Antwort abzuschreiben.</p>
+        <span class="antwort-label">Meine eigene Erklärung:</span>
+        <textarea id="km-c1-eigene-erklaerung" data-km-persist placeholder="In eigenen Worten: …" rows="4"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="stolperfalle">
+    <h3>⚠️ Stolperfalle</h3>
+    <p>Wenn du die Erklärung der KI nur abschreibst, hast du nichts gelernt. Der Test: <strong>Kannst du es jemandem erklären, ohne auf den Bildschirm zu schauen?</strong></p>
+  </div>
+
+  <div class="aufgaben-block">
+    <h3>🔎 Abschluss-Reflexion</h3>
+    <p class="aufgabe-text">Was hat dir die KI-Erklärung besser gemacht als die aus dem Unterricht – und wo war sie schlechter oder ungenauer?</p>
+    <textarea id="km-c1-reflexion" data-km-persist placeholder="Besser war …, schlechter/ungenauer war …" rows="4"></textarea>
+  </div>
+
+  <div style="text-align:center; margin-bottom:20px;">
+    <button class="btn btn-primary" id="btnFertig" onclick="km_fertig()">✓ Aufgabe abschließen</button>
+  </div>
+
+  <div class="abschluss-card">
+    <h2>🎉 Geschafft!</h2>
+    <p>Du hast Modul C.1 abgeschlossen. Wähle als Nächstes frei ein weiteres Thema aus der KI-Werkstatt.</p>
+    <div class="abschluss-check" id="abschlussHinweis">
+      <p>✔️ Deine Antworten stehen oben. Zeig sie deiner Lernbegleitung, wenn ihr sie gemeinsam besprechen wollt.</p>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+(function() {
+  var STORAGE_KEY = 'km-modul-c1-antworten';
+
+  function antwortenSpeichern() {
+    var daten = {};
+    document.querySelectorAll('[data-km-persist]').forEach(function(el) {
+      if (el.id) daten[el.id] = el.value;
+    });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(daten)); } catch (e) {}
+  }
+
+  function antwortenWiederherstellen() {
+    var roh;
+    try { roh = localStorage.getItem(STORAGE_KEY); } catch (e) { return; }
+    if (!roh) return;
+    var daten;
+    try { daten = JSON.parse(roh); } catch (e) { return; }
+    Object.keys(daten).forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.value = daten[id];
+    });
+  }
+
+  document.addEventListener('input', function(e) {
+    if (e.target.matches('[data-km-persist]')) antwortenSpeichern();
+  });
+
+  window.km_fertig = function() {
+    document.getElementById('abschlussHinweis').classList.add('sichtbar');
+    document.getElementById('btnFertig').textContent = '✓ Abgeschlossen';
+    document.getElementById('btnFertig').disabled = true;
+    antwortenSpeichern();
+    document.querySelector('.abschluss-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  antwortenWiederherstellen();
+})();
+</script>
+
+<footer>
+    <div class="container footer-inner">
+        <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+        <nav class="footer-links" aria-label="Rechtliche Links">
+            <a href="/impressum.html">Impressum</a>
+            <a href="/datenschutz.html">Datenschutz</a>
+        </nav>
+        <a href="https://kolosseum.lehrer-herrmann.de/admin/" id="admin-footer-link" class="admin-footer-link" aria-label="Admin-Bereich">⚙</a>
+    </div>
+</footer>
+
+<script src="/js/main.js?v=20260615c"></script>
+<script src="/js/kolosseum-login-widget.js"></script>
+</body>
+</html>
