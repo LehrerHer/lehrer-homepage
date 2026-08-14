@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KI-Werkstatt – Lernkolosseum</title>
+  <link rel="stylesheet" href="/css/style.css?v=20260615c">
+  <style>
+    .werkstatt-intro {
+      background: linear-gradient(135deg, #2b2350 0%, #4a3f8f 100%);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.75rem 2rem;
+      color: #fff;
+      margin-top: 1.5rem;
+    }
+    .werkstatt-intro h1 { font-size: 1.7rem; margin-bottom: 0.4rem; }
+    .werkstatt-intro p { color: #d8d3f5; font-size: 0.95rem; max-width: 620px; }
+    .werkstatt-overall {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      background: rgba(255,255,255,0.12);
+      border-radius: 50px;
+      padding: 0.4rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .werkstatt-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.75rem;
+    }
+
+    .werkstatt-card {
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      transition: opacity var(--transition), filter var(--transition);
+    }
+    .werkstatt-card.locked { opacity: 0.45; filter: grayscale(0.6); }
+
+    .werkstatt-icon { font-size: 2.2rem; line-height: 1; }
+    .werkstatt-title {
+      font-family: 'Fredoka One', sans-serif;
+      font-size: 1.2rem;
+      color: var(--ink);
+    }
+    .werkstatt-desc { font-size: 0.88rem; color: var(--ink-soft); flex: 1; }
+
+    .werkstatt-badge {
+      align-self: flex-start;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 0.2rem 0.65rem;
+      border-radius: 50px;
+    }
+    .werkstatt-badge.offen        { background: rgba(74,158,218,.15); color: #1a6fa0; }
+    .werkstatt-badge.in_bearbeitung { background: rgba(246,168,0,.18); color: #a06000; }
+    .werkstatt-badge.abgeschlossen  { background: rgba(46,204,113,.15); color: #1a7a45; }
+    .werkstatt-badge.gesperrt     { background: rgba(0,0,0,.08); color: var(--ink-soft); }
+    .werkstatt-badge.bald         { background: rgba(167,139,250,.18); color: #6d28d9; }
+
+    .werkstatt-card .btn { align-self: flex-start; margin-top: 0.25rem; }
+    .werkstatt-hinweis { font-size: 0.8rem; color: var(--ink-soft); font-style: italic; }
+
+    .pflicht-hinweis {
+      margin-top: 1.5rem;
+      background: rgba(167,139,250,.12);
+      border-left: 4px solid var(--c4);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      padding: 0.85rem 1.1rem;
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+
+      <a href="https://lehrer-herrmann.de" class="navbar-logo">lehrer-herrmann.de</a>
+
+      <button
+        class="hamburger"
+        id="hamburger"
+        aria-label="Menü öffnen"
+        aria-expanded="false"
+        aria-controls="navbar-links"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <ul class="navbar-links" id="navbar-links">
+        <li><a href="https://lehrer-herrmann.de/#was-ist-neu">Was ist neu?</a></li>
+        <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+        <li class="navbar-gb-trenner" aria-hidden="true">
+          <span class="navbar-gb-label">Geschützter Bereich</span>
+        </li>
+        <li><a href="/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+        <li><a href="https://lehrer-herrmann.de/blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+        <li><a href="https://lehrer-herrmann.de/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+      </ul>
+
+      <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none">
+        <!-- Wird per JS befüllt -->
+      </div>
+
+    </div>
+  </nav>
+
+  <nav class="kolosseum-subnav" aria-label="Arena-Navigation">
+    <div class="kolosseum-subnav-inner">
+      <span class="subnav-brand">🏛️ Lernkolosseum</span>
+      <div class="subnav-links">
+        <a href="/profil.html">Profil</a>
+        <a href="/rangliste.html">Rangliste</a>
+        <a href="/quiz.html">Quizze</a>
+        <a href="/charakter.html">Charakter</a>
+        <a href="/shop.html">🏪 Shop</a>
+        <a href="/ki-werkstatt.html" class="active">🧪 KI-Werkstatt</a>
+        <button id="logout-btn" class="subnav-logout">Ausloggen</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-bottom: 3rem;">
+
+    <div class="werkstatt-intro">
+      <h1>🧪 KI-Werkstatt</h1>
+      <p>Eine offene Werkstatt rund um Künstliche Intelligenz – ein Block pro Woche. Modul A ist die Pflicht-Einführung, danach wählst du frei aus den Modulen B, C und D.</p>
+      <div class="werkstatt-overall" id="overall-status">Fortschritt wird geladen …</div>
+    </div>
+
+    <div class="werkstatt-grid" id="werkstatt-grid">
+      <div class="card"><div class="empty">Wird geladen…</div></div>
+    </div>
+
+    <div class="pflicht-hinweis">
+      🔒 <strong>Modul B, C und D schalten sich frei, sobald du Modul A abgeschlossen hast.</strong>
+      Es gibt danach keine feste Reihenfolge – du kannst frei wählen, womit du weitermachst.
+    </div>
+
+  </main>
+
+  <script>
+    (function () {
+      const MODULE_META = {
+        a: {
+          icon: '🚀',
+          title: 'Modul A – Einführungseinheit',
+          desc: 'Wie funktioniert KI, warum halluziniert sie und wie prompte ich gut? Pflichtmodul, 5 Segmente.',
+          url: 'https://lehrer-herrmann.de/materialien/informatik_ki-werkstatt-modul-a-einfuehrung_jg8-10_2026-08.html',
+        },
+        b: {
+          icon: '⚖️',
+          title: 'Modul B – Ethik & Medienkompetenz',
+          desc: 'Chancen, Risiken und verantwortungsvoller Umgang mit KI.',
+        },
+        c: {
+          icon: '🛠️',
+          title: 'Modul C – Praktische Tool-Anwendung',
+          desc: '11 Werkstatt-Themen zu konkreten KI-Werkzeugen.',
+        },
+        d: {
+          icon: '🎨',
+          title: 'Modul D – Freiraum & eigene Projekte',
+          desc: 'Eigene Ideen mit KI umsetzen.',
+        },
+      };
+
+      const STATUS_LABEL = {
+        offen: '⭘ Offen',
+        in_bearbeitung: '🕓 In Bearbeitung',
+        abgeschlossen: '✓ Abgeschlossen',
+      };
+
+      function werkstattCardHTML(key, modulAStatus) {
+        const meta = MODULE_META[key];
+        const istModulA = key === 'a';
+        const modulAFertig = modulAStatus === 'abgeschlossen';
+        const gesperrt = !istModulA && !modulAFertig;
+
+        let badgeHtml, aktionHtml;
+
+        if (istModulA) {
+          badgeHtml = `<span class="werkstatt-badge ${modulAStatus}">${STATUS_LABEL[modulAStatus]}</span>`;
+          const btnLabel = modulAStatus === 'offen' ? 'Starten' : modulAStatus === 'in_bearbeitung' ? 'Weiter' : 'Nochmal ansehen';
+          aktionHtml = `<a class="btn btn-primary" href="${meta.url}">${btnLabel}</a>`;
+        } else if (gesperrt) {
+          badgeHtml = `<span class="werkstatt-badge gesperrt">🔒 Gesperrt</span>`;
+          aktionHtml = `<span class="werkstatt-hinweis">Erst Modul A abschließen</span>`;
+        } else {
+          badgeHtml = `<span class="werkstatt-badge bald">🔜 Bald verfügbar</span>`;
+          aktionHtml = `<span class="werkstatt-hinweis">Inhalte folgen in Kürze</span>`;
+        }
+
+        return `
+          <div class="card werkstatt-card${gesperrt ? ' locked' : ''}">
+            <span class="werkstatt-icon">${meta.icon}</span>
+            <span class="werkstatt-title">${meta.title}</span>
+            <span class="werkstatt-desc">${meta.desc}</span>
+            ${badgeHtml}
+            ${aktionHtml}
+          </div>
+        `;
+      }
+
+      function render(modulAStatus) {
+        document.getElementById('werkstatt-grid').innerHTML =
+          ['a', 'b', 'c', 'd'].map((k) => werkstattCardHTML(k, modulAStatus)).join('');
+
+        const overallEl = document.getElementById('overall-status');
+        if (modulAStatus === 'abgeschlossen') {
+          overallEl.textContent = '🎉 Modul A abgeschlossen – B, C und D sind frei wählbar!';
+        } else if (modulAStatus === 'in_bearbeitung') {
+          overallEl.textContent = '🕓 Modul A ist in Bearbeitung';
+        } else {
+          overallEl.textContent = '⭘ Noch nicht gestartet – beginne mit Modul A';
+        }
+      }
+
+      async function init() {
+        const meRes = await fetch('/api/auth/me');
+        if (!meRes.ok) { window.location.href = '/login.html'; return; }
+
+        let modulAStatus = 'offen';
+        try {
+          const progressRes = await fetch('/api/ki-werkstatt/progress');
+          if (progressRes.ok) {
+            const data = await progressRes.json();
+            modulAStatus = data.modulAStatus || 'offen';
+          }
+        } catch (e) {
+          console.error('Fortschritt konnte nicht geladen werden:', e);
+        }
+
+        render(modulAStatus);
+      }
+
+      document.getElementById('logout-btn').addEventListener('click', async () => {
+        await fetch('/api/auth/logout', { method: 'POST' });
+        window.location.href = '/login.html';
+      });
+
+      init().catch(console.error);
+    })();
+  </script>
+  <script src="/js/arena-bar.js"></script>
+  <script src="/js/main.js?v=20260615c"></script>
+  <script src="/js/kolosseum-login-widget.js"></script>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+      <nav class="site-footer-links" aria-label="Rechtliche Links">
+        <a href="https://lehrer-herrmann.de/impressum.html">Impressum</a>
+        <a href="https://lehrer-herrmann.de/datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

@@ -23,6 +23,7 @@ const kroatienRoutes         = require('./routes/kroatien');
 const sdbRoutes              = require('./routes/sdb');
 const feedbackRoutes         = require('./routes/feedback');
 const geoAbi2002Routes       = require('./routes/geo-abi2002');
+const kiWerkstattRoutes      = require('./routes/ki-werkstatt');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -87,6 +88,7 @@ app.use('/api/kroatien',     kroatienRoutes);
 app.use('/api/sdb',          sdbRoutes);
 app.use('/api/feedback',     feedbackRoutes);
 app.use('/api/geo-abi2002',  geoAbi2002Routes);
+app.use('/api/ki-werkstatt', kiWerkstattRoutes);
 
 // SPA-Catch: alle nicht-API-Routen geben die jeweilige HTML-Datei zurück
 // (oder leiten zu login weiter)

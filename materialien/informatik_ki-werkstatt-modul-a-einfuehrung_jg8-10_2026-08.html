@@ -752,6 +752,29 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
   var STORAGE_KEY = 'km-modul-a-antworten';
   var ART_LABEL = { chatbot: '💬 Chatbot', bild: '🖼️ Bild-KI', sprache: '🔊 Sprachassistent' };
 
+  /* ── KOLOSSEUM-SYNC (optional, best effort) ──
+     Diese Seite funktioniert komplett ohne Login (lokal via localStorage).
+     Ist der/die Lernende eingeloggt, wird der Fortschritt zusätzlich serverseitig
+     gespiegelt, damit die KI-Werkstatt-Übersicht (kolosseum/public/ki-werkstatt.html)
+     den Status "abgeschlossen" für die Freischaltung von Modul B/C/D sehen kann. */
+  var KOLOSSEUM_API = 'https://kolosseum.lehrer-herrmann.de/api';
+
+  function kolosseumMeldeStart() {
+    fetch(KOLOSSEUM_API + '/ki-werkstatt/modul-a/start', {
+      method: 'POST',
+      credentials: 'include',
+      signal: AbortSignal.timeout(4000)
+    }).catch(function() { /* nicht eingeloggt oder offline – lokal geht es trotzdem weiter */ });
+  }
+
+  function kolosseumMeldeAbschluss() {
+    fetch(KOLOSSEUM_API + '/ki-werkstatt/modul-a/abschliessen', {
+      method: 'POST',
+      credentials: 'include',
+      signal: AbortSignal.timeout(4000)
+    }).catch(function() { /* nicht eingeloggt oder offline – lokal geht es trotzdem weiter */ });
+  }
+
   /* ── ANTWORTEN SPEICHERN / WIEDERHERSTELLEN ── */
   function feldWert(el) { return el.value; }
   function feldWertSetzen(el, wert) { el.value = wert; }
@@ -980,12 +1003,14 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
     document.getElementById('btnAbschluss').textContent = '✓ Modul A abgeschlossen';
     document.getElementById('btnAbschluss').disabled = true;
     antwortenSpeichern();
+    kolosseumMeldeAbschluss();
   };
 
   antwortenWiederherstellen();
   aktuell = segmentAusHash();
   history.replaceState({ segment: aktuell }, '', '#segment-' + (aktuell + 1));
   render(false);
+  kolosseumMeldeStart();
 })();
 </script>
 
