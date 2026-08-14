@@ -101,6 +101,19 @@ db.exec(`
   )
 `);
 
+// KI-Werkstatt: Fortschritt Modul A (Einführungseinheit) pro Lernpartner:in.
+// modul_a_status: 'offen' | 'in_bearbeitung' | 'abgeschlossen'
+db.exec(`
+  CREATE TABLE IF NOT EXISTS ki_werkstatt_progress (
+    student_id           INTEGER PRIMARY KEY,
+    modul_a_status        TEXT    NOT NULL DEFAULT 'offen',
+    modul_a_started_at    TEXT,
+    modul_a_completed_at  TEXT,
+    updated_at            TEXT    NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+  )
+`);
+
 // Feedback-Notizen: Lernbegleiter diktiert Text über eine Lernzeit, Claude teilt ihn
 // nach Lernpartner:in auf und ordnet jedem Abschnitt eine Kategorie zu (siehe CLAUDE.md-Briefing)
 db.exec(`
