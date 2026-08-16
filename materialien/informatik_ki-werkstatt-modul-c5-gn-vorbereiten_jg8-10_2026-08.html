@@ -164,6 +164,32 @@ textarea::placeholder, input[type="text"]::placeholder { color: #a7b3bf; font-st
 .btn-primary { background: var(--primaer); color: #fff; }
 .btn-primary:hover { background: var(--primaer-hell); }
 .btn-primary:disabled { background: #a9b7c4; cursor: not-allowed; }
+.btn-pdf { background: var(--erfolg); color: #fff; }
+.btn-pdf:hover { background: #27ae60; }
+.btn-reihe { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px; }
+
+/* ── PDF-EXPORT ── */
+.pdf-name-feld { margin-bottom: 14px; }
+.pdf-name-feld label { display: block; font-size: 13px; color: var(--text-hell); margin-bottom: 5px; }
+.pdf-name-feld input[type="text"] { max-width: 320px; }
+#pdf-druckkopf, #pdf-inhalt { display: none; }
+.zf-item { margin-bottom: 14px; }
+.zf-item:last-child { margin-bottom: 0; }
+.zf-frage { font-size: 14px; font-weight: 600; color: var(--primaer); margin-bottom: 2px; }
+.zf-antwort { font-size: 14.5px; color: var(--text); white-space: pre-wrap; }
+.zf-antwort.zf-leer { color: var(--text-hell); font-style: italic; }
+
+@media print {
+  nav, .km-hero, footer, .btn-reihe, .pdf-name-feld, .pdf-hinweis { display: none !important; }
+  .info-box, .aufgaben-block, .stolperfalle, .abschluss-card { display: none !important; }
+  #pdf-druckkopf, #pdf-inhalt { display: block !important; }
+  body { background: #fff !important; }
+  .container { padding: 0; max-width: 100%; }
+  #pdf-druckkopf { margin-bottom: 20px; border-bottom: 2px solid #1e3a5f; padding-bottom: 10px; }
+  #pdf-druckkopf h1 { font-size: 20px; color: #1e3a5f; margin: 0 0 6px; }
+  #pdf-druckkopf p { font-size: 13px; color: #555; margin: 0; }
+  .zf-item { break-inside: avoid; }
+}
 
 /* ── ABSCHLUSS ── */
 .abschluss-card {
@@ -282,9 +308,24 @@ textarea::placeholder, input[type="text"]::placeholder { color: #a7b3bf; font-st
     <textarea id="km-c5-reflexion" data-km-persist placeholder="Unsicher war ich bei …, konkret angehen werde ich das, indem ich …" rows="4"></textarea>
   </div>
 
-  <div style="text-align:center; margin-bottom:20px;">
-    <button class="btn btn-primary" id="btnFertig" onclick="km_fertig()">✓ Aufgabe abschließen</button>
+  <div class="pdf-name-feld">
+    <label for="km-c5-name">Dein Name (optional, für die PDF):</label>
+    <input type="text" id="km-c5-name" data-km-persist placeholder="Vorname Nachname">
   </div>
+
+  <div id="pdf-druckkopf">
+    <h1>KI-Werkstatt – Modul C.5: Gelingensnachweis (GN)/Klassenarbeit vorbereiten</h1>
+    <p id="pdf-druckkopf-meta"></p>
+  </div>
+  <div id="pdf-inhalt"></div>
+
+  <div class="btn-reihe">
+    <button class="btn btn-primary" id="btnFertig" onclick="km_fertig()">✓ Aufgabe abschließen</button>
+    <button class="btn btn-pdf" onclick="km_pdf()">📄 Als PDF speichern</button>
+  </div>
+  <p class="pdf-hinweis" style="text-align:center; font-size:12.5px; color:var(--text-hell); margin-top:-10px; margin-bottom:20px;">
+    Tipp: Wähle im Druckdialog „Als PDF sichern"/„Speichern unter PDF" – auf dem iPad über das Freigabe-Symbol „In Dateien sichern".
+  </p>
 
   <div class="abschluss-card">
     <h2>🎉 Geschafft!</h2>
@@ -330,6 +371,41 @@ textarea::placeholder, input[type="text"]::placeholder { color: #a7b3bf; font-st
     document.getElementById('btnFertig').disabled = true;
     antwortenSpeichern();
     document.querySelector('.abschluss-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  };
+
+  function escHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function findeFrage(el) {
+    var sib = el.previousElementSibling;
+    if (sib && sib.classList.contains('antwort-label')) {
+      return sib.textContent.replace(/\(nur falls nötig\)/, '').trim();
+    }
+    if (sib && sib.classList.contains('aufgabe-text')) {
+      return sib.textContent.trim();
+    }
+    return el.id;
+  }
+
+  window.km_pdf = function() {
+    var teile = [];
+    document.querySelectorAll('[data-km-persist]').forEach(function(el) {
+      if (el.id === 'km-c5-name') return;
+      var frage = findeFrage(el);
+      var wert = el.value.trim();
+      teile.push('<div class="zf-item"><div class="zf-frage">' + escHtml(frage) + '</div><div class="zf-antwort' +
+        (wert ? '' : ' zf-leer') + '">' + escHtml(wert || '(noch nicht beantwortet)') + '</div></div>');
+    });
+    document.getElementById('pdf-inhalt').innerHTML = teile.join('');
+
+    var nameEl = document.getElementById('km-c5-name');
+    var name = nameEl ? nameEl.value.trim() : '';
+    var meta = 'Datum: ' + new Date().toLocaleDateString('de-DE');
+    if (name) meta = 'Name: ' + name + ' · ' + meta;
+    document.getElementById('pdf-druckkopf-meta').textContent = meta;
+
+    window.print();
   };
 
   antwortenWiederherstellen();
