@@ -1014,6 +1014,9 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
     document.getElementById('btnAbschluss').disabled = true;
     antwortenSpeichern();
     kolosseumMeldeAbschluss();
+    if (typeof window.worksheetComplete === 'function') {
+      window.worksheetComplete('ki-werkstatt-a', 'KI-Werkstatt – Modul A: Einführungseinheit', 100);
+    }
   };
 
   antwortenWiederherstellen();
@@ -1037,5 +1040,7 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
 
 <script src="/js/main.js?v=20260615c"></script>
 <script src="/js/kolosseum-login-widget.js"></script>
+<script src="/js/worksheet-xp.js"></script>
+<script>if (window.worksheetLoginHinweis) worksheetLoginHinweis();</script>
 </body>
 </html>

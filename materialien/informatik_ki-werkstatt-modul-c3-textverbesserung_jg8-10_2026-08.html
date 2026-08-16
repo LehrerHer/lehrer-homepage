@@ -383,6 +383,9 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
     document.getElementById('btnFertig').disabled = true;
     antwortenSpeichern();
     document.querySelector('.abschluss-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (typeof window.worksheetComplete === 'function') {
+      window.worksheetComplete('ki-werkstatt-c3', 'KI-Werkstatt – Modul C.3: Text verbessern statt schreiben lassen', 20);
+    }
   };
 
   function escHtml(s) {
@@ -437,5 +440,7 @@ textarea::placeholder { color: #a7b3bf; font-style: italic; }
 
 <script src="/js/main.js?v=20260615c"></script>
 <script src="/js/kolosseum-login-widget.js"></script>
+<script src="/js/worksheet-xp.js"></script>
+<script>if (window.worksheetLoginHinweis) worksheetLoginHinweis();</script>
 </body>
 </html>
