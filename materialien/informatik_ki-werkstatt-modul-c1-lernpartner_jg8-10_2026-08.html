@@ -293,20 +293,11 @@ textarea::placeholder, input[type="text"]::placeholder { color: #a7b3bf; font-st
     <div class="schritt">
       <span class="schritt-nr">4</span>
       <div class="schritt-body">
-        <p class="aufgabe-text">Erkläre das Thema danach <strong>in eigenen Worten</strong> – ohne bei der KI-Antwort abzuschreiben.</p>
+        <p class="aufgabe-text">Erkläre das Thema danach <strong>in eigenen Worten</strong> – ohne bei der KI-Antwort abzuschreiben. Gib der KI anschließend deine Erklärung und bitte sie, diese abzugleichen: Stimmt sie? Fehlt etwas? Ist etwas ungenau?</p>
         <span class="antwort-label">Meine eigene Erklärung:</span>
         <textarea id="km-c1-eigene-erklaerung" data-km-persist placeholder="In eigenen Worten: …" rows="4"></textarea>
-      </div>
-    </div>
-
-    <div class="schritt">
-      <span class="schritt-nr">5</span>
-      <div class="schritt-body">
-        <p class="aufgabe-text">Gib der KI jetzt deine eigene Erklärung aus Aufgabe 4 und bitte sie, diese abzugleichen: Stimmt sie? Fehlt etwas? Ist etwas ungenau?</p>
-        <span class="antwort-label">Mein Prompt:</span>
-        <textarea id="km-c1-prompt5" data-km-persist placeholder="z. B. Ich habe das so verstanden: [meine Erklärung]. Stimmt das? Fehlt etwas?" rows="2"></textarea>
-        <span class="antwort-label">Antwort der KI:</span>
-        <textarea id="km-c1-antwort5" data-km-persist placeholder="Die KI antwortete: …" rows="4"></textarea>
+        <span class="antwort-label">Antwort der KI (Abgleich):</span>
+        <textarea id="km-c1-abgleich-antwort" data-km-persist placeholder="Die KI antwortete: …" rows="4"></textarea>
       </div>
     </div>
   </div>
