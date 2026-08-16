@@ -380,6 +380,9 @@ textarea::placeholder, input[type="text"]::placeholder { color: #a7b3bf; font-st
     document.getElementById('btnFertig').disabled = true;
     antwortenSpeichern();
     document.querySelector('.abschluss-card').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (typeof window.worksheetComplete === 'function') {
+      window.worksheetComplete('ki-werkstatt-c5', 'KI-Werkstatt – Modul C.5: Gelingensnachweis (GN)/Klassenarbeit vorbereiten', 20);
+    }
   };
 
   function escHtml(s) {
@@ -434,5 +437,7 @@ textarea::placeholder, input[type="text"]::placeholder { color: #a7b3bf; font-st
 
 <script src="/js/main.js?v=20260615c"></script>
 <script src="/js/kolosseum-login-widget.js"></script>
+<script src="/js/worksheet-xp.js"></script>
+<script>if (window.worksheetLoginHinweis) worksheetLoginHinweis();</script>
 </body>
 </html>

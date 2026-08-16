@@ -205,6 +205,33 @@
     } catch (e) { /* Fehler still schlucken */ }
   };
 
+  /* ── Login-Hinweis vor dem Start (optional, für Seiten ohne echtes Richtig/Falsch) ──
+     Zeigt einmal pro Tab-Sitzung einen Hinweis, wenn noch keine Anmeldung vorliegt. */
+  window.worksheetLoginHinweis = async function () {
+    try {
+      if (sessionStorage.getItem('kwx_login_hinweis_shown')) return;
+    } catch (e) {}
+
+    try {
+      var meRes = await fetch(K + '/api/auth/me', { credentials: 'include' });
+      if (meRes.ok) return;
+    } catch (e) { return; }
+
+    try { sessionStorage.setItem('kwx_login_hinweis_shown', '1'); } catch (e) {}
+
+    openModal(
+      '<span class="kwx-emoji">🔓</span>'
+      + '<div class="kwx-title">Noch nicht eingeloggt</div>'
+      + '<div class="kwx-sub">'
+      +   'Melde dich an, um für diese Aufgabe <strong>XP</strong> zu sammeln und deinen Gladiator zu leveln. '
+      +   'Du kannst auch ohne Login weitermachen.'
+      + '</div>'
+      + '<a href="' + K + '/login.html" class="kwx-btn kwx-btn-primary" target="_blank" rel="noopener">Einloggen</a>'
+      + '<a href="' + K + '/register.html" class="kwx-btn kwx-btn-outline" target="_blank" rel="noopener">🗡️ Gladiator erstellen</a>'
+      + '<button class="kwx-dismiss" onclick="kwxClose()">Ohne Login fortfahren</button>'
+    );
+  };
+
   /* ── Auto-Claim beim Laden: ausstehende XP einlösen ohne Modal-Unterbrechung ── */
   (async function autoClaimOnLoad() {
     var pending = loadPending();
