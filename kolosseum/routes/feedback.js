@@ -24,7 +24,7 @@ const limiter = rateLimit({
   message: { error: 'Zu viele Anfragen. Bitte warte 10 Minuten.' }
 });
 
-const CATEGORIES = ['Fachlich', 'Sozial', 'Verhalten', 'Verbindlichkeit'];
+const CATEGORIES = ['Fachlich', 'Sozial', 'Verhalten', 'Verbindlichkeit', 'Feedback'];
 
 function normalize(s) {
   return (s || '').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
@@ -120,6 +120,20 @@ router.get('/groups/:id/students', (req, res) => {
   res.json(students);
 });
 
+// GET /api/feedback/groups/:id/notes – eigene Ideen/Beobachtungen des Lernbegleiters zur Gruppe
+// (Kategorie "Feedback"), chronologisch
+router.get('/groups/:id/notes', (req, res) => {
+  const groupId = Number(req.params.id);
+  const group = db.prepare('SELECT id, name FROM feedback_groups WHERE id = ?').get(groupId);
+  if (!group) return res.status(404).json({ error: 'Gruppe nicht gefunden.' });
+
+  const notes = db.prepare(
+    'SELECT id, date, text, created_at FROM feedback_group_notes WHERE group_id = ? ORDER BY date DESC, created_at DESC'
+  ).all(groupId);
+
+  res.json({ group, notes });
+});
+
 // POST /api/feedback/process – Diktat per Claude nach Lernpartner:in aufteilen und speichern
 router.post('/process', limiter, async (req, res) => {
   const { text, group_id } = req.body;
@@ -151,19 +165,25 @@ router.post('/process', limiter, async (req, res) => {
 
   const namenListe = students.map(s => `${s.first_name} ${s.last_name}`).join(', ');
   const systemPrompt =
-    'Du bekommst einen diktierten Text eines Lehrers über eine Unterrichtsstunde sowie eine Liste ' +
-    'von Schülernamen dieser Gruppe. Teile den Text in Abschnitte auf, die jeweils genau einem ' +
-    'Schüler zugeordnet werden können. Ordne jedem Abschnitt zusätzlich GENAU EINE der folgenden ' +
+    'Du bekommst einen diktierten Text eines Lehrers (Lernbegleiters) über eine Unterrichtsstunde ' +
+    'sowie eine Liste von Schülernamen dieser Gruppe. Teile den Text in Abschnitte auf. Die meisten ' +
+    'Abschnitte beziehen sich auf genau einen Schüler; manche Abschnitte sind aber eigene Gedanken, ' +
+    'Ideen oder Beobachtungen des Lernbegleiters zur Lernzeit oder Gruppe INSGESAMT und beziehen ' +
+    'sich NICHT auf eine einzelne Person (z. B. Unterrichtsideen, Verbesserungsvorschläge, ' +
+    'organisatorische Notizen). Ordne jedem Abschnitt zusätzlich GENAU EINE der folgenden ' +
     'Kategorien zu: "Fachlich" (fachliche Leistungen, Lernfortschritt, Mitarbeit im Fach), ' +
     '"Sozial" (Umgang mit Mitschüler:innen, Zusammenarbeit, Konflikte), "Verhalten" (Verhalten im ' +
     'Unterricht, Aufmerksamkeit, Störungen), "Verbindlichkeit" (Zuverlässigkeit, erledigte Aufgaben, ' +
-    'Pünktlichkeit, Absprachen). Gib im Feld "student_name" GENAU den Namen so wieder, wie er im ' +
-    'Text erwähnt wurde (z. B. nur den Vornamen, falls nur dieser genannt wurde) – erfinde oder ' +
-    'ergänze den Namen NICHT und entscheide NICHT selbst, welche Person aus der Liste gemeint ist, ' +
-    'falls der genannte Name mehrdeutig sein könnte (z. B. weil es zwei Personen mit ähnlichem ' +
-    'Namen gibt) – das übernimmt eine andere Stelle. Gib NUR JSON zurück, ohne Markdown-Codeblock, ' +
-    'im Format: [{"student_name": "...", "category": "...", "text": "..."}]. Wenn eine Kategorie ' +
-    'nicht eindeutig ist, wähle die am ehesten passende.';
+    'Pünktlichkeit, Absprachen), "Feedback" (eigene Idee/Gedanke/Beobachtung des Lernbegleiters zur ' +
+    'Lernzeit oder Gruppe, NICHT einer einzelnen Person zugeordnet). Bei der Kategorie "Feedback" ' +
+    'MUSS das Feld "student_name" ein leerer String ("") sein. Bei allen anderen Kategorien gib im ' +
+    'Feld "student_name" GENAU den Namen so wieder, wie er im Text erwähnt wurde (z. B. nur den ' +
+    'Vornamen, falls nur dieser genannt wurde) – erfinde oder ergänze den Namen NICHT und ' +
+    'entscheide NICHT selbst, welche Person aus der Liste gemeint ist, falls der genannte Name ' +
+    'mehrdeutig sein könnte (z. B. weil es zwei Personen mit ähnlichem Namen gibt) – das übernimmt ' +
+    'eine andere Stelle. Gib NUR JSON zurück, ohne Markdown-Codeblock, im Format: ' +
+    '[{"student_name": "...", "category": "...", "text": "..."}]. Wenn eine Kategorie nicht ' +
+    'eindeutig ist, wähle die am ehesten passende.';
   const userPrompt = `Schülerliste dieser Gruppe: ${namenListe}\n\nDiktierter Text:\n${text.trim()}`;
 
   let segments;
@@ -205,6 +225,7 @@ router.post('/process', limiter, async (req, res) => {
 
   const heute = new Date().toISOString().slice(0, 10);
   const gespeichert = [];
+  const gespeicherteIdeen = [];
   const zuKlaeren = [];
 
   const speichern = db.transaction(() => {
@@ -217,6 +238,17 @@ router.post('/process', limiter, async (req, res) => {
       if (!segText) continue;
 
       const category = matchCategory(segment?.category);
+
+      // "Feedback": eigene Idee/Beobachtung des Lernbegleiters, nicht personenbezogen –
+      // direkt an der Gruppe speichern, kein Namensabgleich nötig.
+      if (category === 'Feedback') {
+        db.prepare(
+          "INSERT INTO feedback_group_notes (group_id, date, text, raw_input_id, created_at) VALUES (?, ?, ?, ?, datetime('now'))"
+        ).run(groupId, heute, segText, rawInputId);
+        gespeicherteIdeen.push({ text: segText });
+        continue;
+      }
+
       const result = matchStudent(segment?.student_name, students);
 
       if (result.type === 'match') {
@@ -246,7 +278,7 @@ router.post('/process', limiter, async (req, res) => {
 
   const rawInputId = speichern();
 
-  res.json({ ok: true, raw_input_id: rawInputId, gespeichert, zu_klaeren: zuKlaeren });
+  res.json({ ok: true, raw_input_id: rawInputId, gespeichert, gespeicherte_ideen: gespeicherteIdeen, zu_klaeren: zuKlaeren });
 });
 
 // GET /api/feedback/pending – offene, noch nicht zugeordnete Notiz-Abschnitte
