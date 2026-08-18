@@ -67,6 +67,29 @@
     .werkstatt-card .btn { align-self: flex-start; margin-top: 0.25rem; }
     .werkstatt-hinweis { font-size: 0.8rem; color: var(--ink-soft); font-style: italic; }
 
+    .werkstatt-card-c { grid-column: 1 / -1; }
+    .werkstatt-sub-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.55rem;
+      margin-top: 0.15rem;
+    }
+    .werkstatt-sub-link {
+      display: flex;
+      align-items: baseline;
+      gap: 0.45rem;
+      background: rgba(74,158,218,.08);
+      border: 1px solid rgba(74,158,218,.2);
+      border-radius: var(--radius-sm, 8px);
+      padding: 0.6rem 0.75rem;
+      font-size: 0.83rem;
+      color: var(--ink);
+      text-decoration: none;
+      transition: background var(--transition);
+    }
+    .werkstatt-sub-link:hover { background: rgba(74,158,218,.18); }
+    .werkstatt-sub-link .sub-nr { font-weight: 700; color: #1a6fa0; flex-shrink: 0; }
+
     .pflicht-hinweis {
       margin-top: 1.5rem;
       background: rgba(167,139,250,.12);
@@ -164,7 +187,20 @@
         c: {
           icon: '🛠️',
           title: 'Modul C – Praktische Tool-Anwendung',
-          desc: '11 Werkstatt-Themen zu konkreten KI-Werkzeugen.',
+          desc: '11 Werkstatt-Themen zu konkreten KI-Werkzeugen – wähle frei, womit du startest.',
+          submodule: [
+            { nr: 'C.1', label: 'KI als Lernpartner', url: 'https://lehrer-herrmann.de/materialien/informatik_ki-werkstatt-modul-c1-lernpartner_jg8-10_2026-08.html' },
+            { nr: 'C.2', label: 'Recherche mit KI vs. klassisch', url: 'https://lehrer-herrmann.de/materialien/informatik_ki-werkstatt-modul-c2-recherche_jg8-10_2026-08.html' },
+            { nr: 'C.3', label: 'Text verbessern statt schreiben lassen', url: 'https://lehrer-herrmann.de/materialien/informatik_ki-werkstatt-modul-c3-textverbesserung_jg8-10_2026-08.html' },
+            { nr: 'C.4', label: 'Bild-/Grafik-KI ausprobieren', url: 'https://lehrer-herrmann.de/materialien/informatik_ki-werkstatt-modul-c4-bild-ki_jg8-10_2026-08.html' },
+            { nr: 'C.5', label: 'Gelingensnachweis/Klassenarbeit vorbereiten', url: 'https://lehrer-herrmann.de/materialien/informatik_ki-werkstatt-modul-c5-gn-vorbereiten_jg8-10_2026-08.html' },
+            { nr: 'C.6', label: 'KI als Tutor', url: 'https://lehrer-herrmann.de/materialien/informatik_ki-werkstatt-modul-c6-ki-tutor_jg8-10_2026-08.html' },
+            { nr: 'C.7', label: 'Praktikumsbewerbung mit KI überarbeiten', url: 'https://lehrer-herrmann.de/materialien/informatik_ki-werkstatt-modul-c7-praktikumsbewerbung_jg8-10_2026-08.html' },
+            { nr: 'C.8', label: 'Präsentation vorbereiten', url: 'https://lehrer-herrmann.de/materialien/informatik_ki-werkstatt-modul-c8-praesentation_jg8-10_2026-08.html' },
+            { nr: 'C.9', label: 'Bewerbungsgespräch simulieren', url: 'https://lehrer-herrmann.de/materialien/informatik_ki-werkstatt-modul-c9-bewerbungsgespraech_jg8-10_2026-08.html' },
+            { nr: 'C.10', label: 'KI-Karteikarten/Quiz-Generator', url: 'https://lehrer-herrmann.de/materialien/informatik_ki-werkstatt-modul-c10-karteikarten-quiz_jg8-10_2026-08.html' },
+            { nr: 'C.11', label: 'Schwierige Begriffe erklären lassen', url: 'https://lehrer-herrmann.de/materialien/informatik_ki-werkstatt-modul-c11-begriffe-erklaeren_jg8-10_2026-08.html' },
+          ],
         },
         d: {
           icon: '🎨',
@@ -182,6 +218,7 @@
       function werkstattCardHTML(key, modulAStatus) {
         const meta = MODULE_META[key];
         const istModulA = key === 'a';
+        const istModulC = key === 'c';
         const modulAFertig = modulAStatus === 'abgeschlossen';
         const gesperrt = !istModulA && !modulAFertig;
 
@@ -194,13 +231,20 @@
         } else if (gesperrt) {
           badgeHtml = `<span class="werkstatt-badge gesperrt">🔒 Gesperrt</span>`;
           aktionHtml = `<span class="werkstatt-hinweis">Erst Modul A abschließen</span>`;
+        } else if (istModulC) {
+          badgeHtml = `<span class="werkstatt-badge offen">🔓 Frei wählbar</span>`;
+          aktionHtml = `
+            <div class="werkstatt-sub-grid">
+              ${meta.submodule.map((sm) => `<a class="werkstatt-sub-link" href="${sm.url}"><span class="sub-nr">${sm.nr}</span> ${sm.label}</a>`).join('')}
+            </div>
+          `;
         } else {
           badgeHtml = `<span class="werkstatt-badge bald">🔜 Bald verfügbar</span>`;
           aktionHtml = `<span class="werkstatt-hinweis">Inhalte folgen in Kürze</span>`;
         }
 
         return `
-          <div class="card werkstatt-card${gesperrt ? ' locked' : ''}">
+          <div class="card werkstatt-card${gesperrt ? ' locked' : ''}${istModulC && !gesperrt ? ' werkstatt-card-c' : ''}">
             <span class="werkstatt-icon">${meta.icon}</span>
             <span class="werkstatt-title">${meta.title}</span>
             <span class="werkstatt-desc">${meta.desc}</span>
