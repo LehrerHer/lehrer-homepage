@@ -313,6 +313,10 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_vokabel_fortschritt_student ON vokabel_fortschritt(student_id);
 `);
 
+// Migration: Vokabelpakete sind immer für alle eingeloggten Lernpartner:innen sichtbar (keine
+// private/einzelne Sichtbarkeit mehr) – frühere Test-Werte 'familie'/'einzeln' vereinheitlichen.
+db.exec("UPDATE vokabelpakete SET sichtbarkeit = 'alle' WHERE sichtbarkeit != 'alle'");
+
 // Session-Store für express-session auf Basis von better-sqlite3
 class SQLiteSessionStore {
   constructor(session) {

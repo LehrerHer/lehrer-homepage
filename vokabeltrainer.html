@@ -86,11 +86,6 @@
 
   .item-word { font-size: 1.5rem; font-weight: 700; text-align: center; margin: 10px 0 22px; }
 
-  .radio-row { display: flex; gap: 12px; }
-  .radio-opt { flex: 1; border: 1.5px solid var(--border); border-radius: 8px; padding: 12px; cursor: pointer;
-               font-size: .88rem; }
-  .radio-opt input { width: auto; margin-right: 6px; }
-
   /* ── Kacheln ── */
   .kachel-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
   .kachel { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 16px 10px;
@@ -98,6 +93,7 @@
             color: var(--text); }
   .kachel:hover { border-color: var(--accent); background: #eff6ff; }
   .kachel-icon { display: block; font-size: 1.6rem; margin-bottom: 6px; }
+  .kachel-desc { display: block; font-weight: 400; font-size: .74rem; color: var(--gray); margin-top: 3px; }
 
   /* ── Bibliothek ── */
   .bib-filter { display: flex; gap: 10px; margin-bottom: 16px; }
@@ -105,7 +101,6 @@
   .bib-karte-kopf { display: flex; justify-content: space-between; margin-bottom: 6px; }
   .bib-sprache-badge { background: #eff6ff; color: var(--accent); padding: 2px 10px; border-radius: 99px;
                         font-size: .78rem; font-weight: 700; }
-  .bib-sicht-badge { font-size: .78rem; color: var(--gray); }
 
   /* ── Checkbox-Auswahl ── */
   .vok-auswahl-liste { max-height: 320px; overflow-y: auto; border: 1.5px solid var(--border); border-radius: 8px;
@@ -321,13 +316,7 @@
         <label for="sp-quelle">Quelle (Pflichtfeld, z. B. „Green Line 2, Unit 4")</label>
         <input type="text" id="sp-quelle" placeholder="z. B. Green Line 2, Unit 4">
       </div>
-      <div class="field">
-        <label>Sichtbarkeit</label>
-        <div class="radio-row">
-          <label class="radio-opt"><input type="radio" name="sichtbarkeit" value="familie"> 👨‍👩‍👧 Familie<br><span class="modul-sub">für alle sichtbar</span></label>
-          <label class="radio-opt"><input type="radio" name="sichtbarkeit" value="einzeln" checked> 🔒 Eigene Vokabeln<br><span class="modul-sub">nur für dich</span></label>
-        </div>
-      </div>
+      <p class="modul-sub" style="margin-bottom:16px">Das gespeicherte Paket ist danach für alle eingeloggten Lernpartner*innen sichtbar und weiterlernbar.</p>
       <button class="btn btn-primary btn-block" id="sp-btn" onclick="speichern()">Speichern</button>
       <div class="feedback-bar" id="speichern-err"></div>
     </div>
@@ -339,18 +328,18 @@
       <h2>Lernoptionen</h2>
       <p class="modul-sub" id="opt-meta" style="margin-bottom:16px"></p>
       <div class="kachel-grid">
-        <button class="kachel" onclick="modulDruckKarten()"><span class="kachel-icon">🖨️</span>Druckbare Karteikarten</button>
-        <button class="kachel" onclick="modulDigitaleKarten()"><span class="kachel-icon">🔄</span>Interaktive Karteikarten</button>
-        <button class="kachel" onclick="modulAnkiExport()"><span class="kachel-icon">📤</span>Anki-Export</button>
-        <button class="kachel" onclick="modulAbfrage()"><span class="kachel-icon">❓</span>Abfrage</button>
-        <button class="kachel" onclick="modulSpacedRepetition()"><span class="kachel-icon">📅</span>Spaced Repetition</button>
-        <button class="kachel" onclick="modulKontextsaetze()"><span class="kachel-icon">💬</span>Kontextsätze</button>
-        <button class="kachel" onclick="modulMiniQuiz()"><span class="kachel-icon">📝</span>Mini-Quiz</button>
-        <button class="kachel" onclick="modulLueckentext()"><span class="kachel-icon">✍️</span>Lückentext</button>
-        <button class="kachel" onclick="modulKeyword()"><span class="kachel-icon">🔑</span>Schlüsselwort-Methode</button>
-        <button class="kachel" onclick="modulStory()"><span class="kachel-icon">📖</span>Geschichten-Methode</button>
-        <button class="kachel" onclick="modulFalscheFreunde()"><span class="kachel-icon">🚫</span>Falsche Freunde</button>
-        <button class="kachel" onclick="modulLoci()"><span class="kachel-icon">🏛️</span>Loci-Technik</button>
+        <button class="kachel" onclick="modulDruckKarten()"><span class="kachel-icon">🖨️</span>Druckbare Karteikarten<span class="kachel-desc">Zum Ausschneiden für den Karteikasten</span></button>
+        <button class="kachel" onclick="modulDigitaleKarten()"><span class="kachel-icon">🔄</span>Interaktive Karteikarten<span class="kachel-desc">Karten am Bildschirm umdrehen und lernen</span></button>
+        <button class="kachel" onclick="modulAnkiExport()"><span class="kachel-icon">📤</span>Anki-Export<span class="kachel-desc">Als Datei für die Lern-App Anki speichern</span></button>
+        <button class="kachel" onclick="modulAbfrage()"><span class="kachel-icon">❓</span>Abfrage<span class="kachel-desc">Vokabeln eintippen, sofort Feedback bekommen</span></button>
+        <button class="kachel" onclick="modulSpacedRepetition()"><span class="kachel-icon">📅</span>Spaced Repetition<span class="kachel-desc">Falsche Vokabeln kommen häufiger dran</span></button>
+        <button class="kachel" onclick="modulKontextsaetze()"><span class="kachel-icon">💬</span>Kontextsätze<span class="kachel-desc">Beispielsätze zu einzelnen Vokabeln</span></button>
+        <button class="kachel" onclick="modulMiniQuiz()"><span class="kachel-icon">📝</span>Mini-Quiz<span class="kachel-desc">Kurze Multiple-Choice-Fragen zum Üben</span></button>
+        <button class="kachel" onclick="modulLueckentext()"><span class="kachel-icon">✍️</span>Lückentext<span class="kachel-desc">Ein Text, in den du alle Vokabeln einsetzt</span></button>
+        <button class="kachel" onclick="modulKeyword()"><span class="kachel-icon">🔑</span>Schlüsselwort-Methode<span class="kachel-desc">Eselsbrücke für einzelne schwere Wörter</span></button>
+        <button class="kachel" onclick="modulStory()"><span class="kachel-icon">📖</span>Geschichten-Methode<span class="kachel-desc">Mehrere Vokabeln in einer Merkgeschichte</span></button>
+        <button class="kachel" onclick="modulFalscheFreunde()"><span class="kachel-icon">🚫</span>Falsche Freunde<span class="kachel-desc">Warnung vor irreführend ähnlichen Wörtern</span></button>
+        <button class="kachel" onclick="modulLoci()"><span class="kachel-icon">🏛️</span>Loci-Technik<span class="kachel-desc">Vokabeln gedanklich an einem Ort platzieren</span></button>
       </div>
       <button class="btn btn-ghost btn-block" style="margin-top:16px" onclick="showScreen('s-start')">🏠 Zurück zum Start</button>
     </div>
@@ -570,13 +559,11 @@ function weiterZuSpeichern() {
 async function speichern() {
   const sprache = document.getElementById('sp-sprache').value;
   const quelle = document.getElementById('sp-quelle').value.trim();
-  const sichtbarkeit = document.querySelector('input[name="sichtbarkeit"]:checked')?.value;
   const err = document.getElementById('speichern-err');
   err.style.display = 'none';
 
   if (!sprache) return zeigeFehler(err, 'Bitte eine Sprache auswählen.');
   if (!quelle) return zeigeFehler(err, 'Bitte eine Quelle angeben.');
-  if (!sichtbarkeit) return zeigeFehler(err, 'Bitte Sichtbarkeit auswählen.');
 
   const vokabeln = state.vorschau
     .filter((v) => v.fremdsprache.trim() && v.deutsch.trim())
@@ -588,7 +575,7 @@ async function speichern() {
   try {
     const res = await fetch(K + '/api/vokabeltrainer/pakete', {
       method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ sprache, quelle, sichtbarkeit, vokabeln }),
+      body: JSON.stringify({ sprache, quelle, vokabeln }),
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || 'Fehler beim Speichern.');
@@ -607,8 +594,7 @@ async function speichern() {
 function zeigeOptionenScreen() {
   const p = state.aktuellesPaket;
   document.getElementById('opt-meta').textContent =
-    p.sprache + ' · ' + p.quelle + ' · ' + p.vokabeln.length + ' Vokabeln' +
-    (p.sichtbarkeit === 'familie' ? ' · 👨‍👩‍👧 Familie' : ' · 🔒 Eigene Vokabeln');
+    p.sprache + ' · ' + p.quelle + ' · ' + p.vokabeln.length + ' Vokabeln';
   showScreen('s-optionen');
 }
 
@@ -645,7 +631,6 @@ function renderBibliothek(pakete) {
     <div class="bib-karte">
       <div class="bib-karte-kopf">
         <span class="bib-sprache-badge">${esc(p.sprache)}</span>
-        <span class="bib-sicht-badge">${p.sichtbarkeit === 'familie' ? '👨‍👩‍👧 Familie' : '🔒 Eigene Vokabeln'}</span>
       </div>
       <strong>${esc(p.quelle)}</strong>
       <p class="modul-sub">${p.anzahlVokabeln} Vokabeln · von ${esc(p.erstellerNick)}${p.eigenes ? ' (du)' : ''}</p>
