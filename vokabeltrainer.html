@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<script src="js/auth-guard.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Vokabeltrainer – lehrer-herrmann.de</title>
+<link rel="stylesheet" href="css/style.css?v=20260818a">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --bg:      #f4f6f7;
+    --card:    #ffffff;
+    --accent:  #4a9eda;
+    --primary: #1e3a5f;
+    --green:   #2ecc71;
+    --red:     #e74c3c;
+    --orange:  #d97706;
+    --gray:    #6b7280;
+    --border:  #e2e8f0;
+    --text:    #1e293b;
+    --radius:  10px;
+  }
+  body { background: var(--bg); font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+         color: var(--text); }
+  main { max-width: 800px; margin: 0 auto; padding: 16px; }
+  h1  { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; text-align: center; color: var(--primary); }
+  h2  { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; color: var(--primary); }
+  .sub { color: var(--gray); font-size: 0.9rem; text-align: center; margin-bottom: 20px; }
+  .modul-sub { color: var(--gray); font-size: 0.85rem; }
+
+  .card { background: var(--card); border-radius: var(--radius); box-shadow: 0 2px 12px rgba(0,0,0,.08);
+          padding: 24px 20px; margin-bottom: 20px; }
+
+  .field { margin-bottom: 16px; }
+  label { display: block; font-size: .85rem; font-weight: 600; margin-bottom: 6px; color: var(--gray); }
+  input[type="text"], input:not([type]), select, textarea {
+    width: 100%; padding: 11px 13px; border: 1.5px solid var(--border); border-radius: 8px;
+    font-size: 1rem; background: #fff; color: var(--text); outline: none; font-family: inherit;
+  }
+  input:focus, select:focus, textarea:focus { border-color: var(--accent); }
+  textarea { min-height: 140px; resize: vertical; }
+
+  .btn { display: inline-block; padding: 12px 18px; border: none; border-radius: 8px; font-size: 1rem;
+         font-weight: 600; cursor: pointer; font-family: inherit; text-decoration: none; text-align: center; }
+  .btn-block { display: block; width: 100%; }
+  .btn:hover { filter: brightness(1.06); }
+  .btn:disabled { opacity: .6; cursor: default; }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-ghost   { background: var(--border); color: var(--text); }
+  .btn-mini    { padding: 5px 10px; font-size: .78rem; border: none; border-radius: 6px; background: var(--accent);
+                 color: #fff; cursor: pointer; font-family: inherit; margin: 4px 6px 0 0; }
+
+  .feedback-bar { margin-top: 12px; padding: 10px 14px; border-radius: 8px; font-weight: 600; font-size: .9rem;
+                  display: none; }
+  .feedback-bar.show-err { display: block; background: #fee2e2; color: var(--red); }
+  .feedback-bar.show-ok  { display: block; background: #dcfce7; color: #15803d; }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* ── Tabs Eingabeart ── */
+  .tab-row { display: flex; gap: 8px; margin-bottom: 16px; }
+  .tab-btn { flex: 1; padding: 10px; border: 1.5px solid var(--border); border-radius: 8px; background: #fff;
+             font-weight: 600; font-size: .88rem; cursor: pointer; color: var(--gray); font-family: inherit; }
+  .tab-btn.active { border-color: var(--accent); color: var(--accent); background: #eff6ff; }
+  .eingabe-feld { display: none; }
+  .eingabe-feld.active { display: block; }
+
+  /* ── Vorschau-Liste ── */
+  .vok-row { border: 1.5px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 10px; }
+  .vok-row-unsicher { border-color: var(--orange); background: #fffbeb; }
+  .vok-row .vok-input { display: inline-block; width: calc(50% - 32px); margin-right: 6px; margin-bottom: 6px; }
+  .vok-del { border: none; background: none; cursor: pointer; font-size: 1.1rem; vertical-align: middle; }
+  .vok-zusatz { font-size: .82rem; color: var(--gray); margin-top: 4px; }
+  .vok-hinweis { font-size: .85rem; color: #92400e; margin-top: 6px; background: #fef3c7; padding: 8px 10px;
+                 border-radius: 6px; }
+  .vok-vorschlag { margin-top: 6px; }
+
+  .opt-row { display: flex; gap: 10px; margin-top: 4px; }
+  .opt-row .btn { flex: 1; }
+
+  .prog-label { font-size: .8rem; color: var(--gray); text-align: right; margin-bottom: 6px; }
+  .prog-bar { background: var(--border); border-radius: 99px; height: 6px; margin-bottom: 18px; overflow: hidden; }
+  .prog-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width .3s; }
+
+  .item-word { font-size: 1.5rem; font-weight: 700; text-align: center; margin: 10px 0 22px; }
+
+  .radio-row { display: flex; gap: 12px; }
+  .radio-opt { flex: 1; border: 1.5px solid var(--border); border-radius: 8px; padding: 12px; cursor: pointer;
+               font-size: .88rem; }
+  .radio-opt input { width: auto; margin-right: 6px; }
+
+  /* ── Kacheln ── */
+  .kachel-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  .kachel { background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius); padding: 16px 10px;
+            text-align: center; cursor: pointer; font-family: inherit; font-size: .85rem; font-weight: 600;
+            color: var(--text); }
+  .kachel:hover { border-color: var(--accent); background: #eff6ff; }
+  .kachel-icon { display: block; font-size: 1.6rem; margin-bottom: 6px; }
+
+  /* ── Bibliothek ── */
+  .bib-filter { display: flex; gap: 10px; margin-bottom: 16px; }
+  .bib-karte { border: 1.5px solid var(--border); border-radius: var(--radius); padding: 14px; margin-bottom: 10px; }
+  .bib-karte-kopf { display: flex; justify-content: space-between; margin-bottom: 6px; }
+  .bib-sprache-badge { background: #eff6ff; color: var(--accent); padding: 2px 10px; border-radius: 99px;
+                        font-size: .78rem; font-weight: 700; }
+  .bib-sicht-badge { font-size: .78rem; color: var(--gray); }
+
+  /* ── Checkbox-Auswahl ── */
+  .vok-auswahl-liste { max-height: 320px; overflow-y: auto; border: 1.5px solid var(--border); border-radius: 8px;
+                        padding: 10px; margin-bottom: 6px; }
+  .vok-checkbox { display: block; padding: 6px 2px; font-size: .9rem; }
+  .vok-checkbox input { width: auto; margin-right: 8px; }
+
+  /* ── Generierte Inhalte ── */
+  .gen-karte { border: 1.5px solid var(--border); border-radius: 8px; padding: 14px; margin-bottom: 10px; }
+  .ff-badge { cursor: help; }
+
+  /* ── Flip-Karte ── */
+  .flip-card { perspective: 1000px; height: 190px; margin: 16px 0; cursor: pointer; }
+  .flip-inner { position: relative; width: 100%; height: 100%; transition: transform .5s;
+                transform-style: preserve-3d; }
+  .flip-inner.flipped { transform: rotateY(180deg); }
+  .flip-front, .flip-back { position: absolute; inset: 0; backface-visibility: hidden; display: flex;
+                             align-items: center; justify-content: center; border-radius: 12px;
+                             font-size: 1.35rem; font-weight: 700; text-align: center; padding: 14px; }
+  .flip-front { background: #eff6ff; color: var(--accent); }
+  .flip-back  { background: #f0fdf4; color: #15803d; transform: rotateY(180deg); }
+
+  /* ── Lückentext ── */
+  .luecken-text { line-height: 2.2; font-size: 1.05rem; }
+  .luecke-input { display: inline-block; width: 100px; margin: 0 3px; padding: 4px 6px; text-align: center;
+                  border: 1.5px solid var(--accent); border-radius: 6px; font-size: .95rem; }
+
+  /* ── Quiz ── */
+  .quiz-opt-col { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-opt { padding: 12px; border: 1.5px solid var(--border); border-radius: 8px; background: #fff;
+              font-size: .95rem; text-align: left; cursor: pointer; font-family: inherit; }
+  .quiz-opt:hover:not(:disabled) { border-color: var(--accent); background: #eff6ff; }
+  .quiz-opt.correct { background: #dcfce7; border-color: var(--green); }
+  .quiz-opt.wrong { background: #fee2e2; border-color: var(--red); }
+  .quiz-opt:disabled { cursor: default; }
+
+  /* ── XP-Toast ── */
+  .xp-toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--primary);
+              color: #fff; padding: 10px 18px; border-radius: 99px; font-weight: 600; font-size: .88rem;
+              z-index: 9999; box-shadow: 0 4px 16px rgba(0,0,0,.25); }
+
+  /* ── Druckbereich ── */
+  #druck-bereich { display: none; }
+  @media print {
+    body > *:not(#druck-bereich) { display: none !important; }
+    #druck-bereich { display: grid !important; grid-template-columns: repeat(2, 74mm); gap: 4mm; }
+    .druck-karte { width: 74mm; height: 105mm; border: 1px dashed #999; display: flex; align-items: center;
+                   justify-content: center; text-align: center; font-size: 1.3rem; font-weight: 700; padding: 6mm;
+                   page-break-inside: avoid; }
+    .druck-rueck { color: #555; }
+  }
+
+  .lade-hinweis { text-align: center; color: var(--gray); font-size: .9rem; padding: 20px 0; }
+</style>
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="de_DE">
+    <meta property="og:site_name" content="Jan Herrmann – Lehrerhomepage">
+    <meta property="og:title" content="Vokabeltrainer">
+    <meta property="og:description" content="Vokabeln erfassen, speichern und mit elf Lernmethoden trainieren – Englisch, Französisch, Spanisch, Latein.">
+    <meta property="og:url" content="https://lehrer-herrmann.de/vokabeltrainer.html">
+    <meta property="og:image" content="https://lehrer-herrmann.de/img/logo.svg">
+    <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+
+    <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+        <div class="container navbar-inner">
+
+            <a href="index.html" class="navbar-logo" aria-label="Zur Startseite">
+                <img src="img/logo.svg" alt="" class="navbar-logo-img" width="47" height="38">
+                <span class="navbar-logo-text">lehrer-herrmann.de</span>
+            </a>
+
+            <button class="hamburger" id="hamburger" aria-label="Menü öffnen"
+                    aria-expanded="false" aria-controls="navbar-links">
+                <span></span><span></span><span></span>
+            </button>
+
+            <ul class="navbar-links" id="navbar-links">
+                <li><a href="index.html#was-ist-neu" class="nav-item" data-tooltip="Was ist neu?">
+                    <span class="nav-icon" aria-hidden="true">✨</span>
+                    <span class="nav-label">Was ist neu?</span></a></li>
+                <li><a href="https://lehrer-herrmann.de/kontakt.html" class="nav-item" data-tooltip="Kontakt">
+                    <span class="nav-icon" aria-hidden="true">✉️</span>
+                    <span class="nav-label">Kontakt</span></a></li>
+                <li class="navbar-gb-trenner" aria-hidden="true">
+                    <span class="navbar-gb-label">Geschützter Bereich</span>
+                </li>
+                <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="nav-item navbar-gb-link" data-tooltip="Arena – Lernkolosseum">
+                    <span class="nav-icon" aria-hidden="true">⚔️</span>
+                    <span class="nav-label">Arena</span></a></li>
+                <li><a href="blog.html" class="nav-item navbar-gb-link" data-tooltip="Schüler*innenblog">
+                    <span class="nav-icon" aria-hidden="true">✍️</span>
+                    <span class="nav-label">Blog</span></a></li>
+                <li class="navbar-dropdown">
+                    <button class="navbar-dropdown-toggle navbar-gb-link nav-item" aria-expanded="false" aria-haspopup="true" data-tooltip="Fächer" aria-label="Fächer">
+                        <span class="nav-icon" aria-hidden="true">📚</span>
+                        <span class="nav-label">Fächer</span>
+                    </button>
+                    <ul class="navbar-dropdown-menu" role="menu">
+                        <li class="dropdown-group-label">Hauptfächer</li>
+                        <li><a href="fach-deutsch.html" role="menuitem">📖 Deutsch</a></li>
+                        <li><a href="fach-geschichte.html" role="menuitem">🏛️ Geschichte</a></li>
+                        <li><a href="fach-wipo.html" role="menuitem">⚖️ Wirtschaft/Politik</a></li>
+                        <li><a href="fach-informatik.html" role="menuitem">💻 Informatik</a></li>
+                        <li><a href="fach-werte-normen.html" role="menuitem">🤝 Werte &amp; Normen</a></li>
+                        <li class="dropdown-group-label">Weitere Fächer</li>
+                        <li><a href="fach-mathe.html" role="menuitem">🔢 Mathematik</a></li>
+                        <li><a href="fach-englisch.html" role="menuitem">🇬🇧 Englisch</a></li>
+                        <li><a href="fach-sport.html" role="menuitem">⚽ Sport</a></li>
+                        <li><a href="fach-biologie.html" role="menuitem">🌱 Biologie</a></li>
+                        <li><a href="fach-chemie.html" role="menuitem">⚗️ Chemie</a></li>
+                        <li><a href="fach-physik.html" role="menuitem">⚛️ Physik</a></li>
+                        <li><a href="fach-musik.html" role="menuitem">🎵 Musik</a></li>
+                        <li><a href="fach-erdkunde.html" role="menuitem">🗺️ Erdkunde</a></li>
+                        <li><a href="fach-gestaltendes-werken.html" role="menuitem">🎨 Gestaltendes Werken</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="fach-ag-projekte.html" role="menuitem">🚀 AGs &amp; Projekte</a></li>
+                        <li><a href="fach-faecheruebergreifend.html" role="menuitem">🧩 Fächerübergreifend</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+
+        </div>
+    </nav>
+
+<main>
+  <h1>📚 Vokabeltrainer</h1>
+  <p class="sub">Englisch · Französisch · Spanisch · Latein – Vokabeln erfassen, speichern und mit elf Lernmethoden trainieren.</p>
+
+  <!-- ════════════════════════════════════ SCREEN: Start -->
+  <div id="s-start" class="screen active">
+    <div class="card" style="text-align:center">
+      <button class="btn btn-primary btn-block" onclick="showScreen('s-eingabe')">➕ Neue Vokabeln erfassen</button>
+      <p class="modul-sub" style="margin:14px 0 8px">oder</p>
+      <button class="btn btn-ghost btn-block" onclick="zeigeBibliothek()">📂 Meine gespeicherten Pakete</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ SCREEN: Eingabe -->
+  <div id="s-eingabe" class="screen">
+    <div class="card">
+      <h2>Vokabeln erfassen</h2>
+      <div class="field">
+        <label for="inp-sprache">Sprache (optional – wird sonst automatisch erkannt)</label>
+        <select id="inp-sprache">
+          <option value="">– automatisch erkennen –</option>
+          <option value="Englisch">Englisch</option>
+          <option value="Französisch">Französisch</option>
+          <option value="Spanisch">Spanisch</option>
+          <option value="Latein">Latein</option>
+        </select>
+      </div>
+
+      <div class="tab-row">
+        <button class="tab-btn active" data-art="text" onclick="waehleEingabeart('text')">✏️ Text</button>
+        <button class="tab-btn" data-art="pdf" onclick="waehleEingabeart('pdf')">📄 PDF</button>
+        <button class="tab-btn" data-art="bild" onclick="waehleEingabeart('bild')">📷 Foto</button>
+      </div>
+
+      <div class="eingabe-feld active" data-art="text">
+        <div class="field">
+          <label for="inp-text">Vokabeln (eine pro Zeile, z. B. „le chien – der Hund")</label>
+          <textarea id="inp-text" placeholder="le chien – der Hund&#10;la maison – das Haus"></textarea>
+        </div>
+      </div>
+      <div class="eingabe-feld" data-art="pdf">
+        <div class="field">
+          <label for="inp-pdf">PDF-Vokabelliste hochladen</label>
+          <input type="file" id="inp-pdf" accept="application/pdf">
+        </div>
+      </div>
+      <div class="eingabe-feld" data-art="bild">
+        <div class="field">
+          <label for="inp-bild">Foto einer Buchseite/Karteikarte hochladen</label>
+          <input type="file" id="inp-bild" accept="image/jpeg,image/png,image/webp">
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-block" id="eingabe-btn" onclick="erkenneVokabeln()">Vokabeln erkennen</button>
+      <div class="feedback-bar" id="eingabe-err"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ SCREEN: Vorschau -->
+  <div id="s-vorschau" class="screen">
+    <div class="card">
+      <h2>Vorschau <span class="modul-sub">(<span id="vorschau-anzahl">0</span> Vokabeln – bitte prüfen)</span></h2>
+      <p class="modul-sub">Nichts wird gespeichert, bevor du auf „Weiter zum Speichern" klickst. Unsichere Stellen sind markiert.</p>
+      <div id="vorschau-liste" style="margin-top:14px"></div>
+      <button class="btn btn-ghost btn-block" onclick="fuegeVorschauZeileHinzu()">+ Zeile hinzufügen</button>
+      <button class="btn btn-primary btn-block" style="margin-top:10px" onclick="weiterZuSpeichern()">Weiter zum Speichern →</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ SCREEN: Speichern -->
+  <div id="s-speichern" class="screen">
+    <div class="card">
+      <h2>Paket speichern</h2>
+      <div class="field">
+        <label for="sp-sprache">Sprache</label>
+        <select id="sp-sprache">
+          <option value="">– bitte wählen –</option>
+          <option value="Englisch">Englisch</option>
+          <option value="Französisch">Französisch</option>
+          <option value="Spanisch">Spanisch</option>
+          <option value="Latein">Latein</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="sp-quelle">Quelle (Pflichtfeld, z. B. „Green Line 2, Unit 4")</label>
+        <input type="text" id="sp-quelle" placeholder="z. B. Green Line 2, Unit 4">
+      </div>
+      <div class="field">
+        <label>Sichtbarkeit</label>
+        <div class="radio-row">
+          <label class="radio-opt"><input type="radio" name="sichtbarkeit" value="familie"> 👨‍👩‍👧 Familie<br><span class="modul-sub">für alle sichtbar</span></label>
+          <label class="radio-opt"><input type="radio" name="sichtbarkeit" value="einzeln" checked> 🔒 Eigene Vokabeln<br><span class="modul-sub">nur für dich</span></label>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-block" id="sp-btn" onclick="speichern()">Speichern</button>
+      <div class="feedback-bar" id="speichern-err"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ SCREEN: Lernoptionen -->
+  <div id="s-optionen" class="screen">
+    <div class="card">
+      <h2>Lernoptionen</h2>
+      <p class="modul-sub" id="opt-meta" style="margin-bottom:16px"></p>
+      <div class="kachel-grid">
+        <button class="kachel" onclick="modulDruckKarten()"><span class="kachel-icon">🖨️</span>Druckbare Karteikarten</button>
+        <button class="kachel" onclick="modulDigitaleKarten()"><span class="kachel-icon">🔄</span>Interaktive Karteikarten</button>
+        <button class="kachel" onclick="modulAnkiExport()"><span class="kachel-icon">📤</span>Anki-Export</button>
+        <button class="kachel" onclick="modulAbfrage()"><span class="kachel-icon">❓</span>Abfrage</button>
+        <button class="kachel" onclick="modulSpacedRepetition()"><span class="kachel-icon">📅</span>Spaced Repetition</button>
+        <button class="kachel" onclick="modulKontextsaetze()"><span class="kachel-icon">💬</span>Kontextsätze</button>
+        <button class="kachel" onclick="modulMiniQuiz()"><span class="kachel-icon">📝</span>Mini-Quiz</button>
+        <button class="kachel" onclick="modulLueckentext()"><span class="kachel-icon">✍️</span>Lückentext</button>
+        <button class="kachel" onclick="modulKeyword()"><span class="kachel-icon">🔑</span>Schlüsselwort-Methode</button>
+        <button class="kachel" onclick="modulStory()"><span class="kachel-icon">📖</span>Geschichten-Methode</button>
+        <button class="kachel" onclick="modulFalscheFreunde()"><span class="kachel-icon">🚫</span>Falsche Freunde</button>
+        <button class="kachel" onclick="modulLoci()"><span class="kachel-icon">🏛️</span>Loci-Technik</button>
+      </div>
+      <button class="btn btn-ghost btn-block" style="margin-top:16px" onclick="showScreen('s-start')">🏠 Zurück zum Start</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ SCREEN: Lernmodul -->
+  <div id="s-modul" class="screen">
+    <div class="card">
+      <button class="btn btn-ghost" style="margin-bottom:14px" onclick="zeigeOptionenScreen()">← Zurück zu den Lernoptionen</button>
+      <div id="modul-inhalt"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════ SCREEN: Bibliothek -->
+  <div id="s-bibliothek" class="screen">
+    <div class="card">
+      <h2>Meine gespeicherten Pakete</h2>
+      <div class="bib-filter">
+        <select id="bib-sprache" onchange="ladeBibliothek()">
+          <option value="">Alle Sprachen</option>
+          <option value="Englisch">Englisch</option>
+          <option value="Französisch">Französisch</option>
+          <option value="Spanisch">Spanisch</option>
+          <option value="Latein">Latein</option>
+        </select>
+        <input type="text" id="bib-suche" placeholder="Quelle durchsuchen …" oninput="ladeBibliothek()">
+      </div>
+      <div id="bib-liste"><p class="lade-hinweis">Lädt …</p></div>
+      <button class="btn btn-ghost btn-block" style="margin-top:12px" onclick="showScreen('s-start')">🏠 Zurück zum Start</button>
+    </div>
+  </div>
+
+  <div id="druck-bereich"></div>
+</main>
+
+<script>
+const K = 'https://kolosseum.lehrer-herrmann.de';
+
+let state = {
+  spracheAktuell: '',
+  vorschau: [],
+  aktuellesPaket: null,
+};
+
+/* ── Allgemeine Helfer ────────────────────────────────────────── */
+
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach((s) => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function zeigeFehler(el, msg) {
+  el.textContent = msg;
+  el.className = 'feedback-bar show-err';
+}
+
+function mischeArray(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+function normalisiere(s) {
+  return (s || '').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[.,!?;:]/g, '');
+}
+
+function zeigeXpToast(xp) {
+  const t = document.createElement('div');
+  t.className = 'xp-toast';
+  t.textContent = '+' + xp + ' XP – Vokabel gemeistert! 🎉';
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2500);
+}
+
+async function meldeFortschritt(vokabelId, richtig) {
+  try {
+    const res = await fetch(K + '/api/vokabeltrainer/fortschritt', {
+      method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ vokabelId, richtig }),
+    });
+    const data = await res.json();
+    if (data.xpEarned > 0) zeigeXpToast(data.xpEarned);
+  } catch (e) { /* offline-tolerant: Fehler beim Fortschritts-Log wird stillschweigend übergangen */ }
+}
+
+function falscheFreundeBadge(v) {
+  if (v.zusatzinfo && v.zusatzinfo.falscherFreund) {
+    return ' <span class="ff-badge" title="Falscher Freund: ' + esc(v.zusatzinfo.falscherFreund) + '">⚠️</span>';
+  }
+  return '';
+}
+
+function formatZusatzinfo(z) {
+  const teile = [];
+  if (z.artikel) teile.push('Artikel: ' + esc(z.artikel));
+  if (z.typ === 'verb' && z.grundformen) {
+    const g = z.grundformen;
+    teile.push('Grundformen: ' + [g.praesens, g.infinitiv, g.perfekt, g.supin].filter(Boolean).map(esc).join(', '));
+  }
+  if (z.typ === 'substantiv') {
+    const parts = [];
+    if (z.nominativ) parts.push('Nom. ' + esc(z.nominativ));
+    if (z.genitiv) parts.push('Gen. ' + esc(z.genitiv));
+    if (z.genus) parts.push('Genus: ' + esc(z.genus));
+    if (parts.length) teile.push(parts.join(', '));
+  }
+  if (z.falscherFreund) teile.push('⚠️ Falscher Freund: ' + esc(z.falscherFreund));
+  return teile.join(' · ');
+}
+
+/* ── Eingabe ──────────────────────────────────────────────────── */
+
+function waehleEingabeart(art) {
+  document.querySelectorAll('.tab-btn').forEach((b) => b.classList.toggle('active', b.dataset.art === art));
+  document.querySelectorAll('.eingabe-feld').forEach((f) => f.classList.toggle('active', f.dataset.art === art));
+}
+
+async function erkenneVokabeln() {
+  const sprache = document.getElementById('inp-sprache').value;
+  const art = document.querySelector('.tab-btn.active').dataset.art;
+  const err = document.getElementById('eingabe-err');
+  err.style.display = 'none';
+
+  const fd = new FormData();
+  if (sprache) fd.append('sprache', sprache);
+
+  if (art === 'text') {
+    const text = document.getElementById('inp-text').value.trim();
+    if (!text) return zeigeFehler(err, 'Bitte Vokabeltext eingeben.');
+    fd.append('text', text);
+  } else {
+    const inputId = art === 'pdf' ? 'inp-pdf' : 'inp-bild';
+    const datei = document.getElementById(inputId).files[0];
+    if (!datei) return zeigeFehler(err, 'Bitte eine Datei auswählen.');
+    fd.append('datei', datei);
+  }
+
+  const btn = document.getElementById('eingabe-btn');
+  btn.disabled = true; btn.textContent = 'Wird erkannt …';
+
+  try {
+    const res = await fetch(K + '/api/vokabeltrainer/extrahieren', { method: 'POST', credentials: 'include', body: fd });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Fehler bei der Erkennung.');
+    if (!data.vokabeln || data.vokabeln.length === 0) {
+      return zeigeFehler(err, 'Es konnten keine Vokabeln erkannt werden. Bitte Quelle prüfen.');
+    }
+    state.spracheAktuell = data.sprache || '';
+    state.vorschau = data.vokabeln.map((v) => ({ ...v }));
+    renderVorschau();
+    showScreen('s-vorschau');
+  } catch (e) {
+    zeigeFehler(err, e.message);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Vokabeln erkennen';
+  }
+}
+
+/* ── Vorschau ─────────────────────────────────────────────────── */
+
+function renderVorschau() {
+  const cont = document.getElementById('vorschau-liste');
+  cont.innerHTML = state.vorschau.map((v, i) => `
+    <div class="vok-row ${v.unsicher ? 'vok-row-unsicher' : ''}">
+      <input class="vok-input" value="${esc(v.fremdsprache)}" placeholder="Fremdsprache" oninput="updateVorschauFeld(${i},'fremdsprache',this.value)">
+      <input class="vok-input" value="${esc(v.deutsch)}" placeholder="Deutsch" oninput="updateVorschauFeld(${i},'deutsch',this.value)">
+      <button class="vok-del" onclick="entferneVorschauZeile(${i})" title="Entfernen" aria-label="Zeile entfernen">🗑</button>
+      ${v.zusatzinfo ? `<div class="vok-zusatz">${formatZusatzinfo(v.zusatzinfo)}</div>` : ''}
+      ${v.unsicher ? `
+        <div class="vok-hinweis">
+          ⚠️ ${esc(v.hinweis || 'Diese Angabe ist unsicher – bitte prüfen.')}
+          ${v.vorschlag ? `
+            <div class="vok-vorschlag">
+              Vorschlag: „${esc(v.vorschlag)}"
+              <button class="btn-mini" onclick="uebernehmeVorschlag(${i},'fremdsprache')">→ Fremdsprache</button>
+              <button class="btn-mini" onclick="uebernehmeVorschlag(${i},'deutsch')">→ Deutsch</button>
+            </div>` : ''}
+          <button class="btn-mini" onclick="alsGeprueftMarkieren(${i})">Als geprüft markieren</button>
+        </div>` : ''}
+    </div>
+  `).join('');
+  document.getElementById('vorschau-anzahl').textContent = state.vorschau.length;
+}
+
+function updateVorschauFeld(i, feld, wert) { state.vorschau[i][feld] = wert; }
+function entferneVorschauZeile(i) { state.vorschau.splice(i, 1); renderVorschau(); }
+function fuegeVorschauZeileHinzu() {
+  state.vorschau.push({ fremdsprache: '', deutsch: '', unsicher: false, hinweis: null, vorschlag: null, zusatzinfo: null });
+  renderVorschau();
+}
+function uebernehmeVorschlag(i, feld) {
+  state.vorschau[i][feld] = state.vorschau[i].vorschlag;
+  state.vorschau[i].unsicher = false;
+  renderVorschau();
+}
+function alsGeprueftMarkieren(i) { state.vorschau[i].unsicher = false; renderVorschau(); }
+
+function weiterZuSpeichern() {
+  const gueltig = state.vorschau.filter((v) => v.fremdsprache.trim() && v.deutsch.trim());
+  if (gueltig.length === 0) return alert('Bitte mindestens eine vollständige Vokabel (Fremdsprache + Deutsch) angeben.');
+  document.getElementById('sp-sprache').value = state.spracheAktuell || '';
+  document.getElementById('sp-quelle').value = '';
+  showScreen('s-speichern');
+}
+
+/* ── Speichern ────────────────────────────────────────────────── */
+
+async function speichern() {
+  const sprache = document.getElementById('sp-sprache').value;
+  const quelle = document.getElementById('sp-quelle').value.trim();
+  const sichtbarkeit = document.querySelector('input[name="sichtbarkeit"]:checked')?.value;
+  const err = document.getElementById('speichern-err');
+  err.style.display = 'none';
+
+  if (!sprache) return zeigeFehler(err, 'Bitte eine Sprache auswählen.');
+  if (!quelle) return zeigeFehler(err, 'Bitte eine Quelle angeben.');
+  if (!sichtbarkeit) return zeigeFehler(err, 'Bitte Sichtbarkeit auswählen.');
+
+  const vokabeln = state.vorschau
+    .filter((v) => v.fremdsprache.trim() && v.deutsch.trim())
+    .map((v) => ({ fremdsprache: v.fremdsprache.trim(), deutsch: v.deutsch.trim(), zusatzinfo: v.zusatzinfo || null }));
+
+  const btn = document.getElementById('sp-btn');
+  btn.disabled = true; btn.textContent = 'Speichert …';
+
+  try {
+    const res = await fetch(K + '/api/vokabeltrainer/pakete', {
+      method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sprache, quelle, sichtbarkeit, vokabeln }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Fehler beim Speichern.');
+    state.aktuellesPaket = {
+      ...data,
+      vokabeln: data.vokabeln.map((v) => ({ ...v, leitnerBox: 1, letzteAntwortRichtig: null, naechsteWiederholung: null })),
+    };
+    zeigeOptionenScreen();
+  } catch (e) {
+    zeigeFehler(err, e.message);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Speichern';
+  }
+}
+
+function zeigeOptionenScreen() {
+  const p = state.aktuellesPaket;
+  document.getElementById('opt-meta').textContent =
+    p.sprache + ' · ' + p.quelle + ' · ' + p.vokabeln.length + ' Vokabeln' +
+    (p.sichtbarkeit === 'familie' ? ' · 👨‍👩‍👧 Familie' : ' · 🔒 Eigene Vokabeln');
+  showScreen('s-optionen');
+}
+
+/* ── Bibliothek ───────────────────────────────────────────────── */
+
+function zeigeBibliothek() { showScreen('s-bibliothek'); ladeBibliothek(); }
+
+async function ladeBibliothek() {
+  const sprache = document.getElementById('bib-sprache').value;
+  const q = document.getElementById('bib-suche').value.trim();
+  const params = new URLSearchParams();
+  if (sprache) params.set('sprache', sprache);
+  if (q) params.set('q', q);
+
+  const cont = document.getElementById('bib-liste');
+  cont.innerHTML = '<p class="lade-hinweis">Lädt …</p>';
+  try {
+    const res = await fetch(K + '/api/vokabeltrainer/pakete?' + params.toString(), { credentials: 'include' });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Fehler beim Laden.');
+    renderBibliothek(data);
+  } catch (e) {
+    cont.innerHTML = '<p class="feedback-bar show-err" style="display:block">' + esc(e.message) + '</p>';
+  }
+}
+
+function renderBibliothek(pakete) {
+  const cont = document.getElementById('bib-liste');
+  if (pakete.length === 0) {
+    cont.innerHTML = '<p class="lade-hinweis">Noch keine gespeicherten Pakete gefunden.</p>';
+    return;
+  }
+  cont.innerHTML = pakete.map((p) => `
+    <div class="bib-karte">
+      <div class="bib-karte-kopf">
+        <span class="bib-sprache-badge">${esc(p.sprache)}</span>
+        <span class="bib-sicht-badge">${p.sichtbarkeit === 'familie' ? '👨‍👩‍👧 Familie' : '🔒 Eigene Vokabeln'}</span>
+      </div>
+      <strong>${esc(p.quelle)}</strong>
+      <p class="modul-sub">${p.anzahlVokabeln} Vokabeln · von ${esc(p.erstellerNick)}${p.eigenes ? ' (du)' : ''}</p>
+      <button class="btn btn-primary" onclick="oeffnePaket(${p.id})">Weiterlernen →</button>
+    </div>
+  `).join('');
+}
+
+async function oeffnePaket(id) {
+  try {
+    const res = await fetch(K + '/api/vokabeltrainer/pakete/' + id, { credentials: 'include' });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Fehler beim Laden.');
+    state.aktuellesPaket = data;
+    zeigeOptionenScreen();
+  } catch (e) {
+    alert(e.message);
+  }
+}
+
+/* ── Auswahl-Helfer für KI-Module ─────────────────────────────── */
+
+function renderVokabelAuswahl(callbackFnName, titel, alleVorausgewaehlt) {
+  const items = state.aktuellesPaket.vokabeln.map((v) => `
+    <label class="vok-checkbox">
+      <input type="checkbox" class="ausw-cb" value="${v.id}" ${alleVorausgewaehlt ? 'checked' : ''}>
+      ${esc(v.fremdsprache)} – ${esc(v.deutsch)}
+    </label>`).join('');
+  return `
+    <h2>${titel}</h2>
+    <div class="vok-auswahl-liste">${items}</div>
+    <div class="opt-row" style="margin-bottom:10px">
+      <button class="btn btn-ghost" onclick="alleAuswaehlen(true)">Alle</button>
+      <button class="btn btn-ghost" onclick="alleAuswaehlen(false)">Keine</button>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="${callbackFnName}()">Weiter</button>
+    <div id="auswahl-fehler" class="feedback-bar show-err" style="display:none"></div>
+  `;
+}
+function alleAuswaehlen(an) { document.querySelectorAll('.ausw-cb').forEach((cb) => (cb.checked = an)); }
+function ausgewaehlteIds() { return Array.from(document.querySelectorAll('.ausw-cb:checked')).map((cb) => Number(cb.value)); }
+function zeigeAuswahlFehler(msg) {
+  const el = document.getElementById('auswahl-fehler');
+  if (el) { el.textContent = msg; el.style.display = 'block'; }
+}
+
+function zeigeModul(html) {
+  document.getElementById('modul-inhalt').innerHTML = html;
+  showScreen('s-modul');
+}
+
+async function generiere(typ, vokabelIds, extra) {
+  const res = await fetch(K + '/api/vokabeltrainer/generieren', {
+    method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ typ, vokabelIds, ...(extra || {}) }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'Fehler bei der Generierung.');
+  return data.ergebnis;
+}
+
+/* ── Modul 1: Druckbare Karteikarten ─────────────────────────── */
+
+function modulDruckKarten() {
+  zeigeModul(`
+    <h2>🖨️ Druckbare Karteikarten</h2>
+    <p class="modul-sub">Format A7 (74×105&nbsp;mm), zum Ausschneiden für den Leitner-Karteikasten.</p>
+    <div class="field">
+      <label for="druck-richtung">Vorderseite</label>
+      <select id="druck-richtung">
+        <option value="fremd">Fremdsprache (Rückseite: Deutsch)</option>
+        <option value="deutsch">Deutsch (Rückseite: Fremdsprache)</option>
+      </select>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="druckeKarten()">Karten drucken / als PDF speichern</button>
+  `);
+}
+
+function druckeKarten() {
+  const richtung = document.getElementById('druck-richtung').value;
+  const bereich = document.getElementById('druck-bereich');
+  bereich.innerHTML = state.aktuellesPaket.vokabeln.map((v) => {
+    const vorne = richtung === 'fremd' ? v.fremdsprache : v.deutsch;
+    const hinten = richtung === 'fremd' ? v.deutsch : v.fremdsprache;
+    return `<div class="druck-karte">${esc(vorne)}</div><div class="druck-karte druck-rueck">${esc(hinten)}</div>`;
+  }).join('');
+  window.print();
+}
+
+/* ── Modul 2a: Interaktive Karteikarten ──────────────────────── */
+
+let karteikartenState = { idx: 0, gewusst: 0, nichtGewusst: 0, gemischt: [] };
+
+function modulDigitaleKarten() {
+  karteikartenState = { idx: 0, gewusst: 0, nichtGewusst: 0, gemischt: mischeArray(state.aktuellesPaket.vokabeln.slice()) };
+  renderKarteikarte();
+}
+
+function renderKarteikarte() {
+  const ks = karteikartenState;
+  if (ks.idx >= ks.gemischt.length) {
+    zeigeModul(`
+      <h2>🔄 Interaktive Karteikarten – fertig!</h2>
+      <p>${ks.gewusst} gewusst, ${ks.nichtGewusst} nicht gewusst.</p>
+      <button class="btn btn-primary btn-block" onclick="modulDigitaleKarten()">Nochmal</button>
+    `);
+    return;
+  }
+  const v = ks.gemischt[ks.idx];
+  zeigeModul(`
+    <h2>🔄 Interaktive Karteikarten</h2>
+    <div class="prog-label">${ks.idx + 1} / ${ks.gemischt.length}</div>
+    <div class="prog-bar"><div class="prog-fill" style="width:${(ks.idx / ks.gemischt.length) * 100}%"></div></div>
+    <div class="flip-card" id="flip-card" onclick="flipKarte()">
+      <div class="flip-inner" id="flip-inner">
+        <div class="flip-front">${esc(v.fremdsprache)}${falscheFreundeBadge(v)}</div>
+        <div class="flip-back">${esc(v.deutsch)}</div>
+      </div>
+    </div>
+    <p class="modul-sub" style="text-align:center">Zum Umdrehen klicken/tippen</p>
+    <div class="opt-row">
+      <button class="btn" style="background:#fee2e2;color:var(--red)" onclick="karteAntwort(false)">✗ Nicht gewusst</button>
+      <button class="btn" style="background:#dcfce7;color:#15803d" onclick="karteAntwort(true)">✓ Gewusst</button>
+    </div>
+  `);
+}
+function flipKarte() { document.getElementById('flip-inner').classList.toggle('flipped'); }
+function karteAntwort(richtig) {
+  const v = karteikartenState.gemischt[karteikartenState.idx];
+  if (richtig) karteikartenState.gewusst++; else karteikartenState.nichtGewusst++;
+  meldeFortschritt(v.id, richtig);
+  karteikartenState.idx++;
+  renderKarteikarte();
+}
+
+/* ── Modul 2b: Anki-Export ────────────────────────────────────── */
+
+function modulAnkiExport() {
+  zeigeModul(`
+    <h2>📤 Anki-Export</h2>
+    <p class="modul-sub">Tab-getrennte Datei (TSV), in Anki über „Datei → Importieren" einlesbar.</p>
+    <button class="btn btn-primary btn-block" onclick="exportiereAnki()">TSV-Datei herunterladen</button>
+  `);
+}
+function exportiereAnki() {
+  const zeilen = state.aktuellesPaket.vokabeln.map((v) => v.fremdsprache + '\t' + v.deutsch);
+  const blob = new Blob([zeilen.join('\n')], { type: 'text/tab-separated-values;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = ('vokabeln_' + state.aktuellesPaket.sprache + '_' + state.aktuellesPaket.quelle)
+    .toLowerCase().replace(/[^a-z0-9]+/g, '_').slice(0, 60) + '.tsv';
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+
+/* ── Modul 3 + 4: Abfrage & Spaced Repetition ────────────────── */
+
+let abfrageState = { richtung: 'fremd-deutsch', idx: 0, liste: [], richtig: 0, falsch: 0, spaced: false };
+
+function modulAbfrage() {
+  zeigeModul(`
+    <h2>❓ Abfrage</h2>
+    <div class="field">
+      <label for="abfrage-richtung">Richtung</label>
+      <select id="abfrage-richtung">
+        <option value="fremd-deutsch">Fremdsprache → Deutsch</option>
+        <option value="deutsch-fremd">Deutsch → Fremdsprache</option>
+      </select>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="starteAbfrage()">Start</button>
+  `);
+}
+function starteAbfrage() {
+  abfrageState = {
+    richtung: document.getElementById('abfrage-richtung').value,
+    idx: 0, liste: mischeArray(state.aktuellesPaket.vokabeln.slice()), richtig: 0, falsch: 0, spaced: false,
+  };
+  renderAbfrageItem();
+}
+
+async function modulSpacedRepetition() {
+  zeigeModul('<h2>📅 Spaced Repetition</h2><p class="lade-hinweis">Lade Fortschritt …</p>');
+  if (state.aktuellesPaket.id) {
+    try {
+      const res = await fetch(K + '/api/vokabeltrainer/pakete/' + state.aktuellesPaket.id, { credentials: 'include' });
+      if (res.ok) state.aktuellesPaket = await res.json();
+    } catch (e) { /* Fallback: mit lokalem Stand weiterarbeiten */ }
+  }
+  const jetzt = new Date();
+  const faellig = state.aktuellesPaket.vokabeln.filter((v) => !v.naechsteWiederholung || new Date(v.naechsteWiederholung) <= jetzt);
+  if (faellig.length === 0) {
+    zeigeModul('<h2>📅 Spaced Repetition</h2><p>🎉 Aktuell ist keine Vokabel fällig – alles im Zeitplan! Schau später wieder vorbei.</p>');
+    return;
+  }
+  abfrageState = { richtung: 'fremd-deutsch', idx: 0, liste: mischeArray(faellig.slice()), richtig: 0, falsch: 0, spaced: true };
+  renderAbfrageItem();
+}
+
+function renderAbfrageItem() {
+  const s = abfrageState;
+  const titel = s.spaced ? '📅 Spaced Repetition' : '❓ Abfrage';
+  if (s.idx >= s.liste.length) {
+    zeigeModul(`
+      <h2>${titel} – fertig!</h2>
+      <p>${s.richtig} richtig, ${s.falsch} falsch (von ${s.liste.length}).</p>
+      <button class="btn btn-primary btn-block" onclick="${s.spaced ? 'modulSpacedRepetition' : 'modulAbfrage'}()">Nochmal</button>
+    `);
+    return;
+  }
+  const v = s.liste[s.idx];
+  const frage = s.richtung === 'fremd-deutsch' ? v.fremdsprache : v.deutsch;
+  const boxHinweis = s.spaced ? `<p class="modul-sub" style="text-align:center">Box ${v.leitnerBox || 1}</p>` : '';
+  zeigeModul(`
+    <h2>${titel}</h2>
+    <div class="prog-label">${s.idx + 1} / ${s.liste.length}</div>
+    <div class="prog-bar"><div class="prog-fill" style="width:${(s.idx / s.liste.length) * 100}%"></div></div>
+    <div class="item-word">${esc(frage)}${falscheFreundeBadge(v)}</div>
+    ${boxHinweis}
+    <input id="abfrage-antwort" type="text" autocomplete="off" placeholder="Deine Antwort" onkeydown="if(event.key==='Enter')pruefeAbfrageAntwort()">
+    <button class="btn btn-primary btn-block" style="margin-top:10px" onclick="pruefeAbfrageAntwort()">Prüfen</button>
+    <div id="abfrage-feedback" class="feedback-bar"></div>
+    <button class="btn btn-ghost btn-block" id="abfrage-weiter" style="display:none;margin-top:10px" onclick="naechsteAbfrage()">Weiter →</button>
+  `);
+  setTimeout(() => document.getElementById('abfrage-antwort')?.focus(), 50);
+}
+function pruefeAbfrageAntwort() {
+  const s = abfrageState;
+  const v = s.liste[s.idx];
+  const erwartet = s.richtung === 'fremd-deutsch' ? v.deutsch : v.fremdsprache;
+  const eingabe = document.getElementById('abfrage-antwort').value;
+  const richtig = normalisiere(eingabe) === normalisiere(erwartet);
+  if (richtig) s.richtig++; else s.falsch++;
+  meldeFortschritt(v.id, richtig);
+  const fb = document.getElementById('abfrage-feedback');
+  fb.className = 'feedback-bar ' + (richtig ? 'show-ok' : 'show-err');
+  fb.textContent = richtig ? '✓ Richtig!' : ('✗ Richtige Antwort: ' + erwartet);
+  document.getElementById('abfrage-antwort').disabled = true;
+  document.getElementById('abfrage-weiter').style.display = 'block';
+}
+function naechsteAbfrage() { abfrageState.idx++; renderAbfrageItem(); }
+
+/* ── Modul 5: Kontextsätze ────────────────────────────────────── */
+
+function modulKontextsaetze() {
+  zeigeModul(renderVokabelAuswahl('modulKontextsaetzeGenerieren', '💬 Kontextsätze – für welche Vokabeln?', true));
+}
+async function modulKontextsaetzeGenerieren() {
+  const ids = ausgewaehlteIds();
+  if (ids.length === 0) return zeigeAuswahlFehler('Bitte mindestens eine Vokabel auswählen.');
+  zeigeModul('<h2>💬 Kontextsätze</h2><p class="lade-hinweis">Wird erstellt …</p>');
+  try {
+    const ergebnis = await generiere('kontextsatz', ids);
+    const html = ergebnis.map((e) => `
+      <div class="gen-karte">
+        <strong>${esc(e.fremdsprache)}</strong>
+        <p>${esc(e.satz)}</p>
+        <p class="modul-sub">${esc(e.satzDeutsch || '')}</p>
+      </div>`).join('');
+    zeigeModul(`<h2>💬 Kontextsätze</h2>${html}<button class="btn btn-ghost btn-block" onclick="modulKontextsaetze()">Andere Vokabeln wählen</button>`);
+  } catch (e) {
+    zeigeModul(`<h2>💬 Kontextsätze</h2><p class="feedback-bar show-err" style="display:block">${esc(e.message)}</p><button class="btn btn-ghost btn-block" onclick="modulKontextsaetze()">Zurück</button>`);
+  }
+}
+
+/* ── Modul 6: Mini-Quiz ───────────────────────────────────────── */
+
+let quizState = { fragen: [], idx: 0, richtig: 0 };
+
+function modulMiniQuiz() {
+  zeigeModul(renderVokabelAuswahl('modulMiniQuizStart', '📝 Mini-Quiz – welche Vokabeln?', true));
+}
+async function modulMiniQuizStart() {
+  const ids = ausgewaehlteIds();
+  if (ids.length === 0) return zeigeAuswahlFehler('Bitte mindestens eine Vokabel auswählen.');
+  zeigeModul('<h2>📝 Mini-Quiz</h2><p class="lade-hinweis">Wird erstellt …</p>');
+  try {
+    const ergebnis = await generiere('quiz', ids);
+    quizState = { fragen: ergebnis, idx: 0, richtig: 0 };
+    renderQuizFrage();
+  } catch (e) {
+    zeigeModul(`<h2>📝 Mini-Quiz</h2><p class="feedback-bar show-err" style="display:block">${esc(e.message)}</p><button class="btn btn-ghost btn-block" onclick="modulMiniQuiz()">Zurück</button>`);
+  }
+}
+function renderQuizFrage() {
+  const s = quizState;
+  if (s.idx >= s.fragen.length) {
+    zeigeModul(`
+      <h2>📝 Mini-Quiz – fertig!</h2>
+      <p>${s.richtig} von ${s.fragen.length} richtig.</p>
+      <button class="btn btn-primary btn-block" onclick="modulMiniQuiz()">Nochmal</button>
+    `);
+    return;
+  }
+  const f = s.fragen[s.idx];
+  const optionen = (f.optionen || []).map((opt, i) => `<button class="quiz-opt" onclick="quizAntwort(${i})">${esc(opt)}</button>`).join('');
+  zeigeModul(`
+    <h2>📝 Mini-Quiz</h2>
+    <div class="prog-label">${s.idx + 1} / ${s.fragen.length}</div>
+    <div class="item-word" style="font-size:1.2rem">${esc(f.frage)}</div>
+    <div class="quiz-opt-col">${optionen}</div>
+  `);
+}
+function quizAntwort(i) {
+  const f = quizState.fragen[quizState.idx];
+  const richtig = i === f.loesungIndex;
+  if (richtig) quizState.richtig++;
+  document.querySelectorAll('.quiz-opt').forEach((btn, idx) => {
+    btn.disabled = true;
+    if (idx === f.loesungIndex) btn.classList.add('correct');
+    else if (idx === i) btn.classList.add('wrong');
+  });
+  setTimeout(() => { quizState.idx++; renderQuizFrage(); }, 1200);
+}
+
+/* ── Modul 7: Lückentext ──────────────────────────────────────── */
+
+let luekenState = { text: '', luecken: [] };
+
+function modulLueckentext() {
+  zeigeModul(renderVokabelAuswahl('modulLueckentextStart', '✍️ Lückentext – welche Vokabeln?', true));
+}
+async function modulLueckentextStart() {
+  const ids = ausgewaehlteIds();
+  if (ids.length < 2) return zeigeAuswahlFehler('Bitte mindestens zwei Vokabeln auswählen.');
+  zeigeModul('<h2>✍️ Lückentext</h2><p class="lade-hinweis">Wird erstellt …</p>');
+  try {
+    const ergebnis = await generiere('luekentext', ids);
+    luekenState = { text: ergebnis.text || '', luecken: ergebnis.luecken || [] };
+    renderLueckentext();
+  } catch (e) {
+    zeigeModul(`<h2>✍️ Lückentext</h2><p class="feedback-bar show-err" style="display:block">${esc(e.message)}</p><button class="btn btn-ghost btn-block" onclick="modulLueckentext()">Zurück</button>`);
+  }
+}
+function renderLueckentext() {
+  let html = esc(luekenState.text);
+  luekenState.luecken.forEach((l) => {
+    const platzhalter = esc('___' + l.nummer + '___');
+    html = html.split(platzhalter).join('<input class="luecke-input" data-nr="' + l.nummer + '">');
+  });
+  zeigeModul(`
+    <h2>✍️ Lückentext</h2>
+    <div class="luecken-text">${html}</div>
+    <button class="btn btn-primary btn-block" style="margin-top:14px" onclick="pruefeLueckentext()">Prüfen</button>
+    <div id="luecken-ergebnis"></div>
+    <button class="btn btn-ghost btn-block" style="margin-top:10px" onclick="modulLueckentext()">Andere Vokabeln wählen</button>
+  `);
+}
+function pruefeLueckentext() {
+  let richtig = 0;
+  document.querySelectorAll('.luecke-input').forEach((inp) => {
+    const nr = Number(inp.dataset.nr);
+    const soll = luekenState.luecken.find((l) => l.nummer === nr);
+    const ok = !!soll && normalisiere(inp.value) === normalisiere(soll.loesung);
+    inp.style.borderColor = ok ? 'var(--green)' : 'var(--red)';
+    inp.style.color = ok ? '#15803d' : 'var(--red)';
+    if (ok) richtig++;
+  });
+  document.getElementById('luecken-ergebnis').innerHTML =
+    '<p style="margin-top:10px;font-weight:600">' + richtig + ' von ' + luekenState.luecken.length + ' Lücken richtig.</p>';
+}
+
+/* ── Modul 8: Schlüsselwort-Methode ──────────────────────────── */
+
+function modulKeyword() {
+  zeigeModul(renderVokabelAuswahl('modulKeywordStart', '🔑 Schlüsselwort-Methode – welche Vokabeln sind schwierig?', false));
+}
+async function modulKeywordStart() {
+  const ids = ausgewaehlteIds();
+  if (ids.length === 0) return zeigeAuswahlFehler('Bitte mindestens eine schwierige Vokabel auswählen.');
+  zeigeModul('<h2>🔑 Schlüsselwort-Methode</h2><p class="lade-hinweis">Wird erstellt …</p>');
+  try {
+    const ergebnis = await generiere('keyword', ids);
+    const html = ergebnis.map((e) => `
+      <div class="gen-karte">
+        <strong>${esc(e.fremdsprache)}</strong> → Schlüsselwort: <em>${esc(e.schluesselwort)}</em>
+        <p>${esc(e.eselsbruecke)}</p>
+      </div>`).join('');
+    zeigeModul(`<h2>🔑 Schlüsselwort-Methode</h2>${html}<button class="btn btn-ghost btn-block" onclick="modulKeyword()">Andere Vokabeln wählen</button>`);
+  } catch (e) {
+    zeigeModul(`<h2>🔑 Schlüsselwort-Methode</h2><p class="feedback-bar show-err" style="display:block">${esc(e.message)}</p><button class="btn btn-ghost btn-block" onclick="modulKeyword()">Zurück</button>`);
+  }
+}
+
+/* ── Modul 9: Geschichten-Methode ─────────────────────────────── */
+
+function modulStory() {
+  zeigeModul(renderVokabelAuswahl('modulStoryStart', '📖 Geschichten-Methode – welche Vokabeln verknüpfen?', false));
+}
+async function modulStoryStart() {
+  const ids = ausgewaehlteIds();
+  if (ids.length < 2) return zeigeAuswahlFehler('Bitte mindestens zwei Vokabeln auswählen.');
+  zeigeModul('<h2>📖 Geschichten-Methode</h2><p class="lade-hinweis">Wird erstellt …</p>');
+  try {
+    const ergebnis = await generiere('story', ids);
+    zeigeModul(`<h2>📖 Geschichten-Methode</h2><div class="gen-karte"><p>${esc(ergebnis.geschichte)}</p></div><button class="btn btn-ghost btn-block" onclick="modulStory()">Andere Vokabeln wählen</button>`);
+  } catch (e) {
+    zeigeModul(`<h2>📖 Geschichten-Methode</h2><p class="feedback-bar show-err" style="display:block">${esc(e.message)}</p><button class="btn btn-ghost btn-block" onclick="modulStory()">Zurück</button>`);
+  }
+}
+
+/* ── Modul 10: Falsche Freunde ────────────────────────────────── */
+
+function modulFalscheFreunde() {
+  const treffer = state.aktuellesPaket.vokabeln.filter((v) => v.zusatzinfo && v.zusatzinfo.falscherFreund);
+  if (treffer.length === 0) {
+    zeigeModul('<h2>🚫 Falsche Freunde</h2><p>Für dieses Paket wurden bei der Erfassung keine falschen Freunde erkannt.</p>');
+    return;
+  }
+  const html = treffer.map((v) => `
+    <div class="gen-karte">
+      <strong>${esc(v.fremdsprache)}</strong> ≠ „${esc(v.deutsch)}"
+      <p>⚠️ ${esc(v.zusatzinfo.falscherFreund)}</p>
+    </div>`).join('');
+  zeigeModul(`<h2>🚫 Falsche Freunde</h2>${html}`);
+}
+
+/* ── Modul 11: Loci-Technik ───────────────────────────────────── */
+
+function modulLoci() {
+  const items = state.aktuellesPaket.vokabeln.map((v) => `
+    <label class="vok-checkbox">
+      <input type="checkbox" class="ausw-cb" value="${v.id}">
+      ${esc(v.fremdsprache)} – ${esc(v.deutsch)}
+    </label>`).join('');
+  zeigeModul(`
+    <h2>🏛️ Loci-Technik</h2>
+    <div class="field">
+      <label for="loci-ort">Bekannter Ort (z. B. dein Schulweg, deine Wohnung)</label>
+      <input type="text" id="loci-ort" placeholder="z. B. mein Schulweg">
+    </div>
+    <div class="vok-auswahl-liste">${items}</div>
+    <div class="opt-row" style="margin-bottom:10px">
+      <button class="btn btn-ghost" onclick="alleAuswaehlen(true)">Alle</button>
+      <button class="btn btn-ghost" onclick="alleAuswaehlen(false)">Keine</button>
+    </div>
+    <button class="btn btn-primary btn-block" onclick="modulLociStart()">Weiter</button>
+    <div id="auswahl-fehler" class="feedback-bar show-err" style="display:none"></div>
+  `);
+}
+async function modulLociStart() {
+  const ids = ausgewaehlteIds();
+  const ort = document.getElementById('loci-ort').value.trim();
+  if (!ort) return zeigeAuswahlFehler('Bitte einen bekannten Ort beschreiben.');
+  if (ids.length === 0) return zeigeAuswahlFehler('Bitte mindestens eine Vokabel auswählen.');
+  zeigeModul('<h2>🏛️ Loci-Technik</h2><p class="lade-hinweis">Wird erstellt …</p>');
+  try {
+    const ergebnis = await generiere('loci', ids, { ort });
+    const html = ergebnis.map((e) => `
+      <div class="gen-karte">
+        <strong>${esc(e.station)}</strong> — ${esc(e.fremdsprache)} („${esc(e.deutsch)}")
+        <p>${esc(e.verknuepfung)}</p>
+      </div>`).join('');
+    zeigeModul(`<h2>🏛️ Loci-Technik</h2>${html}<button class="btn btn-ghost btn-block" onclick="modulLoci()">Neu</button>`);
+  } catch (e) {
+    zeigeModul(`<h2>🏛️ Loci-Technik</h2><p class="feedback-bar show-err" style="display:block">${esc(e.message)}</p><button class="btn btn-ghost btn-block" onclick="modulLoci()">Zurück</button>`);
+  }
+}
+</script>
+
+    <footer>
+        <div class="container footer-inner">
+            <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+            <nav class="footer-links" aria-label="Rechtliche Links">
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+            </nav>
+            <a href="https://kolosseum.lehrer-herrmann.de/admin/" id="admin-footer-link" class="admin-footer-link" aria-label="Admin-Bereich">⚙</a>
+        </div>
+    </footer>
+    <script src="js/main.js?v=20260818a"></script>
+    <script src="js/kolosseum-login-widget.js"></script>
+
+</body>
+</html>

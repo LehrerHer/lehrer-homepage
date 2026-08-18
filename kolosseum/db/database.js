@@ -273,6 +273,46 @@ db.prepare(
      AND wohnort = '' AND telefonnummer = '' AND social = '' AND email = ''`
 ).run();
 
+// Vokabeltrainer: Vokabelpakete (Englisch/Französisch/Spanisch/Latein), einzelne Vokabeln
+// und pro Lernpartner:in geführter Leitner-Fortschritt. sichtbarkeit steuert, wer ein Paket
+// sehen darf: 'familie' (alle eingeloggten Accounts) oder 'einzeln' (nur die Erstellerin/der
+// Ersteller) – es gibt in diesem System keinen eigenen "Familien-Account", daher wird
+// "familie" als "für alle eingeloggten Lernpartner:innen sichtbar" umgesetzt.
+db.exec(`
+  CREATE TABLE IF NOT EXISTS vokabelpakete (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    sprache      TEXT    NOT NULL,
+    quelle       TEXT    NOT NULL,
+    ersteller_id INTEGER NOT NULL,
+    sichtbarkeit TEXT    NOT NULL DEFAULT 'einzeln',
+    erstellt_am  DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ersteller_id) REFERENCES students(id) ON DELETE CASCADE
+  );
+  CREATE TABLE IF NOT EXISTS vokabeln (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    paket_id     INTEGER NOT NULL,
+    fremdsprache TEXT    NOT NULL,
+    deutsch      TEXT    NOT NULL,
+    zusatzinfo   TEXT,
+    FOREIGN KEY (paket_id) REFERENCES vokabelpakete(id) ON DELETE CASCADE
+  );
+  CREATE TABLE IF NOT EXISTS vokabel_fortschritt (
+    id                      INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id              INTEGER NOT NULL,
+    vokabel_id              INTEGER NOT NULL,
+    leitner_box             INTEGER NOT NULL DEFAULT 1,
+    letzte_antwort_richtig  INTEGER,
+    naechste_wiederholung   TEXT,
+    xp_vergeben             INTEGER NOT NULL DEFAULT 0,
+    updated_at              TEXT    NOT NULL DEFAULT (datetime('now')),
+    UNIQUE(student_id, vokabel_id),
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
+    FOREIGN KEY (vokabel_id) REFERENCES vokabeln(id) ON DELETE CASCADE
+  );
+  CREATE INDEX IF NOT EXISTS idx_vokabeln_paket ON vokabeln(paket_id);
+  CREATE INDEX IF NOT EXISTS idx_vokabel_fortschritt_student ON vokabel_fortschritt(student_id);
+`);
+
 // Session-Store für express-session auf Basis von better-sqlite3
 class SQLiteSessionStore {
   constructor(session) {
