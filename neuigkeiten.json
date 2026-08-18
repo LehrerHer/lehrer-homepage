@@ -2,6 +2,12 @@
   "_hinweis": "Neue Funktionen für die 'Was ist neu?'-Sektion. Neueste oben einfügen. Felder: titel, datum (JJJJ-MM-TT), meta (Bereich), url. Wird von js/was-ist-neu.js geladen; es werden automatisch die 5 jüngsten angezeigt.",
   "funktionen": [
     {
+      "titel": "Vokabeltrainer: Englisch, Französisch, Spanisch, Latein",
+      "datum": "2026-08-18",
+      "meta": "Lernkolosseum",
+      "url": "vokabeltrainer.html"
+    },
+    {
       "titel": "Neues Rätsel-Quiz: Es gibt ein verbindendes Element",
       "datum": "2026-06-17",
       "meta": "Quizze",
