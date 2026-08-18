@@ -4,10 +4,11 @@
    Vokabelpaketen, sowie Lernoptionen (Karteikarten, Abfrage,
    Spaced Repetition, KI-generierte Mnemotechniken).
 
-   Sichtbarkeit "familie" bedeutet: für alle eingeloggten
-   Lernpartner:innen sichtbar (dieses System kennt keinen eigenen
-   Familien-Account, nur individuelle Schüler:innen-Accounts).
-   "einzeln" bedeutet: nur für die Erstellerin/den Ersteller sichtbar.
+   Wer ein Paket speichert, macht es damit automatisch für alle
+   eingeloggten Lernpartner:innen sichtbar und weiterlernbar (Haupt-
+   zielgruppe: Schüler:innen; es gibt keine private/einzelne
+   Sichtbarkeit mehr – "sichtbarkeit" in der DB ist daher immer
+   SICHTBARKEIT_STANDARD).
    ============================================================ */
 
 const express = require('express');
@@ -20,7 +21,7 @@ const { checkAndAwardBadges } = require('../db/badges');
 const router = express.Router();
 
 const VALID_SPRACHEN = ['Englisch', 'Französisch', 'Spanisch', 'Latein'];
-const VALID_SICHTBARKEIT = ['familie', 'einzeln'];
+const SICHTBARKEIT_STANDARD = 'alle';
 const VALID_GENERIEREN_TYPEN = ['kontextsatz', 'luekentext', 'quiz', 'keyword', 'story', 'loci'];
 
 const upload = multer({
@@ -290,12 +291,10 @@ router.post('/pakete', requireStudent, (req, res) => {
   const studentId = req.session.studentId;
   const sprache = (req.body?.sprache || '').trim();
   const quelle = (req.body?.quelle || '').trim();
-  const sichtbarkeit = (req.body?.sichtbarkeit || '').trim();
   const eingabeVokabeln = Array.isArray(req.body?.vokabeln) ? req.body.vokabeln : [];
 
   if (!VALID_SPRACHEN.includes(sprache)) return res.status(400).json({ error: 'Ungültige Sprache.' });
   if (!quelle) return res.status(400).json({ error: 'Quelle ist ein Pflichtfeld.' });
-  if (!VALID_SICHTBARKEIT.includes(sichtbarkeit)) return res.status(400).json({ error: 'Ungültige Sichtbarkeit.' });
 
   const vokabeln = eingabeVokabeln
     .map((v) => ({
@@ -317,7 +316,7 @@ router.post('/pakete', requireStudent, (req, res) => {
   );
 
   const speichern = db.transaction(() => {
-    const { lastInsertRowid: paketId } = insertPaket.run(sprache, quelle, studentId, sichtbarkeit);
+    const { lastInsertRowid: paketId } = insertPaket.run(sprache, quelle, studentId, SICHTBARKEIT_STANDARD);
     const gespeichert = vokabeln.map((v) => {
       const { lastInsertRowid } = insertVokabel.run(
         paketId, v.fremdsprache, v.deutsch, v.zusatzinfo ? JSON.stringify(v.zusatzinfo) : null
@@ -333,27 +332,26 @@ router.post('/pakete', requireStudent, (req, res) => {
     id: paketId,
     sprache,
     quelle,
-    sichtbarkeit,
     erstellerId: studentId,
     vokabeln: gespeichert,
   });
 });
 
-/* ── GET /api/vokabeltrainer/pakete – eigene + „familie"-Pakete auflisten ── */
+/* ── GET /api/vokabeltrainer/pakete – alle Pakete auflisten (immer für alle sichtbar) ── */
 
 router.get('/pakete', requireStudent, (req, res) => {
   const studentId = req.session.studentId;
   const { sprache, quelle, q } = req.query;
 
   let sql = `
-    SELECT p.id, p.sprache, p.quelle, p.sichtbarkeit, p.ersteller_id, p.erstellt_am,
+    SELECT p.id, p.sprache, p.quelle, p.ersteller_id, p.erstellt_am,
            s.nick AS ersteller_nick, COUNT(v.id) AS anzahl_vokabeln
     FROM vokabelpakete p
     JOIN students s ON s.id = p.ersteller_id
     LEFT JOIN vokabeln v ON v.paket_id = p.id
-    WHERE (p.ersteller_id = ? OR p.sichtbarkeit = 'familie')
+    WHERE 1=1
   `;
-  const params = [studentId];
+  const params = [];
 
   if (sprache) {
     if (!VALID_SPRACHEN.includes(sprache)) return res.status(400).json({ error: 'Ungültige Sprache.' });
@@ -376,7 +374,6 @@ router.get('/pakete', requireStudent, (req, res) => {
     id: r.id,
     sprache: r.sprache,
     quelle: r.quelle,
-    sichtbarkeit: r.sichtbarkeit,
     erstellerNick: r.ersteller_nick,
     eigenes: r.ersteller_id === studentId,
     anzahlVokabeln: r.anzahl_vokabeln,
@@ -396,9 +393,6 @@ router.get('/pakete/:id', requireStudent, (req, res) => {
      JOIN students s ON s.id = p.ersteller_id WHERE p.id = ?`
   ).get(paketId);
   if (!paket) return res.status(404).json({ error: 'Paket nicht gefunden.' });
-  if (paket.ersteller_id !== studentId && paket.sichtbarkeit !== 'familie') {
-    return res.status(403).json({ error: 'Kein Zugriff auf dieses Paket.' });
-  }
 
   const vokabeln = db.prepare(
     `SELECT v.id, v.fremdsprache, v.deutsch, v.zusatzinfo,
@@ -413,7 +407,6 @@ router.get('/pakete/:id', requireStudent, (req, res) => {
     id: paket.id,
     sprache: paket.sprache,
     quelle: paket.quelle,
-    sichtbarkeit: paket.sichtbarkeit,
     erstellerNick: paket.ersteller_nick,
     eigenes: paket.ersteller_id === studentId,
     erstelltAm: paket.erstellt_am,
@@ -448,13 +441,9 @@ router.post('/fortschritt', requireStudent, (req, res) => {
   if (!Number.isInteger(vokabelId)) return res.status(400).json({ error: 'Ungültige Vokabel-ID.' });
 
   const vokabel = db.prepare(
-    `SELECT v.id, v.fremdsprache, p.ersteller_id, p.sichtbarkeit
-     FROM vokabeln v JOIN vokabelpakete p ON p.id = v.paket_id WHERE v.id = ?`
+    `SELECT v.id, v.fremdsprache FROM vokabeln v WHERE v.id = ?`
   ).get(vokabelId);
   if (!vokabel) return res.status(404).json({ error: 'Vokabel nicht gefunden.' });
-  if (vokabel.ersteller_id !== studentId && vokabel.sichtbarkeit !== 'familie') {
-    return res.status(403).json({ error: 'Kein Zugriff auf diese Vokabel.' });
-  }
 
   const bestehend = db.prepare(
     'SELECT leitner_box, xp_vergeben FROM vokabel_fortschritt WHERE student_id = ? AND vokabel_id = ?'
@@ -536,7 +525,6 @@ function buildGenerierenPrompt(typ) {
 }
 
 router.post('/generieren', requireStudent, limiterGenerieren, async (req, res) => {
-  const studentId = req.session.studentId;
   const typ = (req.body?.typ || '').trim();
   const vokabelIds = Array.isArray(req.body?.vokabelIds)
     ? req.body.vokabelIds.map(Number).filter(Number.isInteger)
@@ -553,17 +541,15 @@ router.post('/generieren', requireStudent, limiterGenerieren, async (req, res) =
 
   const platzhalter = vokabelIds.map(() => '?').join(',');
   const vokabeln = db.prepare(
-    `SELECT v.id, v.fremdsprache, v.deutsch, v.zusatzinfo, p.ersteller_id, p.sichtbarkeit
-     FROM vokabeln v JOIN vokabelpakete p ON p.id = v.paket_id
-     WHERE v.id IN (${platzhalter})`
+    `SELECT v.id, v.fremdsprache, v.deutsch, v.zusatzinfo
+     FROM vokabeln v WHERE v.id IN (${platzhalter})`
   ).all(...vokabelIds);
 
-  const zugreifbar = vokabeln.filter((v) => v.ersteller_id === studentId || v.sichtbarkeit === 'familie');
-  if (zugreifbar.length !== vokabelIds.length) {
-    return res.status(403).json({ error: 'Zugriff auf eine oder mehrere Vokabeln nicht erlaubt.' });
+  if (vokabeln.length !== vokabelIds.length) {
+    return res.status(404).json({ error: 'Eine oder mehrere Vokabeln wurden nicht gefunden.' });
   }
 
-  const listeText = zugreifbar.map((v) => `${v.fremdsprache} = ${v.deutsch}`).join('\n');
+  const listeText = vokabeln.map((v) => `${v.fremdsprache} = ${v.deutsch}`).join('\n');
   const userText = typ === 'loci'
     ? `Vokabelliste:\n${listeText}\n\nOrt: ${ort}`
     : `Vokabelliste:\n${listeText}`;
