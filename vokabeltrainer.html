@@ -98,6 +98,7 @@
             color: var(--text); }
   .kachel:hover { border-color: var(--accent); background: #eff6ff; }
   .kachel-icon { display: block; font-size: 1.6rem; margin-bottom: 6px; }
+  .kachel-desc { display: block; font-weight: 400; font-size: .74rem; color: var(--gray); margin-top: 3px; }
 
   /* ── Bibliothek ── */
   .bib-filter { display: flex; gap: 10px; margin-bottom: 16px; }
@@ -339,18 +340,18 @@
       <h2>Lernoptionen</h2>
       <p class="modul-sub" id="opt-meta" style="margin-bottom:16px"></p>
       <div class="kachel-grid">
-        <button class="kachel" onclick="modulDruckKarten()"><span class="kachel-icon">🖨️</span>Druckbare Karteikarten</button>
-        <button class="kachel" onclick="modulDigitaleKarten()"><span class="kachel-icon">🔄</span>Interaktive Karteikarten</button>
-        <button class="kachel" onclick="modulAnkiExport()"><span class="kachel-icon">📤</span>Anki-Export</button>
-        <button class="kachel" onclick="modulAbfrage()"><span class="kachel-icon">❓</span>Abfrage</button>
-        <button class="kachel" onclick="modulSpacedRepetition()"><span class="kachel-icon">📅</span>Spaced Repetition</button>
-        <button class="kachel" onclick="modulKontextsaetze()"><span class="kachel-icon">💬</span>Kontextsätze</button>
-        <button class="kachel" onclick="modulMiniQuiz()"><span class="kachel-icon">📝</span>Mini-Quiz</button>
-        <button class="kachel" onclick="modulLueckentext()"><span class="kachel-icon">✍️</span>Lückentext</button>
-        <button class="kachel" onclick="modulKeyword()"><span class="kachel-icon">🔑</span>Schlüsselwort-Methode</button>
-        <button class="kachel" onclick="modulStory()"><span class="kachel-icon">📖</span>Geschichten-Methode</button>
-        <button class="kachel" onclick="modulFalscheFreunde()"><span class="kachel-icon">🚫</span>Falsche Freunde</button>
-        <button class="kachel" onclick="modulLoci()"><span class="kachel-icon">🏛️</span>Loci-Technik</button>
+        <button class="kachel" onclick="modulDruckKarten()"><span class="kachel-icon">🖨️</span>Druckbare Karteikarten<span class="kachel-desc">Zum Ausschneiden für den Karteikasten</span></button>
+        <button class="kachel" onclick="modulDigitaleKarten()"><span class="kachel-icon">🔄</span>Interaktive Karteikarten<span class="kachel-desc">Karten am Bildschirm umdrehen und lernen</span></button>
+        <button class="kachel" onclick="modulAnkiExport()"><span class="kachel-icon">📤</span>Anki-Export<span class="kachel-desc">Als Datei für die Lern-App Anki speichern</span></button>
+        <button class="kachel" onclick="modulAbfrage()"><span class="kachel-icon">❓</span>Abfrage<span class="kachel-desc">Vokabeln eintippen, sofort Feedback bekommen</span></button>
+        <button class="kachel" onclick="modulSpacedRepetition()"><span class="kachel-icon">📅</span>Spaced Repetition<span class="kachel-desc">Falsche Vokabeln kommen häufiger dran</span></button>
+        <button class="kachel" onclick="modulKontextsaetze()"><span class="kachel-icon">💬</span>Kontextsätze<span class="kachel-desc">Beispielsätze zu einzelnen Vokabeln</span></button>
+        <button class="kachel" onclick="modulMiniQuiz()"><span class="kachel-icon">📝</span>Mini-Quiz<span class="kachel-desc">Kurze Multiple-Choice-Fragen zum Üben</span></button>
+        <button class="kachel" onclick="modulLueckentext()"><span class="kachel-icon">✍️</span>Lückentext<span class="kachel-desc">Ein Text, in den du alle Vokabeln einsetzt</span></button>
+        <button class="kachel" onclick="modulKeyword()"><span class="kachel-icon">🔑</span>Schlüsselwort-Methode<span class="kachel-desc">Eselsbrücke für einzelne schwere Wörter</span></button>
+        <button class="kachel" onclick="modulStory()"><span class="kachel-icon">📖</span>Geschichten-Methode<span class="kachel-desc">Mehrere Vokabeln in einer Merkgeschichte</span></button>
+        <button class="kachel" onclick="modulFalscheFreunde()"><span class="kachel-icon">🚫</span>Falsche Freunde<span class="kachel-desc">Warnung vor irreführend ähnlichen Wörtern</span></button>
+        <button class="kachel" onclick="modulLoci()"><span class="kachel-icon">🏛️</span>Loci-Technik<span class="kachel-desc">Vokabeln gedanklich an einem Ort platzieren</span></button>
       </div>
       <button class="btn btn-ghost btn-block" style="margin-top:16px" onclick="showScreen('s-start')">🏠 Zurück zum Start</button>
     </div>

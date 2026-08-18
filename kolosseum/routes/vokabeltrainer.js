@@ -94,6 +94,38 @@ const ABGESCHNITTEN_FEHLER =
   'Die Quelle enthält zu viele Vokabeln für eine einzelne Verarbeitung. Bitte in kleinere Abschnitte ' +
   'aufteilen (z. B. einzelne Kapitel oder Seiten) und einzeln hochladen.';
 
+// Grober Vorab-Check, damit eine erkennbar zu große Quelle nicht erst unnötig Anthropic-API-Kosten
+// verursacht und dann trotzdem abgeschnitten wird – lieber vorher abfangen und um Aufteilung bitten.
+const MAX_TEXT_ZEICHEN = 20000;
+const MAX_PDF_SEITEN = 10;
+const MAX_PDF_FALLBACK_BYTES = 5 * 1024 * 1024;
+const ZU_GROSS_FEHLER =
+  'Diese Quelle ist sehr umfangreich und würde bei der Verarbeitung sehr viele Tokens (und damit Kosten) ' +
+  'verbrauchen. Bitte in kleinere Abschnitte aufteilen (z. B. einzelne Kapitel oder Seiten) und einzeln hochladen.';
+
+// Zählt "/Type /Page" (nicht "/Type /Pages") in den rohen PDF-Bytes – funktioniert nicht bei jedem
+// PDF (z. B. komprimierte Objekt-Streams), ist aber als grobe Vorab-Schätzung ausreichend; kann sie
+// nicht ermittelt werden, wird stattdessen die Dateigröße als Fallback herangezogen.
+function schaetzePdfSeitenzahl(buffer) {
+  try {
+    const text = buffer.toString('latin1');
+    const treffer = text.match(/\/Type\s*\/Page(?!s)\b/g);
+    return treffer ? treffer.length : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function pruefeUmfang(file, text) {
+  if (text && text.length > MAX_TEXT_ZEICHEN) return ZU_GROSS_FEHLER;
+  if (file && file.mimetype === 'application/pdf') {
+    const seiten = schaetzePdfSeitenzahl(file.buffer);
+    if (seiten !== null && seiten > MAX_PDF_SEITEN) return ZU_GROSS_FEHLER;
+    if (seiten === null && file.buffer.length > MAX_PDF_FALLBACK_BYTES) return ZU_GROSS_FEHLER;
+  }
+  return null;
+}
+
 // Robust gegen führende/nachgestellte Markdown-Codeblöcke und gegen
 // erklärenden Text vor/nach dem eigentlichen JSON (z. B. wenn Claude vor
 // einer Websuche noch einen Zwischen-Text ausgibt).
@@ -196,6 +228,9 @@ async function handleExtrahieren(req, res) {
     return res.status(400).json({ error: 'Bitte Text eingeben oder eine Datei (PDF/Bild) hochladen.' });
   }
 
+  const umfangsFehler = pruefeUmfang(file, text);
+  if (umfangsFehler) return res.status(413).json({ error: umfangsFehler });
+
   const userContent = [];
   if (file) userContent.push(buildFileBlock(file));
   if (text) userContent.push({ type: 'text', text: 'Vokabelliste (eingegeben):\n' + text });
@@ -207,7 +242,7 @@ async function handleExtrahieren(req, res) {
   try {
     result = await callClaude({
       model: 'claude-sonnet-4-6',
-      maxTokens: 16000,
+      maxTokens: 8000,
       system: buildExtraktionsPrompt(spracheEingabe),
       userContent,
       tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 3 }],
