@@ -81,12 +81,18 @@ async function callClaude({ model, maxTokens, system, userContent, tools }) {
     throw Object.assign(new Error('Anthropic-API-Fehler'), { apiError: true });
   }
 
-  return (data.content || [])
+  const text = (data.content || [])
     .filter((b) => b.type === 'text')
     .map((b) => b.text)
     .join('\n')
     .trim();
+
+  return { text, stopReason: data.stop_reason };
 }
+
+const ABGESCHNITTEN_FEHLER =
+  'Die Quelle enthält zu viele Vokabeln für eine einzelne Verarbeitung. Bitte in kleinere Abschnitte ' +
+  'aufteilen (z. B. einzelne Kapitel oder Seiten) und einzeln hochladen.';
 
 // Robust gegen führende/nachgestellte Markdown-Codeblöcke und gegen
 // erklärenden Text vor/nach dem eigentlichen JSON (z. B. wenn Claude vor
@@ -150,18 +156,17 @@ function buildExtraktionsPrompt(spracheEingabe) {
     '      "fremdsprache": "...",',
     '      "deutsch": "...",',
     '      "unsicher": true|false,',
-    '      "hinweis": "..." oder null,',
-    '      "vorschlag": "..." oder null,',
-    '      "zusatzinfo": {',
-    '        "artikel": "..." (optional),',
-    '        "typ": "verb"|"substantiv"|null,',
-    '        "grundformen": {"praesens":"...","infinitiv":"...","perfekt":"...","supin":"..."} (nur Latein-Verben),',
-    '        "nominativ": "...", "genitiv": "...", "genus": "m"|"f"|"n" (nur Latein-Substantive),',
-    '        "falscherFreund": "kurze Warnung" oder null',
-    '      } oder null',
+    '      "hinweis": "..." (nur bei unsicher: true, sonst Feld weglassen),',
+    '      "vorschlag": "..." (nur bei unsicher: true UND vorhandenem Vorschlag, sonst Feld weglassen),',
+    '      "zusatzinfo": { ... } (nur bei Latein-Grundformen, Artikel oder falschem Freund, sonst Feld komplett weglassen)',
     '    }',
     '  ]',
     '}',
+    'zusatzinfo, falls vorhanden, nur mit den tatsächlich benötigten Schlüsseln füllen (z. B. nur "artikel", oder nur ',
+    '"typ"+"grundformen" bei Latein-Verben, oder nur "typ"+"nominativ"+"genitiv"+"genus" bei Latein-Substantiven, oder ',
+    'nur "falscherFreund"). WICHTIG bei langen Listen: Halte die Antwort so knapp wie möglich – lasse "hinweis", ',
+    '"vorschlag" und "zusatzinfo" bei jeder Vokabel, die sie nicht braucht, KOMPLETT WEG (nicht mit null befüllen), ',
+    'damit auch sehr lange Vokabellisten vollständig in einer Antwort Platz finden.',
   ].join('\n');
 }
 
@@ -198,11 +203,11 @@ async function handleExtrahieren(req, res) {
     userContent.push({ type: 'text', text: 'Extrahiere die Vokabeln aus dem angehängten Dokument/Bild.' });
   }
 
-  let raw;
+  let result;
   try {
-    raw = await callClaude({
+    result = await callClaude({
       model: 'claude-sonnet-4-6',
-      maxTokens: 8000,
+      maxTokens: 16000,
       system: buildExtraktionsPrompt(spracheEingabe),
       userContent,
       tools: [{ type: 'web_search_20250305', name: 'web_search', max_uses: 3 }],
@@ -213,9 +218,13 @@ async function handleExtrahieren(req, res) {
 
   let parsed;
   try {
-    parsed = extractJson(raw);
+    parsed = extractJson(result.text);
   } catch (e) {
-    console.error('Vokabeltrainer: Antwort konnte nicht geparst werden:', raw);
+    if (result.stopReason === 'max_tokens') {
+      console.error('Vokabeltrainer-Extraktion: Antwort durch max_tokens abgeschnitten.');
+      return res.status(422).json({ error: ABGESCHNITTEN_FEHLER });
+    }
+    console.error('Vokabeltrainer: Antwort konnte nicht geparst werden:', result.text);
     return res.status(502).json({ error: 'Antwort konnte nicht verarbeitet werden. Bitte erneut versuchen.' });
   }
 
@@ -524,11 +533,11 @@ router.post('/generieren', requireStudent, limiterGenerieren, async (req, res) =
     ? `Vokabelliste:\n${listeText}\n\nOrt: ${ort}`
     : `Vokabelliste:\n${listeText}`;
 
-  let raw;
+  let result;
   try {
-    raw = await callClaude({
+    result = await callClaude({
       model: 'claude-sonnet-4-6',
-      maxTokens: Math.min(4000, 220 * zugreifbar.length + 800),
+      maxTokens: Math.min(8000, 220 * zugreifbar.length + 800),
       system: buildGenerierenPrompt(typ),
       userContent: [{ type: 'text', text: userText }],
     });
@@ -539,9 +548,13 @@ router.post('/generieren', requireStudent, limiterGenerieren, async (req, res) =
 
   let ergebnis;
   try {
-    ergebnis = extractJson(raw);
+    ergebnis = extractJson(result.text);
   } catch (e) {
-    console.error('Vokabeltrainer-Generierung: Antwort konnte nicht geparst werden:', raw);
+    if (result.stopReason === 'max_tokens') {
+      console.error('Vokabeltrainer-Generierung: Antwort durch max_tokens abgeschnitten.');
+      return res.status(422).json({ error: ABGESCHNITTEN_FEHLER });
+    }
+    console.error('Vokabeltrainer-Generierung: Antwort konnte nicht geparst werden:', result.text);
     return res.status(502).json({ error: 'Antwort konnte nicht verarbeitet werden. Bitte erneut versuchen.' });
   }
 
