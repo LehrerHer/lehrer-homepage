@@ -558,7 +558,7 @@ router.post('/generieren', requireStudent, limiterGenerieren, async (req, res) =
   try {
     result = await callClaude({
       model: 'claude-sonnet-4-6',
-      maxTokens: Math.min(8000, 220 * zugreifbar.length + 800),
+      maxTokens: Math.min(8000, 220 * vokabeln.length + 800),
       system: buildGenerierenPrompt(typ),
       userContent: [{ type: 'text', text: userText }],
     });
