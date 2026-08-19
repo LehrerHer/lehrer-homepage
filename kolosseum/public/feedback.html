@@ -33,7 +33,9 @@
     .fb-kategorie[data-kategorie="Sozial"] { background: #dcfce7; color: #166534; }
     .fb-kategorie[data-kategorie="Verhalten"] { background: #fef3c7; color: #92400e; }
     .fb-kategorie[data-kategorie="Verbindlichkeit"] { background: #ede9fe; color: #5b21b6; }
+    .fb-kategorie[data-kategorie="Feedback"] { background: #ccfbf1; color: #115e59; }
     .fb-kategorie[data-kategorie=""] { background: #e5e7eb; color: #4b5563; }
+    .fb-view-ideen-btn { background: #ccfbf1; }
     .fb-zuklaeren-card { margin-top: 2rem; }
     .fb-zuklaeren-item { border: 1px solid rgba(0,0,0,0.12); border-radius: 6px; padding: 0.75rem; margin-top: 0.75rem; background: #fffbeb; }
     .fb-zuklaeren-meta { font-size: 0.85rem; color: rgba(0,0,0,0.6); margin-bottom: 0.4rem; }
@@ -255,6 +257,9 @@
         let html = `<p><strong>Gespeichert für:</strong></p><ul>` +
           (eintraege.length ? eintraege.map(e => `<li>${e}</li>`).join('') : '<li>(niemand automatisch zugeordnet)</li>') +
           `</ul>`;
+        if (data.gespeicherte_ideen && data.gespeicherte_ideen.length) {
+          html += `<p>${kategorieBadge('Feedback')}${data.gespeicherte_ideen.length} eigene Idee(n) zur Gruppe gespeichert.</p>`;
+        }
         if (data.zu_klaeren && data.zu_klaeren.length) {
           html += `<p class="fb-warnung">⚠️ ${data.zu_klaeren.length} Abschnitt(e) benötigen eine manuelle Zuordnung – siehe „Zu klären" oben.</p>`;
         }
@@ -393,9 +398,10 @@
         const students = await res.json();
         if (!res.ok) { listeEl.innerHTML = ''; errEl.textContent = students.error || 'Fehler beim Laden.'; return; }
 
-        listeEl.innerHTML = students.length
+        const ideenBtn = `<button type="button" class="btn fb-view-btn fb-view-ideen-btn" data-group-id="${groupId}">💡 Meine Ideen</button>`;
+        listeEl.innerHTML = ideenBtn + (students.length
           ? students.map(s => `<button type="button" class="btn fb-view-btn" data-id="${s.id}">${escapeHtml(s.first_name)} ${escapeHtml(s.last_name)}</button>`).join('')
-          : '<p>Keine Lernpartner:innen in dieser Gruppe.</p>';
+          : '<p style="width:100%;">Keine Lernpartner:innen in dieser Gruppe.</p>');
       } catch {
         listeEl.innerHTML = '';
         errEl.textContent = 'Verbindungsfehler.';
@@ -413,6 +419,24 @@
 
       const notizenEl = document.getElementById('fb-view-notizen');
       notizenEl.textContent = 'Lade …';
+
+      if (btn.classList.contains('fb-view-ideen-btn')) {
+        try {
+          const res = await fetch(`/api/feedback/groups/${btn.dataset.groupId}/notes`);
+          const data = await res.json();
+          if (!res.ok) { notizenEl.textContent = data.error || 'Fehler beim Laden.'; return; }
+
+          notizenEl.innerHTML = `<h3>💡 Ideen zu „${escapeHtml(data.group.name)}"</h3>` + (data.notes.length
+            ? '<ul class="fb-notiz-liste">' + data.notes.map(n =>
+                `<li><span class="fb-notiz-datum">${escapeHtml(n.date)} ${kategorieBadge('Feedback')}</span>${escapeHtml(n.text)}</li>`
+              ).join('') + '</ul>'
+            : '<p>Noch keine eigenen Ideen zu dieser Gruppe.</p>');
+        } catch {
+          notizenEl.textContent = 'Verbindungsfehler.';
+        }
+        return;
+      }
+
       try {
         const res = await fetch(`/api/feedback/students/${btn.dataset.id}/notes`);
         const data = await res.json();
