@@ -591,8 +591,8 @@ function renderVorschau() {
   const cont = document.getElementById('vorschau-liste');
   cont.innerHTML = state.vorschau.map((v, i) => `
     <div class="vok-row ${v.unsicher ? 'vok-row-unsicher' : ''}">
-      <input class="vok-input" value="${esc(v.fremdsprache)}" placeholder="Fremdsprache" oninput="updateVorschauFeld(${i},'fremdsprache',this.value)">
-      <input class="vok-input" value="${esc(v.deutsch)}" placeholder="Deutsch" oninput="updateVorschauFeld(${i},'deutsch',this.value)">
+      <input type="text" class="vok-input" value="${esc(v.fremdsprache)}" placeholder="Fremdsprache" oninput="updateVorschauFeld(${i},'fremdsprache',this.value)">
+      <input type="text" class="vok-input" value="${esc(v.deutsch)}" placeholder="Deutsch" oninput="updateVorschauFeld(${i},'deutsch',this.value)">
       <button class="vok-del" onclick="entferneVorschauZeile(${i})" title="Entfernen" aria-label="Zeile entfernen">🗑</button>
       ${v.zusatzinfo ? `<div class="vok-zusatz">${formatZusatzinfo(v.zusatzinfo)}</div>` : ''}
       ${v.unsicher ? `
@@ -1185,15 +1185,29 @@ function renderLueckentext() {
   let html = esc(luekenState.text);
   luekenState.luecken.forEach((l) => {
     const platzhalter = esc('___' + l.nummer + '___');
-    html = html.split(platzhalter).join('<input class="luecke-input" data-nr="' + l.nummer + '">');
+    // type="text" ist wichtig: ohne explizites type greift sonst die globale
+    // input:not([type])-Regel (width:100%) statt .luecke-input – dadurch würde
+    // jede Lücke eine ganze Zeile für sich beanspruchen statt im Text zu fließen.
+    html = html.split(platzhalter).join('<input type="text" class="luecke-input" data-nr="' + l.nummer + '">');
   });
+  const woerter = mischeArray(luekenState.luecken.map((l) => l.loesung).slice())
+    .map((w) => esc(w)).join(' · ');
   zeigeModul(`
     <h2>✍️ Lückentext</h2>
+    <button class="btn btn-ghost btn-block" id="luecken-hilfe-btn" onclick="luekenHilfeUmschalten()">💡 Wortliste als Hilfe anzeigen</button>
+    <div id="luecken-hilfe" class="modul-beschreibung" style="display:none">${woerter}</div>
     <div class="luecken-text">${html}</div>
     <button class="btn btn-primary btn-block" style="margin-top:14px" onclick="pruefeLueckentext()">Prüfen</button>
     <div id="luecken-ergebnis"></div>
     <button class="btn btn-ghost btn-block" style="margin-top:10px" onclick="modulLueckentext()">Andere Vokabeln wählen</button>
   `);
+}
+function luekenHilfeUmschalten() {
+  const el = document.getElementById('luecken-hilfe');
+  const btn = document.getElementById('luecken-hilfe-btn');
+  const sichtbar = el.style.display !== 'none';
+  el.style.display = sichtbar ? 'none' : 'block';
+  btn.textContent = sichtbar ? '💡 Wortliste als Hilfe anzeigen' : '🙈 Wortliste wieder verbergen';
 }
 function pruefeLueckentext() {
   let richtig = 0;
