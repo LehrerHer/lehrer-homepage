@@ -145,19 +145,22 @@
               z-index: 9999; box-shadow: 0 4px 16px rgba(0,0,0,.25); }
 
   /* ── Druckbereich: 16 Karten (4×4) pro Seite, je eine Vorder- und eine
-     gespiegelte Rückseiten-Seite hintereinander fürs beidseitige Drucken ── */
+     gespiegelte Rückseiten-Seite hintereinander fürs beidseitige Drucken.
+     Feste mm-Maße statt 1fr/grid-auto-rows und deutlicher Sicherheitsabstand
+     zum Seitenrand (statt exaktem Fit), damit es unabhängig vom Browser/
+     Drucker garantiert auf eine A4-Seite passt. ── */
   #druck-bereich { display: none; }
   @media print {
-    @page { size: A4; margin: 8mm; }
+    @page { size: A4; margin: 10mm; }
     body > *:not(#druck-bereich) { display: none !important; }
     #druck-bereich { display: block !important; }
     .druck-seite {
-      display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 68mm; gap: 3mm;
+      display: grid; grid-template-columns: repeat(4, 40mm); grid-auto-rows: 58mm; gap: 6mm;
       page-break-after: always;
     }
-    .druck-karte { border: 1px dashed #999; display: flex; align-items: center; justify-content: center;
-                   text-align: center; font-size: .95rem; font-weight: 700; padding: 3mm; overflow: hidden;
-                   page-break-inside: avoid; }
+    .druck-karte { box-sizing: border-box; border: 1px dashed #999; display: flex; align-items: center;
+                   justify-content: center; text-align: center; font-size: .8rem; font-weight: 700; padding: 2mm;
+                   overflow: hidden; page-break-inside: avoid; }
     .druck-leer { border: none; }
   }
 
@@ -419,6 +422,27 @@ function mischeArray(arr) {
   return arr;
 }
 
+// Gemeinsames "Wie viele zufällige Vokabeln?"-Feld für Module, die wahlweise mit der
+// ganzen Paket-Liste oder nur einer zufälligen Teilmenge starten sollen.
+function anzahlOptionenHtml(gesamt, selectId) {
+  const stufen = [5, 10, 15, 20, 25, 30].filter((n) => n < gesamt);
+  const optionen = stufen.map((n) => `<option value="${n}">${n} zufällige Vokabeln</option>`).join('');
+  return `
+    <div class="field">
+      <label for="${selectId}">Wie viele Vokabeln?</label>
+      <select id="${selectId}">
+        <option value="alle">Alle (${gesamt})</option>
+        ${optionen}
+      </select>
+    </div>
+  `;
+}
+function waehleTeilmenge(vokabeln, anzahlWert) {
+  if (anzahlWert === 'alle') return vokabeln.slice();
+  const n = Math.min(Number(anzahlWert) || vokabeln.length, vokabeln.length);
+  return mischeArray(vokabeln.slice()).slice(0, n);
+}
+
 function normalisiere(s) {
   return (s || '').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[.,!?;:]/g, '');
 }
@@ -446,7 +470,12 @@ function levenshtein(a, b) {
 // kleiner Rechtschreibfehler (Tippfehler-Toleranz je nach Wortl\u00e4nge) z\u00e4hlen als "fastRichtig"
 // (wird als richtig gewertet, aber mit Hinweis angezeigt), alles andere ist "falsch".
 // "erwartetRoh" darf mehrere durch Komma/Semikolon getrennte g\u00fcltige Antworten enthalten.
-function vergleicheAntwort(eingabeRoh, erwartetRoh) {
+// toleranzErlaubt: bei Antworten IN die Fremdsprache (Ziel = fremdsprachiges Wort) soll die
+// Schreibung exakt stimmen \u2013 Toleranz (Artikel/Tippfehler) gilt bewusst nur, wenn ins Deutsche
+// \u00fcbersetzt wird, da man die Muttersprache eher mal vertippt als dass ein Fremdsprachenfehler
+// p\u00e4dagogisch "nur ein Detail" w\u00e4re.
+function vergleicheAntwort(eingabeRoh, erwartetRoh, toleranzErlaubt) {
+  if (toleranzErlaubt === undefined) toleranzErlaubt = true;
   const eingabe = normalisiere(eingabeRoh);
   const eingabeOhneArtikel = normalisiere(ohneArtikel(eingabeRoh));
   const alternativen = String(erwartetRoh || '').split(/[,;]/).map((s) => s.trim()).filter(Boolean);
@@ -455,6 +484,7 @@ function vergleicheAntwort(eingabeRoh, erwartetRoh) {
     const altNorm = normalisiere(alt);
     if (!altNorm) continue;
     if (eingabe === altNorm) return { status: 'richtig' };
+    if (!toleranzErlaubt) continue;
 
     const altOhneArtikel = normalisiere(ohneArtikel(alt));
     if (eingabe === altOhneArtikel || eingabeOhneArtikel === altNorm) {
@@ -731,15 +761,29 @@ async function oeffnePaket(id) {
 
 /* ── Auswahl-Helfer für KI-Module ─────────────────────────────── */
 
-function renderVokabelAuswahl(callbackFnName, titel, alleVorausgewaehlt, beschreibungKey) {
+function renderVokabelAuswahl(callbackFnName, titel, alleVorausgewaehlt, beschreibungKey, zeigeZufallsauswahl) {
   const items = state.aktuellesPaket.vokabeln.map((v) => `
     <label class="vok-checkbox">
       <input type="checkbox" class="ausw-cb" value="${v.id}" ${alleVorausgewaehlt ? 'checked' : ''}>
       ${esc(v.fremdsprache)} – ${esc(v.deutsch)}
     </label>`).join('');
+  const gesamt = state.aktuellesPaket.vokabeln.length;
+  const zufallsBlock = zeigeZufallsauswahl ? `
+    <div class="field">
+      <label for="ausw-anzahl">Zufällige Auswahl</label>
+      <div class="opt-row">
+        <select id="ausw-anzahl" style="flex:2">
+          ${[5, 10, 15, 20, 25, 30].filter((n) => n < gesamt).map((n) => `<option value="${n}">${n} Vokabeln</option>`).join('')}
+          <option value="alle">Alle (${gesamt})</option>
+        </select>
+        <button class="btn btn-ghost" style="flex:1" onclick="zufaelligAuswaehlen()">🎲 Würfeln</button>
+      </div>
+    </div>
+  ` : '';
   return `
     <h2>${titel}</h2>
     ${beschreibungKey ? beschreibung(beschreibungKey) : ''}
+    ${zufallsBlock}
     <div class="vok-auswahl-liste">${items}</div>
     <div class="opt-row" style="margin-bottom:10px">
       <button class="btn btn-ghost" onclick="alleAuswaehlen(true)">Alle</button>
@@ -750,6 +794,14 @@ function renderVokabelAuswahl(callbackFnName, titel, alleVorausgewaehlt, beschre
   `;
 }
 function alleAuswaehlen(an) { document.querySelectorAll('.ausw-cb').forEach((cb) => (cb.checked = an)); }
+function zufaelligAuswaehlen() {
+  const wert = document.getElementById('ausw-anzahl').value;
+  const boxen = Array.from(document.querySelectorAll('.ausw-cb'));
+  boxen.forEach((cb) => (cb.checked = false));
+  if (wert === 'alle') { boxen.forEach((cb) => (cb.checked = true)); return; }
+  const n = Math.min(Number(wert), boxen.length);
+  mischeArray(boxen.slice()).slice(0, n).forEach((cb) => (cb.checked = true));
+}
 function ausgewaehlteIds() { return Array.from(document.querySelectorAll('.ausw-cb:checked')).map((cb) => Number(cb.value)); }
 function zeigeAuswahlFehler(msg) {
   const el = document.getElementById('auswahl-fehler');
@@ -796,7 +848,7 @@ function modulDruckKarten() {
   zeigeModul(`
     <h2>🖨️ Druckbare Karteikarten</h2>
     ${beschreibung('druckKarten')}
-    <p class="modul-sub">16 Karten pro DIN-A4-Seite (4×4, ca. 46×68&nbsp;mm), zum Ausschneiden für den Leitner-Karteikasten.</p>
+    <p class="modul-sub">16 Karten pro DIN-A4-Seite (4×4, ca. 40×58&nbsp;mm), zum Ausschneiden für den Leitner-Karteikasten.</p>
     <div class="field">
       <label for="druck-richtung">Vorderseite</label>
       <select id="druck-richtung">
@@ -857,11 +909,11 @@ function modulDigitaleKarten() {
       <h2>🔄 Interaktive Karteikarten</h2>
       <p>Du hast hier zuletzt bei ${gespeichert.gewusstIds.length} von ${gespeichert.gesamt} Karten aufgehört.</p>
       <button class="btn btn-primary btn-block" onclick="karteikartenWeitermachen()">Weitermachen</button>
-      <button class="btn btn-ghost btn-block" style="margin-top:10px" onclick="karteikartenNeuStarten()">Neu starten</button>
+      <button class="btn btn-ghost btn-block" style="margin-top:10px" onclick="karteikartenSetupZeigen()">Neu starten</button>
     `);
     return;
   }
-  karteikartenNeuStarten();
+  karteikartenSetupZeigen();
 }
 function karteikartenWeitermachen() {
   const schluessel = 'vt_karten_' + state.aktuellesPaket.id;
@@ -869,10 +921,20 @@ function karteikartenWeitermachen() {
   karteikartenState = { schluessel, warteschlange: g.warteschlange, gesamt: g.gesamt, gewusstIds: g.gewusstIds, gewusst: g.gewusst, nichtGewusst: g.nichtGewusst };
   renderKarteikarte();
 }
+function karteikartenSetupZeigen() {
+  fortschrittLoeschen('vt_karten_' + state.aktuellesPaket.id);
+  zeigeModul(`
+    <h2>🔄 Interaktive Karteikarten</h2>
+    ${beschreibung('digitaleKarten')}
+    ${anzahlOptionenHtml(state.aktuellesPaket.vokabeln.length, 'karten-anzahl')}
+    <button class="btn btn-primary btn-block" onclick="karteikartenNeuStarten()">Start</button>
+  `);
+}
 function karteikartenNeuStarten() {
   const schluessel = 'vt_karten_' + state.aktuellesPaket.id;
   fortschrittLoeschen(schluessel);
-  const liste = mischeArray(state.aktuellesPaket.vokabeln.slice());
+  const anzahlWert = document.getElementById('karten-anzahl')?.value || 'alle';
+  const liste = mischeArray(waehleTeilmenge(state.aktuellesPaket.vokabeln, anzahlWert));
   karteikartenState = { schluessel, warteschlange: liste, gesamt: liste.length, gewusstIds: [], gewusst: 0, nichtGewusst: 0 };
   fortschrittSpeichern(schluessel, karteikartenState);
   renderKarteikarte();
@@ -885,14 +947,13 @@ function renderKarteikarte() {
     zeigeModul(`
       <h2>🔄 Interaktive Karteikarten – 🎉 Alle gewusst!</h2>
       <p>${ks.gesamt} Karten geschafft (unterwegs ${ks.gewusst}× gewusst, ${ks.nichtGewusst}× nicht gewusst).</p>
-      <button class="btn btn-primary btn-block" onclick="karteikartenNeuStarten()">Nochmal</button>
+      <button class="btn btn-primary btn-block" onclick="karteikartenSetupZeigen()">Nochmal</button>
     `);
     return;
   }
   const v = ks.warteschlange[0];
   zeigeModul(`
     <h2>🔄 Interaktive Karteikarten</h2>
-    ${ks.gewusstIds.length === 0 ? beschreibung('digitaleKarten') : ''}
     <div class="prog-label">${ks.gewusstIds.length} / ${ks.gesamt} geschafft</div>
     <div class="prog-bar"><div class="prog-fill" style="width:${(ks.gewusstIds.length / ks.gesamt) * 100}%"></div></div>
     <div class="flip-card" id="flip-card" onclick="flipKarte()">
@@ -976,6 +1037,7 @@ function abfrageSetupZeigen() {
   zeigeModul(`
     <h2>❓ Abfrage</h2>
     ${beschreibung('abfrage')}
+    ${anzahlOptionenHtml(state.aktuellesPaket.vokabeln.length, 'abfrage-anzahl')}
     <div class="field">
       <label for="abfrage-richtung">Richtung</label>
       <select id="abfrage-richtung">
@@ -995,8 +1057,9 @@ function abfrageWeitermachen() {
 }
 function starteAbfrage() {
   const richtung = document.getElementById('abfrage-richtung').value;
+  const anzahlWert = document.getElementById('abfrage-anzahl')?.value || 'alle';
   const schluessel = 'vt_abfrage_' + state.aktuellesPaket.id;
-  const liste = mischeArray(state.aktuellesPaket.vokabeln.slice()).map((v) => ({
+  const liste = mischeArray(waehleTeilmenge(state.aktuellesPaket.vokabeln, anzahlWert)).map((v) => ({
     ...v,
     itemRichtung: richtung === 'gemischt' ? zufaelligeRichtung() : richtung,
   }));
@@ -1058,9 +1121,12 @@ function renderAbfrageItem() {
 function pruefeAbfrageAntwort() {
   const s = abfrageState;
   const v = s.warteschlange.shift();
-  const erwartet = v.itemRichtung === 'fremd-deutsch' ? v.deutsch : v.fremdsprache;
+  const insDeutsche = v.itemRichtung === 'fremd-deutsch';
+  const erwartet = insDeutsche ? v.deutsch : v.fremdsprache;
   const eingabe = document.getElementById('abfrage-antwort').value;
-  const ergebnis = vergleicheAntwort(eingabe, erwartet);
+  // Toleranz (Artikel/Tippfehler) nur bei Antworten ins Deutsche – bei Antworten in die
+  // Fremdsprache muss die Schreibung exakt stimmen.
+  const ergebnis = vergleicheAntwort(eingabe, erwartet, insDeutsche);
   const richtigGezaehlt = ergebnis.status !== 'falsch';
 
   if (richtigGezaehlt) {
@@ -1085,14 +1151,18 @@ function pruefeAbfrageAntwort() {
     fb.textContent = '✗ Richtige Antwort: ' + erwartet;
   }
   document.getElementById('abfrage-antwort').disabled = true;
-  document.getElementById('abfrage-weiter').style.display = 'block';
+  const weiterBtn = document.getElementById('abfrage-weiter');
+  weiterBtn.style.display = 'block';
+  // Fokus direkt auf "Weiter" springen lassen, damit man mit Enter→Enter im Sekundentakt
+  // durch die Vokabeln kommt, ohne die Maus/den Finger zu benutzen.
+  weiterBtn.focus();
 }
 function naechsteAbfrage() { renderAbfrageItem(); }
 
 /* ── Modul 5: Kontextsätze ────────────────────────────────────── */
 
 function modulKontextsaetze() {
-  zeigeModul(renderVokabelAuswahl('modulKontextsaetzeGenerieren', '💬 Kontextsätze – für welche Vokabeln?', true, 'kontextsaetze'));
+  zeigeModul(renderVokabelAuswahl('modulKontextsaetzeGenerieren', '💬 Kontextsätze – für welche Vokabeln?', true, 'kontextsaetze', true));
 }
 async function modulKontextsaetzeGenerieren() {
   const ids = ausgewaehlteIds();
@@ -1117,7 +1187,7 @@ async function modulKontextsaetzeGenerieren() {
 let quizState = { fragen: [], idx: 0, richtig: 0 };
 
 function modulMiniQuiz() {
-  zeigeModul(renderVokabelAuswahl('modulMiniQuizStart', '📝 Mini-Quiz – welche Vokabeln?', true, 'miniQuiz'));
+  zeigeModul(renderVokabelAuswahl('modulMiniQuizStart', '📝 Mini-Quiz – welche Vokabeln?', true, 'miniQuiz', true));
 }
 async function modulMiniQuizStart() {
   const ids = ausgewaehlteIds();
@@ -1167,7 +1237,7 @@ function quizAntwort(i) {
 let luekenState = { text: '', luecken: [] };
 
 function modulLueckentext() {
-  zeigeModul(renderVokabelAuswahl('modulLueckentextStart', '✍️ Lückentext – welche Vokabeln?', true, 'lueckentext'));
+  zeigeModul(renderVokabelAuswahl('modulLueckentextStart', '✍️ Lückentext – welche Vokabeln?', true, 'lueckentext', true));
 }
 async function modulLueckentextStart() {
   const ids = ausgewaehlteIds();
@@ -1214,7 +1284,8 @@ function pruefeLueckentext() {
   document.querySelectorAll('.luecke-input').forEach((inp) => {
     const nr = Number(inp.dataset.nr);
     const soll = luekenState.luecken.find((l) => l.nummer === nr);
-    const ergebnis = soll ? vergleicheAntwort(inp.value, soll.loesung) : { status: 'falsch' };
+    // Lücken sind immer das fremdsprachige Wort – hier zählt exakte Schreibung, keine Toleranz.
+    const ergebnis = soll ? vergleicheAntwort(inp.value, soll.loesung, false) : { status: 'falsch' };
     const ok = ergebnis.status !== 'falsch';
     inp.style.borderColor = ok ? 'var(--green)' : 'var(--red)';
     inp.style.color = ok ? '#15803d' : 'var(--red)';
