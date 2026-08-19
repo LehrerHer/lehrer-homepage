@@ -161,7 +161,7 @@
     <meta property="og:locale" content="de_DE">
     <meta property="og:site_name" content="Jan Herrmann – Lehrerhomepage">
     <meta property="og:title" content="Vokabeltrainer">
-    <meta property="og:description" content="Vokabeln erfassen, speichern und mit elf Lernmethoden trainieren – Englisch, Französisch, Spanisch, Latein.">
+    <meta property="og:description" content="Vokabeln erfassen, speichern und mit zwölf Lernmethoden trainieren – Englisch, Französisch, Spanisch, Latein.">
     <meta property="og:url" content="https://lehrer-herrmann.de/vokabeltrainer.html">
     <meta property="og:image" content="https://lehrer-herrmann.de/img/logo.svg">
     <meta name="twitter:card" content="summary_large_image">
@@ -233,7 +233,7 @@
 
 <main>
   <h1>📚 Vokabeltrainer</h1>
-  <p class="sub">Englisch · Französisch · Spanisch · Latein – Vokabeln erfassen, speichern und mit elf Lernmethoden trainieren.</p>
+  <p class="sub">Englisch · Französisch · Spanisch · Latein – Vokabeln erfassen, speichern und mit zwölf Lernmethoden trainieren.</p>
 
   <!-- ════════════════════════════════════ SCREEN: Start -->
   <div id="s-start" class="screen active">
@@ -373,9 +373,9 @@
       <button class="btn btn-ghost btn-block" style="margin-top:12px" onclick="showScreen('s-start')">🏠 Zurück zum Start</button>
     </div>
   </div>
-
-  <div id="druck-bereich"></div>
 </main>
+
+<div id="druck-bereich"></div>
 
 <script>
 const K = 'https://kolosseum.lehrer-herrmann.de';
@@ -813,7 +813,11 @@ function exportiereAnki() {
 
 /* ── Modul 3 + 4: Abfrage & Spaced Repetition ────────────────── */
 
-let abfrageState = { richtung: 'fremd-deutsch', idx: 0, liste: [], richtig: 0, falsch: 0, spaced: false };
+let abfrageState = { idx: 0, liste: [], richtig: 0, falsch: 0, spaced: false };
+
+function zufaelligeRichtung() {
+  return Math.random() < 0.5 ? 'fremd-deutsch' : 'deutsch-fremd';
+}
 
 function modulAbfrage() {
   zeigeModul(`
@@ -824,16 +828,19 @@ function modulAbfrage() {
       <select id="abfrage-richtung">
         <option value="fremd-deutsch">Fremdsprache → Deutsch</option>
         <option value="deutsch-fremd">Deutsch → Fremdsprache</option>
+        <option value="gemischt">Gemischt (beide Richtungen im selben Durchgang)</option>
       </select>
     </div>
     <button class="btn btn-primary btn-block" onclick="starteAbfrage()">Start</button>
   `);
 }
 function starteAbfrage() {
-  abfrageState = {
-    richtung: document.getElementById('abfrage-richtung').value,
-    idx: 0, liste: mischeArray(state.aktuellesPaket.vokabeln.slice()), richtig: 0, falsch: 0, spaced: false,
-  };
+  const richtung = document.getElementById('abfrage-richtung').value;
+  const liste = mischeArray(state.aktuellesPaket.vokabeln.slice()).map((v) => ({
+    ...v,
+    itemRichtung: richtung === 'gemischt' ? zufaelligeRichtung() : richtung,
+  }));
+  abfrageState = { idx: 0, liste, richtig: 0, falsch: 0, spaced: false };
   renderAbfrageItem();
 }
 
@@ -851,7 +858,8 @@ async function modulSpacedRepetition() {
     zeigeModul('<h2>📅 Spaced Repetition</h2><p>🎉 Aktuell ist keine Vokabel fällig – alles im Zeitplan! Schau später wieder vorbei.</p>');
     return;
   }
-  abfrageState = { richtung: 'fremd-deutsch', idx: 0, liste: mischeArray(faellig.slice()), richtig: 0, falsch: 0, spaced: true };
+  const liste = mischeArray(faellig.slice()).map((v) => ({ ...v, itemRichtung: 'fremd-deutsch' }));
+  abfrageState = { idx: 0, liste, richtig: 0, falsch: 0, spaced: true };
   renderAbfrageItem();
 }
 
@@ -867,7 +875,7 @@ function renderAbfrageItem() {
     return;
   }
   const v = s.liste[s.idx];
-  const frage = s.richtung === 'fremd-deutsch' ? v.fremdsprache : v.deutsch;
+  const frage = v.itemRichtung === 'fremd-deutsch' ? v.fremdsprache : v.deutsch;
   const boxHinweis = s.spaced ? `<p class="modul-sub" style="text-align:center">Box ${v.leitnerBox || 1}</p>` : '';
   zeigeModul(`
     <h2>${titel}</h2>
@@ -886,7 +894,7 @@ function renderAbfrageItem() {
 function pruefeAbfrageAntwort() {
   const s = abfrageState;
   const v = s.liste[s.idx];
-  const erwartet = s.richtung === 'fremd-deutsch' ? v.deutsch : v.fremdsprache;
+  const erwartet = v.itemRichtung === 'fremd-deutsch' ? v.deutsch : v.fremdsprache;
   const eingabe = document.getElementById('abfrage-antwort').value;
   const richtig = normalisiere(eingabe) === normalisiere(erwartet);
   if (richtig) s.richtig++; else s.falsch++;
