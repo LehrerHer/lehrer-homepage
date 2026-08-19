@@ -423,6 +423,57 @@ function normalisiere(s) {
   return (s || '').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[.,!?;:]/g, '');
 }
 
+const ARTIKEL_PRAEFIX = /^(der|die|das|den|dem|des|ein|eine|einen|einem|einer|the|le|la|les|un|une|el|los|las)\s+/i;
+function ohneArtikel(s) {
+  return (s || '').replace(ARTIKEL_PRAEFIX, '').trim();
+}
+
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  const dp = Array.from({ length: m + 1 }, (_, i) => [i, ...new Array(n).fill(0)]);
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      dp[i][j] = a[i - 1] === b[j - 1] ? dp[i - 1][j - 1] : 1 + Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]);
+    }
+  }
+  return dp[m][n];
+}
+
+// Pr\u00fcft eine Antwort tolerant: exakte Treffer sind "richtig", fehlender Artikel oder ein
+// kleiner Rechtschreibfehler (Tippfehler-Toleranz je nach Wortl\u00e4nge) z\u00e4hlen als "fastRichtig"
+// (wird als richtig gewertet, aber mit Hinweis angezeigt), alles andere ist "falsch".
+// "erwartetRoh" darf mehrere durch Komma/Semikolon getrennte g\u00fcltige Antworten enthalten.
+function vergleicheAntwort(eingabeRoh, erwartetRoh) {
+  const eingabe = normalisiere(eingabeRoh);
+  const eingabeOhneArtikel = normalisiere(ohneArtikel(eingabeRoh));
+  const alternativen = String(erwartetRoh || '').split(/[,;]/).map((s) => s.trim()).filter(Boolean);
+
+  for (const alt of alternativen) {
+    const altNorm = normalisiere(alt);
+    if (!altNorm) continue;
+    if (eingabe === altNorm) return { status: 'richtig' };
+
+    const altOhneArtikel = normalisiere(ohneArtikel(alt));
+    if (eingabe === altOhneArtikel || eingabeOhneArtikel === altNorm) {
+      return { status: 'fastRichtig', hinweis: 'Artikel nicht vergessen: \u201e' + alt + '"' };
+    }
+
+    // F\u00fcr die Tippfehler-Toleranz die artikelbereinigten Formen vergleichen \u2013 sonst w\u00fcrde
+    // ein fehlender Artikel selbst schon als "gro\u00dfer Unterschied" in die Distanz einflie\u00dfen
+    // und einen echten Mini-Tippfehler im eigentlichen Wort \u00fcberdecken.
+    const zielWort = altOhneArtikel || altNorm;
+    const eingabeWort = eingabeOhneArtikel || eingabe;
+    const toleranz = Math.max(1, Math.round(zielWort.length * 0.2));
+    if (eingabeWort.length > 0 && levenshtein(eingabeWort, zielWort) <= toleranz) {
+      return { status: 'fastRichtig', hinweis: 'kleiner Rechtschreibfehler \u2013 richtig w\u00e4re: \u201e' + alt + '"' };
+    }
+  }
+  return { status: 'falsch' };
+}
+
 function zeigeXpToast(xp) {
   const t = document.createElement('div');
   t.className = 'xp-toast';
@@ -440,6 +491,25 @@ async function meldeFortschritt(vokabelId, richtig) {
     const data = await res.json();
     if (data.xpEarned > 0) zeigeXpToast(data.xpEarned);
   } catch (e) { /* offline-tolerant: Fehler beim Fortschritts-Log wird stillschweigend übergangen */ }
+}
+
+// Lokaler Sitzungs-Fortschritt (Abfrage, Interaktive Karteikarten), damit man dort
+// weiterlernen kann, wo man aufgehört hat. Rein clientseitig (localStorage) – kein
+// Server-Zugriff nötig, überlebt aber nur auf demselben Gerät/Browser.
+function fortschrittSpeichern(schluessel, daten) {
+  if (!schluessel) return;
+  try { localStorage.setItem(schluessel, JSON.stringify(daten)); } catch (e) { /* z. B. privater Modus */ }
+}
+function fortschrittLaden(schluessel) {
+  if (!schluessel) return null;
+  try {
+    const raw = localStorage.getItem(schluessel);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) { return null; }
+}
+function fortschrittLoeschen(schluessel) {
+  if (!schluessel) return;
+  try { localStorage.removeItem(schluessel); } catch (e) { /* egal */ }
 }
 
 function falscheFreundeBadge(v) {
@@ -687,7 +757,8 @@ function zeigeAuswahlFehler(msg) {
 }
 
 function zeigeModul(html) {
-  document.getElementById('modul-inhalt').innerHTML = html;
+  document.getElementById('modul-inhalt').innerHTML = html +
+    '<button class="btn btn-ghost btn-block" style="margin-top:18px" onclick="zeigeOptionenScreen()">← Zurück zu den Lernoptionen</button>';
   showScreen('s-modul');
 }
 
@@ -776,29 +847,54 @@ function druckeKarten() {
 
 /* ── Modul 2a: Interaktive Karteikarten ──────────────────────── */
 
-let karteikartenState = { idx: 0, gewusst: 0, nichtGewusst: 0, gemischt: [] };
+let karteikartenState = { schluessel: '', warteschlange: [], gesamt: 0, gewusstIds: [], gewusst: 0, nichtGewusst: 0 };
 
 function modulDigitaleKarten() {
-  karteikartenState = { idx: 0, gewusst: 0, nichtGewusst: 0, gemischt: mischeArray(state.aktuellesPaket.vokabeln.slice()) };
+  const schluessel = 'vt_karten_' + state.aktuellesPaket.id;
+  const gespeichert = fortschrittLaden(schluessel);
+  if (gespeichert && gespeichert.warteschlange && gespeichert.warteschlange.length > 0) {
+    zeigeModul(`
+      <h2>🔄 Interaktive Karteikarten</h2>
+      <p>Du hast hier zuletzt bei ${gespeichert.gewusstIds.length} von ${gespeichert.gesamt} Karten aufgehört.</p>
+      <button class="btn btn-primary btn-block" onclick="karteikartenWeitermachen()">Weitermachen</button>
+      <button class="btn btn-ghost btn-block" style="margin-top:10px" onclick="karteikartenNeuStarten()">Neu starten</button>
+    `);
+    return;
+  }
+  karteikartenNeuStarten();
+}
+function karteikartenWeitermachen() {
+  const schluessel = 'vt_karten_' + state.aktuellesPaket.id;
+  const g = fortschrittLaden(schluessel);
+  karteikartenState = { schluessel, warteschlange: g.warteschlange, gesamt: g.gesamt, gewusstIds: g.gewusstIds, gewusst: g.gewusst, nichtGewusst: g.nichtGewusst };
+  renderKarteikarte();
+}
+function karteikartenNeuStarten() {
+  const schluessel = 'vt_karten_' + state.aktuellesPaket.id;
+  fortschrittLoeschen(schluessel);
+  const liste = mischeArray(state.aktuellesPaket.vokabeln.slice());
+  karteikartenState = { schluessel, warteschlange: liste, gesamt: liste.length, gewusstIds: [], gewusst: 0, nichtGewusst: 0 };
+  fortschrittSpeichern(schluessel, karteikartenState);
   renderKarteikarte();
 }
 
 function renderKarteikarte() {
   const ks = karteikartenState;
-  if (ks.idx >= ks.gemischt.length) {
+  if (ks.warteschlange.length === 0) {
+    fortschrittLoeschen(ks.schluessel);
     zeigeModul(`
-      <h2>🔄 Interaktive Karteikarten – fertig!</h2>
-      <p>${ks.gewusst} gewusst, ${ks.nichtGewusst} nicht gewusst.</p>
-      <button class="btn btn-primary btn-block" onclick="modulDigitaleKarten()">Nochmal</button>
+      <h2>🔄 Interaktive Karteikarten – 🎉 Alle gewusst!</h2>
+      <p>${ks.gesamt} Karten geschafft (unterwegs ${ks.gewusst}× gewusst, ${ks.nichtGewusst}× nicht gewusst).</p>
+      <button class="btn btn-primary btn-block" onclick="karteikartenNeuStarten()">Nochmal</button>
     `);
     return;
   }
-  const v = ks.gemischt[ks.idx];
+  const v = ks.warteschlange[0];
   zeigeModul(`
     <h2>🔄 Interaktive Karteikarten</h2>
-    ${ks.idx === 0 ? beschreibung('digitaleKarten') : ''}
-    <div class="prog-label">${ks.idx + 1} / ${ks.gemischt.length}</div>
-    <div class="prog-bar"><div class="prog-fill" style="width:${(ks.idx / ks.gemischt.length) * 100}%"></div></div>
+    ${ks.gewusstIds.length === 0 ? beschreibung('digitaleKarten') : ''}
+    <div class="prog-label">${ks.gewusstIds.length} / ${ks.gesamt} geschafft</div>
+    <div class="prog-bar"><div class="prog-fill" style="width:${(ks.gewusstIds.length / ks.gesamt) * 100}%"></div></div>
     <div class="flip-card" id="flip-card" onclick="flipKarte()">
       <div class="flip-inner" id="flip-inner">
         <div class="flip-front">${esc(v.fremdsprache)}${falscheFreundeBadge(v)}</div>
@@ -814,10 +910,17 @@ function renderKarteikarte() {
 }
 function flipKarte() { document.getElementById('flip-inner').classList.toggle('flipped'); }
 function karteAntwort(richtig) {
-  const v = karteikartenState.gemischt[karteikartenState.idx];
-  if (richtig) karteikartenState.gewusst++; else karteikartenState.nichtGewusst++;
+  const ks = karteikartenState;
+  const v = ks.warteschlange.shift();
+  if (richtig) {
+    ks.gewusst++;
+    if (!ks.gewusstIds.includes(v.id)) ks.gewusstIds.push(v.id);
+  } else {
+    ks.nichtGewusst++;
+    ks.warteschlange.push(v);
+  }
   meldeFortschritt(v.id, richtig);
-  karteikartenState.idx++;
+  fortschrittSpeichern(ks.schluessel, ks);
   renderKarteikarte();
 }
 
@@ -845,13 +948,31 @@ function exportiereAnki() {
 
 /* ── Modul 3 + 4: Abfrage & Spaced Repetition ────────────────── */
 
-let abfrageState = { idx: 0, liste: [], richtig: 0, falsch: 0, spaced: false };
+// abfrageState.warteschlange ist eine Warteschlange, keine feste Liste: falsch beantwortete
+// Vokabeln werden ans Ende zurückgestellt und kommen in derselben Runde nochmal dran, bis
+// jede Vokabel mindestens einmal richtig war ("richtigIds" – dann ist die Runde vorbei).
+let abfrageState = { schluessel: '', warteschlange: [], gesamt: 0, richtigIds: [], richtig: 0, falsch: 0, spaced: false };
 
 function zufaelligeRichtung() {
   return Math.random() < 0.5 ? 'fremd-deutsch' : 'deutsch-fremd';
 }
 
 function modulAbfrage() {
+  const schluessel = 'vt_abfrage_' + state.aktuellesPaket.id;
+  const gespeichert = fortschrittLaden(schluessel);
+  if (gespeichert && gespeichert.warteschlange && gespeichert.warteschlange.length > 0) {
+    zeigeModul(`
+      <h2>❓ Abfrage</h2>
+      <p>Du hast hier zuletzt bei ${gespeichert.richtigIds.length} von ${gespeichert.gesamt} Vokabeln aufgehört.</p>
+      <button class="btn btn-primary btn-block" onclick="abfrageWeitermachen()">Weitermachen</button>
+      <button class="btn btn-ghost btn-block" style="margin-top:10px" onclick="abfrageSetupZeigen()">Neu starten</button>
+    `);
+    return;
+  }
+  abfrageSetupZeigen();
+}
+function abfrageSetupZeigen() {
+  fortschrittLoeschen('vt_abfrage_' + state.aktuellesPaket.id);
   zeigeModul(`
     <h2>❓ Abfrage</h2>
     ${beschreibung('abfrage')}
@@ -866,13 +987,21 @@ function modulAbfrage() {
     <button class="btn btn-primary btn-block" onclick="starteAbfrage()">Start</button>
   `);
 }
+function abfrageWeitermachen() {
+  const schluessel = 'vt_abfrage_' + state.aktuellesPaket.id;
+  const g = fortschrittLaden(schluessel);
+  abfrageState = { schluessel, warteschlange: g.warteschlange, gesamt: g.gesamt, richtigIds: g.richtigIds, richtig: g.richtig, falsch: g.falsch, spaced: false };
+  renderAbfrageItem();
+}
 function starteAbfrage() {
   const richtung = document.getElementById('abfrage-richtung').value;
+  const schluessel = 'vt_abfrage_' + state.aktuellesPaket.id;
   const liste = mischeArray(state.aktuellesPaket.vokabeln.slice()).map((v) => ({
     ...v,
     itemRichtung: richtung === 'gemischt' ? zufaelligeRichtung() : richtung,
   }));
-  abfrageState = { idx: 0, liste, richtig: 0, falsch: 0, spaced: false };
+  abfrageState = { schluessel, warteschlange: liste, gesamt: liste.length, richtigIds: [], richtig: 0, falsch: 0, spaced: false };
+  fortschrittSpeichern(schluessel, abfrageState);
   renderAbfrageItem();
 }
 
@@ -890,30 +1019,33 @@ async function modulSpacedRepetition() {
     zeigeModul('<h2>📅 Spaced Repetition</h2><p>🎉 Aktuell ist keine Vokabel fällig – alles im Zeitplan! Schau später wieder vorbei.</p>');
     return;
   }
+  // Spaced Repetition wird bewusst NICHT lokal gespeichert/fortgesetzt: die fällige Auswahl
+  // hängt vom serverseitigen Leitner-Stand ab und muss bei jedem Start neu berechnet werden.
   const liste = mischeArray(faellig.slice()).map((v) => ({ ...v, itemRichtung: 'fremd-deutsch' }));
-  abfrageState = { idx: 0, liste, richtig: 0, falsch: 0, spaced: true };
+  abfrageState = { schluessel: '', warteschlange: liste, gesamt: liste.length, richtigIds: [], richtig: 0, falsch: 0, spaced: true };
   renderAbfrageItem();
 }
 
 function renderAbfrageItem() {
   const s = abfrageState;
   const titel = s.spaced ? '📅 Spaced Repetition' : '❓ Abfrage';
-  if (s.idx >= s.liste.length) {
+  if (s.warteschlange.length === 0) {
+    fortschrittLoeschen(s.schluessel);
     zeigeModul(`
-      <h2>${titel} – fertig!</h2>
-      <p>${s.richtig} richtig, ${s.falsch} falsch (von ${s.liste.length}).</p>
+      <h2>${titel} – 🎉 Alle Vokabeln richtig!</h2>
+      <p>${s.gesamt} Vokabeln geschafft (unterwegs ${s.richtig}× richtig, ${s.falsch}× falsch beantwortet).</p>
       <button class="btn btn-primary btn-block" onclick="${s.spaced ? 'modulSpacedRepetition' : 'modulAbfrage'}()">Nochmal</button>
     `);
     return;
   }
-  const v = s.liste[s.idx];
+  const v = s.warteschlange[0];
   const frage = v.itemRichtung === 'fremd-deutsch' ? v.fremdsprache : v.deutsch;
   const boxHinweis = s.spaced ? `<p class="modul-sub" style="text-align:center">Box ${v.leitnerBox || 1}</p>` : '';
   zeigeModul(`
     <h2>${titel}</h2>
-    ${s.spaced && s.idx === 0 ? beschreibung('spacedRepetition') : ''}
-    <div class="prog-label">${s.idx + 1} / ${s.liste.length}</div>
-    <div class="prog-bar"><div class="prog-fill" style="width:${(s.idx / s.liste.length) * 100}%"></div></div>
+    ${s.spaced && s.richtigIds.length === 0 ? beschreibung('spacedRepetition') : ''}
+    <div class="prog-label">${s.richtigIds.length} / ${s.gesamt} geschafft</div>
+    <div class="prog-bar"><div class="prog-fill" style="width:${(s.richtigIds.length / s.gesamt) * 100}%"></div></div>
     <div class="item-word">${esc(frage)}${falscheFreundeBadge(v)}</div>
     ${boxHinweis}
     <input id="abfrage-antwort" type="text" autocomplete="off" placeholder="Deine Antwort" onkeydown="if(event.key==='Enter')pruefeAbfrageAntwort()">
@@ -925,19 +1057,37 @@ function renderAbfrageItem() {
 }
 function pruefeAbfrageAntwort() {
   const s = abfrageState;
-  const v = s.liste[s.idx];
+  const v = s.warteschlange.shift();
   const erwartet = v.itemRichtung === 'fremd-deutsch' ? v.deutsch : v.fremdsprache;
   const eingabe = document.getElementById('abfrage-antwort').value;
-  const richtig = normalisiere(eingabe) === normalisiere(erwartet);
-  if (richtig) s.richtig++; else s.falsch++;
-  meldeFortschritt(v.id, richtig);
+  const ergebnis = vergleicheAntwort(eingabe, erwartet);
+  const richtigGezaehlt = ergebnis.status !== 'falsch';
+
+  if (richtigGezaehlt) {
+    s.richtig++;
+    if (!s.richtigIds.includes(v.id)) s.richtigIds.push(v.id);
+  } else {
+    s.falsch++;
+    s.warteschlange.push(v);
+  }
+  meldeFortschritt(v.id, richtigGezaehlt);
+  fortschrittSpeichern(s.schluessel, s);
+
   const fb = document.getElementById('abfrage-feedback');
-  fb.className = 'feedback-bar ' + (richtig ? 'show-ok' : 'show-err');
-  fb.textContent = richtig ? '✓ Richtig!' : ('✗ Richtige Antwort: ' + erwartet);
+  if (ergebnis.status === 'richtig') {
+    fb.className = 'feedback-bar show-ok';
+    fb.textContent = '✓ Richtig!';
+  } else if (ergebnis.status === 'fastRichtig') {
+    fb.className = 'feedback-bar show-ok';
+    fb.textContent = '✓ Richtig – ' + ergebnis.hinweis;
+  } else {
+    fb.className = 'feedback-bar show-err';
+    fb.textContent = '✗ Richtige Antwort: ' + erwartet;
+  }
   document.getElementById('abfrage-antwort').disabled = true;
   document.getElementById('abfrage-weiter').style.display = 'block';
 }
-function naechsteAbfrage() { abfrageState.idx++; renderAbfrageItem(); }
+function naechsteAbfrage() { renderAbfrageItem(); }
 
 /* ── Modul 5: Kontextsätze ────────────────────────────────────── */
 
@@ -1050,9 +1200,11 @@ function pruefeLueckentext() {
   document.querySelectorAll('.luecke-input').forEach((inp) => {
     const nr = Number(inp.dataset.nr);
     const soll = luekenState.luecken.find((l) => l.nummer === nr);
-    const ok = !!soll && normalisiere(inp.value) === normalisiere(soll.loesung);
+    const ergebnis = soll ? vergleicheAntwort(inp.value, soll.loesung) : { status: 'falsch' };
+    const ok = ergebnis.status !== 'falsch';
     inp.style.borderColor = ok ? 'var(--green)' : 'var(--red)';
     inp.style.color = ok ? '#15803d' : 'var(--red)';
+    inp.title = ergebnis.status === 'fastRichtig' ? ergebnis.hinweis : '';
     if (ok) richtig++;
   });
   document.getElementById('luecken-ergebnis').innerHTML =
