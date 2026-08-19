@@ -28,6 +28,8 @@
   h2  { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; color: var(--primary); }
   .sub { color: var(--gray); font-size: 0.9rem; text-align: center; margin-bottom: 20px; }
   .modul-sub { color: var(--gray); font-size: 0.85rem; }
+  .modul-beschreibung { background: #eff6ff; color: #1e40af; border-radius: 8px; padding: 12px 14px;
+                         font-size: .85rem; line-height: 1.5; margin-bottom: 14px; }
 
   .card { background: var(--card); border-radius: var(--radius); box-shadow: 0 2px 12px rgba(0,0,0,.08);
           padding: 24px 20px; margin-bottom: 20px; }
@@ -653,7 +655,7 @@ async function oeffnePaket(id) {
 
 /* ── Auswahl-Helfer für KI-Module ─────────────────────────────── */
 
-function renderVokabelAuswahl(callbackFnName, titel, alleVorausgewaehlt) {
+function renderVokabelAuswahl(callbackFnName, titel, alleVorausgewaehlt, beschreibungKey) {
   const items = state.aktuellesPaket.vokabeln.map((v) => `
     <label class="vok-checkbox">
       <input type="checkbox" class="ausw-cb" value="${v.id}" ${alleVorausgewaehlt ? 'checked' : ''}>
@@ -661,6 +663,7 @@ function renderVokabelAuswahl(callbackFnName, titel, alleVorausgewaehlt) {
     </label>`).join('');
   return `
     <h2>${titel}</h2>
+    ${beschreibungKey ? beschreibung(beschreibungKey) : ''}
     <div class="vok-auswahl-liste">${items}</div>
     <div class="opt-row" style="margin-bottom:10px">
       <button class="btn btn-ghost" onclick="alleAuswaehlen(true)">Alle</button>
@@ -682,6 +685,24 @@ function zeigeModul(html) {
   showScreen('s-modul');
 }
 
+const MODUL_BESCHREIBUNG = {
+  druckKarten: 'Claude erstellt Karteikarten im Karteikasten-Format: auf der Vorderseite das fremdsprachige Wort, auf der Rückseite die deutsche Übersetzung. Die Karten werden ausgedruckt, ausgeschnitten und passen in einen klassischen Karteikasten – ideal, wenn ihr lieber mit echten Karten statt am Bildschirm lernt.',
+  digitaleKarten: 'Statt gedruckter Karten öffnet sich ein digitales Karteikarten-Set direkt hier im Browser. Durch Antippen dreht sich die Karte um und zeigt die Lösung, ein Fortschrittszähler zeigt, wie viele Karten schon geschafft sind.',
+  ankiExport: 'Die Vokabeln werden als Datei exportiert, die sich direkt in die Karteikarten-App „Anki" importieren lässt. Anki merkt sich automatisch, welche Karten gut sitzen und welche noch geübt werden müssen, und wiederholt sie in optimalen Abständen. Achtung: Auf dem iPad ist die passende App „AnkiMobile" kostenpflichtig, auf dem PC/Android gibt es sie gratis.',
+  abfrage: 'Die Vokabeln werden nacheinander abgefragt – wahlweise von der Fremdsprache ins Deutsche oder umgekehrt. Man tippt die Antwort ein und bekommt sofort eine Rückmeldung, ob sie richtig war.',
+  spacedRepetition: 'Ein wissenschaftlich gut belegtes Lernprinzip (auch „Leitner-System" genannt): Vokabeln, die man sicher beherrscht, werden seltener wiederholt, Vokabeln, bei denen man unsicher ist, kommen dafür häufiger dran. So verbringt man die Lernzeit genau dort, wo sie am meisten bringt.',
+  kontextsaetze: 'Zu ausgewählten Vokabeln erstellt Claude kurze, passende Beispielsätze. Ein Wort im Zusammenhang eines ganzen Satzes zu lernen, bleibt meist besser im Gedächtnis als ein einzelnes, isoliertes Wort.',
+  miniQuiz: 'Ein kurzer Test mit Auswahlantworten (Multiple Choice) aus der aktuellen Vokabelliste, gut geeignet als schnelle Selbstkontrolle zwischendurch.',
+  lueckentext: 'Claude schreibt einen zusammenhängenden, sinnvollen Text, in dem alle Vokabeln der Liste als Lücken vorkommen. Weil man jedes Wort im passenden Satzzusammenhang einsetzen muss, wird nicht nur die Übersetzung, sondern auch die richtige Verwendung des Wortes geübt.',
+  keyword: 'Für Vokabeln, die sich hartnäckig nicht merken lassen, schlägt Claude eine bildhafte Eselsbrücke vor: ein deutsches Wort, das ähnlich klingt wie die Vokabel, verbunden mit einem kleinen, einprägsamen Bild in Gedanken (z. B. frz. „chien" (Hund) – man stellt sich einen Hund vor, der Ski fährt).',
+  story: 'Mehrere neue Vokabeln werden zu einer kleinen, möglichst ungewöhnlichen oder witzigen Geschichte verknüpft. Je skurriler die Geschichte, desto besser bleibt sie im Kopf – und mit ihr auch die enthaltenen Vokabeln.',
+  falscheFreunde: 'Manche fremdsprachigen Wörter sehen einem deutschen Wort zum Verwechseln ähnlich, bedeuten aber etwas völlig anderes (z. B. engl. „gift" bedeutet „Geschenk", nicht „Gift"). Claude weist bei solchen Vokabeln gezielt auf die Verwechslungsgefahr hin.',
+  loci: 'Eine klassische Gedächtnistechnik für sehr geübte Lerner*innen: Man stellt sich einen vertrauten Ort vor (z. B. die eigene Wohnung) und „platziert" dort gedanklich jede Vokabel an einer bestimmten Stelle. Beim späteren gedanklichen Abgehen des Ortes fallen einem die Vokabeln der Reihe nach wieder ein.',
+};
+function beschreibung(key) {
+  return `<p class="modul-beschreibung">${esc(MODUL_BESCHREIBUNG[key])}</p>`;
+}
+
 async function generiere(typ, vokabelIds, extra) {
   const res = await fetch(K + '/api/vokabeltrainer/generieren', {
     method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
@@ -697,6 +718,7 @@ async function generiere(typ, vokabelIds, extra) {
 function modulDruckKarten() {
   zeigeModul(`
     <h2>🖨️ Druckbare Karteikarten</h2>
+    ${beschreibung('druckKarten')}
     <p class="modul-sub">Format A7 (74×105&nbsp;mm), zum Ausschneiden für den Leitner-Karteikasten.</p>
     <div class="field">
       <label for="druck-richtung">Vorderseite</label>
@@ -742,6 +764,7 @@ function renderKarteikarte() {
   const v = ks.gemischt[ks.idx];
   zeigeModul(`
     <h2>🔄 Interaktive Karteikarten</h2>
+    ${ks.idx === 0 ? beschreibung('digitaleKarten') : ''}
     <div class="prog-label">${ks.idx + 1} / ${ks.gemischt.length}</div>
     <div class="prog-bar"><div class="prog-fill" style="width:${(ks.idx / ks.gemischt.length) * 100}%"></div></div>
     <div class="flip-card" id="flip-card" onclick="flipKarte()">
@@ -771,6 +794,7 @@ function karteAntwort(richtig) {
 function modulAnkiExport() {
   zeigeModul(`
     <h2>📤 Anki-Export</h2>
+    ${beschreibung('ankiExport')}
     <p class="modul-sub">Tab-getrennte Datei (TSV), in Anki über „Datei → Importieren" einlesbar.</p>
     <button class="btn btn-primary btn-block" onclick="exportiereAnki()">TSV-Datei herunterladen</button>
   `);
@@ -794,6 +818,7 @@ let abfrageState = { richtung: 'fremd-deutsch', idx: 0, liste: [], richtig: 0, f
 function modulAbfrage() {
   zeigeModul(`
     <h2>❓ Abfrage</h2>
+    ${beschreibung('abfrage')}
     <div class="field">
       <label for="abfrage-richtung">Richtung</label>
       <select id="abfrage-richtung">
@@ -846,6 +871,7 @@ function renderAbfrageItem() {
   const boxHinweis = s.spaced ? `<p class="modul-sub" style="text-align:center">Box ${v.leitnerBox || 1}</p>` : '';
   zeigeModul(`
     <h2>${titel}</h2>
+    ${s.spaced && s.idx === 0 ? beschreibung('spacedRepetition') : ''}
     <div class="prog-label">${s.idx + 1} / ${s.liste.length}</div>
     <div class="prog-bar"><div class="prog-fill" style="width:${(s.idx / s.liste.length) * 100}%"></div></div>
     <div class="item-word">${esc(frage)}${falscheFreundeBadge(v)}</div>
@@ -876,7 +902,7 @@ function naechsteAbfrage() { abfrageState.idx++; renderAbfrageItem(); }
 /* ── Modul 5: Kontextsätze ────────────────────────────────────── */
 
 function modulKontextsaetze() {
-  zeigeModul(renderVokabelAuswahl('modulKontextsaetzeGenerieren', '💬 Kontextsätze – für welche Vokabeln?', true));
+  zeigeModul(renderVokabelAuswahl('modulKontextsaetzeGenerieren', '💬 Kontextsätze – für welche Vokabeln?', true, 'kontextsaetze'));
 }
 async function modulKontextsaetzeGenerieren() {
   const ids = ausgewaehlteIds();
@@ -901,7 +927,7 @@ async function modulKontextsaetzeGenerieren() {
 let quizState = { fragen: [], idx: 0, richtig: 0 };
 
 function modulMiniQuiz() {
-  zeigeModul(renderVokabelAuswahl('modulMiniQuizStart', '📝 Mini-Quiz – welche Vokabeln?', true));
+  zeigeModul(renderVokabelAuswahl('modulMiniQuizStart', '📝 Mini-Quiz – welche Vokabeln?', true, 'miniQuiz'));
 }
 async function modulMiniQuizStart() {
   const ids = ausgewaehlteIds();
@@ -951,7 +977,7 @@ function quizAntwort(i) {
 let luekenState = { text: '', luecken: [] };
 
 function modulLueckentext() {
-  zeigeModul(renderVokabelAuswahl('modulLueckentextStart', '✍️ Lückentext – welche Vokabeln?', true));
+  zeigeModul(renderVokabelAuswahl('modulLueckentextStart', '✍️ Lückentext – welche Vokabeln?', true, 'lueckentext'));
 }
 async function modulLueckentextStart() {
   const ids = ausgewaehlteIds();
@@ -996,7 +1022,7 @@ function pruefeLueckentext() {
 /* ── Modul 8: Schlüsselwort-Methode ──────────────────────────── */
 
 function modulKeyword() {
-  zeigeModul(renderVokabelAuswahl('modulKeywordStart', '🔑 Schlüsselwort-Methode – welche Vokabeln sind schwierig?', false));
+  zeigeModul(renderVokabelAuswahl('modulKeywordStart', '🔑 Schlüsselwort-Methode – welche Vokabeln sind schwierig?', false, 'keyword'));
 }
 async function modulKeywordStart() {
   const ids = ausgewaehlteIds();
@@ -1018,7 +1044,7 @@ async function modulKeywordStart() {
 /* ── Modul 9: Geschichten-Methode ─────────────────────────────── */
 
 function modulStory() {
-  zeigeModul(renderVokabelAuswahl('modulStoryStart', '📖 Geschichten-Methode – welche Vokabeln verknüpfen?', false));
+  zeigeModul(renderVokabelAuswahl('modulStoryStart', '📖 Geschichten-Methode – welche Vokabeln verknüpfen?', false, 'story'));
 }
 async function modulStoryStart() {
   const ids = ausgewaehlteIds();
@@ -1037,7 +1063,7 @@ async function modulStoryStart() {
 function modulFalscheFreunde() {
   const treffer = state.aktuellesPaket.vokabeln.filter((v) => v.zusatzinfo && v.zusatzinfo.falscherFreund);
   if (treffer.length === 0) {
-    zeigeModul('<h2>🚫 Falsche Freunde</h2><p>Für dieses Paket wurden bei der Erfassung keine falschen Freunde erkannt.</p>');
+    zeigeModul(`<h2>🚫 Falsche Freunde</h2>${beschreibung('falscheFreunde')}<p>Für dieses Paket wurden bei der Erfassung keine falschen Freunde erkannt.</p>`);
     return;
   }
   const html = treffer.map((v) => `
@@ -1045,7 +1071,7 @@ function modulFalscheFreunde() {
       <strong>${esc(v.fremdsprache)}</strong> ≠ „${esc(v.deutsch)}"
       <p>⚠️ ${esc(v.zusatzinfo.falscherFreund)}</p>
     </div>`).join('');
-  zeigeModul(`<h2>🚫 Falsche Freunde</h2>${html}`);
+  zeigeModul(`<h2>🚫 Falsche Freunde</h2>${beschreibung('falscheFreunde')}${html}`);
 }
 
 /* ── Modul 11: Loci-Technik ───────────────────────────────────── */
@@ -1058,6 +1084,7 @@ function modulLoci() {
     </label>`).join('');
   zeigeModul(`
     <h2>🏛️ Loci-Technik</h2>
+    ${beschreibung('loci')}
     <div class="field">
       <label for="loci-ort">Bekannter Ort (z. B. dein Schulweg, deine Wohnung)</label>
       <input type="text" id="loci-ort" placeholder="z. B. mein Schulweg">
