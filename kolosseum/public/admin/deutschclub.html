@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deutschclub – Admin</title>
+  <link rel="stylesheet" href="/css/style.css?v=20260615c">
+  <style>
+    .admin-nav { background: #12122a; }
+
+    .reihen-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
+    .reihe-card { display: flex; flex-direction: column; gap: .85rem; }
+    .reihe-jahrgang { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .03em; color: var(--ink-soft); }
+    .reihe-name { font-size: 1.15rem; font-weight: 700; color: var(--ink); margin-top: .1rem; }
+
+    .aktuelles-modul { background: #f0f7ff; border: 1px solid #b3d4f5; border-radius: var(--radius-sm); padding: .85rem 1rem; }
+    .aktuelles-modul .modul-nr { font-family: 'Fredoka One', sans-serif; font-size: 1rem; color: var(--c4); }
+    .aktuelles-modul .modul-titel { font-weight: 700; margin-top: .15rem; }
+    .aktuelles-modul .modul-beschreibung { font-size: .85rem; color: var(--ink-soft); margin-top: .3rem; }
+
+    .reihe-aktionen { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .reihe-aktionen .btn { font-size: .82rem; padding: .5rem .85rem; }
+
+    .manuell-zeile { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
+    .manuell-zeile select { padding: .4rem .6rem; font-size: .85rem; }
+
+    .entfaellt-zeile { display: none; gap: .5rem; flex-wrap: wrap; }
+    .entfaellt-zeile.aktiv { display: flex; }
+    .entfaellt-zeile input { flex: 1; min-width: 160px; padding: .4rem .6rem; font-size: .85rem; }
+
+    .reihe-msg { font-size: .8rem; min-height: 1.1rem; }
+    .reihe-msg.ok    { color: #1a7a40; }
+    .reihe-msg.error { color: #c0392b; }
+
+    .verlauf-details summary { cursor: pointer; font-size: .85rem; font-weight: 600; color: var(--ink-soft); padding: .3rem 0; }
+    .verlauf-liste { margin-top: .5rem; max-height: 220px; overflow-y: auto; }
+    .verlauf-zeile { display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; padding: .5rem 0; border-bottom: 1px solid #e8edf5; font-size: .8rem; }
+    .verlauf-zeile:last-child { border-bottom: none; }
+    .verlauf-info strong { display: block; }
+    .verlauf-info span { color: var(--ink-soft); }
+    .verlauf-typ { font-size: .68rem; font-weight: 700; text-transform: uppercase; padding: 1px 6px; border-radius: 4px; white-space: nowrap; }
+    .verlauf-typ.stunde    { background: #e8f8ee; color: #1a6b3a; }
+    .verlauf-typ.korrektur { background: #fff3e0; color: #8b4a00; }
+    .verlauf-typ.entfaellt { background: #fdecea; color: #c0392b; }
+    .verlauf-del { background: none; border: none; color: #bbb; cursor: pointer; font-size: .9rem; line-height: 1; padding: 0 .2rem; }
+    .verlauf-del:hover { color: #c0392b; }
+  </style>
+</head>
+<body>
+  <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+      <a href="https://lehrer-herrmann.de" class="navbar-logo">lehrer-herrmann.de</a>
+      <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="navbar-links" id="navbar-links">
+        <li><a href="https://lehrer-herrmann.de/#was-ist-neu">Was ist neu?</a></li>
+        <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+        <li class="navbar-gb-trenner" aria-hidden="true"><span class="navbar-gb-label">Geschützter Bereich</span></li>
+        <li><a href="/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+        <li><a href="https://lehrer-herrmann.de/blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+        <li><a href="https://lehrer-herrmann.de/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+      </ul>
+      <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+    </div>
+  </nav>
+
+  <nav class="nav admin-nav">
+    <a href="/admin/dashboard.html" class="nav-brand">⚙️ Admin</a>
+    <div class="nav-links">
+      <a href="/admin/dashboard.html">Dashboard</a>
+      <a href="/admin/schueler.html">Schüler</a>
+      <a href="/admin/quiz.html">Quizze</a>
+      <a href="/admin/vokabelpakete.html">Vokabeln</a>
+      <a href="/admin/leseabenteuer.html">Leseabenteuer</a>
+      <a href="/admin/deutschclub.html" class="active">Deutschclub</a>
+      <a href="/feedback.html">Feedback</a>
+      <button id="logout-btn" class="btn btn-ghost nav-action" style="font-size:.85rem">Ausloggen</button>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-bottom:3rem">
+    <h1 style="margin-top:2rem;font-size:1.8rem">📅 Deutschclub – Terminübersicht</h1>
+    <p style="color:var(--ink-soft);margin:.5rem 0 1.5rem">
+      Für jede der 4 Reihen den Fortschritt pflegen. Die öffentliche Ansicht für die Lernpartner:innen
+      liegt unter <a href="https://lehrer-herrmann.de/deutschclubtermine" target="_blank" rel="noopener">lehrer-herrmann.de/deutschclubtermine</a>.
+    </p>
+
+    <div id="reihenGrid" class="reihen-grid">
+      <div class="text-soft">Wird geladen …</div>
+    </div>
+  </main>
+
+  <script>
+    const BASE = '/api/deutschclub';
+    let REIHEN_DATEN = [];
+
+    async function init() {
+      const chk = await fetch('/api/auth/admin/check');
+      if (!chk.ok) { window.location.href = '/admin/index.html'; return; }
+      await ladeReihen();
+    }
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await fetch('/api/auth/admin/logout', { method: 'POST' });
+      window.location.href = '/admin/index.html';
+    });
+
+    async function ladeReihen() {
+      const grid = document.getElementById('reihenGrid');
+      try {
+        const res = await fetch(BASE + '/admin/reihen');
+        if (!res.ok) throw new Error();
+        REIHEN_DATEN = await res.json();
+        renderGrid();
+      } catch {
+        grid.innerHTML = '<div class="text-soft">Fehler beim Laden.</div>';
+      }
+    }
+
+    function renderGrid() {
+      const grid = document.getElementById('reihenGrid');
+      grid.innerHTML = REIHEN_DATEN.map(reiheHtml).join('');
+      REIHEN_DATEN.forEach(bindeAktionen);
+    }
+
+    function reiheHtml(reihe) {
+      const modul = reihe.module.find(m => m.nr === reihe.aktuellesModul) || reihe.module[0];
+      const optionen = reihe.module.map(m =>
+        `<option value="${m.nr}" ${m.nr === reihe.aktuellesModul ? 'selected' : ''}>Modul ${m.nr} – ${esc(m.titel)}</option>`
+      ).join('');
+      const verlaufHtml = reihe.verlauf.length
+        ? reihe.verlauf.map(e => verlaufZeileHtml(reihe, e)).join('')
+        : '<div class="text-soft" style="padding:.4rem 0">Noch kein Verlauf.</div>';
+
+      return `
+        <div class="card reihe-card" data-reihe="${reihe.id}">
+          <div>
+            <div class="reihe-jahrgang">${esc(reihe.jahrgang)}</div>
+            <div class="reihe-name">${esc(reihe.name)}</div>
+          </div>
+
+          <div class="aktuelles-modul">
+            <div class="modul-nr">Aktuell: Modul ${modul.nr} / ${reihe.module.length}</div>
+            <div class="modul-titel">${esc(modul.titel)}</div>
+            <div class="modul-beschreibung">${esc(modul.beschreibung)}</div>
+          </div>
+
+          <div class="reihe-aktionen">
+            <button class="btn btn-primary btn-advance">✓ Stunde fand statt → nächstes Modul</button>
+            <button class="btn btn-ghost btn-entfaellt-toggle">✕ Stunde fällt aus</button>
+          </div>
+
+          <div class="entfaellt-zeile">
+            <input type="text" class="entfaellt-notiz" placeholder="Grund (z. B. Grippewelle)" maxlength="300">
+            <button class="btn btn-secondary btn-entfaellt-speichern" style="font-size:.82rem">Eintragen</button>
+          </div>
+
+          <div class="manuell-zeile">
+            <label style="font-size:.82rem;color:var(--ink-soft)" for="manuell-${reihe.id}">Modul manuell setzen:</label>
+            <select id="manuell-${reihe.id}" class="manuell-select">${optionen}</select>
+            <button class="btn btn-ghost btn-manuell-setzen" style="font-size:.82rem">Setzen</button>
+          </div>
+
+          <div class="reihe-msg"></div>
+
+          <details class="verlauf-details">
+            <summary>Verlauf (${reihe.verlauf.length})</summary>
+            <div class="verlauf-liste">${verlaufHtml}</div>
+          </details>
+        </div>
+      `;
+    }
+
+    function verlaufZeileHtml(reihe, eintrag) {
+      const typLabel = { stunde: 'Stunde', korrektur: 'Korrektur', entfaellt: 'Entfällt' }[eintrag.typ] || eintrag.typ;
+      const modulText = eintrag.modul ? `Modul ${eintrag.modul}` : '–';
+      return `
+        <div class="verlauf-zeile" id="verlauf-${eintrag.id}">
+          <div class="verlauf-info">
+            <strong>${fmtDate(eintrag.datum)} · ${modulText}</strong>
+            ${eintrag.notiz ? `<span>${esc(eintrag.notiz)}</span>` : ''}
+          </div>
+          <div style="display:flex;align-items:center;gap:.4rem">
+            <span class="verlauf-typ ${eintrag.typ}">${typLabel}</span>
+            <button class="verlauf-del" title="Eintrag löschen" onclick="loescheVerlaufEintrag(${eintrag.id}, this)">✕</button>
+          </div>
+        </div>
+      `;
+    }
+
+    function bindeAktionen(reihe) {
+      const card = document.querySelector(`.reihe-card[data-reihe="${reihe.id}"]`);
+      const msgEl = card.querySelector('.reihe-msg');
+
+      card.querySelector('.btn-advance').addEventListener('click', async (e) => {
+        setMsg(msgEl, '');
+        e.target.disabled = true;
+        try {
+          const res = await fetch(`${BASE}/reihen/${reihe.id}/advance`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' });
+          const data = await res.json();
+          if (!res.ok) { setMsg(msgEl, data.error || 'Fehler.', 'error'); e.target.disabled = false; return; }
+          setMsg(msgEl, '✓ Nächstes Modul gesetzt.', 'ok');
+          await ladeReihen();
+        } catch { setMsg(msgEl, 'Verbindungsfehler.', 'error'); e.target.disabled = false; }
+      });
+
+      const entfaelltZeile = card.querySelector('.entfaellt-zeile');
+      card.querySelector('.btn-entfaellt-toggle').addEventListener('click', () => {
+        entfaelltZeile.classList.toggle('aktiv');
+      });
+
+      card.querySelector('.btn-entfaellt-speichern').addEventListener('click', async (e) => {
+        const notiz = card.querySelector('.entfaellt-notiz').value.trim();
+        if (!notiz) { setMsg(msgEl, 'Bitte einen Grund angeben.', 'error'); return; }
+        setMsg(msgEl, '');
+        e.target.disabled = true;
+        try {
+          const res = await fetch(`${BASE}/reihen/${reihe.id}/verlauf`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ notiz }),
+          });
+          const data = await res.json();
+          if (!res.ok) { setMsg(msgEl, data.error || 'Fehler.', 'error'); e.target.disabled = false; return; }
+          setMsg(msgEl, '✓ Eingetragen, Modul bleibt unverändert.', 'ok');
+          await ladeReihen();
+        } catch { setMsg(msgEl, 'Verbindungsfehler.', 'error'); e.target.disabled = false; }
+      });
+
+      card.querySelector('.btn-manuell-setzen').addEventListener('click', async (e) => {
+        const modul = Number(card.querySelector('.manuell-select').value);
+        setMsg(msgEl, '');
+        e.target.disabled = true;
+        try {
+          const res = await fetch(`${BASE}/reihen/${reihe.id}/modul`, {
+            method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ modul, notiz: 'Manuell gesetzt' }),
+          });
+          const data = await res.json();
+          if (!res.ok) { setMsg(msgEl, data.error || 'Fehler.', 'error'); e.target.disabled = false; return; }
+          setMsg(msgEl, '✓ Modul manuell gesetzt.', 'ok');
+          await ladeReihen();
+        } catch { setMsg(msgEl, 'Verbindungsfehler.', 'error'); e.target.disabled = false; }
+      });
+    }
+
+    async function loescheVerlaufEintrag(id, btn) {
+      if (!confirm('Diesen Verlaufseintrag wirklich löschen?')) return;
+      btn.disabled = true;
+      const res = await fetch(`${BASE}/verlauf/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        document.getElementById('verlauf-' + id)?.remove();
+      } else {
+        btn.disabled = false;
+        alert('Fehler beim Löschen.');
+      }
+    }
+
+    function setMsg(el, text, typ = '') {
+      el.textContent = text;
+      el.className = 'reihe-msg' + (typ ? ' ' + typ : '');
+    }
+
+    function fmtDate(iso) {
+      if (!iso) return '';
+      return new Date(iso).toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    function esc(s) {
+      return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    init().catch(console.error);
+  </script>
+
+  <footer class="site-footer" style="margin-top:3rem">
+    <div class="site-footer-inner">
+      <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+      <nav class="site-footer-links" aria-label="Rechtliche Links">
+        <a href="https://lehrer-herrmann.de/impressum.html">Impressum</a>
+        <a href="https://lehrer-herrmann.de/datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="/js/main.js?v=20260615c"></script>
+  <script src="/js/kolosseum-login-widget.js"></script>
+</body>
+</html>

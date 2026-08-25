@@ -5,3 +5,4 @@ db/sessions.db
 *.db-journal
 *.db-wal
 *.db-shm
+data/deutschclub-status.json
