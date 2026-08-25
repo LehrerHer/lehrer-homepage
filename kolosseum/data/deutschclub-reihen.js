@@ -5,12 +5,22 @@
  *
  * Die Kurzbeschreibungen sind ein erster Entwurf und sollten durch Jans Originaltexte
  * ersetzt werden, sobald diese vorliegen.
+ *
+ * wochentag: ISO-Wochentag (1 = Montag … 7 = Sonntag), block: 1 oder 2, ersterTermin:
+ * Datum der ersten Stunde (YYYY-MM-DD). Daraus ergibt sich automatisch ein wöchentlicher
+ * Termin bis LAUFZEIT_ENDE; einzelne Termine kann die Verwaltungsansicht überschreiben
+ * (entfällt / verschoben).
  */
-module.exports = [
+const LAUFZEIT_ENDE = '2027-06-30';
+
+const REIHEN = [
   {
     id: 'hs9-texte',
     jahrgang: 'Jahrgang 9 (Hauptschulabschluss)',
     name: 'Texte und Medien lesen und produzieren',
+    wochentag: 3, // Mittwoch
+    block: 2,
+    ersterTermin: '2026-08-26',
     module: [
       { nr: 1, titel: 'Sachtexte sicher erschließen', beschreibung: 'Wir erarbeiten Strategien, um Sachtexte zielgerichtet zu lesen und die wichtigsten Informationen sicher herauszuarbeiten.' },
       { nr: 2, titel: 'Literarische Texte verstehen', beschreibung: 'Wir untersuchen literarische Texte und erschließen Handlung, Figuren und Aussageabsicht.' },
@@ -22,6 +32,9 @@ module.exports = [
     id: 'hs9-rechtschreibung',
     jahrgang: 'Jahrgang 9 (Hauptschulabschluss)',
     name: 'Rechtschreibung',
+    wochentag: 4, // Donnerstag
+    block: 1,
+    ersterTermin: '2026-08-27',
     module: [
       { nr: 1, titel: 'Rechtschreibstrategien kennen und anwenden', beschreibung: 'Wir wiederholen zentrale Rechtschreibstrategien und wenden sie gezielt an eigenen Texten an.' },
       { nr: 2, titel: 'Groß- und Kleinschreibung sicher anwenden und begründen', beschreibung: 'Wir festigen die Regeln der Groß- und Kleinschreibung und lernen, sie zu begründen.' },
@@ -33,6 +46,9 @@ module.exports = [
     id: 'rs10-sachtexte',
     jahrgang: 'Jahrgang 10 (Realschulabschluss)',
     name: 'Sachtexte und Medien lesen und produzieren',
+    wochentag: 2, // Dienstag
+    block: 1,
+    ersterTermin: '2026-09-01',
     module: [
       { nr: 1, titel: 'Sachtexte mit System erschließen – Operatoren verstehen', beschreibung: 'Wir klären die wichtigsten Operatoren und erschließen Sachtexte methodisch.' },
       { nr: 2, titel: 'Mehrere Materialien vergleichen und bewerten', beschreibung: 'Wir vergleichen mehrere Materialien miteinander und bewerten sie kritisch.' },
@@ -44,6 +60,9 @@ module.exports = [
     id: 'rs10-literatur',
     jahrgang: 'Jahrgang 10 (Realschulabschluss)',
     name: 'Literatur lesen und Texte produzieren',
+    wochentag: 3, // Mittwoch
+    block: 1,
+    ersterTermin: '2026-08-26',
     module: [
       { nr: 1, titel: 'Literarische Texte mit System erschließen – Operatoren verstehen', beschreibung: 'Wir klären die wichtigsten Operatoren und erschließen literarische Texte methodisch.' },
       { nr: 2, titel: 'Figuren und Werthaltungen deuten', beschreibung: 'Wir deuten Figuren und ihre Werthaltungen anhand des Textes.' },
@@ -52,3 +71,5 @@ module.exports = [
     ],
   },
 ];
+
+module.exports = { REIHEN, LAUFZEIT_ENDE };

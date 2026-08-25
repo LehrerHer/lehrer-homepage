@@ -18,6 +18,28 @@
     .aktuelles-modul .modul-titel { font-weight: 700; margin-top: .15rem; }
     .aktuelles-modul .modul-beschreibung { font-size: .85rem; color: var(--ink-soft); margin-top: .3rem; }
 
+    .naechster-termin-box { font-size: .88rem; color: var(--ink); }
+    .naechster-termin-box.leer { color: var(--ink-soft); font-style: italic; }
+    .verschoben-badge {
+      display: inline-block; font-size: .68rem; font-weight: 700; text-transform: uppercase;
+      color: #8b4a00; background: #fff3e0; border-radius: 999px; padding: 1px 7px; margin-left: .3rem;
+    }
+
+    .termine-details summary { cursor: pointer; font-size: .85rem; font-weight: 600; color: var(--ink-soft); padding: .3rem 0; }
+    .termin-form { display: flex; flex-direction: column; gap: .5rem; margin: .5rem 0 .85rem; padding: .75rem; background: #f8fbff; border-radius: var(--radius-sm); }
+    .termin-form-row { display: flex; gap: .6rem; align-items: center; flex-wrap: wrap; font-size: .85rem; }
+    .termin-form-row input[type="date"], .termin-form input[type="text"] { padding: .35rem .5rem; font-size: .85rem; }
+    .termin-ausnahmen-liste { margin-top: .25rem; }
+    .termin-ausnahme-zeile { display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; padding: .4rem 0; border-bottom: 1px solid #e8edf5; font-size: .8rem; }
+    .termin-ausnahme-zeile:last-child { border-bottom: none; }
+    .termin-ausnahme-info strong { display: block; }
+    .termin-ausnahme-info span { color: var(--ink-soft); }
+    .termin-ausnahme-typ { font-size: .68rem; font-weight: 700; text-transform: uppercase; padding: 1px 6px; border-radius: 4px; white-space: nowrap; }
+    .termin-ausnahme-typ.entfaellt  { background: #fdecea; color: #c0392b; }
+    .termin-ausnahme-typ.verschoben { background: #fff3e0; color: #8b4a00; }
+    .termin-ausnahme-del { background: none; border: none; color: #bbb; cursor: pointer; font-size: .9rem; line-height: 1; padding: 0 .2rem; }
+    .termin-ausnahme-del:hover { color: #c0392b; }
+
     .reihe-aktionen { display: flex; flex-wrap: wrap; gap: .5rem; }
     .reihe-aktionen .btn { font-size: .82rem; padding: .5rem .85rem; }
 
@@ -133,6 +155,11 @@
         ? reihe.verlauf.map(e => verlaufZeileHtml(reihe, e)).join('')
         : '<div class="text-soft" style="padding:.4rem 0">Noch kein Verlauf.</div>';
 
+      const terminDefaultDatum = reihe.naechsterTermin ? reihe.naechsterTermin.planmaessigesDatum : '';
+      const ausnahmenHtml = reihe.terminAusnahmen.length
+        ? reihe.terminAusnahmen.map(a => terminAusnahmeZeileHtml(reihe, a)).join('')
+        : '<div class="text-soft" style="padding:.4rem 0">Keine Ausnahmen eingetragen.</div>';
+
       return `
         <div class="card reihe-card" data-reihe="${reihe.id}">
           <div>
@@ -145,6 +172,8 @@
             <div class="modul-titel">${esc(modul.titel)}</div>
             <div class="modul-beschreibung">${esc(modul.beschreibung)}</div>
           </div>
+
+          ${naechsterTerminBoxHtml(reihe.naechsterTermin)}
 
           <div class="reihe-aktionen">
             <button class="btn btn-primary btn-advance">✓ Stunde fand statt → nächstes Modul</button>
@@ -164,10 +193,56 @@
 
           <div class="reihe-msg"></div>
 
+          <details class="termine-details">
+            <summary>Termine anpassen (${reihe.terminAusnahmen.length})</summary>
+            <p class="text-soft" style="font-size:.8rem;margin:.4rem 0">
+              Fester Wochentermin: ${esc(reihe.wochentag)}, ${reihe.block}. Block. Trage hier ab, wenn ein einzelner
+              Termin ausfällt oder verschoben wird – der wöchentliche Rhythmus danach bleibt unverändert.
+            </p>
+            <div class="termin-form">
+              <div class="termin-form-row">
+                <label for="termin-datum-${reihe.id}">Planmäßiger Termin:</label>
+                <input type="date" id="termin-datum-${reihe.id}" class="termin-datum" value="${terminDefaultDatum}">
+              </div>
+              <div class="termin-form-row">
+                <label><input type="radio" name="termin-typ-${reihe.id}" class="termin-typ" value="entfaellt" checked> entfällt</label>
+                <label><input type="radio" name="termin-typ-${reihe.id}" class="termin-typ" value="verschoben"> verschoben auf</label>
+                <input type="date" class="termin-neues-datum" disabled>
+              </div>
+              <input type="text" class="termin-notiz" placeholder="Grund (optional)" maxlength="300">
+              <button class="btn btn-secondary btn-termin-speichern" style="font-size:.82rem;align-self:flex-start">Speichern</button>
+            </div>
+            <div class="termin-ausnahmen-liste">${ausnahmenHtml}</div>
+          </details>
+
           <details class="verlauf-details">
             <summary>Verlauf (${reihe.verlauf.length})</summary>
             <div class="verlauf-liste">${verlaufHtml}</div>
           </details>
+        </div>
+      `;
+    }
+
+    function naechsterTerminBoxHtml(termin) {
+      if (!termin) return '<div class="naechster-termin-box leer">Kein weiterer Termin bis Ende der Laufzeit geplant.</div>';
+      return `<div class="naechster-termin-box">📅 Nächster Termin: <strong>${esc(termin.wochentag)}, ${fmtDate(termin.datum)}</strong> (${termin.block}. Block)${termin.verschoben ? '<span class="verschoben-badge">verschoben</span>' : ''}</div>`;
+    }
+
+    function terminAusnahmeZeileHtml(reihe, ausnahme) {
+      const typLabel = ausnahme.typ === 'verschoben' ? 'Verschoben' : 'Entfällt';
+      const detailText = ausnahme.typ === 'verschoben'
+        ? `Planmäßig ${fmtDate(ausnahme.datum)} → neu ${fmtDate(ausnahme.neuesDatum)}`
+        : `Planmäßig ${fmtDate(ausnahme.datum)}`;
+      return `
+        <div class="termin-ausnahme-zeile" id="termin-ausnahme-${reihe.id}-${ausnahme.datum}">
+          <div class="termin-ausnahme-info">
+            <strong>${detailText}</strong>
+            ${ausnahme.notiz ? `<span>${esc(ausnahme.notiz)}</span>` : ''}
+          </div>
+          <div style="display:flex;align-items:center;gap:.4rem">
+            <span class="termin-ausnahme-typ ${ausnahme.typ}">${typLabel}</span>
+            <button class="termin-ausnahme-del" title="Ausnahme zurücknehmen (Termin wieder planmäßig)" onclick="loescheTerminAusnahme('${reihe.id}', '${ausnahme.datum}', this)">✕</button>
+          </div>
         </div>
       `;
     }
@@ -240,6 +315,48 @@
           await ladeReihen();
         } catch { setMsg(msgEl, 'Verbindungsfehler.', 'error'); e.target.disabled = false; }
       });
+
+      const neuesDatumInput = card.querySelector('.termin-neues-datum');
+      card.querySelectorAll('.termin-typ').forEach(radio => {
+        radio.addEventListener('change', () => {
+          neuesDatumInput.disabled = card.querySelector('.termin-typ:checked').value !== 'verschoben';
+        });
+      });
+
+      card.querySelector('.btn-termin-speichern').addEventListener('click', async (e) => {
+        const datum = card.querySelector('.termin-datum').value;
+        const typ = card.querySelector('.termin-typ:checked').value;
+        const neuesDatum = neuesDatumInput.value;
+        const notiz = card.querySelector('.termin-notiz').value.trim();
+
+        if (!datum) { setMsg(msgEl, 'Bitte ein Datum wählen.', 'error'); return; }
+        if (typ === 'verschoben' && !neuesDatum) { setMsg(msgEl, 'Bitte das neue Datum angeben.', 'error'); return; }
+
+        setMsg(msgEl, '');
+        e.target.disabled = true;
+        try {
+          const res = await fetch(`${BASE}/reihen/${reihe.id}/termin-ausnahme`, {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ datum, typ, neuesDatum: typ === 'verschoben' ? neuesDatum : undefined, notiz }),
+          });
+          const data = await res.json();
+          if (!res.ok) { setMsg(msgEl, data.error || 'Fehler.', 'error'); e.target.disabled = false; return; }
+          setMsg(msgEl, '✓ Termin angepasst.', 'ok');
+          await ladeReihen();
+        } catch { setMsg(msgEl, 'Verbindungsfehler.', 'error'); e.target.disabled = false; }
+      });
+    }
+
+    async function loescheTerminAusnahme(reiheId, datum, btn) {
+      if (!confirm('Diese Ausnahme zurücknehmen? Der Termin gilt danach wieder als planmäßig.')) return;
+      btn.disabled = true;
+      const res = await fetch(`${BASE}/reihen/${reiheId}/termin-ausnahme/${datum}`, { method: 'DELETE' });
+      if (res.ok) {
+        await ladeReihen();
+      } else {
+        btn.disabled = false;
+        alert('Fehler beim Zurücknehmen.');
+      }
     }
 
     async function loescheVerlaufEintrag(id, btn) {
