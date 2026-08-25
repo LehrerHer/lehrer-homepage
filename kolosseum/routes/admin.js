@@ -293,4 +293,46 @@ router.delete('/invite-tokens/:id', (req, res) => {
   res.json({ ok: true });
 });
 
+// === VOKABELTRAINER: PAKETE VERWALTEN ===
+
+// GET /api/admin/vokabelpakete – alle Pakete (mit Ersteller + Vokabelanzahl)
+router.get('/vokabelpakete', (req, res) => {
+  const pakete = db.prepare(`
+    SELECT vp.id, vp.sprache, vp.quelle, vp.erstellt_am,
+           s.nick AS ersteller,
+           COUNT(v.id) AS vokabel_anzahl
+    FROM vokabelpakete vp
+    LEFT JOIN students s ON s.id = vp.ersteller_id
+    LEFT JOIN vokabeln v ON v.paket_id = vp.id
+    GROUP BY vp.id
+    ORDER BY vp.erstellt_am DESC
+  `).all();
+  res.json(pakete);
+});
+
+// PATCH /api/admin/vokabelpakete/:id – umbenennen (Quelle, optional Sprache)
+router.patch('/vokabelpakete/:id', (req, res) => {
+  const VALID_SPRACHEN = ['Englisch', 'Französisch', 'Spanisch', 'Latein'];
+  const { quelle, sprache } = req.body;
+  if (!quelle || !quelle.trim()) return res.status(400).json({ error: 'Quelle ist ein Pflichtfeld.' });
+  if (sprache && !VALID_SPRACHEN.includes(sprache)) return res.status(400).json({ error: 'Ungültige Sprache.' });
+
+  const paket = db.prepare('SELECT id FROM vokabelpakete WHERE id = ?').get(Number(req.params.id));
+  if (!paket) return res.status(404).json({ error: 'Paket nicht gefunden.' });
+
+  if (sprache) {
+    db.prepare('UPDATE vokabelpakete SET quelle = ?, sprache = ? WHERE id = ?').run(quelle.trim(), sprache, paket.id);
+  } else {
+    db.prepare('UPDATE vokabelpakete SET quelle = ? WHERE id = ?').run(quelle.trim(), paket.id);
+  }
+  res.json({ ok: true });
+});
+
+// DELETE /api/admin/vokabelpakete/:id – Paket inkl. Vokabeln + Fortschritt löschen (ON DELETE CASCADE)
+router.delete('/vokabelpakete/:id', (req, res) => {
+  const info = db.prepare('DELETE FROM vokabelpakete WHERE id = ?').run(Number(req.params.id));
+  if (info.changes === 0) return res.status(404).json({ error: 'Paket nicht gefunden.' });
+  res.json({ ok: true });
+});
+
 module.exports = router;
