@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vokabelpakete – Admin</title>
+  <link rel="stylesheet" href="/css/style.css?v=20260615c">
+  <style>
+    .admin-nav {
+      background: #12122a;
+      padding: 0.75rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: var(--shadow);
+    }
+    .admin-brand { font-family: 'Fredoka One', sans-serif; font-size: 1.3rem; color: var(--c1); text-decoration: none; }
+    .admin-nav-links { display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap; }
+    .admin-nav-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-weight: 700; font-size: 0.9rem; transition: color 0.2s; }
+    .admin-nav-links a:hover, .admin-nav-links a.active { color: #fff; }
+
+    .page-header { padding: 2rem 0 1.25rem; }
+    .page-header h1 { font-size: 1.8rem; }
+    .page-header p  { color: var(--ink-soft); margin-top: 0.25rem; }
+
+    .paket-filter { margin-bottom: 1rem; }
+
+    .paket-list { display: flex; flex-direction: column; gap: 0.75rem; }
+    .paket-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .paket-row-info { flex: 1; min-width: 200px; }
+    .paket-row-title { font-weight: 700; font-size: 1rem; display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
+    .paket-sprache-badge {
+      display: inline-block; background: rgba(74,158,218,.15); color: var(--farbe-primaer, #1e3a5f);
+      border-radius: 50px; padding: 0.15rem 0.65rem; font-size: 0.78rem; font-weight: 700;
+    }
+    .paket-row-meta  { font-size: 0.82rem; color: var(--ink-soft); margin-top: 0.25rem; }
+    .paket-row-actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+
+    .paket-edit-form { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; flex: 1; min-width: 260px; }
+    .paket-edit-form input[type="text"] { flex: 1; min-width: 160px; }
+
+    .btn-sm { padding: 0.35rem 0.8rem; font-size: 0.82rem; }
+    .btn-danger { background: var(--c1, #e74c3c); color: #fff; }
+    .btn-danger:hover { background: #c0392b; }
+    .btn-edit { background: var(--c4, #4a9eda); color: #fff; }
+    .btn-edit:hover { background: #8b6ef0; }
+
+    .empty-msg { text-align: center; padding: 2rem; color: var(--ink-soft); }
+    .form-error { color: var(--c1, #e74c3c); font-size: 0.85rem; margin-top: 0.4rem; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+      <a href="https://lehrer-herrmann.de" class="navbar-logo">lehrer-herrmann.de</a>
+      <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="navbar-links" id="navbar-links">
+        <li><a href="https://lehrer-herrmann.de/#was-ist-neu">Was ist neu?</a></li>
+        <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+        <li class="navbar-gb-trenner" aria-hidden="true"><span class="navbar-gb-label">Geschützter Bereich</span></li>
+        <li><a href="/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+        <li><a href="https://lehrer-herrmann.de/blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+        <li><a href="https://lehrer-herrmann.de/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+      </ul>
+      <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+    </div>
+  </nav>
+
+  <nav class="admin-nav">
+    <a href="/admin/dashboard.html" class="admin-brand">⚙️ Admin</a>
+    <div class="admin-nav-links">
+      <a href="/admin/dashboard.html">Dashboard</a>
+      <a href="/admin/schueler.html">Schüler</a>
+      <a href="/admin/quiz.html">Quizze</a>
+      <a href="/admin/vokabelpakete.html" class="active">Vokabeln</a>
+      <a href="/feedback.html">Feedback</a>
+      <button id="logout-btn" class="btn btn-ghost" style="font-size:.85rem;padding:.5rem 1rem">Ausloggen</button>
+      <a href="https://lehrer-herrmann.de" style="color:rgba(255,255,255,0.45);font-size:0.8rem;text-decoration:none;margin-left:0.5rem" title="Zur Homepage">🏠 Homepage</a>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-bottom:3rem">
+
+    <div class="page-header">
+      <h1>📚 Vokabelpakete</h1>
+      <p class="text-soft">Von Schüler:innen hochgeladene Vokabelpakete umbenennen oder löschen</p>
+    </div>
+
+    <div class="card">
+      <input type="text" id="paket-filter" class="paket-filter" placeholder="Filtern nach Quelle, Ersteller:in oder Sprache …">
+      <div class="paket-list" id="paket-list">
+        <div class="empty-msg">Wird geladen…</div>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    (function () {
+      let pakete = [];
+      let editingId = null;
+
+      const VALID_SPRACHEN = ['Englisch', 'Französisch', 'Spanisch', 'Latein'];
+
+      async function init() {
+        const check = await fetch('/api/auth/admin/check');
+        if (!check.ok) { window.location.href = '/admin/index.html'; return; }
+        await loadPakete();
+      }
+
+      async function loadPakete() {
+        const res = await fetch('/api/admin/vokabelpakete');
+        if (!res.ok) return;
+        pakete = await res.json();
+        render();
+      }
+
+      function render() {
+        const filter = document.getElementById('paket-filter').value.trim().toLowerCase();
+        const gefiltert = !filter ? pakete : pakete.filter((p) =>
+          p.quelle.toLowerCase().includes(filter) ||
+          p.sprache.toLowerCase().includes(filter) ||
+          (p.ersteller || '').toLowerCase().includes(filter)
+        );
+
+        const el = document.getElementById('paket-list');
+        if (!gefiltert.length) {
+          el.innerHTML = `<div class="empty-msg">${pakete.length ? 'Keine Treffer.' : 'Noch keine Vokabelpakete.'}</div>`;
+          return;
+        }
+
+        el.innerHTML = gefiltert.map((p) => {
+          if (p.id === editingId) return renderEditRow(p);
+          const datum = new Date(p.erstellt_am).toLocaleDateString('de-DE');
+          return `
+            <div class="paket-row">
+              <div class="paket-row-info">
+                <div class="paket-row-title">
+                  <span class="paket-sprache-badge">${escHtml(p.sprache)}</span>
+                  ${escHtml(p.quelle)}
+                </div>
+                <div class="paket-row-meta">
+                  ${escHtml(p.ersteller || 'unbekannt')} · ${p.vokabel_anzahl} Vokabeln · ${datum}
+                </div>
+              </div>
+              <div class="paket-row-actions">
+                <button class="btn btn-edit btn-sm" onclick="startEdit(${p.id})">Umbenennen</button>
+                <button class="btn btn-danger btn-sm" onclick="deletePaket(${p.id}, '${escAttr(p.quelle)}')">Löschen</button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      function renderEditRow(p) {
+        const optionen = VALID_SPRACHEN.map((s) =>
+          `<option value="${s}" ${s === p.sprache ? 'selected' : ''}>${s}</option>`
+        ).join('');
+        return `
+          <div class="paket-row">
+            <form class="paket-edit-form" onsubmit="return saveEdit(event, ${p.id})">
+              <select id="edit-sprache-${p.id}">${optionen}</select>
+              <input type="text" id="edit-quelle-${p.id}" value="${escAttr(p.quelle)}" required>
+              <button type="submit" class="btn btn-primary btn-sm">Speichern</button>
+              <button type="button" class="btn btn-ghost btn-sm" onclick="cancelEdit()">Abbrechen</button>
+            </form>
+          </div>
+        `;
+      }
+
+      window.startEdit = (id) => {
+        editingId = id;
+        render();
+        document.getElementById(`edit-quelle-${id}`)?.focus();
+      };
+
+      window.cancelEdit = () => {
+        editingId = null;
+        render();
+      };
+
+      window.saveEdit = async (e, id) => {
+        e.preventDefault();
+        const quelle = document.getElementById(`edit-quelle-${id}`).value.trim();
+        const sprache = document.getElementById(`edit-sprache-${id}`).value;
+        if (!quelle) return false;
+
+        const res = await fetch(`/api/admin/vokabelpakete/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ quelle, sprache }),
+        });
+        if (res.ok) {
+          editingId = null;
+          await loadPakete();
+        } else {
+          const data = await res.json().catch(() => ({}));
+          alert(data.error || 'Fehler beim Speichern.');
+        }
+        return false;
+      };
+
+      window.deletePaket = async (id, quelle) => {
+        if (!confirm(`Vokabelpaket „${quelle}" wirklich löschen? Alle enthaltenen Vokabeln und der Lernfortschritt aller Nutzer:innen dazu werden unwiderruflich entfernt.`)) return;
+        const res = await fetch(`/api/admin/vokabelpakete/${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          await loadPakete();
+        } else {
+          const data = await res.json().catch(() => ({}));
+          alert(data.error || 'Fehler beim Löschen.');
+        }
+      };
+
+      document.getElementById('paket-filter').addEventListener('input', render);
+
+      function escHtml(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+      function escAttr(s) {
+        return String(s).replace(/'/g, '&#39;').replace(/"/g, '&quot;');
+      }
+
+      document.getElementById('logout-btn').addEventListener('click', async () => {
+        await fetch('/api/auth/admin/logout', { method: 'POST' });
+        window.location.href = '/admin/index.html';
+      });
+
+      init().catch(console.error);
+    })();
+  </script>
+
+  <footer class="site-footer" style="margin-top:3rem">
+    <div class="site-footer-inner">
+      <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+      <nav class="site-footer-links" aria-label="Rechtliche Links">
+        <a href="https://lehrer-herrmann.de/impressum.html">Impressum</a>
+        <a href="https://lehrer-herrmann.de/datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="/js/main.js?v=20260615c"></script>
+  <script src="/js/kolosseum-login-widget.js"></script>
+</body>
+</html>
