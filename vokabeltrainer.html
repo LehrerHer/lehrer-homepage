@@ -149,26 +149,27 @@
      Feste mm-Maße statt 1fr/grid-auto-rows, damit Vorder- und Rückseite
      bei Standard-Skalierung (100%) exakt dieselben Kartenmaße/-positionen
      verwenden und die Schnittlinien beim Ausschneiden übereinanderliegen.
-     Bei A4 mit 10mm Rand stehen 190×277mm zur Verfügung; 46×64mm-Karten
-     nutzen das fast vollständig aus (nur wenige mm Sicherheitsabstand zum
-     Rand, falls Browser/Drucker den Rand nicht exakt einhalten) – nicht
-     manuell im Druckdialog skalieren, sonst verschiebt sich die Deckung.
-     Kein gap zwischen den Karten: benachbarte Karten grenzen direkt an-
-     einander, damit man beim Ausschneiden nur einmal zwischen zwei Karten
-     schneiden muss statt zweimal. ── */
+     Bewusst knapper Rand (3mm statt der browserüblichen ~10mm), um die
+     Karten möglichst groß zu bekommen – bei A4 stehen dann 204×291mm zur
+     Verfügung, die 50,5×71mm-Karten nutzen das bis auf wenige mm Sicher-
+     heitsabstand aus. Das ist näher am unbedruckbaren Rand vieler Drucker
+     als üblich; nicht manuell im Druckdialog skalieren, sonst verschiebt
+     sich die Deckung. Kein gap zwischen den Karten: benachbarte Karten
+     grenzen direkt aneinander, damit man beim Ausschneiden nur einmal
+     zwischen zwei Karten schneiden muss statt zweimal. ── */
   #druck-bereich { display: none; }
   @media print {
-    @page { size: A4; margin: 10mm; }
+    @page { size: A4; margin: 3mm; }
     body > *:not(#druck-bereich) { display: none !important; }
     #druck-bereich { display: block !important; }
     .druck-seite-wrapper { page-break-after: always; }
     .druck-seite {
-      display: grid; grid-template-columns: repeat(4, 46mm); grid-auto-rows: 64mm; gap: 0;
+      display: grid; grid-template-columns: repeat(4, 50.5mm); grid-auto-rows: 71mm; gap: 0;
     }
-    .druck-branding { margin-top: 6mm; text-align: center; font-size: 7pt; color: #999; }
+    .druck-branding { margin-top: 2mm; text-align: center; font-size: 6pt; color: #999; }
     .druck-branding a { color: #999; text-decoration: none; }
     .druck-karte { box-sizing: border-box; border: 1px dashed #999; display: flex; align-items: center;
-                   justify-content: center; text-align: center; font-size: .85rem; font-weight: 700; padding: 2.5mm;
+                   justify-content: center; text-align: center; font-size: .9rem; font-weight: 700; padding: 3mm;
                    overflow: hidden; page-break-inside: avoid; }
     .druck-leer { border: none; }
   }
