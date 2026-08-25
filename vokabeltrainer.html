@@ -595,6 +595,9 @@ async function erkenneVokabeln() {
     const inputId = art === 'pdf' ? 'inp-pdf' : 'inp-bild';
     const datei = document.getElementById(inputId).files[0];
     if (!datei) return zeigeFehler(err, 'Bitte eine Datei auswählen.');
+    if (datei.size > 20 * 1024 * 1024) {
+      return zeigeFehler(err, 'Datei ist zu groß (maximal 20 MB). Bitte eine kleinere Datei oder weniger Seiten hochladen.');
+    }
     fd.append('datei', datei);
   }
 
@@ -613,7 +616,13 @@ async function erkenneVokabeln() {
     renderVorschau();
     showScreen('s-vorschau');
   } catch (e) {
-    zeigeFehler(err, e.message);
+    // Bei einem reinen Netzwerkabbruch (z. B. Verbindung während eines großen Uploads
+    // unterbrochen) liefert der Browser oft nur eine kryptische Meldung ("Failed to fetch")
+    // ohne Serverantwort – dafür eine verständlichere Meldung statt der rohen Browsertext.
+    const netzwerkfehler = /failed to fetch|networkerror|load failed/i.test(e.message || '');
+    zeigeFehler(err, netzwerkfehler
+      ? 'Verbindung zum Server wurde unterbrochen. Bitte erneut versuchen – bei großen Dateien hilft oft eine kleinere Datei.'
+      : e.message);
   } finally {
     btn.disabled = false; btn.textContent = 'Vokabeln erkennen';
   }

@@ -24,15 +24,31 @@ const VALID_SPRACHEN = ['Englisch', 'Französisch', 'Spanisch', 'Latein'];
 const SICHTBARKEIT_STANDARD = 'alle';
 const VALID_GENERIEREN_TYPEN = ['kontextsatz', 'luekentext', 'quiz', 'keyword', 'story', 'loci'];
 
+const MAX_UPLOAD_BYTES = 20 * 1024 * 1024;
+
 const upload = multer({
   storage: multer.memoryStorage(),
-  limits: { fileSize: 15 * 1024 * 1024 },
+  limits: { fileSize: MAX_UPLOAD_BYTES },
   fileFilter: (req, file, cb) => {
     const ALLOWED = ['application/pdf', 'image/jpeg', 'image/png', 'image/webp'];
     if (ALLOWED.includes(file.mimetype)) cb(null, true);
     else cb(new Error('Dateityp nicht erlaubt (erlaubt: PDF, JPG, PNG, WEBP).'));
   },
 });
+
+// Lehnt zu große Uploads sofort anhand des Content-Length-Headers ab, BEVOR der Body
+// überhaupt zu streamen beginnt. Ohne diesen Vorab-Check kommt es bei Dateien, die das
+// multer-Limit erst mitten im Upload überschreiten, leicht dazu, dass der Server mit der
+// Fehlerantwort beginnt, während der Browser noch mitten im Hochladen ist – das lässt bei
+// vielen Verbindungen/Proxies den Request abbrechen, ohne dass die eigentliche Fehler-
+// meldung den Browser je erreicht (im Frontend sieht das dann aus wie "es passiert nichts").
+function pruefeUploadGroesse(req, res, next) {
+  const contentLength = Number(req.headers['content-length'] || 0);
+  if (contentLength > MAX_UPLOAD_BYTES) {
+    return res.status(413).json({ error: 'Datei ist zu groß (maximal 20 MB). Bitte eine kleinere Datei oder weniger Seiten hochladen.' });
+  }
+  next();
+}
 
 const limiterExtrahieren = rateLimit({
   windowMs: 10 * 60 * 1000,
@@ -205,7 +221,7 @@ function buildExtraktionsPrompt(spracheEingabe) {
 
 /* ── POST /api/vokabeltrainer/extrahieren ────────────────────── */
 
-router.post('/extrahieren', requireStudent, limiterExtrahieren, (req, res) => {
+router.post('/extrahieren', requireStudent, limiterExtrahieren, pruefeUploadGroesse, (req, res) => {
   upload.single('datei')(req, res, async (err) => {
     if (err) return res.status(400).json({ error: err.message });
     try {
