@@ -81,10 +81,32 @@
             line-height: 1.5;
         }
 
+        .dc-naechster-termin {
+            font-size: .95rem;
+            color: var(--farbe-text);
+            margin-top: .9rem;
+        }
+        .dc-naechster-termin-leer {
+            color: var(--farbe-text-hell);
+            font-style: italic;
+        }
+        .dc-verschoben-badge {
+            display: inline-block;
+            font-size: .72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .03em;
+            color: #8b4a00;
+            background: #fff3e0;
+            border-radius: 999px;
+            padding: .1rem .5rem;
+            margin-left: .2rem;
+        }
+
         .dc-letzte-stunde {
             font-size: .82rem;
             color: var(--farbe-text-hell);
-            margin-top: .9rem;
+            margin-top: .4rem;
         }
 
         .dc-lade-hinweis, .dc-fehler-hinweis {
@@ -217,9 +239,16 @@
                         <div class="dc-modul-titel">${esc(reihe.aktuellesModul.titel)}</div>
                         <div class="dc-modul-beschreibung">${esc(reihe.aktuellesModul.beschreibung)}</div>
                     </div>
+                    ${naechsterTerminHtml(reihe.naechsterTermin)}
                     ${letzteStunde ? `<div class="dc-letzte-stunde">Letzte Stunde: ${letzteStunde}</div>` : ''}
                 </div>
             `;
+        }
+
+        function naechsterTerminHtml(termin) {
+            if (!termin) return '<div class="dc-naechster-termin dc-naechster-termin-leer">Kein weiterer Termin geplant.</div>';
+            const datum = fmtDate(termin.datum);
+            return `<div class="dc-naechster-termin">📅 Nächster Termin: <strong>${esc(termin.wochentag)}, ${datum}</strong> (${termin.block}. Block)${termin.verschoben ? ' <span class="dc-verschoben-badge">verschoben</span>' : ''}</div>`;
         }
 
         async function laden() {
