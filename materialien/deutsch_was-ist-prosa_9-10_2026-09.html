@@ -1,0 +1,395 @@
+<!--
+  Titel: Was ist Prosa? – Epik, Lyrik und Drama im Vergleich
+  Fach: Deutsch
+  Klasse/Niveau: 9/10 (Realschule)
+  AB-Typ: Multiple Choice (Quiz)
+  Erstellt: 2026-09-02
+  Quelle: Hochgeladenes Arbeitsblatt & Schüler-Quiz (PDF) inkl. Lehrkräfte-Musterlösung
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Was ist Prosa? – Quiz – lehrer-herrmann.de</title>
+<style>
+  :root{
+    --primary:#1e3a5f;
+    --primary-hell:#2d6a9f;
+    --accent:#4a9eda;
+    --correct:#2ecc71;
+    --error:#e74c3c;
+    --bg:#f4f6f7;
+    --card:#ffffff;
+    --radius:8px;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:system-ui, sans-serif;
+    background:var(--bg);
+    color:#222;
+    line-height:1.5;
+  }
+  .quiz-page{max-width:720px;margin:0 auto;padding:16px 16px 48px;}
+
+  .ab-header{
+    background:var(--primary);
+    color:#fff;
+    padding:22px 24px;
+    border-radius:var(--radius);
+    margin-bottom:20px;
+  }
+  .ab-header h1{margin:0 0 8px 0;font-size:1.5rem;}
+  .ab-meta{margin:0;font-size:.9rem;opacity:.9;}
+
+  .card{
+    background:var(--card);
+    border-radius:var(--radius);
+    box-shadow:0 1px 3px rgba(0,0,0,.08);
+    padding:1.5rem 1.75rem;
+    margin-bottom:1.25rem;
+  }
+
+  /* ── START ── */
+  .intro-card p{margin:0 0 .75rem;}
+  .intro-card p:last-child{margin-bottom:0;}
+  .btn{
+    font-family:inherit;
+    font-size:1rem;
+    min-height:44px;
+    padding:.85rem 2rem;
+    border-radius:var(--radius);
+    border:none;
+    cursor:pointer;
+    font-weight:700;
+  }
+  .btn-primary{background:var(--accent);color:#fff;}
+  .btn-primary:hover{background:var(--primary-hell);}
+  .btn-secondary{background:transparent;color:var(--primary);border:2px solid var(--primary);}
+  .btn-secondary:hover{background:var(--bg);}
+  .start-wrap{text-align:center;}
+
+  /* ── QUIZ ── */
+  #quiz-screen{display:none;}
+  .prog-row{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;}
+  .prog-label{font-weight:700;font-size:.85rem;color:#555;white-space:nowrap;}
+  .prog-bar-wrap{flex:1;background:#e2e8f0;border-radius:50px;height:9px;overflow:hidden;}
+  .prog-bar-fill{height:100%;border-radius:50px;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .3s ease;}
+  .score-chip{font-weight:700;font-size:.85rem;color:#555;white-space:nowrap;}
+
+  .q-text{font-size:1.15rem;font-weight:700;margin-bottom:1.1rem;color:var(--primary);}
+  .options{display:flex;flex-direction:column;gap:9px;}
+  .opt-btn{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    width:100%;
+    padding:.85rem 1rem;
+    background:var(--bg);
+    border:2px solid #e0e4e6;
+    border-radius:var(--radius);
+    font-size:.97rem;
+    color:#222;
+    cursor:pointer;
+    text-align:left;
+    line-height:1.45;
+    transition:border-color .12s, background .12s;
+  }
+  .opt-btn:hover:not(:disabled){border-color:var(--accent);background:#fff;}
+  .opt-btn:disabled{cursor:default;}
+  .opt-letter{
+    min-width:26px;height:26px;
+    border-radius:50%;
+    background:#e0e4e6;
+    display:flex;align-items:center;justify-content:center;
+    font-size:.8rem;font-weight:700;color:#555;
+    flex-shrink:0;
+  }
+  .opt-btn.correct{background:rgba(46,204,113,.1);border-color:var(--correct);color:#1a7a43;}
+  .opt-btn.correct .opt-letter{background:var(--correct);color:#fff;}
+  .opt-btn.wrong{background:rgba(231,76,60,.08);border-color:var(--error);color:#a93226;}
+  .opt-btn.wrong .opt-letter{background:var(--error);color:#fff;}
+  .opt-btn.reveal{background:rgba(46,204,113,.07);border-color:var(--correct);color:#1a7a43;}
+  .opt-btn.reveal .opt-letter{background:var(--correct);color:#fff;}
+
+  .feedback{
+    margin-top:1rem;
+    padding:.85rem 1rem;
+    border-radius:var(--radius);
+    font-size:.92rem;
+    line-height:1.55;
+    display:none;
+  }
+  .feedback.ok{background:rgba(46,204,113,.12);color:#1a7a43;border-left:4px solid var(--correct);}
+  .feedback.no{background:rgba(231,76,60,.1);color:#922b21;border-left:4px solid var(--error);}
+
+  .next-wrap{text-align:center;margin-top:1.25rem;display:none;}
+
+  /* ── ERGEBNIS ── */
+  #result-screen{display:none;}
+  .result-top{text-align:center;padding:.5rem 0 1.25rem;}
+  .result-score{font-size:2.6rem;font-weight:900;color:var(--primary);margin:.25rem 0;}
+  .result-pct{font-size:1.05rem;color:#555;margin-bottom:.75rem;}
+  .result-note{font-size:.98rem;color:#333;margin-bottom:1.25rem;}
+
+  .detail-list{text-align:left;}
+  .detail-item{display:flex;gap:.7rem;padding:.65rem 0;border-bottom:1px solid #e5e8ea;font-size:.87rem;line-height:1.45;}
+  .detail-item:last-child{border-bottom:none;}
+  .detail-icon{font-size:1rem;flex-shrink:0;margin-top:.1rem;}
+  .detail-ans{color:#666;margin-top:.15rem;font-size:.83rem;}
+
+  .hs-eingabe{display:flex;gap:8px;margin:1rem 0;flex-wrap:wrap;}
+  .hs-eingabe input{flex:1;min-width:140px;padding:.7rem 1rem;border-radius:var(--radius);border:1px solid #ccc;font-size:1rem;font-family:inherit;}
+  .hs-eingabe button{padding:.7rem 1.2rem;}
+  .hs-ok{text-align:center;padding:8px;font-size:.9rem;font-weight:600;color:var(--correct);}
+
+  .result-actions{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;margin:1.25rem 0;}
+
+  @media (max-width:480px){
+    .ab-header h1{font-size:1.25rem;}
+  }
+</style>
+</head>
+<body>
+<div class="quiz-page">
+
+  <header class="ab-header">
+    <h1>Was ist Prosa? – Epik, Lyrik und Drama im Vergleich</h1>
+    <p class="ab-meta">Fach: Deutsch · Klasse 9/10 · 10 Fragen</p>
+  </header>
+
+  <!-- START -->
+  <div id="start-screen" class="card intro-card">
+    <p><strong>Worum geht es?</strong> Dieses Quiz überprüft dein Wissen über den Begriff <strong>Prosa</strong> und seine Abgrenzung zu Gedichten (Lyrik) und Theaterstücken (Drama).</p>
+    <p>10 Fragen, jeweils genau eine Antwort richtig. Nach jeder Antwort bekommst du sofort eine Rückmeldung mit Begründung.</p>
+    <p>⚔️ Am Ende erfährst du deine Notenpunkte und kannst dein Ergebnis für deinen Gladiator in der Arena einreichen.</p>
+    <div class="start-wrap">
+      <button class="btn btn-primary" onclick="startQuiz()">Quiz starten →</button>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div id="quiz-screen">
+    <div class="card">
+      <div class="prog-row">
+        <span class="prog-label" id="q-counter">Frage 1 / 10</span>
+        <div class="prog-bar-wrap"><div class="prog-bar-fill" id="prog" style="width:0%"></div></div>
+        <span class="score-chip" id="score-chip">0 richtig</span>
+      </div>
+      <div class="q-text" id="q-text"></div>
+      <div class="options" id="opts"></div>
+      <div class="feedback" id="feedback"></div>
+      <div class="next-wrap">
+        <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">Nächste Frage →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ERGEBNIS -->
+  <div id="result-screen">
+    <div class="card result-top">
+      <div class="result-score" id="r-score"></div>
+      <div class="result-pct" id="r-pct"></div>
+      <div class="result-note" id="r-note"></div>
+      <div class="result-actions">
+        <button class="btn btn-primary" onclick="startQuiz()">Quiz wiederholen</button>
+        <a class="btn btn-secondary" href="../fach-deutsch.html">Zurück zu Deutsch</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 style="color:var(--primary);font-size:1.05rem;margin-top:0;">🏆 In die Bestenliste eintragen</h2>
+      <div class="hs-eingabe">
+        <input type="text" id="hs-name" placeholder="Dein Name" maxlength="20">
+        <button class="btn btn-primary" onclick="hsSpeichern()">Speichern</button>
+      </div>
+      <div id="hs-ok"></div>
+      <div id="hs-liste">Lädt…</div>
+    </div>
+
+    <div class="card">
+      <h2 style="color:var(--primary);font-size:1.05rem;margin-top:0;">Auswertung im Detail</h2>
+      <div class="detail-list" id="r-details"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var QUIZ_ID = "deutsch-was-ist-prosa";
+  var QUIZ_TITEL = "Was ist Prosa?";
+
+  var questions = [
+    {q:"Was versteht man unter dem Begriff „Prosa“?",
+     opts:["Texte in gebundener Sprache (Versen), wie zum Beispiel Gedichte.","Alle Texte, die in freier, ungebundener Sprache verfasst sind.","Theaterstücke, bei denen die Schauspieler auf der Bühne stehen.","Ausschließlich Sachtexte aus Zeitungen und Lexika."],
+     correct:1,
+     exp:"Als Prosa bezeichnet man alle Texte in freier/ungebundener Sprache – im Gegensatz zur gebundenen Sprache der Lyrik oder der reinen Figurensprache des Dramas."},
+    {q:"Welches Merkmal unterscheidet ein Gedicht (Lyrik) grundlegend von einem Prosatext?",
+     opts:["In Gedichten entscheiden Autorinnen und Autoren selbst über die Zeilenumbrüche (Verse).","Gedichte dürfen keine erfundenen (fiktionalen) Geschichten erzählen.","Ein Gedicht ist immer mindestens zehn Seiten lang.","In der Lyrik kommen niemals Gefühle oder Gedanken vor."],
+     correct:0,
+     exp:"Bei Gedichten entscheidet die Autorin oder der Autor, welche Wörter in welcher Zeile stehen. Diese Zeile eines Gedichts wird als Vers bezeichnet (gebundene Sprache)."},
+    {q:"Warum gehört ein Drama (Theaterstück) im Normalfall nicht zur Prosa?",
+     opts:["Weil es fast ausschließlich die Sprache der Figuren (Figurensprache) wiedergibt.","Weil Dramen immer eine wahre Geschichte beschreiben müssen.","Weil darin niemals gesprochen wird, sondern nur Handlungen stattfinden.","Weil ein Drama immer in Reimen verfasst sein muss."],
+     correct:0,
+     exp:"Das Drama ist keine Prosa, da dort beinahe ausschließlich die direkte Sprache der Figuren (Dialoge und Monologe) ungefiltert abgedruckt wird."},
+    {q:"Zu welcher Textkategorie gehört der Bericht über das „Fußballduell“?",
+     opts:["Fiktionaler Text (Literatur zur Unterhaltung)","Nicht-fiktionaler Text (Sachtext zur Information)","Dramatischer Text (Theaterstück)","Lyrischer Text (Gedicht in Versen)"],
+     correct:1,
+     exp:"Der Bericht über das Fußballspiel beschreibt eine echte, nicht-erfundene Realität und hat das Ziel, sachlich zu informieren."},
+    {q:"Welches Hauptziel verfolgt ein Text wie der Bericht über das „Fußballduell“?",
+     opts:["Er soll eine erfundene Geschichte erzählen, um das Publikum zu unterhalten.","Er beschreibt die echte Wirklichkeit und soll sachlich informieren.","Er drückt die persönlichen Gefühle des Autors in Reimen aus.","Er dient als Regieanweisung für ein Theaterstück."],
+     correct:1,
+     exp:"Sachtexte (nicht-fiktional) wie Zeitungsberichte haben den Zweck, echte Informationen aus der realen Welt, in der wir leben, zu vermitteln."},
+    {q:"Welcher der folgenden Auszüge ist ein Beispiel für fiktionale epische Prosa?",
+     opts:["Der Zeitungsbericht über das Fußballspiel der Friedensschule.","Der Roman-Auszug von Thomas Mann über die Figur Gustav Aschenbach.","Das Gedicht „Das Göttliche“ von Johann Wolfgang von Goethe.","Der Dialog zwischen dem Maler Conti und dem Prinzen."],
+     correct:1,
+     exp:"Der Textauszug handelt von einer erfundenen Figur (Gustav Aschenbach) und ist in erzählender Prosa (Fließtext ohne Verse) verfasst."},
+    {q:"Was unterscheidet Sachtexte (nicht-fiktional) grundsätzlich von literarischen Texten (fiktional)?",
+     opts:["Sachtexte beschreiben die echte Wirklichkeit und informieren; literarische Texte erzählen eine erfundene Geschichte zur Unterhaltung.","Sachtexte sind immer in Reimen geschrieben, während Literatur immer Prosa ist.","Literarische Texte dienen der wissenschaftlichen Information, Sachtexte nur der Fantasie.","Es gibt überhaupt keinen Unterschied, beide Bezeichnungen meinen das Gleiche."],
+     correct:0,
+     exp:"Dies ist der Kernunterschied zwischen Sachtexten (echte Information aus der echten Welt) und Literatur (erfundene Geschichten zur Unterhaltung)."},
+    {q:"Zu welcher literarischen Gattung gehört der Roman?",
+     opts:["Dramatik","Lyrik","Epik","Sachtext"],
+     correct:2,
+     exp:"Der Roman gehört zur Gattung der Epik (erzählende Texte). Typischerweise werden epische Werke in freier Prosa verfasst."},
+    {q:"Zu welcher literarischen Gattung gehört Goethes Gedicht „Das Göttliche“?",
+     opts:["Epik","Lyrik","Dramatik","Sachtext"],
+     correct:1,
+     exp:"Das Werk „Das Göttliche“ ist ein Gedicht (eine Ode) und gehört damit zur Lyrik, erkennbar an der gebundenen Sprache in Versen."},
+    {q:"Welche literarische Gattung wird durch den Dialog zwischen dem Maler Conti und dem Prinzen dargestellt?",
+     opts:["Epik (erzählender Prosatext)","Lyrik (Gedicht in Versen)","Dramatik (Theaterstück in Figurensprache)","Nicht-fiktionaler Sachtext"],
+     correct:2,
+     exp:"Das Gespräch zwischen dem Maler Conti und dem Prinzen stellt eine Szene aus einem Theaterstück (Emilia Galotti) dar. Weil es Figurensprache ist, gehört es zur Gattung der Dramatik."}
+  ];
+
+  var LETTERS = ['A','B','C','D'];
+  var cur = 0, score = 0, answered = false, history = [];
+
+  window.startQuiz = function(){
+    cur = 0; score = 0; answered = false; history = [];
+    document.getElementById('start-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'block';
+    document.getElementById('result-screen').style.display = 'none';
+    renderQuestion();
+  };
+
+  function renderQuestion(){
+    var q = questions[cur];
+    var pct = (cur/questions.length*100);
+    document.getElementById('prog').style.width = pct+'%';
+    document.getElementById('q-counter').textContent = 'Frage '+(cur+1)+' / '+questions.length;
+    document.getElementById('score-chip').textContent = score+' richtig';
+    document.getElementById('q-text').textContent = q.q;
+
+    var optsEl = document.getElementById('opts');
+    optsEl.innerHTML = '';
+    q.opts.forEach(function(o, i){
+      var btn = document.createElement('button');
+      btn.className = 'opt-btn';
+      btn.id = 'ob'+i;
+      btn.innerHTML = '<span class="opt-letter">'+LETTERS[i]+'</span><span>'+o+'</span>';
+      btn.onclick = function(){ pick(i); };
+      optsEl.appendChild(btn);
+    });
+
+    var fb = document.getElementById('feedback');
+    fb.style.display = 'none';
+    fb.className = 'feedback';
+    document.querySelector('.next-wrap').style.display = 'none';
+    document.getElementById('next-btn').textContent = (cur+1 < questions.length) ? 'Nächste Frage →' : 'Auswertung ansehen →';
+    answered = false;
+  }
+
+  function pick(i){
+    if(answered) return;
+    answered = true;
+    var q = questions[cur];
+    var ok = (i === q.correct);
+    if(ok) score++;
+    history.push({q:q.q, ok:ok, u:q.opts[i], a:q.opts[q.correct]});
+
+    for(var j=0; j<q.opts.length; j++){
+      var b = document.getElementById('ob'+j);
+      b.disabled = true;
+      if(j === q.correct) b.classList.add(ok && j===i ? 'correct' : 'reveal');
+      else if(j === i && !ok) b.classList.add('wrong');
+    }
+
+    var fb = document.getElementById('feedback');
+    fb.style.display = 'block';
+    fb.className = 'feedback '+(ok ? 'ok' : 'no');
+    fb.innerHTML = (ok ? '<strong>Richtig!</strong> ' : '<strong>Leider falsch.</strong> ') + q.exp;
+    document.querySelector('.next-wrap').style.display = 'block';
+  }
+
+  window.nextQuestion = function(){
+    cur++;
+    if(cur >= questions.length) showResult();
+    else renderQuestion();
+  };
+
+  function showResult(){
+    document.getElementById('quiz-screen').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'block';
+
+    var pct = Math.round(score/questions.length*100);
+    document.getElementById('r-score').textContent = score+' / '+questions.length;
+    document.getElementById('r-pct').textContent = pct+' % richtig';
+
+    var note;
+    if(pct === 100) note = 'Perfekt! Du kennst die Abgrenzung von Prosa, Lyrik und Drama genau.';
+    else if(pct >= 70) note = 'Sehr gut! Schau dir die offenen Punkte noch einmal in Ruhe an.';
+    else if(pct >= 40) note = 'Solider Ansatz – ein zweiter Blick ins Arbeitsblatt lohnt sich.';
+    else note = 'Die Unterscheidung von Prosa, Lyrik und Drama braucht noch etwas Übung.';
+    document.getElementById('r-note').textContent = note;
+
+    document.getElementById('r-details').innerHTML = history.map(function(h){
+      return '<div class="detail-item">'
+        + '<span class="detail-icon">'+(h.ok ? '✓' : '✗')+'</span>'
+        + '<div><div>'+h.q+'</div>'
+        + '<div class="detail-ans">'+(h.ok ? 'Richtig: '+h.a : 'Deine Antwort: '+h.u+' · Richtig: '+h.a)+'</div>'
+        + '</div></div>';
+    }).join('');
+
+    document.getElementById('hs-ok').innerHTML = '';
+    ladeBestenliste();
+
+    if(typeof window.kolosseumReport === 'function'){
+      window.kolosseumReport(score, questions.length, QUIZ_ID);
+    }
+  }
+
+  window.hsSpeichern = function(){
+    var name = document.getElementById('hs-name').value;
+    if(typeof leaderboardSave !== 'function') return;
+    leaderboardSave(QUIZ_ID, name, score, questions.length).then(function(ok){
+      document.getElementById('hs-ok').innerHTML = ok
+        ? '<p class="hs-ok">Gespeichert! 🎉</p>'
+        : '<p class="hs-ok" style="color:var(--error)">Fehler beim Speichern.</p>';
+      if(ok) ladeBestenliste();
+    });
+  };
+
+  function ladeBestenliste(){
+    var el = document.getElementById('hs-liste');
+    if(typeof leaderboardFetch !== 'function'){
+      el.innerHTML = '';
+      return;
+    }
+    el.innerHTML = 'Lädt…';
+    leaderboardFetch(QUIZ_ID, 10).then(function(data){
+      el.innerHTML = (typeof leaderboardHTML === 'function') ? leaderboardHTML(data) : '';
+    });
+  }
+
+})();
+</script>
+<script src="/js/supabase-config.js"></script>
+<script src="/js/supabase-leaderboard.js"></script>
+<script src="/js/kolosseum-prompt.js"></script>
+</body>
+</html>
