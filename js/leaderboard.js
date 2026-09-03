@@ -1,6 +1,6 @@
 /* ============================================================
    QUIZ-BESTENLISTE – eigener Hetzner-Server
-   Nutzt API_BASE aus js/supabase-config.js
+   Nutzt API_BASE aus js/api-config.js
    ============================================================ */
 
 (function () {

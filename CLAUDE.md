@@ -41,7 +41,7 @@ lehrer-homepage/
 │   ├── materialien-dynamisch.js  # Lädt je Fach hochgeladene Materialien (Kolosseum-API, data-fach)
 │   ├── was-ist-neu.js            # „Was ist neu?"-Spalten (neuigkeiten.json + inhalte.json + API)
 │   ├── blog.js · blog-daten.js · blog-einreichen.js  # Blog-Rendering/-Fallback/-Upload
-│   ├── supabase-config.js · supabase-leaderboard.js  # Globale Quiz-Bestenlisten
+│   ├── api-config.js · leaderboard.js  # Globale Quiz-Bestenlisten
 ├── neuigkeiten.json     # Pflegbare Einträge für „Was ist neu?" (Funktionen)
 ├── inhalte.json         # Pflegbare Einträge für neue Materialien (dynamic-content.js)
 ├── materialien/         # Generierte interaktive Arbeitsblätter/Quizze (HTML)
@@ -353,7 +353,7 @@ XP werden nur bei **Verbesserungen** gutgeschrieben (Differenz zum bisherigen Be
 - Digitalematerialien-Sektion: Jahrgang-Filterleiste (`.dm-filter-leiste`) über dem Grid; Karten tragen `data-jahrgang="5-6|7-8|9-10"` Attribute
 - `id="startseite"` sitzt auf der `<section class="bereiche-uebersicht-section">` (kein Hero mehr)
 - Copyright year dynamisch via `id="footer-jahr"`
-- Scripts: `main.js`, `dynamic-content.js`, `supabase-config.js`, `was-ist-neu.js`, `arena-bar.js`, `kolosseum-login-widget.js`, `homepage-gate.js` (+ Analytics/GoatCounter am Ende)
+- Scripts: `main.js`, `dynamic-content.js`, `api-config.js`, `was-ist-neu.js`, `arena-bar.js`, `kolosseum-login-widget.js`, `homepage-gate.js` (+ Analytics/GoatCounter am Ende)
 
 ### Fächer: `faecher.html` + `fach-<fach>.html` (Grundprinzip)
 - **Eine Seite pro Fach.** `fach-<fach>.html` ist die **öffentliche, kanonische** Fachseite und enthält Fachvorstellung **und** die komplette Materialliste (Kategorien Arbeitsblätter · Materialien · Quizze) plus `<div class="dyn-mat-section" data-fach="…">` für dynamisch hochgeladene Materialien.
@@ -632,8 +632,8 @@ Weitere Vorgaben: `system-ui, sans-serif`, `border-radius: 8px`, `box-shadow` au
 
 Jedes Quiz (insbesondere die „stummen Karten" in `materialien/erdkunde_*`) muss folgende Mechanik enthalten – Vorlage: `materialien/erdkunde_niedersachsen-landkreise_jg5-10_2026-05.html` und `materialien/erdkunde_bundeslaender_jg5-10_2026-05.html`:
 
-1. **XP-Vergabe** über `js/kolosseum-prompt.js` → `window.kolosseumReport(score, total, 'quiz-slug')` (Notenpunkte-System). Skripte am Dateiende einbinden: `/js/supabase-config.js`, `/js/supabase-leaderboard.js`, `/js/kolosseum-prompt.js`.
-2. **Bestenliste** über `js/supabase-leaderboard.js` (`leaderboardSave` / `leaderboardFetch` / `leaderboardHTML`), Namenseingabe + globale Top-10 nach Abschluss.
+1. **XP-Vergabe** über `js/kolosseum-prompt.js` → `window.kolosseumReport(score, total, 'quiz-slug')` (Notenpunkte-System). Skripte am Dateiende einbinden: `/js/api-config.js`, `/js/leaderboard.js`, `/js/kolosseum-prompt.js`.
+2. **Bestenliste** über `js/leaderboard.js` (`leaderboardSave` / `leaderboardFetch` / `leaderboardHTML`), Namenseingabe + globale Top-10 nach Abschluss.
 3. **Lösungsanzeige umschaltbar:** Der Button „Lösung zeigen" darf die eigenen Eingaben **nicht dauerhaft verstecken**. Er ist ein **Toggle** zwischen „Lösung" und „Meine Antworten zeigen", sodass Lernende beliebig hin- und herklicken und ihre Treffer mit der Lösung vergleichen können.
 4. **Faire XP-Wertung:** Sobald die Lösung **das erste Mal** aufgedeckt wird, wird die XP-würdige Punktzahl auf den Stand **vor** der Hilfe eingefroren (`lockedScore = currentCorrect()`). XP und Bestenlisten-Eintrag zählen nur das, was **ohne** Lösungshilfe richtig war; ein Hinweis dazu wird im Ergebnis angezeigt.
 
@@ -672,7 +672,7 @@ Nach der HTML-Ausgabe kurz angeben:
 Für manche Materialien nutzt Jan Herrmann externe, lokal im Browser laufende Generator-Tools
 (z. B. den **Rebus-Quiz-Generator**), die bereits eine fertige, eigenständige HTML-Datei im
 lehrer-herrmann.de-Format erzeugen – inklusive optionaler Bestenlisten-/Kolosseum-Integration
-über `js/kolosseum-prompt.js`, `js/supabase-leaderboard.js` und `js/supabase-config.js`. Diese
+über `js/kolosseum-prompt.js`, `js/leaderboard.js` und `js/api-config.js`. Diese
 Datei wird **direkt im Chat an Claude Code hochgeladen** (nicht von Jan selbst ins Repo
 eingepflegt).
 
@@ -695,8 +695,8 @@ beim Sichten/Anpassen einer hochgeladenen Datei nicht mit einem Fehler verwechse
    falls kein Fach/Klasse erkennbar ist, sinnvolle Platzhalter wählen und im Workflow-Hinweis
    nennen).
 2. **Prüfen, ob Bestenliste/Kolosseum aktiviert ist**: im HTML nach `kolosseumReport(`,
-   `leaderboardSave(` / `leaderboardFetch(` bzw. den Script-Includes `supabase-config.js` /
-   `supabase-leaderboard.js` / `kolosseum-prompt.js` suchen. Wenn vorhanden, die dort
+   `leaderboardSave(` / `leaderboardFetch(` bzw. den Script-Includes `api-config.js` /
+   `leaderboard.js` / `kolosseum-prompt.js` suchen. Wenn vorhanden, die dort
    verwendete **Quiz-ID** notieren (identischer String in allen Aufrufen, z. B.
    `'familien-rebus'`).
 3. **Falls Bestenliste/Kolosseum aktiv → Quiz-ID in BEIDEN Backend-Whitelists registrieren**
@@ -706,7 +706,7 @@ beim Sichten/Anpassen einer hochgeladenen Datei nicht mit einem Fehler verwechse
    - `kolosseum/routes/external.js` → Array `VALID_SLUGS` **und** Objekt `QUIZ_LABELS`: die
      Quiz-ID exakt (vollständiger String) plus ein sprechendes Label für den XP-Log ergänzen.
    - **Hintergrund (beide Prüfungen sind unabhängig voneinander, deshalb immer beide
-     ergänzen):** `js/supabase-leaderboard.js` leitet für die Bestenliste die Basis-ID vor dem
+     ergänzen):** `js/leaderboard.js` leitet für die Bestenliste die Basis-ID vor dem
      ersten Bindestrich ab (`quiz.split('-')[0]`) und prüft diese per `startsWith` gegen
      `VALID_QUIZZES` – die volle Quiz-ID trotzdem 1:1 eintragen, nicht auf zufällige
      Präfix-Treffer verlassen. `js/kolosseum-prompt.js` → `POST /api/external/submit` prüft
