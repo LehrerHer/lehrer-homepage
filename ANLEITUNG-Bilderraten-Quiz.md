@@ -201,8 +201,8 @@ Wenn das Quiz Kolosseum-XP und eine globale Bestenliste haben soll,
 am Ende des `<body>` einfügen (nach dem Quiz-`<script>`-Block):
 
 ```html
-<script src="/js/supabase-config.js"></script>
-<script src="/js/supabase-leaderboard.js"></script>
+<script src="/js/api-config.js"></script>
+<script src="/js/leaderboard.js"></script>
 <script src="/js/kolosseum-prompt.js"></script>
 ```
 

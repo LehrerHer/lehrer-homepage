@@ -828,7 +828,7 @@ const allQ = [
       return;
     }
     leaderboardFetch('deutsch-seki-' + cat, 10).then(data => {
-      // supabase-leaderboard gibt andere Felder zurück – normalisieren
+      // leaderboard.js gibt andere Felder zurück – normalisieren
       const mapped = (data || []).map(e => ({
         name:  e.name  || 'Anonym',
         pct:   e.prozent !== undefined ? e.prozent : Math.round((e.punkte / e.maximum) * 100),
@@ -1087,7 +1087,7 @@ const allQ = [
 </script>
 
 <script src="../js/main.js?v=20260615c"></script>
-<script src="../js/supabase-leaderboard.js"></script>
+<script src="../js/leaderboard.js"></script>
 <script src="../js/kolosseum-prompt.js"></script>
 <script src="../js/kolosseum-login-widget.js"></script>
 </body>

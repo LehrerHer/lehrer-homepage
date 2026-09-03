@@ -2,7 +2,7 @@
    BLOG – Rendering und Interaktion
    Jan Herrmann · Oberschule Spelle
 
-   Lädt Beiträge aus Supabase (wenn konfiguriert) oder zeigt
+   Lädt Beiträge vom Kolosseum-Server (API_BASE) oder zeigt
    die Beispieldaten aus blog-daten.js (Fallback).
    ============================================================ */
 
@@ -301,7 +301,7 @@
         beitraege.forEach(function (b) { grid.appendChild(karteErstellen(b)); });
         filterAnwenden();
 
-        /* kein Supabase-Hinweis mehr nötig */
+        /* kein Hinweis mehr nötig */
     }
 
     blogRendern();

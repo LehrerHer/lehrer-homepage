@@ -113,6 +113,48 @@
     return 0;
   }
 
+  /* ── localStorage-Helfer: als Gast gespielte Quizze zwischenspeichern ── */
+  var LS_KEY = 'kp_quiz_pending';
+
+  function loadPending() {
+    try { return JSON.parse(localStorage.getItem(LS_KEY) || '[]'); } catch (e) { return []; }
+  }
+
+  function savePending(list) {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(list)); } catch (e) {}
+  }
+
+  function addPending(quizSlug, score, total) {
+    var list = loadPending().filter(function (e) { return e.quizSlug !== quizSlug; });
+    list.push({ quizSlug: quizSlug, score: score, total: total, at: new Date().toISOString() });
+    savePending(list);
+  }
+
+  /* ── Ergebnis an den Server senden ── */
+  async function submitQuiz(quizSlug, score, total) {
+    var res = await fetch(K + '/api/external/submit', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ quizSlug: quizSlug, score: score, total: total }),
+    });
+    return res.ok ? res.json() : null;
+  }
+
+  /* ── Als Gast gesammelte Ergebnisse einlösen (nach Login) ── */
+  async function claimPending() {
+    var pending = loadPending();
+    if (!pending.length) return 0;
+    var totalClaimed = 0;
+    for (var i = 0; i < pending.length; i++) {
+      var item = pending[i];
+      var result = await submitQuiz(item.quizSlug, item.score, item.total);
+      if (result && result.xpEarned > 0) totalClaimed += result.xpEarned;
+    }
+    savePending([]);
+    return totalClaimed;
+  }
+
   /* ── Haupt-API ── */
   window.kolosseumReport = async function (score, total, quizSlug) {
     var np    = computeNotenpunkte(score, total);
@@ -122,13 +164,15 @@
       var meRes = await fetch(K + '/api/auth/me', { credentials: 'include' });
 
       if (!meRes.ok) {
-        /* ── Gast ── */
+        /* ── Gast: lokal speichern + Modal ── */
+        addPending(quizSlug, score, total);
         openModal(
           '<span class="kp-emoji">⚔️</span>'
-          + '<div class="kp-title">XP nicht gespeichert</div>'
+          + '<div class="kp-title">XP noch nicht gutgeschrieben</div>'
           + '<div class="kp-sub">'
           +   'Ergebnis: <strong>' + np + '&thinsp;Notenpunkte</strong> · '
-          +   'das wären <strong>' + xpMax + '&thinsp;Kampferfahrung</strong> für deinen Gladiator!'
+          +   'das wären <strong>' + xpMax + '&thinsp;Kampferfahrung</strong> für deinen Gladiator! '
+          +   'Logge dich ein – deine XP werden automatisch gutgeschrieben, sobald du zu dieser Seite zurückkehrst.'
           + '</div>'
           + '<a href="' + K + '/login.html" class="kp-btn kp-btn-primary" target="_blank" rel="noopener">Einloggen &amp; XP sichern</a>'
           + '<a href="' + K + '/register.html" class="kp-btn kp-btn-outline" target="_blank" rel="noopener">🗡️ Gladiator erstellen</a>'
@@ -137,17 +181,28 @@
         return;
       }
 
-      /* ── Eingeloggt ── */
-      var submitRes = await fetch(K + '/api/external/submit', {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ quizSlug: quizSlug, score: score, total: total }),
-      });
-      var result = await submitRes.json();
-      var npp = result.notenpunkte !== undefined ? result.notenpunkte : np;
+      /* ── Eingeloggt: erst ausstehende (als Gast gespielte) Quizze einlösen ── */
+      var pendingXp = await claimPending();
 
-      if (result.xpEarned > 0 && result.isImprovement) {
+      var result = await submitQuiz(quizSlug, score, total);
+      if (!result) return;
+      var npp = result.notenpunkte !== undefined ? result.notenpunkte : np;
+      var totalXp = result.xpEarned + pendingXp;
+
+      if (pendingXp > 0) {
+        // Nachträglich eingelöste Gast-Ergebnisse (+ ggf. aktuelles Quiz)
+        openModal(
+          '<span class="kp-emoji">📦</span>'
+          + '<div class="kp-title">+' + totalXp + '&thinsp;Kampferfahrung!</div>'
+          + '<div class="kp-sub">'
+          +   (result.xpEarned > 0
+                ? '<strong>' + result.xpEarned + '&thinsp;XP</strong> für dieses Quiz + <strong>' + pendingXp + '&thinsp;XP</strong> aus früher ohne Login gespielten Quizzen. ⚔️'
+                : '<strong>' + pendingXp + '&thinsp;XP</strong> aus früher ohne Login gespielten Quizzen nachgeholt. ⚔️')
+          + '</div>'
+          + '<a href="' + K + '/profil.html" class="kp-btn kp-btn-primary" target="_blank" rel="noopener">Zum Gladiator-Profil →</a>'
+          + '<button class="kp-dismiss" onclick="kpClose()">Schließen</button>'
+        );
+      } else if (result.xpEarned > 0 && result.isImprovement) {
         // Wiederholung mit Verbesserung
         openModal(
           '<span class="kp-emoji">📈</span>'
@@ -184,4 +239,34 @@
       }
     } catch (e) { /* Fehler still schlucken */ }
   };
+
+  /* ── Ausstehende Gast-Ergebnisse automatisch einlösen: beim Laden und
+     wenn der Tab nach dem Login (oft in einem neuen Tab) wieder sichtbar wird ── */
+  var autoClaimLaeuft = false;
+  async function autoClaim() {
+    if (autoClaimLaeuft) return;
+    if (!loadPending().length) return;
+    autoClaimLaeuft = true;
+    try {
+      var meRes = await fetch(K + '/api/auth/me', { credentials: 'include' });
+      if (meRes.ok) {
+        var claimed = await claimPending();
+        if (claimed > 0) {
+          openModal(
+            '<span class="kp-emoji">📦</span>'
+            + '<div class="kp-title">+' + claimed + '&thinsp;XP nachgeholt!</div>'
+            + '<div class="kp-sub">Früher ohne Login gespielte Quizze wurden eingelöst. ⚔️</div>'
+            + '<a href="' + K + '/profil.html" class="kp-btn kp-btn-primary" target="_blank" rel="noopener">Zum Gladiator-Profil →</a>'
+            + '<button class="kp-dismiss" onclick="kpClose()">Schließen</button>'
+          );
+        }
+      }
+    } catch (e) { /* Fehler still schlucken */ }
+    autoClaimLaeuft = false;
+  }
+
+  autoClaim();
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') autoClaim();
+  });
 })();
