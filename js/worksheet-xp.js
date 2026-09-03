@@ -232,26 +232,38 @@
     );
   };
 
-  /* ── Auto-Claim beim Laden: ausstehende XP einlösen ohne Modal-Unterbrechung ── */
-  (async function autoClaimOnLoad() {
+  /* ── Auto-Claim: ausstehende XP einlösen ohne Modal-Unterbrechung – beim
+     Laden und wenn der Tab nach dem Login (oft in einem neuen Tab) wieder
+     sichtbar wird ── */
+  var autoClaimLaeuft = false;
+  async function autoClaimOnLoad() {
+    if (autoClaimLaeuft) return;
     var pending = loadPending();
     if (!pending.length) return;
+    autoClaimLaeuft = true;
     try {
       var meRes = await fetch(K + '/api/auth/me', { credentials: 'include' });
-      if (!meRes.ok) return;
-      var claimed = await claimPending();
-      if (claimed > 0) {
-        openModal(
-          '<span class="kwx-emoji">📦</span>'
-          + '<div class="kwx-title">+' + claimed + '&thinsp;XP nachgeholt!</div>'
-          + '<div class="kwx-sub">'
-          +   'Früher ohne Login abgeschlossene Arbeitsblätter wurden eingelöst. ⚔️'
-          + '</div>'
-          + '<a href="' + K + '/profil.html" class="kwx-btn kwx-btn-primary" target="_blank" rel="noopener">Zum Gladiator-Profil →</a>'
-          + '<button class="kwx-dismiss" onclick="kwxClose()">Schließen</button>'
-        );
+      if (meRes.ok) {
+        var claimed = await claimPending();
+        if (claimed > 0) {
+          openModal(
+            '<span class="kwx-emoji">📦</span>'
+            + '<div class="kwx-title">+' + claimed + '&thinsp;XP nachgeholt!</div>'
+            + '<div class="kwx-sub">'
+            +   'Früher ohne Login abgeschlossene Arbeitsblätter wurden eingelöst. ⚔️'
+            + '</div>'
+            + '<a href="' + K + '/profil.html" class="kwx-btn kwx-btn-primary" target="_blank" rel="noopener">Zum Gladiator-Profil →</a>'
+            + '<button class="kwx-dismiss" onclick="kwxClose()">Schließen</button>'
+          );
+        }
       }
     } catch (e) {}
-  })();
+    autoClaimLaeuft = false;
+  }
+
+  autoClaimOnLoad();
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible') autoClaimOnLoad();
+  });
 
 })();
