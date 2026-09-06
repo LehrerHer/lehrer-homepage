@@ -90,6 +90,7 @@
   .form-row{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-bottom:12px; }
   .form-row label{ font-weight:600; display:flex; align-items:center; gap:5px; }
   .bonus-row label{ font-weight:400; font-size:0.92rem; }
+  .bonus-group-label{ font-family:'Cinzel', serif; font-weight:700; color:var(--felt-deep); }
 
   .team-chips{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
   .team-chip{
@@ -190,26 +191,35 @@
     <div id="teamAssignArea"></div>
 
     <div class="form-row">
-      <label for="winnerSelect">Gewinner:</label>
-      <select id="winnerSelect"></select>
+      <label for="augenA"><span class="side-a-label">Re</span>-Augen:</label>
+      <input type="number" id="augenA" min="0" max="240" style="width:5.5em">
+      <label for="augenB"><span class="side-b-label">Kontra</span>-Augen:</label>
+      <input type="number" id="augenB" min="0" max="240" style="width:5.5em">
     </div>
+    <p class="chip-hint">Insgesamt sind immer 240 Augen im Spiel — ein Feld ausfüllen genügt, das andere wird automatisch ergänzt. Gewinner und Augen-Bonus (unter 90/60/30) werden daraus berechnet.</p>
 
-    <div class="form-row">
-      <label for="augenTier">Augen der Verliererseite:</label>
-      <select id="augenTier">
-        <option value="0">90+ (kein Bonus)</option>
-        <option value="1">unter 90 (+1)</option>
-        <option value="2">unter 60 (+2)</option>
-        <option value="3">unter 30 – schwarz (+3)</option>
-      </select>
+    <div class="form-row bonus-row">
+      <label><input type="checkbox" id="ansageA"> <span class="ansage-a-text">Re angesagt</span></label>
+      <label><input type="checkbox" id="ansageB"> <span class="ansage-b-text">Kontra angesagt</span></label>
     </div>
 
     <div class="form-row bonus-row">
-      <label><input type="checkbox" id="ansageA"> Re angesagt</label>
-      <label><input type="checkbox" id="ansageB"> Kontra angesagt</label>
-      <label>Doppelkopf: <input type="number" id="doppelkopfCount" min="0" value="0" style="width:3.5em"></label>
-      <label><input type="checkbox" id="karlchen"> Karlchen</label>
-      <label>Fuchs gefangen: <input type="number" id="fuchsCount" min="0" value="0" style="width:3.5em"></label>
+      <span class="bonus-group-label">Doppelkopf:</span>
+      <label><span class="side-a-label">Re</span> <input type="number" id="doppelkopfA" min="0" value="0" style="width:3.2em"></label>
+      <label><span class="side-b-label">Kontra</span> <input type="number" id="doppelkopfB" min="0" value="0" style="width:3.2em"></label>
+    </div>
+
+    <div class="form-row bonus-row">
+      <span class="bonus-group-label">Karlchen:</span>
+      <label><input type="radio" name="karlchenSide" id="karlchenNone" value="none" checked> keiner</label>
+      <label><input type="radio" name="karlchenSide" id="karlchenA" value="A"> <span class="side-a-label">Re</span></label>
+      <label><input type="radio" name="karlchenSide" id="karlchenB" value="B"> <span class="side-b-label">Kontra</span></label>
+    </div>
+
+    <div class="form-row bonus-row">
+      <span class="bonus-group-label">Fuchs gefangen:</span>
+      <label><span class="side-a-label">Re</span> <input type="number" id="fuchsA" min="0" value="0" style="width:3.2em"></label>
+      <label><span class="side-b-label">Kontra</span> <input type="number" id="fuchsB" min="0" value="0" style="width:3.2em"></label>
     </div>
 
     <div class="preview" id="previewBox"></div>
@@ -236,9 +246,12 @@
 
     <div class="leaderboard" id="leaderboard"></div>
     <div class="footer-note">
-      Sonderpunkte (Doppelkopf, Karlchen, Fuchs) werden immer der Gewinnerseite gutgeschrieben und NICHT durch Ansagen verdoppelt.
-      „Re“/„Kontra angesagt“ verdoppelt jeweils die Grund- und Augenpunkte der Runde. Bei Solo zählt das Ergebnis dreifach
-      (Solist gegen jeden der drei Gegner). Eine Runde kann jederzeit über „Bearbeiten“ korrigiert oder gelöscht werden.
+      Die Augen beider Seiten ergeben immer 240 — ein Feld genügt, das andere wird automatisch berechnet;
+      Gewinner und Augen-Bonus (unter 90/60/30) ergeben sich daraus von selbst. Sonderpunkte (Doppelkopf,
+      Karlchen, Fuchs gefangen) können jeder Seite unabhängig vom Rundenergebnis gutgeschrieben werden und
+      werden NICHT durch Ansagen verdoppelt. „Re“/„Kontra angesagt“ verdoppelt nur die Grund- und
+      Augenpunkte. Bei Solo zählt das Ergebnis dreifach (Solist gegen jeden der drei Gegner). Eine Runde
+      kann jederzeit über „Bearbeiten“ korrigiert oder gelöscht werden.
     </div>
   </div>
 </div>
@@ -264,7 +277,7 @@
   const STORAGE_KEY = 'doppelkopf-scoreboard-save';
   const MIN_PLAYERS = 4, MAX_PLAYERS = 5;
   let players = [];       // {name, color}
-  let rounds = [];        // gespeicherte Runden (siehe buildRound())
+  let rounds = [];        // gespeicherte Runden (siehe buildRoundFromForm())
   let playerSlots = MIN_PLAYERS;
   let editingIndex = -1;  // -1 = neue Runde, sonst Index der bearbeiteten Runde
   let storageOK = false;
@@ -308,13 +321,14 @@
   const rbNormal = document.getElementById('rbNormal');
   const rbSolo = document.getElementById('rbSolo');
   const teamAssignArea = document.getElementById('teamAssignArea');
-  const winnerSelect = document.getElementById('winnerSelect');
-  const augenTier = document.getElementById('augenTier');
+  const augenA = document.getElementById('augenA');
+  const augenB = document.getElementById('augenB');
   const ansageA = document.getElementById('ansageA');
   const ansageB = document.getElementById('ansageB');
-  const doppelkopfCount = document.getElementById('doppelkopfCount');
-  const karlchen = document.getElementById('karlchen');
-  const fuchsCount = document.getElementById('fuchsCount');
+  const doppelkopfA = document.getElementById('doppelkopfA');
+  const doppelkopfB = document.getElementById('doppelkopfB');
+  const fuchsA = document.getElementById('fuchsA');
+  const fuchsB = document.getElementById('fuchsB');
   const previewBox = document.getElementById('previewBox');
   const saveRoundBtn = document.getElementById('saveRoundBtn');
   const cancelEditBtn = document.getElementById('cancelEditBtn');
@@ -457,9 +471,11 @@
     rbNormal.checked = true;
     reSelection = [];
     soloSelection = -1;
+    augenA.value = ''; augenB.value = '';
     ansageA.checked = false; ansageB.checked = false;
-    doppelkopfCount.value = 0; fuchsCount.value = 0; karlchen.checked = false;
-    augenTier.value = '0';
+    doppelkopfA.value = 0; doppelkopfB.value = 0;
+    fuchsA.value = 0; fuchsB.value = 0;
+    document.getElementById('karlchenNone').checked = true;
     rebuildTeamArea();
   }
 
@@ -468,14 +484,20 @@
     return parseInt(sitOutSelect.value, 10);
   }
 
+  function updateSideLabels(isSolo){
+    const aText = isSolo ? 'Solist' : 'Re';
+    const bText = isSolo ? 'Gegner' : 'Kontra';
+    document.querySelectorAll('.side-a-label').forEach(el => { el.textContent = aText; });
+    document.querySelectorAll('.side-b-label').forEach(el => { el.textContent = bText; });
+    document.querySelector('.ansage-a-text').textContent = isSolo ? 'Solist sagt an' : 'Re angesagt';
+    document.querySelector('.ansage-b-text').textContent = isSolo ? 'Gegner sagen an' : 'Kontra angesagt';
+  }
+
   function rebuildTeamArea(){
     teamAssignArea.innerHTML = '';
     const sitOutIdx = currentSitOut();
     const active = activePlayers(sitOutIdx);
     const isSolo = rbSolo.checked;
-
-    ansageA.nextSibling.textContent = ' ' + (isSolo ? 'Solist sagt an' : 'Re angesagt');
-    ansageB.nextSibling.textContent = ' ' + (isSolo ? 'Gegner sagen an' : 'Kontra angesagt');
 
     if(isSolo){
       const hint = document.createElement('p');
@@ -491,7 +513,6 @@
         chip.addEventListener('click', ()=>{
           soloSelection = pIdx;
           rebuildTeamArea();
-          rebuildWinnerOptions();
           updatePreview();
         });
         wrap.appendChild(chip);
@@ -525,55 +546,61 @@
       });
       teamAssignArea.appendChild(wrap);
     }
-    rebuildWinnerOptions();
+    updateSideLabels(isSolo);
     updatePreview();
-  }
-
-  let lastWinnerMode = null; // verhindert, dass die Gewinner-Auswahl bei jedem Chip-Klick zurückspringt
-
-  function rebuildWinnerOptions(){
-    const isSolo = rbSolo.checked;
-    const mode = isSolo ? 'solo' : 'normal';
-    if(mode === lastWinnerMode) return; // Optionen unverändert, Auswahl des Nutzers erhalten
-    lastWinnerMode = mode;
-    winnerSelect.innerHTML = '';
-    if(isSolo){
-      winnerSelect.appendChild(new Option('Solist gewinnt', 'solo'));
-      winnerSelect.appendChild(new Option('Gegner gewinnen', 'gegner'));
-    } else {
-      winnerSelect.appendChild(new Option('Re gewinnt', 're'));
-      winnerSelect.appendChild(new Option('Kontra gewinnt', 'kontra'));
-    }
   }
 
   [rbNormal, rbSolo].forEach(rb => rb.addEventListener('change', rebuildTeamArea));
   sitOutSelect.addEventListener('change', rebuildTeamArea);
-  [winnerSelect, augenTier, ansageA, ansageB, doppelkopfCount, karlchen, fuchsCount].forEach(el=>{
+  [ansageA, ansageB, doppelkopfA, doppelkopfB, fuchsA, fuchsB].forEach(el=>{
     el.addEventListener('input', updatePreview);
     el.addEventListener('change', updatePreview);
   });
+  document.querySelectorAll('input[name="karlchenSide"]').forEach(r => r.addEventListener('change', updatePreview));
+
+  // Die Augen beider Seiten ergeben immer 240 -- das jeweils andere Feld
+  // wird beim Tippen automatisch nachgezogen, solange der Wert eine Zahl ist.
+  function syncAugen(source, target){
+    const raw = source.value.trim();
+    if(raw === '') return;
+    const v = parseInt(raw, 10);
+    if(isNaN(v)) return;
+    target.value = String(240 - v);
+  }
+  augenA.addEventListener('input', function(){ syncAugen(augenA, augenB); updatePreview(); });
+  augenB.addEventListener('input', function(){ syncAugen(augenB, augenA); updatePreview(); });
 
   /* ---------- Punkteberechnung ---------- */
 
+  function winnerSideOf(round){
+    return round.augenA > 120 ? 'A' : 'B';
+  }
+
   function computeRoundDeltas(round){
     const deltas = players.map(()=>0);
-    const basis = 1 + round.augenTier;
+    const winnerSide = winnerSideOf(round);
+    const loserAugen = winnerSide === 'A' ? round.augenB : round.augenA;
+    const basis = 1 + (loserAugen<90?1:0) + (loserAugen<60?1:0) + (loserAugen<30?1:0);
     let mult = 1;
     if(round.ansageA) mult *= 2;
     if(round.ansageB) mult *= 2;
-    const bonus = round.doppelkopf + (round.karlchen ? 1 : 0) + round.fuchs;
-    const total = basis * mult + bonus;
+    const basisValue = basis * mult;
+    const bonusA = round.doppelkopfA + (round.karlchenSide==='A' ? 1 : 0) + round.fuchsA;
+    const bonusB = round.doppelkopfB + (round.karlchenSide==='B' ? 1 : 0) + round.fuchsB;
+    // netForA: Punktesaldo aus Sicht von Re/Solist. Grund- und Augenpunkte
+    // gehen an die Gewinnerseite, Sonderpunkte zählen unabhängig davon für
+    // die Seite, die sie erspielt hat (Fuchs/Karlchen/Doppelkopf koennen
+    // also auch der Verliererseite gutgeschrieben werden).
+    const netForA = (winnerSide === 'A' ? basisValue : -basisValue) + bonusA - bonusB;
 
     if(round.type === 'normal'){
-      const reWins = round.winner === 're';
-      round.reIdxs.forEach(idx => { deltas[idx] += reWins ? total : -total; });
-      round.kontraIdxs.forEach(idx => { deltas[idx] += reWins ? -total : total; });
+      round.reIdxs.forEach(idx => { deltas[idx] += netForA; });
+      round.kontraIdxs.forEach(idx => { deltas[idx] += -netForA; });
     } else {
-      const soloWins = round.winner === 'solo';
-      deltas[round.soloIdx] += soloWins ? total*3 : -total*3;
-      round.gegnerIdxs.forEach(idx => { deltas[idx] += soloWins ? -total : total; });
+      deltas[round.soloIdx] += netForA * 3;
+      round.gegnerIdxs.forEach(idx => { deltas[idx] += -netForA; });
     }
-    return {deltas, total};
+    return {deltas, netForA, winnerSide, basisValue, bonusA, bonusB};
   }
 
   function buildRoundFromForm(){
@@ -581,51 +608,67 @@
     const active = activePlayers(sitOutIdx);
     const isSolo = rbSolo.checked;
 
+    const rawA = augenA.value.trim();
+    const rawB = augenB.value.trim();
+    if(rawA === '' || rawB === '') return {error: 'Bitte die Augen für beide Seiten eintragen.'};
+    const augenAVal = parseInt(rawA, 10);
+    const augenBVal = parseInt(rawB, 10);
+    if(isNaN(augenAVal) || isNaN(augenBVal) || augenAVal<0 || augenBVal<0 || augenAVal>240 || augenBVal>240){
+      return {error: 'Augen müssen zwischen 0 und 240 liegen.'};
+    }
+    if(augenAVal + augenBVal !== 240){
+      return {error: 'Die Augen beider Seiten müssen zusammen 240 ergeben.'};
+    }
+
+    const karlchenChecked = document.querySelector('input[name="karlchenSide"]:checked');
+    const karlchenSide = (karlchenChecked && karlchenChecked.value !== 'none') ? karlchenChecked.value : null;
+
+    const common = {
+      sitOutIdx,
+      augenA: augenAVal, augenB: augenBVal,
+      ansageA: ansageA.checked, ansageB: ansageB.checked,
+      doppelkopfA: parseInt(doppelkopfA.value,10) || 0,
+      doppelkopfB: parseInt(doppelkopfB.value,10) || 0,
+      karlchenSide: karlchenSide,
+      fuchsA: parseInt(fuchsA.value,10) || 0,
+      fuchsB: parseInt(fuchsB.value,10) || 0
+    };
+
     if(isSolo){
       if(soloSelection === -1) return {error: 'Bitte einen Solisten auswählen.'};
       const gegnerIdxs = active.filter(i => i !== soloSelection);
-      return {round: {
-        type:'solo', sitOutIdx, soloIdx: soloSelection, gegnerIdxs,
-        winner: winnerSelect.value,
-        augenTier: parseInt(augenTier.value,10),
-        ansageA: ansageA.checked, ansageB: ansageB.checked,
-        doppelkopf: parseInt(doppelkopfCount.value,10) || 0,
-        karlchen: karlchen.checked,
-        fuchs: parseInt(fuchsCount.value,10) || 0
-      }};
+      return {round: Object.assign({type:'solo', soloIdx: soloSelection, gegnerIdxs}, common)};
     } else {
       if(reSelection.length !== 2) return {error: 'Bitte genau 2 Spieler als Team Re auswählen.'};
       const kontraIdxs = active.filter(i => reSelection.indexOf(i) === -1);
-      return {round: {
-        type:'normal', sitOutIdx, reIdxs: reSelection.slice(), kontraIdxs,
-        winner: winnerSelect.value,
-        augenTier: parseInt(augenTier.value,10),
-        ansageA: ansageA.checked, ansageB: ansageB.checked,
-        doppelkopf: parseInt(doppelkopfCount.value,10) || 0,
-        karlchen: karlchen.checked,
-        fuchs: parseInt(fuchsCount.value,10) || 0
-      }};
+      return {round: Object.assign({type:'normal', reIdxs: reSelection.slice(), kontraIdxs}, common)};
     }
   }
 
   function describeRound(round){
-    const tierLabels = ['90+','unter 90','unter 60','schwarz'];
+    const calc = computeRoundDeltas(round);
+    const isSolo = round.type === 'solo';
     let parts = [];
-    if(round.type === 'normal'){
+    if(!isSolo){
       const reNames = round.reIdxs.map(i=>players[i].name).join(' + ');
       const kontraNames = round.kontraIdxs.map(i=>players[i].name).join(' + ');
       parts.push('<span class="tag tag-normal">Normal</span> Re: ' + reNames + ' — Kontra: ' + kontraNames);
-      parts.push((round.winner==='re' ? 'Re' : 'Kontra') + ' gewinnt, Verlierer ' + tierLabels[round.augenTier]);
+      parts.push((calc.winnerSide==='A' ? 'Re' : 'Kontra') + ' gewinnt ' + round.augenA + ':' + round.augenB
+        + ' (Grundwert ' + calc.basisValue + ')');
     } else {
       parts.push('<span class="tag tag-solo">Solo</span> ' + players[round.soloIdx].name + ' gegen ' + round.gegnerIdxs.map(i=>players[i].name).join(', '));
-      parts.push((round.winner==='solo' ? 'Solist gewinnt' : 'Gegner gewinnen') + ', Verlierer ' + tierLabels[round.augenTier]);
+      parts.push((calc.winnerSide==='A' ? 'Solist gewinnt' : 'Gegner gewinnen') + ' ' + round.augenA + ':' + round.augenB
+        + ' (Grundwert ' + calc.basisValue + ')');
     }
     let bonusParts = [];
-    if(round.ansageA) bonusParts.push(round.type==='normal' ? 'Re angesagt' : 'Solist angesagt');
-    if(round.ansageB) bonusParts.push(round.type==='normal' ? 'Kontra angesagt' : 'Gegner angesagt');
-    if(round.doppelkopf) bonusParts.push(round.doppelkopf + '× Doppelkopf');
-    if(round.karlchen) bonusParts.push('Karlchen');
-    if(round.fuchs) bonusParts.push(round.fuchs + '× Fuchs gefangen');
+    if(round.ansageA) bonusParts.push(isSolo ? 'Solist angesagt' : 'Re angesagt');
+    if(round.ansageB) bonusParts.push(isSolo ? 'Gegner angesagt' : 'Kontra angesagt');
+    if(round.doppelkopfA) bonusParts.push(round.doppelkopfA + '× Doppelkopf (' + (isSolo?'Solist':'Re') + ')');
+    if(round.doppelkopfB) bonusParts.push(round.doppelkopfB + '× Doppelkopf (' + (isSolo?'Gegner':'Kontra') + ')');
+    if(round.karlchenSide==='A') bonusParts.push('Karlchen (' + (isSolo?'Solist':'Re') + ')');
+    if(round.karlchenSide==='B') bonusParts.push('Karlchen (' + (isSolo?'Gegner':'Kontra') + ')');
+    if(round.fuchsA) bonusParts.push(round.fuchsA + '× Fuchs gefangen (' + (isSolo?'Solist':'Re') + ')');
+    if(round.fuchsB) bonusParts.push(round.fuchsB + '× Fuchs gefangen (' + (isSolo?'Gegner':'Kontra') + ')');
     if(round.sitOutIdx !== null && round.sitOutIdx !== undefined) bonusParts.push(players[round.sitOutIdx].name + ' sitzt aus');
     if(bonusParts.length) parts.push(bonusParts.join(', '));
     return parts.join('<br>');
@@ -637,8 +680,11 @@
       previewBox.innerHTML = '<span class="err">' + built.error + '</span>';
       return;
     }
-    const {deltas, total} = computeRoundDeltas(built.round);
-    let html = 'Punkte diese Runde (Wert: ' + total + '): ';
+    const {deltas, winnerSide} = computeRoundDeltas(built.round);
+    const isSolo = built.round.type === 'solo';
+    const winnerLabel = winnerSide === 'A' ? (isSolo ? 'Solist' : 'Re') : (isSolo ? 'Gegner' : 'Kontra');
+    let html = 'Ergebnis: <strong>' + winnerLabel + ' gewinnt</strong> ('
+      + built.round.augenA + ':' + built.round.augenB + ') — Punkte diese Runde: ';
     html += players.map((p,i)=>{
       const d = deltas[i];
       const cls = d>0 ? 'delta-pos' : (d<0 ? 'delta-neg' : 'delta-zero');
@@ -743,13 +789,16 @@
       reSelection = round.reIdxs.slice();
     }
     rebuildTeamArea();
-    winnerSelect.value = round.winner;
-    augenTier.value = String(round.augenTier);
+    augenA.value = round.augenA;
+    augenB.value = round.augenB;
     ansageA.checked = !!round.ansageA;
     ansageB.checked = !!round.ansageB;
-    doppelkopfCount.value = round.doppelkopf;
-    karlchen.checked = !!round.karlchen;
-    fuchsCount.value = round.fuchs;
+    doppelkopfA.value = round.doppelkopfA;
+    doppelkopfB.value = round.doppelkopfB;
+    fuchsA.value = round.fuchsA;
+    fuchsB.value = round.fuchsB;
+    const karlchenId = round.karlchenSide === 'A' ? 'karlchenA' : (round.karlchenSide === 'B' ? 'karlchenB' : 'karlchenNone');
+    document.getElementById(karlchenId).checked = true;
     updatePreview();
     window.scrollTo({top: gamePanel.offsetTop - 10, behavior:'smooth'});
   }
