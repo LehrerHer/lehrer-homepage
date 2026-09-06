@@ -128,8 +128,27 @@
   .delta-pos{ color:var(--ok); font-weight:700; }
   .delta-neg{ color:var(--danger); font-weight:700; }
   .delta-zero{ color:#888; }
-  .sum-note{ display:block; font-size:0.7rem; color:#666; }
+  .sum-big{ font-size:1.25rem; font-weight:800; }
   .row-actions{ display:flex; gap:4px; justify-content:center; }
+
+  .stepper{ display:inline-flex; align-items:center; gap:5px; vertical-align:middle; }
+  .stepper-btn{
+    font-family:'Cinzel', serif; font-weight:700; width:1.7em; height:1.7em; line-height:1;
+    border-radius:50%; border:1px solid var(--felt); background:#fff; color:var(--felt-deep);
+    cursor:pointer; font-size:0.95rem; padding:0;
+    display:inline-flex; align-items:center; justify-content:center;
+    box-shadow:0 1px 3px rgba(0,0,0,0.25);
+  }
+  .stepper-btn:active{ transform:translateY(1px); }
+  .stepper-value{ min-width:1.4em; text-align:center; font-weight:700; font-family:'Cinzel',serif; }
+
+  .pill-group{ display:inline-flex; gap:4px; vertical-align:middle; }
+  .pill-btn{
+    font-family:'Cinzel', serif; font-weight:700; font-size:0.82rem;
+    padding:4px 11px; border-radius:14px; border:1px solid var(--felt);
+    background:#fff; color:var(--felt-deep); cursor:pointer;
+  }
+  .pill-btn.selected{ background:var(--felt); color:#fff; }
 
   .leaderboard{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:10px; }
   .player-badge{
@@ -205,8 +224,18 @@
 
     <div class="form-row bonus-row">
       <span class="bonus-group-label">Doppelkopf:</span>
-      <label><span class="side-a-label">Re</span> <input type="number" id="doppelkopfA" min="0" value="0" style="width:3.2em"></label>
-      <label><span class="side-b-label">Kontra</span> <input type="number" id="doppelkopfB" min="0" value="0" style="width:3.2em"></label>
+      <span class="side-a-label">Re</span>
+      <span class="stepper" id="doppelkopfAStepper">
+        <button type="button" class="stepper-btn" data-step="-1" aria-label="Doppelkopf Re verringern">−</button>
+        <span class="stepper-value" id="doppelkopfAValue">0</span>
+        <button type="button" class="stepper-btn" data-step="1" aria-label="Doppelkopf Re erhöhen">+</button>
+      </span>
+      <span class="side-b-label">Kontra</span>
+      <span class="stepper" id="doppelkopfBStepper">
+        <button type="button" class="stepper-btn" data-step="-1" aria-label="Doppelkopf Kontra verringern">−</button>
+        <span class="stepper-value" id="doppelkopfBValue">0</span>
+        <button type="button" class="stepper-btn" data-step="1" aria-label="Doppelkopf Kontra erhöhen">+</button>
+      </span>
     </div>
 
     <div class="form-row bonus-row">
@@ -218,8 +247,18 @@
 
     <div class="form-row bonus-row">
       <span class="bonus-group-label">Fuchs gefangen:</span>
-      <label><span class="side-a-label">Re</span> <input type="number" id="fuchsA" min="0" value="0" style="width:3.2em"></label>
-      <label><span class="side-b-label">Kontra</span> <input type="number" id="fuchsB" min="0" value="0" style="width:3.2em"></label>
+      <span class="side-a-label">Re</span>
+      <span class="pill-group" id="fuchsAGroup" role="group" aria-label="Re Fuchs gefangen">
+        <button type="button" class="pill-btn selected" data-value="0">0</button>
+        <button type="button" class="pill-btn" data-value="1">1</button>
+        <button type="button" class="pill-btn" data-value="2">2</button>
+      </span>
+      <span class="side-b-label">Kontra</span>
+      <span class="pill-group" id="fuchsBGroup" role="group" aria-label="Kontra Fuchs gefangen">
+        <button type="button" class="pill-btn selected" data-value="0">0</button>
+        <button type="button" class="pill-btn" data-value="1">1</button>
+        <button type="button" class="pill-btn" data-value="2">2</button>
+      </span>
     </div>
 
     <div class="preview" id="previewBox"></div>
@@ -237,7 +276,8 @@
         <thead>
           <tr id="playersHeadTr">
             <th>Runde</th>
-            <th style="text-align:left;">Spiel</th>
+            <th>Spiel</th>
+            <th style="text-align:left;">Details</th>
           </tr>
         </thead>
         <tbody id="scoreBody"></tbody>
@@ -325,16 +365,18 @@
   const augenB = document.getElementById('augenB');
   const ansageA = document.getElementById('ansageA');
   const ansageB = document.getElementById('ansageB');
-  const doppelkopfA = document.getElementById('doppelkopfA');
-  const doppelkopfB = document.getElementById('doppelkopfB');
-  const fuchsA = document.getElementById('fuchsA');
-  const fuchsB = document.getElementById('fuchsB');
+  const doppelkopfAValue = document.getElementById('doppelkopfAValue');
+  const doppelkopfBValue = document.getElementById('doppelkopfBValue');
+  const fuchsAGroup = document.getElementById('fuchsAGroup');
+  const fuchsBGroup = document.getElementById('fuchsBGroup');
   const previewBox = document.getElementById('previewBox');
   const saveRoundBtn = document.getElementById('saveRoundBtn');
   const cancelEditBtn = document.getElementById('cancelEditBtn');
 
   let reSelection = [];   // Indizes (innerhalb activePlayers()) der Re-Spieler
   let soloSelection = -1; // Index (innerhalb activePlayers()) des Solisten
+  let doppelkopfACount = 0, doppelkopfBCount = 0; // per Stepper-Buttons
+  let fuchsACount = 0, fuchsBCount = 0;           // per 0/1/2-Auswahl
 
   /* ---------- Setup ---------- */
 
@@ -425,7 +467,7 @@
   /* ---------- Tabellenkopf & Verlauf ---------- */
 
   function buildTableHead(){
-    playersHeadTr.innerHTML = '<th>Runde</th><th style="text-align:left;">Spiel</th>';
+    playersHeadTr.innerHTML = '<th>Runde</th><th>Spiel</th><th style="text-align:left;">Details</th>';
     players.forEach(p=>{
       const th = document.createElement('th');
       th.style.background = p.color;
@@ -473,8 +515,10 @@
     soloSelection = -1;
     augenA.value = ''; augenB.value = '';
     ansageA.checked = false; ansageB.checked = false;
-    doppelkopfA.value = 0; doppelkopfB.value = 0;
-    fuchsA.value = 0; fuchsB.value = 0;
+    doppelkopfACount = 0; doppelkopfBCount = 0;
+    doppelkopfAValue.textContent = '0'; doppelkopfBValue.textContent = '0';
+    fuchsACount = 0; fuchsBCount = 0;
+    setPillSelected(fuchsAGroup, 0); setPillSelected(fuchsBGroup, 0);
     document.getElementById('karlchenNone').checked = true;
     rebuildTeamArea();
   }
@@ -552,11 +596,44 @@
 
   [rbNormal, rbSolo].forEach(rb => rb.addEventListener('change', rebuildTeamArea));
   sitOutSelect.addEventListener('change', rebuildTeamArea);
-  [ansageA, ansageB, doppelkopfA, doppelkopfB, fuchsA, fuchsB].forEach(el=>{
+  [ansageA, ansageB].forEach(el=>{
     el.addEventListener('input', updatePreview);
     el.addEventListener('change', updatePreview);
   });
   document.querySelectorAll('input[name="karlchenSide"]').forEach(r => r.addEventListener('change', updatePreview));
+
+  // Doppelkopf: kleine +/- Stepper statt Zahlenfeld.
+  function wireStepper(containerId, valueSpan, getVal, setVal){
+    document.getElementById(containerId).querySelectorAll('.stepper-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const v = Math.max(0, getVal() + parseInt(btn.dataset.step,10));
+        setVal(v);
+        valueSpan.textContent = String(v);
+        updatePreview();
+      });
+    });
+  }
+  wireStepper('doppelkopfAStepper', doppelkopfAValue, ()=>doppelkopfACount, v=>{ doppelkopfACount = v; });
+  wireStepper('doppelkopfBStepper', doppelkopfBValue, ()=>doppelkopfBCount, v=>{ doppelkopfBCount = v; });
+
+  // Fuchs gefangen: anklickbare 0/1/2-Option statt Zahlenfeld.
+  function setPillSelected(container, value){
+    container.querySelectorAll('.pill-btn').forEach(b=>{
+      b.classList.toggle('selected', parseInt(b.dataset.value,10) === value);
+    });
+  }
+  function wirePillGroup(container, setVal){
+    container.querySelectorAll('.pill-btn').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const v = parseInt(btn.dataset.value,10);
+        setVal(v);
+        setPillSelected(container, v);
+        updatePreview();
+      });
+    });
+  }
+  wirePillGroup(fuchsAGroup, v=>{ fuchsACount = v; });
+  wirePillGroup(fuchsBGroup, v=>{ fuchsBCount = v; });
 
   // Die Augen beider Seiten ergeben immer 240 -- das jeweils andere Feld
   // wird beim Tippen automatisch nachgezogen, solange der Wert eine Zahl ist.
@@ -627,11 +704,11 @@
       sitOutIdx,
       augenA: augenAVal, augenB: augenBVal,
       ansageA: ansageA.checked, ansageB: ansageB.checked,
-      doppelkopfA: parseInt(doppelkopfA.value,10) || 0,
-      doppelkopfB: parseInt(doppelkopfB.value,10) || 0,
+      doppelkopfA: doppelkopfACount,
+      doppelkopfB: doppelkopfBCount,
       karlchenSide: karlchenSide,
-      fuchsA: parseInt(fuchsA.value,10) || 0,
-      fuchsB: parseInt(fuchsB.value,10) || 0
+      fuchsA: fuchsACount,
+      fuchsB: fuchsBCount
     };
 
     if(isSolo){
@@ -645,8 +722,7 @@
     }
   }
 
-  function describeRound(round){
-    const calc = computeRoundDeltas(round);
+  function describeRound(round, calc){
     const isSolo = round.type === 'solo';
     let parts = [];
     if(!isSolo){
@@ -728,18 +804,23 @@
       tdNum.textContent = r+1;
       tr.appendChild(tdNum);
 
+      const calc = computeRoundDeltas(round);
+
+      const tdSpiel = document.createElement('td');
+      const spielCls = calc.netForA>0 ? 'delta-pos' : (calc.netForA<0 ? 'delta-neg' : 'delta-zero');
+      tdSpiel.innerHTML = '<span class="' + spielCls + '">' + (calc.netForA>0?'+':'') + calc.netForA + '</span>';
+      tr.appendChild(tdSpiel);
+
       const tdInfo = document.createElement('td');
       tdInfo.className = 'info-cell';
-      tdInfo.innerHTML = describeRound(round);
+      tdInfo.innerHTML = describeRound(round, calc);
       tr.appendChild(tdInfo);
 
-      const {deltas} = computeRoundDeltas(round);
       players.forEach((p, pi)=>{
         const td = document.createElement('td');
-        const d = deltas[pi];
         const sum = runningTotalUpTo(pi, r);
-        const cls = d>0 ? 'delta-pos' : (d<0 ? 'delta-neg' : 'delta-zero');
-        td.innerHTML = '<span class="' + cls + '">' + (d>0?'+':'') + d + '</span><span class="sum-note">Σ ' + sum + '</span>';
+        const cls = sum>0 ? 'delta-pos' : (sum<0 ? 'delta-neg' : 'delta-zero');
+        td.innerHTML = '<span class="sum-big ' + cls + '">' + (sum>0?'+':'') + sum + '</span>';
         tr.appendChild(td);
       });
 
@@ -793,10 +874,10 @@
     augenB.value = round.augenB;
     ansageA.checked = !!round.ansageA;
     ansageB.checked = !!round.ansageB;
-    doppelkopfA.value = round.doppelkopfA;
-    doppelkopfB.value = round.doppelkopfB;
-    fuchsA.value = round.fuchsA;
-    fuchsB.value = round.fuchsB;
+    doppelkopfACount = round.doppelkopfA; doppelkopfAValue.textContent = String(round.doppelkopfA);
+    doppelkopfBCount = round.doppelkopfB; doppelkopfBValue.textContent = String(round.doppelkopfB);
+    fuchsACount = round.fuchsA; setPillSelected(fuchsAGroup, round.fuchsA);
+    fuchsBCount = round.fuchsB; setPillSelected(fuchsBGroup, round.fuchsB);
     const karlchenId = round.karlchenSide === 'A' ? 'karlchenA' : (round.karlchenSide === 'B' ? 'karlchenB' : 'karlchenNone');
     document.getElementById(karlchenId).checked = true;
     updatePreview();
