@@ -246,7 +246,7 @@
       <label><input type="radio" name="karlchenSide" id="karlchenB" value="B"> <span class="side-b-label">Kontra</span></label>
     </div>
 
-    <div class="form-row bonus-row">
+    <div class="form-row bonus-row" id="fuchsRow">
       <span class="bonus-group-label">Fuchs gefangen:</span>
       <span class="side-a-label">Re</span>
       <span class="pill-group" id="fuchsAGroup" role="group" aria-label="Re Fuchs gefangen">
@@ -289,10 +289,11 @@
     <div class="footer-note">
       Die Augen beider Seiten ergeben immer 240 — ein Feld genügt, das andere wird automatisch berechnet;
       Gewinner und Augen-Bonus (unter 90/60/30) ergeben sich daraus von selbst. Sonderpunkte (Doppelkopf,
-      Karlchen, Fuchs gefangen) können jeder Seite unabhängig vom Rundenergebnis gutgeschrieben werden und
-      werden NICHT durch Ansagen verdoppelt. „Re“/„Kontra angesagt“ verdoppelt nur die Grund- und
-      Augenpunkte. Bei Solo zählt das Ergebnis dreifach (Solist gegen jeden der drei Gegner). Eine Runde
-      kann jederzeit über „Bearbeiten“ korrigiert oder gelöscht werden.
+      Karlchen, Fuchs gefangen) können bei Normalspielen jeder Seite unabhängig vom Rundenergebnis
+      gutgeschrieben werden und werden NICHT durch Ansagen verdoppelt. Im Solospiel entfallen diese drei
+      Sonderpunkte komplett. „Re“/„Kontra angesagt“ verdoppelt nur die Grund- und Augenpunkte. Bei Solo
+      zählt das Ergebnis dreifach (Solist gegen jeden der drei Gegner). Eine Runde kann jederzeit über
+      „Bearbeiten“ korrigiert oder gelöscht werden.
     </div>
   </div>
 </div>
@@ -540,19 +541,24 @@
 
   const doppelkopfRow = document.getElementById('doppelkopfRow');
   const karlchenRow = document.getElementById('karlchenRow');
+  const fuchsRow = document.getElementById('fuchsRow');
 
-  // Im Solospiel gibt es keine Doppelkopf-/Karlchen-Sonderpunkte (Karlchen
-  // wird mancherorts auch "Charly" genannt) -- beide Optionen werden dann
-  // deaktiviert, ausgegraut und zurückgesetzt. Fuchs gefangen bleibt möglich.
+  // Im Solospiel gibt es keine Doppelkopf-/Karlchen-/Fuchs-Sonderpunkte
+  // (Karlchen wird mancherorts auch "Charly" genannt) -- alle drei Optionen
+  // werden dann deaktiviert, ausgegraut und zurückgesetzt.
   function updateSoloBonusLock(isSolo){
     doppelkopfRow.classList.toggle('bonus-disabled', isSolo);
     karlchenRow.classList.toggle('bonus-disabled', isSolo);
+    fuchsRow.classList.toggle('bonus-disabled', isSolo);
     doppelkopfRow.querySelectorAll('.stepper-btn').forEach(b => { b.disabled = isSolo; });
     karlchenRow.querySelectorAll('input[type="radio"]').forEach(r => { r.disabled = isSolo; });
+    fuchsRow.querySelectorAll('.pill-btn').forEach(b => { b.disabled = isSolo; });
     if(isSolo){
       doppelkopfACount = 0; doppelkopfBCount = 0;
       doppelkopfAValue.textContent = '0'; doppelkopfBValue.textContent = '0';
       document.getElementById('karlchenNone').checked = true;
+      fuchsACount = 0; fuchsBCount = 0;
+      setPillSelected(fuchsAGroup, 0); setPillSelected(fuchsBGroup, 0);
     }
   }
 
@@ -728,8 +734,8 @@
       doppelkopfA: isSolo ? 0 : doppelkopfACount,
       doppelkopfB: isSolo ? 0 : doppelkopfBCount,
       karlchenSide: isSolo ? null : karlchenSide,
-      fuchsA: fuchsACount,
-      fuchsB: fuchsBCount
+      fuchsA: isSolo ? 0 : fuchsACount,
+      fuchsB: isSolo ? 0 : fuchsBCount
     };
 
     if(isSolo){
