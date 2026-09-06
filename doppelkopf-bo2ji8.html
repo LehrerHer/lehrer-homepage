@@ -91,6 +91,7 @@
   .form-row label{ font-weight:600; display:flex; align-items:center; gap:5px; }
   .bonus-row label{ font-weight:400; font-size:0.92rem; }
   .bonus-group-label{ font-family:'Cinzel', serif; font-weight:700; color:var(--felt-deep); }
+  .bonus-disabled{ opacity:0.4; pointer-events:none; }
 
   .team-chips{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
   .team-chip{
@@ -222,7 +223,7 @@
       <label><input type="checkbox" id="ansageB"> <span class="ansage-b-text">Kontra angesagt</span></label>
     </div>
 
-    <div class="form-row bonus-row">
+    <div class="form-row bonus-row" id="doppelkopfRow">
       <span class="bonus-group-label">Doppelkopf:</span>
       <span class="side-a-label">Re</span>
       <span class="stepper" id="doppelkopfAStepper">
@@ -238,7 +239,7 @@
       </span>
     </div>
 
-    <div class="form-row bonus-row">
+    <div class="form-row bonus-row" id="karlchenRow">
       <span class="bonus-group-label">Karlchen:</span>
       <label><input type="radio" name="karlchenSide" id="karlchenNone" value="none" checked> keiner</label>
       <label><input type="radio" name="karlchenSide" id="karlchenA" value="A"> <span class="side-a-label">Re</span></label>
@@ -537,6 +538,24 @@
     document.querySelector('.ansage-b-text').textContent = isSolo ? 'Gegner sagen an' : 'Kontra angesagt';
   }
 
+  const doppelkopfRow = document.getElementById('doppelkopfRow');
+  const karlchenRow = document.getElementById('karlchenRow');
+
+  // Im Solospiel gibt es keine Doppelkopf-/Karlchen-Sonderpunkte (Karlchen
+  // wird mancherorts auch "Charly" genannt) -- beide Optionen werden dann
+  // deaktiviert, ausgegraut und zurückgesetzt. Fuchs gefangen bleibt möglich.
+  function updateSoloBonusLock(isSolo){
+    doppelkopfRow.classList.toggle('bonus-disabled', isSolo);
+    karlchenRow.classList.toggle('bonus-disabled', isSolo);
+    doppelkopfRow.querySelectorAll('.stepper-btn').forEach(b => { b.disabled = isSolo; });
+    karlchenRow.querySelectorAll('input[type="radio"]').forEach(r => { r.disabled = isSolo; });
+    if(isSolo){
+      doppelkopfACount = 0; doppelkopfBCount = 0;
+      doppelkopfAValue.textContent = '0'; doppelkopfBValue.textContent = '0';
+      document.getElementById('karlchenNone').checked = true;
+    }
+  }
+
   function rebuildTeamArea(){
     teamAssignArea.innerHTML = '';
     const sitOutIdx = currentSitOut();
@@ -591,6 +610,7 @@
       teamAssignArea.appendChild(wrap);
     }
     updateSideLabels(isSolo);
+    updateSoloBonusLock(isSolo);
     updatePreview();
   }
 
@@ -704,9 +724,10 @@
       sitOutIdx,
       augenA: augenAVal, augenB: augenBVal,
       ansageA: ansageA.checked, ansageB: ansageB.checked,
-      doppelkopfA: doppelkopfACount,
-      doppelkopfB: doppelkopfBCount,
-      karlchenSide: karlchenSide,
+      // Im Solospiel gibt es keine Doppelkopf-/Karlchen-Sonderpunkte.
+      doppelkopfA: isSolo ? 0 : doppelkopfACount,
+      doppelkopfB: isSolo ? 0 : doppelkopfBCount,
+      karlchenSide: isSolo ? null : karlchenSide,
       fuchsA: fuchsACount,
       fuchsB: fuchsBCount
     };
