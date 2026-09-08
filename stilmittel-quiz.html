@@ -2,7 +2,6 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-    <script src="/js/auth-guard.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Stilmittel-Quiz – Jan Herrmann</title>
     <link rel="stylesheet" href="/css/style.css?v=20260615c">
@@ -249,6 +248,7 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
     <div class="filter-grid">
       <button class="filter-btn active" data-scope="alle" onclick="toggleScope(this)">Alle Stilmittel</button>
       <button class="filter-btn" data-scope="mittelstufe" onclick="toggleScope(this)">Mittelstufe (Kl.&nbsp;5&ndash;10)</button>
+      <button class="filter-btn" data-scope="rs910" onclick="toggleScope(this)">Realschule Jhg.&nbsp;9/10</button>
     </div>
   </div>
   <div class="filter-section">
@@ -384,28 +384,28 @@ body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); color
 var ALLE = [
   // ── BILDLICHKEIT ──
   {
-    name: "Metapher", kat: "Bildlichkeit", mittelstufe: true,
+    name: "Metapher", kat: "Bildlichkeit", mittelstufe: true, rs910: true,
     bild: "\uD83D\uDD25",
     erklaerung: "Bildlicher Ausdruck ohne Vergleichswort \u2013 ein Wort wird aus seinem eigentlichen Bedeutungsbereich in einen anderen \u00fcbertragen.",
     beispiel: "\u201eJemandem das Herz brechen\u201c  \u2016  \u201eDas Feuer der Leidenschaft\u201c",
     wirkung: "veranschaulicht, verdichtet"
   },
   {
-    name: "Vergleich", kat: "Bildlichkeit", mittelstufe: true,
+    name: "Vergleich", kat: "Bildlichkeit", mittelstufe: true, rs910: true,
     bild: "\u2696\uFE0F",
     erklaerung: "Verkn\u00fcpfung zweier Bedeutungsbereiche durch \u201ewie\u201c oder \u201eals\u201c.",
     beispiel: "\u201eEr k\u00e4mpft wie ein L\u00f6we\u201c  \u2016  \u201eSt\u00e4rker als der Tod\u201c",
     wirkung: "veranschaulicht, verbindet"
   },
   {
-    name: "Personifikation", kat: "Bildlichkeit", mittelstufe: true,
+    name: "Personifikation", kat: "Bildlichkeit", mittelstufe: true, rs910: true,
     bild: "\u2600\uFE0F",
     erklaerung: "Menschliche Eigenschaften werden auf Nichtmenschliches \u00fcbertragen.",
     beispiel: "\u201eDie Sonne lacht\u201c  \u2016  \u201eDer Wind fl\u00fcstert\u201c",
     wirkung: "verlebendigt, vermenschlicht"
   },
   {
-    name: "Symbol", kat: "Bildlichkeit", mittelstufe: true,
+    name: "Symbol", kat: "Bildlichkeit", mittelstufe: true, rs910: true,
     bild: "\uD83D\uDD4A\uFE0F",
     erklaerung: "Ein konkreter Gegenstand steht f\u00fcr eine abstrakte Idee, oft kulturell festgelegt.",
     beispiel: "Rose = Liebe  \u2016  Taube = Frieden",
@@ -441,7 +441,7 @@ var ALLE = [
   },
   // ── WORTFIGUREN ──
   {
-    name: "Hyperbel", kat: "Wortfigur", mittelstufe: true,
+    name: "Hyperbel", kat: "Wortfigur", mittelstufe: true, rs910: true,
     bild: "\uD83D\uDCE2",
     erklaerung: "Starke \u00dcbertreibung eines Sachverhalts.",
     beispiel: "\u201etodernst\u201c  \u2016  \u201efuchsteufelswild\u201c  \u2016  \u201eein Meer von Tr\u00e4nen\u201c",
@@ -483,7 +483,7 @@ var ALLE = [
     wirkung: "betont, emotional aufgeladen"
   },
   {
-    name: "Euphemismus", kat: "Wortfigur", mittelstufe: true,
+    name: "Euphemismus", kat: "Wortfigur", mittelstufe: true, rs910: true,
     bild: "\uD83C\uDF38",
     erklaerung: "Besch\u00f6nigende Umschreibung eines unangenehmen oder anst\u00f6\u00dfigen Sachverhalts.",
     beispiel: "\u201eentschlafen\u201c (statt: sterben)  \u2016  \u201efreisetzen\u201c (statt: entlassen)  \u2016  \u201ekollateraler Schaden\u201c (statt: get\u00f6tete Zivilisten)",
@@ -491,7 +491,7 @@ var ALLE = [
   },
   // ── SATZFIGUREN ──
   {
-    name: "Ellipse", kat: "Satzfigur", mittelstufe: true,
+    name: "Ellipse", kat: "Satzfigur", mittelstufe: true, rs910: true,
     bild: "\uD83D\uDCAD",
     erklaerung: "Auslassung eines Satzteils, der gedanklich erg\u00e4nzt werden kann.",
     beispiel: "\u201eJe sp\u00e4ter der Abend, desto sch\u00f6ner die G\u00e4ste\u201c  \u2016  \u201eEnde gut, alles gut.\u201c",
@@ -505,18 +505,25 @@ var ALLE = [
     wirkung: "hervorhebend durch Umstellung"
   },
   {
-    name: "Parallelismus", kat: "Satzfigur", mittelstufe: true,
+    name: "Parallelismus", kat: "Satzfigur", mittelstufe: true, rs910: true,
     bild: "\uD83D\uDCCF",
     erklaerung: "Wiederholung der gleichen syntaktischen Struktur in aufeinanderfolgenden S\u00e4tzen oder Satzteilen.",
     beispiel: "\u201eHei\u00df die Liebe, kalt der Tod\u201c  \u2016  \u201eIch kam, ich sah, ich siegte\u201c (Caesar)",
     wirkung: "ordnend, rhythmisch"
   },
   {
-    name: "Klimax", kat: "Satzfigur", mittelstufe: true,
+    name: "Klimax", kat: "Satzfigur", mittelstufe: true, rs910: true,
     bild: "\uD83D\uDCC8",
     erklaerung: "Stufenweise Steigerung von Ausdruck zu Ausdruck.",
     beispiel: "\u201eEr sei mein Freund, mein Engel, mein Gott\u201c (Schiller)  \u2016  \u201eVeni, vidi, vici\u201c (Caesar)",
     wirkung: "steigernd, eindringlich"
+  },
+  {
+    name: "Aufz\u00E4hlung / Trikolon", kat: "Satzfigur", mittelstufe: true, rs910: true,
+    bild: "\uD83E\uDDEE",
+    erklaerung: "Mehrere (beim Trikolon genau drei) Begriffe oder Satzteile werden hintereinander aufgereiht.",
+    beispiel: "\u201eEinigkeit und Recht und Freiheit\u201c (Hoffmann von Fallersleben, deutsche Nationalhymne, 1841)",
+    wirkung: "reihend, betont, einpr\u00E4gsam"
   },
   {
     name: "Akkumulation", kat: "Satzfigur", mittelstufe: true,
@@ -569,21 +576,21 @@ var ALLE = [
   },
   // ── GEDANKENFIGUREN ──
   {
-    name: "Antithese", kat: "Gedankenfigur", mittelstufe: true,
+    name: "Antithese", kat: "Gedankenfigur", mittelstufe: true, rs910: true,
     bild: "\u2194\uFE0F",
     erklaerung: "Gegen\u00fcberstellung gegens\u00e4tzlicher Begriffe oder Gedanken.",
     beispiel: "\u201eKlein ist der Strauch, gro\u00df ist der Baum\u201c  \u2016  \u201eKrieg und Frieden\u201c (Tolstoi)",
     wirkung: "kontrastierend, gegen\u00fcberstellend"
   },
   {
-    name: "Ironie", kat: "Gedankenfigur", mittelstufe: true,
+    name: "Ironie", kat: "Gedankenfigur", mittelstufe: true, rs910: true,
     bild: "\uD83D\uDE0F",
     erklaerung: "Das Gegenteil des Gemeinten wird gesagt \u2014 die eigentliche Bedeutung ergibt sich erst aus dem Kontext, dem Tonfall oder dem Vorwissen des Lesers",
     beispiel: "\u201eWir haben\u2019s ja\u201c (wenn Geld knapp ist)  \u2016  \u201eDas hast du ja toll hinbekommen!\u201c",
     wirkung: "doppelb\u00f6dig, verschl\u00fcsselt; in geschriebenen Texten nur durch Kontextanalyse erkennbar \u2014 kann belustigen, distanzieren oder verletzen"
   },
   {
-    name: "Oxymoron", kat: "Gedankenfigur", mittelstufe: false,
+    name: "Oxymoron", kat: "Gedankenfigur", mittelstufe: false, rs910: true,
     bild: "\u262F\uFE0F",
     erklaerung: "Verbindung zweier sich logisch widersprechender Begriffe in einer Wortgruppe.",
     beispiel: "\u201eHassliebe\u201c  \u2016  \u201eberedtes Schweigen\u201c  \u2016  \u201ealter Knabe\u201c",
@@ -597,7 +604,7 @@ var ALLE = [
     wirkung: "scheinbar widerspr\u00fcchlich, zum Nachdenken"
   },
   {
-    name: "Rhetorische Frage", kat: "Gedankenfigur", mittelstufe: true,
+    name: "Rhetorische Frage", kat: "Gedankenfigur", mittelstufe: true, rs910: true,
     bild: "\u2753",
     erklaerung: "Eine Frage, auf die keine Antwort erwartet wird \u2013 die Antwort ist bereits klar.",
     beispiel: "\u201eWie viele Menschen m\u00fcssen noch sterben?\u201c  \u2016  \u201eBin ich denn der Einzige, der das sieht?\u201c",
@@ -619,21 +626,21 @@ var ALLE = [
   },
   // ── KLANGFIGUREN ──
   {
-    name: "Alliteration", kat: "Klangfigur", mittelstufe: true,
+    name: "Alliteration", kat: "Klangfigur", mittelstufe: true, rs910: true,
     bild: "\uD83D\uDD24",
     erklaerung: "Wiederholung des gleichen Anfangslauts bei benachbarten W\u00f6rtern.",
     beispiel: "\u201eMilch macht m\u00fcde M\u00e4nner munter\u201c  \u2016  \u201eMit Mann und Maus\u201c  \u2016  \u201eWer wirbt, wirbt W\u00e4hler\u201c",
     wirkung: "betont, einpr\u00e4gsam, klingend"
   },
   {
-    name: "Anapher", kat: "Klangfigur", mittelstufe: true,
+    name: "Anapher", kat: "Klangfigur", mittelstufe: true, rs910: true,
     bild: "\uD83D\uDD01",
     erklaerung: "Wiederholung eines Wortes oder einer Wortgruppe am Anfang aufeinanderfolgender S\u00e4tze oder Verse.",
     beispiel: "\u201eKein Licht. Kein Ton.\u201c  \u2016  \u201eWer nie sein Brot mit Tr\u00e4nen a\u00df, / Wer nie \u2026\u201c (Goethe)",
     wirkung: "verst\u00e4rkend, rhythmisch"
   },
   {
-    name: "Repetitio", kat: "Klangfigur", mittelstufe: false,
+    name: "Wiederholung/Repetitio", kat: "Klangfigur", mittelstufe: false, rs910: true,
     bild: "\uD83D\uDD02",
     erklaerung: "Wiederholung eines Wortes oder Ausdrucks innerhalb eines Satzes oder Verses.",
     beispiel: "\u201eO Mutter! Was ist Seligkeit? O Mutter!\u201c (B\u00fcrger)  \u2016  \u201eMein Vater, mein Vater\u201c (Goethe)",
@@ -746,13 +753,14 @@ function toggleFilter(btn) {
 function getPool() {
   var pool = ALLE;
   if (activeScope === "mittelstufe") pool = pool.filter(function(s) { return s.mittelstufe; });
+  if (activeScope === "rs910") pool = pool.filter(function(s) { return s.rs910; });
   if (activeKat !== "alle") pool = pool.filter(function(s) { return s.kat === activeKat; });
   return pool;
 }
 function updateHintBox() {
   var filtered = getPool();
   var hb = document.getElementById("hint-box");
-  var scopeLabel = activeScope === "mittelstufe" ? " (Mittelstufe)" : "";
+  var scopeLabel = activeScope === "mittelstufe" ? " (Mittelstufe)" : activeScope === "rs910" ? " (Realschule Jhg. 9/10)" : "";
   var countInfo = activeCount === "10" ? "10 zuf\u00e4llige von " + filtered.length : filtered.length;
   hb.textContent = countInfo + " Stilmittel" + scopeLabel + " werden abgefragt. Tippe auf die richtige Antwort unter 4 Optionen.";
 }
@@ -1163,6 +1171,16 @@ function goHome() {
   document.getElementById("home").classList.remove("hidden");
   isAborted = false;
 }
+
+// ── URL-PARAMETER: direkter Link auf eine Auswahl (z.B. ?scope=rs910) ─────────
+(function() {
+  var params = new URLSearchParams(location.search);
+  var scope = params.get("scope");
+  if (scope) {
+    var btn = document.querySelector('[data-scope="' + scope + '"]');
+    if (btn) toggleScope(btn);
+  }
+})();
 
 // ── HAMBURGER-MENÜ ────────────────────────────────────────────────────────────
 (function() {
