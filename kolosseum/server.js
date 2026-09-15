@@ -53,6 +53,17 @@ app.use('/api/deploy',     deployRoutes);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Von Schüler*innen hochgeladene HTML-Projekte (Blog) isoliert ausliefern:
+// CSP-Sandbox verhindert, dass eingebettetes JavaScript auf Cookies/Login
+// zugreifen oder Requests im Namen eingeloggter Nutzer (z. B. Admin bei der
+// Prüfung) auslösen kann.
+app.get(/^\/uploads\/blog\/.*\.html?$/i, (req, res, next) => {
+  res.setHeader('Content-Security-Policy', "sandbox allow-scripts");
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  next();
+});
+
 // Hochgeladene Dateien statisch ausliefern
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

@@ -23,7 +23,7 @@ const storage = multer.diskStorage({
 });
 
 const ERLAUBTE_TYPEN = ['image/jpeg','image/png','image/webp','image/gif',
-                        'application/pdf','text/plain'];
+                        'application/pdf','text/plain','text/html'];
 const MAX_GROESSE = 10 * 1024 * 1024; // 10 MB
 
 const upload = multer({
@@ -31,12 +31,13 @@ const upload = multer({
   limits: { fileSize: MAX_GROESSE },
   fileFilter: (_req, file, cb) => {
     if (ERLAUBTE_TYPEN.includes(file.mimetype)) return cb(null, true);
-    cb(new Error('Dateityp nicht erlaubt (erlaubt: JPG, PNG, WebP, GIF, PDF, TXT)'));
+    cb(new Error('Dateityp nicht erlaubt (erlaubt: JPG, PNG, WebP, GIF, PDF, TXT, HTML)'));
   }
 });
 
 function dateiTyp(mimetype) {
   if (!mimetype) return 'sonstige';
+  if (mimetype === 'text/html') return 'html';
   if (mimetype.startsWith('image/')) return 'bild';
   if (mimetype === 'application/pdf') return 'pdf';
   if (mimetype.startsWith('text/')) return 'text';

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog-Beiträge – Admin</title>
+  <link rel="stylesheet" href="/css/style.css?v=20260615c">
+  <style>
+    .admin-nav { background: #12122a; }
+    .toolbar { display: flex; gap: 1rem; align-items: center; margin: 2rem 0 1rem; flex-wrap: wrap; }
+    .toolbar h1 { font-size: 1.8rem; flex: 1; }
+    .section-label { font-size: 1rem; font-weight: 700; color: var(--ink-soft); margin: 1.75rem 0 0.75rem; }
+
+    .beitrag-row {
+      display: flex; gap: 1.25rem; padding: 1rem; border-bottom: 1px solid #e2e8f0; flex-wrap: wrap;
+    }
+    .beitrag-row:last-child { border-bottom: none; }
+    .beitrag-info { flex: 1; min-width: 220px; }
+    .beitrag-info h3 { font-size: 1.05rem; margin-bottom: 0.2rem; }
+    .beitrag-meta { color: var(--ink-soft); font-size: 0.85rem; margin-bottom: 0.4rem; }
+    .beitrag-beschreibung { font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .beitrag-typ-pill {
+      display: inline-block; padding: 0.15rem 0.6rem; border-radius: 50px;
+      font-size: 0.75rem; font-weight: 700; background: #e8f4fd; color: #1e3a5f; margin-right: 0.4rem;
+    }
+    .status-pill {
+      display: inline-block; padding: 0.15rem 0.6rem; border-radius: 50px;
+      font-size: 0.75rem; font-weight: 700;
+    }
+    .status-pending  { background: #fff3e0; color: #c07000; }
+    .status-live     { background: #eafaf1; color: #1a7a40; }
+
+    .beitrag-vorschau { flex-basis: 320px; max-width: 320px; }
+    .beitrag-vorschau img { max-width: 100%; border-radius: 8px; display: block; }
+    .beitrag-html-frame {
+      width: 100%; height: 220px; border: 1px solid #e2e8f0; border-radius: 8px; background: #fff;
+    }
+    .beitrag-vorschau a.oeffnen-link { display: inline-block; margin-top: 0.4rem; font-size: 0.82rem; }
+
+    .beitrag-actions { display: flex; flex-direction: column; gap: 0.5rem; align-self: flex-start; }
+    .beitrag-actions .btn { white-space: nowrap; }
+    .btn-sm { padding: 0.4rem 0.9rem; font-size: 0.82rem; }
+    .btn-danger { background: #c0392b; color: #fff; }
+  </style>
+</head>
+<body>
+  <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+      <a href="https://lehrer-herrmann.de" class="navbar-logo">lehrer-herrmann.de</a>
+      <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="navbar-links" id="navbar-links">
+        <li><a href="https://lehrer-herrmann.de/#was-ist-neu">Was ist neu?</a></li>
+        <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+        <li class="navbar-gb-trenner" aria-hidden="true"><span class="navbar-gb-label">Geschützter Bereich</span></li>
+        <li><a href="/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+        <li><a href="https://lehrer-herrmann.de/blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+        <li><a href="https://lehrer-herrmann.de/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+      </ul>
+      <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+    </div>
+  </nav>
+
+  <nav class="nav admin-nav">
+    <a href="/admin/dashboard.html" class="nav-brand">⚙️ Admin</a>
+    <div class="nav-links">
+      <a href="/admin/dashboard.html">Dashboard</a>
+      <a href="/admin/schueler.html">Schüler</a>
+      <a href="/admin/quiz.html">Quizze</a>
+      <a href="/admin/vokabelpakete.html">Vokabeln</a>
+      <a href="/admin/leseabenteuer.html">Leseabenteuer</a>
+      <a href="/admin/deutschclub.html">Deutschclub</a>
+      <a href="/admin/blog.html" class="active">Blog</a>
+      <a href="/feedback.html">Feedback</a>
+      <button id="logout-btn" class="btn btn-ghost nav-action" style="font-size:.85rem">Ausloggen</button>
+      <a href="https://lehrer-herrmann.de" style="color:rgba(255,255,255,0.45);font-size:0.8rem;text-decoration:none;margin-left:0.5rem" title="Zur Homepage">🏠 Homepage</a>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-bottom:3rem;max-width:1100px">
+    <div class="toolbar">
+      <h1>✍️ Schüler*innenblog – Beiträge</h1>
+    </div>
+    <p style="color:var(--ink-soft);font-size:0.9rem;margin-bottom:1rem">
+      Neue Einreichungen erscheinen hier zuerst und werden erst nach dem Freischalten auf
+      <a href="https://lehrer-herrmann.de/blog.html" target="_blank" rel="noopener">lehrer-herrmann.de/blog.html</a> sichtbar.
+      HTML-Projekte laufen zur Prüfung in einer isolierten Sandbox-Vorschau (kein Zugriff auf Logins/Cookies).
+    </p>
+
+    <div class="section-label">⏳ Wartet auf Freischaltung</div>
+    <div class="card" id="pending-card"><div class="text-soft" style="padding:0.75rem">Wird geladen…</div></div>
+
+    <div class="section-label">✅ Veröffentlicht</div>
+    <div class="card" id="live-card"><div class="text-soft" style="padding:0.75rem">Wird geladen…</div></div>
+  </main>
+
+  <script>
+    const API = '/api/blog';
+
+    function esc(s) {
+      return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function fmtDate(iso) {
+      if (!iso) return '';
+      return new Date(iso).toLocaleString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+    }
+
+    function typLabel(t) {
+      return { pdf: '📄 PDF', bild: '🖼️ Bild', text: '✍️ Text', html: '💻 HTML-Projekt' }[t] || '📎 Datei';
+    }
+
+    function vorschauHTML(b) {
+      if (!b.datei_url) return '';
+      const url = b.datei_url;
+      if (b.datei_typ === 'bild') {
+        return `<img src="${esc(url)}" alt="Vorschau">`;
+      }
+      if (b.datei_typ === 'html') {
+        return `
+          <iframe class="beitrag-html-frame" src="${esc(url)}" sandbox="allow-scripts" title="Vorschau: ${esc(b.titel)}" loading="lazy"></iframe>
+          <a class="oeffnen-link" href="${esc(url)}" target="_blank" rel="noopener">↗ In neuem Tab öffnen</a>`;
+      }
+      return `<a class="oeffnen-link" href="${esc(url)}" target="_blank" rel="noopener">📎 Datei öffnen</a>`;
+    }
+
+    function rowHTML(b) {
+      const statusPill = b.genehmigt
+        ? '<span class="status-pill status-live">Veröffentlicht</span>'
+        : '<span class="status-pill status-pending">Wartet</span>';
+      return `
+        <div class="beitrag-row" data-id="${b.id}">
+          <div class="beitrag-info">
+            <span class="beitrag-typ-pill">${typLabel(b.datei_typ)}</span>
+            ${statusPill}
+            <h3>${esc(b.titel)}</h3>
+            <div class="beitrag-meta">👤 ${esc(b.autor)} · 🏫 Klasse ${esc(b.klasse)} · 📚 ${esc(b.fach)} · 📅 ${fmtDate(b.datum)}</div>
+            ${b.beschreibung ? `<div class="beitrag-beschreibung">${esc(b.beschreibung)}</div>` : ''}
+          </div>
+          <div class="beitrag-vorschau">${vorschauHTML(b)}</div>
+          <div class="beitrag-actions">
+            ${b.genehmigt ? '' : `<button class="btn btn-secondary btn-sm" onclick="freischalten(${b.id}, this)">✅ Freischalten</button>`}
+            <button class="btn btn-danger btn-sm" onclick="loeschen(${b.id}, this)">🗑️ Löschen</button>
+          </div>
+        </div>`;
+    }
+
+    async function laden() {
+      const pendingCard = document.getElementById('pending-card');
+      const liveCard    = document.getElementById('live-card');
+      try {
+        const res = await fetch(API + '/admin');
+        if (res.status === 401) { window.location.href = '/admin/index.html'; return; }
+        const beitraege = await res.json();
+
+        const pending = beitraege.filter(b => !b.genehmigt);
+        const live    = beitraege.filter(b => b.genehmigt);
+
+        pendingCard.innerHTML = pending.length
+          ? pending.map(rowHTML).join('')
+          : '<div class="text-soft" style="padding:0.75rem">Keine offenen Einreichungen.</div>';
+
+        liveCard.innerHTML = live.length
+          ? live.map(rowHTML).join('')
+          : '<div class="text-soft" style="padding:0.75rem">Noch keine veröffentlichten Beiträge.</div>';
+      } catch (e) {
+        pendingCard.innerHTML = '<div class="text-soft" style="padding:0.75rem">❌ Fehler beim Laden.</div>';
+        liveCard.innerHTML = '';
+      }
+    }
+
+    async function freischalten(id, btn) {
+      btn.disabled = true;
+      btn.textContent = '…';
+      await fetch(API + '/' + id + '/genehmigen', { method: 'POST' });
+      laden();
+    }
+
+    async function loeschen(id, btn) {
+      if (!confirm('Beitrag wirklich endgültig löschen?')) return;
+      btn.disabled = true;
+      await fetch(API + '/' + id, { method: 'DELETE' });
+      laden();
+    }
+
+    (async function init() {
+      const chk = await fetch('/api/auth/admin/check');
+      if (!chk.ok) { window.location.href = '/admin/index.html'; return; }
+      laden();
+    })();
+
+    document.getElementById('logout-btn').addEventListener('click', async () => {
+      await fetch('/api/auth/admin/logout', { method: 'POST' });
+      window.location.href = '/admin/index.html';
+    });
+  </script>
+
+  <footer class="site-footer" style="margin-top:3rem">
+    <div class="site-footer-inner">
+      <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+      <nav class="site-footer-links" aria-label="Rechtliche Links">
+        <a href="https://lehrer-herrmann.de/impressum.html">Impressum</a>
+        <a href="https://lehrer-herrmann.de/datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="/js/main.js?v=20260615c"></script>
+  <script src="/js/kolosseum-login-widget.js"></script>
+</body>
+</html>

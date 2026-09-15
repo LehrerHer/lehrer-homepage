@@ -1658,6 +1658,16 @@ footer {
     color: var(--farbe-text-hell);
 }
 
+/* HTML-Projektvorschau in der Lightbox (Sandbox-iframe) */
+.lightbox-html-frame {
+    width: 100%;
+    height: 60vh;
+    border: 1px solid var(--farbe-rahmen);
+    border-radius: var(--radius);
+    background-color: var(--farbe-weiss);
+    display: block;
+}
+
 /* Download-Link in der Lightbox */
 .lightbox-download {
     display: inline-block;
