@@ -28,6 +28,7 @@
             'pdf':      { icon: '📄', label: 'PDF-Dokument' },
             'bild':     { icon: '🖼️', label: 'Bild / Foto' },
             'text':     { icon: '✍️', label: 'Text / Gedicht' },
+            'html':     { icon: '💻', label: 'Informatik-Projekt' },
             'sonstige': { icon: '📎', label: 'Datei' }
         };
         return map[typ] || map['sonstige'];
@@ -121,6 +122,7 @@
         if (beitrag.dateiTyp === 'pdf'  && beitrag.datei) btnLabel = 'PDF öffnen →';
         if (beitrag.dateiTyp === 'bild')                  btnLabel = 'Bild ansehen →';
         if (beitrag.dateiTyp === 'text')                  btnLabel = 'Text lesen →';
+        if (beitrag.dateiTyp === 'html' && beitrag.datei) btnLabel = 'Projekt öffnen →';
 
         artikel.innerHTML = `
             ${vorschauHTML}
@@ -168,6 +170,24 @@
                     <p class="lightbox-meta">${metaText}</p>
                 </div>
                 <div class="lightbox-textinhalt">${escape(beitrag.textinhalt)}</div>`;
+
+        } else if (beitrag.dateiTyp === 'html' && beitrag.datei) {
+            lightboxInhalt.innerHTML = `
+                <div class="lightbox-text-header">
+                    ${badge}
+                    <h2>${escape(beitrag.titel)}</h2>
+                    <p class="lightbox-meta">${metaText}</p>
+                    ${beitrag.beschreibung ? `<p style="margin-top:8px;font-size:.93rem;color:var(--farbe-text-hell)">${escape(beitrag.beschreibung)}</p>` : ''}
+                </div>
+                <p style="font-size:.82rem;color:var(--farbe-text-hell);margin-bottom:10px;">
+                    🔒 Läuft isoliert (Sandbox) – ohne Zugriff auf diese Webseite oder Logins.
+                </p>
+                <iframe class="lightbox-html-frame" src="${escape(beitrag.datei)}"
+                        sandbox="allow-scripts" title="${escape(beitrag.titel)}" loading="lazy"></iframe>
+                <br>
+                <a href="${escape(beitrag.datei)}" target="_blank" rel="noopener" class="lightbox-download">
+                    ↗ In neuem Tab öffnen
+                </a>`;
 
         } else if (beitrag.dateiTyp === 'bild' && beitrag.datei) {
             lightboxInhalt.innerHTML = `
