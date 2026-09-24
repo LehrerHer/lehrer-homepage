@@ -190,18 +190,20 @@
         if (!ranglRes.ok) return;
         const students = await ranglRes.json();
 
-        var angriffeUebrig = 4;
+        var angriffeUebrig = 5;
+        var maxAngriffeProTag = 5;
         if (uebersichtRes.ok) {
           const ud = await uebersichtRes.json();
           angriffeUebrig = ud.angriffeUebrig;
+          maxAngriffeProTag = ud.maxAngriffeProTag;
         }
         var limitReached = angriffeUebrig <= 0;
 
         const hinweis = document.getElementById('angriffe-hinweis');
         if (hinweis) {
           hinweis.textContent = limitReached
-            ? 'Du hast dein Tageslimit von 4 Angriffen erreicht – morgen geht’s weiter!'
-            : `Noch ${angriffeUebrig} von 4 Angriffen heute übrig.`;
+            ? `Du hast dein Tageslimit von ${maxAngriffeProTag} Angriffen erreicht – morgen geht’s weiter!`
+            : `Noch ${angriffeUebrig} von ${maxAngriffeProTag} Angriffen heute übrig.`;
         }
 
         const tbody = document.getElementById('rangliste-body');

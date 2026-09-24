@@ -47,7 +47,7 @@ function equippedItems(sid) {
   ).all(sid).map(r => r.item_id);
 }
 
-const MAX_ANGRIFFE_PRO_TAG = 4;
+const MAX_ANGRIFFE_PRO_TAG = 5;
 const MUENZEN_BASIS = 15; // Münzen bei gleich starkem Gegner
 
 // Münzen für einen erfolgreichen Angriff: skaliert mit der relativen Stärke
