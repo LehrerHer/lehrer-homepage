@@ -241,10 +241,20 @@
 
     <div class="form-row bonus-row" id="karlchenRow">
       <span class="bonus-group-label">Karlchen:</span>
-      <label><input type="radio" name="karlchenSide" id="karlchenNone" value="none" checked> keiner</label>
-      <label><input type="radio" name="karlchenSide" id="karlchenA" value="A"> <span class="side-a-label">Re</span></label>
-      <label><input type="radio" name="karlchenSide" id="karlchenB" value="B"> <span class="side-b-label">Kontra</span></label>
+      <span class="side-a-label">Re</span>
+      <span class="pill-group" id="karlchenAGroup" role="group" aria-label="Re Karlchen">
+        <button type="button" class="pill-btn selected" data-value="0">0</button>
+        <button type="button" class="pill-btn" data-value="1">1</button>
+        <button type="button" class="pill-btn" data-value="2">2</button>
+      </span>
+      <span class="side-b-label">Kontra</span>
+      <span class="pill-group" id="karlchenBGroup" role="group" aria-label="Kontra Karlchen">
+        <button type="button" class="pill-btn selected" data-value="0">0</button>
+        <button type="button" class="pill-btn" data-value="1">1</button>
+        <button type="button" class="pill-btn" data-value="2">2</button>
+      </span>
     </div>
+    <p class="chip-hint">0 = kein Karlchen, 1 = aktiv (mit eigenem Karlchen den letzten Stich geholt) ODER passiv (gegnerisches Karlchen gefangen), 2 = beides in derselben Runde.</p>
 
     <div class="form-row bonus-row" id="fuchsRow">
       <span class="bonus-group-label">Fuchs gefangen:</span>
@@ -290,10 +300,12 @@
       Die Augen beider Seiten ergeben immer 240 — ein Feld genügt, das andere wird automatisch berechnet;
       Gewinner und Augen-Bonus (unter 90/60/30) ergeben sich daraus von selbst. Sonderpunkte (Doppelkopf,
       Karlchen, Fuchs gefangen) können bei Normalspielen jeder Seite unabhängig vom Rundenergebnis
-      gutgeschrieben werden und werden NICHT durch Ansagen verdoppelt. Im Solospiel entfallen diese drei
-      Sonderpunkte komplett. „Re“/„Kontra angesagt“ verdoppelt nur die Grund- und Augenpunkte. Bei Solo
-      zählt das Ergebnis dreifach (Solist gegen jeden der drei Gegner). Eine Runde kann jederzeit über
-      „Bearbeiten“ korrigiert oder gelöscht werden.
+      gutgeschrieben werden und werden NICHT durch Ansagen verdoppelt. Bei Karlchen zählen aktiv (mit
+      eigenem Karlchen den letzten Stich geholt) und passiv (gegnerisches Karlchen gefangen) getrennt,
+      in derselben Runde sind daher bis zu 2 Karlchen-Punkte für dieselbe Seite möglich. Im Solospiel
+      entfallen diese drei Sonderpunkte komplett. „Re“/„Kontra angesagt“ verdoppelt nur die Grund- und
+      Augenpunkte. Bei Solo zählt das Ergebnis dreifach (Solist gegen jeden der drei Gegner). Eine Runde
+      kann jederzeit über „Bearbeiten“ korrigiert oder gelöscht werden.
     </div>
   </div>
 </div>
@@ -369,6 +381,8 @@
   const ansageB = document.getElementById('ansageB');
   const doppelkopfAValue = document.getElementById('doppelkopfAValue');
   const doppelkopfBValue = document.getElementById('doppelkopfBValue');
+  const karlchenAGroup = document.getElementById('karlchenAGroup');
+  const karlchenBGroup = document.getElementById('karlchenBGroup');
   const fuchsAGroup = document.getElementById('fuchsAGroup');
   const fuchsBGroup = document.getElementById('fuchsBGroup');
   const previewBox = document.getElementById('previewBox');
@@ -378,6 +392,7 @@
   let reSelection = [];   // Indizes (innerhalb activePlayers()) der Re-Spieler
   let soloSelection = -1; // Index (innerhalb activePlayers()) des Solisten
   let doppelkopfACount = 0, doppelkopfBCount = 0; // per Stepper-Buttons
+  let karlchenACount = 0, karlchenBCount = 0;     // per 0/1/2-Auswahl (aktiv + passiv moeglich)
   let fuchsACount = 0, fuchsBCount = 0;           // per 0/1/2-Auswahl
 
   /* ---------- Setup ---------- */
@@ -519,9 +534,10 @@
     ansageA.checked = false; ansageB.checked = false;
     doppelkopfACount = 0; doppelkopfBCount = 0;
     doppelkopfAValue.textContent = '0'; doppelkopfBValue.textContent = '0';
+    karlchenACount = 0; karlchenBCount = 0;
+    setPillSelected(karlchenAGroup, 0); setPillSelected(karlchenBGroup, 0);
     fuchsACount = 0; fuchsBCount = 0;
     setPillSelected(fuchsAGroup, 0); setPillSelected(fuchsBGroup, 0);
-    document.getElementById('karlchenNone').checked = true;
     rebuildTeamArea();
   }
 
@@ -551,12 +567,13 @@
     karlchenRow.classList.toggle('bonus-disabled', isSolo);
     fuchsRow.classList.toggle('bonus-disabled', isSolo);
     doppelkopfRow.querySelectorAll('.stepper-btn').forEach(b => { b.disabled = isSolo; });
-    karlchenRow.querySelectorAll('input[type="radio"]').forEach(r => { r.disabled = isSolo; });
+    karlchenRow.querySelectorAll('.pill-btn').forEach(b => { b.disabled = isSolo; });
     fuchsRow.querySelectorAll('.pill-btn').forEach(b => { b.disabled = isSolo; });
     if(isSolo){
       doppelkopfACount = 0; doppelkopfBCount = 0;
       doppelkopfAValue.textContent = '0'; doppelkopfBValue.textContent = '0';
-      document.getElementById('karlchenNone').checked = true;
+      karlchenACount = 0; karlchenBCount = 0;
+      setPillSelected(karlchenAGroup, 0); setPillSelected(karlchenBGroup, 0);
       fuchsACount = 0; fuchsBCount = 0;
       setPillSelected(fuchsAGroup, 0); setPillSelected(fuchsBGroup, 0);
     }
@@ -626,7 +643,6 @@
     el.addEventListener('input', updatePreview);
     el.addEventListener('change', updatePreview);
   });
-  document.querySelectorAll('input[name="karlchenSide"]').forEach(r => r.addEventListener('change', updatePreview));
 
   // Doppelkopf: kleine +/- Stepper statt Zahlenfeld.
   function wireStepper(containerId, valueSpan, getVal, setVal){
@@ -642,7 +658,8 @@
   wireStepper('doppelkopfAStepper', doppelkopfAValue, ()=>doppelkopfACount, v=>{ doppelkopfACount = v; });
   wireStepper('doppelkopfBStepper', doppelkopfBValue, ()=>doppelkopfBCount, v=>{ doppelkopfBCount = v; });
 
-  // Fuchs gefangen: anklickbare 0/1/2-Option statt Zahlenfeld.
+  // Karlchen und Fuchs gefangen: anklickbare 0/1/2-Option statt Zahlenfeld
+  // (Karlchen: aktiv + passiv koennen in derselben Runde beide zaehlen).
   function setPillSelected(container, value){
     container.querySelectorAll('.pill-btn').forEach(b=>{
       b.classList.toggle('selected', parseInt(b.dataset.value,10) === value);
@@ -658,6 +675,8 @@
       });
     });
   }
+  wirePillGroup(karlchenAGroup, v=>{ karlchenACount = v; });
+  wirePillGroup(karlchenBGroup, v=>{ karlchenBCount = v; });
   wirePillGroup(fuchsAGroup, v=>{ fuchsACount = v; });
   wirePillGroup(fuchsBGroup, v=>{ fuchsBCount = v; });
 
@@ -688,8 +707,8 @@
     if(round.ansageA) mult *= 2;
     if(round.ansageB) mult *= 2;
     const basisValue = basis * mult;
-    const bonusA = round.doppelkopfA + (round.karlchenSide==='A' ? 1 : 0) + round.fuchsA;
-    const bonusB = round.doppelkopfB + (round.karlchenSide==='B' ? 1 : 0) + round.fuchsB;
+    const bonusA = round.doppelkopfA + round.karlchenA + round.fuchsA;
+    const bonusB = round.doppelkopfB + round.karlchenB + round.fuchsB;
     // netForA: Punktesaldo aus Sicht von Re/Solist. Grund- und Augenpunkte
     // gehen an die Gewinnerseite, Sonderpunkte zählen unabhängig davon für
     // die Seite, die sie erspielt hat (Fuchs/Karlchen/Doppelkopf koennen
@@ -723,17 +742,15 @@
       return {error: 'Die Augen beider Seiten müssen zusammen 240 ergeben.'};
     }
 
-    const karlchenChecked = document.querySelector('input[name="karlchenSide"]:checked');
-    const karlchenSide = (karlchenChecked && karlchenChecked.value !== 'none') ? karlchenChecked.value : null;
-
     const common = {
       sitOutIdx,
       augenA: augenAVal, augenB: augenBVal,
       ansageA: ansageA.checked, ansageB: ansageB.checked,
-      // Im Solospiel gibt es keine Doppelkopf-/Karlchen-Sonderpunkte.
+      // Im Solospiel gibt es keine Doppelkopf-/Karlchen-/Fuchs-Sonderpunkte.
       doppelkopfA: isSolo ? 0 : doppelkopfACount,
       doppelkopfB: isSolo ? 0 : doppelkopfBCount,
-      karlchenSide: isSolo ? null : karlchenSide,
+      karlchenA: isSolo ? 0 : karlchenACount,
+      karlchenB: isSolo ? 0 : karlchenBCount,
       fuchsA: isSolo ? 0 : fuchsACount,
       fuchsB: isSolo ? 0 : fuchsBCount
     };
@@ -768,8 +785,8 @@
     if(round.ansageB) bonusParts.push(isSolo ? 'Gegner angesagt' : 'Kontra angesagt');
     if(round.doppelkopfA) bonusParts.push(round.doppelkopfA + '× Doppelkopf (' + (isSolo?'Solist':'Re') + ')');
     if(round.doppelkopfB) bonusParts.push(round.doppelkopfB + '× Doppelkopf (' + (isSolo?'Gegner':'Kontra') + ')');
-    if(round.karlchenSide==='A') bonusParts.push('Karlchen (' + (isSolo?'Solist':'Re') + ')');
-    if(round.karlchenSide==='B') bonusParts.push('Karlchen (' + (isSolo?'Gegner':'Kontra') + ')');
+    if(round.karlchenA) bonusParts.push(round.karlchenA + '× Karlchen (' + (isSolo?'Solist':'Re') + ')');
+    if(round.karlchenB) bonusParts.push(round.karlchenB + '× Karlchen (' + (isSolo?'Gegner':'Kontra') + ')');
     if(round.fuchsA) bonusParts.push(round.fuchsA + '× Fuchs gefangen (' + (isSolo?'Solist':'Re') + ')');
     if(round.fuchsB) bonusParts.push(round.fuchsB + '× Fuchs gefangen (' + (isSolo?'Gegner':'Kontra') + ')');
     if(round.sitOutIdx !== null && round.sitOutIdx !== undefined) bonusParts.push(players[round.sitOutIdx].name + ' sitzt aus');
@@ -903,10 +920,10 @@
     ansageB.checked = !!round.ansageB;
     doppelkopfACount = round.doppelkopfA; doppelkopfAValue.textContent = String(round.doppelkopfA);
     doppelkopfBCount = round.doppelkopfB; doppelkopfBValue.textContent = String(round.doppelkopfB);
+    karlchenACount = round.karlchenA; setPillSelected(karlchenAGroup, round.karlchenA);
+    karlchenBCount = round.karlchenB; setPillSelected(karlchenBGroup, round.karlchenB);
     fuchsACount = round.fuchsA; setPillSelected(fuchsAGroup, round.fuchsA);
     fuchsBCount = round.fuchsB; setPillSelected(fuchsBGroup, round.fuchsB);
-    const karlchenId = round.karlchenSide === 'A' ? 'karlchenA' : (round.karlchenSide === 'B' ? 'karlchenB' : 'karlchenNone');
-    document.getElementById(karlchenId).checked = true;
     updatePreview();
     window.scrollTo({top: gamePanel.offsetTop - 10, behavior:'smooth'});
   }
