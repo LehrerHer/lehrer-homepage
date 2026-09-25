@@ -23,15 +23,18 @@ const storage = multer.diskStorage({
 });
 
 const ERLAUBTE_TYPEN = ['image/jpeg','image/png','image/webp','image/gif',
-                        'application/pdf','text/plain','text/html'];
+                        'application/pdf','text/plain','text/html',
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
 const MAX_GROESSE = 10 * 1024 * 1024; // 10 MB
+
+class DateiTypFehler extends Error {}
 
 const upload = multer({
   storage,
   limits: { fileSize: MAX_GROESSE },
   fileFilter: (_req, file, cb) => {
     if (ERLAUBTE_TYPEN.includes(file.mimetype)) return cb(null, true);
-    cb(new Error('Dateityp nicht erlaubt (erlaubt: JPG, PNG, WebP, GIF, PDF, TXT, HTML)'));
+    cb(new DateiTypFehler('Dateityp nicht erlaubt (erlaubt: PDF, JPG, PNG, WebP, GIF, TXT, DOCX, HTML)'));
   }
 });
 
@@ -139,6 +142,26 @@ router.delete('/:id', requireAdmin, (req, res) => {
   } catch (e) {
     res.status(500).json({ error: 'Datenbankfehler' });
   }
+});
+
+// ── Fehlerbehandlung für den Datei-Upload ───────────────────────────
+// (Multer/fileFilter-Fehler wie "Dateityp nicht erlaubt" oder "Datei zu groß"
+// landen sonst als generischer 500-Fehler statt einer verständlichen Meldung.)
+router.use((err, req, res, next) => {
+  if (req.file) fs.unlink(req.file.path, () => {});
+
+  if (err instanceof multer.MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ error: 'Die Datei ist zu groß (maximal 10 MB).' });
+    }
+    return res.status(400).json({ error: 'Fehler beim Datei-Upload: ' + err.message });
+  }
+  if (err instanceof DateiTypFehler) {
+    return res.status(400).json({ error: err.message });
+  }
+
+  console.error('Blog-Upload Fehler:', err);
+  res.status(500).json({ error: 'Unerwarteter Server-Fehler.' });
 });
 
 module.exports = router;
