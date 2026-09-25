@@ -930,6 +930,14 @@ function wiederholenAudio() {
   speak(letzterText);
 }
 
+const EMOJI_SETS = [
+  ['🍎','🍊','🍋','🍇','🍓'],
+  ['🐱','🐶','🐸','🐼','🐨'],
+  ['⭐','🌙','☀️','🌈','🌸'],
+  ['🚗','🚂','✈️','🚀','🛸'],
+  ['🌺','🌻','🌷','🌼','🍀']
+];
+
 // ===== STATIONEN-DEFINITIONEN =====
 const STATIONEN_DEF = [
   {
@@ -996,13 +1004,6 @@ function zufallAus(arr) { return arr[Math.floor(Math.random()*arr.length)]; }
 function emojiFuerZahl(n, emoji) {
   return Array(n).fill(emoji).join('');
 }
-const EMOJI_SETS = [
-  ['🍎','🍊','🍋','🍇','🍓'],
-  ['🐱','🐶','🐸','🐼','🐨'],
-  ['⭐','🌙','☀️','🌈','🌸'],
-  ['🚗','🚂','✈️','🚀','🛸'],
-  ['🌺','🌻','🌷','🌼','🍀']
-];
 
 function generiere_subitizing() {
   // Subitizing: 1-5 Punkte, kurz gezeigt
