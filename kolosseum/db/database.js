@@ -171,6 +171,21 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_feedback_pending_group ON feedback_pending_notes(group_id);
 `);
 
+// Feedback-Notizen: eigene Ideen/Beobachtungen des Lernbegleiters zu einer Lerngruppe als
+// Ganzes (Kategorie "Feedback") – nicht an eine einzelne Person gebunden, daher eigene Tabelle
+// statt feedback_notes.student_id (dort NOT NULL).
+db.exec(`
+  CREATE TABLE IF NOT EXISTS feedback_group_notes (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    group_id     INTEGER NOT NULL REFERENCES feedback_groups(id) ON DELETE CASCADE,
+    date         TEXT NOT NULL,
+    text         TEXT NOT NULL,
+    raw_input_id INTEGER REFERENCES feedback_raw_inputs(id) ON DELETE SET NULL,
+    created_at   TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+  CREATE INDEX IF NOT EXISTS idx_feedback_group_notes_group ON feedback_group_notes(group_id);
+`);
+
 // Geo Abijahrgang 2002: Kontaktliste fürs Klassentreffen – kein Login,
 // Zugriff nur über Geheimlink + Shared-Secret-Header (siehe routes/geo-abi2002.js)
 db.exec(`
