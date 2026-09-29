@@ -42,6 +42,10 @@
     .fb-zuklaeren-text { margin: 0 0 0.6rem; }
     .fb-zuklaeren-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
     .fb-zuklaeren-select { flex: 1 1 200px; min-width: 180px; }
+    .fb-cluster { margin-top: 1.1rem; }
+    .fb-cluster:first-of-type { margin-top: 0.75rem; }
+    .fb-cluster-titel { display: flex; align-items: center; gap: 0.4rem; margin: 0 0 0.4rem; font-size: 0.95rem; }
+    .fb-cluster-anzahl { color: rgba(0,0,0,0.4); font-size: 0.8rem; font-weight: normal; }
   </style>
 </head>
 <body>
@@ -185,6 +189,31 @@
     function kategorieBadge(kategorie) {
       const k = kategorie || '';
       return `<span class="fb-kategorie" data-kategorie="${escapeHtml(k)}">${escapeHtml(k || 'Unklar')}</span>`;
+    }
+
+    // Gruppiert Notizen nach ihrer bestehenden Kategorie, statt sie nur chronologisch
+    // aufzulisten – macht Muster über die Zeit sichtbar (z. B. wiederkehrendes Verhalten).
+    const KATEGORIE_REIHENFOLGE = ['Fachlich', 'Sozial', 'Verhalten', 'Verbindlichkeit'];
+
+    function notizClusterHtml(notes) {
+      const gruppen = new Map();
+      for (const n of notes) {
+        const key = KATEGORIE_REIHENFOLGE.includes(n.category) ? n.category : '';
+        if (!gruppen.has(key)) gruppen.set(key, []);
+        gruppen.get(key).push(n);
+      }
+      const keys = [...KATEGORIE_REIHENFOLGE.filter(k => gruppen.has(k)), ...(gruppen.has('') ? [''] : [])];
+
+      return keys.map(kategorie => {
+        const gruppenNotizen = gruppen.get(kategorie);
+        return `
+          <div class="fb-cluster">
+            <h4 class="fb-cluster-titel">${kategorieBadge(kategorie)}<span class="fb-cluster-anzahl">(${gruppenNotizen.length})</span></h4>
+            <ul class="fb-notiz-liste">
+              ${gruppenNotizen.map(n => `<li><span class="fb-notiz-datum">${escapeHtml(n.date)}</span>${escapeHtml(n.text)}</li>`).join('')}
+            </ul>
+          </div>`;
+      }).join('');
     }
 
     async function init() {
@@ -444,9 +473,7 @@
 
         const name = `${escapeHtml(data.student.first_name)} ${escapeHtml(data.student.last_name)}`;
         notizenEl.innerHTML = `<h3>${name}</h3>` + (data.notes.length
-          ? '<ul class="fb-notiz-liste">' + data.notes.map(n =>
-              `<li><span class="fb-notiz-datum">${escapeHtml(n.date)} ${kategorieBadge(n.category)}</span>${escapeHtml(n.text)}</li>`
-            ).join('') + '</ul>'
+          ? notizClusterHtml(data.notes)
           : '<p>Noch keine Notizen.</p>');
       } catch {
         notizenEl.textContent = 'Verbindungsfehler.';
