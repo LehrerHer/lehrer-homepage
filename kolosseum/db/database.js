@@ -206,6 +206,25 @@ db.exec(`
   );
 `);
 
+// Fortbildung, Variante 2: anonymer Feedbackbogen (Skalen als JSON-Listen, Werte pp/p/m/mm).
+// Bewusst OHNE Name, IP oder User-Agent.
+db.exec(`
+  CREATE TABLE IF NOT EXISTS fortbildung_bogen (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    erfahrung  TEXT NOT NULL DEFAULT '',
+    gesamt     TEXT NOT NULL DEFAULT '[]',
+    module     TEXT NOT NULL DEFAULT '[]',
+    mitnehmen  TEXT NOT NULL DEFAULT '',
+    gefehlt    TEXT NOT NULL DEFAULT '',
+    wunsch     TEXT NOT NULL DEFAULT '',
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+  CREATE TABLE IF NOT EXISTS fortbildung_bogen_loeschung (
+    id         INTEGER PRIMARY KEY CHECK (id = 1),
+    geplant_am TEXT NOT NULL
+  );
+`);
+
 // Geo Abijahrgang 2002: Kontaktliste fürs Klassentreffen – kein Login,
 // Zugriff nur über Geheimlink + Shared-Secret-Header (siehe routes/geo-abi2002.js)
 db.exec(`
