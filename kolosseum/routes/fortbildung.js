@@ -62,4 +62,57 @@ router.get('/', requireAdmin, (req, res) => {
   }
 });
 
+// --- Geplante Löschung: 7 Tage nach Klick, bis dahin widerrufbar ---
+
+// Löscht alle Einsendungen, sobald der geplante Zeitpunkt erreicht ist.
+function faelligeLoeschungAusfuehren() {
+  try {
+    const zeile = db.prepare("SELECT geplant_am FROM fortbildung_loeschung WHERE id = 1").get();
+    if (!zeile) return;
+    const faellig = db.prepare("SELECT datetime('now') >= ? AS faellig").get(zeile.geplant_am).faellig;
+    if (!faellig) return;
+    db.transaction(() => {
+      db.prepare('DELETE FROM fortbildung_feedback').run();
+      db.prepare('DELETE FROM fortbildung_loeschung').run();
+    })();
+    console.log('Fortbildung: geplante Löschung ausgeführt.');
+  } catch (e) {
+    console.error('Fortbildung Löschung Fehler:', e);
+  }
+}
+faelligeLoeschungAusfuehren();
+setInterval(faelligeLoeschungAusfuehren, 60 * 60 * 1000).unref();
+
+// GET /api/fortbildung/loeschung – nur Admin: geplanter Zeitpunkt (oder null)
+router.get('/loeschung', requireAdmin, (req, res) => {
+  faelligeLoeschungAusfuehren();
+  const zeile = db.prepare('SELECT geplant_am FROM fortbildung_loeschung WHERE id = 1').get();
+  res.json({ geplant_am: zeile ? zeile.geplant_am : null });
+});
+
+// POST /api/fortbildung/loeschung – nur Admin: Löschung in 7 Tagen planen
+router.post('/loeschung', requireAdmin, (req, res) => {
+  try {
+    db.prepare(
+      "INSERT OR REPLACE INTO fortbildung_loeschung (id, geplant_am) VALUES (1, datetime('now', '+7 days'))"
+    ).run();
+    const zeile = db.prepare('SELECT geplant_am FROM fortbildung_loeschung WHERE id = 1').get();
+    res.json({ ok: true, geplant_am: zeile.geplant_am });
+  } catch (e) {
+    console.error('Fortbildung Löschung planen Fehler:', e);
+    res.status(500).json({ error: 'Datenbankfehler' });
+  }
+});
+
+// DELETE /api/fortbildung/loeschung – nur Admin: geplante Löschung rückgängig machen
+router.delete('/loeschung', requireAdmin, (req, res) => {
+  try {
+    db.prepare('DELETE FROM fortbildung_loeschung').run();
+    res.json({ ok: true });
+  } catch (e) {
+    console.error('Fortbildung Löschung abbrechen Fehler:', e);
+    res.status(500).json({ error: 'Datenbankfehler' });
+  }
+});
+
 module.exports = router;

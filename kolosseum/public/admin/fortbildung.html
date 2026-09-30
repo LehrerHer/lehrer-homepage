@@ -51,6 +51,7 @@
       <button type="button" class="btn" id="fa-md">Markdown herunterladen</button>
       <button type="button" class="btn" id="fa-csv">CSV herunterladen</button>
       <button type="button" class="btn" id="fa-neu">Neu laden</button>
+      <button type="button" class="btn" id="fa-loeschen" style="color:#dc2626">Alle löschen</button>
     </div>
     <div class="fa-status" id="fa-status" role="status" aria-live="polite"></div>
     <div id="fa-liste"></div>
@@ -135,12 +136,57 @@
       document.getElementById('fa-md').addEventListener('click', () => herunterladen('fortbildung-rueckmeldungen.md', markdown(), 'text/markdown;charset=utf-8'));
       document.getElementById('fa-csv').addEventListener('click', () => herunterladen('fortbildung-rueckmeldungen.csv', csv(), 'text/csv;charset=utf-8'));
       document.getElementById('fa-neu').addEventListener('click', () => laden().then(() => meldung('Aktualisiert.')));
+      const loeschBtn = document.getElementById('fa-loeschen');
+      let geplantAm = null;
+
+      function datumDe(sqlUtc) {
+        return new Date(sqlUtc.replace(' ', 'T') + 'Z').toLocaleDateString('de-DE');
+      }
+
+      function loeschButtonAktualisieren() {
+        if (geplantAm) {
+          loeschBtn.textContent = 'Löschung am ' + datumDe(geplantAm) + ' – rückgängig machen';
+          loeschBtn.style.color = '#6b7280';
+          loeschBtn.style.background = '#e5e7eb';
+        } else {
+          loeschBtn.textContent = 'Alle löschen';
+          loeschBtn.style.color = '#dc2626';
+          loeschBtn.style.background = '';
+        }
+      }
+
+      async function loeschStatusLaden() {
+        const res = await fetch('/api/fortbildung/loeschung');
+        if (res.ok) geplantAm = (await res.json()).geplant_am;
+        loeschButtonAktualisieren();
+      }
+
+      loeschBtn.addEventListener('click', async () => {
+        try {
+          if (geplantAm) {
+            const res = await fetch('/api/fortbildung/loeschung', { method: 'DELETE' });
+            if (!res.ok) { meldung('Rückgängig machen fehlgeschlagen.'); return; }
+            geplantAm = null;
+            loeschButtonAktualisieren();
+            meldung('✓ Geplante Löschung rückgängig gemacht.');
+            return;
+          }
+          if (!confirm('Sollen alle Daten in 7 Tagen gelöscht werden?')) return;
+          const res = await fetch('/api/fortbildung/loeschung', { method: 'POST' });
+          if (!res.ok) { meldung('Löschung konnte nicht geplant werden.'); return; }
+          geplantAm = (await res.json()).geplant_am;
+          loeschButtonAktualisieren();
+          meldung('✓ Alle Daten werden am ' + datumDe(geplantAm) + ' gelöscht. Bis dahin ist das rückgängig zu machen.');
+        } catch {
+          meldung('Verbindungsfehler.');
+        }
+      });
       document.getElementById('logout-btn').addEventListener('click', async () => {
         await fetch('/api/auth/admin/logout', { method: 'POST' });
         window.location.href = '/admin/index.html';
       });
 
-      laden().catch(() => meldung('Verbindungsfehler.'));
+      laden().then(loeschStatusLaden).catch(() => meldung('Verbindungsfehler.'));
     })();
   </script>
   <script src="/js/main.js?v=20260615c"></script>
