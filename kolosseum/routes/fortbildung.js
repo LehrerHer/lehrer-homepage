@@ -62,4 +62,15 @@ router.get('/', requireAdmin, (req, res) => {
   }
 });
 
+// DELETE /api/fortbildung – nur Admin: löscht alle Einsendungen (nach der Auswertung)
+router.delete('/', requireAdmin, (req, res) => {
+  try {
+    const { changes } = db.prepare('DELETE FROM fortbildung_feedback').run();
+    res.json({ ok: true, geloescht: changes });
+  } catch (e) {
+    console.error('Fortbildung DELETE Fehler:', e);
+    res.status(500).json({ error: 'Datenbankfehler' });
+  }
+});
+
 module.exports = router;
