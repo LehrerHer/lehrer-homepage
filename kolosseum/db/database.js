@@ -198,6 +198,14 @@ db.exec(`
   );
 `);
 
+// Fortbildung: geplante Löschung (eine Zeile, id = 1). Leer = nichts geplant.
+db.exec(`
+  CREATE TABLE IF NOT EXISTS fortbildung_loeschung (
+    id         INTEGER PRIMARY KEY CHECK (id = 1),
+    geplant_am TEXT NOT NULL
+  );
+`);
+
 // Geo Abijahrgang 2002: Kontaktliste fürs Klassentreffen – kein Login,
 // Zugriff nur über Geheimlink + Shared-Secret-Header (siehe routes/geo-abi2002.js)
 db.exec(`
