@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rückmeldung zur Fortbildung</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="/css/style.css?v=20260615c">
+  <style>
+    .fb-wrap { max-width: 640px; margin: 0 auto; padding-bottom: 3rem; }
+    .fb-hinweis { background: #fffbeb; border: 1px solid #f59e0b; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1.25rem; font-weight: 600; }
+    .fb-zaehler { font-size: 0.8rem; color: rgba(0,0,0,0.5); text-align: right; }
+    .fb-wrap textarea { min-height: 110px; font-size: 1rem; }
+    .fb-error { color: #dc2626; margin-bottom: 0.75rem; }
+    .fb-danke { text-align: center; }
+    .fb-danke .fb-haken { font-size: 3rem; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+      <a href="https://lehrer-herrmann.de" class="navbar-logo">lehrer-herrmann.de</a>
+      <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="navbar-links" id="navbar-links">
+        <li><a href="https://lehrer-herrmann.de/#was-ist-neu">Was ist neu?</a></li>
+        <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+        <li class="navbar-gb-trenner" aria-hidden="true"><span class="navbar-gb-label">Geschützter Bereich</span></li>
+        <li><a href="/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+        <li><a href="https://lehrer-herrmann.de/blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+        <li><a href="https://lehrer-herrmann.de/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+      </ul>
+      <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+    </div>
+  </nav>
+
+  <main class="container fb-wrap">
+    <h1>📝 Deine Rückmeldung</h1>
+    <p>Fortbildung „Erste Schritte mit Claude.ai“ – anonym, ohne Anmeldung.</p>
+
+    <div class="card" id="fb-karte">
+      <p class="fb-hinweis" role="note">Bitte keine Namen von Personen oder Schüler*innen nennen.</p>
+      <form id="fb-form" novalidate>
+        <div class="form-group">
+          <label for="fb-gefallen">Das hat mir gefallen</label>
+          <textarea id="fb-gefallen" maxlength="600" placeholder="Maximal 2 Sätze"></textarea>
+          <span class="fb-zaehler" data-fuer="fb-gefallen"></span>
+        </div>
+        <div class="form-group">
+          <label for="fb-aendern">Das würde ich ändern</label>
+          <textarea id="fb-aendern" maxlength="600" placeholder="Maximal 2 Sätze"></textarea>
+          <span class="fb-zaehler" data-fuer="fb-aendern"></span>
+        </div>
+        <div class="form-group">
+          <label for="fb-schritt">Mein wichtigster nächster Schritt</label>
+          <textarea id="fb-schritt" maxlength="300" placeholder="Ein Satz"></textarea>
+          <span class="fb-zaehler" data-fuer="fb-schritt"></span>
+        </div>
+        <div class="fb-error" id="fb-error" role="alert" aria-live="polite"></div>
+        <button type="submit" class="btn btn-primary" id="fb-submit" style="width:100%">Absenden</button>
+      </form>
+    </div>
+
+    <div class="card fb-danke" id="fb-danke" style="display:none">
+      <div class="fb-haken" aria-hidden="true">✅</div>
+      <h2>Vielen Dank!</h2>
+      <p>Deine Rückmeldung ist angekommen.</p>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      const form = document.getElementById('fb-form');
+      const errEl = document.getElementById('fb-error');
+      const btn = document.getElementById('fb-submit');
+
+      document.querySelectorAll('.fb-zaehler').forEach(z => {
+        const feld = document.getElementById(z.dataset.fuer);
+        const aktualisieren = () => { z.textContent = feld.value.length + ' / ' + feld.maxLength; };
+        feld.addEventListener('input', aktualisieren);
+        aktualisieren();
+      });
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errEl.textContent = '';
+        const daten = {
+          gefallen: document.getElementById('fb-gefallen').value,
+          aendern: document.getElementById('fb-aendern').value,
+          naechster_schritt: document.getElementById('fb-schritt').value
+        };
+        if (!daten.gefallen.trim() && !daten.aendern.trim() && !daten.naechster_schritt.trim()) {
+          errEl.textContent = 'Bitte mindestens ein Feld ausfüllen.';
+          return;
+        }
+        btn.disabled = true; btn.textContent = 'Sende …';
+        try {
+          const res = await fetch('/api/fortbildung', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(daten)
+          });
+          const antwort = await res.json().catch(() => ({}));
+          if (!res.ok) { errEl.textContent = antwort.error || 'Fehler beim Senden.'; return; }
+          document.getElementById('fb-karte').style.display = 'none';
+          document.getElementById('fb-danke').style.display = 'block';
+        } catch {
+          errEl.textContent = 'Verbindungsfehler. Bitte erneut versuchen.';
+        } finally {
+          btn.disabled = false; btn.textContent = 'Absenden';
+        }
+      });
+    })();
+  </script>
+  <script src="/js/main.js?v=20260615c"></script>
+  <script src="/js/kolosseum-login-widget.js"></script>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+      <nav class="site-footer-links" aria-label="Rechtliche Links">
+        <a href="https://lehrer-herrmann.de/impressum.html">Impressum</a>
+        <a href="https://lehrer-herrmann.de/datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
