@@ -27,6 +27,7 @@ const kiWerkstattRoutes      = require('./routes/ki-werkstatt');
 const vokabeltrainerRoutes   = require('./routes/vokabeltrainer');
 const deutschclubRoutes      = require('./routes/deutschclub');
 const fortbildungRoutes      = require('./routes/fortbildung');
+const fortbildungBogenRoutes = require('./routes/fortbildung-bogen');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -106,6 +107,7 @@ app.use('/api/ki-werkstatt', kiWerkstattRoutes);
 app.use('/api/vokabeltrainer', vokabeltrainerRoutes);
 app.use('/api/deutschclub', deutschclubRoutes);
 app.use('/api/fortbildung', fortbildungRoutes);
+app.use('/api/fortbildung-bogen', fortbildungBogenRoutes);
 
 // SPA-Catch: alle nicht-API-Routen geben die jeweilige HTML-Datei zurück
 // (oder leiten zu login weiter)

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedbackbogen auswerten – Lernkolosseum</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="/css/style.css?v=20260615c">
+  <style>
+    .admin-nav { background: #12122a; }
+    .fa-wrap { max-width: 800px; margin: 0 auto; padding-bottom: 3rem; }
+    .fa-aktionen { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+    .fa-status { min-height: 1.4rem; color: #166534; }
+    .fa-tabelle { width: 100%; border-collapse: collapse; margin-top: 0.5rem; font-size: 0.9rem; }
+    .fa-tabelle th, .fa-tabelle td { border-bottom: 1px solid rgba(0,0,0,0.1); padding: 0.35rem 0.4rem; text-align: center; }
+    .fa-tabelle th:first-child, .fa-tabelle td:first-child { text-align: left; }
+    .fa-eintrag { border-left: 3px solid var(--c2); padding: 0.5rem 0.75rem; margin-top: 0.75rem; background: rgba(0,0,0,0.03); border-radius: 4px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+      <a href="https://lehrer-herrmann.de" class="navbar-logo">lehrer-herrmann.de</a>
+      <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="navbar-links" id="navbar-links">
+        <li><a href="https://lehrer-herrmann.de/#was-ist-neu">Was ist neu?</a></li>
+        <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+        <li class="navbar-gb-trenner" aria-hidden="true"><span class="navbar-gb-label">Geschützter Bereich</span></li>
+        <li><a href="/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+        <li><a href="https://lehrer-herrmann.de/blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+        <li><a href="https://lehrer-herrmann.de/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+      </ul>
+      <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+    </div>
+  </nav>
+
+  <nav class="nav admin-nav">
+    <a href="/admin/dashboard.html" class="nav-brand">⚙️ Admin</a>
+    <div class="nav-links">
+      <a href="/admin/dashboard.html">Dashboard</a>
+      <a href="/admin/fortbildung.html">Fortbildung</a>
+      <a href="/admin/fortbildung-bogen.html" class="active">Feedbackbogen</a>
+      <button id="logout-btn" class="btn btn-ghost nav-action" style="font-size:.85rem">Ausloggen</button>
+    </div>
+  </nav>
+
+  <main class="container fa-wrap">
+    <h1>📝 Feedbackbogen auswerten</h1>
+    <p id="fa-anzahl">Lade …</p>
+    <div class="fa-aktionen">
+      <button type="button" class="btn btn-primary" id="fa-kopieren">Alle Antworten kopieren</button>
+      <button type="button" class="btn" id="fa-md">Markdown herunterladen</button>
+      <button type="button" class="btn" id="fa-csv">CSV herunterladen</button>
+      <button type="button" class="btn" id="fa-neu">Neu laden</button>
+      <button type="button" class="btn" id="fa-loeschen" style="color:#dc2626">Alle löschen</button>
+    </div>
+    <div class="fa-status" id="fa-status" role="status" aria-live="polite"></div>
+    <div id="fa-zusammenfassung"></div>
+    <div id="fa-liste"></div>
+  </main>
+
+  <script>
+    (function () {
+      const AUSSAGEN = ["Die Fortbildung hat meine Erwartungen erfüllt.", "Tempo und Verhältnis von Input und Arbeitsphasen haben gepasst.", "Die Arbeitsaufträge waren verständlich und praxisnah.", "Es gab genug Raum für Fragen und Austausch.", "Ich traue mir zu, selbstständig mit Claude.ai weiterzuarbeiten.", "Ich werde Claude.ai für Unterricht oder Vorbereitung nutzen.", "Organisation und Rahmen im LWH haben gepasst."];
+      const MODULE = ["0 · Einführung", "1 · KI-Grundlagen", "2 · Erste eigene Prompts erstellen", "3 · Professionelles Prompting", "4 · Eigene Dateien nutzen", "5 · Kreative Anwendungen (Abend)", "6 · Projekte in Claude.ai", "7 · KI in Einstieg, Erarbeitung und Sicherung"];
+      const SYMBOL = { pp: '++', p: '+', m: '–', mm: '––' };
+      const SCHLUESSEL = ['pp', 'p', 'm', 'mm'];
+      const ERFAHRUNG = { keine: 'keine', ausprobiert: 'ausprobiert', gelegentlich: 'gelegentlich', regelmaessig: 'regelmäßig' };
+      let eintraege = [];
+      const statusEl = document.getElementById('fa-status');
+      function meldung(t) { statusEl.textContent = t; }
+      function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+      // Verteilung einer Skalenfrage: { pp: n, p: n, m: n, mm: n }
+      function verteilung(getter) {
+        const v = { pp: 0, p: 0, m: 0, mm: 0 };
+        eintraege.forEach(e => { const w = getter(e); if (w in v) v[w]++; });
+        return v;
+      }
+      function verteilungText(v) {
+        return SCHLUESSEL.map(k => SYMBOL[k] + ' ' + v[k]).join(' · ');
+      }
+      function erfahrungVerteilung() {
+        const v = { keine: 0, ausprobiert: 0, gelegentlich: 0, regelmaessig: 0 };
+        eintraege.forEach(e => { if (e.erfahrung in v) v[e.erfahrung]++; });
+        return v;
+      }
+
+      // Kompakter Text für Claude: Häufigkeiten + alle Freitexte
+      function textFuerClaude() {
+        const z = ['Feedbackbogen „Erste Schritte mit Claude.ai“ – ' + eintraege.length + ' Einsendungen', ''];
+        const ev = erfahrungVerteilung();
+        z.push('KI-Erfahrung vor der Fortbildung: ' + Object.keys(ev).map(k => ERFAHRUNG[k] + ' ' + ev[k]).join(' · '), '');
+        z.push('Gesamteindruck (++ trifft voll zu · + eher zu · – eher nicht zu · –– nicht zu):');
+        AUSSAGEN.forEach((t, i) => z.push('- ' + t + ' → ' + verteilungText(verteilung(e => e.gesamt[i]))));
+        z.push('', 'Module (++ sehr hilfreich · + hilfreich · – wenig hilfreich · –– nicht hilfreich):');
+        MODULE.forEach((t, i) => z.push('- ' + t + ' → ' + verteilungText(verteilung(e => e.module[i]))));
+        [['mitnehmen', 'Das nehme ich mit'], ['gefehlt', 'Das hat mir gefehlt oder sollte anders laufen'],
+         ['wunsch', 'Mein Wunschthema für eine Folgeveranstaltung']].forEach(([feld, titel]) => {
+          z.push('', titel + ':');
+          const texte = eintraege.map(e => (e[feld] || '').replace(/\n+/g, ' ')).filter(Boolean);
+          if (!texte.length) z.push('- (keine Angaben)');
+          texte.forEach(t => z.push('- ' + t));
+        });
+        return z.join('\n');
+      }
+
+      function markdown() { return textFuerClaude().replace(/^(Feedbackbogen.*)$/m, '# $1'); }
+
+      function csv() {
+        const q = s => '"' + String(s == null ? '' : s).replace(/"/g, '""') + '"';
+        const kopf = ['Nr', 'KI-Erfahrung'].concat(AUSSAGEN, MODULE, ['Das nehme ich mit', 'Das hat mir gefehlt oder sollte anders laufen', 'Wunschthema']);
+        const zeilen = [kopf.map(q).join(';')];
+        eintraege.forEach((e, i) => zeilen.push(
+          [i + 1, ERFAHRUNG[e.erfahrung] || ''].concat(e.gesamt.map(w => SYMBOL[w] || ''), e.module.map(w => SYMBOL[w] || ''),
+            [e.mitnehmen, e.gefehlt, e.wunsch]).map(q).join(';')));
+        return '\uFEFF' + zeilen.join('\r\n') + '\r\n';
+      }
+
+      function herunterladen(name, inhalt, typ) {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([inhalt], { type: typ }));
+        a.download = name;
+        a.click();
+        URL.revokeObjectURL(a.href);
+      }
+
+      async function kopieren(t) {
+        try { await navigator.clipboard.writeText(t); }
+        catch { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); }
+      }
+
+      function tabelle(titel, texte, getter) {
+        return '<h2 style="margin-top:1.25rem">' + esc(titel) + '</h2><table class="fa-tabelle"><thead><tr><th></th>' +
+          SCHLUESSEL.map(k => '<th>' + SYMBOL[k] + '</th>').join('') + '</tr></thead><tbody>' +
+          texte.map((t, i) => { const v = verteilung(e => getter(e, i));
+            return '<tr><td>' + esc(t) + '</td>' + SCHLUESSEL.map(k => '<td>' + v[k] + '</td>').join('') + '</tr>'; }).join('') +
+          '</tbody></table>';
+      }
+
+      function anzeigen() {
+        document.getElementById('fa-anzahl').textContent = eintraege.length === 1 ? '1 Einsendung' : eintraege.length + ' Einsendungen';
+        const ev = erfahrungVerteilung();
+        document.getElementById('fa-zusammenfassung').innerHTML =
+          '<p><strong>KI-Erfahrung:</strong> ' + Object.keys(ev).map(k => esc(ERFAHRUNG[k]) + ' ' + ev[k]).join(' · ') + '</p>' +
+          tabelle('Gesamteindruck', AUSSAGEN, (e, i) => e.gesamt[i]) + tabelle('Module', MODULE, (e, i) => e.module[i]);
+        const liste = document.getElementById('fa-liste');
+        liste.textContent = '';
+        const kopf = document.createElement('h2'); kopf.style.marginTop = '1.25rem'; kopf.textContent = 'Freitexte';
+        liste.appendChild(kopf);
+        eintraege.forEach((e, i) => {
+          if (!e.mitnehmen && !e.gefehlt && !e.wunsch) return;
+          const d = document.createElement('div'); d.className = 'fa-eintrag';
+          d.textContent = 'Antwort ' + (i + 1) + '\nMitnehmen: ' + (e.mitnehmen || '–') + '\nGefehlt/anders: ' + (e.gefehlt || '–') + '\nWunschthema: ' + (e.wunsch || '–');
+          liste.appendChild(d);
+        });
+      }
+
+      async function laden() {
+        const res = await fetch('/api/fortbildung-bogen');
+        if (res.status === 401) { window.location.href = '/admin/'; return; }
+        if (!res.ok) { meldung('Fehler beim Laden.'); return; }
+        eintraege = await res.json();
+        anzeigen();
+      }
+
+      document.getElementById('fa-kopieren').addEventListener('click', async () => {
+        if (!eintraege.length) { meldung('Noch keine Einsendungen.'); return; }
+        await kopieren(textFuerClaude());
+        meldung('✓ Auswertung mit ' + eintraege.length + ' Einsendungen in die Zwischenablage kopiert.');
+      });
+      document.getElementById('fa-md').addEventListener('click', () => herunterladen('feedbackbogen.md', markdown(), 'text/markdown;charset=utf-8'));
+      document.getElementById('fa-csv').addEventListener('click', () => herunterladen('feedbackbogen.csv', csv(), 'text/csv;charset=utf-8'));
+      document.getElementById('fa-neu').addEventListener('click', () => laden().then(() => meldung('Aktualisiert.')));
+
+      const loeschBtn = document.getElementById('fa-loeschen');
+      let geplantAm = null;
+      function datumDe(sqlUtc) { return new Date(sqlUtc.replace(' ', 'T') + 'Z').toLocaleDateString('de-DE'); }
+      function loeschButtonAktualisieren() {
+        if (geplantAm) {
+          loeschBtn.textContent = 'Löschung am ' + datumDe(geplantAm) + ' – rückgängig machen';
+          loeschBtn.style.color = '#6b7280'; loeschBtn.style.background = '#e5e7eb';
+        } else {
+          loeschBtn.textContent = 'Alle löschen'; loeschBtn.style.color = '#dc2626'; loeschBtn.style.background = '';
+        }
+      }
+      async function loeschStatusLaden() {
+        const res = await fetch('/api/fortbildung-bogen/loeschung');
+        if (res.ok) geplantAm = (await res.json()).geplant_am;
+        loeschButtonAktualisieren();
+      }
+      loeschBtn.addEventListener('click', async () => {
+        try {
+          if (geplantAm) {
+            const res = await fetch('/api/fortbildung-bogen/loeschung', { method: 'DELETE' });
+            if (!res.ok) { meldung('Rückgängig machen fehlgeschlagen.'); return; }
+            geplantAm = null; loeschButtonAktualisieren();
+            meldung('✓ Geplante Löschung rückgängig gemacht.');
+            return;
+          }
+          if (!confirm('Sollen alle Daten in 7 Tagen gelöscht werden?')) return;
+          const res = await fetch('/api/fortbildung-bogen/loeschung', { method: 'POST' });
+          if (!res.ok) { meldung('Löschung konnte nicht geplant werden.'); return; }
+          geplantAm = (await res.json()).geplant_am; loeschButtonAktualisieren();
+          meldung('✓ Alle Daten werden am ' + datumDe(geplantAm) + ' gelöscht. Bis dahin ist das rückgängig zu machen.');
+        } catch { meldung('Verbindungsfehler.'); }
+      });
+
+      document.getElementById('logout-btn').addEventListener('click', async () => {
+        await fetch('/api/auth/admin/logout', { method: 'POST' });
+        window.location.href = '/admin/index.html';
+      });
+
+      laden().then(loeschStatusLaden).catch(() => meldung('Verbindungsfehler.'));
+    })();
+  </script>
+  <script src="/js/main.js?v=20260615c"></script>
+  <script src="/js/kolosseum-login-widget.js"></script>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+      <nav class="site-footer-links" aria-label="Rechtliche Links">
+        <a href="https://lehrer-herrmann.de/impressum.html">Impressum</a>
+        <a href="https://lehrer-herrmann.de/datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>

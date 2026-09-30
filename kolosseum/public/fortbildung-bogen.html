@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedbackbogen zur Fortbildung</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="/css/style.css?v=20260615c">
+  <style>
+    .fb-wrap { max-width: 680px; margin: 0 auto; padding-bottom: 3rem; }
+    .fb-hinweis { background: #fffbeb; border: 1px solid #f59e0b; border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1.25rem; font-weight: 600; }
+    .fb-wrap fieldset { border: none; padding: 0; margin: 0 0 1.25rem; min-width: 0; }
+    .fb-wrap legend { font-weight: 600; padding: 0; margin-bottom: 0.5rem; }
+    .fb-legende { font-size: 0.85rem; color: rgba(0,0,0,0.6); margin: -0.25rem 0 1rem; }
+    .fb-frage { padding: 0.75rem 0; border-top: 1px solid rgba(0,0,0,0.08); }
+    .fb-frage-text { margin-bottom: 0.5rem; }
+    .fb-optionen { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.4rem; }
+    .fb-optionen.fb-erfahrung { grid-template-columns: repeat(2, 1fr); }
+    .fb-opt { position: relative; }
+    .fb-opt input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+    .fb-opt span { display: block; text-align: center; padding: 0.6rem 0.25rem; border: 2px solid rgba(0,0,0,0.15); border-radius: 8px; font-weight: 600; background: #fff; }
+    .fb-opt input:checked + span { background: var(--c1); border-color: var(--c1); color: #fff; }
+    .fb-opt input:focus-visible + span { outline: 3px solid var(--c2); outline-offset: 2px; }
+    .fb-wrap textarea { min-height: 90px; font-size: 1rem; }
+    .fb-error { color: #dc2626; margin-bottom: 0.75rem; }
+    .fb-danke { text-align: center; }
+    .fb-danke .fb-haken { font-size: 3rem; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+      <a href="https://lehrer-herrmann.de" class="navbar-logo">lehrer-herrmann.de</a>
+      <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="navbar-links" id="navbar-links">
+        <li><a href="https://lehrer-herrmann.de/#was-ist-neu">Was ist neu?</a></li>
+        <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+        <li class="navbar-gb-trenner" aria-hidden="true"><span class="navbar-gb-label">Geschützter Bereich</span></li>
+        <li><a href="/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+        <li><a href="https://lehrer-herrmann.de/blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+        <li><a href="https://lehrer-herrmann.de/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+      </ul>
+      <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+    </div>
+  </nav>
+
+  <main class="container fb-wrap">
+    <h1>📝 Feedbackbogen</h1>
+    <p><strong>Erste Schritte mit Claude.ai</strong><br>Ludwig-Windthorst-Haus Lingen · 1.–2. Oktober 2026</p>
+    <p>Vielen Dank für deine Rückmeldung! Der Bogen ist anonym und dauert etwa fünf Minuten.</p>
+
+    <div class="card" id="fb-karte">
+      <p class="fb-hinweis" role="note">Bitte keine Namen von Personen oder Schüler*innen nennen.</p>
+      <form id="fb-form" novalidate>
+
+        <fieldset id="fb-erfahrung-gruppe">
+          <legend>KI-Erfahrung vor der Fortbildung</legend>
+          <div class="fb-optionen fb-erfahrung" id="fb-erfahrung"></div>
+        </fieldset>
+
+        <h2>1 · Gesamteindruck</h2>
+        <p class="fb-legende">++ trifft voll zu · + trifft eher zu · – trifft eher nicht zu · –– trifft nicht zu</p>
+        <div id="fb-gesamt"></div>
+
+        <h2 style="margin-top:1.5rem">2 · Die Module</h2>
+        <p class="fb-legende">++ sehr hilfreich · + hilfreich · – wenig hilfreich · –– nicht hilfreich</p>
+        <div id="fb-module"></div>
+
+        <h2 style="margin-top:1.5rem">3 · Deine Gedanken</h2>
+        <div class="form-group">
+          <label for="fb-mitnehmen">Das nehme ich mit:</label>
+          <textarea id="fb-mitnehmen" maxlength="600"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="fb-gefehlt">Das hat mir gefehlt oder sollte anders laufen:</label>
+          <textarea id="fb-gefehlt" maxlength="600"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="fb-wunsch">Mein Wunschthema für eine Folgeveranstaltung:</label>
+          <textarea id="fb-wunsch" maxlength="600"></textarea>
+        </div>
+
+        <div class="fb-error" id="fb-error" role="alert" aria-live="polite"></div>
+        <button type="submit" class="btn btn-primary" id="fb-submit" style="width:100%">Absenden</button>
+      </form>
+    </div>
+
+    <div class="card fb-danke" id="fb-danke" style="display:none">
+      <div class="fb-haken" aria-hidden="true">✅</div>
+      <h2>Vielen Dank!</h2>
+      <p>Deine Rückmeldung ist angekommen.</p>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      const AUSSAGEN = ["Die Fortbildung hat meine Erwartungen erfüllt.", "Tempo und Verhältnis von Input und Arbeitsphasen haben gepasst.", "Die Arbeitsaufträge waren verständlich und praxisnah.", "Es gab genug Raum für Fragen und Austausch.", "Ich traue mir zu, selbstständig mit Claude.ai weiterzuarbeiten.", "Ich werde Claude.ai für Unterricht oder Vorbereitung nutzen.", "Organisation und Rahmen im LWH haben gepasst."];
+      const MODULE = ["0 · Einführung", "1 · KI-Grundlagen", "2 · Erste eigene Prompts erstellen", "3 · Professionelles Prompting", "4 · Eigene Dateien nutzen", "5 · Kreative Anwendungen (Abend)", "6 · Projekte in Claude.ai", "7 · KI in Einstieg, Erarbeitung und Sicherung"];
+      const SKALA = [['pp', '++', 'Trifft voll zu bzw. sehr hilfreich'], ['p', '+', 'Trifft eher zu bzw. hilfreich'],
+                     ['m', '–', 'Trifft eher nicht zu bzw. wenig hilfreich'], ['mm', '––', 'Trifft nicht zu bzw. nicht hilfreich']];
+      const ERFAHRUNG = [['keine', 'keine'], ['ausprobiert', 'ausprobiert'], ['gelegentlich', 'gelegentlich'], ['regelmaessig', 'regelmäßig']];
+
+      function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+      function option(name, wert, label, titel) {
+        return '<label class="fb-opt"><input type="radio" name="' + name + '" value="' + wert + '"' +
+               (titel ? ' aria-label="' + esc(titel) + '"' : '') + '><span>' + esc(label) + '</span></label>';
+      }
+
+      function skalaFragen(zielId, texte, prefix) {
+        document.getElementById(zielId).innerHTML = texte.map((t, i) =>
+          '<div class="fb-frage" role="radiogroup" aria-label="' + esc(t) + '">' +
+          '<div class="fb-frage-text">' + esc(t) + '</div>' +
+          '<div class="fb-optionen">' + SKALA.map(s => option(prefix + i, s[0], s[1], s[2])).join('') + '</div></div>'
+        ).join('');
+      }
+
+      document.getElementById('fb-erfahrung').innerHTML = ERFAHRUNG.map(e => option('erfahrung', e[0], e[1])).join('');
+      skalaFragen('fb-gesamt', AUSSAGEN, 'g');
+      skalaFragen('fb-module', MODULE, 'm');
+
+      function gewaehlt(name) {
+        const r = document.querySelector('input[name="' + name + '"]:checked');
+        return r ? r.value : '';
+      }
+
+      const form = document.getElementById('fb-form');
+      const errEl = document.getElementById('fb-error');
+      const btn = document.getElementById('fb-submit');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        errEl.textContent = '';
+        const daten = {
+          erfahrung: gewaehlt('erfahrung'),
+          gesamt: AUSSAGEN.map((_, i) => gewaehlt('g' + i)),
+          module: MODULE.map((_, i) => gewaehlt('m' + i)),
+          mitnehmen: document.getElementById('fb-mitnehmen').value,
+          gefehlt: document.getElementById('fb-gefehlt').value,
+          wunsch: document.getElementById('fb-wunsch').value
+        };
+        const leer = !daten.erfahrung && daten.gesamt.every(w => !w) && daten.module.every(w => !w) &&
+          !daten.mitnehmen.trim() && !daten.gefehlt.trim() && !daten.wunsch.trim();
+        if (leer) { errEl.textContent = 'Bitte mindestens eine Frage beantworten.'; return; }
+
+        btn.disabled = true; btn.textContent = 'Sende …';
+        try {
+          const res = await fetch('/api/fortbildung-bogen', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(daten)
+          });
+          const antwort = await res.json().catch(() => ({}));
+          if (!res.ok) { errEl.textContent = antwort.error || 'Fehler beim Senden.'; return; }
+          document.getElementById('fb-karte').style.display = 'none';
+          document.getElementById('fb-danke').style.display = 'block';
+          window.scrollTo(0, 0);
+        } catch {
+          errEl.textContent = 'Verbindungsfehler. Bitte erneut versuchen.';
+        } finally {
+          btn.disabled = false; btn.textContent = 'Absenden';
+        }
+      });
+    })();
+  </script>
+  <script src="/js/main.js?v=20260615c"></script>
+  <script src="/js/kolosseum-login-widget.js"></script>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+      <nav class="site-footer-links" aria-label="Rechtliche Links">
+        <a href="https://lehrer-herrmann.de/impressum.html">Impressum</a>
+        <a href="https://lehrer-herrmann.de/datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
+</body>
+</html>
