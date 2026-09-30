@@ -26,6 +26,7 @@ const geoAbi2002Routes       = require('./routes/geo-abi2002');
 const kiWerkstattRoutes      = require('./routes/ki-werkstatt');
 const vokabeltrainerRoutes   = require('./routes/vokabeltrainer');
 const deutschclubRoutes      = require('./routes/deutschclub');
+const fortbildungRoutes      = require('./routes/fortbildung');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -104,6 +105,7 @@ app.use('/api/geo-abi2002',  geoAbi2002Routes);
 app.use('/api/ki-werkstatt', kiWerkstattRoutes);
 app.use('/api/vokabeltrainer', vokabeltrainerRoutes);
 app.use('/api/deutschclub', deutschclubRoutes);
+app.use('/api/fortbildung', fortbildungRoutes);
 
 // SPA-Catch: alle nicht-API-Routen geben die jeweilige HTML-Datei zurück
 // (oder leiten zu login weiter)

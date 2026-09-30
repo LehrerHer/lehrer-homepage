@@ -186,6 +186,18 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_feedback_group_notes_group ON feedback_group_notes(group_id);
 `);
 
+// Fortbildung „Erste Schritte mit Claude.ai": anonyme Abschluss-Rückmeldungen der Teilnehmenden.
+// Bewusst OHNE Name, IP oder User-Agent – nur die drei Textfelder und ein Zeitstempel.
+db.exec(`
+  CREATE TABLE IF NOT EXISTS fortbildung_feedback (
+    id                INTEGER PRIMARY KEY AUTOINCREMENT,
+    gefallen          TEXT NOT NULL DEFAULT '',
+    aendern           TEXT NOT NULL DEFAULT '',
+    naechster_schritt TEXT NOT NULL DEFAULT '',
+    created_at        TEXT NOT NULL DEFAULT (datetime('now'))
+  );
+`);
+
 // Geo Abijahrgang 2002: Kontaktliste fürs Klassentreffen – kein Login,
 // Zugriff nur über Geheimlink + Shared-Secret-Header (siehe routes/geo-abi2002.js)
 db.exec(`
