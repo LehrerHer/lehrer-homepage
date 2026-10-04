@@ -151,6 +151,9 @@
   }
   .pill-btn.selected{ background:var(--felt); color:#fff; }
 
+  .bock-status{ font-weight:700; color:var(--felt-deep); }
+  .bock-status.active{ color:var(--danger); }
+
   .leaderboard{ display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:10px; }
   .player-badge{
     font-family:'Cinzel', serif; font-weight:700; color:#fff;
@@ -198,6 +201,15 @@
     <!-- ROUND ENTRY -->
     <h3 id="roundHeading">Neue Runde eintragen</h3>
 
+    <div class="form-row" id="bockRow" style="justify-content:space-between;">
+      <span id="bockStatus" class="bock-status">Keine Bockrunde aktiv</span>
+      <div class="btn-row" style="margin:0;">
+        <button class="btn secondary small" id="bockStartBtn" type="button">🐐 Bockrunde ausrufen</button>
+        <button class="btn secondary small hidden" id="bockCancelBtn" type="button">Bockrunde beenden</button>
+      </div>
+    </div>
+    <p class="chip-hint">Eine Bockrunde verdoppelt die Punkte der nächsten Spiele (so viele wie Mitspieler), bis jeder einmal ausgesetzt/gegeben hat.</p>
+
     <div class="form-row hidden" id="sitOutRow">
       <label for="sitOutSelect">Sitzt aus:</label>
       <select id="sitOutSelect"></select>
@@ -221,6 +233,10 @@
     <div class="form-row bonus-row">
       <label><input type="checkbox" id="ansageA"> <span class="ansage-a-text">Re angesagt</span></label>
       <label><input type="checkbox" id="ansageB"> <span class="ansage-b-text">Kontra angesagt</span></label>
+    </div>
+
+    <div class="form-row bonus-row">
+      <label><input type="checkbox" id="bockCheckbox"> 🐐 Bockrunde (verdoppelt die gesamte Runde)</label>
     </div>
 
     <div class="form-row bonus-row" id="doppelkopfRow">
@@ -304,8 +320,10 @@
       eigenem Karlchen den letzten Stich geholt) und passiv (gegnerisches Karlchen gefangen) getrennt,
       in derselben Runde sind daher bis zu 2 Karlchen-Punkte für dieselbe Seite möglich. Im Solospiel
       entfallen diese drei Sonderpunkte komplett. „Re“/„Kontra angesagt“ verdoppelt nur die Grund- und
-      Augenpunkte. Bei Solo zählt das Ergebnis dreifach (Solist gegen jeden der drei Gegner). Eine Runde
-      kann jederzeit über „Bearbeiten“ korrigiert oder gelöscht werden.
+      Augenpunkte. Bei Solo zählt das Ergebnis dreifach (Solist gegen jeden der drei Gegner). Eine
+      Bockrunde verdoppelt die komplette Rundenpunktzahl (inkl. Sonderpunkte und Ansage-Verdopplung)
+      für so viele folgende Runden wie Mitspieler am Tisch sitzen. Eine Runde kann jederzeit über
+      „Bearbeiten“ korrigiert oder gelöscht werden.
     </div>
   </div>
 </div>
@@ -347,7 +365,7 @@
 
   function saveGame(){
     if(!storageOK) return;
-    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify({players, rounds})); }catch(e){ storageOK = false; }
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify({players, rounds, bockRoundsRemaining})); }catch(e){ storageOK = false; }
   }
   function clearSave(){ if(!storageOK) return; try{ localStorage.removeItem(STORAGE_KEY); }catch(e){} }
   function loadSavedGame(){
@@ -379,6 +397,10 @@
   const augenB = document.getElementById('augenB');
   const ansageA = document.getElementById('ansageA');
   const ansageB = document.getElementById('ansageB');
+  const bockCheckbox = document.getElementById('bockCheckbox');
+  const bockStatus = document.getElementById('bockStatus');
+  const bockStartBtn = document.getElementById('bockStartBtn');
+  const bockCancelBtn = document.getElementById('bockCancelBtn');
   const doppelkopfAValue = document.getElementById('doppelkopfAValue');
   const doppelkopfBValue = document.getElementById('doppelkopfBValue');
   const karlchenAGroup = document.getElementById('karlchenAGroup');
@@ -394,6 +416,7 @@
   let doppelkopfACount = 0, doppelkopfBCount = 0; // per Stepper-Buttons
   let karlchenACount = 0, karlchenBCount = 0;     // per 0/1/2-Auswahl (aktiv + passiv moeglich)
   let fuchsACount = 0, fuchsBCount = 0;           // per 0/1/2-Auswahl
+  let bockRoundsRemaining = 0;                    // Anzahl noch folgender Bock-Runden (verdoppelt)
 
   /* ---------- Setup ---------- */
 
@@ -437,7 +460,9 @@
       players.push({name: name, color: colors[i % colors.length]});
     });
     rounds = [];
+    bockRoundsRemaining = 0;
     buildTableHead();
+    updateBockStatus();
     resetRoundForm();
     renderHistory();
     updateLeaderboard();
@@ -450,6 +475,7 @@
     if(!confirm('Aktuellen Spielstand wirklich löschen und neu beginnen?')) return;
     clearSave();
     players = []; rounds = []; playerSlots = MIN_PLAYERS;
+    bockRoundsRemaining = 0;
     gamePanel.classList.add('hidden');
     setupPanel.classList.remove('hidden');
     renderNameInputs();
@@ -458,9 +484,11 @@
   function restoreGame(saved){
     players = saved.players;
     rounds = saved.rounds || [];
+    bockRoundsRemaining = saved.bockRoundsRemaining || 0;
     playerSlots = players.length;
     renderNameInputs();
     buildTableHead();
+    updateBockStatus();
     resetRoundForm();
     renderHistory();
     updateLeaderboard();
@@ -468,18 +496,6 @@
     gamePanel.classList.remove('hidden');
   }
 
-  const saved = loadSavedGame();
-  if(saved && saved.players && saved.players.length){
-    try{ restoreGame(saved); }
-    catch(err){
-      showFatalError(err);
-      clearSave();
-      players = []; rounds = []; playerSlots = MIN_PLAYERS;
-      setupPanel.classList.remove('hidden');
-      gamePanel.classList.add('hidden');
-      renderNameInputs();
-    }
-  }
 
   /* ---------- Tabellenkopf & Verlauf ---------- */
 
@@ -532,6 +548,7 @@
     soloSelection = -1;
     augenA.value = ''; augenB.value = '';
     ansageA.checked = false; ansageB.checked = false;
+    bockCheckbox.checked = bockRoundsRemaining > 0;
     doppelkopfACount = 0; doppelkopfBCount = 0;
     doppelkopfAValue.textContent = '0'; doppelkopfBValue.textContent = '0';
     karlchenACount = 0; karlchenBCount = 0;
@@ -578,6 +595,40 @@
       setPillSelected(fuchsAGroup, 0); setPillSelected(fuchsBGroup, 0);
     }
   }
+
+  // Bockrunde: verdoppelt die naechsten Runden (so viele wie Mitspieler),
+  // bis die Reihe einmal komplett rum ist.
+  function updateBockStatus(){
+    if(bockRoundsRemaining > 0){
+      bockStatus.textContent = '🐐 Bockrunde aktiv – noch ' + bockRoundsRemaining
+        + (bockRoundsRemaining === 1 ? ' Runde doppelt' : ' Runden doppelt');
+      bockStatus.classList.add('active');
+      bockCancelBtn.classList.remove('hidden');
+    } else {
+      bockStatus.textContent = 'Keine Bockrunde aktiv';
+      bockStatus.classList.remove('active');
+      bockCancelBtn.classList.add('hidden');
+    }
+  }
+
+  bockStartBtn.addEventListener('click', function(){
+    if(bockRoundsRemaining > 0
+      && !confirm('Bockrunde ist noch für ' + bockRoundsRemaining + ' Runde(n) aktiv. Neu auf '
+        + players.length + ' Runden setzen?')) return;
+    bockRoundsRemaining = players.length;
+    updateBockStatus();
+    if(editingIndex === -1) bockCheckbox.checked = true;
+    saveGame();
+    updatePreview();
+  });
+  bockCancelBtn.addEventListener('click', function(){
+    bockRoundsRemaining = 0;
+    updateBockStatus();
+    if(editingIndex === -1) bockCheckbox.checked = false;
+    saveGame();
+    updatePreview();
+  });
+  bockCheckbox.addEventListener('change', updatePreview);
 
   function rebuildTeamArea(){
     teamAssignArea.innerHTML = '';
@@ -713,7 +764,9 @@
     // gehen an die Gewinnerseite, Sonderpunkte zählen unabhängig davon für
     // die Seite, die sie erspielt hat (Fuchs/Karlchen/Doppelkopf koennen
     // also auch der Verliererseite gutgeschrieben werden).
-    const netForA = (winnerSide === 'A' ? basisValue : -basisValue) + bonusA - bonusB;
+    let netForA = (winnerSide === 'A' ? basisValue : -basisValue) + bonusA - bonusB;
+    // Bockrunde verdoppelt die gesamte Runde (inkl. Sonderpunkte und Ansage-Verdopplung).
+    if(round.bock) netForA *= 2;
 
     if(round.type === 'normal'){
       round.reIdxs.forEach(idx => { deltas[idx] += netForA; });
@@ -722,7 +775,7 @@
       deltas[round.soloIdx] += netForA * 3;
       round.gegnerIdxs.forEach(idx => { deltas[idx] += -netForA; });
     }
-    return {deltas, netForA, winnerSide, basisValue, bonusA, bonusB};
+    return {deltas, netForA, winnerSide, basisValue, bonusA, bonusB, basis, mult, loserAugen};
   }
 
   function buildRoundFromForm(){
@@ -746,6 +799,7 @@
       sitOutIdx,
       augenA: augenAVal, augenB: augenBVal,
       ansageA: ansageA.checked, ansageB: ansageB.checked,
+      bock: bockCheckbox.checked,
       // Im Solospiel gibt es keine Doppelkopf-/Karlchen-/Fuchs-Sonderpunkte.
       doppelkopfA: isSolo ? 0 : doppelkopfACount,
       doppelkopfB: isSolo ? 0 : doppelkopfBCount,
@@ -766,6 +820,19 @@
     }
   }
 
+  // Schlüsselt den Grundwert auf: 1 Punkt fürs Gewinnen (unter 120), je 1
+  // weiterer Punkt wenn die Verliererseite unter 90/60/30 Augen hat, plus
+  // ggf. Verdopplung durch Ansage.
+  function basisBreakdown(calc){
+    const parts = ['Sieg (unter 120)'];
+    if(calc.loserAugen < 90) parts.push('unter 90');
+    if(calc.loserAugen < 60) parts.push('unter 60');
+    if(calc.loserAugen < 30) parts.push('unter 30 (schwarz)');
+    let text = parts.join(' + ') + ' = ' + calc.basis;
+    if(calc.mult > 1) text += ', ×' + calc.mult + ' durch Ansage = ' + calc.basisValue;
+    return text;
+  }
+
   function describeRound(round, calc){
     const isSolo = round.type === 'solo';
     let parts = [];
@@ -774,13 +841,14 @@
       const kontraNames = round.kontraIdxs.map(i=>players[i].name).join(' + ');
       parts.push('<span class="tag tag-normal">Normal</span> Re: ' + reNames + ' — Kontra: ' + kontraNames);
       parts.push((calc.winnerSide==='A' ? 'Re' : 'Kontra') + ' gewinnt ' + round.augenA + ':' + round.augenB
-        + ' (Grundwert ' + calc.basisValue + ')');
+        + ' (Grundwert: ' + basisBreakdown(calc) + ')');
     } else {
       parts.push('<span class="tag tag-solo">Solo</span> ' + players[round.soloIdx].name + ' gegen ' + round.gegnerIdxs.map(i=>players[i].name).join(', '));
       parts.push((calc.winnerSide==='A' ? 'Solist gewinnt' : 'Gegner gewinnen') + ' ' + round.augenA + ':' + round.augenB
-        + ' (Grundwert ' + calc.basisValue + ')');
+        + ' (Grundwert: ' + basisBreakdown(calc) + ')');
     }
     let bonusParts = [];
+    if(round.bock) bonusParts.push('🐐 Bockrunde (Punkte verdoppelt)');
     if(round.ansageA) bonusParts.push(isSolo ? 'Solist angesagt' : 'Re angesagt');
     if(round.ansageB) bonusParts.push(isSolo ? 'Gegner angesagt' : 'Kontra angesagt');
     if(round.doppelkopfA) bonusParts.push(round.doppelkopfA + '× Doppelkopf (' + (isSolo?'Solist':'Re') + ')');
@@ -804,7 +872,8 @@
     const isSolo = built.round.type === 'solo';
     const winnerLabel = winnerSide === 'A' ? (isSolo ? 'Solist' : 'Re') : (isSolo ? 'Gegner' : 'Kontra');
     let html = 'Ergebnis: <strong>' + winnerLabel + ' gewinnt</strong> ('
-      + built.round.augenA + ':' + built.round.augenB + ') — Punkte diese Runde: ';
+      + built.round.augenA + ':' + built.round.augenB + ')' + (built.round.bock ? ' 🐐 Bockrunde' : '')
+      + ' — Punkte diese Runde: ';
     html += players.map((p,i)=>{
       const d = deltas[i];
       const cls = d>0 ? 'delta-pos' : (d<0 ? 'delta-neg' : 'delta-zero');
@@ -816,10 +885,18 @@
   saveRoundBtn.addEventListener('click', function(){
     const built = buildRoundFromForm();
     if(built.error){ alert(built.error); return; }
-    if(editingIndex === -1){
+    const isNewRound = editingIndex === -1;
+    if(isNewRound){
       rounds.push(built.round);
     } else {
       rounds[editingIndex] = built.round;
+    }
+    // Eine Bockrunden-Ansage verbraucht sich ueber die naechsten echten
+    // Runden, unabhaengig davon, ob fuer eine einzelne Runde manuell
+    // ab- oder angewaehlt wurde.
+    if(isNewRound && bockRoundsRemaining > 0){
+      bockRoundsRemaining--;
+      updateBockStatus();
     }
     renderHistory();
     updateLeaderboard();
@@ -852,7 +929,8 @@
 
       const tdSpiel = document.createElement('td');
       const spielCls = calc.netForA>0 ? 'delta-pos' : (calc.netForA<0 ? 'delta-neg' : 'delta-zero');
-      tdSpiel.innerHTML = '<span class="' + spielCls + '">' + (calc.netForA>0?'+':'') + calc.netForA + '</span>';
+      tdSpiel.innerHTML = '<span class="' + spielCls + '">' + (calc.netForA>0?'+':'') + calc.netForA + '</span>'
+        + (round.bock ? ' 🐐' : '');
       tr.appendChild(tdSpiel);
 
       const tdInfo = document.createElement('td');
@@ -918,6 +996,7 @@
     augenB.value = round.augenB;
     ansageA.checked = !!round.ansageA;
     ansageB.checked = !!round.ansageB;
+    bockCheckbox.checked = !!round.bock;
     doppelkopfACount = round.doppelkopfA; doppelkopfAValue.textContent = String(round.doppelkopfA);
     doppelkopfBCount = round.doppelkopfB; doppelkopfBValue.textContent = String(round.doppelkopfB);
     karlchenACount = round.karlchenA; setPillSelected(karlchenAGroup, round.karlchenA);
@@ -943,6 +1022,23 @@
       span.textContent = (medals[i] ? medals[i] + ' ' : '') + t.name + ': ' + t.total;
       leaderboard.appendChild(span);
     });
+  }
+
+  // Gespeicherten Spielstand laden -- erst hier am Skriptende, wenn alle
+  // Konstanten/Funktionen oben bereits initialisiert sind (sonst schlaegt
+  // der Wiederaufbau mit einem TDZ-Fehler fehl).
+  const saved = loadSavedGame();
+  if(saved && saved.players && saved.players.length){
+    try{ restoreGame(saved); }
+    catch(err){
+      showFatalError(err);
+      clearSave();
+      players = []; rounds = []; playerSlots = MIN_PLAYERS;
+      bockRoundsRemaining = 0;
+      setupPanel.classList.remove('hidden');
+      gamePanel.classList.add('hidden');
+      renderNameInputs();
+    }
   }
 })();
 </script>
