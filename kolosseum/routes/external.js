@@ -6,6 +6,12 @@ const { checkAndAwardBadges } = require('../db/badges');
 const router = express.Router();
 
 const VALID_SLUGS = ['stilmittel', 'literaturwissenschaft', 'rechtschreibung', 'lernquiz-jahrgang5', 'das-parfum', 'theaterprojekt-9', 'deutsch-seki-quiz', 'deutsch-was-ist-prosa'];
+// Mathe-Training „Zahlen und Größen" (mathe-zahlen-groessen-k7m4p.html): ein Slug je Thema und Niveau (1–3)
+const MATHE_ZG = {
+  'grosse-zahlen': 'Große Zahlen', 'strahl-lesen': 'Zahlenstrahl ablesen', 'strahl-zeichnen': 'Zahlenstrahl zeichnen',
+  'ordnen': 'Ordnen', 'runden': 'Runden', 'bild-lesen': 'Bilddiagramme lesen', 'bild-erstellen': 'Bilddiagramme erstellen',
+  'laengen': 'Längen umrechnen', 'massstaebe': 'Maßstäbe', 'gewichte': 'Gewichte umrechnen', 'zeiten': 'Zeiten umrechnen',
+};
 const QUIZ_LABELS = {
   stilmittel:             'Stilmittel-Quiz',
   literaturwissenschaft:  'Literaturwissenschaft-Quiz',
@@ -16,6 +22,13 @@ const QUIZ_LABELS = {
   'deutsch-seki-quiz':    'Deutsch-Quiz Sek I',
   'deutsch-was-ist-prosa': 'Was ist Prosa?',
 };
+for (const [key, label] of Object.entries(MATHE_ZG)) {
+  for (let n = 1; n <= 3; n++) {
+    const slug = `mathe-zg-${key}-${n}`;
+    VALID_SLUGS.push(slug);
+    QUIZ_LABELS[slug] = `Mathe-Training: ${label} (Niveau ${n})`;
+  }
+}
 
 // Notenpunkte-Tabelle (Oberstufe, 0–15 Punkte)
 function computeNotenpunkte(score, total) {
