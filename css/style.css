@@ -3422,3 +3422,11 @@ h1, h2, h3, .section-titel {
     box-shadow: 6px 6px 0 var(--farbe-highlight);
 }
 .portal-glow { display: none; }
+
+
+/* Linien-Icons in der Navigation (ersetzt Emojis, Farbe folgt dem Link) */
+.navbar-links .nav-icon svg {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
