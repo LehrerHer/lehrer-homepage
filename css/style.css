@@ -19,19 +19,21 @@
 
 /* ---- CSS-Variablen: Farben, Abstände, Effekte ---- */
 :root {
-    --farbe-primaer:        #1e3a5f;   /* Dunkelblau – Hauptfarbe */
-    --farbe-primaer-hell:   #2d6a9f;   /* Mittleres Blau */
-    --farbe-akzent:         #4a9eda;   /* Hellblau für Badges & Hover */
-    --farbe-hintergrund:    #f4f6f9;   /* Seitenhintergrund (Hellgrau) */
+    --farbe-primaer:        #14284b;   /* Tiefes Marineblau – Tinte, Navigation, Überschriften */
+    --farbe-primaer-hell:   #2556c4;   /* Kräftiges Blau – Links, Buttons */
+    --farbe-akzent:         #3d7bff;   /* Helles Blau für Badges & Hover */
+    --farbe-highlight:      #ffc233;   /* Sonnengelb (Logo-Gold) – Markierungen, Haupt-Buttons */
+    --farbe-hintergrund:    #faf6ee;   /* Warmes Papierweiß statt Kaltgrau */
     --farbe-weiss:          #ffffff;
-    --farbe-text:           #2c3e50;   /* Dunkler Fließtext */
-    --farbe-text-hell:      #6c757d;   /* Grauer Hilfstext */
-    --farbe-rahmen:         #dee2e6;   /* Rahmen & Trennlinien */
-    --farbe-erfolg:         #27ae60;   /* Grün für Erfolgsmeldungen */
+    --farbe-text:           #1c2740;   /* Dunkler Fließtext */
+    --farbe-text-hell:      #55607a;   /* Hilfstext (WCAG AA auf Papierweiß) */
+    --farbe-rahmen:         #d9d2c3;   /* Rahmen & Trennlinien (warm) */
+    --farbe-erfolg:         #1f9d55;   /* Grün für Erfolgsmeldungen */
 
-    --schatten:     0 2px 12px rgba(30, 58, 95, 0.10);
-    --radius:       8px;
-    --transition:   0.3s ease;
+    --schatten:     0 3px 0 rgba(20, 40, 75, 0.14);
+    --schatten-hart: 4px 4px 0 var(--farbe-primaer);   /* Signatur-Schatten: flach, versetzt */
+    --radius:       12px;
+    --transition:   0.2s ease;
 }
 
 
@@ -3202,4 +3204,145 @@ footer {
     .bereiche-grid {
         grid-template-columns: 1fr;
     }
+}
+
+
+/* ================================================================
+   DESIGN 2026-10: Kräftig-jugendlich, aber seriös
+   Flache Farben statt Verläufen, Tintenkontur, harter Schatten,
+   fette Überschriften. Überschreibt die älteren Regeln oben.
+   ================================================================ */
+
+h1, h2, h3, .section-titel {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+}
+
+/* Gelber Marker unter Abschnittstiteln */
+.section-titel {
+    display: inline-block;
+    background-image: linear-gradient(var(--farbe-highlight), var(--farbe-highlight));
+    background-repeat: no-repeat;
+    background-size: 100% 0.32em;
+    background-position: 0 90%;
+}
+
+:focus-visible {
+    outline: 3px solid var(--farbe-highlight);
+    outline-offset: 2px;
+}
+
+/* --- Navigation & Footer: flache Marine-Karten --- */
+.navbar-inner,
+.footer-inner {
+    background: var(--farbe-primaer);
+    border: 2px solid var(--farbe-primaer);
+    border-radius: 16px;
+    box-shadow: 4px 4px 0 var(--farbe-highlight);
+}
+
+.navbar-links .nav-item:hover,
+.navbar-links > li > a:hover,
+.navbar-links > li > a.aktiv {
+    background-color: var(--farbe-highlight);
+    color: var(--farbe-primaer);
+    transform: none;
+}
+
+.nav-item[data-tooltip]::after {
+    background: var(--farbe-highlight);
+    color: var(--farbe-primaer);
+}
+.nav-item[data-tooltip]::before {
+    border-bottom-color: var(--farbe-highlight);
+}
+
+/* --- Große Farbflächen: flach statt Verlauf --- */
+.hero,
+.abgabe-header {
+    background: var(--farbe-primaer);
+}
+
+/* --- Hinweisbanner --- */
+.aufbau-banner {
+    background: var(--farbe-highlight);
+    border-bottom: 2px solid var(--farbe-primaer);
+    color: var(--farbe-primaer);
+}
+
+/* --- Karten --- */
+.bereich-karte,
+.material-karte,
+.fach-karte,
+.mat-card,
+.dm-karte,
+.portal-karte,
+.formular-box {
+    background: var(--farbe-weiss);
+    border: 2px solid var(--farbe-primaer);
+    border-radius: 16px;
+    box-shadow: var(--schatten-hart);
+    transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.bereich-karte:hover,
+.material-karte:hover,
+.fach-karte:hover,
+.mat-card:hover,
+.dm-karte:hover,
+.portal-karte:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--farbe-primaer);
+    border-color: var(--farbe-primaer);
+}
+
+/* --- Buttons --- */
+.btn-primaer {
+    background-color: var(--farbe-highlight);
+    color: var(--farbe-primaer);
+    border: 2px solid var(--farbe-primaer);
+    border-radius: 12px;
+    font-weight: 700;
+    box-shadow: 3px 3px 0 var(--farbe-primaer);
+}
+.btn-primaer:hover {
+    background-color: var(--farbe-highlight);
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 var(--farbe-primaer);
+}
+.btn-primaer:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--farbe-primaer);
+}
+
+/* --- Status-Pillen --- */
+.bereich-status {
+    border: 1.5px solid currentColor;
+    font-weight: 700;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; scroll-behavior: auto !important; }
+}
+
+/* Kontrast-Feinschliff */
+.navbar-logo span,
+.navbar-logo-text {
+    color: var(--farbe-highlight);
+}
+.bereich-cta,
+.bereich-links a {
+    color: var(--farbe-primaer-hell);
+}
+.bereich-links a:hover {
+    background: var(--farbe-highlight);
+    color: var(--farbe-primaer);
+}
+#kolo-widget .kolo-login-btn,
+#kolosseum-widget .kolo-login-btn {
+    background: var(--farbe-highlight) !important;
+    color: var(--farbe-primaer) !important;
+    border-radius: 10px;
+    font-weight: 700;
 }
