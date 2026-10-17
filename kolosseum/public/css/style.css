@@ -657,3 +657,36 @@ input:focus, select:focus, textarea:focus {
     .navbar-gb-link { padding: 12px 14px; }
     .footer-marke { justify-content: center; }
 }
+
+
+/* ================================================================
+   DESIGN 2026-10: Angleichung an lehrer-herrmann.de
+   (Kolosseum lädt dieses Stylesheet statt css/style.css, Werte daher hart codiert:
+    Marine #14284b, Gelb #ffc233, Kontur 2px, versetzter Schatten)
+   ================================================================ */
+.navbar-inner,
+.site-footer-inner {
+    background: #14284b;
+    border: 2px solid #14284b;
+    border-radius: 16px;
+    box-shadow: 4px 4px 0 #ffc233;
+}
+.navbar-links .nav-item:hover,
+.navbar-links > li > a:hover,
+.navbar-links > li > a.aktiv {
+    background-color: #ffc233;
+    color: #14284b;
+    transform: none;
+}
+.nav-item[data-tooltip]::after { background: #ffc233; color: #14284b; }
+.nav-item[data-tooltip]::before { border-bottom-color: #ffc233; }
+.navbar-logo-text, .navbar-logo span { color: #ffc233; }
+:focus-visible { outline: 3px solid #ffc233; outline-offset: 2px; }
+
+@media (max-width: 768px) {
+    .navbar .navbar-links {
+        background: #14284b;
+        border: 2px solid #14284b;
+        box-shadow: 4px 4px 0 #ffc233;
+    }
+}
