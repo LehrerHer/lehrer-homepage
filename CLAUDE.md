@@ -122,7 +122,7 @@ Die Navbar erscheint **auf jeder einzelnen Seite** – sowohl auf der Hauptdomai
 
 Kopf- und Fußbereich sind **nicht durchgezogen**, sondern **schwebende „Karten"**
 (abgerundet, Schatten, seitlicher Abstand, dunkler Blau-Verlauf). Die Navigation
-zeigt **nur zentrierte Icons** (alle gleich hoch); der Linktext steckt in einer
+zeigt **nur zentrierte Linien-Icons (SVG, per `main.js` aus den Emojis ersetzt)** (alle gleich hoch); der Linktext steckt in einer
 Screenreader-only-`.nav-label` und erscheint beim Hover/Fokus als **Tooltip**
 (`data-tooltip`). Oben links **und** unten links steht die **Bildmarke**
 (`img/logo.svg` — Buch/Laptop mit JH-Monogramm, Navy/Gold).
@@ -412,7 +412,7 @@ Wichtige CSS-Klassen (ab 2026-05):
 - `lang="de"`, alle sichtbaren Texte auf Deutsch
 - Semantische Elemente: `<nav>`, `<main>`, `<section>`, `<header>`, `<footer>`
 - ARIA-Attribute auf interaktiven Elementen
-- Icons: Unicode-Emoji (keine Icon-Fonts, keine SVGs)
+- Icons: Navigation = einheitliche Linien-Icons als Inline-SVG (`LINIEN_ICONS` in `js/main.js` und `kolosseum/public/js/main.js`, ersetzen die Emojis `.nav-icon`; Farbe via `currentColor`). Sonst Unicode-Emoji (keine Icon-Fonts)
 - IDs: `kebab-case`, passend zu JavaScript-Selektoren
 
 ### CSS

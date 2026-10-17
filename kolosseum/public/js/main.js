@@ -58,6 +58,24 @@
         });
     }
 
+    /* --- Emoji-Icons durch einheitliche Linien-Icons (SVG) ersetzen --- */
+    var LINIEN_ICONS = {
+        '\u2728': '<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 3v4M17 5h4"/>',
+        '\u2709': '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+        '\u2694': '<path d="M5 5l10 10M5 5h4M5 5v4M19 5L9 15M19 5h-4M19 5v4M7 17l-3 3M17 17l3 3"/>',
+        '\u270D': '<path d="M4 20l1-4L16 5l3 3L8 19zM14 7l3 3"/>',
+        '\uD83D\uDCDA': '<path d="M4 19.5A2.5 2.5 0 016.5 17H20V3H6.5A2.5 2.5 0 004 5.5z"/><path d="M20 17v4H6.5A2.5 2.5 0 014 18.5"/>'
+    };
+    document.querySelectorAll('.navbar-links .nav-icon').forEach(function (el) {
+        if (el.querySelector('svg')) return;
+        var zeichen = (el.textContent || '').replace(/\uFE0F/g, '').trim();
+        var pfad = LINIEN_ICONS[zeichen];
+        if (!pfad) return;
+        el.innerHTML = '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" ' +
+            'stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' +
+            pfad + '</svg>';
+    });
+
     var fInner = document.querySelector('.footer-inner, .site-footer-inner');
     if (fInner && !fInner.querySelector('.footer-marke')) {
         var p = fInner.querySelector('p');

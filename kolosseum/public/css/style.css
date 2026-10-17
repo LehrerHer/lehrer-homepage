@@ -690,3 +690,11 @@ input:focus, select:focus, textarea:focus {
         box-shadow: 4px 4px 0 #ffc233;
     }
 }
+
+
+/* Linien-Icons in der Navigation (ersetzt Emojis, Farbe folgt dem Link) */
+.navbar-links .nav-icon svg {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
