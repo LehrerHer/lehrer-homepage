@@ -3552,3 +3552,64 @@ code, kbd, samp, pre { font-size: 0.9em; }
     height: 30px;
     display: block;
 }
+
+
+/* ================================================================
+   LESBARKEIT 2026-10: Kontrast + Schriftgrößen (ca. +2 px)
+   ================================================================ */
+
+/* Hilfstext deutlich dunkler (Kontrast ca. 8:1 statt 5,8:1) */
+:root {
+    --farbe-text-hell: #3f4a63;
+}
+
+/* „Was ist neu?"-Spalten */
+.win-col-label   { font-size: .85rem; }
+.win-col-icon    { font-size: 1.1rem; }
+.win-item-titel  { font-size: 1rem; line-height: 1.35; }
+.win-item-meta   { font-size: .9rem; }
+.win-item-datum  { font-size: .9rem; color: var(--farbe-primaer-hell); }
+.win-item:hover .win-item-titel { color: var(--farbe-primaer-hell); }
+
+/* „Neue Uploads"-Liste */
+.uf-datum      { font-size: .95rem; }
+.uf-titel      { font-size: 1.05rem; }
+.uf-item:hover .uf-titel { color: var(--farbe-primaer-hell); }
+.uf-beschr     { font-size: .95rem; }
+.uf-typ        { font-size: .85rem; }
+.uf-fach       { font-size: .85rem; }
+.uf-filter-btn { font-size: 1rem; }
+.uf-mehr-btn   { font-size: 1rem; }
+.uf-typ-mat    { color: var(--farbe-text-hell); }
+
+/* Kacheln der Bereiche-Übersicht */
+.bereich-status    { font-size: .85rem; }
+.bereich-links a   { font-size: .95rem; }
+.bereich-cta       { font-size: 1rem; }
+.bereich-aufbau-hinweis { font-size: .9rem; }
+.aufbau-banner     { font-size: 1rem; }
+
+/* Dunkle Abschnitte: Text heller */
+.gladiatoren-eyebrow { font-size: .9rem; }
+.gladiatoren-stat    { font-size: 1rem; color: rgba(255, 255, 255, 0.92); }
+.gladiatoren-beschr  { font-size: 1.1rem; }
+
+/* Footer */
+footer { font-size: 1rem; }
+.footer-inner,
+.footer-links a { color: rgba(255, 255, 255, 0.92); }
+
+/* „Was ist neu?": Spaltenbreite passt sich dem Platz an statt fester 6 Spalten */
+.win-grid {
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    align-items: start;
+}
+@media (max-width: 1100px) { .win-grid { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); } }
+@media (max-width: 560px)  { .win-grid { grid-template-columns: 1fr; } }
+
+.gladiatoren-beschr { color: rgba(255, 255, 255, 0.92); }
+
+.kontakt-karte a {
+    color: var(--farbe-primaer-hell);
+    text-decoration: underline;
+}
