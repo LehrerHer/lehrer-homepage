@@ -412,7 +412,7 @@ Wichtige CSS-Klassen (ab 2026-05):
 - `lang="de"`, alle sichtbaren Texte auf Deutsch
 - Semantische Elemente: `<nav>`, `<main>`, `<section>`, `<header>`, `<footer>`
 - ARIA-Attribute auf interaktiven Elementen
-- Icons: Navigation = einheitliche Linien-Icons als Inline-SVG (`LINIEN_ICONS` in `js/main.js` und `kolosseum/public/js/main.js`, ersetzen die Emojis `.nav-icon`; Farbe via `currentColor`). Sonst Unicode-Emoji (keine Icon-Fonts)
+- Icons: Navigation = einheitliche Linien-Icons als Inline-SVG (`LINIEN_ICONS` in `js/main.js` und `kolosseum/public/js/main.js`, ersetzen die Emojis `.nav-icon`; Farbe via `currentColor`). In `index.html` und `vokabeltrainer.html` steht das SVG fest im HTML (kein Aufblitzen), die Startseiten-Kacheln (`.bereich-icon`) nutzen ebenfalls Inline-SVG. Fächer-Chips und Fächer-Dropdown sind reiner Text ohne Emoji. Sonst Unicode-Emoji (keine Icon-Fonts)
 - IDs: `kebab-case`, passend zu JavaScript-Selektoren
 
 ### Typografie (Stand 2026-10)

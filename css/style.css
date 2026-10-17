@@ -3533,3 +3533,22 @@ code, kbd, samp, pre { font-size: 0.9em; }
     font-size: 1rem;
     line-height: 1.55;
 }
+
+/* Kachel-Icons (Startseite): Linien-Icon im gelben Rahmen */
+.bereich-icon {
+    width: 56px;
+    height: 56px;
+    display: grid;
+    place-items: center;
+    margin-top: .25rem;
+    background: var(--farbe-highlight);
+    color: var(--farbe-primaer);
+    border: 2px solid var(--farbe-primaer);
+    border-radius: 14px;
+    box-shadow: 2px 2px 0 var(--farbe-primaer);
+}
+.bereich-icon svg {
+    width: 30px;
+    height: 30px;
+    display: block;
+}
