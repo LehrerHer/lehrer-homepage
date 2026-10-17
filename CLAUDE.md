@@ -10,7 +10,7 @@ This file provides context for AI assistants (e.g., Claude Code) working on this
 
 - **Language**: German (UI content and code comments are in German)
 - **Tech stack**: HTML5, CSS3, Vanilla JavaScript (ES6+)
-- **External services**: Google Fonts (CDN), Formspree (form submissions)
+- **External services**: Formspree (form submissions). Schriften werden selbst gehostet (DSGVO), kein Google-CDN
 
 ---
 
@@ -414,6 +414,15 @@ Wichtige CSS-Klassen (ab 2026-05):
 - ARIA-Attribute auf interaktiven Elementen
 - Icons: Navigation = einheitliche Linien-Icons als Inline-SVG (`LINIEN_ICONS` in `js/main.js` und `kolosseum/public/js/main.js`, ersetzen die Emojis `.nav-icon`; Farbe via `currentColor`). Sonst Unicode-Emoji (keine Icon-Fonts)
 - IDs: `kebab-case`, passend zu JavaScript-Selektoren
+
+### Typografie (Stand 2026-10)
+- **Fließtext:** Open Sans (400/600/700), Basis 18 px, Zeilenabstand 1,5–1,6, linksbündig, kein Blocksatz, Zeilenlänge max. ca. 60 Zeichen (`ch`)
+- **Überschriften:** Merriweather (700/900)
+- **Akzent:** JetBrains Mono (400/700) – nur kurze Labels/Tags/Hinweise und Code, nie ganze Sätze
+- **Leichte Sprache:** Seiten bekommen `class="leichte-sprache"` am `<body>` → keine Akzentschrift, nur Merriweather + Open Sans
+- CSS-Variablen: `--schrift-text`, `--schrift-ueberschrift`, `--schrift-akzent`
+- Schriftdateien (WOFF2, Latin-Subset) liegen in `assets/fonts/`, Lizenzen (OFL) in `assets/fonts/lizenzen/`. **Nie** per Google-CDN laden. Neue Gewichte: Datei aus dem npm-Paket `@fontsource/<name>` holen und per `@font-face` in `css/style.css` ergänzen.
+- Hinweis: Kolosseum-CSS (`kolosseum/public/css/style.css`) und ältere Einzelseiten in `materialien/` nutzen noch eigene Schriften bzw. laden Google Fonts (offen).
 
 ### CSS
 - **Kein Präprozessor** — reines CSS
