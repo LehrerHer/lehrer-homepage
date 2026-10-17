@@ -3346,3 +3346,79 @@ h1, h2, h3, .section-titel {
     border-radius: 10px;
     font-weight: 700;
 }
+
+
+/* ================================================================
+   DESIGN 2026-10 (Teil 2): Fachfarben, Quiz-/Portal-Kacheln, Mobile-Menü
+   ================================================================ */
+
+/* Mobile-Menü passend zur flachen Navbar */
+@media (max-width: 768px) {
+    .navbar-links {
+        background: var(--farbe-primaer);
+        border: 2px solid var(--farbe-primaer);
+        box-shadow: 4px 4px 0 var(--farbe-highlight);
+    }
+}
+
+/* Fach-Badges: gleiche Kontur-Sprache, Textfarben bleiben je Fach erkennbar */
+[class*="fach-"][class*="fach-"].fach-deutsch,
+.fach-geschichte, .fach-wipo, .fach-informatik,
+.fach-werte-normen, .fach-ag-projekte, .fach-sonstige {
+    border: 1.5px solid currentColor;
+    font-weight: 700;
+}
+
+/* Material-Typ-Badges */
+.dm-typ-ab   { background: #dfe9ff; color: var(--farbe-primaer); border: 1.5px solid var(--farbe-primaer); }
+.dm-typ-quiz { background: var(--farbe-highlight); color: var(--farbe-primaer); border: 1.5px solid var(--farbe-primaer); }
+
+/* Quiz-Feature-Karten: flach, Marine mit gelbem Schatten (alle Varianten einheitlich) */
+.quiz-feature-card,
+.quiz-feature-card.quiz-lila,
+.quiz-feature-card.quiz-gruen {
+    background: var(--farbe-primaer);
+    border: 2px solid var(--farbe-primaer);
+    box-shadow: 5px 5px 0 var(--farbe-highlight);
+}
+.quiz-feature-card:hover,
+.quiz-feature-card.quiz-lila:hover,
+.quiz-feature-card.quiz-gruen:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 7px 7px 0 var(--farbe-highlight);
+}
+.quiz-feature-card.quiz-lila .quiz-badge,
+.quiz-feature-card.quiz-gruen .quiz-badge {
+    background: rgba(255, 194, 51, 0.16);
+    color: var(--farbe-highlight);
+    border-color: var(--farbe-highlight);
+}
+.quiz-feature-card.quiz-lila .quiz-fach-badge,
+.quiz-feature-card.quiz-gruen .quiz-fach-badge {
+    border-color: var(--farbe-highlight);
+    color: var(--farbe-highlight);
+}
+.quiz-feature-card .btn-primary,
+.quiz-feature-card.quiz-lila .btn-primary,
+.quiz-feature-card.quiz-gruen .btn-primary,
+.quiz-feature-card.quiz-lila .btn-primary:hover,
+.quiz-feature-card.quiz-gruen .btn-primary:hover {
+    background: var(--farbe-highlight);
+    color: var(--farbe-primaer);
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* Portal-Karten: eine Farbfamilie statt Lila/Gold/Grün-Verläufen */
+.portal-karte {
+    border-radius: 16px;
+    border: 2px solid var(--farbe-primaer);
+}
+.portal-held, .portal-rangliste, .portal-arbeitsblatt {
+    background: var(--farbe-primaer);
+    box-shadow: 4px 4px 0 var(--farbe-highlight);
+}
+.portal-held:hover, .portal-rangliste:hover, .portal-arbeitsblatt:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--farbe-highlight);
+}
+.portal-glow { display: none; }
