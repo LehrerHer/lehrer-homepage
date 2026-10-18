@@ -69,6 +69,8 @@
 
 /* ---- CSS-Variablen: Farben, Abstände, Effekte ---- */
 :root {
+    --seitenbreite: min(1680px, 100%);   /* nutzt große Monitore besser aus */
+    color-scheme: light;                 /* verhindert abweichende Farben durch Dark-Mode/Geräteprofil */
     --farbe-primaer:        #14284b;   /* Tiefes Marineblau – Tinte, Navigation, Überschriften */
     --farbe-primaer-hell:   #2556c4;   /* Kräftiges Blau – Links, Buttons */
     --farbe-akzent:         #3d7bff;   /* Helles Blau für Badges & Hover */
@@ -144,7 +146,7 @@ ul {
 
 /* Zentrierter Inhalts-Container mit maximalem Seitenabstand */
 .container {
-    max-width: 1100px;
+    max-width: var(--seitenbreite);
     margin: 0 auto;
     padding: 0 24px;
 }
@@ -178,7 +180,7 @@ ul {
 
 /* Schwebende Navigations-„Karte" */
 .navbar-inner {
-    max-width: 1100px;
+    max-width: var(--seitenbreite);
     margin: 0 auto;
     height: 60px;
     padding: 0 16px;
@@ -995,7 +997,7 @@ footer {
 }
 
 .footer-inner {
-    max-width: 1100px;
+    max-width: var(--seitenbreite);
     margin: 0 auto;
     padding: 20px 26px;
     display: flex;
@@ -3264,6 +3266,53 @@ footer {
     .bereiche-grid {
         grid-template-columns: 1fr;
     }
+}
+
+/* Zwei Reihen: oben drei große Kacheln, unten kleinere Kacheln */
+.bereiche-grid-gross,
+.bereiche-grid-klein {
+    grid-template-columns: repeat(3, 1fr);
+}
+.bereiche-grid-klein {
+    margin-top: 1.25rem;
+}
+.bereiche-grid-klein .bereich-karte {
+    padding: 1.1rem 1.2rem 1rem;
+    gap: .45rem;
+}
+.bereiche-grid-klein .bereich-icon {
+    font-size: 1.8rem;
+}
+.bereiche-grid-klein h3 {
+    font-size: 1.05rem;
+}
+@media (max-width: 900px) {
+    .bereiche-grid-gross,
+    .bereiche-grid-klein {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 600px) {
+    .bereiche-grid-gross,
+    .bereiche-grid-klein {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Kachel-Fuß: Aktion links, Login-Hinweis unten rechts */
+.bereich-fuss {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    margin-top: auto;
+}
+.bereich-lock {
+    margin-left: auto;
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--farbe-text-hell);
+    white-space: nowrap;
 }
 
 
