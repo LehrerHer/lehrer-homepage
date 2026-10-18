@@ -45,13 +45,13 @@
         .la-kachel-pfeil{ font-size: .9rem; color: var(--accent-color,#4a9eda); font-weight: 600; margin-top: .25rem; }
 
         /* Materialien-Liste */
-        .mat-grid {
+        .la-mat-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 1rem;
             margin-top: 1.5rem;
         }
-        .mat-karte {
+        .la-mat-karte {
             background: #fff;
             border: 1px solid #d6e4f0;
             border-radius: 12px;
@@ -61,7 +61,7 @@
             gap: .5rem;
             box-shadow: 0 1px 8px rgba(30,58,95,.06);
         }
-        .mat-kategorie {
+        .la-mat-kategorie {
             display: inline-block;
             font-size: .72rem;
             font-weight: 700;
@@ -73,11 +73,11 @@
             color: #1e3a5f;
             width: fit-content;
         }
-        .mat-kategorie.text        { background: #fff3e0; color: #8b4a00; }
-        .mat-kategorie.arbeitsblatt{ background: #e8f8ee; color: #1a6b3a; }
-        .mat-karte h4 { font-size: 1rem; color: #1e3a5f; margin: 0; }
-        .mat-karte p  { font-size: .84rem; color: #666; line-height: 1.5; margin: 0; flex: 1; }
-        .mat-download {
+        .la-mat-kategorie.text        { background: #fff3e0; color: #8b4a00; }
+        .la-mat-kategorie.arbeitsblatt{ background: #e8f8ee; color: #1a6b3a; }
+        .la-mat-karte h4 { font-size: 1rem; color: #1e3a5f; margin: 0; }
+        .la-mat-karte p  { font-size: .84rem; color: #666; line-height: 1.5; margin: 0; flex: 1; }
+        .la-mat-download {
             display: inline-flex;
             align-items: center;
             gap: .35rem;
@@ -87,17 +87,29 @@
             text-decoration: none;
             margin-top: .25rem;
         }
-        .mat-download:hover { text-decoration: underline; }
-        .mat-datum { font-size: .76rem; color: #999; }
-        .mat-leer {
+        .la-mat-download:hover { text-decoration: underline; }
+        .la-mat-datum { font-size: .76rem; color: #999; }
+        .la-mat-leer {
             text-align: center;
-            padding: 2.5rem;
+            padding: 2.5rem 2rem;
             color: #888;
             background: #fafafa;
             border: 1px dashed #ddd;
             border-radius: 12px;
             margin-top: 1.5rem;
         }
+    
+        /* Einheitliche Kästchen: gleiche Rundung, Innenabstand, Schriftgrößen */
+        .la-kachel, .la-mat-karte, .la-mat-leer { border-radius: 14px; padding: 1.5rem 1.6rem; }
+        .la-mat-leer { padding: 2.5rem 2rem; }
+        .la-kachel p    { font-size: 1rem; }
+        .la-mat-karte h4 { font-size: 1.15rem; }
+        .la-mat-karte p  { font-size: 1rem; }
+        .la-mat-download { font-size: 1rem; }
+        .la-mat-datum    { font-size: .9rem; }
+        .la-hero-logo { width: 96px; height: 96px; margin: 0 auto .5rem; border-radius: 50%;
+            background: rgba(255,255,255,.12); border: 2px dashed rgba(255,255,255,.5);
+            display: flex; align-items: center; justify-content: center; font-size: 2.8rem; }
     </style>
     <meta property="og:type" content="website">
     <meta property="og:locale" content="de_DE">
@@ -170,7 +182,8 @@
     <!-- HERO -->
     <div class="la-hero">
         <div class="container">
-            <div style="font-size:3rem">🔖</div>
+            <!-- PLATZHALTER: Logo "Herrmanns Leseabenteuer" (Jan) – hier <img> einsetzen -->
+            <div class="la-hero-logo" role="img" aria-label="Platzhalter für das Leseabenteuer-Logo">🔖</div>
             <h1>Leseabenteuer</h1>
             <p>Bücher erleben, Helden erschaffen, Abenteuer bestehen –<br>
                Texte, Materialien und der Heldenbogen-Generator für Schülerinnen und Schüler.</p>
@@ -178,7 +191,7 @@
     </div>
 
 
-    <main class="container" style="padding: 3rem 1rem;">
+    <main class="container" style="padding: 3rem 24px;">
 
         <!-- EINSTIEGSKACHELN -->
         <div class="la-kacheln">
@@ -204,12 +217,12 @@
 
 
         <!-- MATERIALIEN-LISTE -->
-        <section style="margin-top: 3.5rem">
+        <section style="margin-top: 3.5rem; padding: 0; background: transparent">
             <h2 class="section-titel" style="text-align:left;font-size:1.4rem">Abenteuer &amp; Lesetexte</h2>
             <p style="color:#666;margin-top:.25rem">Von Herrn Herrmann bereitgestellte PDFs – zum Herunterladen und Lesen.</p>
 
             <div id="mat-container">
-                <div class="mat-leer">⏳ Lade Materialien …</div>
+                <div class="la-mat-leer">⏳ Lade Materialien …</div>
             </div>
         </section>
 
@@ -256,27 +269,27 @@
                 const materialien = await res.json();
 
                 if (!materialien.length) {
-                    container.innerHTML = '<div class="mat-leer">📭 Noch keine Materialien hochgeladen.<br><small>Herr Herrmann fügt bald Abenteuer und Texte hinzu!</small></div>';
+                    container.innerHTML = '<div class="la-mat-leer">📭 Noch keine Materialien hochgeladen.<br><small>Herr Herrmann fügt bald Abenteuer und Texte hinzu!</small></div>';
                     return;
                 }
 
                 const grid = document.createElement('div');
-                grid.className = 'mat-grid';
+                grid.className = 'la-mat-grid';
                 grid.innerHTML = materialien.map(m => `
-                    <div class="mat-karte">
-                        <span class="mat-kategorie ${esc(m.kategorie)}">${kategorieLabel(m.kategorie)}</span>
+                    <div class="la-mat-karte">
+                        <span class="la-mat-kategorie ${esc(m.kategorie)}">${kategorieLabel(m.kategorie)}</span>
                         <h4>${esc(m.titel)}</h4>
                         ${m.beschreibung ? `<p>${esc(m.beschreibung)}</p>` : ''}
-                        <a href="${esc(API + m.datei_url)}" class="mat-download" target="_blank" rel="noopener">
+                        <a href="${esc(API + m.datei_url)}" class="la-mat-download" target="_blank" rel="noopener">
                             📄 PDF herunterladen
                         </a>
-                        <span class="mat-datum">Hochgeladen: ${fmtDatum(m.erstellt_am)}</span>
+                        <span class="la-mat-datum">Hochgeladen: ${fmtDatum(m.erstellt_am)}</span>
                     </div>
                 `).join('');
                 container.innerHTML = '';
                 container.appendChild(grid);
             } catch (e) {
-                container.innerHTML = '<div class="mat-leer">Materialien konnten nicht geladen werden.</div>';
+                container.innerHTML = '<div class="la-mat-leer">Materialien konnten nicht geladen werden.</div>';
             }
         }
 

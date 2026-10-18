@@ -28,10 +28,15 @@
             'pdf':      { icon: '📄', label: 'PDF-Dokument' },
             'bild':     { icon: '🖼️', label: 'Bild / Foto' },
             'text':     { icon: '✍️', label: 'Text / Gedicht' },
-            'html':     { icon: '💻', label: 'Informatik-Projekt' },
+            'html':     { icon: '💻', label: 'HTML-Projekt' },
             'sonstige': { icon: '📎', label: 'Datei' }
         };
         return map[typ] || map['sonstige'];
+    }
+
+    /* Alte Beiträge speichern "7c", neue nur "7": nur die Jahrgangszahl verwenden */
+    function jahrgangVon(wert) {
+        return String(wert || '').replace(/[^0-9]/g, '');
     }
 
     function datumFormatieren(isoString) {
@@ -131,7 +136,7 @@
                 <h3>${escape(beitrag.titel)}</h3>
                 <div class="blog-karte-meta">
                     <span>👤 ${escape(beitrag.autor)}</span>
-                    <span>🏫 Klasse ${escape(beitrag.klasse)}</span>
+                    <span>🏫 Jahrgang ${escape(jahrgangVon(beitrag.klasse))}</span>
                     <span>📅 ${datumFormatieren(beitrag.datum)}</span>
                 </div>
                 <p class="blog-karte-beschreibung">${escape(beitrag.beschreibung)}</p>
@@ -159,7 +164,7 @@
     function detailOeffnen(beitrag) {
         if (!lightbox || !lightboxInhalt) return;
 
-        const metaText = `${escape(beitrag.autor)} · Klasse ${escape(beitrag.klasse)} · ${datumFormatieren(beitrag.datum)}`;
+        const metaText = `${escape(beitrag.autor)} · Jahrgang ${escape(jahrgangVon(beitrag.klasse))} · ${datumFormatieren(beitrag.datum)}`;
         const badge    = `<span class="blog-fach-badge ${fachKlasse(beitrag.fach)}">${escape(beitrag.fach)}</span>`;
 
         if (beitrag.dateiTyp === 'text' && beitrag.textinhalt) {
@@ -246,28 +251,23 @@
 
     const filterFach      = document.getElementById('filter-fach');
     const filterJahrgang  = document.getElementById('filter-jahrgang');
-    const filterKlasse    = document.getElementById('filter-klasse');
     const filterTyp       = document.getElementById('filter-typ');
     const filterZurueck   = document.getElementById('filter-zurueck');
 
     function filterAnwenden() {
         const gewFach     = filterFach     ? filterFach.value     : '';
         const gewJahrgang = filterJahrgang ? filterJahrgang.value : '';
-        const gewKlasse   = filterKlasse   ? filterKlasse.value   : '';
         const gewTyp      = filterTyp      ? filterTyp.value      : '';
 
-        const aktiv = !!(gewFach || gewJahrgang || gewKlasse || gewTyp);
+        const aktiv = !!(gewFach || gewJahrgang || gewTyp);
         filterZurueck && filterZurueck.classList.toggle('sichtbar', aktiv);
 
         let sichtbar = 0;
         document.querySelectorAll('.blog-karte').forEach(function (k) {
-            /* k.dataset.klasse enthält kombinierten Wert, z. B. "7c" */
-            const kJahrgang = k.dataset.klasse ? k.dataset.klasse.slice(0, -1) : '';
-            const kBuchstabe = k.dataset.klasse ? k.dataset.klasse.slice(-1)   : '';
+            const kJahrgang = jahrgangVon(k.dataset.klasse);
             const passt =
                 (!gewFach     || k.dataset.fach === gewFach)   &&
                 (!gewJahrgang || kJahrgang       === gewJahrgang) &&
-                (!gewKlasse   || kBuchstabe       === gewKlasse) &&
                 (!gewTyp      || k.dataset.typ    === gewTyp);
             k.style.display = passt ? '' : 'none';
             if (passt) sichtbar++;
@@ -282,12 +282,10 @@
 
     filterFach     && filterFach.addEventListener('change', filterAnwenden);
     filterJahrgang && filterJahrgang.addEventListener('change', filterAnwenden);
-    filterKlasse   && filterKlasse.addEventListener('change', filterAnwenden);
     filterTyp      && filterTyp.addEventListener('change', filterAnwenden);
     filterZurueck  && filterZurueck.addEventListener('click', function () {
         if (filterFach)     filterFach.value     = '';
         if (filterJahrgang) filterJahrgang.value = '';
-        if (filterKlasse)   filterKlasse.value   = '';
         if (filterTyp)      filterTyp.value      = '';
         filterAnwenden();
     });

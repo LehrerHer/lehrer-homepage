@@ -7,7 +7,7 @@
 <title>Heldenbogen-Generator – Leseabenteuer</title>
 <!-- Auth-Guard: nur für eingeloggte Schülerinnen und Schüler -->
 <script src="js/auth-guard.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=20260615c">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <style>
   :root {
@@ -33,7 +33,7 @@
       repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(0,0,0,0.04) 40px, rgba(0,0,0,0.04) 41px),
       repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(0,0,0,0.04) 40px, rgba(0,0,0,0.04) 41px);
     min-height: 100vh;
-    font-family: 'Crimson Text', Georgia, serif;
+    font-family: var(--schrift-text);
     color: var(--ink);
     padding: 1rem 1rem 2rem;
   }
@@ -43,8 +43,8 @@
     align-items: center;
     gap: .4rem;
     color: var(--parchment-dark);
-    font-family: 'Cinzel', serif;
-    font-size: .72rem;
+    font-family: var(--schrift-ueberschrift);
+    font-size: 0.8rem;
     letter-spacing: .12em;
     text-transform: uppercase;
     text-decoration: none;
@@ -56,7 +56,7 @@
 
   .page-title {
     text-align: center;
-    font-family: 'Cinzel', serif;
+    font-family: var(--schrift-ueberschrift);
     font-size: 1.1rem;
     color: var(--gold);
     letter-spacing: 0.25em;
@@ -67,7 +67,7 @@
 
   .page-subtitle {
     text-align: center;
-    font-family: 'Crimson Text', serif;
+    font-family: var(--schrift-text);
     font-size: 0.95rem;
     color: var(--parchment-dark);
     opacity: 0.6;
@@ -75,7 +75,7 @@
     font-style: italic;
   }
 
-  .container {
+  .hb-container {
     max-width: 960px;
     margin: 0 auto;
     display: grid;
@@ -100,8 +100,8 @@
     pointer-events: none;
   }
   .panel-title {
-    font-family: 'Cinzel', serif;
-    font-size: 0.75rem;
+    font-family: var(--schrift-ueberschrift);
+    font-size: 0.8rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--accent);
@@ -112,8 +112,8 @@
 
   .field-group { margin-bottom: 1rem; }
   .field-label {
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
+    font-family: var(--schrift-ueberschrift);
+    font-size: 0.8rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
     color: var(--muted);
@@ -125,7 +125,7 @@
     background: transparent;
     border: none;
     border-bottom: 1px solid var(--border);
-    font-family: 'Crimson Text', serif;
+    font-family: var(--schrift-text);
     font-size: 1.1rem;
     color: var(--ink);
     padding: 0.2rem 0.1rem;
@@ -152,7 +152,7 @@
   }
   .class-card-header { display: flex; align-items: baseline; gap: 0.5rem; }
   .class-icon { font-size: 1rem; }
-  .class-name { font-family: 'Cinzel', serif; font-size: 0.78rem; font-weight: 600; color: var(--accent); }
+  .class-name { font-family: var(--schrift-ueberschrift); font-size: 0.8rem; font-weight: 600; color: var(--accent); }
   .class-tagline { font-size: 0.8rem; font-style: italic; color: var(--muted); margin-top: 0.1rem; }
 
   .preview-panel {
@@ -183,8 +183,8 @@
   }
   .preview-empty-icon { font-size: 3rem; }
   .preview-empty-text {
-    font-family: 'Cinzel', serif;
-    font-size: 0.75rem;
+    font-family: var(--schrift-ueberschrift);
+    font-size: 0.8rem;
     letter-spacing: 0.15em;
     color: var(--muted);
     text-align: center;
@@ -199,9 +199,9 @@
     padding-bottom: 0.75rem;
     margin-bottom: 1rem;
   }
-  .sheet-title { font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 700; color: var(--accent); letter-spacing: 0.08em; }
-  .sheet-subtitle { font-family: 'Cinzel', serif; font-size: 0.65rem; letter-spacing: 0.2em; color: var(--muted); margin-top: 0.2rem; }
-  .sheet-hero-name { font-family: 'Cinzel', serif; font-size: 1.6rem; font-weight: 600; color: var(--ink); margin: 0.5rem 0 0.15rem; }
+  .sheet-title { font-family: var(--schrift-ueberschrift); font-size: 1.3rem; font-weight: 700; color: var(--accent); letter-spacing: 0.08em; }
+  .sheet-subtitle { font-family: var(--schrift-ueberschrift); font-size: 0.8rem; letter-spacing: 0.2em; color: var(--muted); margin-top: 0.2rem; }
+  .sheet-hero-name { font-family: var(--schrift-ueberschrift); font-size: 1.6rem; font-weight: 600; color: var(--ink); margin: 0.5rem 0 0.15rem; }
   .sheet-class-name { font-style: italic; font-size: 1rem; color: var(--muted); }
 
   .sheet-body { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -215,8 +215,8 @@
   .sheet-section.full { grid-column: 1 / -1; }
 
   .section-head {
-    font-family: 'Cinzel', serif;
-    font-size: 0.6rem;
+    font-family: var(--schrift-ueberschrift);
+    font-size: 0.8rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--accent);
@@ -228,9 +228,9 @@
   .attr-table { width: 100%; border-collapse: collapse; }
   .attr-table td { padding: 0.25rem 0.3rem; font-size: 0.9rem; vertical-align: middle; }
   .attr-name { color: var(--muted); font-size: 0.82rem; }
-  .attr-formula { color: var(--muted); font-size: 0.75rem; font-style: italic; text-align: right; }
+  .attr-formula { color: var(--muted); font-size: 0.8rem; font-style: italic; text-align: right; }
   .attr-val {
-    font-family: 'Cinzel', serif;
+    font-family: var(--schrift-ueberschrift);
     font-size: 1.1rem;
     font-weight: 600;
     color: var(--ink);
@@ -238,7 +238,7 @@
     width: 2.5rem;
     border-bottom: 1px solid var(--border);
   }
-  .lp-val { font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 700; color: var(--accent); text-align: center; margin: 0.3rem 0; }
+  .lp-val { font-family: var(--schrift-ueberschrift); font-size: 1.4rem; font-weight: 700; color: var(--accent); text-align: center; margin: 0.3rem 0; }
 
   .reroll-btn {
     display: block;
@@ -247,8 +247,8 @@
     background: transparent;
     border: 1px solid var(--border);
     border-radius: 2px;
-    font-family: 'Cinzel', serif;
-    font-size: 0.62rem;
+    font-family: var(--schrift-ueberschrift);
+    font-size: 0.8rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
@@ -277,11 +277,11 @@
   .xp-track-wrap { margin-top: 0.6rem; }
   .xp-labels { display: flex; justify-content: space-between; margin-bottom: 0.25rem; }
   .xp-label-item { text-align: center; }
-  .xp-label-num { font-family: 'Cinzel', serif; font-size: 0.65rem; color: var(--accent); display: block; }
-  .xp-label-name { font-size: 0.62rem; color: var(--muted); font-style: italic; display: block; }
+  .xp-label-num { font-family: var(--schrift-ueberschrift); font-size: 0.8rem; color: var(--accent); display: block; }
+  .xp-label-name { font-size: 0.8rem; color: var(--muted); font-style: italic; display: block; }
   .xp-bar-outer { height: 18px; background: rgba(0,0,0,0.07); border: 1px solid var(--border); border-radius: 2px; position: relative; overflow: hidden; }
   .xp-bar-inner { height: 100%; background: linear-gradient(90deg, var(--accent) 0%, var(--gold) 100%); transition: width 0.5s ease; min-width: 3px; }
-  .xp-arrow { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); font-family: 'Cinzel', serif; font-size: 0.65rem; color: var(--ink); font-weight: 600; }
+  .xp-arrow { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); font-family: var(--schrift-ueberschrift); font-size: 0.8rem; color: var(--ink); font-weight: 600; }
   .xp-milestones { display: flex; gap: 3px; margin-top: 3px; }
   .xp-ms-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(0,0,0,0.12); border: 1px solid var(--border); transition: background 0.3s; }
   .xp-ms-dot.reached { background: var(--gold); border-color: var(--gold-dark); }
@@ -292,18 +292,18 @@
     background: transparent;
     border: none;
     border-bottom: 1px solid var(--border);
-    font-family: 'Cinzel', serif;
+    font-family: var(--schrift-ueberschrift);
     font-size: 1.1rem;
     color: var(--ink);
     text-align: center;
     outline: none;
   }
   .xp-input:focus { border-bottom-color: var(--accent); }
-  .xp-stufe { font-family: 'Cinzel', serif; font-size: 0.72rem; color: var(--gold-dark); font-style: italic; }
+  .xp-stufe { font-family: var(--schrift-ueberschrift); font-size: 0.8rem; color: var(--gold-dark); font-style: italic; }
 
   .adventure-log { margin-top: 0.5rem; }
   .adv-row { display: grid; grid-template-columns: 1.5rem 3rem 1fr; gap: 0.3rem; align-items: center; margin-bottom: 0.25rem; font-size: 0.82rem; }
-  .adv-num { color: var(--muted); font-family: 'Cinzel', serif; font-size: 0.7rem; }
+  .adv-num { color: var(--muted); font-family: var(--schrift-ueberschrift); font-size: 0.8rem; }
   .adv-ep-line { border-bottom: 1px solid var(--border); height: 1px; }
 
   .export-btn {
@@ -314,7 +314,7 @@
     color: var(--parchment);
     border: none;
     border-radius: 3px;
-    font-family: 'Cinzel', serif;
+    font-family: var(--schrift-ueberschrift);
     font-size: 0.8rem;
     letter-spacing: 0.15em;
     text-transform: uppercase;
@@ -333,7 +333,7 @@
     background: transparent;
     border: none;
     border-bottom: 1px solid var(--border);
-    font-family: 'Crimson Text', serif;
+    font-family: var(--schrift-text);
     font-size: 0.9rem;
     color: var(--ink);
     padding: 0.2rem 0;
@@ -344,10 +344,17 @@
   .gegenstand-input::placeholder { color: rgba(90,65,30,0.35); }
 
   @media (max-width: 700px) {
-    .container { grid-template-columns: 1fr; }
+    .hb-container { grid-template-columns: 1fr; }
     .sheet-body { grid-template-columns: 1fr; }
     .sheet-section.full { grid-column: 1; }
   }
+
+  /* === Angleichung an die Homepage (Stand 2026-10) === */
+  body { background: var(--farbe-hintergrund); background-image: none; padding: 0; font-size: 1.1rem; }
+  .hb-container { max-width: none; }
+  .la-wrap { max-width: 1100px; margin: 0 auto; padding: 1.5rem 24px 3rem; }
+  .la-zurueck { display: inline-block; margin-bottom: 1.25rem; font-weight: 600; color: var(--farbe-primaer-hell); }
+  @media print { .navbar, footer, .abgabe-header, .la-zurueck { display: none; } }
 </style>
     <meta property="og:type" content="website">
     <meta property="og:locale" content="de_DE">
@@ -360,14 +367,73 @@
 </head>
 <body>
 
-<div style="max-width:960px;margin:0 auto">
-  <a href="leseabenteuer.html" class="back-link">← Zurück zum Leseabenteuer</a>
-</div>
+    <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+        <div class="container navbar-inner">
 
-<div class="page-title">Leseabenteuer</div>
-<div class="page-subtitle">Heldenbogen-Generator</div>
+            <a href="index.html" class="navbar-logo">lehrer-herrmann.de</a>
 
-<div class="container">
+            <button
+                class="hamburger"
+                id="hamburger"
+                aria-label="Menü öffnen"
+                aria-expanded="false"
+                aria-controls="navbar-links"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="navbar-links" id="navbar-links">
+                <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
+                <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+                <li class="navbar-gb-trenner" aria-hidden="true">
+                    <span class="navbar-gb-label">Geschützter Bereich</span>
+                </li>
+                <li><a href="blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+                <li class="navbar-dropdown">
+                    <button class="navbar-dropdown-toggle navbar-gb-link" aria-expanded="false" aria-haspopup="true">📚 Fächer ▾</button>
+                    <ul class="navbar-dropdown-menu" role="menu">
+                        <li><a href="fach-deutsch.html" role="menuitem">Deutsch</a></li>
+                        <li><a href="fach-geschichte.html" role="menuitem">Geschichte</a></li>
+                        <li><a href="fach-informatik.html" role="menuitem">Informatik</a></li>
+                        <li><a href="fach-mathe.html" role="menuitem">Mathematik</a></li>
+                        <li><a href="fach-englisch.html" role="menuitem">Englisch</a></li>
+                        <li><a href="fach-sport.html" role="menuitem">Sport</a></li>
+                        <li><a href="fach-biologie.html" role="menuitem">Biologie</a></li>
+                        <li><a href="fach-chemie.html" role="menuitem">Chemie</a></li>
+                        <li><a href="fach-physik.html" role="menuitem">Physik</a></li>
+                        <li><a href="fach-musik.html" role="menuitem">Musik</a></li>
+                        <li><a href="fach-erdkunde.html" role="menuitem">Erdkunde</a></li>
+                        <li><a href="fach-gestaltendes-werken.html" role="menuitem">Gestaltendes Werken</a></li>
+                        <li><a href="fach-wipo.html" role="menuitem">Wirtschaft/Politik</a></li>
+                        <li><a href="fach-werte-normen.html" role="menuitem">Werte &amp; Normen</a></li>
+                        <li class="dropdown-divider"></li>
+                        <li><a href="fach-ag-projekte.html" role="menuitem">AGs &amp; Projekte</a></li>
+                        <li><a href="fach-faecheruebergreifend.html" role="menuitem">Fächerübergreifend</a></li>
+                    </ul>
+                </li>
+                <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+            </ul>
+
+            <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none">
+                <!-- Wird per JS befüllt -->
+            </div>
+
+        </div>
+    </nav>
+
+    <header class="abgabe-header">
+        <div class="container">
+            <h1>⚔️ Heldenbogen-Generator</h1>
+            <p>Leseabenteuer</p>
+        </div>
+    </header>
+
+<div class="la-wrap">
+<a href="leseabenteuer.html" class="la-zurueck">← Zurück zum Leseabenteuer</a>
+
+<div class="hb-container">
 
   <!-- LEFT: Controls -->
   <div class="panel">
@@ -472,6 +538,21 @@
   </div>
 </div>
 
+</div><!-- /la-wrap -->
+    <footer>
+        <div class="container footer-inner">
+            <p>© <span id="footer-jahr">2025</span> Jan Herrmann</p>
+            <nav class="footer-links" aria-label="Rechtliche Links">
+                <a href="impressum.html">Impressum</a>
+                <a href="datenschutz.html">Datenschutz</a>
+            </nav>
+            <a href="https://kolosseum.lehrer-herrmann.de/admin/" id="admin-footer-link" class="admin-footer-link" aria-label="Admin-Bereich">⚙</a>
+        </div>
+    </footer>
+
+
+    <script src="js/main.js?v=20260615c"></script>
+    <script src="js/kolosseum-login-widget.js"></script>
 <script>
 const CLASSES = [
   {
