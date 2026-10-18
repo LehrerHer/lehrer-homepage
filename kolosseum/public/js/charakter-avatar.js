@@ -1,184 +1,328 @@
+/* ============================================================
+   Charakter-Avatar (SVG) – EINZIGE Zeichenfunktion für
+   Charakter, Profil, Rangliste und Kampf.
+   window.drawCharakterAvatar(cfg, size) → SVG-String
+   cfg: { classId, raceId, genderId, skinId, hairColorId, accessoryId }
+
+   Erkennbarkeit auf einen Blick:
+   - Klasse: Kleidung, Waffe/Attribut, Kopfbedeckung
+     Ritter (Rüstung, Schwert, Schild) · Magier (Robe, Spitzhut, Stab)
+     Waldschrat (Kapuze, Blätterkranz, Knorrenstab) · Bogenschütze
+     (Lederwams, Federhut, Bogen, Köcher) · Lehrer (Jackett, Krawatte,
+     Doktorhut, Buch, Zeigestock)
+   - Volk: Körperform, Kopf, Ohren, Bart, Gesicht
+     Mensch (ausgewogen) · Zwerg (breit, gedrungen, Bart/Zöpfe, große Nase)
+     Elfe (schlank, lange Spitzohren, Mandelaugen, Stirnreif)
+   ============================================================ */
 (function () {
   'use strict';
 
-  const CLASSES = [
-    { id: 'knight',  label: 'Ritter',       emoji: '⚔️',  primary: '#b08030', accent: '#7a5010', glow: '#c8a04088' },
-    { id: 'mage',    label: 'Magier',       emoji: '🔮',  primary: '#7050c0', accent: '#4a2890', glow: '#8060d088' },
-    { id: 'druid',   label: 'Waldschrat',   emoji: '🌿',  primary: '#4a8040', accent: '#2a5820', glow: '#60a05088' },
-    { id: 'archer',  label: 'Bogenschütze', emoji: '🏹',  primary: '#805030', accent: '#503010', glow: '#a07040 88' },
-    { id: 'teacher', label: 'Lehrer',       emoji: '📖',  primary: '#306080', accent: '#104060', glow: '#4080a088' },
-  ];
+  const SKIN_TONES = {
+    s1: '#fde8c8', s2: '#f0c898', s3: '#d4a070', s4: '#9a6038', s5: '#6a3818',
+  };
+  const HAIR_COLORS = {
+    hc1: '#2a1a0e', hc2: '#6b3a1f', hc3: '#d4a53a', hc4: '#9b3a1a',
+    hc5: '#908880', hc6: '#e8e0d0', hc7: '#8040d0', hc8: '#3a6030',
+  };
 
-  const SKIN_TONES = [
-    { id: 's1', color: '#fde8c8' },
-    { id: 's2', color: '#f0c898' },
-    { id: 's3', color: '#d4a070' },
-    { id: 's4', color: '#9a6038' },
-    { id: 's5', color: '#6a3818' },
-  ];
+  // Farbwelt je Klasse (Kleidung)
+  const KLASSEN = {
+    knight:  { stoff: '#a8323a', stoffDunkel: '#6e1c22', glow: '#c8a04088' },
+    mage:    { stoff: '#5b3fa8', stoffDunkel: '#36246e', glow: '#8060d088' },
+    druid:   { stoff: '#3f7a3a', stoffDunkel: '#24501f', glow: '#60a05088' },
+    archer:  { stoff: '#7a4a24', stoffDunkel: '#4a2a10', glow: '#a0704088' },
+    teacher: { stoff: '#2f5f86', stoffDunkel: '#1a3d5c', glow: '#4080a088' },
+  };
 
-  const HAIR_COLORS = [
-    { id: 'hc1', color: '#180e06' },
-    { id: 'hc2', color: '#6b3a1f' },
-    { id: 'hc3', color: '#d4a53a' },
-    { id: 'hc4', color: '#9b3a1a' },
-    { id: 'hc5', color: '#908880' },
-    { id: 'hc6', color: '#e8e0d0' },
-    { id: 'hc7', color: '#8040d0' },
-    { id: 'hc8', color: '#3a6030' },
-  ];
+  // Körperbau je Volk
+  const VOELKER = {
+    human: { hy: 36, hrx: 14,   hry: 16,   tw: 34, ty: 58, hals: 8 },
+    dwarf: { hy: 43, hrx: 16.5, hry: 14.5, tw: 48, ty: 63, hals: 11 },
+    elf:   { hy: 33, hrx: 12.5, hry: 17.5, tw: 27, ty: 56, hals: 6 },
+  };
+
+  let zaehler = 0;
 
   function drawCharakterAvatar(cfg, size) {
+    cfg = cfg || {};
     size = size || 140;
-    const cls  = CLASSES.find(c => c.id === cfg.classId)        || CLASSES[0];
-    const skin = SKIN_TONES.find(s => s.id === cfg.skinId)      || SKIN_TONES[1];
-    const hcol = HAIR_COLORS.find(h => h.id === cfg.hairColorId) || HAIR_COLORS[1];
-    const race   = cfg.raceId   || 'human';
-    const gender = cfg.genderId || 'male';
+    const uid    = 'av' + (++zaehler) + Math.random().toString(36).slice(2, 6);
+    const klasse = KLASSEN[cfg.classId] ? cfg.classId : 'knight';
+    const volk   = VOELKER[cfg.raceId] ? cfg.raceId : 'human';
+    const gender = ['male', 'female', 'diverse'].includes(cfg.genderId) ? cfg.genderId : 'male';
     const acc    = cfg.accessoryId || 'none';
+    const haut   = SKIN_TONES[cfg.skinId] || SKIN_TONES.s2;
+    const haar   = HAIR_COLORS[cfg.hairColorId] || HAIR_COLORS.hc2;
+    const K = KLASSEN[klasse];
+    const V = VOELKER[volk];
 
-    const raceParams = {
-      human: { headRx: 22, headRy: 24, bodyW: 34 },
-      dwarf: { headRx: 26, headRy: 22, bodyW: 42 },
-      elf:   { headRx: 19, headRy: 26, bodyW: 30 },
-    };
-    const rp = raceParams[race] || raceParams.human;
+    const hx = 50, hy = V.hy, rx = V.hrx, ry = V.hry;
+    const sL = 50 - V.tw / 2, sR = 50 + V.tw / 2, ty = V.ty;
+    const hellHaut = ['s1', 's2'].includes(cfg.skinId) || !cfg.skinId;
+    const kontur   = hellHaut ? '#a0704a' : '#3a1a08';
+    const lippe    = hellHaut ? '#b0584a' : '#5a1e12';
+    const handL = { x: sL - 4, y: ty + 29 };
+    const handR = { x: sR + 4, y: ty + 29 };
 
-    const hairPaths = {
-      male: {
-        human: 'M 50,28 Q 34,16 30,30 Q 28,18 42,13 Q 50,9 58,13 Q 72,18 70,30 Q 66,16 50,28 Z',
-        dwarf: 'M 50,28 Q 30,16 28,32 Q 26,18 40,12 Q 50,8 60,12 Q 74,18 72,32 Q 70,16 50,28 Z',
-        elf:   'M 50,26 Q 36,14 32,28 Q 30,16 44,11 Q 50,8 56,11 Q 70,16 68,28 Q 64,14 50,26 Z',
-      },
-      female: {
-        human: 'M 50,28 Q 28,16 24,36 Q 22,52 26,65 Q 30,16 50,28 Q 70,16 74,65 Q 78,52 76,36 Q 72,16 50,28 Z',
-        dwarf: 'M 50,28 Q 26,16 22,38 Q 20,54 26,68 Q 30,16 50,28 Q 70,16 74,68 Q 80,54 78,38 Q 74,16 50,28 Z',
-        elf:   'M 50,26 Q 29,13 25,35 Q 23,50 27,64 Q 31,14 50,26 Q 69,14 73,64 Q 77,50 75,35 Q 71,13 50,26 Z',
-      },
-      diverse: {
-        human: 'M 50,28 Q 30,16 28,30 Q 26,18 42,13 Q 50,9 58,13 Q 72,18 70,30 Q 68,16 50,28 M 50,28 L 62,55 Q 64,58 62,62',
-        dwarf: 'M 50,28 Q 28,16 26,32 Q 24,18 40,12 Q 50,8 60,12 Q 74,18 72,32 M 50,28 L 63,56 Q 65,60 63,64',
-        elf:   'M 50,26 Q 32,14 30,28 Q 28,16 44,11 Q 50,8 56,11 Q 70,16 68,28 M 50,26 L 63,54 Q 65,58 63,62',
-      },
-    };
-    const hairPath = (hairPaths[gender] || hairPaths.male)[race] || hairPaths.male.human;
+    const teile = [];
+    const add = (s) => teile.push(s);
 
-    const p  = cls.primary;
-    const a  = cls.accent;
-    const sc = skin.color;
-    const hc = hcol.color;
-    const bW = rp.bodyW;
-    const bx = 50 - bW / 2;
+    // ── Hintergrund-Aura ──────────────────────────────────────────
+    add(`<defs>
+      <radialGradient id="${uid}-aura" cx="50%" cy="55%" r="50%">
+        <stop offset="0%" stop-color="${K.stoff}" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="${K.stoff}" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="${uid}-stahl" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#e4e9ee"/><stop offset="55%" stop-color="#9aa3ad"/><stop offset="100%" stop-color="#5f6872"/>
+      </linearGradient>
+      <radialGradient id="${uid}-kugel" cx="40%" cy="35%" r="60%">
+        <stop offset="0%" stop-color="#ffffff"/><stop offset="45%" stop-color="#b7a0ff"/><stop offset="100%" stop-color="#5b3fa8"/>
+      </radialGradient>
+    </defs>`);
+    add(`<circle cx="50" cy="54" r="46" fill="url(#${uid}-aura)"/>`);
 
-    const equipment = {
-      knight: `<g>
-        <rect x="14" y="54" width="11" height="32" rx="2" fill="${p}" stroke="${a}" stroke-width="1.2"/>
-        <rect x="17" y="40" width="5" height="16" rx="1" fill="${a}"/>
-        <rect x="10" y="52" width="18" height="4" rx="1" fill="${a}"/>
-        <ellipse cx="30" cy="67" rx="6" ry="4" fill="${p}" stroke="${a}" stroke-width="1"/>
-        <ellipse cx="70" cy="67" rx="6" ry="4" fill="${p}" stroke="${a}" stroke-width="1"/>
-      </g>`,
-      mage: `<g>
-        <line x1="18" y1="58" x2="18" y2="88" stroke="${a}" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="18" cy="52" r="7" fill="${p}" opacity="0.85" stroke="${a}" stroke-width="1"/>
-        <circle cx="18" cy="52" r="4" fill="white" opacity="0.4"/>
-        <circle cx="13" cy="47" r="1.5" fill="${p}" opacity="0.7"/>
-        <circle cx="24" cy="46" r="1" fill="${p}" opacity="0.6"/>
-        <circle cx="11" cy="55" r="1" fill="${p}" opacity="0.5"/>
-      </g>`,
-      druid: `<g>
-        <path d="M 20,88 Q 17,70 19,55 Q 20,45 18,38" stroke="#6b4a20" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <circle cx="18" cy="36" r="5" fill="${p}" opacity="0.8"/>
-        <path d="M 15,34 Q 10,28 14,24 Q 20,30 18,36" fill="${p}" opacity="0.7"/>
-        <path d="M 21,33 Q 26,26 30,29 Q 26,34 20,36" fill="${p}" opacity="0.6"/>
-        <path d="M 68,64 Q 76,58 80,64 Q 76,70 68,66 Z" fill="${p}" opacity="0.7"/>
-      </g>`,
-      archer: `<g>
-        <path d="M 78,42 Q 88,55 78,72" stroke="${a}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <line x1="78" y1="42" x2="78" y2="72" stroke="#c8a060" stroke-width="1" stroke-dasharray="2,2"/>
-        <rect x="68" y="58" width="7" height="20" rx="3" fill="${p}" stroke="${a}" stroke-width="1"/>
-        <line x1="70" y1="58" x2="70" y2="52" stroke="${a}" stroke-width="1.2"/>
-        <line x1="73" y1="58" x2="73" y2="50" stroke="${a}" stroke-width="1.2"/>
-      </g>`,
-      teacher: `<g>
-        <rect x="68" y="55" width="16" height="22" rx="2" fill="${p}" stroke="${a}" stroke-width="1.2"/>
-        <rect x="70" y="57" width="12" height="18" rx="1" fill="white" opacity="0.15"/>
-        <line x1="70" y1="62" x2="82" y2="62" stroke="${a}" stroke-width="0.8"/>
-        <line x1="70" y1="66" x2="82" y2="66" stroke="${a}" stroke-width="0.8"/>
-        <line x1="70" y1="70" x2="78" y2="70" stroke="${a}" stroke-width="0.8"/>
-        <line x1="20" y1="50" x2="20" y2="85" stroke="${a}" stroke-width="2" stroke-linecap="round"/>
-        <circle cx="20" cy="48" r="3" fill="${p}"/>
-      </g>`,
-    };
+    // ── Hinter dem Körper: Köcher, Kapuze, lange Haare ─────────────
+    if (klasse === 'archer') {
+      add(`<g transform="rotate(18 ${sR - 4} ${ty})">
+        <rect x="${sR - 9}" y="${ty - 18}" width="9" height="30" rx="3" fill="#5a3416" stroke="#2e1a08" stroke-width="1"/>
+        ${[0, 3, 6].map(d => `<line x1="${sR - 7 + d}" y1="${ty - 18}" x2="${sR - 7 + d}" y2="${ty - 26}" stroke="#d8c8a0" stroke-width="1"/>
+          <path d="M${sR - 8.5 + d},${ty - 26} l1.5,-4 l1.5,4 z" fill="#c0392b"/>`).join('')}
+      </g>`);
+    }
+    if (klasse === 'druid') {
+      add(`<path d="M${hx - rx - 7},${hy + ry + 8} Q${hx - rx - 9},${hy - ry - 4} ${hx},${hy - ry - 8}
+        Q${hx + rx + 9},${hy - ry - 4} ${hx + rx + 7},${hy + ry + 8} Z" fill="${K.stoffDunkel}"/>`);
+    }
+    if (gender === 'female' && volk !== 'dwarf') {
+      add(`<path d="M${hx - rx - 2},${hy - 4} Q${hx - rx - 5},${hy + ry + 10} ${hx - rx + 1},${hy + ry + 15}
+        L${hx + rx - 1},${hy + ry + 15} Q${hx + rx + 5},${hy + ry + 10} ${hx + rx + 2},${hy - 4} Z" fill="${haar}"/>`);
+    }
 
-    const accSVG = {
-      glasses: `<g stroke="${a}" stroke-width="1.5" fill="none">
-        <rect x="33" y="42" width="13" height="9" rx="2.5"/>
-        <rect x="54" y="42" width="13" height="9" rx="2.5"/>
-        <line x1="46" y1="46" x2="54" y2="46"/>
-        <line x1="33" y1="46" x2="27" y2="44"/>
-        <line x1="67" y1="46" x2="73" y2="44"/>
-      </g>`,
-      scar: `<path d="M 43,37 L 39,52" stroke="#7a1a1a" stroke-width="1.8" stroke-linecap="round" opacity="0.85"/>`,
-      freckles: `<g fill="#9a5030" opacity="0.45">${[[36,49],[40,51],[44,49],[56,49],[60,51],[64,49],[38,45],[62,45]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.8"/>`).join('')}</g>`,
-      beard: `<path d="M 36,60 Q 38,68 50,72 Q 62,68 64,60 Q 57,65 50,66 Q 43,65 36,60 Z" fill="${hc}" opacity="0.85"/>`,
-      braid: `<path d="M 50,28 L 50,75 Q 48,72 50,68 Q 52,72 50,75" stroke="${hc}" stroke-width="3" fill="none" stroke-linecap="round"/>`,
-      none: '',
-    };
+    // ── Körper: Kleidung je Klasse ────────────────────────────────
+    const rumpf = `M${sL},${ty + 6} Q${sL},${ty} ${sL + 6},${ty} L${sR - 6},${ty} Q${sR},${ty} ${sR},${ty + 6}`;
+    const armL = `<rect x="${sL - 8}" y="${ty + 2}" width="9" height="27" rx="4.5"`;
+    const armR = `<rect x="${sR - 1}" y="${ty + 2}" width="9" height="27" rx="4.5"`;
 
-    const elfEars = race === 'elf'
-      ? `<g fill="${sc}" stroke="${sc === '#fde8c8' ? '#c8a080' : '#7a4820'}" stroke-width="0.8">
-          <path d="M 28,42 Q 20,36 24,28 Q 30,32 30,42 Z"/>
-          <path d="M 72,42 Q 80,36 76,28 Q 70,32 70,42 Z"/>
-        </g>` : '';
+    if (klasse === 'knight') {
+      add(`${armL} fill="url(#${uid}-stahl)" stroke="#4a525a" stroke-width="0.8"/>`);
+      add(`${armR} fill="url(#${uid}-stahl)" stroke="#4a525a" stroke-width="0.8"/>`);
+      add(`<path d="${rumpf} L${sR + 1},100 L${sL - 1},100 Z" fill="url(#${uid}-stahl)" stroke="#4a525a" stroke-width="0.8"/>`);
+      // Wappenrock mit Kreuz
+      add(`<path d="M${50 - V.tw * 0.28},${ty + 8} L${50 + V.tw * 0.28},${ty + 8} L${50 + V.tw * 0.32},100 L${50 - V.tw * 0.32},100 Z" fill="${K.stoff}"/>`);
+      add(`<path d="M50,${ty + 14} V${ty + 34} M${50 - 6},${ty + 21} H${50 + 6}" stroke="#f2cf6b" stroke-width="2.6" stroke-linecap="round"/>`);
+      // Schulterplatten
+      add(`<ellipse cx="${sL + 2}" cy="${ty + 3}" rx="8" ry="5" fill="url(#${uid}-stahl)" stroke="#4a525a" stroke-width="0.8"/>`);
+      add(`<ellipse cx="${sR - 2}" cy="${ty + 3}" rx="8" ry="5" fill="url(#${uid}-stahl)" stroke="#4a525a" stroke-width="0.8"/>`);
+    } else if (klasse === 'mage' || klasse === 'druid') {
+      add(`${armL} fill="${K.stoff}"/>`);
+      add(`${armR} fill="${K.stoff}"/>`);
+      // Weite Ärmel
+      add(`<path d="M${sL - 9},${ty + 22} L${sL + 2},${ty + 22} L${sL + 3},${ty + 31} L${sL - 12},${ty + 31} Z" fill="${K.stoffDunkel}"/>`);
+      add(`<path d="M${sR - 2},${ty + 22} L${sR + 9},${ty + 22} L${sR + 12},${ty + 31} L${sR - 3},${ty + 31} Z" fill="${K.stoffDunkel}"/>`);
+      add(`<path d="${rumpf} L${sR + 6},100 L${sL - 6},100 Z" fill="${K.stoff}"/>`);
+      if (klasse === 'mage') {
+        add(`<path d="M50,${ty} V100" stroke="#f2cf6b" stroke-width="1.6"/>`);
+        add(`<rect x="${sL + 1}" y="${ty + 18}" width="${V.tw - 2}" height="3.5" fill="#f2cf6b"/>`);
+        add(stern(sL + 6, ty + 30, 2.6, '#f2cf6b') + stern(sR - 7, ty + 36, 2, '#f2cf6b') + stern(sL + 9, ty + 39, 1.6, '#e8e0ff'));
+      } else {
+        // Blätter am Umhang und Gürtel
+        add(`<path d="M${sL + 1},${ty + 18} H${sR - 1}" stroke="#6b4a20" stroke-width="3"/>`);
+        add(blatt(sL + 4, ty + 6, -30, '#7fbf5a') + blatt(sR - 4, ty + 6, 30, '#7fbf5a') + blatt(50, ty + 28, 0, '#9fd46c'));
+      }
+    } else if (klasse === 'archer') {
+      add(`${armL} fill="#3f6b2e"/>`);
+      add(`${armR} fill="#3f6b2e"/>`);
+      add(`<path d="${rumpf} L${sR + 1},100 L${sL - 1},100 Z" fill="${K.stoff}" stroke="${K.stoffDunkel}" stroke-width="0.8"/>`);
+      // Schnürung + Köcherriemen
+      add(`<path d="M${50 - 3},${ty + 6} L${50 + 3},${ty + 11} M${50 + 3},${ty + 6} L${50 - 3},${ty + 11} M${50 - 3},${ty + 13} L${50 + 3},${ty + 18} M${50 + 3},${ty + 13} L${50 - 3},${ty + 18}" stroke="#e0c690" stroke-width="1"/>`);
+      add(`<path d="M${sL + 3},${ty + 1} L${sR - 2},${ty + 30}" stroke="#3a200c" stroke-width="3"/>`);
+      add(`<path d="M${sL - 1},${ty + 24} H${sR + 1}" stroke="#3a200c" stroke-width="3"/>`);
+    } else { // teacher
+      add(`${armL} fill="${K.stoff}"/>`);
+      add(`${armR} fill="${K.stoff}"/>`);
+      add(`<path d="${rumpf} L${sR + 1},100 L${sL - 1},100 Z" fill="${K.stoff}" stroke="${K.stoffDunkel}" stroke-width="0.8"/>`);
+      // Hemd, Revers, Krawatte
+      add(`<path d="M${50 - 7},${ty} L50,${ty + 16} L${50 + 7},${ty} Z" fill="#f4f1e8"/>`);
+      add(`<path d="M${50 - 7},${ty} L${50 - 2},${ty + 20} L${50 - 9},${ty + 10} Z M${50 + 7},${ty} L${50 + 2},${ty + 20} L${50 + 9},${ty + 10} Z" fill="${K.stoffDunkel}"/>`);
+      add(`<path d="M50,${ty + 2} l-2,3 l2,13 l2,-13 z" fill="#c0392b"/>`);
+      add(`<rect x="${sR - 9}" y="${ty + 8}" width="5" height="1.6" fill="#f2cf6b"/>`);
+    }
 
-    const dwarfBeard = (race === 'dwarf' && gender === 'male')
-      ? `<path d="M 32,62 Q 34,74 50,78 Q 66,74 68,62 Q 60,70 50,72 Q 40,70 32,62 Z" fill="${hc}" opacity="0.9"/>` : '';
+    // Hände
+    add(`<circle cx="${handL.x}" cy="${handL.y}" r="4.2" fill="${haut}" stroke="${kontur}" stroke-width="0.5"/>`);
+    add(`<circle cx="${handR.x}" cy="${handR.y}" r="4.2" fill="${haut}" stroke="${kontur}" stroke-width="0.5"/>`);
 
-    const eyeRyL = race === 'elf' ? 3.5 : 4.5;
-    const eyeRyR = race === 'elf' ? 3.5 : 4.5;
-    const eyeRotL = race === 'elf' ? 'transform="rotate(-10,40,42)"' : '';
-    const eyeRotR = race === 'elf' ? 'transform="rotate(10,60,42)"' : '';
-    const noseStroke  = (sc === '#fde8c8' || sc === '#f0c898') ? '#b88050' : '#4a2808';
-    const mouthStroke = (sc === '#fde8c8' || sc === '#f0c898') ? '#b06050' : '#6a2818';
-    const mouth = gender === 'female'
-      ? `<path d="M 43,59 Q 50,65 57,59" fill="none" stroke="#b05050" stroke-width="2" stroke-linecap="round"/>`
-      : `<path d="M 44,59 Q 50,64 56,59" fill="none" stroke="${mouthStroke}" stroke-width="1.5" stroke-linecap="round"/>`;
+    // ── Waffen & Attribute (vor dem Körper) ───────────────────────
+    if (klasse === 'knight') {
+      // Schwert rechts
+      add(`<g>
+        <path d="M${handR.x - 2},${handR.y - 5} L${handR.x - 2},${handR.y - 46} L${handR.x},${handR.y - 51} L${handR.x + 2},${handR.y - 46} L${handR.x + 2},${handR.y - 5} Z" fill="url(#${uid}-stahl)" stroke="#4a525a" stroke-width="0.6"/>
+        <rect x="${handR.x - 7}" y="${handR.y - 6}" width="14" height="3" rx="1.2" fill="#c9962f"/>
+        <rect x="${handR.x - 1.5}" y="${handR.y - 3}" width="3" height="8" fill="#5a3416"/>
+        <circle cx="${handR.x}" cy="${handR.y + 6}" r="2" fill="#c9962f"/>
+      </g>`);
+      // Schild links
+      const sx = handL.x + 2, sy = handL.y - 14;
+      add(`<g>
+        <path d="M${sx - 10},${sy} H${sx + 10} V${sy + 13} Q${sx + 10},${sy + 22} ${sx},${sy + 27} Q${sx - 10},${sy + 22} ${sx - 10},${sy + 13} Z" fill="${K.stoff}" stroke="#c9962f" stroke-width="1.8"/>
+        <path d="M${sx},${sy + 3} V${sy + 23} M${sx - 6},${sy + 10} H${sx + 6}" stroke="#f2cf6b" stroke-width="2.4" stroke-linecap="round"/>
+      </g>`);
+    } else if (klasse === 'mage') {
+      add(`<line x1="${handR.x}" y1="99" x2="${handR.x}" y2="${handR.y - 48}" stroke="#6b4a20" stroke-width="2.6" stroke-linecap="round"/>`);
+      add(`<path d="M${handR.x - 4},${handR.y - 47} Q${handR.x},${handR.y - 42} ${handR.x + 4},${handR.y - 47}" stroke="#c9962f" stroke-width="1.6" fill="none"/>`);
+      add(`<circle cx="${handR.x}" cy="${handR.y - 52}" r="5.5" fill="url(#${uid}-kugel)"/>`);
+      add(`<circle cx="${handR.x}" cy="${handR.y - 52}" r="8.5" fill="#b7a0ff" opacity="0.25"/>`);
+    } else if (klasse === 'druid') {
+      add(`<path d="M${handR.x},99 Q${handR.x - 3},${handR.y - 12} ${handR.x + 1},${handR.y - 28} Q${handR.x + 4},${handR.y - 40} ${handR.x - 2},${handR.y - 48}" stroke="#6b4a20" stroke-width="3" fill="none" stroke-linecap="round"/>`);
+      add(`<path d="M${handR.x + 1},${handR.y - 28} q5,-3 7,-9" stroke="#6b4a20" stroke-width="2" fill="none" stroke-linecap="round"/>`);
+      add(blatt(handR.x - 3, handR.y - 50, -20, '#7fbf5a') + blatt(handR.x + 3, handR.y - 47, 40, '#9fd46c') + blatt(handR.x + 8, handR.y - 38, 70, '#7fbf5a'));
+    } else if (klasse === 'archer') {
+      const bx = handL.x - 2;
+      add(`<path d="M${bx + 4},${handL.y - 34} Q${bx - 20},${handL.y} ${bx + 4},${handL.y + 30}" stroke="#8a5420" stroke-width="3.4" fill="none" stroke-linecap="round"/>`);
+      add(`<line x1="${bx + 4}" y1="${handL.y - 34}" x2="${bx + 4}" y2="${handL.y + 30}" stroke="#e8dcc0" stroke-width="0.9"/>`);
+      add(`<circle cx="${handL.x}" cy="${handL.y}" r="4.2" fill="${haut}" stroke="${kontur}" stroke-width="0.5"/>`);
+    } else { // teacher
+      // Buch links
+      add(`<g transform="rotate(-12 ${handL.x} ${handL.y})">
+        <rect x="${handL.x - 7}" y="${handL.y - 13}" width="14" height="18" rx="1.5" fill="#8a2f2a" stroke="#4a1410" stroke-width="0.8"/>
+        <rect x="${handL.x - 7}" y="${handL.y - 13}" width="2.5" height="18" fill="#4a1410"/>
+        <rect x="${handL.x - 2}" y="${handL.y - 9}" width="7" height="1.4" fill="#f2cf6b"/>
+      </g>`);
+      add(`<circle cx="${handL.x}" cy="${handL.y}" r="4.2" fill="${haut}" stroke="${kontur}" stroke-width="0.5"/>`);
+      // Zeigestock rechts
+      add(`<line x1="${handR.x}" y1="${handR.y}" x2="${handR.x + 10}" y2="${handR.y - 40}" stroke="#c8a060" stroke-width="2" stroke-linecap="round"/>`);
+      add(`<circle cx="${handR.x + 10}" cy="${handR.y - 40}" r="1.6" fill="#f4f1e8"/>`);
+    }
 
-    const raceEmoji = race === 'dwarf' ? '⛏' : race === 'elf' ? '🌙' : '👤';
+    // ── Hals, Ohren, Kopf ─────────────────────────────────────────
+    add(`<rect x="${hx - V.hals / 2}" y="${hy + ry - 4}" width="${V.hals}" height="${ty - hy - ry + 6}" fill="${haut}"/>`);
+    if (volk === 'elf') {
+      add(`<path d="M${hx - rx + 1.5},${hy - 1} L${hx - rx - 13},${hy - 15} L${hx - rx + 1},${hy + 6} Z" fill="${haut}" stroke="${kontur}" stroke-width="0.7" stroke-linejoin="round"/>`);
+      add(`<path d="M${hx + rx - 1.5},${hy - 1} L${hx + rx + 13},${hy - 15} L${hx + rx - 1},${hy + 6} Z" fill="${haut}" stroke="${kontur}" stroke-width="0.7" stroke-linejoin="round"/>`);
+    } else {
+      const or = volk === 'dwarf' ? 4.2 : 3.4;
+      add(`<ellipse cx="${hx - rx}" cy="${hy + 1}" rx="${or * 0.8}" ry="${or}" fill="${haut}" stroke="${kontur}" stroke-width="0.6"/>`);
+      add(`<ellipse cx="${hx + rx}" cy="${hy + 1}" rx="${or * 0.8}" ry="${or}" fill="${haut}" stroke="${kontur}" stroke-width="0.6"/>`);
+    }
+    add(`<ellipse cx="${hx}" cy="${hy}" rx="${rx}" ry="${ry}" fill="${haut}" stroke="${kontur}" stroke-width="0.6"/>`);
+
+    // ── Gesicht ───────────────────────────────────────────────────
+    const ax = rx * 0.42, ay = hy - 1;
+    if (volk === 'elf') {
+      add(`<path d="M${hx - ax - 3.5},${ay + 0.8} Q${hx - ax},${ay - 3} ${hx - ax + 3.5},${ay - 1.2} Q${hx - ax},${ay + 2.2} ${hx - ax - 3.5},${ay + 0.8} Z" fill="#fff"/>`);
+      add(`<path d="M${hx + ax + 3.5},${ay + 0.8} Q${hx + ax},${ay - 3} ${hx + ax - 3.5},${ay - 1.2} Q${hx + ax},${ay + 2.2} ${hx + ax + 3.5},${ay + 0.8} Z" fill="#fff"/>`);
+      add(`<circle cx="${hx - ax}" cy="${ay}" r="1.5" fill="#2a5a3a"/><circle cx="${hx + ax}" cy="${ay}" r="1.5" fill="#2a5a3a"/>`);
+    } else {
+      add(`<ellipse cx="${hx - ax}" cy="${ay}" rx="2.8" ry="3.1" fill="#fff"/><ellipse cx="${hx + ax}" cy="${ay}" rx="2.8" ry="3.1" fill="#fff"/>`);
+      add(`<circle cx="${hx - ax + 0.4}" cy="${ay + 0.4}" r="1.7" fill="#1e1208"/><circle cx="${hx + ax + 0.4}" cy="${ay + 0.4}" r="1.7" fill="#1e1208"/>`);
+      add(`<circle cx="${hx - ax + 1}" cy="${ay - 0.5}" r="0.6" fill="#fff"/><circle cx="${hx + ax + 1}" cy="${ay - 0.5}" r="0.6" fill="#fff"/>`);
+    }
+    if (gender === 'female') {
+      add(`<path d="M${hx - ax - 3},${ay - 2.4} l-1.6,-1.4 M${hx + ax + 3},${ay - 2.4} l1.6,-1.4" stroke="#1e1208" stroke-width="0.8" stroke-linecap="round"/>`);
+    }
+    // Augenbrauen (Zwerge: buschig)
+    const bw = volk === 'dwarf' ? 2.4 : 1.1;
+    add(`<path d="M${hx - ax - 3.4},${ay - 4.2} Q${hx - ax},${ay - 5.6 - (volk === 'elf' ? 1 : 0)} ${hx - ax + 3.2},${ay - 4.4}" stroke="${haar}" stroke-width="${bw}" fill="none" stroke-linecap="round"/>`);
+    add(`<path d="M${hx + ax + 3.4},${ay - 4.2} Q${hx + ax},${ay - 5.6 - (volk === 'elf' ? 1 : 0)} ${hx + ax - 3.2},${ay - 4.4}" stroke="${haar}" stroke-width="${bw}" fill="none" stroke-linecap="round"/>`);
+    // Nase
+    if (volk === 'dwarf') {
+      add(`<ellipse cx="${hx}" cy="${hy + 4.5}" rx="3.6" ry="3" fill="${haut}" stroke="${kontur}" stroke-width="0.7"/>`);
+      add(`<circle cx="${hx - 4.5}" cy="${hy + 6}" r="2.6" fill="#e07a6a" opacity="0.35"/><circle cx="${hx + 4.5}" cy="${hy + 6}" r="2.6" fill="#e07a6a" opacity="0.35"/>`);
+    } else {
+      add(`<path d="M${hx},${hy + 1} Q${hx - 1.6},${hy + 5} ${hx},${hy + 6}" stroke="${kontur}" stroke-width="0.8" fill="none" stroke-linecap="round"/>`);
+    }
+    // Mund
+    const my = hy + ry * 0.58;
+    add(gender === 'female'
+      ? `<path d="M${hx - 3.4},${my} Q${hx},${my + 3} ${hx + 3.4},${my}" fill="none" stroke="${lippe}" stroke-width="1.5" stroke-linecap="round"/>`
+      : `<path d="M${hx - 3.2},${my} Q${hx},${my + 2.4} ${hx + 3.2},${my}" fill="none" stroke="${lippe}" stroke-width="1.1" stroke-linecap="round"/>`);
+
+    // ── Bart (Zwerge immer, außer weiblich; oder als Accessoire) ──
+    const zwergBart = volk === 'dwarf' && gender !== 'female';
+    if (zwergBart) {
+      add(`<path d="M${hx - rx + 0.5},${hy + 1} Q${hx - rx - 3},${hy + ry + 14} ${hx},${hy + ry + 22}
+        Q${hx + rx + 3},${hy + ry + 14} ${hx + rx - 0.5},${hy + 1}
+        Q${hx + rx * 0.5},${hy + 9} ${hx},${hy + 8.5} Q${hx - rx * 0.5},${hy + 9} ${hx - rx + 0.5},${hy + 1} Z" fill="${haar}"/>`);
+      add(`<path d="M${hx - 3},${hy + ry + 14} L${hx},${hy + ry + 19} L${hx + 3},${hy + ry + 14}" stroke="#f2cf6b" stroke-width="1.4" fill="none"/>`);
+      add(`<ellipse cx="${hx}" cy="${hy + 4.5}" rx="3.6" ry="3" fill="${haut}" stroke="${kontur}" stroke-width="0.7"/>`);
+      add(`<path d="M${hx - 7},${hy + 9} Q${hx - 3},${hy + 6} ${hx},${hy + 8} Q${hx + 3},${hy + 6} ${hx + 7},${hy + 9}" stroke="${haar}" stroke-width="2.4" fill="none" stroke-linecap="round"/>`);
+    } else if (acc === 'beard') {
+      add(`<path d="M${hx - rx + 1},${hy + 3} Q${hx - rx + 1},${hy + ry + 6} ${hx},${hy + ry + 8} Q${hx + rx - 1},${hy + ry + 6} ${hx + rx - 1},${hy + 3}
+        Q${hx + rx * 0.4},${hy + ry * 0.75} ${hx},${hy + ry * 0.75} Q${hx - rx * 0.4},${hy + ry * 0.75} ${hx - rx + 1},${hy + 3} Z" fill="${haar}" opacity="0.92"/>`);
+    }
+
+    // ── Haare (oben) ──────────────────────────────────────────────
+    if (gender === 'diverse') {
+      add(`<path d="M${hx - rx - 0.5},${hy - 2} Q${hx - rx},${hy - ry - 3} ${hx + 2},${hy - ry - 3}
+        Q${hx + rx + 4},${hy - ry - 2} ${hx + rx + 2},${hy + 6}
+        Q${hx + rx - 2},${hy - ry * 0.5} ${hx - rx * 0.3},${hy - ry * 0.55}
+        Q${hx - rx * 0.8},${hy - ry * 0.4} ${hx - rx - 0.5},${hy - 2} Z" fill="${haar}"/>`);
+    } else {
+      add(`<path d="M${hx - rx - 1},${hy - 1} Q${hx - rx},${hy - ry - 3} ${hx},${hy - ry - 3}
+        Q${hx + rx},${hy - ry - 3} ${hx + rx + 1},${hy - 1}
+        Q${hx + rx * 0.5},${hy - ry * 0.55} ${hx - rx * 0.15},${hy - ry * 0.5}
+        Q${hx - rx * 0.7},${hy - ry * 0.35} ${hx - rx - 1},${hy - 1} Z" fill="${haar}"/>`);
+    }
+    // Zwergin: zwei dicke Zöpfe
+    if (volk === 'dwarf' && gender === 'female') {
+      [-1, 1].forEach(s => {
+        const zx = hx + s * (rx + 1);
+        add(`<path d="M${zx},${hy - 2} Q${zx + s * 3},${hy + 10} ${zx + s * 1},${hy + ry + 12}" stroke="${haar}" stroke-width="5.5" fill="none" stroke-linecap="round"/>`);
+        add(`<circle cx="${zx + s * 1}" cy="${hy + ry + 13}" r="2.2" fill="#c9962f"/>`);
+      });
+    }
+    // Elfen: silberner Stirnreif
+    if (volk === 'elf' && klasse !== 'mage' && klasse !== 'teacher') {
+      add(`<path d="M${hx - rx + 1},${hy - ry * 0.45} Q${hx},${hy - ry * 0.75} ${hx + rx - 1},${hy - ry * 0.45}" stroke="#dfe6ee" stroke-width="1.3" fill="none"/>`);
+      add(`<path d="M${hx},${hy - ry * 0.78} l2,2.4 l-2,2.4 l-2,-2.4 z" fill="#7fdcaa" stroke="#dfe6ee" stroke-width="0.5"/>`);
+    }
+
+    // ── Accessoires (Gesicht) ─────────────────────────────────────
+    if (acc === 'glasses') {
+      add(`<g stroke="#2a1a0e" stroke-width="0.9" fill="rgba(255,255,255,.12)">
+        <circle cx="${hx - ax}" cy="${ay}" r="3.9"/><circle cx="${hx + ax}" cy="${ay}" r="3.9"/>
+        <path d="M${hx - ax + 3.9},${ay} H${hx + ax - 3.9}" fill="none"/></g>`);
+    } else if (acc === 'scar') {
+      add(`<path d="M${hx - ax - 2},${ay - 6} L${hx - ax + 2},${ay + 6}" stroke="#8a1a1a" stroke-width="1.2" stroke-linecap="round"/>`);
+      add(`<path d="M${hx - ax - 1.5},${ay - 2} l2.6,-0.9 M${hx - ax - 0.6},${ay + 1.4} l2.6,-0.9" stroke="#8a1a1a" stroke-width="0.8"/>`);
+    } else if (acc === 'freckles') {
+      add(`<g fill="#9a5030" opacity="0.6">${[[-6, 4], [-4.5, 5.5], [-7.5, 5.8], [6, 4], [4.5, 5.5], [7.5, 5.8]]
+        .map(([x, y]) => `<circle cx="${hx + x}" cy="${hy + y}" r="0.75"/>`).join('')}</g>`);
+    } else if (acc === 'braid') {
+      add(`<path d="M${hx + rx * 0.6},${hy - ry * 0.6} Q${hx + rx + 6},${hy + 4} ${hx + rx + 3},${hy + ry + 10}" stroke="${haar}" stroke-width="3.6" fill="none" stroke-linecap="round" stroke-dasharray="3 1"/>`);
+    }
+
+    // ── Kopfbedeckung je Klasse ───────────────────────────────────
+    const top = hy - ry;
+    if (klasse === 'mage') {
+      add(`<path d="M${hx - rx + 1},${top + 5} Q${hx - 3},${top - 8} ${hx + 9},${top - 20} Q${hx + 4},${top - 6} ${hx + rx - 1},${top + 5} Z" fill="${K.stoff}" stroke="${K.stoffDunkel}" stroke-width="0.8"/>`);
+      add(`<ellipse cx="${hx}" cy="${top + 5}" rx="${rx + 8}" ry="3.6" fill="${K.stoffDunkel}"/>`);
+      add(`<rect x="${hx - rx + 1}" y="${top + 1.2}" width="${2 * rx - 2}" height="2.6" fill="#f2cf6b"/>`);
+      add(stern(hx + 2, top - 6, 2.2, '#f2cf6b'));
+    } else if (klasse === 'teacher') {
+      add(`<path d="M${hx - rx + 1},${top + 4} Q${hx},${top + 1} ${hx + rx - 1},${top + 4} L${hx + rx - 1},${top - 1} L${hx - rx + 1},${top - 1} Z" fill="#1d1d26"/>`);
+      add(`<path d="M${hx - rx - 7},${top - 2} L${hx},${top - 8} L${hx + rx + 7},${top - 2} L${hx},${top + 4} Z" fill="#26262f" stroke="#0d0d12" stroke-width="0.6"/>`);
+      add(`<path d="M${hx},${top - 2} L${hx + rx + 2},${top + 1} L${hx + rx + 2},${top + 9}" stroke="#f2cf6b" stroke-width="1" fill="none"/>`);
+      add(`<circle cx="${hx + rx + 2}" cy="${top + 10}" r="1.4" fill="#f2cf6b"/>`);
+    } else if (klasse === 'druid') {
+      add(`<path d="M${hx - rx * 0.6},${top + 3} q-3,-8 -9,-12 M${hx - rx * 0.6 - 4},${top - 4} q-5,0 -7,-4 M${hx + rx * 0.6},${top + 3} q3,-8 9,-12 M${hx + rx * 0.6 + 4},${top - 4} q5,0 7,-4" stroke="#7a5426" stroke-width="2" fill="none" stroke-linecap="round"/>`);
+      add(blatt(hx - 7, top + 1, -50, '#7fbf5a') + blatt(hx, top - 1, 0, '#9fd46c') + blatt(hx + 7, top + 1, 50, '#7fbf5a'));
+    } else if (klasse === 'archer') {
+      add(`<path d="M${hx - rx - 3},${top + 6} Q${hx - rx + 2},${top - 6} ${hx + 2},${top - 5} Q${hx + rx + 2},${top - 3} ${hx + rx + 13},${top + 2} Q${hx + rx},${top + 5} ${hx - rx - 3},${top + 6} Z" fill="#3f6b2e" stroke="#24401a" stroke-width="0.8"/>`);
+      add(`<path d="M${hx - 1},${top - 4} Q${hx + 9},${top - 18} ${hx + 18},${top - 15} Q${hx + 9},${top - 11} ${hx + 1},${top - 2} Z" fill="#c0392b"/>`);
+    }
 
     return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="${size}" height="${size}"
-      style="filter:drop-shadow(0 4px 12px ${cls.glow||'#00000088'});display:block" aria-hidden="true">
-      <defs>
-        <radialGradient id="kaura-${cls.id}" cx="50%" cy="55%" r="50%">
-          <stop offset="0%" stop-color="${p}" stop-opacity="0.18"/>
-          <stop offset="100%" stop-color="#000" stop-opacity="0"/>
-        </radialGradient>
-      </defs>
-      <circle cx="50" cy="55" r="48" fill="url(#kaura-${cls.id})"/>
-      <circle cx="50" cy="50" r="47" fill="none" stroke="${p}" stroke-width="0.5" opacity="0.4"/>
-      ${equipment[cls.id] || ''}
-      <rect x="${bx}" y="64" width="${bW}" height="22" rx="6" fill="${p}" stroke="${a}" stroke-width="1.2"/>
-      <ellipse cx="50" cy="86" rx="${bW/2}" ry="10" fill="${p}" stroke="${a}" stroke-width="1"/>
-      <ellipse cx="${bx-3}" cy="72" rx="7" ry="13" fill="${p}" stroke="${a}" stroke-width="1"/>
-      <ellipse cx="${bx+bW+3}" cy="72" rx="7" ry="13" fill="${p}" stroke="${a}" stroke-width="1"/>
-      <rect x="44" y="58" width="12" height="9" rx="3" fill="${sc}"/>
-      ${elfEars}
-      <ellipse cx="50" cy="40" rx="${rp.headRx}" ry="${rp.headRy}" fill="${sc}"/>
-      <path d="${hairPath}" fill="${hc}" opacity="0.95"/>
-      ${dwarfBeard}
-      <ellipse cx="40" cy="42" rx="4" ry="${eyeRyL}" fill="white" ${eyeRotL}/>
-      <ellipse cx="60" cy="42" rx="4" ry="${eyeRyR}" fill="white" ${eyeRotR}/>
-      <circle cx="41" cy="43" r="2.5" fill="#1e1208"/>
-      <circle cx="61" cy="43" r="2.5" fill="#1e1208"/>
-      <circle cx="42" cy="42" r="0.9" fill="white"/>
-      <circle cx="62" cy="42" r="0.9" fill="white"/>
-      <path d="M 50,48 Q 48,53 50,55 Q 52,53 50,48" fill="none" stroke="${noseStroke}" stroke-width="1.2" opacity="0.55" stroke-linecap="round"/>
-      ${mouth}
-      ${accSVG[acc] || ''}
-      <text x="84" y="18" text-anchor="middle" font-size="12">${cls.emoji}</text>
-      <text x="16" y="18" text-anchor="middle" font-size="10">${raceEmoji}</text>
-    </svg>`;
+      style="filter:drop-shadow(0 4px 12px ${K.glow});display:block" role="img" aria-hidden="true">${teile.join('')}</svg>`;
+  }
+
+  function stern(x, y, r, farbe) {
+    return `<path d="M${x},${y - r} L${x + r * 0.3},${y - r * 0.3} L${x + r},${y} L${x + r * 0.3},${y + r * 0.3} L${x},${y + r} L${x - r * 0.3},${y + r * 0.3} L${x - r},${y} L${x - r * 0.3},${y - r * 0.3} Z" fill="${farbe}"/>`;
+  }
+
+  function blatt(x, y, winkel, farbe) {
+    return `<path transform="rotate(${winkel} ${x} ${y})" d="M${x},${y + 4} Q${x - 3.5},${y} ${x},${y - 4} Q${x + 3.5},${y} ${x},${y + 4} Z" fill="${farbe}" stroke="#2f5a1f" stroke-width="0.5"/>`;
   }
 
   window.drawCharakterAvatar = drawCharakterAvatar;

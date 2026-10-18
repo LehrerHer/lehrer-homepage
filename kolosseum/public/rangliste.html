@@ -78,8 +78,10 @@
     .btn-challenge:disabled { opacity: .45; cursor: default; transform: none; }
 
     @media (max-width: 600px) {
-      .rangliste-table th:nth-child(3),
-      .rangliste-table td:nth-child(3) { display: none; }
+      .rangliste-table th:nth-child(4),
+      .rangliste-table td:nth-child(4),
+      .rangliste-table th:nth-child(5),
+      .rangliste-table td:nth-child(5) { display: none; }
     }
   </style>
 </head>
@@ -135,6 +137,7 @@
         <thead>
           <tr>
             <th style="width:60px">#</th>
+            <th><span class="sr-only">Avatar</span></th>
             <th>Held</th>
             <th>Level</th>
             <th>Abzeichen</th>
@@ -143,7 +146,7 @@
           </tr>
         </thead>
         <tbody id="rangliste-body">
-          <tr><td colspan="5" class="empty">Wird geladen…</td></tr>
+          <tr><td colspan="7" class="empty">Wird geladen…</td></tr>
         </tbody>
       </table>
     </div>
@@ -151,6 +154,7 @@
   </main>
 
   <script src="/js/avatar.js"></script>
+  <script src="/js/charakter-avatar.js"></script>
   <script>
     (function () {
       const MEDALS = ['🥇', '🥈', '🥉'];
@@ -197,7 +201,7 @@
 
         const tbody = document.getElementById('rangliste-body');
         if (!students.length) {
-          tbody.innerHTML = '<tr><td colspan="5" class="empty">Noch keine Helden – seid die Ersten!</td></tr>';
+          tbody.innerHTML = '<tr><td colspan="7" class="empty">Noch keine Helden – seid die Ersten!</td></tr>';
           return;
         }
 
@@ -226,6 +230,7 @@
           return `
             <tr>
               <td>${rankEl}</td>
+              <td><span class="rang-avatar">${avatarSvg(s)}</span></td>
               <td><span class="nick-cell${isMe ? ' me' : ''}">${escHtml(s.nick)}${titelBadge}</span></td>
               <td><span class="level-chip">${info.level.name}</span></td>
               <td style="text-align:center">${'🏅'.repeat(Math.min(s.badge_count, 5))}${s.badge_count > 5 ? ` +${s.badge_count - 5}` : s.badge_count === 0 ? '–' : ''}</td>
@@ -255,6 +260,14 @@
             }
           });
         });
+      }
+
+      // Gleiche Zeichnung wie Profil/Kampf; ohne Charakter: XP-Gladiator
+      function avatarSvg(s) {
+        let cfg = null;
+        try { cfg = s.avatar_config ? JSON.parse(s.avatar_config) : null; } catch (_) {}
+        if (cfg && window.drawCharakterAvatar) return drawCharakterAvatar(cfg, 64);
+        return window.drawAvatar ? drawAvatar(s.xp) : '';
       }
 
       function escHtml(s) {

@@ -185,6 +185,10 @@ router.get('/uebersicht', requireStudent, (req, res) => {
   });
 });
 
+function avatarAusJson(text) {
+  try { return text ? JSON.parse(text) : null; } catch (_) { return null; }
+}
+
 // GET /api/arena/kampf/:id – Kampfergebnis/Replay-Daten
 router.get('/kampf/:id', requireStudent, (req, res) => {
   const meinId = req.session.studentId;
@@ -192,8 +196,8 @@ router.get('/kampf/:id', requireStudent, (req, res) => {
 
   const c = db.prepare(`
     SELECT c.id, c.winner_id, c.battle_log, c.created_at,
-           h.nick AS h_nick, h.xp AS h_xp_aktuell, h.id AS h_id,
-           g.nick AS g_nick, g.xp AS g_xp_aktuell, g.id AS g_id
+           h.nick AS h_nick, h.xp AS h_xp_aktuell, h.id AS h_id, h.avatar_config AS h_avatar,
+           g.nick AS g_nick, g.xp AS g_xp_aktuell, g.id AS g_id, g.avatar_config AS g_avatar
     FROM challenges c
     JOIN students h ON h.id = c.challenger_id
     JOIN students g ON g.id = c.opponent_id
@@ -214,6 +218,8 @@ router.get('/kampf/:id', requireStudent, (req, res) => {
     h_nick: c.h_nick, h_id: c.h_id, h_xp: c.h_xp_aktuell,
     g_nick: c.g_nick, g_id: c.g_id, g_xp: c.g_xp_aktuell,
     h_items, g_items,
+    h_avatar: avatarAusJson(c.h_avatar),
+    g_avatar: avatarAusJson(c.g_avatar),
     log,
     meinId,
   });

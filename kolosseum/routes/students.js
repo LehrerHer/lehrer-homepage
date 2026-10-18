@@ -160,7 +160,7 @@ router.get('/xp-potenzial', requireStudent, (req, res) => {
 // GET /api/students/rangliste – Top-Schüler nach XP
 router.get('/rangliste', requireStudent, (req, res) => {
   const students = db.prepare(`
-    SELECT s.id, s.nick, s.xp, COALESCE(s.coins, 0) AS coins,
+    SELECT s.id, s.nick, s.xp, COALESCE(s.coins, 0) AS coins, s.avatar_config,
            COUNT(sb.badge_id) AS badge_count,
            (SELECT si.item_id FROM student_items si
             WHERE si.student_id = s.id AND si.equipped = 1

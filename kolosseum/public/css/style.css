@@ -872,7 +872,7 @@ body.arena-welt .subnav-logout:hover { border-color: var(--gold) !important; col
 /* --- Seitenkopf mit Erklärzeile --- */
 body.arena-welt .page-header,
 body.arena-welt .shop-header,
-body.arena-welt .char-header { text-align: center; padding: 2.25rem 0 1.25rem; }
+body.arena-welt .char-header { text-align: center; padding: 2.25rem 1rem 1.25rem; }
 body.arena-welt .page-header h1,
 body.arena-welt .shop-header h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); color: var(--gold); }
 .arena-erklaerung {
@@ -996,8 +996,8 @@ body.arena-welt .rangliste-table tr:hover td { background: rgba(232,192,106,.06)
 body.arena-welt .level-chip { background: #140f0a; color: var(--ink); border: 1px solid var(--rahmen); }
 body.arena-welt .nick-cell.me { color: var(--gold); }
 body.arena-welt .btn-challenge:disabled { background: #2a2017; color: var(--ink-soft); }
-.rang-avatar { width: 48px; height: 48px; display: block; }
-.rang-avatar svg { width: 48px; height: 48px; }
+.rang-avatar { width: 64px; height: 64px; display: block; }
+.rang-avatar svg { width: 64px; height: 64px; }
 
 /* --- Shop --- */
 body.arena-welt .muenzen-display {
@@ -1047,3 +1047,26 @@ body.arena-welt #arena-bar {
   font-family: var(--schrift-text);
 }
 body.arena-welt #arena-bar .ab-chip { color: var(--ink); background: rgba(232,192,106,.10); }
+
+body.arena-welt .avatar-badge { color: var(--ink) !important; font-size: 1rem; }
+
+/* --- Kampf: Avatare passen auch aufs Handy --- */
+@media (max-width: 520px) {
+  body.arena-welt .avatar-stage { width: 112px; height: 120px; }
+  body.arena-welt .fighter-svg-wrap svg { width: 112px; height: 112px; }
+  body.arena-welt .fighter-row { gap: .25rem; }
+}
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+body.arena-welt .rangliste-wrap { overflow-x: auto; }
+@media (max-width: 600px) {
+  body.arena-welt .rangliste-wrap { padding: .75rem .5rem; }
+  body.arena-welt .rangliste-table th,
+  body.arena-welt .rangliste-table td { padding: .55rem .35rem; }
+  body.arena-welt .rang-avatar,
+  body.arena-welt .rang-avatar svg { width: 44px; height: 44px; }
+  body.arena-welt .btn-challenge { padding: .35rem .6rem; }
+}

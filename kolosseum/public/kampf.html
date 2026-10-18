@@ -445,6 +445,7 @@
   </main>
 
   <script src="/js/avatar.js"></script>
+  <script src="/js/charakter-avatar.js"></script>
   <script>
   (function () {
     'use strict';
@@ -613,9 +614,13 @@
       // Avatare einfügen
       const svgA = document.getElementById('svg-wrap-a');
       const svgB = document.getElementById('svg-wrap-b');
+      // Eigener Charakter (wie in Profil/Rangliste), sonst XP-Gladiator
+      const zeichne = (avatar, xp) => (avatar && window.drawCharakterAvatar)
+        ? drawCharakterAvatar(avatar, 150)
+        : drawAvatar(xp);
       if (window.drawAvatar) {
-        svgA.innerHTML = drawAvatar(hXp);
-        svgB.innerHTML = drawAvatar(gXp);
+        svgA.innerHTML = zeichne(data.h_avatar, hXp);
+        svgB.innerHTML = zeichne(data.g_avatar, gXp);
       } else {
         svgA.innerHTML = '<div style="font-size:3.5rem">⚔️</div>';
         svgB.innerHTML = '<div style="font-size:3.5rem">⚔️</div>';
