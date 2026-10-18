@@ -366,7 +366,11 @@ input:focus, select:focus, textarea:focus {
   gap: 0.75rem;
   align-items: center;
   flex-wrap: wrap;
+  list-style: none;
 }
+.subnav-item { display: inline-flex; align-items: center; gap: 0.45rem; }
+.subnav-text { display: flex; flex-direction: column; line-height: 1.15; }
+.subnav-info { font-size: 0.75rem; font-weight: 600; opacity: 0.8; }
 .subnav-links a {
   color: rgba(255,255,255,0.7);
   text-decoration: none;

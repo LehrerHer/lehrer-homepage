@@ -120,18 +120,7 @@
     </div>
   </nav>
 
-  <nav class="kolosseum-subnav" aria-label="Arena-Navigation">
-    <div class="kolosseum-subnav-inner">
-      <span class="subnav-brand">🏛️ Lernkolosseum</span>
-      <div class="subnav-links">
-        <a href="/profil.html">Profil</a>
-        <a href="/rangliste.html" class="active">Rangliste</a>
-        <a href="/charakter.html">Charakter</a>
-        <a href="/shop.html">🏪 Shop</a>
-        <button id="logout-btn" class="subnav-logout">Ausloggen</button>
-      </div>
-    </div>
-  </nav>
+  <script src="/js/arena-subnav.js"></script>
 
   <main class="container" style="padding-bottom: 3rem;">
 
@@ -272,10 +261,6 @@
         return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       }
 
-      document.getElementById('logout-btn').addEventListener('click', async () => {
-        await fetch('/api/auth/logout', { method: 'POST' });
-        window.location.href = '/login.html';
-      });
 
       init().catch(console.error);
     })();

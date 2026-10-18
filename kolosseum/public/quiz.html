@@ -112,17 +112,7 @@
     </div>
   </nav>
 
-  <nav class="kolosseum-subnav" aria-label="Arena-Navigation">
-    <div class="kolosseum-subnav-inner">
-      <span class="subnav-brand">🏛️ Lernkolosseum</span>
-      <div class="subnav-links">
-        <a href="/profil.html">Profil</a>
-        <a href="/rangliste.html">Rangliste</a>
-        <a href="/charakter.html">Charakter</a>
-        <button id="logout-btn" class="subnav-logout">Ausloggen</button>
-      </div>
-    </div>
-  </nav>
+  <script src="/js/arena-subnav.js"></script>
 
   <main class="container" style="padding-bottom: 3rem;">
 
@@ -232,16 +222,8 @@
         const meRes = await fetch('/api/auth/me');
         loggedIn = meRes.ok;
 
-        // Logout-Button nur für eingeloggte SuS zeigen
-        const logoutBtn = document.getElementById('logout-btn');
-        if (loggedIn) {
-          logoutBtn.addEventListener('click', async () => {
-            await fetch('/api/auth/logout', { method: 'POST' });
-            window.location.href = '/login.html';
-          });
-        } else {
-          logoutBtn.style.display = 'none';
-        }
+        // Logout-Button nur für eingeloggte SuS zeigen (Klick-Logik: arena-subnav.js)
+        if (!loggedIn) document.getElementById('logout-btn').style.display = 'none';
 
         // Externe Quizze: Abschluss-Status laden
         let completions = [];
