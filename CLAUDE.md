@@ -65,7 +65,8 @@ lehrer-homepage/
 │   │   ├── profil.html · rangliste.html · charakter.html
 │   │   ├── quiz.html · quiz-spiel.html · kampf.html · shop.html
 │   │   ├── login.html · register.html
-│   │   ├── js/ (main.js, arena-bar.js, avatar.js, charakter-avatar.js, site-nav.js)
+│   │   ├── js/ (main.js, arena-bar.js, arena-subnav.js, avatar.js, charakter-avatar.js, site-nav.js)
+│   │   ├── fonts/  # Selbst gehostete Schriften (Cinzel, Alegreya Sans, Fredoka One, Nunito) + lizenzen/
 │   │   └── admin/
 │   │       ├── index.html · dashboard.html · quiz.html · schueler.html
 │   │       ├── link-erstellen.html · material-hochladen.html · xp-vergabe.html
@@ -422,7 +423,7 @@ Wichtige CSS-Klassen (ab 2026-05):
 - **Leichte Sprache:** Seiten bekommen `class="leichte-sprache"` am `<body>` → keine Akzentschrift, nur Merriweather + Open Sans
 - CSS-Variablen: `--schrift-text`, `--schrift-ueberschrift`, `--schrift-akzent`
 - Schriftdateien (WOFF2, Latin-Subset) liegen in `assets/fonts/`, Lizenzen (OFL) in `assets/fonts/lizenzen/`. **Nie** per Google-CDN laden. Neue Gewichte: Datei aus dem npm-Paket `@fontsource/<name>` holen und per `@font-face` in `css/style.css` ergänzen.
-- Hinweis: Kolosseum-CSS (`kolosseum/public/css/style.css`) und ältere Einzelseiten in `materialien/` nutzen noch eigene Schriften bzw. laden Google Fonts (offen).
+- Hinweis: Kolosseum-CSS (`kolosseum/public/css/style.css`) hostet seine Schriften selbst in `kolosseum/public/fonts/` (Subdomain → eigene Kopien, kein CDN). Ältere Einzelseiten in `materialien/` laden teils noch Google Fonts (offen).
 
 ### CSS
 - **Kein Präprozessor** — reines CSS
@@ -552,6 +553,33 @@ Alle Änderungen müssen sicherstellen:
 - Keine globalen JavaScript-Variablen (IIFEs verwenden)
 - Keine Farben hardcoden — bestehende CSS-Variablen verwenden
 - Header oder Footer auf keiner Seite weglassen oder abweichend gestalten
+
+---
+
+## Gladiatorenkämpfe (Arena im Kolosseum, Stand 2026-10)
+
+Sichtbarer Name des Arena-Bereichs: **„Gladiatorenkämpfe"** (Navbar-Icon bleibt „Arena", Tooltip
+„Arena – Gladiatorenkämpfe"). Technische Pfade/Dateinamen (`kolosseum/`, `profil.html` …) bleiben.
+„Lernkolosseum" bezeichnet weiterhin das Konto-/XP-System (Login, Registrierung, Datenschutz).
+
+- **Seiten:** `profil.html` · `charakter.html` · `rangliste.html` · `shop.html` · `kampf.html` ·
+  `quiz.html` · `quiz-spiel.html` (alle in `kolosseum/public/`), jeweils `<body class="arena-welt">`.
+- **Bereichs-Navigation:** `js/arena-subnav.js` direkt unter der Navbar einbinden
+  (`<script src="/js/arena-subnav.js"></script>`). Es setzt Profil · Charakter · Rangliste · Shop
+  (mit Untertiteln) synchron ein und übernimmt den Logout (`#logout-btn`). **Keine Subnav mehr
+  pro Seite kopieren**; neue Einträge nur in `EINTRAEGE` im Script ergänzen.
+- **Erklärzeile:** unter jeder Überschrift `<p class="arena-erklaerung">…</p>`.
+- **Fantasy-Look:** Block „GLADIATORENKÄMPFE – FANTASY-LOOK" am Ende von
+  `kolosseum/public/css/style.css`, greift nur bei `body.arena-welt` (Tokens `--card`, `--ink`,
+  `--gold` …; Schriften Cinzel/Alegreya Sans über `--schrift-titel`/`--schrift-text`).
+  Mindestschrift 16 px, Fließtext 18 px. Navbar/Footer: gleiche Struktur, nur Arena-Farben
+  (gespiegelt in `css/style.css`).
+- **Avatare:** `js/charakter-avatar.js` (`drawCharakterAvatar(cfg, size)`) ist die **einzige**
+  Zeichenfunktion für Charakter, Profil, Rangliste und Kampf. Klasse = Kleidung/Waffe/Kopfbedeckung,
+  Volk = Körperbau/Ohren/Bart/Gesicht. Ohne gespeicherten Charakter: XP-Gladiator aus `avatar.js`.
+  API liefert `avatar_config` in `/api/students/rangliste` und `h_avatar`/`g_avatar` in
+  `/api/arena/kampf/:id`.
+- **Seitenbreite:** Kolosseum nutzt `--seitenbreite: min(1680px, 100%)` wie die Hauptseite.
 
 ---
 
