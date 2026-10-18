@@ -3662,3 +3662,64 @@ footer { font-size: 1rem; }
     color: var(--farbe-primaer-hell);
     text-decoration: underline;
 }
+
+
+/* === FACHSEITEN: HERVORGEHOBENE ANGEBOTE (RegelRadar, Eulis, Zahlo) === */
+.fach-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 1.25rem;
+    margin: 1.25rem 0 1.75rem;
+}
+.fach-highlight {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.5rem 1.6rem;
+    background: var(--farbe-weiss);
+    border: 1.5px solid var(--farbe-rahmen);
+    border-left: 6px solid var(--farbe-akzent);
+    border-radius: 14px;
+    box-shadow: var(--schatten);
+    text-decoration: none;
+    color: var(--farbe-text);
+    transition: box-shadow var(--transition), transform var(--transition);
+}
+.fach-highlight:hover {
+    box-shadow: 0 6px 24px rgba(30,58,95,.15);
+    transform: translateY(-2px);
+    color: var(--farbe-text);
+}
+.fach-highlight-bild {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    font-size: 2.6rem;
+    line-height: 64px;
+    text-align: center;
+    object-fit: cover;
+}
+.fach-highlight-label {
+    font-family: var(--schrift-akzent);
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--farbe-akzent);
+}
+.fach-highlight h3 {
+    font-size: 1.25rem;
+    color: var(--farbe-primaer);
+    margin: .25rem 0 .4rem;
+}
+.fach-highlight p {
+    margin: 0;
+    color: var(--farbe-text-hell);
+    line-height: 1.55;
+}
+
+/* Fachseiten: Material-Kacheln etwas größer, passend zur breiteren Seite */
+.mat-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+.mat-title { font-size: 1.05rem; }
+.mat-desc  { font-size: .95rem; }

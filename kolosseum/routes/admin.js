@@ -21,12 +21,13 @@ router.get('/stats', (req, res) => {
   const totalXP        = db.prepare('SELECT COALESCE(SUM(xp),0) as t FROM students').get().t;
   const totalBadges    = db.prepare('SELECT COUNT(*) as c FROM student_badges').get().c;
   const quizCount      = db.prepare('SELECT COUNT(*) AS n FROM quizzes').get().n;
+  const pendingBlog    = db.prepare('SELECT COUNT(*) AS n FROM blog_beitraege WHERE genehmigt = 0').get().n;
   const recentActivity = db.prepare(`
     SELECT s.nick, x.amount, x.reason, x.created_at
     FROM xp_log x JOIN students s ON s.id = x.student_id
     ORDER BY x.created_at DESC LIMIT 10
   `).all();
-  res.json({ totalStudents, totalXP, totalBadges, quizCount, recentActivity });
+  res.json({ totalStudents, totalXP, totalBadges, quizCount, pendingBlog, recentActivity });
 });
 
 // GET /api/admin/students
