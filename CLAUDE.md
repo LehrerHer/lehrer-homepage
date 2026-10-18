@@ -39,7 +39,7 @@ lehrer-homepage/
 │   ├── auth-guard.js             # Body verstecken bis Auth-Check (geschützte Einzelseiten)
 │   ├── dynamic-content.js        # Lädt dynamische Inhalte (inhalte.json)
 │   ├── materialien-dynamisch.js  # Lädt je Fach hochgeladene Materialien (Kolosseum-API, data-fach)
-│   ├── was-ist-neu.js            # „Was ist neu?"-Spalten (neuigkeiten.json + inhalte.json + API)
+│   ├── was-ist-neu.js            # „Was ist neu?": 8 Fenster (neuigkeiten.json + inhalte.json + Kolosseum-API)
 │   ├── blog.js · blog-daten.js · blog-einreichen.js  # Blog-Rendering/-Fallback/-Upload
 │   ├── api-config.js · leaderboard.js  # Globale Quiz-Bestenlisten
 ├── neuigkeiten.json     # Pflegbare Einträge für „Was ist neu?" (Funktionen)
@@ -603,6 +603,15 @@ systemctl daemon-reload && systemctl restart reso-api
 
 Dieser Assistent unterstützt Jan Herrmann und sein Kollegium dabei, hochgeladene Arbeitsblätter (PDF, Bild oder Text) in interaktive, eigenständige HTML-Dateien umzuwandeln.
 
+### „Was ist neu?" – so kommen Einträge hinein (Stand 2026-10)
+
+Acht Fenster: Neue Funktion · Quiz-Bestleistung · Avatar-Aufstieg · Neuer Gladiator · Blog (alle automatisch per Kolosseum-API)
+sowie Neue Arbeitsblätter · Neue Quizze · Neue Materialien.
+
+- **Neue Seitenfunktion:** Claude trägt sie bei jeder Änderung **selbst** oben in `neuigkeiten.json` ein (`titel`, `datum`, `meta`, `url`).
+- **Neues Material/Quiz/Arbeitsblatt, das Claude ins Repo legt:** Claude trägt es **selbst** in `inhalte.json` ein (Typ wird aus Titel/Beschreibung erkannt: „Quiz/Rätsel/Rebus" → Quizze, „Arbeitsblatt/Lückentext" → Arbeitsblätter, sonst Materialien).
+- **Material, das Jan im Admin-Bereich hochlädt („Material hochladen"):** erscheint automatisch (Typ Arbeitsblatt/Quiz/Material); keine weitere Eingabe nötig.
+
 ### Ablageort
 
 Generierte Dateien → `materialien/`. Verlinkt werden sie auf der jeweiligen **`fach-<fach>.html`** (in der passenden Kategorie Arbeitsblätter · Materialien · Quizze); für die Startseiten-Übersicht ggf. zusätzlich in `inhalte.json`/`neuigkeiten.json` eintragen.
@@ -721,8 +730,8 @@ beim Sichten/Anpassen einer hochgeladenen Datei nicht mit einem Fehler verwechse
      Präfix-Treffer verlassen. `js/kolosseum-prompt.js` → `POST /api/external/submit` prüft
      dagegen die **volle** Quiz-ID exakt (kein Präfix-Matching) gegen `VALID_SLUGS`.
 4. **Verlinken** auf der passenden `fach-<fach>.html` in der Kategorie „Quizze".
-5. Optional: Eintrag in `neuigkeiten.json` bzw. `inhalte.json` für die „Was ist neu?"-Sektion,
-   falls gewünscht.
+5. **Pflicht:** Eintrag in `inhalte.json` (Felder `titel`, `beschreibung`, `icon`, `url`, `seite`, `datum`),
+   damit das Quiz unter „Was ist neu?" (Fenster Neue Quizze) erscheint.
 6. **Falls Bestenliste/Kolosseum NICHT aktiviert ist**: Schritt 3 entfällt vollständig – die
    Datei läuft komplett unabhängig vom Backend.
 7. **Git-Workflow wie immer** (siehe Abschnitt „Git — PFLICHTREGELN FÜR CLAUDE"): auf dem
