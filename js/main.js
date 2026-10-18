@@ -32,7 +32,7 @@
     var TIPS = [
         { test: /was-ist-neu/i,            icon: '✨',          label: 'Was ist neu?', tip: 'Was ist neu?' },
         { test: /kontakt/i,                icon: '✉️',    label: 'Kontakt',      tip: 'Kontakt' },
-        { test: /profil|kolosseum|arena/i, icon: '⚔️',    label: 'Arena',        tip: 'Arena – Lernkolosseum' },
+        { test: /profil|kolosseum|arena/i, icon: '⚔️',    label: 'Arena',        tip: 'Arena – Gladiatorenkämpfe' },
         { test: /blog/i,                   icon: '✍️',    label: 'Blog',         tip: 'Schüler*innenblog' },
         { test: /faecher|fächer/i,    icon: '📚',    label: 'Fächer',  tip: 'Fächer' }
     ];

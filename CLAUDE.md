@@ -170,7 +170,7 @@ plus `class="nav-item"` und `data-tooltip="Text"`.
             <li class="navbar-gb-trenner" aria-hidden="true">
                 <span class="navbar-gb-label">Geschützter Bereich</span>
             </li>
-            <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="nav-item navbar-gb-link" data-tooltip="Arena – Lernkolosseum">
+            <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="nav-item navbar-gb-link" data-tooltip="Arena – Gladiatorenkämpfe">
                 <span class="nav-icon" aria-hidden="true">⚔️</span>
                 <span class="nav-label">Arena</span></a></li>
             <li><a href="blog.html" class="nav-item navbar-gb-link" data-tooltip="Schüler*innenblog">
@@ -250,7 +250,7 @@ Startseite (index.html)
 ├── #startseite      → Bereiche-Übersicht: 6 Kacheln in dieser Reihenfolge:
 │                      1. Fächervorstellung (öffentlich, klickbar → faecher.html;
 │                         Pill-Chips verlinken direkt auf die jeweilige fach-*.html)
-│                      2. Arena – Lernkolosseum (🔒)
+│                      2. Gladiatorenkämpfe – Arena (🔒)
 │                      3. Jan Herrmann – Wer bin ich? (öffentlich)
 │                      4. Schüler*innenblog (🔒)
 │                      5. Leseabenteuer (🔒)
@@ -345,7 +345,7 @@ XP werden nur bei **Verbesserungen** gutgeschrieben (Differenz zum bisherigen Be
 - **Sektionsreihenfolge:** `#ladebildschirm` (Lade-Animation) → Navbar → Aufbau-Banner (`.aufbau-banner`) → Bereiche-Übersicht (`#startseite`, `.bereiche-uebersicht-section`) → `#was-ist-neu` → `#gladiatoren-teaser` → `#regelradar-teaser` → Login-Gate (`#homepage-login-gate`) → `#lernkolosseum` → `#digitale-materialien` → `#blog-teaser` → `#kontakt` → Footer
 - **Bereiche-Grid:** 6 Kacheln in fester Reihenfolge:
   1. **Fächervorstellung** (öffentlich) — alle 15 Fächer als Pill-Chips; Klick auf Chip → Fachseite; Klick auf Karte → `faecher.html`; umgesetzt via `.bereich-karte-klickbar` + `onclick="if(!event.target.closest('a'))location.href='faecher.html'"`
-  2. **Arena – Lernkolosseum** (🔒 Login)
+  2. **Gladiatorenkämpfe** (Arena, 🔒 Login)
   3. **Jan Herrmann – Wer bin ich?** (öffentlich)
   4. **Schüler\*innenblog** (🔒 Login)
   5. **Leseabenteuer** (🔒 Login)
