@@ -5,7 +5,7 @@
 <script src="js/auth-guard.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Diagnosediktate – Individuelles Rechtschreibtraining</title>
-<link rel="stylesheet" href="css/style.css?v=20260615c">
+<link rel="stylesheet" href="css/style.css?v=20261018">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -20,7 +20,7 @@ body { background:var(--bg); font-family:-apple-system,BlinkMacSystemFont,"Segoe
 header { background:linear-gradient(135deg,#1e3a5f,#2563eb); color:#fff;
          padding:16px 20px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
 header h1 { font-size:1.1rem; font-weight:800; flex:1; }
-.back-link { color:rgba(255,255,255,.8); font-size:.82rem; text-decoration:none; }
+.back-link { color:rgba(255,255,255,.8); font-size:1rem; text-decoration:none; }
 .back-link:hover { color:#fff; }
 
 main { padding:16px; max-width:640px; margin:0 auto; }
@@ -29,24 +29,24 @@ main { padding:16px; max-width:640px; margin:0 auto; }
 .card { background:var(--card); border-radius:var(--r);
         box-shadow:0 2px 10px rgba(0,0,0,.08); padding:22px 20px; margin-bottom:14px; }
 .field { margin-bottom:14px; }
-label { display:block; font-size:.82rem; font-weight:600; color:var(--gray); margin-bottom:5px; }
+label { display:block; font-size:1rem; font-weight:600; color:var(--gray); margin-bottom:5px; }
 input, select { width:100%; padding:10px 12px; border:1.5px solid var(--border);
-                border-radius:9px; font-size:.95rem; outline:none; }
+                border-radius:9px; font-size:1rem; outline:none; }
 input:focus, select:focus { border-color:var(--accent); }
 .btn { display:block; width:100%; padding:13px; border:none; border-radius:10px;
-       font-weight:700; font-size:.97rem; cursor:pointer; transition:filter .15s; }
+       font-weight:700; font-size:1rem; cursor:pointer; transition:filter .15s; }
 .btn-primary { background:var(--accent); color:#fff; }
 .btn-ghost   { background:var(--border); color:var(--text); margin-top:8px; }
 .btn:hover   { filter:brightness(1.07); }
 
 /* ── Test-Screen ────────────────────────────────────────── */
 .prog-row { display:flex; justify-content:space-between; align-items:center;
-            font-size:.8rem; color:var(--gray); margin-bottom:6px; }
+            font-size:1rem; color:var(--gray); margin-bottom:6px; }
 .prog-bar { background:var(--border); border-radius:99px; height:5px;
             margin-bottom:16px; overflow:hidden; }
 .prog-fill { height:100%; border-radius:99px; background:var(--accent); transition:width .3s; }
 
-.satz-label { font-size:.75rem; font-weight:700; text-transform:uppercase;
+.satz-label { font-size:1rem; font-weight:700; text-transform:uppercase;
               letter-spacing:.06em; color:var(--accent); margin-bottom:10px; }
 
 .satz-text { font-size:1rem; line-height:2; margin-bottom:16px; }
@@ -55,7 +55,7 @@ input:focus, select:focus { border-color:var(--accent); }
 .gap-wrap { display:inline-flex; align-items:center; gap:4px; vertical-align:middle; margin:2px 0; }
 .speak-btn {
   padding:3px 7px; background:var(--accent); color:#fff; border:none;
-  border-radius:6px; font-size:.85rem; cursor:pointer; transition:all .15s;
+  border-radius:6px; font-size:1rem; cursor:pointer; transition:all .15s;
   flex-shrink:0;
 }
 .speak-btn:hover { filter:brightness(1.15); }
@@ -63,7 +63,7 @@ input:focus, select:focus { border-color:var(--accent); }
 .speak-btn.played { background:#0ea5e9; }
 .gap-input {
   width: 130px; padding:4px 8px; border:2px solid var(--accent);
-  border-radius:7px; font-size:.95rem; font-weight:600; outline:none;
+  border-radius:7px; font-size:1rem; font-weight:600; outline:none;
   background:#eff6ff; transition:all .2s;
 }
 .gap-input:focus { border-color:#1d4ed8; background:#fff; }
@@ -72,11 +72,11 @@ input:focus, select:focus { border-color:var(--accent); }
 .gap-input:disabled { cursor:default; }
 
 .correct-bubble {
-  display:none; font-size:.78rem; font-weight:700; color:var(--red);
+  display:none; font-size:1rem; font-weight:700; color:var(--red);
   background:#fee2e2; border-radius:5px; padding:2px 6px; white-space:nowrap;
 }
 
-.hint-row { font-size:.82rem; color:var(--gray); margin-bottom:12px; font-style:italic; }
+.hint-row { font-size:1rem; color:var(--gray); margin-bottom:12px; font-style:italic; }
 
 .check-btn { margin-top:4px; }
 .next-btn  { display:none; }
@@ -84,7 +84,7 @@ input:focus, select:focus { border-color:var(--accent); }
 /* Satz-Feedback */
 .satz-result {
   display:none; border-radius:10px; padding:10px 14px; margin-top:10px;
-  font-size:.88rem; font-weight:600;
+  font-size:1rem; font-weight:600;
 }
 .satz-result.show { display:block; }
 .satz-result.ok   { background:#dcfce7; color:var(--green); }
@@ -94,22 +94,22 @@ input:focus, select:focus { border-color:var(--accent); }
 /* ── Laufende Punkte ────────────────────────────────────── */
 .score-mini { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
 .score-chip {
-  padding:3px 9px; border-radius:99px; font-size:.75rem; font-weight:700; color:#fff;
+  padding:3px 9px; border-radius:99px; font-size:1rem; font-weight:700; color:#fff;
 }
 
 /* ── Ergebnis-Screen ────────────────────────────────────── */
 .result-header { text-align:center; padding:6px 0 16px; }
 .result-header h2 { font-size:1.2rem; font-weight:800; }
-.result-header .sub { color:var(--gray); font-size:.88rem; margin-top:4px; }
+.result-header .sub { color:var(--gray); font-size:1rem; margin-top:4px; }
 
 .kat-bar-row { display:flex; align-items:center; gap:10px; margin-bottom:12px; }
-.kat-bar-label { font-size:.8rem; font-weight:700; width:52px; text-align:right; }
+.kat-bar-label { font-size:1rem; font-weight:700; width:52px; text-align:right; }
 .kat-bar-bg { flex:1; background:var(--border); border-radius:99px; height:20px; overflow:hidden; }
 .kat-bar-fill { height:100%; border-radius:99px; }
-.kat-bar-score { font-size:.8rem; color:var(--gray); width:40px; }
+.kat-bar-score { font-size:1rem; color:var(--gray); width:40px; }
 
-.fehler-table { width:100%; border-collapse:collapse; font-size:.82rem; margin-top:6px; }
-.fehler-table th { text-align:left; padding:6px 8px; font-size:.75rem; color:var(--gray);
+.fehler-table { width:100%; border-collapse:collapse; font-size:1rem; margin-top:6px; }
+.fehler-table th { text-align:left; padding:6px 8px; font-size:1rem; color:var(--gray);
                    border-bottom:2px solid var(--border); }
 .fehler-table td { padding:7px 8px; border-bottom:1px solid var(--border); vertical-align:top; }
 .fehler-table tr:last-child td { border-bottom:none; }
@@ -117,7 +117,7 @@ input:focus, select:focus { border-color:var(--accent); }
 .fehler-korrekt { color:var(--green); font-weight:600; }
 
 .send-box { margin-top:8px; padding:11px 14px; border-radius:10px;
-            background:#eff6ff; color:#1e40af; font-size:.88rem; text-align:center; display:none; }
+            background:#eff6ff; color:#1e40af; font-size:1rem; text-align:center; display:none; }
 
 .screen { display:none; }
 .screen.active { display:block; }
@@ -131,7 +131,7 @@ input:focus, select:focus { border-color:var(--accent); }
     <meta property="og:image" content="https://lehrer-herrmann.de/img/logo.svg">
     <meta name="twitter:card" content="summary_large_image">
 </head>
-<body>
+<body class="regelradar-seite">
 
     <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
         <div class="container navbar-inner">
@@ -173,8 +173,9 @@ input:focus, select:focus { border-color:var(--accent); }
     </nav>
 
 <header>
-  <h1>Diagnosediktate</h1>
-  <a href="regelradar.html" class="back-link">← Rechtschreibtraining</a>
+  <h1>📡 RegelRadar – Diagnosediktate</h1>
+  <p>Hör dir die Sätze an und schreib die fehlenden Wörter.</p>
+  <a href="regelradar.html">← RegelRadar-Übersicht</a>
 </header>
 
 <main>
@@ -182,22 +183,18 @@ input:focus, select:focus { border-color:var(--accent); }
 <!-- ═══════════════ Screen 1: Eingabe -->
 <div id="s-entry" class="screen active">
   <div class="card">
+    <div id="rr-login-status" class="rr-login-status" aria-live="polite">Login wird geprüft …</div>
     <div class="field">
-      <label for="inp-code">Klassencode <span style="font-weight:400;color:#9ca3af">(von der Lehrkraft)</span></label>
-      <input id="inp-code" type="text" maxlength="6" placeholder="z. B. AB3X7Y"
-             style="text-transform:uppercase;letter-spacing:.08em" autocomplete="off" spellcheck="false">
+      <label for="inp-name">Dein echter Name <span class="rr-hinweis">(sieht nur deine Lehrkraft, nirgends öffentlich)</span></label>
+      <input id="inp-name" type="text" maxlength="80" placeholder="Vorname Nachname" autocomplete="off" spellcheck="false">
     </div>
-    <div class="field">
-      <label for="inp-name">Dein Name</label>
-      <input id="inp-name" type="text" placeholder="Vorname Nachname" autocomplete="off" spellcheck="false">
-    </div>
-    <div style="background:#fef9c3;border-radius:10px;padding:12px 14px;font-size:.88rem;margin-bottom:16px;line-height:1.55">
+    <div style="background:#fef9c3;border-radius:10px;padding:12px 14px;font-size:1rem;margin-bottom:16px;line-height:1.55">
       <strong>So funktioniert es:</strong> Du siehst Sätze mit Lücken. Klicke auf <strong>🔊</strong>
       um das fehlende Wort zu hören – so oft du möchtest. Dann tippst du das Wort in das Feld ein.
       Du machst alle 5 Diktate nacheinander.
     </div>
-    <button class="btn btn-primary" onclick="startDiktat()">Los geht's →</button>
-    <p id="entry-err" style="color:var(--red);font-size:.83rem;margin-top:8px;display:none"></p>
+    <button class="btn btn-primary" onclick="startDiktat()" data-rr-start disabled>Los geht's →</button>
+    <p id="entry-err" style="color:var(--red);font-size:1rem;margin-top:8px;display:none"></p>
   </div>
 </div>
 
@@ -232,7 +229,7 @@ input:focus, select:focus { border-color:var(--accent); }
 
     <div id="res-bars"></div>
 
-    <div style="margin:14px 0 8px;font-size:.82rem;font-weight:700;color:var(--gray);
+    <div style="margin:14px 0 8px;font-size:1rem;font-weight:700;color:var(--gray);
                 text-transform:uppercase;letter-spacing:.05em">Falsch geschriebene Wörter</div>
     <div id="res-fehler"></div>
 
@@ -244,14 +241,15 @@ input:focus, select:focus { border-color:var(--accent); }
   </div>
 
   <nav style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:14px 0 24px">
-    <a href="regelradar-strategien.html" style="padding:9px 16px;border-radius:99px;font-size:.83rem;font-weight:600;text-decoration:none;background:#e2e8f0;color:#475569">📖 Strategien</a>
-    <a href="regelradar-uebungen.html"   style="padding:9px 16px;border-radius:99px;font-size:.83rem;font-weight:600;text-decoration:none;background:#e2e8f0;color:#475569">✏️ Übungen</a>
-    <a href="regelradar.html"            style="padding:9px 16px;border-radius:99px;font-size:.83rem;font-weight:600;text-decoration:none;background:#2563eb;color:#fff">🏠 Startseite</a>
+    <a href="regelradar-strategien.html" style="padding:9px 16px;border-radius:99px;font-size:1rem;font-weight:600;text-decoration:none;background:#e2e8f0;color:#475569">📖 Strategien</a>
+    <a href="regelradar-uebungen.html"   style="padding:9px 16px;border-radius:99px;font-size:1rem;font-weight:600;text-decoration:none;background:#e2e8f0;color:#475569">✏️ Übungen</a>
+    <a href="regelradar.html"            style="padding:9px 16px;border-radius:99px;font-size:1rem;font-weight:600;text-decoration:none;background:#2563eb;color:#fff">🏠 Startseite</a>
   </nav>
 </div>
 
 </main>
 
+<script src="js/regelradar-login.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════════════════════
 // DIKTAT-DATEN
@@ -371,7 +369,6 @@ const KAT = {
   8:{k:"GK",   n:"Groß-/Kleinschreibung",  c:"var(--c8)"}
 };
 
-const API = "https://lehrer-herrmann.de/reso-api";
 
 // ── State ────────────────────────────────────────────────
 let st = {
@@ -420,11 +417,10 @@ function isCorrect(typed, correct, kat) {
 // ── Start ────────────────────────────────────────────────
 function startDiktat() {
   const name = document.getElementById("inp-name").value.trim();
-  const code = document.getElementById("inp-code").value.trim().toUpperCase();
   const err  = document.getElementById("entry-err");
   if (!name) { err.textContent="Bitte deinen Namen eingeben."; err.style.display="block"; return; }
   err.style.display = "none";
-  st.name = name; st.code = code;
+  st.name = name;
   st.dIdx = 0; st.sIdx = 0;
   initScores();
   st.items = []; st.fehler = [];
@@ -605,7 +601,7 @@ function showResult() {
       html += `<tr>
         <td class="fehler-korrekt">${f.wort}</td>
         <td class="fehler-eingabe">${f.eingabe || "—"}</td>
-        <td><span style="background:${KAT[f.kat].c};color:#fff;padding:2px 7px;border-radius:99px;font-size:.75rem;font-weight:700">${KAT[f.kat].k}</span></td>
+        <td><span style="background:${KAT[f.kat].c};color:#fff;padding:2px 7px;border-radius:99px;font-size:1rem;font-weight:700">${KAT[f.kat].k}</span></td>
       </tr>`;
     });
     html += "</tbody></table>";
@@ -613,7 +609,7 @@ function showResult() {
   }
 
   // Sende-Button nur wenn Code vorhanden
-  document.getElementById("btn-send").style.display = st.code ? "block" : "none";
+  document.getElementById("btn-send").style.display = RegelRadarLogin.eingeloggt() ? "block" : "none";
   show("s-result");
 }
 
@@ -630,30 +626,18 @@ async function sendResult() {
   });
 
   try {
-    const res = await fetch(API + "/ergebnis", {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({
-        klasse_code:   st.code,
-        schueler_name: st.name,
+    await RegelRadarLogin.senden({
+        echter_name: st.name,
         stufe:         1,
         format:        "diktat",
         variante:      1,
         kategorien,
         items: st.items
-      })
-    });
-    if (!res.ok) {
-      const err = new Error(res.status === 404 ? "Klassencode nicht gefunden" : await res.text());
-      err.status = res.status;
-      throw err;
-    }
+      });
     document.getElementById("send-box").style.display = "block";
     btn.style.display = "none";
   } catch(e) {
-    btn.textContent = e && e.status === 404
-      ? "Klassencode falsch/unbekannt – bitte bei der Lehrkraft nachfragen"
-      : "Senden fehlgeschlagen – Internetverbindung prüfen und nochmal versuchen";
+    btn.textContent = e.message;
     btn.disabled = false;
     console.error(e);
   }

@@ -3,835 +3,591 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RegelRadar – Lehrkraft-Dashboard</title>
+<meta name="robots" content="noindex, nofollow">
+<title>RegelRadar – Auswertung für die Lehrkraft</title>
+<link rel="stylesheet" href="css/style.css?v=20261018">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --bg:     #f1f5f9;
-    --card:   #ffffff;
-    --accent: #2563eb;
-    --green:  #16a34a;
-    --orange: #d97706;
-    --red:    #dc2626;
-    --gray:   #64748b;
-    --border: #e2e8f0;
-    --text:   #0f172a;
-    --r:      12px;
-    --kat2:#3b82f6; --kat3:#8b5cf6; --kat4:#06b6d4;
-    --kat5:#f59e0b; --kat6:#10b981; --kat7:#f97316; --kat8:#ec4899;
+  /* Seitenspezifisch: Dashboard-Bausteine (Layout/Schrift/Kopf: css/style.css, Abschnitt REGELRADAR) */
+  .rr-dash {
+    --gruen: #15803d; --orange: #b45309; --rot: #b91c1c; --grau: #475569; --linie: #e2e8f0;
+    --kat2:#2563eb; --kat3:#7c3aed; --kat4:#0e7490; --kat5:#b45309; --kat6:#047857; --kat7:#c2410c; --kat8:#be185d;
   }
-  body { background: var(--bg); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-         color: var(--text); min-height: 100dvh; }
-
-  /* ── Header ─────────────────────────────────────────────── */
-  header { background: var(--accent); color: #fff; padding: 14px 20px;
-           display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  header h1 { font-size: 1.15rem; font-weight: 700; flex: 1 0 160px; }
-  .hdr-inputs { display: flex; gap: 8px; flex-wrap: wrap; flex: 2 0 240px; }
-  .hdr-inputs input, .hdr-inputs select {
-    padding: 7px 10px; border: none; border-radius: 8px;
-    font-size: .9rem; background: rgba(255,255,255,.2); color: #fff;
-    outline: none; min-width: 110px;
+  .rr-werkzeug { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+  .rr-quelle { display: inline-flex; border: 2px solid var(--farbe-primaer); border-radius: 10px; overflow: hidden; }
+  .rr-quelle button { padding: 8px 16px; background: #fff; color: var(--farbe-primaer); border: 0; font: inherit; font-weight: 600; cursor: pointer; }
+  .rr-quelle button[aria-pressed="true"] { background: var(--farbe-primaer); color: #fff; }
+  .rr-tabs { display: flex; gap: 4px; border-bottom: 2px solid var(--linie); margin-bottom: 18px; overflow-x: auto; }
+  .rr-tabs button { padding: 12px 18px; background: none; border: 0; border-bottom: 3px solid transparent; margin-bottom: -2px;
+                    font: inherit; font-weight: 700; color: var(--grau); cursor: pointer; white-space: nowrap; }
+  .rr-tabs button[aria-selected="true"] { color: var(--farbe-primaer); border-bottom-color: var(--farbe-akzent); }
+  .rr-panel { display: none; }
+  .rr-panel.aktiv { display: block; }
+  .rr-karte { background: #fff; border-radius: 12px; box-shadow: 0 1px 8px rgba(15,42,75,.08); padding: 20px; margin-bottom: 18px; }
+  .rr-karte h2 { font-size: 1.25rem; margin-bottom: 14px; }
+  .rr-filter { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+  .rr-filter select, .rr-filter input, .rr-archiv input, .rr-archiv select {
+    padding: 8px 12px; border: 1.5px solid var(--linie); border-radius: 8px; font: inherit; background: #fff; min-width: 180px;
   }
-  .hdr-inputs input::placeholder { color: rgba(255,255,255,.7); }
-  .hdr-inputs input:focus { background: rgba(255,255,255,.3); }
-  .hdr-inputs select option { color: var(--text); background: #fff; }
-  .btn-hdr { padding: 7px 16px; background: rgba(255,255,255,.25); color: #fff;
-             border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: .9rem; }
-  .btn-hdr:hover { background: rgba(255,255,255,.35); }
-
-  /* ── Tabs ───────────────────────────────────────────────── */
-  nav { display: flex; gap: 0; border-bottom: 2px solid var(--border); background: var(--card);
-        padding: 0 16px; overflow-x: auto; }
-  nav button {
-    padding: 12px 18px; background: none; border: none; border-bottom: 3px solid transparent;
-    margin-bottom: -2px; cursor: pointer; font-size: .9rem; font-weight: 600; color: var(--gray);
-    white-space: nowrap;
-  }
-  nav button.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-  main { padding: 20px; max-width: 960px; margin: 0 auto; }
-  .panel { display: none; }
-  .panel.active { display: block; }
-
-  /* ── Cards ──────────────────────────────────────────────── */
-  .card { background: var(--card); border-radius: var(--r);
-          box-shadow: 0 1px 6px rgba(0,0,0,.07); padding: 20px; margin-bottom: 16px; }
-  .card h2 { font-size: 1rem; font-weight: 700; margin-bottom: 14px; }
-
-  /* ── Tabellen ───────────────────────────────────────────── */
-  table { width: 100%; border-collapse: collapse; font-size: .88rem; }
-  th { text-align: left; padding: 8px 10px; font-size: .78rem; color: var(--gray);
-       border-bottom: 2px solid var(--border); font-weight: 600; white-space: nowrap; }
-  td { padding: 9px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
-  tr:last-child td { border-bottom: none; }
-  tr:hover td { background: #f8fafc; }
-
-  /* ── Heatmap ────────────────────────────────────────────── */
-  .hm-wrap { overflow-x: auto; }
-  .hm-table { border-collapse: collapse; font-size: .82rem; white-space: nowrap; }
-  .hm-table th { padding: 6px 10px; font-size: .75rem; color: var(--gray); font-weight: 600; }
-  .hm-table td { padding: 6px 8px; text-align: center; border: 1px solid var(--border); }
-  .hm-table td.name-cell { text-align: left; font-weight: 500; padding-left: 10px; min-width: 120px; }
-  .dot-5 { background: #dcfce7; color: var(--green); font-weight: 700; }
-  .dot-4 { background: #d1fae5; color: #166534; }
-  .dot-3 { background: #fef9c3; color: #854d0e; }
-  .dot-2 { background: #fed7aa; color: #9a3412; }
-  .dot-1, .dot-0 { background: #fee2e2; color: var(--red); font-weight: 700; }
-
-  /* ── Schülerprofil (Balken) ─────────────────────────────── */
-  .bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-  .bar-label { font-size: .8rem; width: 55px; color: var(--gray); font-weight: 600; text-align: right; }
-  .bar-bg { flex: 1; background: var(--border); border-radius: 99px; height: 18px; overflow: hidden; }
-  .bar-fill { height: 100%; border-radius: 99px; transition: width .4s; }
-  .bar-score { font-size: .8rem; width: 28px; color: var(--gray); }
-
-  /* ── Klasse anlegen ─────────────────────────────────────── */
-  .form-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
-  .form-row input { flex: 1 0 180px; padding: 10px 12px; border: 1.5px solid var(--border);
-                    border-radius: 8px; font-size: .95rem; outline: none; }
-  .form-row input:focus { border-color: var(--accent); }
-  .btn { padding: 10px 20px; border: none; border-radius: 8px; font-weight: 600;
-         font-size: .9rem; cursor: pointer; }
-  .btn-primary { background: var(--accent); color: #fff; }
-  .btn-danger  { background: #fef2f2; color: var(--red); border: 1px solid #fecaca; }
-  .btn:hover { filter: brightness(1.07); }
-
-  /* ── Status/Meldungen ───────────────────────────────────── */
-  .msg { padding: 10px 14px; border-radius: 8px; font-size: .88rem; margin-bottom: 12px; display: none; }
-  .msg.ok  { background: #dcfce7; color: #14532d; display: block; }
-  .msg.err { background: #fee2e2; color: #7f1d1d; display: block; }
-  .msg.info{ background: #eff6ff; color: #1e40af; display: block; }
-
-  .kat-chip { display: inline-block; padding: 2px 8px; border-radius: 99px;
-              font-size: .75rem; font-weight: 600; color: #fff; margin-right: 3px; }
-  .kat-tag  { font-size: .75rem; color: var(--gray); }
-
-  .ampel { display: inline-block; padding: 2px 8px; border-radius: 99px; font-size: .75rem; font-weight: 600; }
-  .g { background: #dcfce7; color: var(--green); }
-  .o { background: #fef9c3; color: #854d0e; }
-  .r { background: #fee2e2; color: var(--red); }
-
-  .empty-state { text-align: center; padding: 40px 20px; color: var(--gray); font-size: .95rem; }
-  .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid #ddd;
-             border-top-color: var(--accent); border-radius: 50%; animation: spin .6s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,.45);
-              display: none; align-items: center; justify-content: center; z-index: 100; }
-  .modal-bg.open { display: flex; }
-  .modal { background: #fff; border-radius: var(--r); padding: 24px; width: 90%; max-width: 420px; }
-  .modal h3 { margin-bottom: 14px; }
-
-  /* ── Detail-Modal ───────────────────────────────────────── */
-  .detail-bg { position: fixed; inset: 0; background: rgba(0,0,0,.5);
-               display: none; align-items: flex-start; justify-content: center;
-               z-index: 200; overflow-y: auto; padding: 20px 12px; }
-  .detail-bg.open { display: flex; }
-  .detail-modal {
-    background: #fff; border-radius: var(--r); width: 100%; max-width: 720px;
-    box-shadow: 0 8px 40px rgba(0,0,0,.2); margin: auto;
-  }
-  .detail-header {
-    padding: 18px 22px 14px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
-  }
-  .detail-header h2 { font-size: 1.05rem; font-weight: 700; }
-  .detail-header .meta { font-size: .8rem; color: var(--gray); margin-top: 3px; }
-  .detail-close { background: none; border: none; font-size: 1.4rem; cursor: pointer;
-                  color: var(--gray); padding: 0 4px; line-height: 1; flex-shrink: 0; }
-  .detail-close:hover { color: var(--text); }
-  .detail-body { padding: 18px 22px; }
-
-  .detail-bars { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
-  .d-bar-row { display: flex; align-items: center; gap: 8px; }
-  .d-bar-lbl { font-size: .78rem; font-weight: 700; width: 48px; text-align: right; }
-  .d-bar-bg  { flex: 1; background: var(--border); border-radius: 99px; height: 16px; overflow: hidden; }
-  .d-bar-fill{ height: 100%; border-radius: 99px; }
-  .d-bar-sc  { font-size: .78rem; color: var(--gray); width: 38px; }
-
-  .detail-section { margin-bottom: 16px; }
-  .detail-section h3 { font-size: .8rem; font-weight: 700; text-transform: uppercase;
-                       letter-spacing: .06em; margin-bottom: 8px; }
-  .items-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
-  .items-table th { text-align: left; padding: 5px 8px; font-size: .75rem; color: var(--gray);
-                    border-bottom: 1.5px solid var(--border); }
-  .items-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); }
-  .items-table tr:last-child td { border-bottom: none; }
-  .item-korrekt   { color: var(--green); font-weight: 600; }
-  .item-falsch-w  { color: var(--red);   font-weight: 600; text-decoration: line-through; }
-  .item-falsch-k  { color: var(--green); font-weight: 600; }
-  .item-row-wrong td { background: #fff5f5; }
-  .item-row-ok  td   { background: #f0fdf4; }
-
-  .detail-footer { padding: 12px 22px; border-top: 1px solid var(--border);
-                   display: flex; gap: 10px; justify-content: flex-end; }
-  .btn-print { background: #f1f5f9; color: var(--text); }
-
-  /* ── Drucklayout ────────────────────────────────────────── */
-  @media print {
-    header, nav, main > .card:not(#print-target),
-    .detail-bg, .detail-footer, .detail-close,
-    #global-msg, .msg, .btn-hdr { display: none !important; }
-    body { background: #fff; }
-    #print-area { display: block !important; padding: 0; }
-    .print-page { page-break-after: always; padding: 20px; }
-    .items-table td, .items-table th { padding: 4px 6px; }
-  }
+  .rr-archiv { display: none; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .rr-archiv.sichtbar { display: flex; }
+  .rr-tabelle-wrap { overflow-x: auto; }
+  .rr-dash table { width: 100%; border-collapse: collapse; }
+  .rr-dash th { text-align: left; padding: 8px 10px; color: var(--grau); border-bottom: 2px solid var(--linie); white-space: nowrap; }
+  .rr-dash td { padding: 9px 10px; border-bottom: 1px solid var(--linie); vertical-align: middle; }
+  .rr-dash tbody tr:hover td { background: #f8fafc; }
+  .rr-konto { color: var(--grau); }
+  .rr-chip { display: inline-block; padding: 1px 9px; border-radius: 99px; background: #f1f5f9; font-weight: 600; white-space: nowrap; }
+  .ampel { display: inline-block; padding: 1px 9px; border-radius: 99px; font-weight: 700; white-space: nowrap; }
+  .ampel.g { background: #dcfce7; color: var(--gruen); }
+  .ampel.o { background: #fef3c7; color: var(--orange); }
+  .ampel.r { background: #fee2e2; color: var(--rot); }
+  .ampel.leer { color: #94a3b8; }
+  .rr-legende { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+  .rr-legende b { padding: 1px 8px; border-radius: 99px; color: #fff; }
+  .btn-klein { padding: 6px 12px; border: 0; border-radius: 8px; font: inherit; font-weight: 600; cursor: pointer; }
+  .btn-blau { background: var(--farbe-primaer); color: #fff; }
+  .btn-rot  { background: #fef2f2; color: var(--rot); border: 1px solid #fecaca; }
+  .btn-hell { background: #f1f5f9; color: var(--farbe-text); }
+  .rr-leer { text-align: center; padding: 36px 16px; color: var(--grau); }
+  .rr-meldung { display: none; padding: 10px 14px; border-radius: 8px; margin-bottom: 14px; }
+  .rr-meldung.ok   { display: block; background: #dcfce7; color: #14532d; }
+  .rr-meldung.err  { display: block; background: #fee2e2; color: #7f1d1d; }
+  .rr-meldung.info { display: block; background: #eff6ff; color: #1e3a8a; }
+  .balken { display: grid; grid-template-columns: 70px 1fr 70px; gap: 10px; align-items: center; margin-bottom: 8px; }
+  .balken-lbl { font-weight: 700; text-align: right; }
+  .balken-bg { background: var(--linie); border-radius: 99px; height: 18px; overflow: hidden; }
+  .balken-fill { height: 100%; border-radius: 99px; }
+  .rr-empfehlung { margin-top: 14px; padding: 12px 14px; border-radius: 10px; background: #fef9c3; }
+  .rr-empfehlung.gut { background: #dcfce7; }
+  .rr-verlauf { margin-top: 18px; }
+  /* Modals */
+  .rr-modal-bg { position: fixed; inset: 0; background: rgba(15,23,42,.5); display: none; align-items: flex-start;
+                 justify-content: center; z-index: 500; overflow-y: auto; padding: 20px 12px; }
+  .rr-modal-bg.offen { display: flex; }
+  .rr-modal { background: #fff; border-radius: 12px; width: 100%; max-width: 760px; margin: auto; box-shadow: 0 8px 40px rgba(0,0,0,.25); }
+  .rr-modal.klein { max-width: 440px; padding: 22px; }
+  .rr-modal-kopf { padding: 18px 22px 12px; border-bottom: 1px solid var(--linie); display: flex; justify-content: space-between; gap: 12px; }
+  .rr-modal-kopf h2 { font-size: 1.2rem; }
+  .rr-modal-kopf .meta { color: var(--grau); margin-top: 2px; }
+  .rr-modal-zu { background: none; border: 0; font-size: 1.6rem; line-height: 1; cursor: pointer; color: var(--grau); }
+  .rr-modal-inhalt { padding: 18px 22px; }
+  .rr-modal-fuss { padding: 12px 22px; border-top: 1px solid var(--linie); display: flex; gap: 10px; justify-content: flex-end; }
+  .detail-abschnitt { margin-bottom: 16px; }
+  .detail-abschnitt h3 { font-size: 1rem; margin-bottom: 8px; }
+  .wort-richtig { color: var(--gruen); font-weight: 700; }
+  .wort-falsch  { color: var(--rot); font-weight: 700; text-decoration: line-through; }
   #print-area { display: none; }
+  @media print {
+    .navbar, .rr-kopf, .rr-werkzeug, .rr-tabs, .rr-dash > .rr-panel, .rr-modal-bg, footer, #arena-bar { display: none !important; }
+    #print-area { display: block !important; }
+  }
 </style>
-<link rel="stylesheet" href="css/style.css?v=20260615c">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="de_DE">
-    <meta property="og:site_name" content="Jan Herrmann – Lehrerhomepage">
-    <meta property="og:title" content="RegelRadar – Lehrkraft-Dashboard">
-    <meta property="og:description" content="Lehrerhomepage von Jan Herrmann – Unterrichtsmaterialien, Fachseiten und mehr.">
-    <meta property="og:url" content="https://lehrer-herrmann.de/regelradar-lehrkraft.html">
-    <meta property="og:image" content="https://lehrer-herrmann.de/img/logo.svg">
-    <meta name="twitter:card" content="summary_large_image">
 </head>
-<body>
+<body class="regelradar-seite">
 <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
     <div class="container navbar-inner">
-
         <a href="index.html" class="navbar-logo">lehrer-herrmann.de</a>
-
-        <button
-            class="hamburger"
-            id="hamburger"
-            aria-label="Menü öffnen"
-            aria-expanded="false"
-            aria-controls="navbar-links"
-        >
-            <span></span>
-            <span></span>
-            <span></span>
+        <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+            <span></span><span></span><span></span>
         </button>
-
         <ul class="navbar-links" id="navbar-links">
             <li><a href="index.html#was-ist-neu">Was ist neu?</a></li>
             <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
             <li class="navbar-gb-trenner" aria-hidden="true">
                 <span class="navbar-gb-label">Geschützter Bereich</span>
             </li>
+            <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
             <li><a href="blog.html" class="navbar-gb-link">✍️ Blog</a></li>
             <li><a href="faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
-            <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
         </ul>
-
-        <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none">
-        </div>
-
+        <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
     </div>
 </nav>
 
-<header>
-  <a href="regelradar.html" style="color:rgba(255,255,255,.85);text-decoration:none;font-size:.82rem;font-weight:600;white-space:nowrap;flex-shrink:0;">← Startseite des individuellen<br>Rechtschreibtrainings</a>
-  <h1>RegelRadar – Dashboard</h1>
-  <div class="hdr-inputs">
-    <input id="inp-token" type="password" placeholder="Lehrkraft-Token" autocomplete="off">
-    <select id="inp-klasse">
-      <option value="">— Klasse wählen —</option>
-    </select>
-    <button class="btn-hdr" onclick="loadData()">Laden ↻</button>
-  </div>
+<header class="abgabe-header rr-kopf">
+    <div class="container">
+        <h1>📡 RegelRadar – Auswertung</h1>
+        <p>Diagnose-Ergebnisse aller Schüler*innen. Nur für die Lehrkraft (Admin-Login).</p>
+        <a href="regelradar.html" class="rr-zurueck">← RegelRadar-Übersicht</a>
+    </div>
 </header>
 
-<nav>
-  <button class="active" onclick="tab('t-liste',this)">Ergebnisse</button>
-  <button onclick="tab('t-heatmap',this)">Klassenheatmap</button>
-  <button onclick="tab('t-profil',this)">Schülerprofil</button>
-  <button onclick="tab('t-klassen',this)">Klassen</button>
-</nav>
+<main class="container rr-inhalt rr-dash">
+  <div id="rr-meldung" class="rr-meldung" role="status"></div>
 
-<!-- ═══════════════════════════════ Legende Abkürzungen -->
-<div style="background:#fff;border-bottom:1px solid var(--border);padding:8px 16px;overflow-x:auto;">
-  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;min-width:0;font-size:.75rem;">
-    <span style="color:var(--gray);font-weight:600;white-space:nowrap;">Abkürzungen:</span>
-    <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;"><span style="background:#3b82f6;color:#fff;padding:1px 7px;border-radius:99px;font-weight:700;">DK</span> Doppelkonsonanten</span>
-    <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;"><span style="background:#8b5cf6;color:#fff;padding:1px 7px;border-radius:99px;font-weight:700;">s/ß</span> s / ß / ss</span>
-    <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;"><span style="background:#06b6d4;color:#fff;padding:1px 7px;border-radius:99px;font-weight:700;">AK</span> Auslautverhärtung</span>
-    <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;"><span style="background:#f59e0b;color:#fff;padding:1px 7px;border-radius:99px;font-weight:700;">ä/äu</span> ä / äu (Ableiten)</span>
-    <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;"><span style="background:#10b981;color:#fff;padding:1px 7px;border-radius:99px;font-weight:700;">ZW</span> Zusammensetzungen</span>
-    <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;"><span style="background:#f97316;color:#fff;padding:1px 7px;border-radius:99px;font-weight:700;">AE</span> Ableitungen &amp; Vorsilben</span>
-    <span style="display:inline-flex;align-items:center;gap:4px;white-space:nowrap;"><span style="background:#ec4899;color:#fff;padding:1px 7px;border-radius:99px;font-weight:700;">GK</span> Groß-/Kleinschreibung</span>
+  <div class="rr-werkzeug">
+    <div class="rr-quelle" role="group" aria-label="Datenquelle">
+      <button type="button" id="q-neu" aria-pressed="true">Aktuell (Homepage-Login)</button>
+      <button type="button" id="q-archiv" aria-pressed="false">Archiv (alter Klassencode)</button>
+    </div>
+    <div class="rr-archiv" id="archiv-felder">
+      <label class="sr-only" for="inp-token">Altes Lehrkraft-Token</label>
+      <input id="inp-token" type="password" placeholder="Altes Lehrkraft-Token" autocomplete="off">
+      <label class="sr-only" for="inp-klasse">Klasse (Archiv)</label>
+      <select id="inp-klasse"><option value="">— Klasse wählen —</option></select>
+      <button type="button" class="btn-klein btn-hell" id="btn-archiv-klassen">Klassen laden</button>
+    </div>
+    <button type="button" class="btn-klein btn-blau" id="btn-laden">Neu laden ↻</button>
   </div>
-</div>
 
-<!-- ═══════════════════════════════ Detail-Modal -->
-<div class="detail-bg" id="detail-bg">
-  <div class="detail-modal">
-    <div class="detail-header">
-      <div>
-        <h2 id="det-name">—</h2>
-        <div class="meta" id="det-meta">—</div>
-      </div>
-      <button class="detail-close" onclick="closeDetail()">×</button>
-    </div>
-    <div class="detail-body">
-      <div id="det-spinner" style="text-align:center;padding:20px">
-        <span class="spinner"></span> Lade Details …
-      </div>
-      <div id="det-content" style="display:none">
-        <div class="detail-bars" id="det-bars"></div>
-        <div id="det-sections"></div>
-      </div>
-    </div>
-    <div class="detail-footer">
-      <button class="btn btn-print" onclick="printDetail()">🖨️ Drucken / PDF</button>
-      <button class="btn" style="background:var(--border)" onclick="closeDetail()">Schließen</button>
-    </div>
+  <div class="rr-tabs" role="tablist" aria-label="Ansichten">
+    <button type="button" role="tab" aria-selected="true"  aria-controls="t-liste"   id="tab-liste">Ergebnisse</button>
+    <button type="button" role="tab" aria-selected="false" aria-controls="t-heatmap" id="tab-heatmap">Heatmap</button>
+    <button type="button" role="tab" aria-selected="false" aria-controls="t-profil"  id="tab-profil">Schülerprofil</button>
   </div>
-</div>
 
-<!-- Unsichtbarer Druckbereich -->
-<div id="print-area"></div>
-
-<main>
-<div id="global-msg" class="msg"></div>
-
-<!-- ═══════════════════════════════ Tab 1: Ergebnisliste -->
-<div id="t-liste" class="panel active">
-  <div class="card">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px">
-      <h2 style="margin:0">Eingereichte Tests</h2>
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <select id="filter-stufe" onchange="renderListe()" style="padding:6px 10px;border:1px solid var(--border);border-radius:7px;font-size:.82rem;outline:none">
-          <option value="">Alle Stufen</option>
-          <option value="1">Stufe 1 – Diktate</option>
-          <option value="2">Stufe 2 – Selbsttest</option>
-          <option value="3">Stufe 3 – Strategie</option>
-          <option value="4">Stufe 4 – Quatsch</option>
+  <section id="t-liste" class="rr-panel aktiv" role="tabpanel" aria-labelledby="tab-liste">
+    <div class="rr-karte">
+      <h2>Eingereichte Tests</h2>
+      <div class="rr-filter">
+        <label class="sr-only" for="filter-stufe">Testart</label>
+        <select id="filter-stufe">
+          <option value="">Alle Testarten</option>
+          <option value="1">Diktat</option>
+          <option value="2">Selbsttest</option>
+          <option value="3">Strategieabfrage</option>
+          <option value="4">Quatschwortdiktat</option>
         </select>
-        <select id="filter-name" onchange="renderListe()" style="padding:6px 10px;border:1px solid var(--border);border-radius:7px;font-size:.82rem;outline:none">
-          <option value="">Alle Schüler:innen</option>
-        </select>
+        <label class="sr-only" for="filter-person">Schüler*in</label>
+        <select id="filter-person"><option value="">Alle Schüler*innen</option></select>
       </div>
+      <div class="rr-tabelle-wrap" id="liste-inhalt"><div class="rr-leer">Wird geladen …</div></div>
     </div>
-    <div id="liste-content">
-      <div class="empty-state">Klasse wählen und „Laden" klicken.</div>
-    </div>
-  </div>
-</div>
+  </section>
 
-<!-- ═══════════════════════════════ Tab 2: Heatmap -->
-<div id="t-heatmap" class="panel">
-  <div class="card">
-    <h2>Klassenheatmap – alle Kategorien auf einen Blick</h2>
-    <div id="hm-legend" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;font-size:.8rem"></div>
-    <div class="hm-wrap" id="hm-content">
-      <div class="empty-state">Klasse laden, dann erscheint hier die Heatmap.</div>
+  <section id="t-heatmap" class="rr-panel" role="tabpanel" aria-labelledby="tab-heatmap">
+    <div class="rr-karte">
+      <h2>Heatmap – letzter Test je Schüler*in</h2>
+      <p style="margin-bottom:12px">Es zählt die oben bei „Ergebnisse“ gewählte Testart (sonst: Selbsttest).</p>
+      <div class="rr-legende" id="hm-legende"></div>
+      <div class="rr-tabelle-wrap" id="hm-inhalt"></div>
     </div>
-  </div>
-</div>
+  </section>
 
-<!-- ═══════════════════════════════ Tab 3: Schülerprofil -->
-<div id="t-profil" class="panel">
-  <div class="card">
-    <h2>Schülerprofil</h2>
-    <div id="profil-select" style="margin-bottom:16px">
-      <select id="sel-schueler" style="padding:9px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:.9rem;outline:none;min-width:200px" onchange="renderProfil()">
-        <option value="">— Schüler:in wählen —</option>
-      </select>
+  <section id="t-profil" class="rr-panel" role="tabpanel" aria-labelledby="tab-profil">
+    <div class="rr-karte">
+      <h2>Schülerprofil</h2>
+      <div class="rr-filter">
+        <label class="sr-only" for="sel-person">Schüler*in wählen</label>
+        <select id="sel-person"><option value="">— Schüler*in wählen —</option></select>
+      </div>
+      <div id="profil-inhalt"><div class="rr-leer">Schüler*in auswählen.</div></div>
     </div>
-    <div id="profil-content"><div class="empty-state">Klasse laden und Schüler:in auswählen.</div></div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════ Tab 4: Klassen verwalten -->
-<div id="t-klassen" class="panel">
-  <div class="card">
-    <h2>Neue Klasse anlegen</h2>
-    <div class="form-row">
-      <input id="inp-new-klasse" type="text" placeholder="Klassenname, z. B. 6b" maxlength="40">
-      <button class="btn btn-primary" onclick="createKlasse()">Anlegen</button>
-    </div>
-    <div id="create-msg" class="msg"></div>
-  </div>
-  <div class="card">
-    <h2>Vorhandene Klassen</h2>
-    <div id="klassen-list"><div class="empty-state">Token eingeben und „Laden" klicken.</div></div>
-  </div>
-</div>
+  </section>
 </main>
 
-<!-- Lösch-Bestätigung -->
-<div class="modal-bg" id="modal-del">
-  <div class="modal">
-    <h3 id="modal-title">Wirklich löschen?</h3>
-    <p id="modal-text" style="margin-bottom:18px;font-size:.9rem;color:var(--gray)"></p>
-    <div style="display:flex;gap:10px">
-      <button class="btn btn-danger" id="modal-confirm">Löschen</button>
-      <button class="btn" style="background:var(--border)" onclick="closeModal()">Abbrechen</button>
+<!-- Detail-Ansicht -->
+<div class="rr-modal-bg" id="detail-bg">
+  <div class="rr-modal" role="dialog" aria-modal="true" aria-labelledby="det-name">
+    <div class="rr-modal-kopf">
+      <div><h2 id="det-name">—</h2><div class="meta" id="det-meta"></div></div>
+      <button type="button" class="rr-modal-zu" id="det-zu" aria-label="Schließen">×</button>
+    </div>
+    <div class="rr-modal-inhalt" id="det-inhalt"></div>
+    <div class="rr-modal-fuss">
+      <button type="button" class="btn-klein btn-hell" id="det-drucken">🖨️ Drucken / PDF</button>
+      <button type="button" class="btn-klein btn-hell" id="det-schliessen">Schließen</button>
     </div>
   </div>
 </div>
 
+<!-- Lösch-Bestätigung -->
+<div class="rr-modal-bg" id="loeschen-bg">
+  <div class="rr-modal klein" role="dialog" aria-modal="true" aria-labelledby="loeschen-titel">
+    <h2 id="loeschen-titel" style="font-size:1.2rem;margin-bottom:10px">Ergebnis löschen?</h2>
+    <p id="loeschen-text" style="margin-bottom:18px"></p>
+    <div style="display:flex;gap:10px">
+      <button type="button" class="btn-klein btn-rot" id="loeschen-ja">Löschen</button>
+      <button type="button" class="btn-klein btn-hell" id="loeschen-nein">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+<div id="print-area"></div>
+
 <script>
-// API-Basis – ANPASSEN!
-const API = "https://lehrer-herrmann.de/reso-api";
+(function () {
+  'use strict';
 
-const KAT = {
-  2:{k:"DK",   n:"Doppelkonsonanten",      c:"var(--kat2)"},
-  3:{k:"s/ß",  n:"s / ß / ss",            c:"var(--kat3)"},
-  4:{k:"AK",   n:"Auslautverhärtung",      c:"var(--kat4)"},
-  5:{k:"ä/äu", n:"ä / äu",               c:"var(--kat5)"},
-  6:{k:"ZW",   n:"Zusammensetzungen",      c:"var(--kat6)"},
-  7:{k:"AE",   n:"Ableitungen/Vorsilben",  c:"var(--kat7)"},
-  8:{k:"GK",   n:"Groß-/Kleinschreibung",  c:"var(--kat8)"}
-};
-const CATS = [2,3,4,5,6,7,8];
+  var K       = 'https://kolosseum.lehrer-herrmann.de';
+  var ALT_API = 'https://lehrer-herrmann.de/reso-api';   // Archiv: alte Daten (Klassencode + Token)
 
-let allData = null;   // letzte geladene Antwort vom Server
-let klassen = [];     // alle Klassen
+  var KAT = {
+    2: { k: 'DK',   n: 'Doppelkonsonanten',     c: 'var(--kat2)' },
+    3: { k: 's/ß',  n: 's / ß / ss',            c: 'var(--kat3)' },
+    4: { k: 'AK',   n: 'Auslautverhärtung',     c: 'var(--kat4)' },
+    5: { k: 'ä/äu', n: 'ä / äu',                c: 'var(--kat5)' },
+    6: { k: 'ZW',   n: 'Zusammensetzungen',     c: 'var(--kat6)' },
+    7: { k: 'AE',   n: 'Ableitungen/Vorsilben', c: 'var(--kat7)' },
+    8: { k: 'GK',   n: 'Groß-/Kleinschreibung', c: 'var(--kat8)' }
+  };
+  var CATS = [2, 3, 4, 5, 6, 7, 8];
+  var STUFE = { 1: 'Diktat', 2: 'Selbsttest', 3: 'Strategieabfrage', 4: 'Quatschwortdiktat' };
 
-function token() { return document.getElementById("inp-token").value.trim(); }
-function klasseCode() { return document.getElementById("inp-klasse").value; }
+  var quelle = 'neu';      // 'neu' | 'archiv'
+  var daten  = [];         // vereinheitlichte Ergebnisse
+  var $ = function (id) { return document.getElementById(id); };
 
-// ── Globale Nachricht ────────────────────────────────────────────────────────
-function msg(text, type="info") {
-  const el = document.getElementById("global-msg");
-  el.textContent = text;
-  el.className = "msg " + type;
-  if (type !== "err") setTimeout(() => { el.className="msg"; }, 4000);
-}
-
-// ── Tab-Wechsel ──────────────────────────────────────────────────────────────
-function tab(id, btn) {
-  document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
-  document.querySelectorAll("nav button").forEach(b => b.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-  btn.classList.add("active");
-}
-
-// ── Daten laden ──────────────────────────────────────────────────────────────
-async function loadData() {
-  if (!token()) { msg("Bitte Token eingeben.", "err"); return; }
-  await Promise.all([loadKlassen(), loadErgebnisse()]);
-}
-
-async function loadKlassen() {
-  try {
-    const res = await fetch(API + "/klassen", {headers:{Authorization:"Bearer "+token()}});
-    if (!res.ok) throw new Error(res.status);
-    klassen = await res.json();
-    renderKlassenList();
-    updateKlasseSelect();
-  } catch(e) { msg("Klassen konnten nicht geladen werden (Token korrekt?).", "err"); }
-}
-
-async function loadErgebnisse() {
-  const code = klasseCode();
-  if (!code) return;
-  try {
-    const res = await fetch(API + "/ergebnisse/" + code, {headers:{Authorization:"Bearer "+token()}});
-    if (!res.ok) throw new Error(res.status);
-    allData = await res.json();
-    renderListe();
-    renderHeatmap();
-    updateSchuelerSelect();
-    msg(`${allData.ergebnisse.length} Ergebnis(se) für ${allData.klasse.name} geladen.`, "ok");
-  } catch(e) { msg("Ergebnisse konnten nicht geladen werden.", "err"); }
-}
-
-function updateKlasseSelect() {
-  const sel = document.getElementById("inp-klasse");
-  const cur = sel.value;
-  sel.innerHTML = '<option value="">— Klasse wählen —</option>';
-  klassen.forEach(k => {
-    sel.innerHTML += `<option value="${k.code}" ${k.code===cur?"selected":""}>${k.name} (${k.code})</option>`;
-  });
-}
-
-const STUFE_LABEL = {1:"Diktat", 2:"Selbsttest", 3:"Strategie", 4:"Quatsch"};
-
-// ── Tab 1: Ergebnisliste ──────────────────────────────────────────────────────
-function renderListe() {
-  const el = document.getElementById("liste-content");
-  if (!allData || !allData.ergebnisse.length) {
-    el.innerHTML = '<div class="empty-state">Noch keine Ergebnisse für diese Klasse.</div>';
-    return;
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
   }
 
-  // Filter
-  const filterStufe = document.getElementById("filter-stufe").value;
-  const filterName  = document.getElementById("filter-name").value;
-  let ergebnisse = allData.ergebnisse;
-  if (filterStufe) ergebnisse = ergebnisse.filter(e => String(e.stufe||1) === filterStufe);
-  if (filterName)  ergebnisse = ergebnisse.filter(e => e.schueler_name === filterName);
-
-  // Name-Filter befüllen
-  const names = [...new Set(allData.ergebnisse.map(e => e.schueler_name))].sort();
-  const nameSel = document.getElementById("filter-name");
-  const curName = nameSel.value;
-  nameSel.innerHTML = '<option value="">Alle Schüler:innen</option>' +
-    names.map(n => `<option value="${n}" ${n===curName?"selected":""}>${n}</option>`).join("");
-
-  if (!ergebnisse.length) {
-    el.innerHTML = '<div class="empty-state">Keine Ergebnisse für diesen Filter.</div>';
-    return;
+  function meldung(text, typ) {
+    var el = $('rr-meldung');
+    el.textContent = text;
+    el.className = 'rr-meldung ' + (typ || 'info');
+    if (typ === 'ok') setTimeout(function () { el.className = 'rr-meldung'; }, 4000);
   }
 
-  let html = `<table>
-    <thead><tr>
-      <th>Name</th><th>Stufe</th>
-      ${CATS.map(k=>`<th style="color:${KAT[k].c}">${KAT[k].k}</th>`).join("")}
-      <th>Ges.</th><th>Datum</th><th></th>
-    </tr></thead><tbody>`;
+  function ampelKlasse(r, g) {
+    if (!g) return 'leer';
+    var p = r / g;
+    return p >= 0.8 ? 'g' : p >= 0.5 ? 'o' : 'r';
+  }
 
-  ergebnisse.forEach(e => {
-    let total = 0, maxP = 0;
-    const kat_cells = CATS.map(k => {
-      const v = e.kategorien[String(k)] || {richtig:0, gesamt:0};
-      total += v.richtig; maxP += (v.gesamt || 0);
-      if (!v.gesamt) return `<td style="color:#cbd5e1">—</td>`;
-      const pct = v.richtig/v.gesamt;
-      const cl  = pct>=0.8?"g":pct>=0.5?"o":"r";
-      return `<td><span class="ampel ${cl}">${v.richtig}/${v.gesamt}</span></td>`;
-    }).join("");
+  function datum(iso) {
+    var d = new Date(iso);
+    return isNaN(d) ? '' : d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit' });
+  }
 
-    const stufe = e.stufe || 1;
-    const d  = new Date(e.eingereicht);
-    const ds = d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"2-digit"});
-    const stufeLabel = STUFE_LABEL[stufe] || `S${stufe}`;
+  // Einheitliches Format für neue und alte Ergebnisse
+  function normalisiere(e, q) {
+    return {
+      id: e.id,
+      quelle: q,
+      name: q === 'neu' ? e.echter_name : e.schueler_name,
+      konto: q === 'neu' ? e.nick : ('Klasse ' + (e.klasse_code || '')),
+      person: q === 'neu' ? 'a' + e.student_id : 'n' + e.schueler_name,
+      stufe: e.stufe || 1,
+      format: e.format,
+      variante: e.variante,
+      kategorien: e.kategorien || {},
+      eingereicht: e.eingereicht
+    };
+  }
 
-    html += `<tr>
-      <td><strong>${e.schueler_name}</strong></td>
-      <td><span style="font-size:.75rem;background:#f1f5f9;padding:2px 7px;border-radius:99px;font-weight:600">${stufeLabel}</span></td>
-      ${kat_cells}
-      <td><strong>${total}${maxP?"/"+maxP:""}</strong></td>
-      <td style="font-size:.78rem;color:var(--gray)">${ds}</td>
-      <td style="display:flex;gap:4px">
-        <button class="btn btn-primary" style="padding:4px 10px;font-size:.78rem"
-            onclick="openDetail(${e.id},'${e.schueler_name.replace(/'/g,"\\'")}','${stufeLabel}','${ds}')">Details</button>
-        <button class="btn btn-danger" style="padding:4px 10px;font-size:.78rem"
-            onclick="confirmDelete(${e.id},'${e.schueler_name}')">×</button>
-      </td>
-    </tr>`;
-  });
-  html += "</tbody></table>";
-  el.innerHTML = html;
-}
-
-// ── Detail-Modal ──────────────────────────────────────────────────────────────
-async function openDetail(id, name, stufe, datum) {
-  document.getElementById("det-name").textContent  = name;
-  document.getElementById("det-meta").textContent  = `${stufe} · ${datum}`;
-  document.getElementById("det-spinner").style.display = "block";
-  document.getElementById("det-content").style.display = "none";
-  document.getElementById("detail-bg").classList.add("open");
-
-  try {
-    const res = await fetch(`${API}/ergebnis/${id}/items`,
-      {headers:{Authorization:"Bearer "+token()}});
-    if (!res.ok) {
-      const body = await res.text().catch(()=>"");
-      throw new Error(`HTTP ${res.status}: ${body.substring(0,120)}`);
+  // ── Laden ────────────────────────────────────────────────────────────────
+  async function ladeNeu() {
+    var res;
+    try {
+      res = await fetch(K + '/api/regelradar/admin/ergebnisse', { credentials: 'include' });
+    } catch (_) {
+      meldung('Server nicht erreichbar. Bitte später erneut versuchen.', 'err');
+      return;
     }
-    const data = await res.json();
-    renderDetail(data);
-  } catch(e) {
-    document.getElementById("det-spinner").textContent = "Fehler: " + e.message;
-  }
-}
-
-function closeDetail() {
-  document.getElementById("detail-bg").classList.remove("open");
-}
-
-function renderDetail(data) {
-  document.getElementById("det-spinner").style.display = "none";
-  document.getElementById("det-content").style.display = "block";
-
-  const items = data.items || [];
-  const kat   = data.kategorien || {};
-
-  // Kategorie-Balken
-  const bars = document.getElementById("det-bars");
-  bars.innerHTML = "";
-  CATS.forEach(k => {
-    const v = kat[String(k)];
-    if (!v || !v.gesamt) return;
-    const pct = Math.round(v.richtig / v.gesamt * 100);
-    const col = pct>=80?"var(--green)":pct>=50?"var(--orange)":"var(--red)";
-    bars.innerHTML += `
-      <div class="d-bar-row">
-        <div class="d-bar-lbl" style="color:${KAT[k].c}">${KAT[k].k}</div>
-        <div class="d-bar-bg">
-          <div class="d-bar-fill" style="width:${pct}%;background:${col}"></div>
-        </div>
-        <div class="d-bar-sc">${v.richtig}/${v.gesamt}</div>
-      </div>`;
-  });
-
-  // Items pro Kategorie
-  const sections = document.getElementById("det-sections");
-  sections.innerHTML = "";
-
-  if (!items.length) {
-    sections.innerHTML = `<p style="color:var(--gray);font-size:.88rem">
-      Keine Einzelitem-Daten vorhanden (älteres Ergebnis ohne Detailspeicherung).</p>`;
-    return;
+    if (res.status === 401) {
+      meldung('Bitte als Admin anmelden – du wirst weitergeleitet …', 'info');
+      window.location.href = K + '/admin/?next=' + encodeURIComponent(window.location.href);
+      return;
+    }
+    if (!res.ok) { meldung('Ergebnisse konnten nicht geladen werden.', 'err'); return; }
+    var d = await res.json();
+    daten = d.ergebnisse.map(function (e) { return normalisiere(e, 'neu'); });
+    allesZeichnen();
+    meldung(daten.length + ' Ergebnis(se) geladen.', 'ok');
   }
 
-  // Gruppieren nach Kategorie
-  const byKat = {};
-  items.forEach(it => {
-    const k = it.kat;
-    if (!byKat[k]) byKat[k] = [];
-    byKat[k].push(it);
-  });
+  function token() { return $('inp-token').value.trim(); }
 
-  CATS.forEach(k => {
-    const list = byKat[k];
-    if (!list || !list.length) return;
-    const wrong  = list.filter(i => !i.richtig);
-    const richtig = list.filter(i => i.richtig).length;
+  async function ladeArchivKlassen() {
+    if (!token()) { meldung('Für das Archiv bitte das alte Lehrkraft-Token eingeben.', 'err'); return; }
+    try {
+      var res = await fetch(ALT_API + '/klassen', { headers: { Authorization: 'Bearer ' + token() } });
+      if (!res.ok) throw new Error(res.status);
+      var klassen = await res.json();
+      $('inp-klasse').innerHTML = '<option value="">— Klasse wählen —</option>' + klassen.map(function (k) {
+        return '<option value="' + esc(k.code) + '">' + esc(k.name) + ' (' + esc(k.code) + ')</option>';
+      }).join('');
+      meldung(klassen.length + ' Archiv-Klasse(n) gefunden.', 'ok');
+    } catch (_) { meldung('Archiv-Klassen konnten nicht geladen werden (Token korrekt?).', 'err'); }
+  }
 
-    let sec = `<div class="detail-section">
-      <h3 style="color:${KAT[k].c}">${KAT[k].k} – ${KAT[k].n}
-        <span style="font-weight:400;color:var(--gray)">· ${richtig}/${list.length} richtig</span>
-      </h3>`;
+  async function ladeArchiv() {
+    var code = $('inp-klasse').value;
+    if (!token() || !code) { daten = []; allesZeichnen(); meldung('Archiv: Token eingeben, „Klassen laden“, dann Klasse wählen.', 'info'); return; }
+    try {
+      var res = await fetch(ALT_API + '/ergebnisse/' + encodeURIComponent(code), { headers: { Authorization: 'Bearer ' + token() } });
+      if (!res.ok) throw new Error(res.status);
+      var d = await res.json();
+      daten = d.ergebnisse.map(function (e) { return normalisiere(e, 'archiv'); });
+      allesZeichnen();
+      meldung(daten.length + ' Archiv-Ergebnis(se) für ' + d.klasse.name + ' geladen.', 'ok');
+    } catch (_) { meldung('Archiv-Ergebnisse konnten nicht geladen werden.', 'err'); }
+  }
 
-    if (wrong.length === 0) {
-      sec += `<p style="color:var(--green);font-size:.85rem;font-weight:600;margin-bottom:8px">✓ Alle richtig!</p>`;
+  function laden() { return quelle === 'neu' ? ladeNeu() : ladeArchiv(); }
+
+  function setzeQuelle(q) {
+    quelle = q;
+    $('q-neu').setAttribute('aria-pressed', String(q === 'neu'));
+    $('q-archiv').setAttribute('aria-pressed', String(q === 'archiv'));
+    $('archiv-felder').classList.toggle('sichtbar', q === 'archiv');
+    daten = [];
+    allesZeichnen();
+    laden();
+  }
+
+  // ── Personen-Auswahl ────────────────────────────────────────────────────
+  function personen() {
+    var map = {};
+    daten.forEach(function (e) {
+      if (!map[e.person]) map[e.person] = { id: e.person, name: e.name, konto: e.konto };
+    });
+    return Object.keys(map).map(function (k) { return map[k]; })
+      .sort(function (a, b) { return a.name.localeCompare(b.name, 'de'); });
+  }
+
+  function fuellePersonen() {
+    var liste = personen();
+    ['filter-person', 'sel-person'].forEach(function (id) {
+      var sel = $(id), alt = sel.value;
+      var erst = id === 'filter-person' ? 'Alle Schüler*innen' : '— Schüler*in wählen —';
+      sel.innerHTML = '<option value="">' + erst + '</option>' + liste.map(function (p) {
+        return '<option value="' + esc(p.id) + '"' + (p.id === alt ? ' selected' : '') + '>' +
+          esc(p.name) + ' (' + esc(p.konto) + ')</option>';
+      }).join('');
+    });
+  }
+
+  function gefiltert() {
+    var stufe = $('filter-stufe').value, person = $('filter-person').value;
+    return daten.filter(function (e) {
+      return (!stufe || String(e.stufe) === stufe) && (!person || e.person === person);
+    });
+  }
+
+  // ── Ergebnisse ──────────────────────────────────────────────────────────
+  function zeichneListe() {
+    var el = $('liste-inhalt'), liste = gefiltert();
+    if (!daten.length) { el.innerHTML = '<div class="rr-leer">Noch keine Ergebnisse.</div>'; return; }
+    if (!liste.length) { el.innerHTML = '<div class="rr-leer">Keine Ergebnisse für diesen Filter.</div>'; return; }
+    var html = '<table><thead><tr><th>Name (echt)</th><th>Konto</th><th>Test</th>' +
+      CATS.map(function (k) { return '<th style="color:' + KAT[k].c + '" title="' + KAT[k].n + '">' + KAT[k].k + '</th>'; }).join('') +
+      '<th>Gesamt</th><th>Datum</th><th><span class="sr-only">Aktionen</span></th></tr></thead><tbody>';
+    liste.forEach(function (e) {
+      var sum = 0, max = 0;
+      var zellen = CATS.map(function (k) {
+        var v = e.kategorien[String(k)];
+        if (!v || !v.gesamt) return '<td><span class="ampel leer">–</span></td>';
+        sum += v.richtig; max += v.gesamt;
+        return '<td><span class="ampel ' + ampelKlasse(v.richtig, v.gesamt) + '">' + v.richtig + '/' + v.gesamt + '</span></td>';
+      }).join('');
+      html += '<tr><td><strong>' + esc(e.name) + '</strong></td><td class="rr-konto">' + esc(e.konto) + '</td>' +
+        '<td><span class="rr-chip">' + esc(STUFE[e.stufe] || e.format) + '</span></td>' + zellen +
+        '<td><span class="ampel ' + ampelKlasse(sum, max) + '">' + sum + '/' + max + '</span></td>' +
+        '<td>' + datum(e.eingereicht) + '</td>' +
+        '<td style="white-space:nowrap"><button type="button" class="btn-klein btn-blau" data-detail="' + e.id + '">Details</button> ' +
+        '<button type="button" class="btn-klein btn-rot" data-loeschen="' + e.id + '" aria-label="Ergebnis löschen">×</button></td></tr>';
+    });
+    el.innerHTML = html + '</tbody></table>';
+  }
+
+  // ── Heatmap: je Person der letzte Test der gewählten Testart ────────────
+  function zeichneHeatmap() {
+    $('hm-legende').innerHTML = CATS.map(function (k) {
+      return '<span><b style="background:' + KAT[k].c + '">' + KAT[k].k + '</b> ' + KAT[k].n + '</span>';
+    }).join('');
+    var stufe = $('filter-stufe').value || '2';
+    var letzte = {};
+    daten.forEach(function (e) {
+      if (String(e.stufe) !== stufe) return;
+      if (!letzte[e.person] || e.eingereicht > letzte[e.person].eingereicht) letzte[e.person] = e;
+    });
+    var zeilen = Object.keys(letzte).map(function (k) { return letzte[k]; })
+      .sort(function (a, b) { return a.name.localeCompare(b.name, 'de'); });
+    var el = $('hm-inhalt');
+    if (!zeilen.length) { el.innerHTML = '<div class="rr-leer">Keine Ergebnisse für „' + esc(STUFE[stufe]) + '“.</div>'; return; }
+    var summen = {};
+    var html = '<table><thead><tr><th>Name (echt)</th><th>Konto</th>' +
+      CATS.map(function (k) { return '<th style="color:' + KAT[k].c + '">' + KAT[k].k + '</th>'; }).join('') + '</tr></thead><tbody>';
+    zeilen.forEach(function (e) {
+      html += '<tr><td><strong>' + esc(e.name) + '</strong></td><td class="rr-konto">' + esc(e.konto) + '</td>' +
+        CATS.map(function (k) {
+          var v = e.kategorien[String(k)];
+          if (!v || !v.gesamt) return '<td><span class="ampel leer">–</span></td>';
+          summen[k] = summen[k] || { r: 0, g: 0 };
+          summen[k].r += v.richtig; summen[k].g += v.gesamt;
+          return '<td><span class="ampel ' + ampelKlasse(v.richtig, v.gesamt) + '" title="' + KAT[k].n + '">' + v.richtig + '/' + v.gesamt + '</span></td>';
+        }).join('') + '</tr>';
+    });
+    html += '<tr><td colspan="2"><strong>Ø Gruppe</strong></td>' + CATS.map(function (k) {
+      var s = summen[k];
+      if (!s || !s.g) return '<td><span class="ampel leer">–</span></td>';
+      return '<td><span class="ampel ' + ampelKlasse(s.r, s.g) + '">' + Math.round(s.r / s.g * 100) + ' %</span></td>';
+    }).join('') + '</tr>';
+    el.innerHTML = html + '</tbody></table>';
+  }
+
+  // ── Schülerprofil: alle Tests einer Person, letzter Test als Balken ─────
+  function balken(kategorien) {
+    return CATS.map(function (k) {
+      var v = kategorien[String(k)];
+      if (!v || !v.gesamt) return '';
+      var pct = Math.round(v.richtig / v.gesamt * 100);
+      var farbe = pct >= 80 ? 'var(--gruen)' : pct >= 50 ? 'var(--orange)' : 'var(--rot)';
+      return '<div class="balken"><div class="balken-lbl" style="color:' + KAT[k].c + '">' + KAT[k].k + '</div>' +
+        '<div class="balken-bg"><div class="balken-fill" style="width:' + pct + '%;background:' + farbe + '"></div></div>' +
+        '<div>' + v.richtig + '/' + v.gesamt + '</div></div>';
+    }).join('');
+  }
+
+  function zeichneProfil() {
+    var id = $('sel-person').value, el = $('profil-inhalt');
+    if (!id) { el.innerHTML = '<div class="rr-leer">Schüler*in auswählen.</div>'; return; }
+    var tests = daten.filter(function (e) { return e.person === id; })
+      .sort(function (a, b) { return a.eingereicht < b.eingereicht ? 1 : -1; });
+    if (!tests.length) { el.innerHTML = '<div class="rr-leer">Keine Ergebnisse.</div>'; return; }
+    var e = tests[0];
+    var schwach = [], mittel = [];
+    CATS.forEach(function (k) {
+      var v = e.kategorien[String(k)];
+      if (!v || !v.gesamt) return;
+      var p = v.richtig / v.gesamt;
+      if (p < 0.5) schwach.push(KAT[k].n); else if (p < 0.8) mittel.push(KAT[k].n);
+    });
+    var html = '<p style="margin-bottom:14px"><strong>' + esc(e.name) + '</strong> <span class="rr-konto">(' + esc(e.konto) + ')</span><br>' +
+      'Letzter Test: ' + esc(STUFE[e.stufe] || e.format) + ', ' + datum(e.eingereicht) + '</p>' + balken(e.kategorien);
+    if (schwach.length || mittel.length) {
+      html += '<div class="rr-empfehlung"><strong>Förderempfehlung:</strong><br>' +
+        (schwach.length ? '<span style="color:var(--rot);font-weight:700">Dringend üben:</span> ' + esc(schwach.join(', ')) + '<br>' : '') +
+        (mittel.length ? '<span style="color:var(--orange);font-weight:700">Noch üben:</span> ' + esc(mittel.join(', ')) : '') + '</div>';
     } else {
-      sec += `<table class="items-table">
-        <thead><tr>
-          <th>#</th><th>Korrektes Wort</th><th>Eingabe des Schülers</th><th>Kontext</th>
-        </tr></thead><tbody>`;
-      wrong.forEach(it => {
-        const ctx = it.satz ? `<span style="color:var(--gray);font-size:.75rem">${it.satz.substring(0,50)}…</span>` : "—";
-        sec += `<tr class="item-row-wrong">
-          <td style="color:var(--gray)">${it.nr}</td>
-          <td class="item-falsch-k">${it.wort}</td>
-          <td class="item-falsch-w">${it.eingabe || "—"}</td>
-          <td>${ctx}</td>
-        </tr>`;
-      });
-      sec += "</tbody></table>";
+      html += '<div class="rr-empfehlung gut"><strong>Sehr gut!</strong> Alle Bereiche sicher.</div>';
     }
-    sec += "</div>";
-    sections.innerHTML += sec;
-  });
-
-  // Für Druckbereich aufbereiten
-  document.getElementById("print-area").innerHTML =
-    `<div class="print-page">
-      <h2 style="margin-bottom:4px">${document.getElementById("det-name").textContent}</h2>
-      <p style="color:#64748b;font-size:.85rem;margin-bottom:16px">
-        ${document.getElementById("det-meta").textContent}</p>
-      ${bars.outerHTML}
-      ${sections.innerHTML}
-    </div>`;
-}
-
-function printDetail() {
-  document.getElementById("print-area").style.display = "block";
-  window.print();
-  setTimeout(() => {
-    document.getElementById("print-area").style.display = "none";
-  }, 500);
-}
-
-// ── Tab 2: Heatmap ─────────────────────────────────────────────────────────
-function renderHeatmap() {
-  const el = document.getElementById("hm-content");
-  const leg = document.getElementById("hm-legend");
-  if (!allData || !allData.ergebnisse.length) {
-    el.innerHTML = '<div class="empty-state">Keine Ergebnisse vorhanden.</div>';
-    return;
+    html += '<div class="rr-verlauf"><h3 style="font-size:1.05rem;margin-bottom:8px">Alle Tests (' + tests.length + ')</h3><table><tbody>' +
+      tests.map(function (t) {
+        var s = 0, m = 0;
+        CATS.forEach(function (k) { var v = t.kategorien[String(k)]; if (v) { s += v.richtig; m += v.gesamt; } });
+        return '<tr><td>' + datum(t.eingereicht) + '</td><td>' + esc(STUFE[t.stufe] || t.format) + '</td>' +
+          '<td><span class="ampel ' + ampelKlasse(s, m) + '">' + s + '/' + m + '</span></td>' +
+          '<td><button type="button" class="btn-klein btn-blau" data-detail="' + t.id + '">Details</button></td></tr>';
+      }).join('') + '</tbody></table></div>';
+    el.innerHTML = html;
   }
 
-  leg.innerHTML = CATS.map(k =>
-    `<span><span class="kat-chip" style="background:${KAT[k].c}">${KAT[k].k}</span> ${KAT[k].n}</span>`
-  ).join("  ");
-
-  let html = `<table class="hm-table">
-    <thead><tr><th>Name</th>${CATS.map(k=>`<th style="color:${KAT[k].c}">${KAT[k].k}</th>`).join("")}<th>Ges.</th></tr></thead>
-    <tbody>`;
-
-  allData.ergebnisse.forEach(e => {
-    let total = 0;
-    const cells = CATS.map(k => {
-      const v = e.kategorien[String(k)] || {richtig:0,gesamt:5};
-      total += v.richtig;
-      const dots = ["✕","◔","◑","◕","●","●"][Math.min(v.richtig,5)];
-      return `<td class="dot-${v.richtig}" title="${KAT[k].n}: ${v.richtig}/5">${v.richtig}/5</td>`;
-    }).join("");
-
-    const pct = Math.round(total/35*100);
-    const cl = pct>=80?"g":pct>=50?"o":"r";
-    html += `<tr><td class="name-cell">${e.schueler_name}</td>${cells}
-             <td><span class="ampel ${cl}">${total}</span></td></tr>`;
-  });
-
-  // ── Klassenmittelwert ──────────────────────────────────────
-  const n = allData.ergebnisse.length;
-  const avgCells = CATS.map(k => {
-    const avg = allData.ergebnisse.reduce((s,e) =>
-      s + (e.kategorien[String(k)]?.richtig || 0), 0) / n;
-    const rounded = Math.round(avg*10)/10;
-    const cl = avg>=4?"dot-5":avg>=3?"dot-4":avg>=2?"dot-3":"dot-1";
-    return `<td class="${cl}"><strong>${rounded}</strong></td>`;
-  }).join("");
-  const avgTotal = Math.round(allData.ergebnisse.reduce((s,e)=>
-    s+CATS.reduce((ss,k)=>ss+(e.kategorien[String(k)]?.richtig||0),0),0)/n);
-  html += `<tr style="border-top:2px solid var(--border)">
-    <td class="name-cell" style="font-weight:700;color:var(--accent)">Ø Klasse</td>
-    ${avgCells}<td><strong>${avgTotal}</strong></td></tr>`;
-
-  html += "</tbody></table>";
-  el.innerHTML = html;
-}
-
-// ── Tab 3: Schülerprofil ──────────────────────────────────────────────────────
-function updateSchuelerSelect() {
-  const sel = document.getElementById("sel-schueler");
-  sel.innerHTML = '<option value="">— Schüler:in wählen —</option>';
-  if (!allData) return;
-  allData.ergebnisse.forEach((e,i) => {
-    sel.innerHTML += `<option value="${i}">${e.schueler_name} (Var. ${e.variante})</option>`;
-  });
-}
-
-function renderProfil() {
-  const idx = document.getElementById("sel-schueler").value;
-  const el = document.getElementById("profil-content");
-  if (idx === "" || !allData) { el.innerHTML = '<div class="empty-state">Schüler:in auswählen.</div>'; return; }
-  const e = allData.ergebnisse[parseInt(idx)];
-  const total = CATS.reduce((s,k)=>s+(e.kategorien[String(k)]?.richtig||0),0);
-
-  let html = `<p style="margin-bottom:16px"><strong>${e.schueler_name}</strong>
-    &nbsp;Variante ${e.variante}&nbsp;
-    <span style="color:var(--gray);font-size:.85rem">${new Date(e.eingereicht).toLocaleString("de-DE")}</span>
-    </p>`;
-
-  CATS.forEach(k => {
-    const v = e.kategorien[String(k)] || {richtig:0, gesamt:5};
-    const pct = v.richtig/v.gesamt*100;
-    const c = KAT[k].c;
-    const cl = v.richtig>=4?"var(--green)":v.richtig>=2?"var(--orange)":"var(--red)";
-    html += `<div class="bar-row">
-      <div class="bar-label" style="color:${c}">${KAT[k].k}</div>
-      <div class="bar-bg">
-        <div class="bar-fill" style="width:${pct}%;background:${cl}"></div>
-      </div>
-      <div class="bar-score">${v.richtig}/5</div>
-    </div>`;
-  });
-
-  const pct = Math.round(total/35*100);
-  const cl = pct>=80?"g":pct>=50?"o":"r";
-  html += `<p style="margin-top:16px;font-size:.9rem">
-    Gesamt: <strong>${total}/35</strong>&nbsp;
-    <span class="ampel ${cl}">${pct} %</span></p>`;
-
-  // Förderempfehlung
-  const schwach = CATS.filter(k=>(e.kategorien[String(k)]?.richtig||0)<=1).map(k=>KAT[k].n);
-  const mittel  = CATS.filter(k=>{const r=e.kategorien[String(k)]?.richtig||0; return r>=2&&r<=3;}).map(k=>KAT[k].n);
-  if (schwach.length || mittel.length) {
-    html += `<div style="margin-top:14px;padding:12px 14px;background:#fef9c3;border-radius:10px;font-size:.88rem">
-      <strong>Förderempfehlung:</strong><br>`;
-    if (schwach.length) html += `<span style="color:var(--red)">Dringend üben:</span> ${schwach.join(", ")}<br>`;
-    if (mittel.length)  html += `<span style="color:var(--orange)">Noch üben:</span> ${mittel.join(", ")}`;
-    html += `</div>`;
-  } else {
-    html += `<div style="margin-top:14px;padding:12px 14px;background:#dcfce7;border-radius:10px;font-size:.88rem">
-      <strong>Sehr gut!</strong> Alle Bereiche sicher oder auf gutem Weg.</div>`;
+  function allesZeichnen() {
+    fuellePersonen();
+    zeichneListe();
+    zeichneHeatmap();
+    zeichneProfil();
   }
 
-  el.innerHTML = html;
-}
+  // ── Detail ──────────────────────────────────────────────────────────────
+  async function oeffneDetail(id) {
+    var e = daten.find(function (x) { return String(x.id) === String(id); });
+    if (!e) return;
+    $('det-name').textContent = e.name + ' (' + e.konto + ')';
+    $('det-meta').textContent = (STUFE[e.stufe] || e.format) + ' · Variante ' + e.variante + ' · ' + datum(e.eingereicht);
+    $('det-inhalt').innerHTML = '<p>Lade Details …</p>';
+    $('detail-bg').classList.add('offen');
+    $('det-zu').focus();
+    try {
+      var res = e.quelle === 'neu'
+        ? await fetch(K + '/api/regelradar/admin/ergebnis/' + encodeURIComponent(e.id), { credentials: 'include' })
+        : await fetch(ALT_API + '/ergebnis/' + encodeURIComponent(e.id) + '/items', { headers: { Authorization: 'Bearer ' + token() } });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      zeichneDetail(await res.json());
+    } catch (err) {
+      $('det-inhalt').innerHTML = '<p>Details konnten nicht geladen werden (' + esc(err.message) + ').</p>';
+    }
+  }
 
-// ── Tab 4: Klassen ─────────────────────────────────────────────────────────
-async function createKlasse() {
-  const name = document.getElementById("inp-new-klasse").value.trim();
-  const el = document.getElementById("create-msg");
-  if (!name) { el.textContent="Name eingeben."; el.className="msg err"; return; }
-  if (!token()) { el.textContent="Token eingeben."; el.className="msg err"; return; }
-  try {
-    const res = await fetch(API+"/klasse",{method:"POST",
-      headers:{"Content-Type":"application/json","Authorization":"Bearer "+token()},
-      body:JSON.stringify({name})});
-    if (!res.ok) throw new Error(res.status);
-    const d = await res.json();
-    el.textContent = `Klasse angelegt! Code: ${d.code}  (an Schüler:innen weitergeben)`;
-    el.className = "msg ok";
-    document.getElementById("inp-new-klasse").value = "";
-    await loadKlassen();
-  } catch(e) { el.textContent="Fehler beim Anlegen."; el.className="msg err"; }
-}
+  function zeichneDetail(d) {
+    var items = d.items || [];
+    var html = balken(d.kategorien || {});
+    if (!items.length) {
+      html += '<p style="margin-top:12px">Keine Einzelantworten gespeichert.</p>';
+    } else {
+      CATS.forEach(function (k) {
+        var liste = items.filter(function (it) { return it.kat === k; });
+        if (!liste.length) return;
+        var falsch = liste.filter(function (it) { return !it.richtig; });
+        html += '<div class="detail-abschnitt"><h3 style="color:' + KAT[k].c + '">' + KAT[k].k + ' – ' + KAT[k].n +
+          ' · ' + (liste.length - falsch.length) + '/' + liste.length + ' richtig</h3>';
+        if (!falsch.length) {
+          html += '<p class="wort-richtig">✓ Alle richtig!</p>';
+        } else {
+          html += '<table><thead><tr><th>#</th><th>Richtig</th><th>Eingabe</th><th>Satz</th></tr></thead><tbody>' +
+            falsch.map(function (it) {
+              return '<tr><td>' + esc(it.nr) + '</td><td class="wort-richtig">' + esc(it.wort) + '</td>' +
+                '<td class="wort-falsch">' + esc(it.eingabe || '—') + '</td><td>' + esc(it.satz || '—') + '</td></tr>';
+            }).join('') + '</tbody></table>';
+        }
+        html += '</div>';
+      });
+    }
+    $('det-inhalt').innerHTML = html;
+    $('print-area').innerHTML = '<h2>' + esc($('det-name').textContent) + '</h2><p>' + esc($('det-meta').textContent) + '</p>' + html;
+  }
 
-function renderKlassenList() {
-  const el = document.getElementById("klassen-list");
-  if (!klassen.length) { el.innerHTML='<div class="empty-state">Noch keine Klassen.</div>'; return; }
-  let html = `<table><thead><tr><th>Name</th><th>Code</th><th>Angelegt</th><th></th></tr></thead><tbody>`;
-  klassen.forEach(k => {
-    const d = new Date(k.erstellt).toLocaleDateString("de-DE");
-    html += `<tr>
-      <td><strong>${k.name}</strong></td>
-      <td><code style="background:#f1f5f9;padding:2px 8px;border-radius:6px;font-size:.9rem">${k.code}</code></td>
-      <td style="color:var(--gray);font-size:.83rem">${d}</td>
-      <td><button class="btn btn-danger" style="padding:4px 10px;font-size:.78rem"
-          onclick="confirmDeleteKlasse('${k.code}','${k.name}')">Löschen</button></td>
-    </tr>`;
+  function schliesseDetail() { $('detail-bg').classList.remove('offen'); }
+
+  // ── Löschen ─────────────────────────────────────────────────────────────
+  var zuLoeschen = null;
+  function frageLoeschen(id) {
+    var e = daten.find(function (x) { return String(x.id) === String(id); });
+    if (!e) return;
+    zuLoeschen = e;
+    $('loeschen-text').textContent = 'Ergebnis von „' + e.name + '“ (' + (STUFE[e.stufe] || e.format) + ', ' + datum(e.eingereicht) + ') wirklich löschen?';
+    $('loeschen-bg').classList.add('offen');
+    $('loeschen-nein').focus();
+  }
+
+  async function loeschen() {
+    var e = zuLoeschen;
+    $('loeschen-bg').classList.remove('offen');
+    if (!e) return;
+    try {
+      var res = e.quelle === 'neu'
+        ? await fetch(K + '/api/regelradar/admin/ergebnis/' + encodeURIComponent(e.id), { method: 'DELETE', credentials: 'include' })
+        : await fetch(ALT_API + '/ergebnis/' + encodeURIComponent(e.id), { method: 'DELETE', headers: { Authorization: 'Bearer ' + token() } });
+      if (!res.ok) throw new Error(res.status);
+      meldung('Ergebnis gelöscht.', 'ok');
+      await laden();
+    } catch (_) { meldung('Fehler beim Löschen.', 'err'); }
+  }
+
+  // ── Ereignisse ──────────────────────────────────────────────────────────
+  ['liste', 'heatmap', 'profil'].forEach(function (name) {
+    $('tab-' + name).addEventListener('click', function () {
+      document.querySelectorAll('.rr-tabs [role="tab"]').forEach(function (b) { b.setAttribute('aria-selected', 'false'); });
+      document.querySelectorAll('.rr-panel').forEach(function (p) { p.classList.remove('aktiv'); });
+      this.setAttribute('aria-selected', 'true');
+      $('t-' + name).classList.add('aktiv');
+    });
   });
-  html += "</tbody></table>";
-  el.innerHTML = html;
-}
+  document.addEventListener('click', function (ev) {
+    var d = ev.target.closest('[data-detail]');
+    if (d) { oeffneDetail(d.getAttribute('data-detail')); return; }
+    var l = ev.target.closest('[data-loeschen]');
+    if (l) frageLoeschen(l.getAttribute('data-loeschen'));
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape') { schliesseDetail(); $('loeschen-bg').classList.remove('offen'); }
+  });
+  $('filter-stufe').addEventListener('change', function () { zeichneListe(); zeichneHeatmap(); });
+  $('filter-person').addEventListener('change', zeichneListe);
+  $('sel-person').addEventListener('change', zeichneProfil);
+  $('q-neu').addEventListener('click', function () { setzeQuelle('neu'); });
+  $('q-archiv').addEventListener('click', function () { setzeQuelle('archiv'); });
+  $('btn-archiv-klassen').addEventListener('click', ladeArchivKlassen);
+  $('inp-klasse').addEventListener('change', ladeArchiv);
+  $('btn-laden').addEventListener('click', laden);
+  $('det-zu').addEventListener('click', schliesseDetail);
+  $('det-schliessen').addEventListener('click', schliesseDetail);
+  $('det-drucken').addEventListener('click', function () { window.print(); });
+  $('loeschen-ja').addEventListener('click', loeschen);
+  $('loeschen-nein').addEventListener('click', function () { $('loeschen-bg').classList.remove('offen'); });
 
-// ── Löschen ──────────────────────────────────────────────────────────────────
-let _pendingDelete = null;
-
-function confirmDelete(id, name) {
-  document.getElementById("modal-title").textContent = "Ergebnis löschen?";
-  document.getElementById("modal-text").textContent  = `Ergebnis von „${name}" wirklich löschen?`;
-  document.getElementById("modal-confirm").onclick   = () => deleteErgebnis(id);
-  document.getElementById("modal-del").classList.add("open");
-}
-
-function confirmDeleteKlasse(code, name) {
-  document.getElementById("modal-title").textContent = "Klasse löschen?";
-  document.getElementById("modal-text").textContent  = `Klasse „${name}" (${code}) und alle Ergebnisse löschen?`;
-  document.getElementById("modal-confirm").onclick   = () => deleteKlasse(code);
-  document.getElementById("modal-del").classList.add("open");
-}
-
-function closeModal() { document.getElementById("modal-del").classList.remove("open"); }
-
-async function deleteErgebnis(id) {
-  closeModal();
-  try {
-    await fetch(API+"/ergebnis/"+id, {method:"DELETE", headers:{Authorization:"Bearer "+token()}});
-    await loadErgebnisse();
-    msg("Ergebnis gelöscht.", "ok");
-  } catch(e) { msg("Fehler beim Löschen.", "err"); }
-}
-
-async function deleteKlasse(code) {
-  closeModal();
-  try {
-    await fetch(API+"/klasse/"+code, {method:"DELETE", headers:{Authorization:"Bearer "+token()}});
-    if (klasseCode()===code) document.getElementById("inp-klasse").value="";
-    await loadKlassen();
-    msg("Klasse gelöscht.", "ok");
-  } catch(e) { msg("Fehler beim Löschen.", "err"); }
-}
-
-// Token aus LocalStorage (optional merken)
-window.onload = () => {
-  const t = localStorage.getItem("reso_token");
-  if (t) document.getElementById("inp-token").value = t;
-};
-document.getElementById("inp-token").addEventListener("change", e => {
-  localStorage.setItem("reso_token", e.target.value);
-});
+  ladeNeu();
+}());
 </script>
 
 <footer>
     <div class="container footer-inner">
-        <p>© <span id="footer-jahr">2025</span> Jan Herrmann</p>
+        <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
         <nav class="footer-links" aria-label="Rechtliche Links">
             <a href="impressum.html">Impressum</a>
             <a href="datenschutz.html">Datenschutz</a>
@@ -841,6 +597,5 @@ document.getElementById("inp-token").addEventListener("change", e => {
 </footer>
 <script src="js/main.js?v=20260615c"></script>
 <script src="js/kolosseum-login-widget.js"></script>
-
 </body>
 </html>

@@ -20,14 +20,14 @@ body { background:var(--bg); font-family:-apple-system,BlinkMacSystemFont,"Segoe
         box-shadow:0 2px 12px rgba(0,0,0,.08);
         padding:24px 20px; width:100%; max-width:520px; }
 h1 { font-size:1.2rem; font-weight:800; margin-bottom:4px; }
-.sub { color:var(--gray); font-size:.88rem; margin-bottom:20px; line-height:1.55; }
+.sub { color:var(--gray); font-size:1rem; margin-bottom:20px; line-height:1.55; }
 .field { margin-bottom:14px; }
-label { display:block; font-size:.82rem; font-weight:600; color:var(--gray); margin-bottom:5px; }
+label { display:block; font-size:1rem; font-weight:600; color:var(--gray); margin-bottom:5px; }
 input[type=text] { width:100%; padding:10px 12px; border:1.5px solid var(--border);
-        border-radius:9px; font-size:.95rem; outline:none; }
+        border-radius:9px; font-size:1rem; outline:none; }
 input[type=text]:focus { border-color:var(--accent); }
 .btn { display:block; width:100%; padding:12px; border:none; border-radius:10px;
-       font-weight:700; font-size:.95rem; cursor:pointer; transition:filter .15s; }
+       font-weight:700; font-size:1rem; cursor:pointer; transition:filter .15s; }
 .btn-primary { background:var(--accent); color:#fff; }
 .btn-ghost   { background:var(--border); color:var(--text); margin-top:8px; }
 .btn:hover   { filter:brightness(1.07); }
@@ -35,13 +35,13 @@ input[type=text]:focus { border-color:var(--accent); }
 /* Audio-Hinweis */
 .audio-hint {
   background:#fef9c3; border-radius:10px; padding:11px 14px;
-  font-size:.85rem; line-height:1.55; margin-bottom:16px;
+  font-size:1rem; line-height:1.55; margin-bottom:16px;
   border-left:3px solid var(--orange);
 }
 .audio-hint strong { display:block; margin-bottom:3px; }
 
 /* Test */
-.prog-row { display:flex; justify-content:space-between; font-size:.8rem;
+.prog-row { display:flex; justify-content:space-between; font-size:1rem;
             color:var(--gray); margin-bottom:5px; }
 .prog-bar { background:var(--border); border-radius:99px; height:5px;
             margin-bottom:18px; overflow:hidden; }
@@ -52,7 +52,7 @@ input[type=text]:focus { border-color:var(--accent); }
 .audio-btn {
   display:flex; align-items:center; gap:6px; padding:9px 14px;
   background:var(--accent); color:#fff; border:none; border-radius:10px;
-  font-size:.85rem; font-weight:600; cursor:pointer; transition:all .15s;
+  font-size:1rem; font-weight:600; cursor:pointer; transition:all .15s;
 }
 .audio-btn:hover { filter:brightness(1.12); }
 .audio-btn.unavail { background:#e2e8f0; color:var(--gray); cursor:default; }
@@ -69,18 +69,18 @@ input[type=text]:focus { border-color:var(--accent); }
             vertical-align:middle; margin:1px 0; }
 .gap-inp {
   width:130px; padding:4px 8px; border:2px solid var(--accent);
-  border-radius:7px; font-size:.95rem; font-weight:600; outline:none;
+  border-radius:7px; font-size:1rem; font-weight:600; outline:none;
   background:#f5f0ff; transition:all .2s;
 }
 .gap-inp:focus { border-color:#5b21b6; background:#fff; }
 .gap-inp.ok   { border-color:var(--green); background:#dcfce7; color:var(--green); }
 .gap-inp.err  { border-color:var(--red);   background:#fee2e2; color:var(--red); }
 .gap-inp:disabled { cursor:default; }
-.correct-label { font-size:.76rem; font-weight:700; color:var(--green);
+.correct-label { font-size:1rem; font-weight:700; color:var(--green);
                  background:#dcfce7; border-radius:5px; padding:1px 6px; display:none; }
 
 .feedback-bar { padding:9px 14px; border-radius:10px; text-align:center;
-                font-weight:600; font-size:.88rem; margin-top:10px; display:none; }
+                font-weight:600; font-size:1rem; margin-top:10px; display:none; }
 .feedback-bar.ok  { display:block; background:#dcfce7; color:var(--green); }
 .feedback-bar.err { display:block; background:#fee2e2; color:var(--red); }
 .feedback-bar.mid { display:block; background:#fef9c3; color:#854d0e; }
@@ -89,20 +89,20 @@ input[type=text]:focus { border-color:var(--accent); }
 
 /* Score-Mini */
 .score-mini { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:12px; }
-.sc-chip { padding:3px 9px; border-radius:99px; font-size:.73rem; font-weight:700; color:#fff; }
+.sc-chip { padding:3px 9px; border-radius:99px; font-size:1rem; font-weight:700; color:#fff; }
 
 /* Ergebnis */
-.result-table { width:100%; border-collapse:collapse; font-size:.88rem; margin:12px 0; }
-.result-table th { text-align:left; padding:7px 8px; font-size:.77rem; color:var(--gray);
+.result-table { width:100%; border-collapse:collapse; font-size:1rem; margin:12px 0; }
+.result-table th { text-align:left; padding:7px 8px; font-size:1rem; color:var(--gray);
                    border-bottom:1.5px solid var(--border); }
 .result-table td { padding:8px 8px; border-bottom:1px solid var(--border); vertical-align:middle; }
 .result-table tr:last-child td { border-bottom:none; }
-.ampel { display:inline-block; padding:3px 9px; border-radius:99px; font-size:.78rem; font-weight:600; }
+.ampel { display:inline-block; padding:3px 9px; border-radius:99px; font-size:1rem; font-weight:600; }
 .g { background:#dcfce7; color:var(--green); }
 .o { background:#fef9c3; color:#854d0e; }
 .r { background:#fee2e2; color:var(--red); }
 
-.sent-box { background:#eff6ff; border-radius:10px; padding:11px 14px; font-size:.88rem;
+.sent-box { background:#eff6ff; border-radius:10px; padding:11px 14px; font-size:1rem;
             color:#1e40af; text-align:center; margin-top:8px; display:none; }
 
 .screen { width:100%; max-width:520px; display:none; }
@@ -110,10 +110,10 @@ input[type=text]:focus { border-color:var(--accent); }
 
 .page-nav { display:flex; gap:8px; justify-content:center; flex-wrap:wrap;
             margin-top:16px; padding-top:14px; border-top:1px solid var(--border); }
-.page-nav a { padding:8px 14px; border-radius:99px; font-size:.82rem; font-weight:600;
+.page-nav a { padding:8px 14px; border-radius:99px; font-size:1rem; font-weight:600;
               text-decoration:none; background:var(--border); color:var(--gray); }
 </style>
-<link rel="stylesheet" href="css/style.css?v=20260615c">
+<link rel="stylesheet" href="css/style.css?v=20261018">
     <meta property="og:type" content="website">
     <meta property="og:locale" content="de_DE">
     <meta property="og:site_name" content="Jan Herrmann – Lehrerhomepage">
@@ -123,7 +123,7 @@ input[type=text]:focus { border-color:var(--accent); }
     <meta property="og:image" content="https://lehrer-herrmann.de/img/logo.svg">
     <meta name="twitter:card" content="summary_large_image">
 </head>
-<body>
+<body class="regelradar-seite">
 <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
     <div class="container navbar-inner">
 
@@ -158,17 +158,17 @@ input[type=text]:focus { border-color:var(--accent); }
     </div>
 </nav>
 
-<div style="background:#f0f4f8;padding:0.6rem 1rem;font-size:0.82rem;text-align:center;border-bottom:1px solid #e2e8f0;">
-    <a href="regelradar.html" style="color:#2563eb;text-decoration:none;font-weight:600;">← Startseite des individuellen Rechtschreibtrainings</a>
-</div>
 
 
 
+<header>
+  <h1>📡 RegelRadar – Quatschwortdiktat</h1>
+  <p>Du hörst Sätze mit erfundenen Wörtern — und schreibst sie auf. Die Rechtschreibregeln gelten auch für Quatschwörter!</p>
+  <a href="regelradar.html">← RegelRadar-Übersicht</a>
+</header>
 <!-- ══════════ Screen 1: Eingabe -->
 <div id="s-entry" class="screen active">
   <div class="card">
-    <h1>Quatschwortdiktat</h1>
-    <p class="sub">Du hörst Sätze mit erfundenen Wörtern — und schreibst sie auf. Die Rechtschreibregeln gelten auch für Quatschwörter!</p>
 
     <div class="audio-hint">
       <strong>🎤 So läuft der Test ab:</strong>
@@ -177,26 +177,22 @@ input[type=text]:focus { border-color:var(--accent); }
       Es gibt keine richtige oder falsche Aussprache — nur richtige oder falsche Schreibung!
     </div>
 
+    <div id="rr-login-status" class="rr-login-status" aria-live="polite">Login wird geprüft …</div>
     <div class="field">
-      <label>Klassencode <span style="font-weight:400;color:#9ca3af">(von der Lehrkraft)</span></label>
-      <input type="text" id="inp-code" maxlength="6" placeholder="z. B. AB3X7Y"
-             style="text-transform:uppercase;letter-spacing:.08em" autocomplete="off" spellcheck="false">
-    </div>
-    <div class="field">
-      <label>Dein Name</label>
-      <input type="text" id="inp-name" placeholder="Vorname Nachname" autocomplete="off" spellcheck="false">
+      <label for="inp-name">Dein echter Name <span class="rr-hinweis">(sieht nur deine Lehrkraft, nirgends öffentlich)</span></label>
+      <input id="inp-name" type="text" maxlength="80" placeholder="Vorname Nachname" autocomplete="off" spellcheck="false">
     </div>
     <div class="field">
       <label>Diktat-Nummer <span style="font-weight:400;color:#9ca3af">(von der Lehrkraft)</span></label>
-      <select id="inp-diktat" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:.95rem;outline:none">
+      <select id="inp-diktat" style="width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:9px;font-size:1rem;outline:none">
         <option value="1">Diktat 1 – Nappige Sehmheiten</option>
         <option value="2">Diktat 2 – Siebliche Plocker</option>
         <option value="3">Diktat 3 – Plödige Tosslein</option>
         <option value="4">Diktat 4 – Sümmliche Keunde</option>
       </select>
     </div>
-    <button class="btn btn-primary" onclick="start()">Los geht's →</button>
-    <p id="entry-err" style="color:var(--red);font-size:.83rem;margin-top:8px;display:none"></p>
+    <button class="btn btn-primary" onclick="start()" data-rr-start disabled>Los geht's →</button>
+    <p id="entry-err" style="color:var(--red);font-size:1rem;margin-top:8px;display:none"></p>
   </div>
 </div>
 
@@ -223,14 +219,14 @@ input[type=text]:focus { border-color:var(--accent); }
 <div id="s-result" class="screen">
   <div class="card">
     <h2 style="text-align:center;margin-bottom:4px">Dein Ergebnis</h2>
-    <p id="res-sub" style="text-align:center;color:var(--gray);font-size:.88rem;margin-bottom:14px"></p>
+    <p id="res-sub" style="text-align:center;color:var(--gray);font-size:1rem;margin-bottom:14px"></p>
 
     <table class="result-table">
       <thead><tr><th>Bereich</th><th>Richtig</th><th></th></tr></thead>
       <tbody id="res-tbody"></tbody>
     </table>
 
-    <div id="res-summary" style="padding:13px;border-radius:10px;font-size:.92rem;line-height:1.5;margin-bottom:12px"></div>
+    <div id="res-summary" style="padding:13px;border-radius:10px;font-size:1rem;line-height:1.5;margin-bottom:12px"></div>
 
     <button class="btn btn-primary" id="btn-send" onclick="senden()" style="margin-top:4px">
       Ergebnis an Lehrkraft senden
@@ -246,6 +242,7 @@ input[type=text]:focus { border-color:var(--accent); }
   </div>
 </div>
 
+<script src="js/regelradar-login.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════
 // QUATSCHDIKTAT-DATEN – 4 Diktate × 7 Sätze
@@ -380,7 +377,6 @@ const KAT = {
   8:{k:"GK",  n:"Groß-/Kleinschreibung", c:"var(--c8)"}
 };
 const CATS = [2,3,4,5,6,7,8];
-const API  = "https://lehrer-herrmann.de/reso-api";
 
 let st = { name:"", code:"", dNr:1, sIdx:0, scores:{}, items:[], audio:null };
 function initScores() { CATS.forEach(k => st.scores[k]={r:0,g:0}); }
@@ -398,7 +394,6 @@ function start() {
   if (!name) { err.textContent="Bitte deinen Namen eingeben."; err.style.display="block"; return; }
   err.style.display = "none";
   st.name = name;
-  st.code = document.getElementById("inp-code").value.trim().toUpperCase();
   st.dNr  = parseInt(document.getElementById("inp-diktat").value);
   st.sIdx = 0; st.items = [];
   initScores();
@@ -550,9 +545,9 @@ function showResult() {
     const cl  = pct>=80?"g":pct>=50?"o":"r";
     tbody.innerHTML += `<tr>
       <td><strong style="color:${KAT[k].c}">${KAT[k].k}</strong>
-          <span style="font-size:.76rem;color:#6b7280;display:block">${KAT[k].n}</span></td>
+          <span style="font-size:1rem;color:#6b7280;display:block">${KAT[k].n}</span></td>
       <td><span class="ampel ${cl}">${s.r}/${s.g}</span></td>
-      <td style="color:var(--gray);font-size:.8rem">${pct}%</td>
+      <td style="color:var(--gray);font-size:1rem">${pct}%</td>
     </tr>`;
   });
 
@@ -569,7 +564,7 @@ function showResult() {
     sum.innerHTML=`<strong>${tot}/${max} richtig (${pct}%)</strong><br>Das Quatschwortdiktat ist besonders schwer. Schau dir die Strategien noch einmal an.`;
   }
 
-  document.getElementById("btn-send").style.display = st.code ? "block" : "none";
+  document.getElementById("btn-send").style.display = RegelRadarLogin.eingeloggt() ? "block" : "none";
   show("s-result");
 }
 
@@ -580,25 +575,15 @@ async function senden() {
   const kategorien = {};
   CATS.forEach(k => { if(st.scores[k].g) kategorien[String(k)]={richtig:st.scores[k].r,gesamt:st.scores[k].g}; });
   try {
-    const res = await fetch(API+"/ergebnis",{
-      method:"POST", headers:{"Content-Type":"application/json"},
-      body:JSON.stringify({
-        klasse_code:st.code, schueler_name:st.name,
+    await RegelRadarLogin.senden({
+        echter_name:st.name,
         stufe:4, format:"quatsch", variante:st.dNr,
         kategorien, items:st.items
-      })
-    });
-    if (!res.ok) {
-      const err = new Error(res.status === 404 ? "Klassencode nicht gefunden" : await res.text());
-      err.status = res.status;
-      throw err;
-    }
+      });
     document.getElementById("sent-box").style.display="block";
     btn.style.display="none";
   } catch(e) {
-    btn.textContent = e && e.status === 404
-      ? "Klassencode falsch/unbekannt – bitte bei der Lehrkraft nachfragen"
-      : "Senden fehlgeschlagen – Internetverbindung prüfen und nochmal versuchen";
+    btn.textContent = e.message;
     btn.disabled=false;
     console.error(e);
   }
