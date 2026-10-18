@@ -2,6 +2,24 @@
   "_hinweis": "Neue Funktionen für die 'Was ist neu?'-Sektion. Neueste oben einfügen. Felder: titel, datum (JJJJ-MM-TT), meta (Bereich), url. Wird von js/was-ist-neu.js geladen; es werden automatisch die 5 jüngsten angezeigt.",
   "funktionen": [
     {
+      "titel": "Eulis Lese-Reise und RegelRadar prominent auf der Deutsch-Seite",
+      "datum": "2026-10-18",
+      "meta": "Fächer",
+      "url": "fach-deutsch.html"
+    },
+    {
+      "titel": "Zahlo's Zahlen-Reise (Voranalyse Dyskalkulie) auf der Mathe-Seite",
+      "datum": "2026-10-18",
+      "meta": "Fächer",
+      "url": "fach-mathe.html"
+    },
+    {
+      "titel": "Doppelkopf- und Wizard-Zähler zum Ausprobieren",
+      "datum": "2026-10-18",
+      "meta": "AGs & Projekte",
+      "url": "fach-ag-projekte.html"
+    },
+    {
       "titel": "Vokabeltrainer: Englisch, Französisch, Spanisch, Latein",
       "datum": "2026-08-18",
       "meta": "Lernkolosseum",

@@ -3723,3 +3723,9 @@ footer { font-size: 1rem; }
 .mat-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
 .mat-title { font-size: 1.05rem; }
 .mat-desc  { font-size: .95rem; }
+
+
+/* „Was ist neu?": acht Fenster, auf großen Bildschirmen 4 × 2 */
+@media (min-width: 1101px) { .win-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 561px) and (max-width: 1100px) { .win-grid { grid-template-columns: repeat(2, 1fr); } }
+.win-item-leer { color: var(--farbe-text-hell); font-style: italic; }

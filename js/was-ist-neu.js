@@ -1,13 +1,16 @@
 /* ============================================================
    WAS IST NEU? – Kompakte Neuigkeiten-Übersicht (je 5 pro Kategorie)
-   Jan Herrmann · Oberschule Spelle
+   Jan Herrmann
 
-   Kategorien:
-     1. Neue Funktionen  (manuell gepflegt)
-     2. Quiz-Bestenliste (Kolosseum API)
-     3. Avataraufstiege  (Kolosseum API)
-     4. Neue Materialien (inhalte.json)
-     5. Blogbeiträge     (Kolosseum API)
+   Acht Fenster:
+     1. Neue Funktion        (neuigkeiten.json)
+     2. Quiz-Bestleistung    (Kolosseum API)
+     3. Avatar-Aufstieg      (Kolosseum API)
+     4. Neuer Gladiator      (Kolosseum API)
+     5. Blog                 (Kolosseum API)
+     6. Neue Arbeitsblätter  (inhalte.json + Kolosseum-Uploads)
+     7. Neue Quizze          (inhalte.json + Kolosseum-Uploads, inkl. Rätsel)
+     8. Neue Materialien     (inhalte.json + Kolosseum-Uploads, inkl. Präsentationen)
    ============================================================ */
 
 (function () {
@@ -52,24 +55,66 @@
 
     /* ---- Datenquellen (max. 2 pro Kategorie) ---- */
 
-    function ladeMaterialien() {
+    /* Typ-Erkennung für inhalte.json-Einträge (dort gibt es kein typ-Feld) */
+    function erkenneTyp(m) {
+        var t = ((m.titel || '') + ' ' + (m.url || '') + ' ' + (m.beschreibung || '')).toLowerCase();
+        if (t.indexOf('quiz') !== -1 || t.indexOf('rätsel') !== -1 || t.indexOf('raetsel') !== -1 || t.indexOf('rebus') !== -1) return 'Quiz';
+        if (t.indexOf('arbeitsblatt') !== -1 || t.indexOf('lückentext') !== -1) return 'Arbeitsblatt';
+        return 'Material';
+    }
+
+    var MAT_KATEGORIE = {
+        'Arbeitsblatt': { kat: 'Neue Arbeitsblätter', icon: '📝' },
+        'Quiz':         { kat: 'Neue Quizze',         icon: '⚔️' },
+        'Material':     { kat: 'Neue Materialien',    icon: '📥' }
+    };
+
+    function materialItem(typ, titel, beschr, datum, url) {
+        var k = MAT_KATEGORIE[typ] || MAT_KATEGORIE['Material'];
+        return {
+            icon: k.icon, kat: k.kat,
+            titel: esc(titel), meta: beschr || '',
+            datum: datum, url: url, nurDatum: true,
+            schluessel: String(url).replace(/^https?:\/\/[^/]+/, '').toLowerCase()
+        };
+    }
+
+    function ladeMaterialienJson() {
         return fetch('inhalte.json?t=' + Date.now())
             .then(function (r) { return r.ok ? r.json() : { materialien: [] }; })
             .then(function (d) {
-                return (d.materialien || []).slice()
-                    .sort(function (a, b) { return (b.datum || '').localeCompare(a.datum || ''); })
-                    .slice(0, 5)
-                    .map(function (m) {
-                        return {
-                            icon: '📥', kat: 'Materialien',
-                            titel: m.titel, meta: m.beschreibung || '',
-                            datum: m.datum ? m.datum + 'T00:00:00' : null,
-                            url:  m.url || 'index.html#digitalematerialien',
-                            nurDatum: true
-                        };
-                    });
+                return (d.materialien || []).map(function (m) {
+                    return materialItem(erkenneTyp(m), m.titel, m.beschreibung,
+                        m.datum ? m.datum + 'T00:00:00' : null, m.url || 'index.html#was-ist-neu');
+                });
             })
             .catch(function () { return []; });
+    }
+
+    /* Über „Material hochladen" im Admin hochgeladene Dateien (Typ: Arbeitsblatt / Material / Quiz) */
+    function ladeMaterialienUploads() {
+        return fetch(API + '/api/materials')
+            .then(function (r) { return r.ok ? r.json() : []; })
+            .then(function (d) {
+                if (!Array.isArray(d)) return [];
+                return d.map(function (m) {
+                    return materialItem(m.typ, m.titel, m.fach || '',
+                        (m.erstellt_am || '').replace(' ', 'T') || null,
+                        m.datei_url ? API + m.datei_url : 'index.html#was-ist-neu');
+                });
+            })
+            .catch(function () { return []; });
+    }
+
+    function ladeMaterialien() {
+        return Promise.all([ladeMaterialienJson(), ladeMaterialienUploads()]).then(function (q) {
+            var gesehen = {};
+            return [].concat(q[0], q[1]).filter(function (i) {
+                if (gesehen[i.schluessel]) return false;
+                gesehen[i.schluessel] = true;
+                return true;
+            });
+        });
     }
 
     function ladeBlogbeitraege() {
@@ -80,7 +125,7 @@
                     return {
                         icon: '✍️', kat: 'Blog',
                         titel: b.titel,
-                        meta: (b.autor || '') + (b.klasse ? ' \xB7 Kl. ' + b.klasse : ''),
+                        meta: (b.autor || '') + (String(b.klasse || '').replace(/[^0-9]/g, '') ? ' \xB7 Jg. ' + String(b.klasse).replace(/[^0-9]/g, '') : ''),
                         datum: b.datum, url: 'blog.html'
                     };
                 });
@@ -172,13 +217,17 @@
             return;
         }
 
-        var reihenfolge = ['Neue Funktion', 'Quiz-Bestleistung', 'Avatar-Aufstieg', 'Neuer Gladiator', 'Materialien', 'Blog'];
+        var reihenfolge = ['Neue Funktion', 'Quiz-Bestleistung', 'Avatar-Aufstieg', 'Neuer Gladiator', 'Blog',
+                           'Neue Arbeitsblätter', 'Neue Quizze', 'Neue Materialien'];
+        var ICONS = { 'Neue Funktion': '🛠️', 'Quiz-Bestleistung': '🏆', 'Avatar-Aufstieg': '⚔️', 'Neuer Gladiator': '🪖',
+                      'Blog': '✍️', 'Neue Arbeitsblätter': '📝', 'Neue Quizze': '⚔️', 'Neue Materialien': '📥' };
 
         var cols = reihenfolge.map(function (kat) {
-            var items = gruppen[kat] || [];
-            if (!items.length) return '';
+            var items = (gruppen[kat] || []).slice()
+                .sort(function (a, b) { return (b.datum || '').localeCompare(a.datum || ''); })
+                .slice(0, 5);
 
-            var itemsHtml = items.map(function (item) {
+            var itemsHtml = !items.length ? '<span class="win-item win-item-leer">Noch nichts Neues</span>' : items.map(function (item) {
                 return '<a href="' + esc(item.url) + '" class="win-item">'
                     + '<span class="win-item-titel">' + item.titel + '</span>'
                     + (item.meta ? '<span class="win-item-meta">' + esc(item.meta) + '</span>' : '')
@@ -188,7 +237,7 @@
 
             return '<div class="win-col">'
                 + '<div class="win-col-header">'
-                + '<span class="win-col-icon" aria-hidden="true">' + esc(items[0].icon) + '</span>'
+                + '<span class="win-col-icon" aria-hidden="true">' + esc(ICONS[kat] || '') + '</span>'
                 + '<span class="win-col-label">' + esc(kat) + '</span>'
                 + '</div>'
                 + itemsHtml
