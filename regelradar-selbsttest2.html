@@ -5,7 +5,7 @@
 <script src="js/auth-guard.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Erweiterter Selbsttest – Individuelles Rechtschreibtraining</title>
-<link rel="stylesheet" href="css/style.css?v=20260615c">
+<link rel="stylesheet" href="css/style.css?v=20261018">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -19,7 +19,7 @@ body { background:var(--bg); font-family:-apple-system,BlinkMacSystemFont,"Segoe
        align-items:center; padding:16px; }
 
 header { width:100%; max-width:480px; margin-bottom:20px; }
-.top-nav { color:var(--accent); font-size:.82rem; font-weight:600; text-decoration:none; }
+.top-nav { color:var(--accent); font-size:1rem; font-weight:600; text-decoration:none; }
 
 .card { background:var(--card); border-radius:var(--r);
         box-shadow:0 2px 12px rgba(0,0,0,.08);
@@ -27,20 +27,20 @@ header { width:100%; max-width:480px; margin-bottom:20px; }
 
 /* ── Eingabe ────────────────────────────────── */
 h1 { font-size:1.3rem; font-weight:800; margin-bottom:4px; }
-.sub { color:var(--gray); font-size:.88rem; margin-bottom:20px; line-height:1.5; }
+.sub { color:var(--gray); font-size:1rem; margin-bottom:20px; line-height:1.5; }
 .field { margin-bottom:14px; }
-label { display:block; font-size:.82rem; font-weight:600; color:var(--gray); margin-bottom:5px; }
+label { display:block; font-size:1rem; font-weight:600; color:var(--gray); margin-bottom:5px; }
 input { width:100%; padding:11px 13px; border:1.5px solid var(--border);
-        border-radius:9px; font-size:.97rem; outline:none; }
+        border-radius:9px; font-size:1rem; outline:none; }
 input:focus { border-color:var(--accent); }
 .btn { display:block; width:100%; padding:13px; border:none; border-radius:10px;
-       font-weight:700; font-size:.97rem; cursor:pointer; transition:filter .15s; }
+       font-weight:700; font-size:1rem; cursor:pointer; transition:filter .15s; }
 .btn-primary { background:var(--accent); color:#fff; }
 .btn-ghost   { background:var(--border); color:var(--text); margin-top:8px; }
 .btn:hover { filter:brightness(1.07); }
 
 /* ── Test ───────────────────────────────────── */
-.prog-label { font-size:.8rem; color:var(--gray); text-align:right; margin-bottom:5px; }
+.prog-label { font-size:1rem; color:var(--gray); text-align:right; margin-bottom:5px; }
 .prog-bar   { background:var(--border); border-radius:99px; height:6px; margin-bottom:22px; overflow:hidden; }
 .prog-fill  { height:100%; border-radius:99px; background:var(--accent); transition:width .35s; }
 
@@ -64,23 +64,23 @@ input:focus { border-color:var(--accent); }
 .answer-input:disabled { background:var(--bg); cursor:default; }
 
 .feedback-bar { padding:10px 14px; border-radius:10px; text-align:center;
-                font-weight:600; font-size:.92rem; display:none; margin-bottom:10px; }
+                font-weight:600; font-size:1rem; display:none; margin-bottom:10px; }
 .feedback-bar.ok  { display:block; background:#dcfce7; color:var(--green); }
 .feedback-bar.err { display:block; background:#fee2e2; color:var(--red); }
 
-.kat-hint { font-size:.78rem; font-weight:600; padding:3px 9px; border-radius:99px;
+.kat-hint { font-size:1rem; font-weight:600; padding:3px 9px; border-radius:99px;
             color:#fff; display:inline-block; margin-bottom:10px; }
 
 .next-btn { display:none; }
 
 /* ── Ergebnis ───────────────────────────────── */
-.result-name { text-align:center; color:var(--gray); font-size:.88rem; margin-bottom:14px; }
-.result-table { width:100%; border-collapse:collapse; margin:14px 0; font-size:.9rem; }
-.result-table th { text-align:left; padding:7px 6px; font-size:.77rem; color:var(--gray);
+.result-name { text-align:center; color:var(--gray); font-size:1rem; margin-bottom:14px; }
+.result-table { width:100%; border-collapse:collapse; margin:14px 0; font-size:1rem; }
+.result-table th { text-align:left; padding:7px 6px; font-size:1rem; color:var(--gray);
                    border-bottom:1.5px solid var(--border); font-weight:600; }
 .result-table td { padding:9px 6px; border-bottom:1px solid var(--border); vertical-align:middle; }
 .dots { letter-spacing:1px; }
-.ampel { display:inline-block; padding:3px 9px; border-radius:99px; font-size:.79rem; font-weight:600; }
+.ampel { display:inline-block; padding:3px 9px; border-radius:99px; font-size:1rem; font-weight:600; }
 .g { background:#dcfce7; color:var(--green); }
 .o { background:#fef9c3; color:#854d0e; }
 .r { background:#fee2e2; color:var(--red); }
@@ -88,14 +88,14 @@ input:focus { border-color:var(--accent); }
 .step-links { display:flex; gap:8px; flex-wrap:wrap; margin:12px 0 4px; }
 .step-link {
   flex:1; min-width:120px; padding:10px 12px; border-radius:10px;
-  font-size:.82rem; font-weight:600; text-decoration:none; text-align:center;
+  font-size:1rem; font-weight:600; text-decoration:none; text-align:center;
   border:1.5px solid var(--border); color:var(--text); transition:all .15s;
 }
 .step-link:hover { border-color:var(--accent); color:var(--accent); }
 .step-link.active { background:var(--accent); color:#fff; border-color:var(--accent); }
 
 .sent-box { background:#eff6ff; border-radius:10px; padding:11px 14px;
-            font-size:.88rem; color:#1e40af; text-align:center; margin-top:8px; display:none; }
+            font-size:1rem; color:#1e40af; text-align:center; margin-top:8px; display:none; }
 
 .screen { width:100%; max-width:480px; display:none; }
 .screen.active { display:block; }
@@ -103,7 +103,7 @@ input:focus { border-color:var(--accent); }
 /* Seitennavigation */
 .page-nav { display:flex; gap:8px; justify-content:center; flex-wrap:wrap;
             margin-top:16px; padding-top:14px; border-top:1px solid var(--border); }
-.page-nav a { padding:8px 14px; border-radius:99px; font-size:.82rem; font-weight:600;
+.page-nav a { padding:8px 14px; border-radius:99px; font-size:1rem; font-weight:600;
               text-decoration:none; background:var(--border); color:var(--gray); }
 .page-nav a:hover { background:#cbd5e1; }
 </style>
@@ -116,7 +116,7 @@ input:focus { border-color:var(--accent); }
     <meta property="og:image" content="https://lehrer-herrmann.de/img/logo.svg">
     <meta name="twitter:card" content="summary_large_image">
 </head>
-<body>
+<body class="regelradar-seite">
 
     <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
         <div class="container navbar-inner">
@@ -157,25 +157,24 @@ input:focus { border-color:var(--accent); }
         </div>
     </nav>
 
+<header>
+  <h1>📡 RegelRadar – Erweiterter Selbsttest</h1>
+  <p>98 Lückenwörter – 7 Rechtschreibbereiche – du tippst selbst, was fehlt.</p>
+  <a href="regelradar.html">← RegelRadar-Übersicht</a>
+</header>
 <!-- ══════════ Screen 1: Eingabe -->
 <div id="s-entry" class="screen active">
   <div class="card">
-    <h1>Erweiterter Selbsttest</h1>
-    <p class="sub">98 Lückenwörter – 7 Rechtschreibbereiche – du tippst selbst, was fehlt.</p>
+    <div id="rr-login-status" class="rr-login-status" aria-live="polite">Login wird geprüft …</div>
     <div class="field">
-      <label>Klassencode <span style="font-weight:400;color:#9ca3af">(von der Lehrkraft)</span></label>
-      <input id="inp-code" type="text" maxlength="6" placeholder="z. B. AB3X7Y"
-             style="text-transform:uppercase;letter-spacing:.08em" autocomplete="off" spellcheck="false">
+      <label for="inp-name">Dein echter Name <span class="rr-hinweis">(sieht nur deine Lehrkraft, nirgends öffentlich)</span></label>
+      <input id="inp-name" type="text" maxlength="80" placeholder="Vorname Nachname" autocomplete="off" spellcheck="false">
     </div>
-    <div class="field">
-      <label>Dein Name</label>
-      <input id="inp-name" type="text" placeholder="Vorname Nachname" autocomplete="off" spellcheck="false">
-    </div>
-    <div style="background:#fef9c3;border-radius:10px;padding:11px 13px;font-size:.86rem;margin-bottom:16px;line-height:1.55">
+    <div style="background:#fef9c3;border-radius:10px;padding:11px 13px;font-size:1rem;margin-bottom:16px;line-height:1.55">
       Du siehst ein Wort mit einer Lücke, z.&nbsp;B. „die Be<u>___</u>decke". Schreibe die fehlenden Buchstaben – hier wäre die Antwort <strong>tt</strong>.
     </div>
-    <button class="btn btn-primary" onclick="startTest()">Los geht's →</button>
-    <p id="entry-err" style="color:var(--red);font-size:.83rem;margin-top:8px;display:none"></p>
+    <button class="btn btn-primary" onclick="startTest()" data-rr-start disabled>Los geht's →</button>
+    <p id="entry-err" style="color:var(--red);font-size:1rem;margin-top:8px;display:none"></p>
   </div>
 </div>
 
@@ -205,9 +204,9 @@ input:focus { border-color:var(--accent); }
       <thead><tr><th>Bereich</th><th>Punkte</th><th></th></tr></thead>
       <tbody id="res-tbody"></tbody>
     </table>
-    <div id="res-summary" style="padding:13px;border-radius:10px;font-size:.92rem;line-height:1.5;margin-bottom:14px"></div>
+    <div id="res-summary" style="padding:13px;border-radius:10px;font-size:1rem;line-height:1.5;margin-bottom:14px"></div>
 
-    <div style="font-size:.82rem;font-weight:700;color:var(--gray);text-transform:uppercase;
+    <div style="font-size:1rem;font-weight:700;color:var(--gray);text-transform:uppercase;
                 letter-spacing:.05em;margin-bottom:10px">Was als Nächstes?</div>
     <div class="step-links" id="next-steps"></div>
 
@@ -225,6 +224,7 @@ input:focus { border-color:var(--accent); }
   </div>
 </div>
 
+<script src="js/regelradar-login.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════
 // TESTDATEN – 98 Items, 14 pro Kategorie
@@ -356,7 +356,6 @@ const KAT = {
   8:{k:"GK",  n:"Groß-/Kleinschreibung", c:"var(--c8)"}
 };
 
-const API = "https://lehrer-herrmann.de/reso-api";
 
 // Items interleaven: 14 Runden × 7 Kategorien = 98 Items
 function buildItemList() {
@@ -388,7 +387,6 @@ function startTest() {
   if (!name) { err.textContent="Bitte deinen Namen eingeben."; err.style.display="block"; return; }
   err.style.display = "none";
   st.name  = name;
-  st.code  = document.getElementById("inp-code").value.trim().toUpperCase();
   st.idx   = 0;
   st.items = [];
   initScores();
@@ -495,8 +493,8 @@ function showResult() {
 
     tbody.innerHTML += `<tr>
       <td><strong style="color:${KAT[k].c}">${KAT[k].k}</strong>
-          <span style="font-size:.77rem;color:#6b7280;display:block">${KAT[k].n}</span></td>
-      <td class="dots">${dots} <span style="color:#6b7280;font-size:.79rem;margin-left:3px">${s.r}/${s.g}</span></td>
+          <span style="font-size:1rem;color:#6b7280;display:block">${KAT[k].n}</span></td>
+      <td class="dots">${dots} <span style="color:#6b7280;font-size:1rem;margin-left:3px">${s.r}/${s.g}</span></td>
       <td><span class="ampel ${ampelClass}">${ampelText}</span></td>
     </tr>`;
   });
@@ -526,10 +524,10 @@ function showResult() {
         ✏️ <span style="color:${KAT[k].c}">${KAT[k].k}</span> üben
       </a>`).join("");
   } else {
-    links.innerHTML = `<p style="font-size:.9rem;color:var(--green);font-weight:600">✓ Alle Bereiche sicher!</p>`;
+    links.innerHTML = `<p style="font-size:1rem;color:var(--green);font-weight:600">✓ Alle Bereiche sicher!</p>`;
   }
 
-  document.getElementById("btn-send").style.display = st.code ? "block" : "none";
+  document.getElementById("btn-send").style.display = RegelRadarLogin.eingeloggt() ? "block" : "none";
   show("s-result");
 }
 
@@ -544,33 +542,21 @@ async function sendResult() {
   });
 
   try {
-    const res = await fetch(API + "/ergebnis", {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({
-        klasse_code: st.code, schueler_name: st.name,
+    await RegelRadarLogin.senden({
+        echter_name: st.name,
         stufe: 2, format: "selbsttest2", variante: 1,
         kategorien, items: st.items
-      })
-    });
-    if (!res.ok) {
-      const err = new Error(res.status === 404 ? "Klassencode nicht gefunden" : await res.text());
-      err.status = res.status;
-      throw err;
-    }
+      });
     document.getElementById("sent-box").style.display = "block";
     btn.style.display = "none";
   } catch(e) {
-    btn.textContent = e && e.status === 404
-      ? "Klassencode falsch/unbekannt – bitte bei der Lehrkraft nachfragen"
-      : "Senden fehlgeschlagen – Internetverbindung prüfen und nochmal versuchen";
+    btn.textContent = e.message;
     btn.disabled = false;
     console.error(e);
   }
 }
 
 function restart() {
-  document.getElementById("inp-name").value = "";
   show("s-entry");
 }
 </script>

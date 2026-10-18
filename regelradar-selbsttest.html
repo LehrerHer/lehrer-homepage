@@ -5,7 +5,7 @@
 <script src="js/auth-guard.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>RegelRadar – Selbsttest</title>
-<link rel="stylesheet" href="css/style.css?v=20260615c">
+<link rel="stylesheet" href="css/style.css?v=20261018">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -26,7 +26,7 @@
 
   h1  { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; text-align: center; }
   h2  { font-size: 1.15rem; font-weight: 600; margin-bottom: 12px; }
-  .sub { color: var(--gray); font-size: 0.875rem; text-align: center; margin-bottom: 24px; }
+  .sub { color: var(--gray); font-size: 1rem; text-align: center; margin-bottom: 24px; }
 
   .card {
     background: var(--card); border-radius: var(--radius);
@@ -36,7 +36,7 @@
 
   /* ── Eingabe ──────────────────────────────────────────────── */
   .field      { margin-bottom: 16px; }
-  label       { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; color: var(--gray); }
+  label       { display: block; font-size: 1rem; font-weight: 600; margin-bottom: 6px; color: var(--gray); }
   input, select {
     width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
     border-radius: 10px; font-size: 1rem; background: #fff; color: var(--text);
@@ -59,7 +59,7 @@
   /* ── Fortschritt ─────────────────────────────────────────── */
   .prog-bar { background: var(--border); border-radius: 99px; height: 6px; margin-bottom: 20px; overflow: hidden; }
   .prog-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width .3s; }
-  .prog-label { font-size: .8rem; color: var(--gray); text-align: right; margin-bottom: 6px; }
+  .prog-label { font-size: 1rem; color: var(--gray); text-align: right; margin-bottom: 6px; }
 
   /* ── Item-Karte ──────────────────────────────────────────── */
   .item-word {
@@ -86,7 +86,7 @@
 
   .feedback-bar {
     margin-top: 14px; padding: 10px 16px; border-radius: 10px; text-align: center;
-    font-weight: 600; font-size: .95rem; display: none;
+    font-weight: 600; font-size: 1rem; display: none;
   }
   .feedback-bar.show-ok  { display: block; background: #dcfce7; color: var(--green); }
   .feedback-bar.show-err { display: block; background: #fee2e2; color: var(--red); }
@@ -94,23 +94,23 @@
   .next-btn { margin-top: 14px; }
 
   /* ── Ergebnis ────────────────────────────────────────────── */
-  .result-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: .9rem; }
-  .result-table th { text-align: left; padding: 8px 6px; font-size: .78rem; color: var(--gray);
+  .result-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 1rem; }
+  .result-table th { text-align: left; padding: 8px 6px; font-size: 1rem; color: var(--gray);
                      border-bottom: 1.5px solid var(--border); font-weight: 600; }
   .result-table td { padding: 10px 6px; border-bottom: 1px solid var(--border); vertical-align: middle; }
   .dots span { font-size: 1.1rem; }
-  .ampel { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: .8rem; font-weight: 600; }
+  .ampel { display: inline-block; padding: 3px 10px; border-radius: 99px; font-size: 1rem; font-weight: 600; }
   .ampel-gruen  { background: #dcfce7; color: var(--green); }
   .ampel-gelb   { background: #fef9c3; color: #854d0e; }
   .ampel-rot    { background: #fee2e2; color: var(--red); }
 
-  .summary-box { padding: 16px; border-radius: 12px; margin: 16px 0; font-size: .95rem; line-height: 1.5; }
+  .summary-box { padding: 16px; border-radius: 12px; margin: 16px 0; font-size: 1rem; line-height: 1.5; }
   .summary-ok   { background: #dcfce7; color: #14532d; }
   .summary-mid  { background: #fef9c3; color: #713f12; }
   .summary-bad  { background: #fee2e2; color: #7f1d1d; }
 
   .sent-box { background: #eff6ff; border-radius: 10px; padding: 12px 16px;
-              font-size: .9rem; color: #1e40af; text-align: center; margin-top: 8px; display: none; }
+              font-size: 1rem; color: #1e40af; text-align: center; margin-top: 8px; display: none; }
 
   .screen { width: 100%; max-width: 480px; display: none; }
   .screen.active { display: block; }
@@ -120,13 +120,13 @@
 
   /* ── Weiter-Lernen-Buttons im Ergebnis ───────────────── */
   .next-steps { margin: 14px 0 6px; }
-  .next-steps h3 { font-size: .82rem; font-weight: 700; color: var(--gray);
+  .next-steps h3 { font-size: 1rem; font-weight: 700; color: var(--gray);
                    text-transform: uppercase; letter-spacing: .05em; margin-bottom: 10px; }
   .step-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; flex-wrap: wrap; }
-  .step-label { font-size: .85rem; font-weight: 600; min-width: 120px; flex: 0 0 auto; }
+  .step-label { font-size: 1rem; font-weight: 600; min-width: 120px; flex: 0 0 auto; }
   .step-btn {
     flex: 1; padding: 9px 12px; border: none; border-radius: 9px;
-    font-size: .82rem; font-weight: 600; cursor: pointer; text-align: center;
+    font-size: 1rem; font-weight: 600; cursor: pointer; text-align: center;
     text-decoration: none; display: inline-block; transition: filter .15s;
   }
   .step-btn:hover { filter: brightness(.92); }
@@ -140,7 +140,7 @@
     border-top: 1px solid var(--border);
   }
   .page-nav a {
-    padding: 8px 14px; border-radius: 99px; font-size: .82rem; font-weight: 600;
+    padding: 8px 14px; border-radius: 99px; font-size: 1rem; font-weight: 600;
     text-decoration: none; background: var(--border); color: var(--gray);
     transition: all .15s;
   }
@@ -156,7 +156,7 @@
     <meta property="og:image" content="https://lehrer-herrmann.de/img/logo.svg">
     <meta name="twitter:card" content="summary_large_image">
 </head>
-<body>
+<body class="regelradar-seite">
 
     <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
         <div class="container navbar-inner">
@@ -197,18 +197,18 @@
         </div>
     </nav>
 
+<header>
+  <h1>📡 RegelRadar – Selbsttest</h1>
+  <p>Finde heraus, wo du in der Rechtschreibung schon sicher bist.</p>
+  <a href="regelradar.html">← RegelRadar-Übersicht</a>
+</header>
 <!-- ═══════════════════════════════════════════════════════════ SCREEN 1: Eingabe -->
 <div id="s-entry" class="screen active">
-  <div style="margin-top:12px" class="top-logo">RegelRadar – Selbsttest</div>
-  <p class="sub">Rechtschreibung &amp; Zeichensetzung diagnostizieren, trainieren, meistern. Finde heraus, wo du in der Rechtschreibung schon sicher bist.</p>
   <div class="card">
+    <div id="rr-login-status" class="rr-login-status" aria-live="polite">Login wird geprüft …</div>
     <div class="field">
-      <label for="inp-code">Klassencode (von der Lehrkraft)</label>
-      <input id="inp-code" class="upper" type="text" maxlength="6" placeholder="z. B. AB3X7Y" autocomplete="off" spellcheck="false">
-    </div>
-    <div class="field">
-      <label for="inp-name">Dein Name</label>
-      <input id="inp-name" type="text" placeholder="Vorname Nachname" autocomplete="off" spellcheck="false">
+      <label for="inp-name">Dein echter Name <span class="rr-hinweis">(sieht nur deine Lehrkraft, nirgends öffentlich)</span></label>
+      <input id="inp-name" type="text" maxlength="80" placeholder="Vorname Nachname" autocomplete="off" spellcheck="false">
     </div>
     <div class="field">
       <label for="inp-variante">Variante <span style="font-weight:400;color:#9ca3af">(falls nicht anders gesagt: Variante 1)</span></label>
@@ -220,8 +220,8 @@
         <option value="5">Variante 5</option>
       </select>
     </div>
-    <button class="btn btn-primary" onclick="startTest()">Los geht's →</button>
-    <p id="entry-err" style="color:var(--red);font-size:.85rem;margin-top:10px;display:none"></p>
+    <button class="btn btn-primary" onclick="startTest()" data-rr-start disabled>Los geht's →</button>
+    <p id="entry-err" style="color:var(--red);font-size:1rem;margin-top:10px;display:none"></p>
   </div>
 </div>
 
@@ -244,7 +244,7 @@
 <div id="s-result" class="screen">
   <div class="card">
     <h2 style="text-align:center">Dein Ergebnis 🎉</h2>
-    <p id="res-name" style="text-align:center;color:var(--gray);font-size:.9rem;margin-bottom:14px"></p>
+    <p id="res-name" style="text-align:center;color:var(--gray);font-size:1rem;margin-bottom:14px"></p>
     <table class="result-table">
       <thead><tr><th>Bereich</th><th>Punkte</th><th></th></tr></thead>
       <tbody id="res-tbody"></tbody>
@@ -262,6 +262,7 @@
   </div>
 </div>
 
+<script src="js/regelradar-login.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════════════════════════════
 // TESTDATEN – alle 5 Varianten × 35 Items
@@ -465,8 +466,6 @@ const KAT = {
   8: {kuerzel:"GK",  name:"Groß- / Kleinschreibung", farbe:"#ec4899"}
 };
 
-// API-Basis – ANPASSEN auf deinen Server!
-const API = "https://lehrer-herrmann.de/reso-api";
 
 // ── App-Zustand ──────────────────────────────────────────────────────────────
 let state = {
@@ -495,7 +494,6 @@ function renderWord(item, chosen, correct) {
 // ── Start ────────────────────────────────────────────────────────────────────
 function startTest() {
   const name = document.getElementById("inp-name").value.trim();
-  const code = document.getElementById("inp-code").value.trim().toUpperCase();
   const variante = parseInt(document.getElementById("inp-variante").value);
   const err = document.getElementById("entry-err");
 
@@ -503,7 +501,6 @@ function startTest() {
   err.style.display = "none";
 
   state.name = name;
-  state.code = code;
   state.variante = variante;
   state.items = TESTS[variante];
   state.idx = 0;
@@ -613,8 +610,8 @@ function showResult() {
     tbody.innerHTML += `
       <tr>
         <td><strong style="color:${KAT[k].farbe}">${KAT[k].kuerzel}</strong>
-            <span style="font-size:.78rem;color:#6b7280;display:block">${KAT[k].name}</span></td>
-        <td class="dots">${dots} <span style="color:#6b7280;font-size:.8rem;margin-left:4px">${r}/5</span></td>
+            <span style="font-size:1rem;color:#6b7280;display:block">${KAT[k].name}</span></td>
+        <td class="dots">${dots} <span style="color:#6b7280;font-size:1rem;margin-left:4px">${r}/5</span></td>
         <td><span class="ampel ${aClass}">${ampel}</span></td>
       </tr>${links}`;
   });
@@ -632,7 +629,7 @@ function showResult() {
     summary.innerHTML = `<strong>${total} von ${totalMax} Punkten (${pct} %)</strong><br>Keine Sorge – die Strategien lassen sich lernen! Klicke bei den roten Bereichen auf „Strategie erklären lassen" und dann auf „Jetzt üben".`;
   }
 
-  document.getElementById("btn-send").style.display = state.code ? "block" : "none";
+  document.getElementById("btn-send").style.display = RegelRadarLogin.eingeloggt() ? "block" : "none";
   document.getElementById("sent-box").style.display = "none";
   showScreen("s-result");
 }
@@ -649,28 +646,16 @@ async function sendResult() {
   });
 
   try {
-    const res = await fetch(API + "/ergebnis", {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({
-        klasse_code:   state.code,
-        schueler_name: state.name,
+    await RegelRadarLogin.senden({
+        echter_name: state.name,
         format:        "selbsttest",
         variante:      state.variante,
         kategorien
-      })
-    });
-    if (!res.ok) {
-      const err = new Error(res.status === 404 ? "Klassencode nicht gefunden" : await res.text());
-      err.status = res.status;
-      throw err;
-    }
+      });
     document.getElementById("sent-box").style.display = "block";
     btn.style.display = "none";
   } catch(e) {
-    btn.textContent = e && e.status === 404
-      ? "Klassencode falsch/unbekannt – bitte bei der Lehrkraft nachfragen"
-      : "Senden fehlgeschlagen – Internetverbindung prüfen und nochmal versuchen";
+    btn.textContent = e.message;
     btn.disabled = false;
     console.error(e);
   }
@@ -678,8 +663,6 @@ async function sendResult() {
 
 function restart() {
   showScreen("s-entry");
-  document.getElementById("inp-name").value = "";
-  document.getElementById("inp-code").value = "";
 }
 </script>
 

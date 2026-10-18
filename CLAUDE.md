@@ -597,15 +597,36 @@ Deutschunterricht. Claim: **„Rechtschreibung & Zeichensetzung diagnostizieren,
 - **Hub:** `regelradar.html` – bündelt alle Unterbereiche, Hero + Claim, Logo `img/regelradar-logo.jpg`.
 - **Schüler-Selbsttest:** `regelradar-selbsttest.html` – 5 Varianten × 35 Items, 7 Rechtschreibkategorien
   (Doppelkonsonanten, s/ß/ss, Auslautverhärtung, ä/äu, Zusammensetzungen, Ableitungen/Vorsilben,
-  Groß-/Kleinschreibung). Klassencode + Name → Variante → MC-Test → Ergebnis → optional an Lehrkraft
-  senden (POST `/reso-api/ergebnis`). API fest eingebaut: `https://lehrer-herrmann.de/reso-api`.
-- **Lehrkraft-Dashboard:** `regelradar-lehrkraft.html` – Login via **Lehrkraft-Token** (Bearer-Header),
-  4 Tabs: Ergebnisliste · Klassenheatmap · Schülerprofil · Klassen verwalten.
+  Groß-/Kleinschreibung). Homepage-Login → echter Name → Variante → MC-Test → Ergebnis → an Lehrkraft senden.
+- **Lehrkraft-Auswertung:** `regelradar-lehrkraft.html` – **kein Token mehr**; Zugang nur mit Admin-Login
+  im Kolosseum (sonst Weiterleitung auf `kolosseum…/admin/?next=…`). Reiter: Ergebnisse · Heatmap ·
+  Schülerprofil; zeigt echten Namen und Kontoname nebeneinander. Umschalter „Archiv (alter Klassencode)“
+  liest die alten Daten weiter aus `/reso-api` mit dem alten Token (nur Lesen/Löschen).
 - **Weitere:** `regelradar-diktat.html`, `regelradar-strategien.html`, `regelradar-strategieabfrage.html`,
   `regelradar-uebungen.html`, `regelradar-selbsttest2.html`, `regelradar-quatsch.html`.
 - **Teaser** auf der Startseite: `#regelradar-teaser` in `index.html` → `regelradar.html`.
 
-### Backend (`reso-backend/api.py`) — Pfad/Service bewusst weiter „reso-api"
+### Login-Ablauf (Stand 2026-10)
+- Alle Testseiten, die Ergebnisse senden (Diktat, Selbsttest, Selbsttest 2, Strategieabfrage, Quatsch),
+  binden `js/regelradar-login.js` **vor** ihrem Seiten-Script ein. Es prüft den Homepage-Login
+  (`/api/auth/me`, Cookie), zeigt den Status in `#rr-login-status`, sperrt sonst `[data-rr-start]`
+  und belegt `#inp-name` mit dem zuletzt eingegebenen echten Namen vor.
+  Senden: `RegelRadarLogin.senden({ echter_name, format, variante, kategorien, items })`.
+- **Speicherort:** Kolosseum-DB, Tabelle `regelradar_ergebnisse` (Schüler-Account + echter Name),
+  Route `kolosseum/routes/regelradar.js`. Der echte Name ist nur über Admin-Endpunkte lesbar
+  (und für die eigene Person zur Vorbelegung), nie in Ranglisten.
+- **Gestaltung:** `<body class="regelradar-seite">` + Block „REGELRADAR-SEITEN“ in `css/style.css`
+  (Kopf wie `.abgabe-header`, `--seitenbreite`, Homepage-Schriften, Schrift mind. 16 px).
+
+| Methode | Pfad (Kolosseum) | Auth | Zweck |
+|---------|------------------|------|-------|
+| POST | `/api/regelradar/ergebnis` | Schüler-Login | Ergebnis speichern (Eingaben geprüft) |
+| GET | `/api/regelradar/mein-name` | Schüler-Login | eigener zuletzt eingegebener echter Name |
+| GET | `/api/regelradar/admin/ergebnisse` | Admin | alle Ergebnisse (ohne Einzelantworten) |
+| GET | `/api/regelradar/admin/ergebnis/:id` | Admin | Detail inkl. Einzelantworten |
+| DELETE | `/api/regelradar/admin/ergebnis/:id` | Admin | Ergebnis löschen |
+
+### Altes Backend (`reso-backend/api.py`) — nur noch Archiv, Pfad/Service bewusst weiter „reso-api"
 - FastAPI + SQLite, läuft als systemd-Service `reso-api` auf Port 8400
 - Proxy via Caddy: `https://lehrer-herrmann.de/reso-api/` → `localhost:8400`
 - **Wichtige Endpunkte:**

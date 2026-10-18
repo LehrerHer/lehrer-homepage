@@ -101,6 +101,24 @@ db.exec(`
   )
 `);
 
+// RegelRadar (Rechtschreib-Diagnostik): Ergebnisse je Schüler-Account.
+// echter_name ist nur für Admin-Endpunkte lesbar (routes/regelradar.js).
+db.exec(`
+  CREATE TABLE IF NOT EXISTS regelradar_ergebnisse (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id  INTEGER NOT NULL,
+    echter_name TEXT    NOT NULL,
+    stufe       INTEGER NOT NULL DEFAULT 1,
+    format      TEXT    NOT NULL,
+    variante    INTEGER NOT NULL DEFAULT 1,
+    kategorien  TEXT    NOT NULL,
+    items       TEXT    NOT NULL DEFAULT '[]',
+    eingereicht TEXT    NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+  )
+`);
+db.exec('CREATE INDEX IF NOT EXISTS idx_regelradar_student ON regelradar_ergebnisse(student_id)');
+
 // KI-Werkstatt: Fortschritt Modul A (Einführungseinheit) pro Lernpartner:in.
 // modul_a_status: 'offen' | 'in_bearbeitung' | 'abgeschlossen'
 db.exec(`

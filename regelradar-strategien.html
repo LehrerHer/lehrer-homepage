@@ -5,7 +5,7 @@
 <script src="js/auth-guard.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>RegelRadar – Rechtschreibstrategien</title>
-<link rel="stylesheet" href="css/style.css?v=20260615c">
+<link rel="stylesheet" href="css/style.css?v=20261018">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -34,7 +34,7 @@ header {
   color: #fff; padding: 20px 20px 0; text-align: center;
 }
 header h1 { font-size: 1.4rem; font-weight: 800; letter-spacing: .03em; }
-header p  { font-size: .9rem; opacity: .8; margin: 4px 0 16px; }
+header p  { font-size: 1rem; opacity: .8; margin: 4px 0 16px; }
 
 /* ── Kategorie-Tabs (horizontal scroll) ──────────────── */
 .cat-scroll {
@@ -45,7 +45,7 @@ header p  { font-size: .9rem; opacity: .8; margin: 4px 0 16px; }
 .cat-tab {
   flex: 0 0 auto; padding: 8px 16px; border-radius: 99px;
   border: 2px solid transparent; background: rgba(255,255,255,.15);
-  color: #fff; font-weight: 700; font-size: .85rem; cursor: pointer;
+  color: #fff; font-weight: 700; font-size: 1rem; cursor: pointer;
   transition: all .2s; white-space: nowrap;
 }
 .cat-tab:hover   { background: rgba(255,255,255,.25); }
@@ -60,7 +60,7 @@ main { padding: 20px 16px; max-width: 640px; margin: 0 auto; }
 /* ── Strategie-Badge ──────────────────────────────────── */
 .strat-badge {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 5px 14px; border-radius: 99px; font-size: .82rem;
+  padding: 5px 14px; border-radius: 99px; font-size: 1rem;
   font-weight: 700; margin-bottom: 14px;
 }
 .strat-v { background: #e0f2fe; color: #0369a1; }
@@ -85,20 +85,20 @@ main { padding: 20px 16px; max-width: 640px; margin: 0 auto; }
   font-size: 1.3rem; font-weight: 800; color: #fff; flex-shrink: 0;
 }
 .kat-title h2 { font-size: 1.1rem; font-weight: 700; }
-.kat-title .sub { font-size: .8rem; color: var(--gray); }
+.kat-title .sub { font-size: 1rem; color: var(--gray); }
 
 .explain-body { padding: 16px 20px; }
-.explain-body p { font-size: .95rem; line-height: 1.65; margin-bottom: 10px; }
+.explain-body p { font-size: 1rem; line-height: 1.65; margin-bottom: 10px; }
 .explain-body p:last-child { margin-bottom: 0; }
 
 .rule-box {
   background: #f8fafc; border-left: 4px solid; border-radius: 0 10px 10px 0;
-  padding: 12px 16px; margin: 12px 0; font-size: .92rem; line-height: 1.55;
+  padding: 12px 16px; margin: 12px 0; font-size: 1rem; line-height: 1.55;
 }
 
 /* ── Beispiele (klickbar) ─────────────────────────────── */
 .beispiele { margin-top: 18px; }
-.beispiele h3 { font-size: .82rem; font-weight: 700; color: var(--gray);
+.beispiele h3 { font-size: 1rem; font-weight: 700; color: var(--gray);
                 text-transform: uppercase; letter-spacing: .06em; margin-bottom: 10px; }
 
 .bsp-grid { display: flex; flex-direction: column; gap: 10px; }
@@ -118,22 +118,22 @@ main { padding: 20px 16px; max-width: 640px; margin: 0 auto; }
 .bsp-lupenstelle {
   display: inline-block; border-bottom: 2.5px solid; padding: 0 1px;
 }
-.bsp-hint { font-size: .82rem; color: var(--gray); margin-bottom: 6px; }
+.bsp-hint { font-size: 1rem; color: var(--gray); margin-bottom: 6px; }
 
 .bsp-strategie {
   display: none; margin-top: 10px; padding: 10px 14px;
-  border-radius: 10px; font-size: .88rem; line-height: 1.55;
+  border-radius: 10px; font-size: 1rem; line-height: 1.55;
 }
 .bsp-card.revealed .bsp-strategie { display: block; }
-.bsp-tap { font-size: .78rem; color: var(--gray); margin-top: 6px; }
+.bsp-tap { font-size: 1rem; color: var(--gray); margin-top: 6px; }
 .bsp-card.revealed .bsp-tap { display: none; }
 
 /* ── Merksatz-Box ─────────────────────────────────────── */
 .merksatz {
   border-radius: var(--r); padding: 16px 18px; margin-top: 4px;
-  font-size: .95rem; line-height: 1.6;
+  font-size: 1rem; line-height: 1.6;
 }
-.merksatz strong { display: block; font-size: .8rem; text-transform: uppercase;
+.merksatz strong { display: block; font-size: 1rem; text-transform: uppercase;
                    letter-spacing: .06em; margin-bottom: 6px; opacity: .7; }
 
 /* ── Strategie-Übersicht (Startseite) ────────────────── */
@@ -143,15 +143,15 @@ main { padding: 20px 16px; max-width: 640px; margin: 0 auto; }
   background: var(--card); box-shadow: 0 2px 10px rgba(0,0,0,.07);
 }
 .strat-card h2 { font-size: 1.05rem; font-weight: 700; margin-bottom: 6px; }
-.strat-card p  { font-size: .9rem; color: var(--gray); line-height: 1.5; }
+.strat-card p  { font-size: 1rem; color: var(--gray); line-height: 1.5; }
 .strat-card .cats { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
 .chip {
-  padding: 3px 10px; border-radius: 99px; font-size: .78rem;
+  padding: 3px 10px; border-radius: 99px; font-size: 1rem;
   font-weight: 700; color: #fff;
 }
 
 .nav-hint {
-  text-align: center; color: var(--gray); font-size: .85rem;
+  text-align: center; color: var(--gray); font-size: 1rem;
   padding: 20px 0 8px;
 }
 .nav-hint span { font-size: 1.1rem; }
@@ -165,7 +165,7 @@ main { padding: 20px 16px; max-width: 640px; margin: 0 auto; }
     <meta property="og:image" content="https://lehrer-herrmann.de/img/logo.svg">
     <meta name="twitter:card" content="summary_large_image">
 </head>
-<body>
+<body class="regelradar-seite">
 
     <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
         <div class="container navbar-inner">
@@ -272,7 +272,7 @@ main { padding: 20px 16px; max-width: 640px; margin: 0 auto; }
         </div>
       </div>
       <span class="strat-badge strat-v">🔁 Strategie: Verlängern</span>
-      <p style="font-size:.9rem;color:var(--gray)">Wann schreibt man <em>tt</em> statt <em>t</em>, <em>mm</em> statt <em>m</em>, <em>ll</em> statt <em>l</em> …?</p>
+      <p style="font-size:1rem;color:var(--gray)">Wann schreibt man <em>tt</em> statt <em>t</em>, <em>mm</em> statt <em>m</em>, <em>ll</em> statt <em>l</em> …?</p>
     </div>
     <div class="explain-body">
       <p>Nach einem <strong>kurzen betonten Vokal</strong> (a, e, i, o, u, ä, ö, ü) wird der folgende Konsonant verdoppelt.</p>
@@ -335,7 +335,7 @@ main { padding: 20px 16px; max-width: 640px; margin: 0 auto; }
         <div><h2>s – ss – ß</h2><div class="sub">Kategorie 3</div></div>
       </div>
       <span class="strat-badge strat-v">🔁 Strategie: Verlängern</span>
-      <p style="font-size:.9rem;color:var(--gray)">Wann schreibt man <em>s</em>, wann <em>ss</em>, wann <em>ß</em>?</p>
+      <p style="font-size:1rem;color:var(--gray)">Wann schreibt man <em>s</em>, wann <em>ss</em>, wann <em>ß</em>?</p>
     </div>
     <div class="explain-body">
       <div class="rule-box" style="border-color:var(--c3)">
@@ -396,7 +396,7 @@ main { padding: 20px 16px; max-width: 640px; margin: 0 auto; }
         <div><h2>Auslautverhärtung</h2><div class="sub">Kategorie 4</div></div>
       </div>
       <span class="strat-badge strat-a">🔀 Strategie: Ableiten</span>
-      <p style="font-size:.9rem;color:var(--gray)">Am Wortende klingen <em>b/p</em>, <em>d/t</em>, <em>g/k</em> gleich – wie schreibt man richtig?</p>
+      <p style="font-size:1rem;color:var(--gray)">Am Wortende klingen <em>b/p</em>, <em>d/t</em>, <em>g/k</em> gleich – wie schreibt man richtig?</p>
     </div>
     <div class="explain-body">
       <p>Im Deutschen werden stimmhafte Konsonanten (<em>b, d, g, v</em>) am Wortende oder vor stimmlosen Konsonanten wie ihr stimmloser Partner ausgesprochen:</p>
@@ -456,7 +456,7 @@ main { padding: 20px 16px; max-width: 640px; margin: 0 auto; }
         <div><h2>ä und äu – Umlautableitung</h2><div class="sub">Kategorie 5</div></div>
       </div>
       <span class="strat-badge strat-a">🔀 Strategie: Ableiten</span>
-      <p style="font-size:.9rem;color:var(--gray)">Wann schreibt man <em>ä</em> (nicht e) und <em>äu</em> (nicht eu)?</p>
+      <p style="font-size:1rem;color:var(--gray)">Wann schreibt man <em>ä</em> (nicht e) und <em>äu</em> (nicht eu)?</p>
     </div>
     <div class="explain-body">
       <p><em>ä</em> und <em>äu</em> sind Umlaute. Sie entstehen aus <em>a</em> bzw. <em>au</em>. Wenn du dir unsicher bist, leite das Wort zu einer Form ab, in der kein Umlaut steht.</p>
@@ -516,7 +516,7 @@ main { padding: 20px 16px; max-width: 640px; margin: 0 auto; }
         <div><h2>Zusammensetzungen</h2><div class="sub">Kategorie 6</div></div>
       </div>
       <span class="strat-badge strat-z">🧩 Strategie: Zerlegen</span>
-      <p style="font-size:.9rem;color:var(--gray)">Bei zusammengesetzten Wörtern bleiben alle Buchstaben erhalten – auch doppelte.</p>
+      <p style="font-size:1rem;color:var(--gray)">Bei zusammengesetzten Wörtern bleiben alle Buchstaben erhalten – auch doppelte.</p>
     </div>
     <div class="explain-body">
       <p>Viele deutsche Wörter entstehen aus zwei einzelnen Wörtern. An der <strong>Nahtstelle</strong> treffen beide Schreibweisen aufeinander – alle Buchstaben bleiben erhalten.</p>
@@ -577,7 +577,7 @@ main { padding: 20px 16px; max-width: 640px; margin: 0 auto; }
         <div><h2>Ableitungen &amp; Vorsilben</h2><div class="sub">Kategorie 7</div></div>
       </div>
       <span class="strat-badge strat-z">🧩 Strategie: Zerlegen</span>
-      <p style="font-size:.9rem;color:var(--gray)">Vorsilben wie <em>ver-, ab-, vor-, miss-</em> haben eine feste Schreibung.</p>
+      <p style="font-size:1rem;color:var(--gray)">Vorsilben wie <em>ver-, ab-, vor-, miss-</em> haben eine feste Schreibung.</p>
     </div>
     <div class="explain-body">
       <p>Viele Wörter beginnen mit einer <strong>Vorsilbe</strong> (Präfix), die immer gleich geschrieben wird – egal wie sie klingt.</p>
@@ -642,7 +642,7 @@ main { padding: 20px 16px; max-width: 640px; margin: 0 auto; }
         <div><h2>Groß- und Kleinschreibung</h2><div class="sub">Kategorie 8</div></div>
       </div>
       <span class="strat-badge strat-z">🧩 Strategie: Zerlegen</span>
-      <p style="font-size:.9rem;color:var(--gray)">Nomen groß – alles andere klein. Aber wie erkennt man Nomen?</p>
+      <p style="font-size:1rem;color:var(--gray)">Nomen groß – alles andere klein. Aber wie erkennt man Nomen?</p>
     </div>
     <div class="explain-body">
       <p>Im Deutschen werden alle <strong>Nomen (Substantive)</strong> großgeschrieben. Adjektive, Verben und Adverbien schreibt man klein.</p>
@@ -696,9 +696,9 @@ main { padding: 20px 16px; max-width: 640px; margin: 0 auto; }
 
 <!-- Seitennavigation -->
 <nav style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;padding:14px 16px 24px;max-width:640px;margin:0 auto">
-  <a href="regelradar-selbsttest.html" style="padding:9px 16px;border-radius:99px;font-size:.83rem;font-weight:600;text-decoration:none;background:#e2e8f0;color:#475569">🔎 Selbsttest</a>
-  <a href="regelradar-strategien.html" style="padding:9px 16px;border-radius:99px;font-size:.83rem;font-weight:600;text-decoration:none;background:#2563eb;color:#fff">📖 Strategien</a>
-  <a href="regelradar-uebungen.html"   style="padding:9px 16px;border-radius:99px;font-size:.83rem;font-weight:600;text-decoration:none;background:#e2e8f0;color:#475569">✏️ Übungen</a>
+  <a href="regelradar-selbsttest.html" style="padding:9px 16px;border-radius:99px;font-size:1rem;font-weight:600;text-decoration:none;background:#e2e8f0;color:#475569">🔎 Selbsttest</a>
+  <a href="regelradar-strategien.html" style="padding:9px 16px;border-radius:99px;font-size:1rem;font-weight:600;text-decoration:none;background:#2563eb;color:#fff">📖 Strategien</a>
+  <a href="regelradar-uebungen.html"   style="padding:9px 16px;border-radius:99px;font-size:1rem;font-weight:600;text-decoration:none;background:#e2e8f0;color:#475569">✏️ Übungen</a>
 </nav>
 
 <script>

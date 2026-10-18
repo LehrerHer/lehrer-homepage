@@ -3743,3 +3743,85 @@ body.arena-welt .navbar-links .nav-item:hover,
 body.arena-welt .navbar-links > li > a:hover { background-color: #e8c06a; color: #1a1208; }
 body.arena-welt .nav-item[data-tooltip]::after { background: #e8c06a; color: #1a1208; }
 body.arena-welt .nav-item[data-tooltip]::before { border-bottom-color: #e8c06a; }
+
+/* ================================================================
+   REGELRADAR-SEITEN (body.regelradar-seite)
+   Gleicht die RegelRadar-Seiten an die Homepage an: volle Breite für
+   Navbar/Footer, Homepage-Schriften, Kopf wie .abgabe-header,
+   Inhalt bis --seitenbreite. Seitenspezifische Farben/Logik bleiben.
+   ================================================================ */
+.sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+body.regelradar-seite {
+    display: block;               /* einige Seiten zentrieren den Body per Flexbox */
+    padding: 0;
+    font-family: var(--schrift-text);
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--farbe-text);
+    background: var(--farbe-hintergrund);
+    min-height: 100vh;
+}
+body.regelradar-seite h1,
+body.regelradar-seite h2,
+body.regelradar-seite h3 { font-family: var(--schrift-ueberschrift); color: var(--farbe-primaer); }
+body.regelradar-seite button,
+body.regelradar-seite input,
+body.regelradar-seite select,
+body.regelradar-seite textarea { font-family: inherit; }
+
+/* Einheitlicher Kopf (wie Aufgaben-Abgabe) – auch für vorhandene Seitenköpfe */
+body.regelradar-seite > header {
+    width: auto;
+    max-width: none;
+    margin: 0 0 8px;
+    padding: 36px clamp(12px, 3vw, 22px) 28px;
+    text-align: center;
+    color: var(--farbe-weiss);
+    background: linear-gradient(145deg, var(--farbe-primaer) 0%, var(--farbe-primaer-hell) 100%);
+    display: block;
+}
+body.regelradar-seite > header h1 {
+    color: var(--farbe-weiss);
+    font-size: clamp(1.6rem, 3vw, 2rem);
+    margin-bottom: 6px;
+}
+body.regelradar-seite > header p { color: rgba(255,255,255,.88); font-size: 1rem; opacity: 1; }
+body.regelradar-seite > header a,
+body.regelradar-seite .rr-zurueck {
+    display: inline-block;
+    margin-top: 10px;
+    color: #fff;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+/* Inhalt: dynamische Breite wie die Homepage; Testkarten bleiben gut lesbar */
+body.regelradar-seite > main,
+body.regelradar-seite .rr-inhalt {
+    max-width: var(--seitenbreite);
+    margin: 0 auto;
+    padding: 24px clamp(12px, 3vw, 22px) 48px;
+}
+body.regelradar-seite > .screen,
+body.regelradar-seite main .screen {
+    width: auto;
+    max-width: min(960px, calc(100% - 2 * clamp(12px, 3vw, 22px)));
+    margin: 24px auto 48px;
+}
+body.regelradar-seite main .screen { max-width: 960px; margin-top: 0; }
+
+/* Login-Status (js/regelradar-login.js) */
+.rr-login-status { margin-bottom: 16px; padding: 12px 14px; border-radius: 10px; background: #f1f5f9; }
+.rr-login-status.rr-login-ok { background: #dcfce7; color: #14532d; }
+.rr-login-status.rr-login-fehlt { background: #fef3c7; color: #78350f; }
+.rr-login-status p { margin-bottom: 10px; }
+.rr-login-status .btn { display: inline-block; text-decoration: none; }
+.rr-hinweis { font-weight: 400; color: var(--farbe-text-hell); }
+body.regelradar-seite [data-rr-start]:disabled { opacity: .5; cursor: not-allowed; }
+body.regelradar-seite .rr-panel { padding: 0; background: none; border: 0; box-shadow: none; }
+body.regelradar-seite .screen .card { max-width: none; width: 100%; }
+body.regelradar-seite > header .cat-scroll { justify-content: safe center; max-width: var(--seitenbreite); margin-inline: auto; }

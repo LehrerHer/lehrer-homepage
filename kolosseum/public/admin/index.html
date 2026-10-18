@@ -65,9 +65,20 @@
   </div>
 
   <script>
+    // ?next – Rücksprung nach dem Login (z. B. RegelRadar-Auswertung).
+    // Nur lehrer-herrmann.de erlaubt (kein Open-Redirect).
+    const nextParam = new URLSearchParams(location.search).get('next') || '';
+    function zielNachLogin(fallback) {
+      try {
+        const u = new URL(nextParam);
+        if (u.protocol === 'https:' && u.hostname === 'lehrer-herrmann.de') return nextParam;
+      } catch {}
+      return fallback;
+    }
+
     // Bereits eingeloggt? Weiterleiten.
     fetch('/api/auth/admin/check').then(r => {
-      if (r.ok) window.location.href = '/admin/dashboard.html';
+      if (r.ok) window.location.href = zielNachLogin('/admin/dashboard.html');
     });
 
     const form   = document.getElementById('admin-form');
@@ -88,7 +99,7 @@
         });
         const data = await res.json();
         if (!res.ok) { errEl.textContent = data.error; btn.disabled = false; btn.textContent = 'Einloggen'; return; }
-        window.location.href = data.redirect || '/admin/dashboard.html';
+        window.location.href = zielNachLogin(data.redirect || '/admin/dashboard.html');
       } catch {
         errEl.textContent = 'Verbindungsfehler.';
         btn.disabled = false; btn.textContent = 'Einloggen';
