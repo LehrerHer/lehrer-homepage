@@ -1,4 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap');
+/* === SCHRIFTEN (selbst gehostet, OFL – Lizenzen in /fonts/lizenzen/) === */
+@font-face { font-family: 'Fredoka One'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/fredoka-one-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Nunito'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/nunito-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Nunito'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/nunito-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Nunito'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/nunito-latin-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Nunito'; font-style: normal; font-weight: 800; font-display: swap; src: url('/fonts/nunito-latin-800-normal.woff2') format('woff2'); }
+/* Gladiatorenkämpfe (Fantasy-Look) */
+@font-face { font-family: 'Cinzel'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/cinzel-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Cinzel'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/cinzel-latin-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Cinzel'; font-style: normal; font-weight: 900; font-display: swap; src: url('/fonts/cinzel-latin-900-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Alegreya Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/alegreya-sans-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Alegreya Sans'; font-style: italic; font-weight: 400; font-display: swap; src: url('/fonts/alegreya-sans-latin-400-italic.woff2') format('woff2'); }
+@font-face { font-family: 'Alegreya Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/alegreya-sans-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Alegreya Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/alegreya-sans-latin-700-normal.woff2') format('woff2'); }
 
 /* === DESIGN TOKENS === */
 :root {
@@ -16,6 +29,8 @@
   --radius-sm: 10px;
   --transition: 0.25s cubic-bezier(.4,0,.2,1);
   --seitenbreite: min(1680px, 100%);   /* wie Hauptseite: große Monitore nutzen */
+  --schrift-titel: 'Fredoka One', sans-serif;
+  --schrift-text: 'Nunito', sans-serif;
 }
 
 /* === RESET === */
@@ -24,7 +39,7 @@
 html { font-size: 16px; scroll-behavior: smooth; }
 
 body {
-  font-family: 'Nunito', sans-serif;
+  font-family: var(--schrift-text);
   background: var(--bg);
   color: var(--ink);
   min-height: 100vh;
@@ -32,7 +47,7 @@ body {
 }
 
 h1, h2, h3, .display {
-  font-family: 'Fredoka One', sans-serif;
+  font-family: var(--schrift-titel);
   line-height: 1.2;
 }
 
@@ -62,7 +77,7 @@ h1, h2, h3, .display {
   padding: 0.75rem 1.75rem;
   border: none;
   border-radius: 50px;
-  font-family: 'Nunito', sans-serif;
+  font-family: var(--schrift-text);
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
@@ -97,7 +112,7 @@ textarea {
   padding: 0.8rem 1rem;
   border: 2px solid #e2e8f0;
   border-radius: var(--radius-sm);
-  font-family: 'Nunito', sans-serif;
+  font-family: var(--schrift-text);
   font-size: 1rem;
   color: var(--ink);
   background: #fff;
@@ -130,7 +145,7 @@ input:focus, select:focus, textarea:focus {
   box-shadow: var(--shadow);
 }
 .nav-brand {
-  font-family: 'Fredoka One', sans-serif;
+  font-family: var(--schrift-titel);
   font-size: 1.4rem;
   color: var(--c2);
   text-decoration: none;
@@ -208,7 +223,7 @@ input:focus, select:focus, textarea:focus {
 }
 .popup-overlay.visible .popup-box { transform: scale(1); }
 
-.popup-xp { color: var(--c3); font-size: 2.5rem; font-family: 'Fredoka One', sans-serif; }
+.popup-xp { color: var(--c3); font-size: 2.5rem; font-family: var(--schrift-titel); }
 .popup-badge { font-size: 3.5rem; }
 
 /* === KONFETTI (CSS only) === */
@@ -236,7 +251,7 @@ input:focus, select:focus, textarea:focus {
   padding: 0.75rem 1rem;
   background: var(--ink);
   color: #fff;
-  font-family: 'Fredoka One', sans-serif;
+  font-family: var(--schrift-titel);
   font-size: 1rem;
 }
 .rangliste-table td {
@@ -357,7 +372,7 @@ input:focus, select:focus, textarea:focus {
   gap: 0.5rem;
 }
 .subnav-brand {
-  font-family: 'Fredoka One', sans-serif;
+  font-family: var(--schrift-titel);
   font-size: 1.05rem;
   color: #FFE66D;
   text-decoration: none;
@@ -391,7 +406,7 @@ input:focus, select:focus, textarea:focus {
   padding: 4px 10px !important;
   border-radius: 6px !important;
   cursor: pointer;
-  font-family: 'Nunito', sans-serif;
+  font-family: var(--schrift-text);
   font-weight: 700;
   transition: color 0.2s, border-color 0.2s;
 }
@@ -703,3 +718,332 @@ input:focus, select:focus, textarea:focus {
     height: 24px;
     display: block;
 }
+
+
+/* ================================================================
+   GLADIATORENKÄMPFE – FANTASY-LOOK (2026-10)
+   Gilt nur für Seiten mit <body class="arena-welt">
+   (Profil, Charakter, Rangliste, Shop, Kampf, Quizze).
+   Dunkle Stein-/Pergament-/Gold-Welt. Kontraste geprüft (WCAG AA):
+   Pergament #f1e6cc / Gold #e8c06a / Leise #cdb98f auf Stein #241c15.
+   ================================================================ */
+body.arena-welt {
+  --bg: #17110c;            /* Vertiefungen in Karten (Listenzeilen) */
+  --card: #241c15;          /* Steinplatte */
+  --ink: #f1e6cc;           /* Pergament-Schrift */
+  --ink-soft: #cdb98f;
+  --c1: #ff8f7a;            /* Glut-Rot (Text auf Dunkel) */
+  --c2: #f2cf6b;
+  --c3: #7fdcaa;            /* XP: Smaragd */
+  --c4: #8e6ad8;            /* Arkan-Violett */
+  --gold: #e8c06a;
+  --gold-dunkel: #b8862b;
+  --rahmen: rgba(232,192,106,.38);
+  --shadow: 0 6px 22px rgba(0,0,0,.45);
+  --shadow-lg: 0 12px 40px rgba(0,0,0,.6);
+  --radius: 10px;
+  --radius-sm: 6px;
+  --schrift-titel: 'Cinzel', 'Times New Roman', serif;
+  --schrift-text: 'Alegreya Sans', 'Segoe UI', sans-serif;
+
+  font-size: 1.125rem;                       /* 18 px Fließtext */
+  color: var(--ink);
+  background-color: #0e0a07;
+  background-image:
+    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(232,150,60,.18), transparent 70%),
+    radial-gradient(ellipse 120% 80% at 50% 120%, rgba(0,0,0,.75), transparent 60%),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='60'%3E%3Cg fill='none' stroke='%23f1e6cc' stroke-opacity='.045' stroke-width='2'%3E%3Cpath d='M0 1h120M0 31h120M1 1v30M61 1v30M31 31v29M91 31v29'/%3E%3C/g%3E%3C/svg%3E");
+  background-attachment: fixed, fixed, scroll;
+}
+body.arena-welt h1,
+body.arena-welt h2,
+body.arena-welt h3 {
+  font-family: var(--schrift-titel);
+  color: var(--gold);
+  letter-spacing: .03em;
+  font-weight: 700;
+  text-shadow: 0 2px 10px rgba(0,0,0,.6);
+}
+body.arena-welt h1 { font-weight: 900; }
+
+/* --- Navbar & Footer: gleiche Struktur, Farben der Arena --- */
+body.arena-welt .navbar .navbar-inner,
+body.arena-welt .site-footer-inner {
+  background: linear-gradient(180deg, #2a1f15 0%, #17100a 100%);
+  border: 2px solid #c9a24a;
+  box-shadow: 4px 4px 0 #6e5220, 0 10px 30px rgba(0,0,0,.5);
+}
+body.arena-welt .site-footer { font-family: 'Nunito', sans-serif; font-size: 0.88rem; }
+body.arena-welt .site-footer-inner { color: #e9dcbc; }
+body.arena-welt .site-footer-links a { color: #e9dcbc; }
+body.arena-welt .navbar-links .nav-item:hover,
+body.arena-welt .navbar-links > li > a:hover,
+body.arena-welt .navbar-links > li > a.aktiv { background-color: #e8c06a; color: #1a1208 !important; }
+body.arena-welt .nav-item[data-tooltip]::after { background: #e8c06a; color: #1a1208; }
+body.arena-welt .nav-item[data-tooltip]::before { border-bottom-color: #e8c06a; }
+body.arena-welt :focus-visible { outline: 3px solid #f2cf6b; outline-offset: 2px; }
+@media (max-width: 768px) {
+  body.arena-welt .navbar .navbar-links {
+    background: linear-gradient(180deg, #2a1f15 0%, #17100a 100%);
+    border: 2px solid #c9a24a;
+    box-shadow: 4px 4px 0 #6e5220;
+  }
+}
+
+/* --- Bereichs-Navigation (js/arena-subnav.js) --- */
+body.arena-welt .kolosseum-subnav {
+  background: transparent;
+  border: 0;
+  padding: 0 clamp(12px, 3vw, 22px);
+}
+body.arena-welt .kolosseum-subnav-inner {
+  background:
+    linear-gradient(180deg, rgba(232,192,106,.10), rgba(0,0,0,0) 40%),
+    #1c150f;
+  border-top: 1px solid var(--rahmen);
+  border-bottom: 1px solid var(--rahmen);
+  box-shadow: inset 0 1px 0 rgba(0,0,0,.6), inset 0 -1px 0 rgba(0,0,0,.6);
+  padding: .55rem 1.25rem;
+  gap: .75rem 1.25rem;
+  flex-wrap: nowrap;
+}
+body.arena-welt .subnav-brand {
+  font-family: var(--schrift-titel);
+  font-weight: 900;
+  font-size: 1.15rem;
+  color: var(--gold);
+  letter-spacing: .06em;
+  white-space: nowrap;
+}
+body.arena-welt .subnav-links { gap: .4rem; flex-wrap: nowrap; justify-content: center; flex: 1; }
+body.arena-welt .subnav-links a {
+  color: var(--ink);
+  padding: .4rem .85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  font-size: 1rem;
+}
+body.arena-welt .subnav-links a:hover {
+  background: rgba(232,192,106,.10);
+  border-color: var(--rahmen);
+}
+body.arena-welt .subnav-links a.active {
+  background: linear-gradient(180deg, #3a2b1b, #2a1f14);
+  border-color: var(--gold);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.5), 0 0 14px rgba(232,192,106,.18);
+}
+body.arena-welt .subnav-icon { font-size: 1.35rem; }
+body.arena-welt .subnav-titel {
+  font-family: var(--schrift-titel);
+  font-weight: 700;
+  color: var(--gold);
+  font-size: 1rem;
+  letter-spacing: .04em;
+}
+body.arena-welt .subnav-info { font-size: 1rem; font-weight: 400; opacity: 1; color: var(--ink-soft); }
+body.arena-welt .subnav-logout {
+  font-family: var(--schrift-text) !important;
+  font-size: 1rem !important;
+  color: var(--ink) !important;
+  border-color: var(--rahmen) !important;
+  white-space: nowrap;
+}
+body.arena-welt .subnav-logout:hover { border-color: var(--gold) !important; color: var(--gold) !important; }
+@media (max-width: 1100px) {
+  body.arena-welt .subnav-info { display: none; }
+}
+@media (max-width: 760px) {
+  body.arena-welt .kolosseum-subnav-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    padding: .6rem .75rem;
+  }
+  body.arena-welt .subnav-links {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: .4rem;
+  }
+  body.arena-welt .subnav-links a { width: 100%; padding: .5rem .6rem; border-color: rgba(232,192,106,.18); }
+  body.arena-welt .subnav-info { display: block; }
+}
+
+/* --- Seitenkopf mit Erklärzeile --- */
+body.arena-welt .page-header,
+body.arena-welt .shop-header,
+body.arena-welt .char-header { text-align: center; padding: 2.25rem 0 1.25rem; }
+body.arena-welt .page-header h1,
+body.arena-welt .shop-header h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); color: var(--gold); }
+.arena-erklaerung {
+  max-width: 60ch;
+  margin: .5rem auto 0;
+  color: var(--ink);
+  font-size: 1.125rem;
+  line-height: 1.55;
+}
+body.arena-welt .page-header::after,
+body.arena-welt .shop-header::after {
+  content: "";
+  display: block;
+  width: min(320px, 70%);
+  height: 14px;
+  margin: 1rem auto 0;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 14'%3E%3Cpath d='M14 1l6 6-6 6-6-6z' fill='%23e8c06a'/%3E%3C/svg%3E") center / 28px 14px no-repeat,
+    linear-gradient(90deg, transparent, #e8c06a 30%, #e8c06a 70%, transparent) center / 100% 1px no-repeat;
+}
+
+/* --- Steinplatten (Karten) mit Goldrahmen --- */
+body.arena-welt .card,
+body.arena-welt .item-card,
+body.arena-welt .options-panel {
+  background: linear-gradient(180deg, #2b2119 0%, #211912 100%);
+  color: var(--ink);
+  border: 1px solid var(--rahmen);
+  box-shadow:
+    inset 0 0 0 4px #211912,
+    inset 0 0 0 5px rgba(232,192,106,.16),
+    var(--shadow);
+}
+body.arena-welt .card h2 {
+  padding-bottom: .5rem;
+  border-bottom: 1px solid rgba(232,192,106,.25);
+}
+
+/* --- Texte, Listen, Chips --- */
+body.arena-welt .text-soft { color: var(--ink-soft); font-size: 1rem; }
+body.arena-welt label { color: var(--ink-soft); font-size: 1rem; }
+body.arena-welt a { color: var(--gold); }
+body.arena-welt .xp-bar-wrap { background: #0f0b08; border: 1px solid var(--rahmen); height: 16px; }
+body.arena-welt .xp-bar-fill { background: linear-gradient(90deg, #b8862b, #f2cf6b); }
+body.arena-welt .badge-item.locked { opacity: .45; }
+
+/* --- Buttons --- */
+body.arena-welt .btn { border-radius: var(--radius-sm); font-family: var(--schrift-titel); font-weight: 700; letter-spacing: .04em; }
+body.arena-welt .btn-primary,
+body.arena-welt .item-btn.kaufen,
+body.arena-welt .btn-challenge:not(:disabled) {
+  background: linear-gradient(180deg, #f2cf6b 0%, #c9962f 100%);
+  color: #1a1208;
+  border: 1px solid #7a5a1c;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.35), 0 2px 8px rgba(0,0,0,.4);
+}
+body.arena-welt .btn-primary:hover { background: linear-gradient(180deg, #f7dc8a 0%, #d6a43a 100%); }
+body.arena-welt .btn-secondary,
+body.arena-welt .item-btn.ausrüsten,
+body.arena-welt .ch-btn-replay {
+  background: linear-gradient(180deg, #8a2f2a 0%, #64201c 100%);
+  color: #fbeedd;
+  border: 1px solid #c9a24a;
+}
+body.arena-welt .btn-ghost { color: var(--ink); border-color: var(--rahmen); }
+body.arena-welt input[type="text"],
+body.arena-welt input[type="password"],
+body.arena-welt input[type="number"],
+body.arena-welt select,
+body.arena-welt textarea {
+  background: #120d09;
+  color: var(--ink);
+  border-color: var(--rahmen);
+}
+
+/* --- Profil --- */
+body.arena-welt .profil-grid { margin-top: .5rem; }
+body.arena-welt .avatar-wrap {
+  background: radial-gradient(circle at 50% 40%, #3b2c1c 0%, #140f0a 75%);
+  border: 2px solid var(--gold);
+  box-shadow: 0 0 0 4px #211912, 0 0 0 5px rgba(232,192,106,.35), 0 0 30px rgba(232,192,106,.15);
+}
+body.arena-welt .hero-nick { color: var(--gold); font-weight: 900; }
+body.arena-welt .xp-total { color: var(--c3); font-weight: 700; }
+body.arena-welt .xpp-item:hover { background: #2a2017; }
+body.arena-welt .xpp-filter-btn { border-color: var(--rahmen); color: var(--ink); }
+body.arena-welt .xpp-filter-btn.active { background: var(--gold); border-color: var(--gold); color: #1a1208; }
+body.arena-welt .xpp-badge.offen        { background: rgba(120,170,255,.16); color: #b9d3ff; }
+body.arena-welt .xpp-badge.verbesserbar { background: rgba(242,207,107,.16); color: #f2cf6b; }
+body.arena-welt .xpp-badge.fertig       { background: rgba(127,220,170,.14); color: #9be6bd; }
+body.arena-welt .xpp-item.done { opacity: .75; }
+body.arena-welt .ch-status-badge { background: rgba(255,255,255,.06); color: var(--ink-soft); }
+body.arena-welt .ch-status-badge.gewonnen { background: rgba(127,220,170,.14); color: #9be6bd; }
+body.arena-welt .ch-status-badge.verloren { background: rgba(255,143,122,.14); color: #ffb2a3; }
+body.arena-welt .profil-muenzen {
+  display: flex; align-items: center; gap: .5rem;
+  background: linear-gradient(180deg, #f2cf6b, #c9962f);
+  color: #1a1208; border: 1px solid #7a5a1c;
+  border-radius: 999px; padding: .35rem 1rem; margin-top: .25rem;
+  font-family: var(--schrift-titel); font-weight: 700; font-size: 1.05rem;
+}
+@media (min-width: 1280px) {
+  body.arena-welt .profil-grid { grid-template-columns: 300px 1fr; }
+  body.arena-welt .avatar-card { position: sticky; top: 90px; align-self: start; }
+  body.arena-welt .info-stack {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+/* --- Rangliste --- */
+body.arena-welt .rangliste-table th {
+  background: #140f0a;
+  color: var(--gold);
+  font-family: var(--schrift-titel);
+  border-bottom: 1px solid var(--rahmen);
+}
+body.arena-welt .rangliste-table td { border-bottom-color: rgba(232,192,106,.14); }
+body.arena-welt .rangliste-table tr:hover td { background: rgba(232,192,106,.06); }
+body.arena-welt .level-chip { background: #140f0a; color: var(--ink); border: 1px solid var(--rahmen); }
+body.arena-welt .nick-cell.me { color: var(--gold); }
+body.arena-welt .btn-challenge:disabled { background: #2a2017; color: var(--ink-soft); }
+.rang-avatar { width: 48px; height: 48px; display: block; }
+.rang-avatar svg { width: 48px; height: 48px; }
+
+/* --- Shop --- */
+body.arena-welt .muenzen-display {
+  background: linear-gradient(180deg, #f2cf6b, #c9962f);
+  color: #1a1208;
+  border: 1px solid #7a5a1c;
+  font-family: var(--schrift-titel);
+  font-weight: 700;
+}
+body.arena-welt .shop-tab { background: #1c150f; color: var(--ink); border: 1px solid var(--rahmen); }
+body.arena-welt .shop-tab.active,
+body.arena-welt .shop-tab:hover { background: var(--gold); color: #1a1208; border-color: var(--gold); }
+body.arena-welt .item-card.ausgerüstet { border-color: var(--c3); background: linear-gradient(180deg, #1f2a20, #182019); }
+body.arena-welt .item-name { color: var(--gold); font-weight: 700; }
+body.arena-welt .item-preis { color: var(--c2); }
+body.arena-welt .item-badge.besessen { background: rgba(127,220,170,.14); color: #9be6bd; }
+body.arena-welt .item-badge.angelegt { background: var(--c3); color: #10241a; }
+body.arena-welt .item-btn { border-radius: var(--radius-sm); }
+body.arena-welt .item-btn.ablegen,
+body.arena-welt .item-btn.zu-teuer { background: #17110c; color: var(--ink); border: 1px solid var(--rahmen); }
+body.arena-welt .coins-log-amount.positiv { color: var(--c2); }
+
+/* --- Charakter (Seite hatte bereits dunkles Design: nur Lesbarkeit) --- */
+body.arena-welt .char-eyebrow { font-family: var(--schrift-titel); color: var(--gold); opacity: 1; letter-spacing: .3em; }
+body.arena-welt .char-title { font-family: var(--schrift-titel); font-weight: 900; }
+body.arena-welt .section-label { font-family: var(--schrift-titel); color: var(--gold); opacity: 1; letter-spacing: .12em; }
+body.arena-welt .chip { color: var(--ink); border-color: var(--rahmen); }
+body.arena-welt .chip-desc { opacity: 1; color: var(--ink-soft); }
+body.arena-welt .chip.active .chip-desc { color: #1a1208; }
+body.arena-welt .hint-box { color: var(--ink-soft); }
+body.arena-welt .hint-box strong { color: var(--gold); }
+body.arena-welt .status-msg { color: var(--gold); }
+body.arena-welt .char-name-input { color: var(--ink); border: 1px solid var(--rahmen); }
+body.arena-welt .char-layout { max-width: 1100px; grid-template-columns: minmax(240px, 340px) 1fr; }
+@media (max-width: 600px) {
+  body.arena-welt .char-layout { grid-template-columns: 1fr; }
+}
+
+/* --- Popups --- */
+body.arena-welt .popup-box { background: #241c15; border: 1px solid var(--gold); color: var(--ink); }
+body.arena-welt .popup-title { color: var(--gold); }
+
+/* --- Persistente Statusleiste (js/arena-bar.js) --- */
+body.arena-welt #arena-bar {
+  background: rgba(20,14,9,.96);
+  border-top: 1px solid var(--rahmen);
+  font-family: var(--schrift-text);
+}
+body.arena-welt #arena-bar .ab-chip { color: var(--ink); background: rgba(232,192,106,.10); }

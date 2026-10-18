@@ -20,7 +20,7 @@
     }
     .progress-label {
       font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 1rem;
       color: var(--ink-soft);
       white-space: nowrap;
     }
@@ -51,7 +51,7 @@
       display: inline-block;
       background: var(--c4);
       color: #fff;
-      font-size: 0.78rem;
+      font-size: 1rem;
       font-weight: 700;
       text-transform: uppercase;
       padding: 0.2rem 0.65rem;
@@ -88,8 +88,8 @@
       background: var(--bg);
       border: 2px solid #e2e8f0;
       border-radius: var(--radius-sm);
-      font-family: 'Nunito', sans-serif;
-      font-size: 0.95rem;
+      font-family: var(--schrift-text);
+      font-size: 1rem;
       font-weight: 600;
       color: var(--ink);
       cursor: pointer;
@@ -154,15 +154,15 @@
     .result-overlay.visible .result-box { transform: scale(1); }
 
     .result-emoji { font-size: 4rem; display: block; margin-bottom: 0.75rem; }
-    .result-title { font-family: 'Fredoka One', sans-serif; font-size: 1.8rem; }
+    .result-title { font-family: var(--schrift-titel); font-size: 1.8rem; }
     .result-score {
-      font-family: 'Fredoka One', sans-serif;
+      font-family: var(--schrift-titel);
       font-size: 3rem;
       color: var(--c3);
       margin: 0.5rem 0;
     }
     .result-xp { font-size: 1.1rem; font-weight: 700; color: var(--ink-soft); }
-    .result-repeat { font-size: 0.85rem; color: var(--ink-soft); margin-top: 0.5rem; }
+    .result-repeat { font-size: 1rem; color: var(--ink-soft); margin-top: 0.5rem; }
     .result-actions { display: flex; gap: 0.75rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
 
     @media (max-width: 520px) {
@@ -170,7 +170,7 @@
     }
   </style>
 </head>
-<body>
+<body class="arena-welt">
 
   <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
     <div class="container navbar-inner">
@@ -249,7 +249,7 @@
       <div class="result-xp" id="result-xp">+0 XP erhalten</div>
       <div class="result-repeat" id="result-repeat"></div>
       <div id="result-bestenliste" style="display:none;margin-top:1.25rem;text-align:left;border-top:1px solid rgba(0,0,0,.08);padding-top:1rem">
-        <div style="font-size:0.8rem;font-weight:700;color:var(--ink-soft);margin-bottom:0.5rem;text-align:center;text-transform:uppercase;letter-spacing:.06em">🏆 Beste Ergebnisse</div>
+        <div style="font-size:1rem;font-weight:700;color:var(--ink-soft);margin-bottom:0.5rem;text-align:center;text-transform:uppercase;letter-spacing:.06em">🏆 Beste Ergebnisse</div>
         <div id="bestenliste-list"></div>
       </div>
       <div class="result-actions">
@@ -445,8 +445,8 @@
                 const pct = Math.round((row.best_score / row.total) * 100);
                 return `<div style="display:flex;align-items:center;gap:0.5rem;padding:0.35rem 0;${i > 0 ? 'border-top:1px solid rgba(0,0,0,.06)' : ''}">
                   <span style="width:1.6rem;text-align:center;font-size:1rem">${i < 3 ? MEDALS[i] : (i + 1) + '.'}</span>
-                  <span style="flex:1;font-weight:700;font-size:0.88rem">${escHtml(row.nick)}</span>
-                  <span style="font-weight:700;font-size:0.88rem;color:var(--c3)">${row.best_score}/${row.total} <span style="font-weight:400;color:var(--ink-soft)">(${pct}%)</span></span>
+                  <span style="flex:1;font-weight:700;font-size:1rem">${escHtml(row.nick)}</span>
+                  <span style="font-weight:700;font-size:1rem;color:var(--c3)">${row.best_score}/${row.total} <span style="font-weight:400;color:var(--ink-soft)">(${pct}%)</span></span>
                 </div>`;
               }).join('');
               section.style.display = 'block';

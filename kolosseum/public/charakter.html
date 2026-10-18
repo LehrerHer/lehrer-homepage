@@ -6,21 +6,13 @@
   <title>Charaktererstellung – Gladiatorenkämpfe</title>
   <link rel="stylesheet" href="/css/style.css?v=20260615c">
   <style>
-    /* ── Seiten-Grundlage ── */
-    body {
-      background: radial-gradient(ellipse at 30% 10%, #1c0e04 0%, #0c0804 50%, #060402 100%);
-      min-height: 100vh;
-      color: #d4b86a;
-      font-family: 'Palatino Linotype', Palatino, 'Book Antiqua', serif;
-    }
-
     /* ── Header ── */
     .char-header {
       text-align: center;
       padding: 2rem 1rem 1.5rem;
     }
     .char-eyebrow {
-      font-size: 10px;
+      font-size: 16px;
       letter-spacing: 5px;
       color: #c8a84a;
       opacity: .6;
@@ -82,7 +74,7 @@
     .avatar-badge {
       padding: 2px 9px;
       border-radius: 12px;
-      font-size: 11px;
+      font-size: 16px;
       letter-spacing: .5px;
     }
     .char-name-input {
@@ -91,7 +83,7 @@
       border-radius: 7px;
       padding: 7px 12px;
       color: #f0d070;
-      font-size: 13px;
+      font-size: 16px;
       font-family: inherit;
       text-align: center;
       width: 85%;
@@ -103,7 +95,7 @@
       padding: 11px;
       border: none;
       border-radius: 9px;
-      font-size: 13px;
+      font-size: 16px;
       font-family: inherit;
       font-weight: bold;
       letter-spacing: 2px;
@@ -121,7 +113,7 @@
       box-shadow: 0 2px 12px #3a8a3a50;
     }
     .status-msg {
-      font-size: 11px;
+      font-size: 16px;
       text-align: center;
       min-height: 16px;
       color: #c8a84a;
@@ -138,7 +130,7 @@
       max-height: 680px;
     }
     .section-label {
-      font-size: 10px;
+      font-size: 16px;
       letter-spacing: 3px;
       color: #c8a84a;
       text-transform: uppercase;
@@ -164,7 +156,7 @@
       padding: 5px 10px;
       cursor: pointer;
       color: #d4b860;
-      font-size: 12px;
+      font-size: 16px;
       font-family: inherit;
       transition: all .18s;
       display: flex;
@@ -178,7 +170,7 @@
       box-shadow: 0 2px 10px rgba(200,160,48,.45);
     }
     .chip-desc {
-      font-size: 10px;
+      font-size: 16px;
       opacity: .6;
       margin-top: 1px;
     }
@@ -210,14 +202,14 @@
       background: rgba(200,168,74,.05);
       border-radius: 8px;
       border: 1px solid rgba(200,168,74,.12);
-      font-size: 11px;
+      font-size: 16px;
       color: rgba(200,168,74,.5);
       line-height: 1.65;
     }
     .hint-box strong { color: rgba(200,168,74,.67); }
   </style>
 </head>
-<body>
+<body class="arena-welt">
 
   <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
     <div class="container navbar-inner">
@@ -608,7 +600,7 @@
     const refs = {
       'chips-class':  { opts: CLASSES,      key: 'classId',     fn: o => `<span>${o.emoji}</span><span>${o.label}</span>` },
       'chips-race':   { opts: RACES,        key: 'raceId',      fn: o => `<div><div style="display:flex;gap:4px;align-items:center"><span>${o.emoji}</span><span>${o.label}</span></div><div class="chip-desc">${o.desc}</div></div>` },
-      'chips-gender': { opts: GENDERS,      key: 'genderId',    fn: o => `<span style="font-size:14px">${o.symbol}</span><span>${o.label}</span>` },
+      'chips-gender': { opts: GENDERS,      key: 'genderId',    fn: o => `<span style="font-size:16px">${o.symbol}</span><span>${o.label}</span>` },
       'chips-acc':    { opts: ACCESSORIES,  key: 'accessoryId', fn: null },
     };
 

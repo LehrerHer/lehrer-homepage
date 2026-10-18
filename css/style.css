@@ -3729,3 +3729,17 @@ footer { font-size: 1rem; }
 @media (min-width: 1101px) { .win-grid { grid-template-columns: repeat(4, 1fr); } }
 @media (min-width: 561px) and (max-width: 1100px) { .win-grid { grid-template-columns: repeat(2, 1fr); } }
 .win-item-leer { color: var(--farbe-text-hell); font-style: italic; }
+
+/* === GLADIATORENKÄMPFE: Navbar/Footer-Farben (Spiegel von kolosseum/public/css/style.css) ===
+   Greift nur auf Seiten mit <body class="arena-welt">; Struktur bleibt unverändert. */
+body.arena-welt .navbar .navbar-inner,
+body.arena-welt .footer-inner,
+body.arena-welt .site-footer-inner {
+    background: linear-gradient(180deg, #2a1f15 0%, #17100a 100%);
+    border: 2px solid #c9a24a;
+    box-shadow: 4px 4px 0 #6e5220, 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+body.arena-welt .navbar-links .nav-item:hover,
+body.arena-welt .navbar-links > li > a:hover { background-color: #e8c06a; color: #1a1208; }
+body.arena-welt .nav-item[data-tooltip]::after { background: #e8c06a; color: #1a1208; }
+body.arena-welt .nav-item[data-tooltip]::before { border-bottom-color: #e8c06a; }
