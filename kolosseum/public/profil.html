@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gladiator-Profil – Lernkolosseum</title>
+  <title>Gladiator-Profil – Gladiatorenkämpfe</title>
   <link rel="stylesheet" href="/css/style.css?v=20260615c">
   <style>
     /* === PROFIL LAYOUT === */
@@ -36,12 +36,12 @@
     .avatar-wrap svg { width: 140px; height: 140px; }
 
     .hero-nick {
-      font-family: 'Fredoka One', sans-serif;
+      font-family: var(--schrift-titel);
       font-size: 1.6rem;
       color: var(--ink);
     }
     .hero-level {
-      font-size: 0.95rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--ink-soft);
       text-transform: uppercase;
@@ -53,13 +53,13 @@
     .xp-numbers {
       display: flex;
       justify-content: space-between;
-      font-size: 0.85rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--ink-soft);
       margin-bottom: 0.3rem;
     }
     .xp-total {
-      font-family: 'Fredoka One', sans-serif;
+      font-family: var(--schrift-titel);
       font-size: 2rem;
       color: var(--c3);
     }
@@ -86,8 +86,8 @@
     }
     .badge-item:not(.locked):hover { transform: translateY(-3px); }
     .badge-item .badge-emoji { font-size: 2rem; line-height: 1; }
-    .badge-item .badge-name  { font-weight: 700; font-size: 0.85rem; }
-    .badge-item .badge-desc  { font-size: 0.75rem; color: var(--ink-soft); }
+    .badge-item .badge-name  { font-weight: 700; font-size: 1rem; }
+    .badge-item .badge-desc  { font-size: 1rem; color: var(--ink-soft); }
     .badge-item.locked       { opacity: 0.3; filter: grayscale(1); }
 
     /* XP-Log */
@@ -99,18 +99,18 @@
       padding: 0.6rem 1rem;
       background: var(--bg);
       border-radius: var(--radius-sm);
-      font-size: 0.9rem;
+      font-size: 1rem;
     }
     .xp-log-amount {
-      font-family: 'Fredoka One', sans-serif;
+      font-family: var(--schrift-titel);
       font-size: 1.1rem;
       color: var(--c3);
     }
     .xp-log-amount.negative { color: var(--c1); }
-    .xp-log-empty { color: var(--ink-soft); font-size: 0.9rem; text-align: center; padding: 1rem; }
+    .xp-log-empty { color: var(--ink-soft); font-size: 1rem; text-align: center; padding: 1rem; }
 
     /* Logout-Button */
-    .nav-action { font-size: 0.9rem; }
+    .nav-action { font-size: 1rem; }
 
     /* Badge-Popup */
     .popup-overlay { position: fixed; inset: 0; background: rgba(26,26,46,0.55);
@@ -127,8 +127,8 @@
     }
     .popup-overlay.visible .popup-box { transform: scale(1); }
     .popup-emoji { font-size: 4rem; display: block; margin-bottom: 0.5rem; }
-    .popup-title { font-family: 'Fredoka One', sans-serif; font-size: 1.5rem; color: var(--ink); }
-    .popup-sub   { color: var(--ink-soft); font-size: 0.95rem; margin-top: 0.3rem; }
+    .popup-title { font-family: var(--schrift-titel); font-size: 1.5rem; color: var(--ink); }
+    .popup-sub   { color: var(--ink-soft); font-size: 1rem; margin-top: 0.3rem; }
     .popup-btn   { margin-top: 1.25rem; }
 
     /* === HERAUSFORDERUNGEN === */
@@ -141,18 +141,18 @@
       background: var(--bg);
       border-radius: var(--radius-sm);
       padding: .7rem 1rem;
-      font-size: .88rem;
+      font-size: 1rem;
       flex-wrap: wrap;
     }
     .challenge-item .ch-info { flex: 1; min-width: 0; }
     .challenge-item .ch-nick { font-weight: 700; }
-    .challenge-item .ch-xp   { font-size: .78rem; color: var(--ink-soft); }
+    .challenge-item .ch-xp   { font-size: 1rem; color: var(--ink-soft); }
     .challenge-item .ch-btns { display: flex; gap: .45rem; flex-shrink: 0; }
     .ch-btn {
       padding: .35rem .85rem;
       border-radius: 50px;
-      font-family: 'Nunito', sans-serif;
-      font-size: .8rem;
+      font-family: var(--schrift-text);
+      font-size: 1rem;
       font-weight: 700;
       border: none;
       cursor: pointer;
@@ -162,12 +162,12 @@
     .ch-btn-replay   { background: var(--c4); color: #fff; text-decoration: none;
                        display: inline-flex; align-items: center; }
     .ch-status-badge {
-      font-size: .72rem; font-weight: 700; padding: .2rem .6rem;
+      font-size: 1rem; font-weight: 700; padding: .2rem .6rem;
       border-radius: 50px; background: rgba(0,0,0,.06); color: var(--ink-soft);
     }
     .ch-status-badge.gewonnen { background: rgba(78,205,196,.18); color: #0d9488; }
     .ch-status-badge.verloren { background: rgba(255,107,107,.15); color: #b91c1c; }
-    .ch-leer { color: var(--ink-soft); font-size: .9rem; text-align: center; padding: .75rem; }
+    .ch-leer { color: var(--ink-soft); font-size: 1rem; text-align: center; padding: .75rem; }
 
     /* === XP-POTENZIAL === */
     .xpp-filter {
@@ -182,8 +182,8 @@
       border: 1.5px solid var(--ink-soft);
       background: transparent;
       color: var(--ink-soft);
-      font-family: 'Nunito', sans-serif;
-      font-size: .8rem;
+      font-family: var(--schrift-text);
+      font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
       transition: all var(--transition);
@@ -194,7 +194,7 @@
       color: #fff;
     }
     .xpp-summary {
-      font-size: .88rem;
+      font-size: 1rem;
       color: var(--ink-soft);
       margin-bottom: .9rem;
     }
@@ -207,7 +207,7 @@
       padding: .6rem .9rem;
       background: var(--bg);
       border-radius: var(--radius-sm);
-      font-size: .88rem;
+      font-size: 1rem;
       text-decoration: none;
       color: inherit;
       transition: background var(--transition);
@@ -218,7 +218,7 @@
     .xpp-name { flex: 1; min-width: 0; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .xpp-badge {
       flex-shrink: 0;
-      font-size: .72rem;
+      font-size: 1rem;
       font-weight: 700;
       padding: .18rem .55rem;
       border-radius: 50px;
@@ -228,14 +228,14 @@
     .xpp-badge.fertig    { background: rgba(46,204,113,.15); color: #1a7a45; }
     .xpp-xp {
       flex-shrink: 0;
-      font-family: 'Fredoka One', sans-serif;
+      font-family: var(--schrift-titel);
       font-size: 1rem;
       color: var(--c3);
       min-width: 3.5rem;
       text-align: right;
     }
-    .xpp-xp.unknown { color: var(--ink-soft); font-family: 'Nunito', sans-serif; font-size: .8rem; }
-    .xpp-empty { color: var(--ink-soft); font-size: .88rem; text-align: center; padding: .75rem; }
+    .xpp-xp.unknown { color: var(--ink-soft); font-family: var(--schrift-text); font-size: 1rem; }
+    .xpp-empty { color: var(--ink-soft); font-size: 1rem; text-align: center; padding: .75rem; }
 
     @media (max-width: 640px) {
       .profil-grid { grid-template-columns: 1fr; }
@@ -243,7 +243,7 @@
     }
   </style>
 </head>
-<body>
+<body class="arena-welt">
 
   <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
     <div class="container navbar-inner">
@@ -280,20 +280,13 @@
     </div>
   </nav>
 
-  <nav class="kolosseum-subnav" aria-label="Arena-Navigation">
-    <div class="kolosseum-subnav-inner">
-      <span class="subnav-brand">🏛️ Lernkolosseum</span>
-      <div class="subnav-links">
-        <a href="/profil.html" class="active">Profil</a>
-        <a href="/rangliste.html">Rangliste</a>
-        <a href="/charakter.html">Charakter</a>
-        <a href="/shop.html">🏪 Shop</a>
-        <button id="logout-btn" class="subnav-logout">Ausloggen</button>
-      </div>
-    </div>
-  </nav>
+  <script src="/js/arena-subnav.js"></script>
 
   <main class="container" style="padding-bottom: 3rem;">
+    <div class="page-header arena-kopf">
+      <h1>🛡️ Mein Profil</h1>
+      <p class="arena-erklaerung">Deine Werte auf einen Blick: Level und XP, Münzen, Ausrüstung, deine Kämpfe und die Kampfchronik.</p>
+    </div>
     <div class="profil-grid">
 
       <!-- Linke Spalte: Avatar + XP -->
@@ -306,15 +299,10 @@
         <div class="hero-nick" id="hero-nick">…</div>
         <div class="hero-level" id="hero-level">Rekrut</div>
 
-        <a href="/charakter.html" id="charakter-link"
-           style="font-size:.8rem;color:var(--ink-soft);text-decoration:none;opacity:.7;margin-top:-.25rem"
-           title="Charakter anpassen">✏️ Charakter bearbeiten</a>
+        <a href="/charakter.html" id="charakter-link" style="font-size:1rem;margin-top:-.25rem">🎭 Aussehen gestalten</a>
 
         <!-- Münzen -->
-        <div style="display:flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,#ffe066,#f6a800);
-                    color:#5a3800;border-radius:50px;padding:.35rem 1rem;
-                    font-family:'Fredoka One',sans-serif;font-size:1.1rem;
-                    box-shadow:0 2px 8px rgba(246,168,0,.3);margin-top:.25rem">
+        <div class="profil-muenzen">
           🪙 <span id="profil-coins">…</span> Münzen
         </div>
 
@@ -345,11 +333,11 @@
         <!-- Kämpfe -->
         <div class="card" id="herausforderungen-card">
           <h2 style="font-size:1.3rem; margin-bottom:.35rem;">⚔️ Kämpfe</h2>
-          <div class="text-soft" id="angriffe-status" style="font-size:.85rem;margin-bottom:1rem">Wird geladen…</div>
+          <div class="text-soft" id="angriffe-status" style="font-size:1rem;margin-bottom:1rem">Wird geladen…</div>
 
           <!-- Letzte Kämpfe -->
           <div>
-            <div style="font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:.5rem">
+            <div style="font-size:1rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);margin-bottom:.5rem">
               Letzte Kämpfe
             </div>
             <div class="challenge-list" id="challenges-kaempfe">
@@ -358,7 +346,7 @@
           </div>
 
           <div style="margin-top:1rem;text-align:right">
-            <a href="/rangliste.html" class="btn btn-primary" style="font-size:.85rem;padding:.55rem 1.2rem">
+            <a href="/rangliste.html" class="btn btn-primary" style="font-size:1rem;padding:.55rem 1.2rem">
               ⚔️ Jetzt angreifen →
             </a>
           </div>
@@ -487,7 +475,7 @@
           <span class="badge-emoji">${b.emoji}</span>
           <span class="badge-name">${b.name}</span>
           <span class="badge-desc">${b.desc}</span>
-          ${b.earned && b.earnedAt ? `<span class="text-soft" style="font-size:.7rem">${formatDate(b.earnedAt)}</span>` : ''}
+          ${b.earned && b.earnedAt ? `<span class="text-soft" style="font-size:1rem">${formatDate(b.earnedAt)}</span>` : ''}
         `;
         grid.appendChild(el);
         if (b.isNew) newBadges.push(b);
@@ -506,7 +494,7 @@
           <div class="xp-log-item">
             <span>${e.reason || 'XP erhalten'}</span>
             <div style="display:flex;gap:.75rem;align-items:center">
-              <span class="text-soft" style="font-size:.8rem">${formatDate(e.created_at)}</span>
+              <span class="text-soft" style="font-size:1rem">${formatDate(e.created_at)}</span>
               <span class="xp-log-amount${e.amount < 0 ? ' negative' : ''}">
                 ${e.amount > 0 ? '+' : ''}${e.amount} XP
               </span>
@@ -713,11 +701,6 @@
       ladeXppPotenzial();
     }
 
-    // Logout
-    document.getElementById('logout-btn').addEventListener('click', async () => {
-      await fetch('/api/auth/logout', { method: 'POST' });
-      window.location.href = '/login.html';
-    });
 
     init().catch(console.error);
   </script>

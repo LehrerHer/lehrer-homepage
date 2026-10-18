@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Quizze – Lernkolosseum</title>
+  <title>Quizze – Gladiatorenkämpfe</title>
   <link rel="stylesheet" href="/css/style.css?v=20260615c">
   <style>
     .page-header {
@@ -30,7 +30,7 @@
       display: inline-block;
       background: var(--c4);
       color: #fff;
-      font-size: 0.75rem;
+      font-size: 1rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.07em;
@@ -39,7 +39,7 @@
     }
 
     .quiz-title {
-      font-family: 'Fredoka One', sans-serif;
+      font-family: var(--schrift-titel);
       font-size: 1.3rem;
       color: var(--ink);
     }
@@ -47,7 +47,7 @@
     .quiz-meta {
       display: flex;
       gap: 1rem;
-      font-size: 0.85rem;
+      font-size: 1rem;
       color: var(--ink-soft);
       font-weight: 700;
     }
@@ -65,7 +65,7 @@
     }
 
     .quiz-result-label {
-      font-size: 0.8rem;
+      font-size: 1rem;
       color: var(--ink-soft);
       font-weight: 600;
     }
@@ -75,7 +75,7 @@
     .empty { text-align: center; padding: 3rem; color: var(--ink-soft); }
   </style>
 </head>
-<body>
+<body class="arena-welt">
 
   <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
     <div class="container navbar-inner">
@@ -112,23 +112,13 @@
     </div>
   </nav>
 
-  <nav class="kolosseum-subnav" aria-label="Arena-Navigation">
-    <div class="kolosseum-subnav-inner">
-      <span class="subnav-brand">🏛️ Lernkolosseum</span>
-      <div class="subnav-links">
-        <a href="/profil.html">Profil</a>
-        <a href="/rangliste.html">Rangliste</a>
-        <a href="/charakter.html">Charakter</a>
-        <button id="logout-btn" class="subnav-logout">Ausloggen</button>
-      </div>
-    </div>
-  </nav>
+  <script src="/js/arena-subnav.js"></script>
 
   <main class="container" style="padding-bottom: 3rem;">
 
     <div class="page-header">
       <h1>⚔️ Arena-Quizze</h1>
-      <p>Kämpfe in der Arena – jede richtige Antwort bringt deinem Gladiator Kampferfahrung.</p>
+      <p class="arena-erklaerung">Jede richtige Antwort bringt deinem Gladiator Kampferfahrung (XP).</p>
     </div>
 
     <!-- Fächerübergreifendes Arenaquiz -->
@@ -203,13 +193,13 @@
         grid.innerHTML = quizList.map(q => {
           const done = completions.includes(q.slug);
           const badgeHtml = done
-            ? '<span style="background:#2ecc71;color:#fff;font-size:.72rem;font-weight:700;padding:.2rem .6rem;border-radius:50px">✓ Absolviert</span>'
+            ? '<span style="background:#2ecc71;color:#fff;font-size:1rem;font-weight:700;padding:.2rem .6rem;border-radius:50px">✓ Absolviert</span>'
             : (loggedIn
-                ? '<span style="color:var(--ink-soft);font-size:.82rem">Noch nicht gespielt</span>'
-                : '<span style="color:var(--c4);font-size:.82rem">⚔️ Login → XP verdienen</span>');
+                ? '<span style="color:var(--ink-soft);font-size:1rem">Noch nicht gespielt</span>'
+                : '<span style="color:var(--c4);font-size:1rem">⚔️ Login → XP verdienen</span>');
           const metaText = q.meta || q.faecher || '';
           const meta = metaText
-            ? `<div style="font-size:.82rem;color:var(--ink-soft);font-weight:700">${escHtml(metaText)}</div>`
+            ? `<div style="font-size:1rem;color:var(--ink-soft);font-weight:700">${escHtml(metaText)}</div>`
             : '';
           const chipLabel = q.subject || (q.faecher ? 'Fächerübergreifend' : 'Deutsch');
           return `
@@ -217,7 +207,7 @@
               <span class="quiz-subject">${escHtml(chipLabel)}</span>
               <div class="quiz-title">${q.icon} ${escHtml(q.title)}</div>
               ${meta}
-              <div style="font-size:.84rem;color:var(--ink-soft);line-height:1.45">${escHtml(q.desc)}</div>
+              <div style="font-size:1rem;color:var(--ink-soft);line-height:1.45">${escHtml(q.desc)}</div>
               <div style="margin-top:.25rem">${badgeHtml}</div>
               <a href="${q.url}" class="btn btn-primary" style="margin-top:auto">
                 ${done ? 'Nochmal üben →' : 'Quiz starten →'}
@@ -232,16 +222,8 @@
         const meRes = await fetch('/api/auth/me');
         loggedIn = meRes.ok;
 
-        // Logout-Button nur für eingeloggte SuS zeigen
-        const logoutBtn = document.getElementById('logout-btn');
-        if (loggedIn) {
-          logoutBtn.addEventListener('click', async () => {
-            await fetch('/api/auth/logout', { method: 'POST' });
-            window.location.href = '/login.html';
-          });
-        } else {
-          logoutBtn.style.display = 'none';
-        }
+        // Logout-Button nur für eingeloggte SuS zeigen (Klick-Logik: arena-subnav.js)
+        if (!loggedIn) document.getElementById('logout-btn').style.display = 'none';
 
         // Externe Quizze: Abschluss-Status laden
         let completions = [];

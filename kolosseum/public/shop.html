@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arena-Shop – Lernkolosseum</title>
+  <title>Arena-Shop – Gladiatorenkämpfe</title>
   <link rel="stylesheet" href="/css/style.css?v=20260615c">
   <style>
     /* === SHOP-KOPFZEILE === */
@@ -22,7 +22,7 @@
       color: #5a3800;
       border-radius: 50px;
       padding: .5rem 1.4rem;
-      font-family: 'Fredoka One', sans-serif;
+      font-family: var(--schrift-titel);
       font-size: 1.3rem;
       box-shadow: 0 3px 12px rgba(246,168,0,.35);
       margin-top: .75rem;
@@ -40,8 +40,8 @@
       padding: .45rem 1.1rem;
       border-radius: 50px;
       border: 2px solid transparent;
-      font-family: 'Nunito', sans-serif;
-      font-size: .88rem;
+      font-family: var(--schrift-text);
+      font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
       background: var(--card);
@@ -81,15 +81,15 @@
     .item-card.gekauft:not(.ausgerüstet) { border-color: rgba(0,0,0,.08); }
 
     .item-emoji    { font-size: 3.2rem; line-height: 1; }
-    .item-name     { font-family: 'Fredoka One', sans-serif; font-size: 1.15rem; color: var(--ink); }
+    .item-name     { font-family: var(--schrift-titel); font-size: 1.15rem; color: var(--ink); }
     .item-type-chip {
-      font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+      font-size: 1rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
       padding: .15rem .55rem; border-radius: 50px;
       background: var(--bg); color: var(--ink-soft);
     }
-    .item-beschr   { font-size: .82rem; color: var(--ink-soft); line-height: 1.45; flex: 1; }
+    .item-beschr   { font-size: 1rem; color: var(--ink-soft); line-height: 1.45; flex: 1; }
     .item-preis {
-      font-family: 'Fredoka One', sans-serif;
+      font-family: var(--schrift-titel);
       font-size: 1.1rem;
       color: #b07700;
       display: flex;
@@ -100,7 +100,7 @@
     .item-badge {
       position: absolute;
       top: .75rem; right: .75rem;
-      font-size: .7rem; font-weight: 800; text-transform: uppercase;
+      font-size: 1rem; font-weight: 800; text-transform: uppercase;
       padding: .2rem .55rem; border-radius: 50px;
     }
     .item-badge.besessen  { background: rgba(74,205,196,.2); color: #0d9488; }
@@ -112,8 +112,8 @@
       padding: .55rem 0;
       border-radius: 50px;
       border: none;
-      font-family: 'Nunito', sans-serif;
-      font-size: .9rem;
+      font-family: var(--schrift-text);
+      font-size: 1rem;
       font-weight: 700;
       cursor: pointer;
       transition: transform .2s, opacity .2s;
@@ -131,10 +131,10 @@
     .coins-log-item {
       display: flex; justify-content: space-between; align-items: center;
       padding: .5rem .9rem; background: var(--bg);
-      border-radius: var(--radius-sm); font-size: .85rem;
+      border-radius: var(--radius-sm); font-size: 1rem;
     }
     .coins-log-amount {
-      font-family: 'Fredoka One', sans-serif; font-size: 1rem;
+      font-family: var(--schrift-titel); font-size: 1rem;
     }
     .coins-log-amount.positiv { color: #d4a017; }
     .coins-log-amount.negativ { color: var(--c1); }
@@ -147,7 +147,7 @@
     }
   </style>
 </head>
-<body>
+<body class="arena-welt">
 
   <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
     <div class="container navbar-inner">
@@ -184,24 +184,13 @@
     </div>
   </nav>
 
-  <nav class="kolosseum-subnav" aria-label="Arena-Navigation">
-    <div class="kolosseum-subnav-inner">
-      <span class="subnav-brand">🏛️ Lernkolosseum</span>
-      <div class="subnav-links">
-        <a href="/profil.html">Profil</a>
-        <a href="/rangliste.html">Rangliste</a>
-        <a href="/charakter.html">Charakter</a>
-        <a href="/shop.html" class="active">🏪 Shop</a>
-        <button id="logout-btn" class="subnav-logout">Ausloggen</button>
-      </div>
-    </div>
-  </nav>
+  <script src="/js/arena-subnav.js"></script>
 
   <main class="container" style="padding-bottom: 3rem;">
 
     <div class="shop-header">
-      <h1>🏪 Arena-Shop</h1>
-      <p>Gib deine Kampf-Münzen für Titel und Einzugseffekte aus.</p>
+      <h1>🪙 Shop</h1>
+      <p class="arena-erklaerung">Münzen bekommst du für gewonnene Angriffe. Hier tauschst du sie gegen Titel und Einzugseffekte.</p>
       <div class="muenzen-display" id="muenzen-display">
         <span class="coin-icon">🪙</span>
         <span id="muenzen-zahl">…</span> Münzen
@@ -223,7 +212,7 @@
     <div class="card" style="margin-top:2rem">
       <h2 style="font-size:1.2rem;margin-bottom:.75rem">🪙 Münz-Verlauf</h2>
       <div class="coins-log-list" id="coins-log-list">
-        <div style="color:var(--ink-soft);font-size:.9rem;text-align:center;padding:.75rem">Wird geladen…</div>
+        <div style="color:var(--ink-soft);font-size:1rem;text-align:center;padding:.75rem">Wird geladen…</div>
       </div>
     </div>
 
@@ -367,14 +356,14 @@
       const { log } = await r.json();
       const el = document.getElementById('coins-log-list');
       if (!log.length) {
-        el.innerHTML = '<div style="color:var(--ink-soft);font-size:.9rem;text-align:center;padding:.75rem">Noch keine Transaktionen.</div>';
+        el.innerHTML = '<div style="color:var(--ink-soft);font-size:1rem;text-align:center;padding:.75rem">Noch keine Transaktionen.</div>';
         return;
       }
       el.innerHTML = log.map(e => `
         <div class="coins-log-item">
           <span>${esc(e.reason || 'Transaktion')}</span>
           <div style="display:flex;gap:.75rem;align-items:center">
-            <span style="font-size:.78rem;color:var(--ink-soft)">${datumKurz(e.created_at)}</span>
+            <span style="font-size:1rem;color:var(--ink-soft)">${datumKurz(e.created_at)}</span>
             <span class="coins-log-amount ${e.amount > 0 ? 'positiv' : 'negativ'}">
               ${e.amount > 0 ? '+' : ''}${e.amount} 🪙
             </span>
@@ -416,10 +405,6 @@
       renderShop();
     }
 
-    document.getElementById('logout-btn').addEventListener('click', async () => {
-      await fetch('/api/auth/logout', { method: 'POST' });
-      window.location.href = '/login.html';
-    });
 
     init().catch(console.error);
   })();

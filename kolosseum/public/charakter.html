@@ -3,24 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Charaktererstellung – Lernkolosseum</title>
+  <title>Charaktererstellung – Gladiatorenkämpfe</title>
   <link rel="stylesheet" href="/css/style.css?v=20260615c">
   <style>
-    /* ── Seiten-Grundlage ── */
-    body {
-      background: radial-gradient(ellipse at 30% 10%, #1c0e04 0%, #0c0804 50%, #060402 100%);
-      min-height: 100vh;
-      color: #d4b86a;
-      font-family: 'Palatino Linotype', Palatino, 'Book Antiqua', serif;
-    }
-
     /* ── Header ── */
     .char-header {
       text-align: center;
       padding: 2rem 1rem 1.5rem;
     }
     .char-eyebrow {
-      font-size: 10px;
+      font-size: 16px;
       letter-spacing: 5px;
       color: #c8a84a;
       opacity: .6;
@@ -82,7 +74,7 @@
     .avatar-badge {
       padding: 2px 9px;
       border-radius: 12px;
-      font-size: 11px;
+      font-size: 16px;
       letter-spacing: .5px;
     }
     .char-name-input {
@@ -91,7 +83,7 @@
       border-radius: 7px;
       padding: 7px 12px;
       color: #f0d070;
-      font-size: 13px;
+      font-size: 16px;
       font-family: inherit;
       text-align: center;
       width: 85%;
@@ -103,7 +95,7 @@
       padding: 11px;
       border: none;
       border-radius: 9px;
-      font-size: 13px;
+      font-size: 16px;
       font-family: inherit;
       font-weight: bold;
       letter-spacing: 2px;
@@ -121,7 +113,7 @@
       box-shadow: 0 2px 12px #3a8a3a50;
     }
     .status-msg {
-      font-size: 11px;
+      font-size: 16px;
       text-align: center;
       min-height: 16px;
       color: #c8a84a;
@@ -138,7 +130,7 @@
       max-height: 680px;
     }
     .section-label {
-      font-size: 10px;
+      font-size: 16px;
       letter-spacing: 3px;
       color: #c8a84a;
       text-transform: uppercase;
@@ -164,7 +156,7 @@
       padding: 5px 10px;
       cursor: pointer;
       color: #d4b860;
-      font-size: 12px;
+      font-size: 16px;
       font-family: inherit;
       transition: all .18s;
       display: flex;
@@ -178,7 +170,7 @@
       box-shadow: 0 2px 10px rgba(200,160,48,.45);
     }
     .chip-desc {
-      font-size: 10px;
+      font-size: 16px;
       opacity: .6;
       margin-top: 1px;
     }
@@ -210,14 +202,14 @@
       background: rgba(200,168,74,.05);
       border-radius: 8px;
       border: 1px solid rgba(200,168,74,.12);
-      font-size: 11px;
+      font-size: 16px;
       color: rgba(200,168,74,.5);
       line-height: 1.65;
     }
     .hint-box strong { color: rgba(200,168,74,.67); }
   </style>
 </head>
-<body>
+<body class="arena-welt">
 
   <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
     <div class="container navbar-inner">
@@ -254,21 +246,13 @@
     </div>
   </nav>
 
-  <nav class="kolosseum-subnav" aria-label="Arena-Navigation">
-    <div class="kolosseum-subnav-inner">
-      <span class="subnav-brand">🏛️ Lernkolosseum</span>
-      <div class="subnav-links">
-        <a href="/profil.html">Profil</a>
-        <a href="/rangliste.html">Rangliste</a>
-        <a href="/charakter.html" class="active">Charakter</a>
-        <button id="logout-btn" class="subnav-logout">Ausloggen</button>
-      </div>
-    </div>
-  </nav>
+  <script src="/js/arena-subnav.js"></script>
+
 
   <div class="char-header">
-    <div class="char-eyebrow">✦ Lernkolosseum ✦</div>
-    <h1 class="char-title">Charaktererstellung</h1>
+    <div class="char-eyebrow">✦ Gladiatorenkämpfe ✦</div>
+    <h1 class="char-title">Charakter</h1>
+    <p class="arena-erklaerung">Gestalte das Aussehen deines Gladiators: Klasse, Volk, Haut, Haare und Accessoire. Das Aussehen ändert nichts an deinen Kampfwerten.</p>
     <div class="char-divider"></div>
   </div>
 
@@ -307,12 +291,13 @@
 
       <div class="hint-box">
         <strong>Hinweis</strong><br>
-        Zwerge bekommen automatisch einen Bart (m.), Elfen erhalten Spitzohren.
-        Dein Charakter erscheint auf deinem Profil im Lernkolosseum.
+        Jede Klasse hat eigene Kleidung, Waffe und Kopfbedeckung. Zwerge sind breit und tragen Bart (Zwerginnen Zöpfe), Elfen sind schlank mit langen Spitzohren.
+        Dein Charakter erscheint im Profil, in der Rangliste und im Kampf.
       </div>
     </div>
   </div>
 
+<script src="/js/charakter-avatar.js"></script>
 <script>
 (function () {
   'use strict';
@@ -367,171 +352,8 @@
     { id: 'braid',    label: 'Zopf' },
   ];
 
-  // ── Avatar-SVG-Renderer ───────────────────────────────────────────────────
-
-  function drawCharakterAvatar(cfg, size) {
-    size = size || 200;
-    const cls    = CLASSES.find(c => c.id === cfg.classId)       || CLASSES[0];
-    const skin   = SKIN_TONES.find(s => s.id === cfg.skinId)     || SKIN_TONES[1];
-    const hcol   = HAIR_COLORS.find(h => h.id === cfg.hairColorId) || HAIR_COLORS[1];
-    const race   = cfg.raceId   || 'human';
-    const gender = cfg.genderId || 'male';
-    const acc    = cfg.accessoryId || 'none';
-
-    const raceParams = {
-      human: { headRx: 22, headRy: 24, bodyW: 34 },
-      dwarf: { headRx: 26, headRy: 22, bodyW: 42 },
-      elf:   { headRx: 19, headRy: 26, bodyW: 30 },
-    };
-    const rp = raceParams[race];
-
-    const hairPaths = {
-      male: {
-        human: 'M 50,28 Q 34,16 30,30 Q 28,18 42,13 Q 50,9 58,13 Q 72,18 70,30 Q 66,16 50,28 Z',
-        dwarf: 'M 50,28 Q 30,16 28,32 Q 26,18 40,12 Q 50,8 60,12 Q 74,18 72,32 Q 70,16 50,28 Z',
-        elf:   'M 50,26 Q 36,14 32,28 Q 30,16 44,11 Q 50,8 56,11 Q 70,16 68,28 Q 64,14 50,26 Z',
-      },
-      female: {
-        human: 'M 50,28 Q 28,16 24,36 Q 22,52 26,65 Q 30,16 50,28 Q 70,16 74,65 Q 78,52 76,36 Q 72,16 50,28 Z',
-        dwarf: 'M 50,28 Q 26,16 22,38 Q 20,54 26,68 Q 30,16 50,28 Q 70,16 74,68 Q 80,54 78,38 Q 74,16 50,28 Z',
-        elf:   'M 50,26 Q 29,13 25,35 Q 23,50 27,64 Q 31,14 50,26 Q 69,14 73,64 Q 77,50 75,35 Q 71,13 50,26 Z',
-      },
-      diverse: {
-        human: 'M 50,28 Q 30,16 28,30 Q 26,18 42,13 Q 50,9 58,13 Q 72,18 70,30 Q 68,16 50,28 M 50,28 L 62,55 Q 64,58 62,62',
-        dwarf: 'M 50,28 Q 28,16 26,32 Q 24,18 40,12 Q 50,8 60,12 Q 74,18 72,32 M 50,28 L 63,56 Q 65,60 63,64',
-        elf:   'M 50,26 Q 32,14 30,28 Q 28,16 44,11 Q 50,8 56,11 Q 70,16 68,28 M 50,26 L 63,54 Q 65,58 63,62',
-      },
-    };
-    const hairPath = (hairPaths[gender] || hairPaths.male)[race] || hairPaths.male.human;
-
-    const p = cls.primary;
-    const a = cls.accent;
-    const sc = skin.color;
-    const hc = hcol.color;
-    const bW = rp.bodyW;
-    const bx = 50 - bW / 2;
-
-    // Klassen-Ausrüstung
-    const equipment = {
-      knight: `<g>
-        <rect x="14" y="54" width="11" height="32" rx="2" fill="${p}" stroke="${a}" stroke-width="1.2"/>
-        <rect x="17" y="40" width="5" height="16" rx="1" fill="${a}"/>
-        <rect x="10" y="52" width="18" height="4" rx="1" fill="${a}"/>
-        <ellipse cx="30" cy="67" rx="6" ry="4" fill="${p}" stroke="${a}" stroke-width="1"/>
-        <ellipse cx="70" cy="67" rx="6" ry="4" fill="${p}" stroke="${a}" stroke-width="1"/>
-      </g>`,
-      mage: `<g>
-        <line x1="18" y1="58" x2="18" y2="88" stroke="${a}" stroke-width="2.5" stroke-linecap="round"/>
-        <circle cx="18" cy="52" r="7" fill="${p}" opacity="0.85" stroke="${a}" stroke-width="1"/>
-        <circle cx="18" cy="52" r="4" fill="white" opacity="0.4"/>
-        <circle cx="13" cy="47" r="1.5" fill="${p}" opacity="0.7"/>
-        <circle cx="24" cy="46" r="1" fill="${p}" opacity="0.6"/>
-        <circle cx="11" cy="55" r="1" fill="${p}" opacity="0.5"/>
-      </g>`,
-      druid: `<g>
-        <path d="M 20,88 Q 17,70 19,55 Q 20,45 18,38" stroke="#6b4a20" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <circle cx="18" cy="36" r="5" fill="${p}" opacity="0.8"/>
-        <path d="M 15,34 Q 10,28 14,24 Q 20,30 18,36" fill="${p}" opacity="0.7"/>
-        <path d="M 21,33 Q 26,26 30,29 Q 26,34 20,36" fill="${p}" opacity="0.6"/>
-        <path d="M 68,64 Q 76,58 80,64 Q 76,70 68,66 Z" fill="${p}" opacity="0.7"/>
-      </g>`,
-      archer: `<g>
-        <path d="M 78,42 Q 88,55 78,72" stroke="${a}" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <line x1="78" y1="42" x2="78" y2="72" stroke="#c8a060" stroke-width="1" stroke-dasharray="2,2"/>
-        <rect x="68" y="58" width="7" height="20" rx="3" fill="${p}" stroke="${a}" stroke-width="1"/>
-        <line x1="70" y1="58" x2="70" y2="52" stroke="${a}" stroke-width="1.2"/>
-        <line x1="73" y1="58" x2="73" y2="50" stroke="${a}" stroke-width="1.2"/>
-      </g>`,
-      teacher: `<g>
-        <rect x="68" y="55" width="16" height="22" rx="2" fill="${p}" stroke="${a}" stroke-width="1.2"/>
-        <rect x="70" y="57" width="12" height="18" rx="1" fill="white" opacity="0.15"/>
-        <line x1="70" y1="62" x2="82" y2="62" stroke="${a}" stroke-width="0.8"/>
-        <line x1="70" y1="66" x2="82" y2="66" stroke="${a}" stroke-width="0.8"/>
-        <line x1="70" y1="70" x2="78" y2="70" stroke="${a}" stroke-width="0.8"/>
-        <line x1="20" y1="50" x2="20" y2="85" stroke="${a}" stroke-width="2" stroke-linecap="round"/>
-        <circle cx="20" cy="48" r="3" fill="${p}"/>
-      </g>`,
-    };
-
-    // Accessoires
-    const accSVG = {
-      glasses: `<g stroke="${a}" stroke-width="1.5" fill="none">
-        <rect x="33" y="42" width="13" height="9" rx="2.5"/>
-        <rect x="54" y="42" width="13" height="9" rx="2.5"/>
-        <line x1="46" y1="46" x2="54" y2="46"/>
-        <line x1="33" y1="46" x2="27" y2="44"/>
-        <line x1="67" y1="46" x2="73" y2="44"/>
-      </g>`,
-      scar: `<path d="M 43,37 L 39,52" stroke="#7a1a1a" stroke-width="1.8" stroke-linecap="round" opacity="0.85"/>`,
-      freckles: `<g fill="#9a5030" opacity="0.45">
-        ${[[36,49],[40,51],[44,49],[56,49],[60,51],[64,49],[38,45],[62,45]].map(([x,y]) =>
-          `<circle cx="${x}" cy="${y}" r="1.8"/>`).join('')}
-      </g>`,
-      beard: `<path d="M 36,60 Q 38,68 50,72 Q 62,68 64,60 Q 57,65 50,66 Q 43,65 36,60 Z" fill="${hc}" opacity="0.85"/>`,
-      braid: `<path d="M 50,28 L 50,75 Q 48,72 50,68 Q 52,72 50,75" stroke="${hc}" stroke-width="3" fill="none" stroke-linecap="round"/>`,
-      none: '',
-    };
-
-    const elfEars = race === 'elf'
-      ? `<g fill="${sc}" stroke="${sc === '#fde8c8' ? '#c8a080' : '#7a4820'}" stroke-width="0.8">
-          <path d="M 28,42 Q 20,36 24,28 Q 30,32 30,42 Z"/>
-          <path d="M 72,42 Q 80,36 76,28 Q 70,32 70,42 Z"/>
-        </g>`
-      : '';
-
-    const dwarfBeard = (race === 'dwarf' && gender === 'male')
-      ? `<path d="M 32,62 Q 34,74 50,78 Q 66,74 68,62 Q 60,70 50,72 Q 40,70 32,62 Z" fill="${hc}" opacity="0.9"/>`
-      : '';
-
-    const eyeRxL = race === 'elf' ? 4 : 4;
-    const eyeRyL = race === 'elf' ? 3.5 : 4.5;
-    const eyeRxR = 4;
-    const eyeRyR = race === 'elf' ? 3.5 : 4.5;
-    const eyeRotL = race === 'elf' ? 'transform="rotate(-10,40,42)"' : '';
-    const eyeRotR = race === 'elf' ? 'transform="rotate(10,60,42)"' : '';
-
-    const mouthStroke = (sc === '#fde8c8' || sc === '#f0c898') ? '#b06050' : '#6a2818';
-    const noseStroke  = (sc === '#fde8c8' || sc === '#f0c898') ? '#b88050' : '#4a2808';
-
-    const mouth = gender === 'female'
-      ? `<path d="M 43,59 Q 50,65 57,59" fill="none" stroke="#b05050" stroke-width="2" stroke-linecap="round"/>`
-      : `<path d="M 44,59 Q 50,64 56,59" fill="none" stroke="${mouthStroke}" stroke-width="1.5" stroke-linecap="round"/>`;
-
-    const raceEmoji = race === 'dwarf' ? '⛏' : race === 'elf' ? '🌙' : '👤';
-
-    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="${size}" height="${size}"
-      style="filter:drop-shadow(0 6px 18px ${cls.glow||'#00000088'});display:block" aria-hidden="true">
-      <defs>
-        <radialGradient id="aura-${cls.id}" cx="50%" cy="55%" r="50%">
-          <stop offset="0%" stop-color="${p}" stop-opacity="0.18"/>
-          <stop offset="100%" stop-color="#000" stop-opacity="0"/>
-        </radialGradient>
-      </defs>
-      <circle cx="50" cy="55" r="48" fill="url(#aura-${cls.id})"/>
-      <circle cx="50" cy="50" r="47" fill="none" stroke="${p}" stroke-width="0.5" opacity="0.4"/>
-      ${equipment[cls.id] || ''}
-      <rect x="${bx}" y="64" width="${bW}" height="22" rx="6" fill="${p}" stroke="${a}" stroke-width="1.2"/>
-      <ellipse cx="50" cy="86" rx="${bW/2}" ry="10" fill="${p}" stroke="${a}" stroke-width="1"/>
-      <ellipse cx="${bx-3}" cy="72" rx="7" ry="13" fill="${p}" stroke="${a}" stroke-width="1"/>
-      <ellipse cx="${bx+bW+3}" cy="72" rx="7" ry="13" fill="${p}" stroke="${a}" stroke-width="1"/>
-      <rect x="44" y="58" width="12" height="9" rx="3" fill="${sc}"/>
-      ${elfEars}
-      <ellipse cx="50" cy="40" rx="${rp.headRx}" ry="${rp.headRy}" fill="${sc}"/>
-      <path d="${hairPath}" fill="${hc}" opacity="0.95"/>
-      ${dwarfBeard}
-      <ellipse cx="40" cy="42" rx="${eyeRxL}" ry="${eyeRyL}" fill="white" ${eyeRotL}/>
-      <ellipse cx="60" cy="42" rx="${eyeRxR}" ry="${eyeRyR}" fill="white" ${eyeRotR}/>
-      <circle cx="41" cy="43" r="2.5" fill="#1e1208"/>
-      <circle cx="61" cy="43" r="2.5" fill="#1e1208"/>
-      <circle cx="42" cy="42" r="0.9" fill="white"/>
-      <circle cx="62" cy="42" r="0.9" fill="white"/>
-      <path d="M 50,48 Q 48,53 50,55 Q 52,53 50,48" fill="none" stroke="${noseStroke}" stroke-width="1.2" opacity="0.55" stroke-linecap="round"/>
-      ${mouth}
-      ${accSVG[acc] || ''}
-      <text x="84" y="18" text-anchor="middle" font-size="12">${cls.emoji}</text>
-      <text x="16" y="18" text-anchor="middle" font-size="10">${raceEmoji}</text>
-    </svg>`;
-  }
+  // Avatar-Zeichnung: gemeinsame Funktion aus /js/charakter-avatar.js
+  const drawCharakterAvatar = window.drawCharakterAvatar;
 
   // ── Zustand ──────────────────────────────────────────────────────────────
 
@@ -616,7 +438,7 @@
     const refs = {
       'chips-class':  { opts: CLASSES,      key: 'classId',     fn: o => `<span>${o.emoji}</span><span>${o.label}</span>` },
       'chips-race':   { opts: RACES,        key: 'raceId',      fn: o => `<div><div style="display:flex;gap:4px;align-items:center"><span>${o.emoji}</span><span>${o.label}</span></div><div class="chip-desc">${o.desc}</div></div>` },
-      'chips-gender': { opts: GENDERS,      key: 'genderId',    fn: o => `<span style="font-size:14px">${o.symbol}</span><span>${o.label}</span>` },
+      'chips-gender': { opts: GENDERS,      key: 'genderId',    fn: o => `<span style="font-size:16px">${o.symbol}</span><span>${o.label}</span>` },
       'chips-acc':    { opts: ACCESSORIES,  key: 'accessoryId', fn: null },
     };
 
@@ -689,12 +511,6 @@
     saveBtn.addEventListener('click', saveAvatar);
   }
 
-  // ── Logout ───────────────────────────────────────────────────────────────
-
-  document.getElementById('logout-btn').addEventListener('click', async () => {
-    await fetch('/api/auth/logout', { method: 'POST', credentials: 'same-origin' });
-    window.location.href = '/login.html';
-  });
 
   init();
 })();
