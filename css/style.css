@@ -3825,3 +3825,10 @@ body.regelradar-seite [data-rr-start]:disabled { opacity: .5; cursor: not-allowe
 body.regelradar-seite .rr-panel { padding: 0; background: none; border: 0; box-shadow: none; }
 body.regelradar-seite .screen .card { max-width: none; width: 100%; }
 body.regelradar-seite > header .cat-scroll { justify-content: safe center; max-width: var(--seitenbreite); margin-inline: auto; }
+
+/* Obere Kachelreihe: nur noch zwei große Kacheln (Fächer, Wer bin ich) */
+@media (min-width: 901px) {
+    .bereiche-grid-gross {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
