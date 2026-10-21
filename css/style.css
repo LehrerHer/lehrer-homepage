@@ -3832,3 +3832,10 @@ body.regelradar-seite > header .cat-scroll { justify-content: safe center; max-w
         grid-template-columns: repeat(2, 1fr);
     }
 }
+
+
+/* Startseite: Kacheln (weiß) brauchen einen abgesetzten Grund – nicht von
+   section:nth-child(even) überschreiben lassen */
+#startseite {
+    background-color: var(--farbe-hintergrund);
+}
