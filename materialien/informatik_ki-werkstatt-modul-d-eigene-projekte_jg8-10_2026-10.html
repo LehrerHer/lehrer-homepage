@@ -1,0 +1,627 @@
+<!--
+  Titel: KI-Werkstatt – Modul D: Freiraum & eigene Projekte
+  Fach: Informatik (Werkstatt „KI für Schüler*innen")
+  Klasse/Niveau: Jahrgang 8–10
+  AB-Typ: Gemischt (Projektbörse, Ablaufplan, Steckbrief- und Logbuch-Formulare, Reflexion)
+  Erstellt: 2026-10-29
+  Quelle: Entwurf von Jan Herrmann (Friedensschule Osnabrück), überarbeitet und ins
+          lehrer-herrmann.de-Designsystem sowie die Kolosseum-Fortschrittssynchronisierung integriert.
+-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>KI-Werkstatt – Modul D: Freiraum &amp; eigene Projekte</title>
+<style>
+:root {
+  --primaer: #1e3a5f;
+  --primaer-hell: #2d6a9f;
+  --akzent: #4a9eda;
+  --erfolg: #2ecc71;
+  --fehler: #e74c3c;
+  --hintergrund: #f4f6f7;
+  --karte: #ffffff;
+  --text: #23303f;
+  --text-hell: #64748b;
+  --rahmen: #dbe3ea;
+  --radius: 8px;
+  --schatten: 0 2px 10px rgba(30,58,95,0.08);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--hintergrund);
+  color: var(--text);
+  line-height: 1.65;
+  -webkit-text-size-adjust: 100%;
+}
+
+.container { max-width: 900px; margin: 0 auto; padding: 0 18px 70px; }
+
+/* ── HERO ── */
+.km-hero {
+  background: linear-gradient(135deg, var(--primaer) 0%, var(--primaer-hell) 100%);
+  padding: 34px 20px 26px;
+  color: #fff;
+}
+.km-hero-inner { max-width: 900px; margin: 0 auto; }
+.km-kicker {
+  display: inline-block;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.3);
+  padding: 3px 12px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+.km-hero h1 { font-size: clamp(24px, 5vw, 34px); margin: 0 0 8px; line-height: 1.2; }
+.km-hero p.km-sub { margin: 0 0 16px; color: #cfe0f2; font-size: 15px; }
+.km-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+.km-badge {
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.25);
+  font-size: 12px;
+  padding: 4px 11px;
+  border-radius: 20px;
+}
+.km-regel {
+  margin-top: 18px;
+  background: rgba(255,255,255,.12);
+  border-left: 4px solid #ffd166;
+  padding: 10px 14px;
+  border-radius: 0 6px 6px 0;
+  font-size: 14px;
+}
+
+/* ── SYNC-STATUS ── */
+.kmd-sync-wrap { background: #0f2540; padding: 8px 20px; }
+.kmd-sync-status { max-width: 900px; margin: 0 auto; color: #9fb6cf; font-size: 12px; text-align: right; }
+
+/* ── TABS ── */
+.nav-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding: 16px 0 0; }
+.nav-scroll::-webkit-scrollbar { display: none; }
+.nav-tabs { display: flex; gap: 6px; width: max-content; }
+.nav-tab {
+  flex-shrink: 0;
+  background: var(--karte);
+  border: 1.5px solid var(--rahmen);
+  border-radius: 7px;
+  padding: 7px 14px;
+  font-size: 12.5px;
+  color: var(--text-hell);
+  cursor: pointer;
+  transition: all .18s;
+  white-space: nowrap;
+  font-family: inherit;
+}
+.nav-tab.active { background: var(--primaer); border-color: var(--primaer); color: #fff; }
+
+/* ── SECTIONS ── */
+.section { display: none; padding-top: 18px; animation: fadeIn .25s ease; }
+.section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; } }
+
+.section-header {
+  background: var(--karte);
+  border-radius: var(--radius);
+  padding: 20px 22px 16px;
+  margin-bottom: 16px;
+  border-left: 5px solid var(--akzent);
+  box-shadow: var(--schatten);
+}
+.section-header h2 { font-size: clamp(19px, 4vw, 25px); margin: 0 0 6px; color: var(--primaer); line-height: 1.25; }
+.section-header p.lead { margin: 0; color: var(--text-hell); font-size: 14.5px; }
+
+/* ── PROJEKTBÖRSE ── */
+.kmd-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+.kmd-card {
+  background: var(--karte); border-radius: var(--radius); box-shadow: var(--schatten);
+  padding: 16px 18px; border-top: 4px solid var(--akzent);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.kmd-card h3 { margin: 0; font-size: 16px; color: var(--primaer); }
+.kmd-card p { margin: 0; font-size: 13.5px; color: var(--text); }
+.kmd-card p strong { color: var(--text); }
+.kmd-card .kmd-tool { color: var(--text-hell); font-size: 12px; margin-top: 2px; }
+.kmd-card .btn { margin-top: 8px; align-self: flex-start; }
+
+/* ── ABLAUF ── */
+.kmd-week {
+  background: var(--karte); border-radius: var(--radius); box-shadow: var(--schatten);
+  padding: 18px 20px; margin-bottom: 14px; border-left: 5px solid var(--akzent);
+}
+.kmd-week h3 { margin: 0 0 10px; font-size: 16.5px; color: var(--primaer); }
+.kmd-week ol { margin: 0; padding-left: 20px; }
+.kmd-week li { margin-bottom: 8px; font-size: 14.5px; }
+.kmd-week li:last-child { margin-bottom: 0; }
+.kmd-prompt { display: block; font-style: italic; color: var(--text-hell); margin-top: 3px; font-size: 13.5px; }
+
+/* ── FORMULARE (Steckbrief, Logbuch, Reflexion) ── */
+.aufgaben-block { background: var(--karte); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; box-shadow: var(--schatten); }
+.kmd-feld { margin-bottom: 14px; }
+.kmd-feld:last-child { margin-bottom: 0; }
+.kmd-feld label { display: block; font-size: 13.5px; font-weight: 600; color: var(--primaer); margin-bottom: 5px; }
+.kmd-feld textarea {
+  width: 100%; min-height: 60px; border: 1.5px solid var(--rahmen); border-radius: 7px;
+  padding: 9px 12px; font-family: inherit; font-size: 14.5px; color: var(--text); background: #fbfcfd;
+  resize: vertical;
+}
+.kmd-feld textarea:focus { outline: none; border-color: var(--akzent); box-shadow: 0 0 0 3px rgba(74,158,218,.15); }
+.kmd-logwoche { margin-bottom: 18px; }
+.kmd-logwoche:last-child { margin-bottom: 0; }
+.kmd-logwoche h3 {
+  font-size: 13px; letter-spacing: .5px; text-transform: uppercase; color: var(--text-hell);
+  margin: 0 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--rahmen);
+}
+
+/* ── REGELN-LISTE ── */
+.info-box { background: var(--karte); border-radius: var(--radius); padding: 18px 20px; margin-bottom: 14px; box-shadow: var(--schatten); }
+.info-box ul { margin: 0; padding-left: 20px; }
+.info-box li { margin-bottom: 10px; font-size: 14.5px; }
+.info-box li:last-child { margin-bottom: 0; }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 18px; border-radius: 7px; border: none; cursor: pointer;
+  font-family: inherit; font-size: 14px; font-weight: 600; text-decoration: none;
+  transition: background .18s;
+}
+.btn-primary { background: var(--primaer); color: #fff; }
+.btn-primary:hover { background: var(--primaer-hell); }
+.btn-outline { background: transparent; color: var(--primaer); border: 2px solid var(--primaer); }
+.btn-download { background: var(--erfolg); color: #fff; }
+.btn-download:hover { background: #27ae60; }
+.nav-buttons {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--rahmen); gap: 10px;
+}
+@media (max-width: 480px) { .nav-buttons { flex-direction: column-reverse; } .btn { width: 100%; justify-content: center; } }
+
+/* ── EXPORT / ZUSAMMENFASSUNG ── */
+.zf-gruppe { margin-bottom: 18px; }
+.zf-gruppe:last-child { margin-bottom: 0; }
+.zf-gruppe h4 {
+  font-size: 13px; letter-spacing: .5px; text-transform: uppercase; color: var(--text-hell);
+  margin: 0 0 8px; padding-bottom: 6px; border-bottom: 1px solid var(--rahmen);
+}
+.zf-item { margin-bottom: 10px; }
+.zf-item:last-child { margin-bottom: 0; }
+.zf-frage { font-size: 14px; font-weight: 600; color: var(--primaer); margin-bottom: 2px; }
+.zf-antwort { font-size: 14.5px; color: var(--text); white-space: pre-wrap; }
+.zf-antwort.zf-leer { color: var(--text-hell); font-style: italic; }
+.pdf-hinweis { text-align: center; font-size: 12.5px; color: var(--text-hell); margin-top: 8px; }
+
+/* ── PDF-DRUCKANSICHT ── */
+#pdf-druckkopf { display: none; }
+@media print {
+  nav, .km-hero, .kmd-sync-wrap, .nav-scroll, footer, .btn, .pdf-hinweis { display: none !important; }
+  .section:not(#sExport) { display: none !important; }
+  #sExport { display: block !important; }
+  #sExport .section-header, #sExport .nav-buttons { display: none !important; }
+  #pdf-druckkopf {
+    display: block !important; margin-bottom: 20px;
+    border-bottom: 2px solid #1e3a5f; padding-bottom: 10px;
+  }
+  #pdf-druckkopf h1 { font-size: 20px; color: #1e3a5f; margin: 0 0 6px; }
+  #pdf-druckkopf p { font-size: 13px; color: #555; margin: 0; }
+  body { background: #fff !important; }
+  .container { padding: 0; max-width: 100%; }
+  .zf-item, .zf-gruppe { break-inside: avoid; }
+}
+</style>
+<link rel="stylesheet" href="/css/style.css?v=20260615c">
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+        <a href="/index.html" class="navbar-logo">lehrer-herrmann.de</a>
+        <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="navbar-links" id="navbar-links">
+            <li><a href="/index.html#was-ist-neu">Was ist neu?</a></li>
+            <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+            <li class="navbar-gb-trenner" aria-hidden="true"><span class="navbar-gb-label">Geschützter Bereich</span></li>
+            <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+            <li><a href="/blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+            <li><a href="/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+        </ul>
+        <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="km-hero">
+  <div class="km-hero-inner">
+    <span class="km-kicker">KI-Werkstatt · Modul D</span>
+    <h1>Dein Projekt mit KI</h1>
+    <p class="km-sub">Freiraum &amp; eigene Projekte – Werkstatt „KI für Schüler*innen" · Jahrgang 8–10</p>
+    <div class="km-badges">
+      <span class="km-badge">🎨 4 Sitzungen à 75 Min.</span>
+      <span class="km-badge">👥 Einzel- oder Partnerarbeit</span>
+      <span class="km-badge">🤖 KI-Werkzeug: SchulKI</span>
+      <span class="km-badge">✓ Voraussetzung: Modul A</span>
+    </div>
+    <div class="km-regel">
+      ⚖️ <strong>Die KI darf fragen, prüfen und Feedback geben.</strong> Sie darf <strong>nicht für dich schreiben, rechnen oder gestalten.</strong>
+    </div>
+  </div>
+</div>
+
+<div class="kmd-sync-wrap">
+  <div class="kmd-sync-status" id="syncStatus">Speicherstatus wird geprüft …</div>
+</div>
+
+<div class="container">
+  <div class="nav-scroll">
+    <div class="nav-tabs" id="navTabs">
+      <button type="button" class="nav-tab active" data-tab="boerse">1. Projektbörse</button>
+      <button type="button" class="nav-tab" data-tab="ablauf">2. Ablauf</button>
+      <button type="button" class="nav-tab" data-tab="steckbrief">3. Steckbrief</button>
+      <button type="button" class="nav-tab" data-tab="logbuch">4. KI-Logbuch</button>
+      <button type="button" class="nav-tab" data-tab="reflexion">5. Regeln &amp; Reflexion</button>
+      <button type="button" class="nav-tab" data-tab="export">6. Export</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════ PROJEKTBÖRSE ════════════════════════════════ -->
+  <div class="section active" id="sBoerse">
+    <div class="section-header">
+      <h2>Projektbörse</h2>
+      <p class="lead">Wähle eine Karte oder entwickle eine eigene Idee (Karte 12).</p>
+    </div>
+    <div class="kmd-cards" id="cards"></div>
+  </div>
+
+  <!-- ════════════════════════════════ ABLAUF ════════════════════════════════ -->
+  <div class="section" id="sAblauf">
+    <div class="section-header">
+      <h2>So läuft dein Projekt</h2>
+      <p class="lead">Jede Sitzung endet mit einem Logbuch-Eintrag. Die erste Fassung schreibst du immer <strong>ohne</strong> KI.</p>
+    </div>
+    <div id="weeks"></div>
+  </div>
+
+  <!-- ════════════════════════════════ STECKBRIEF ════════════════════════════════ -->
+  <div class="section" id="sSteckbrief">
+    <div class="section-header">
+      <h2>Projektsteckbrief</h2>
+      <p class="lead">Füllt den Steckbrief gemeinsam aus und lasst ihn euch von der Lernbegleitung freigeben.</p>
+    </div>
+    <div class="aufgaben-block"><form id="steckbrief-form"></form></div>
+  </div>
+
+  <!-- ════════════════════════════════ LOGBUCH ════════════════════════════════ -->
+  <div class="section" id="sLogbuch">
+    <div class="section-header">
+      <h2>KI-Logbuch</h2>
+      <p class="lead">Trage jede wichtige KI-Nutzung ein. Arbeitet ihr zu zweit, führt ihr ein gemeinsames Logbuch.</p>
+    </div>
+    <div class="aufgaben-block" id="log-weeks"></div>
+  </div>
+
+  <!-- ════════════════════════════════ REGELN & REFLEXION ════════════════════════════════ -->
+  <div class="section" id="sReflexion">
+    <div class="section-header">
+      <h2>Stolperfallen und Regeln</h2>
+    </div>
+    <div class="info-box">
+      <ul>
+        <li><strong>„Mach mal schnell fertig":</strong> Liefert die KI ganzen Text, Code oder Plan, ist es nicht mehr dein Projekt. Bitte um Fragen oder Hinweise.</li>
+        <li><strong>Keine persönlichen Daten:</strong> keine Namen, Adressen oder Umfrageantworten echter Personen eingeben.</li>
+        <li><strong>Prüfen statt glauben:</strong> Fakten mit einer zweiten Quelle checken.</li>
+        <li><strong>Erst selbst, dann fragen:</strong> erst du oder dein Team, dann die KI, dann die Lernbegleitung.</li>
+        <li><strong>Verbindlichkeit:</strong> Mit dem Logbuch kann dein Team auch weiterarbeiten, wenn jemand fehlt.</li>
+      </ul>
+    </div>
+    <div class="section-header" style="margin-top:20px">
+      <h2>Abschluss-Reflexion</h2>
+    </div>
+    <div class="aufgaben-block"><form id="reflexion-form"></form></div>
+  </div>
+
+  <!-- ════════════════════════════════ EXPORT ════════════════════════════════ -->
+  <div class="section" id="sExport">
+    <div class="section-header">
+      <h2>Export</h2>
+      <p class="lead">Steckbrief, Logbuch und Reflexion auf einen Blick – zeig sie deiner Lernbegleitung oder lade sie als PDF herunter.</p>
+    </div>
+
+    <div class="aufgaben-block" id="exportInhalt"><!-- wird per JS gefüllt --></div>
+
+    <div id="pdf-druckkopf">
+      <h1>KI-Werkstatt – Modul D: Freiraum &amp; eigene Projekte</h1>
+      <p id="pdf-druckkopf-meta"></p>
+    </div>
+
+    <div class="nav-buttons">
+      <span></span>
+      <button type="button" class="btn btn-download" onclick="kmd_pdf()">📄 Als PDF speichern</button>
+    </div>
+    <p class="pdf-hinweis">
+      Tipp: Wähle im Druckdialog „Als PDF sichern"/„Speichern unter PDF" – auf dem iPad über das Freigabe-Symbol „In Dateien sichern".
+    </p>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+(function () {
+  'use strict';
+
+  // ---------- Inhalte ----------
+  var CARDS = [
+    {n:1, t:"Erklär-Projekt", p:"Erklärplakat, Erklärvideo oder Folien zu einem Thema deiner Wahl", ki:"Stellt Verständnisfragen, spielt „ahnungslose Zuschauer:in“", self:"Inhalt, Gestaltung, Sprechtext", tool:"C.8, C.11"},
+    {n:2, t:"Eigene Geschichte oder Comic-Skript", p:"Kurzgeschichte oder Storyboard", ki:"Ideen-Sparring, Lektorat mit Hinweisen statt Umschreiben", self:"Handlung, Figuren, der ganze Text", tool:"C.3"},
+    {n:3, t:"Lernspiel oder Quiz für andere", p:"Quiz, Brettspiel oder Rätsel zu einem Fachthema", ki:"Prüft deine Fragen auf Fehler und Verständlichkeit", self:"Fragen, Spielregeln, Material", tool:"C.10"},
+    {n:4, t:"Podcast oder Interview", p:"Audiofolge mit einem echten Interview", ki:"Hilft, Fragen zu schärfen, spielt Probe-Interviewpartner", self:"Interview führen, aufnehmen, moderieren", tool:"C.9"},
+    {n:5, t:"Ratgeber für Jüngere", p:"Leitfaden oder Flyer, z. B. „Gut ankommen an der Schule“", ki:"Spielt die Zielgruppe und sagt, was unklar ist", self:"Inhalte aus eigener Erfahrung, Text", tool:"C.3"},
+    {n:6, t:"Schul-Umfrage", p:"Fragebogen und Auswertung als Plakat", ki:"Prüft Fragen auf Suggestivfragen und Unklarheiten", self:"Umfrage durchführen, auswerten, Schlüsse ziehen", tool:"C.2"},
+    {n:7, t:"Faktencheck", p:"Check-Bericht zu einer Behauptung oder einem Video aus Social Media", ki:"Hilft dir, Prüffragen zu entwickeln", self:"Quellen suchen, vergleichen, urteilen", tool:"C.2"},
+    {n:8, t:"Streitgespräch", p:"Pro-Contra-Debatte vor Publikum", ki:"Übernimmt die Gegenseite und testet deine Argumente", self:"Argumente recherchieren, formulieren, vortragen", tool:"C.8"},
+    {n:9, t:"Aktion planen", p:"Plan für ein Event oder eine Aktion, z. B. Spendenlauf", ki:"Kritischer Planungscheck: „Was hast du vergessen?“", self:"Idee, Planung, Absprachen", tool:"C.6"},
+    {n:10, t:"Mini-Programm oder Website", p:"Kleines Programm oder einfache Webseite", ki:"Erklärt Fehlermeldungen, gibt Hinweise statt fertigem Code", self:"Code schreiben und testen", tool:"C.6"},
+    {n:11, t:"Tutorial zu deinem Hobby", p:"Schritt-für-Schritt-Anleitung als Text, Foto oder Video", ki:"Prüft, ob Anfänger:innen deine Anleitung verstehen", self:"Fachwissen, Fotos oder Video, Text", tool:"C.11"},
+    {n:12, t:"Freie Idee", p:"Dein eigenes Produkt", ki:"„Pitch-Check“: stellt kritische Fragen zu deiner Idee", self:"Alles – nach Freigabe durch die Lernbegleitung", tool:"–"}
+  ];
+
+  var WEEKS = [
+    {t:"Woche 1 – Idee und Plan", steps:[
+      "Projektbörse ansehen und eine Karte wählen (10 Min.)",
+      "Idee mit der KI schärfen (20 Min.)|„Stell mir fünf Fragen zu meiner Projektidee, damit ich sie genauer planen kann. Mach keine eigenen Vorschläge.“",
+      "Projektsteckbrief ausfüllen (30 Min.)",
+      "Steckbrief der Lernbegleitung zeigen und Freigabe holen (10 Min.)",
+      "Logbuch (5 Min.)"]},
+    {t:"Woche 2 – Erarbeiten und Rohfassung", steps:[
+      "Logbuch lesen, Tagesziel festlegen (5 Min.)",
+      "Inhalte sammeln und eine Rohfassung erstellen – ohne KI-Text (50 Min.)",
+      "Erster KI-Check (15 Min.)|„Lies meine Rohfassung. Was fehlt, was ist unklar? Schreib nichts um.“",
+      "Logbuch (5 Min.)"]},
+    {t:"Woche 3 – Feedback und Überarbeiten", steps:[
+      "Tagesziel festlegen (5 Min.)",
+      "Feedback von einem anderen Team einholen (20 Min.)",
+      "Feedback von der KI einholen (15 Min.)",
+      "Überarbeiten: Welches Feedback übernimmst du, welches nicht – und warum? (30 Min.)",
+      "Logbuch (5 Min.)"]},
+    {t:"Woche 4 – Fertigstellen und Vorstellen", steps:[
+      "Produkt fertigstellen (30 Min.)",
+      "Galerie-Rundgang oder Kurzvorstellung, je 2–3 Minuten (30 Min.)",
+      "Abschluss-Reflexion (15 Min.)"]}
+  ];
+
+  var STECKBRIEF = [
+    ["namen","Name(n)"], ["projekt","Projekt (Karten-Nr. oder eigene Idee)"],
+    ["produkt","Mein Produkt am Ende ist …"], ["zielgruppe","Für wen ist es? (Zielgruppe)"],
+    ["warum","Warum interessiert mich das?"], ["aufgaben","Wer macht was? (bei Partnerarbeit)"],
+    ["ziel2","Ziel Woche 2"], ["ziel3","Ziel Woche 3"], ["ziel4","Ziel Woche 4"],
+    ["kinutzung","Wofür nutze ich die KI – und wofür nicht?"],
+    ["freigabe","Freigabe Lernbegleitung (Kürzel)"]
+  ];
+
+  var LOG_FIELDS = [
+    ["frage","Was habe ich die KI gefragt?"],
+    ["ergebnis","Was kam heraus? (Kern in 1 Satz)"],
+    ["entscheidung","Übernommen, verändert oder verworfen – und warum?"],
+    ["naechster","Was habe ich heute geschafft? Was ist mein nächster Schritt?"]
+  ];
+
+  var REFLEXION = [
+    ["r1","Was an meinem Produkt habe ich selbst gedacht und gemacht?"],
+    ["r2","Wo hat mir die KI wirklich geholfen?"],
+    ["r3","Wo hätte die KI mir das Denken abgenommen – und wie habe ich das verhindert?"],
+    ["r4","Darauf bin ich stolz: …"]
+  ];
+
+  // ---------- Speicher: lokal sofort, Kolosseum-Konto geräteübergreifend ----------
+  var STORAGE_KEY = 'ki-werkstatt-modul-d';
+  var KOLOSSEUM_API = 'https://kolosseum.lehrer-herrmann.de/api';
+  var eingeloggt = false;
+  var speicherTimer = null;
+
+  function localLaden() {
+    try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch (e) { return {}; }
+  }
+  function localSpeichern() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  var state = localLaden();
+
+  function uhrzeit() { return new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' }); }
+  function setSyncStatus(text) {
+    var el = document.getElementById('syncStatus');
+    if (el) el.textContent = text;
+  }
+
+  function serverSpeichern() {
+    if (!eingeloggt) {
+      setSyncStatus('💾 Nur auf diesem Gerät gespeichert – einloggen, damit dein Team denselben Stand sieht.');
+      return;
+    }
+    setSyncStatus('⏳ Wird synchronisiert …');
+    fetch(KOLOSSEUM_API + '/ki-werkstatt/modul-d', {
+      method: 'PUT',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ daten: state }),
+      signal: AbortSignal.timeout(6000)
+    }).then(function (r) {
+      setSyncStatus(r.ok ? ('✓ Mit Kolosseum synchronisiert · ' + uhrzeit())
+                          : '⚠️ Synchronisierung fehlgeschlagen – lokal bleibt gespeichert.');
+    }).catch(function () {
+      setSyncStatus('⚠️ Keine Verbindung – lokal bleibt gespeichert, wird beim nächsten Mal erneut versucht.');
+    });
+  }
+
+  function geplantSpeichern() {
+    localSpeichern();
+    setSyncStatus('💾 Wird gespeichert …');
+    clearTimeout(speicherTimer);
+    speicherTimer = setTimeout(serverSpeichern, 1200);
+  }
+
+  async function sync_init() {
+    try {
+      var meRes = await fetch(KOLOSSEUM_API + '/auth/me', { credentials: 'include', signal: AbortSignal.timeout(4000) });
+      eingeloggt = meRes.ok;
+    } catch (e) { eingeloggt = false; }
+
+    if (!eingeloggt) {
+      setSyncStatus('🔒 Nicht eingeloggt – Stand bleibt nur auf diesem Gerät.');
+      return;
+    }
+
+    try {
+      var res = await fetch(KOLOSSEUM_API + '/ki-werkstatt/modul-d', { credentials: 'include', signal: AbortSignal.timeout(5000) });
+      if (res.ok) {
+        var data = await res.json();
+        if (data.daten) {
+          state = Object.assign({}, state, data.daten);
+          localSpeichern();
+          formulareFuellen();
+        }
+      }
+      setSyncStatus('✓ Mit Kolosseum synchronisiert');
+    } catch (e) {
+      setSyncStatus('⚠️ Keine Verbindung zum Kolosseum – lokaler Stand wird genutzt.');
+    }
+  }
+
+  // ---------- Render ----------
+  function feldHTML(id, label, value) {
+    return '<div class="kmd-feld"><label for="' + id + '">' + label + '</label>' +
+      '<textarea id="' + id + '" data-persist="' + id + '">' + (value || '') + '</textarea></div>';
+  }
+
+  document.getElementById('cards').innerHTML = CARDS.map(function (c) {
+    return '<div class="kmd-card">' +
+      '<h3>' + c.n + '. ' + c.t + '</h3>' +
+      '<p><strong>Produkt:</strong> ' + c.p + '</p>' +
+      '<p><strong>KI hilft:</strong> ' + c.ki + '</p>' +
+      '<p><strong>Du machst:</strong> ' + c.self + '</p>' +
+      (c.tool !== '–' ? '<p class="kmd-tool">🛠️ Passt zu Modul C: ' + c.tool + '</p>' : '') +
+      '<button type="button" class="btn btn-primary" data-pick="' + c.n + '">Diese Karte wählen</button>' +
+      '</div>';
+  }).join('');
+
+  document.getElementById('weeks').innerHTML = WEEKS.map(function (w) {
+    var steps = w.steps.map(function (s) {
+      var teile = s.split('|');
+      return '<li>' + teile[0] + (teile[1] ? '<span class="kmd-prompt">' + teile[1] + '</span>' : '') + '</li>';
+    }).join('');
+    return '<div class="kmd-week"><h3>' + w.t + '</h3><ol>' + steps + '</ol></div>';
+  }).join('');
+
+  var sbForm = document.getElementById('steckbrief-form');
+  sbForm.innerHTML = STECKBRIEF.map(function (f) { return feldHTML('sb_' + f[0], f[1], state['sb_' + f[0]]); }).join('');
+
+  var logEl = document.getElementById('log-weeks');
+  logEl.innerHTML = [1, 2, 3, 4].map(function (w) {
+    var felder = LOG_FIELDS.map(function (f) { return feldHTML('log' + w + '_' + f[0], f[1], state['log' + w + '_' + f[0]]); }).join('');
+    return '<div class="kmd-logwoche"><h3>Woche ' + w + '</h3>' + felder + '</div>';
+  }).join('');
+
+  var rfForm = document.getElementById('reflexion-form');
+  rfForm.innerHTML = REFLEXION.map(function (f) { return feldHTML(f[0], f[1], state[f[0]]); }).join('');
+
+  function formulareFuellen() {
+    document.querySelectorAll('[data-persist]').forEach(function (el) {
+      var key = el.dataset.persist;
+      if (state[key] !== undefined) el.value = state[key];
+    });
+  }
+
+  document.addEventListener('input', function (e) {
+    var key = e.target.dataset && e.target.dataset.persist;
+    if (!key) return;
+    state[key] = e.target.value;
+    geplantSpeichern();
+  });
+
+  // Karte wählen -> Steckbrief vorbelegen
+  document.getElementById('cards').addEventListener('click', function (e) {
+    var n = e.target.dataset.pick;
+    if (!n) return;
+    var c = CARDS.filter(function (x) { return x.n == n; })[0];
+    state.sb_projekt = c.n + '. ' + c.t;
+    var feld = document.getElementById('sb_projekt');
+    if (feld) feld.value = state.sb_projekt;
+    geplantSpeichern();
+    showTab('steckbrief');
+  });
+
+  // ---------- Export / PDF ----------
+  function htmlEscape(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function zfGruppe(titel, felder) {
+    var items = felder.map(function (f) {
+      var antwort = state[f[0]] || '';
+      var leer = !antwort;
+      return '<div class="zf-item"><div class="zf-frage">' + htmlEscape(f[1]) + '</div>' +
+        '<div class="zf-antwort' + (leer ? ' zf-leer' : '') + '">' +
+        htmlEscape(leer ? '(noch nicht ausgefüllt)' : antwort) + '</div></div>';
+    }).join('');
+    return '<div class="zf-gruppe"><h4>' + htmlEscape(titel) + '</h4>' + items + '</div>';
+  }
+
+  function renderExport() {
+    var ziel = document.getElementById('exportInhalt');
+    if (!ziel) return;
+    var html = zfGruppe('Projektsteckbrief', STECKBRIEF.map(function (f) { return ['sb_' + f[0], f[1]]; }));
+    [1, 2, 3, 4].forEach(function (w) {
+      html += zfGruppe('Logbuch – Woche ' + w, LOG_FIELDS.map(function (f) { return ['log' + w + '_' + f[0], f[1]]; }));
+    });
+    html += zfGruppe('Abschluss-Reflexion', REFLEXION);
+    ziel.innerHTML = html;
+  }
+
+  window.kmd_pdf = function () {
+    renderExport();
+    var name = state.sb_namen || '';
+    var meta = 'Datum: ' + new Date().toLocaleDateString('de-DE');
+    if (name) meta = 'Team: ' + name + ' · ' + meta;
+    document.getElementById('pdf-druckkopf-meta').textContent = meta;
+    window.print();
+  };
+
+  // ---------- Tabs ----------
+  function showTab(id) {
+    document.querySelectorAll('.nav-tab').forEach(function (b) { b.classList.toggle('active', b.dataset.tab === id); });
+    document.querySelectorAll('.section').forEach(function (s) { s.classList.toggle('active', s.id === 's' + id.charAt(0).toUpperCase() + id.slice(1)); });
+    if (id === 'export') renderExport();
+  }
+  document.getElementById('navTabs').addEventListener('click', function (e) {
+    var tab = e.target.dataset.tab;
+    if (tab) showTab(tab);
+  });
+
+  sync_init();
+})();
+</script>
+
+<footer>
+    <div class="container footer-inner">
+        <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+        <nav class="footer-links" aria-label="Rechtliche Links">
+            <a href="/impressum.html">Impressum</a>
+            <a href="/datenschutz.html">Datenschutz</a>
+        </nav>
+        <a href="https://kolosseum.lehrer-herrmann.de/admin/" id="admin-footer-link" class="admin-footer-link" aria-label="Admin-Bereich">⚙</a>
+    </div>
+</footer>
+
+<script src="/js/main.js?v=20260615c"></script>
+<script src="/js/kolosseum-login-widget.js"></script>
+<script src="/js/worksheet-xp.js"></script>
+<script>if (window.worksheetLoginHinweis) worksheetLoginHinweis();</script>
+</body>
+</html>

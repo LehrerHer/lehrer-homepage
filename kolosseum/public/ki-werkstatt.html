@@ -205,7 +205,8 @@
         d: {
           icon: '🎨',
           title: 'Modul D – Freiraum & eigene Projekte',
-          desc: 'Eigene Ideen mit KI umsetzen.',
+          desc: 'Setze in vier Wochen ein eigenes Projekt um – wähle aus der Projektbörse oder bring deine eigene Idee mit.',
+          url: 'https://lehrer-herrmann.de/materialien/informatik_ki-werkstatt-modul-d-eigene-projekte_jg8-10_2026-10.html',
         },
       };
 
@@ -238,6 +239,9 @@
               ${meta.submodule.map((sm) => `<a class="werkstatt-sub-link" href="${sm.url}"><span class="sub-nr">${sm.nr}</span> ${sm.label}</a>`).join('')}
             </div>
           `;
+        } else if (meta.url) {
+          badgeHtml = `<span class="werkstatt-badge offen">🔓 Frei wählbar</span>`;
+          aktionHtml = `<a class="btn btn-primary" href="${meta.url}">Starten →</a>`;
         } else {
           badgeHtml = `<span class="werkstatt-badge bald">🔜 Bald verfügbar</span>`;
           aktionHtml = `<span class="werkstatt-hinweis">Inhalte folgen in Kürze</span>`;
