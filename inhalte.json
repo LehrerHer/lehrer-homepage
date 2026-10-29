@@ -1,6 +1,15 @@
 {
   "materialien": [
     {
+      "id": "1793232000000",
+      "titel": "KI-Werkstatt – Modul D: Freiraum & eigene Projekte (Jg. 8–10)",
+      "beschreibung": "Selbstlern-Arbeitsblatt: In vier Wochen ein eigenes Projekt mit KI als Sparringspartner umsetzen – Projektbörse, Steckbrief, Logbuch, PDF-Export",
+      "icon": "🎨",
+      "url": "materialien/informatik_ki-werkstatt-modul-d-eigene-projekte_jg8-10_2026-10.html",
+      "seite": "informatik",
+      "datum": "2026-10-29"
+    },
+    {
       "id": "1788393600000",
       "titel": "Was ist Prosa? – Epik, Lyrik und Drama im Vergleich (Kl. 9/10)",
       "beschreibung": "Abgrenzung von Prosa, Lyrik und Drama – 10 Fragen mit Begründung, XP & Bestenliste",
