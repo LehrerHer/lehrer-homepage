@@ -132,6 +132,18 @@ db.exec(`
   )
 `);
 
+// KI-Werkstatt Modul D (Freiraum/eigene Projekte): Steckbrief, Logbuch und
+// Reflexion als ein JSON-Blob pro Lernpartner:in, damit der Stand geräteübergreifend
+// synchron bleibt (statt nur lokal im Browser-Speicher eines Geräts).
+db.exec(`
+  CREATE TABLE IF NOT EXISTS ki_werkstatt_modul_d (
+    student_id INTEGER PRIMARY KEY,
+    daten      TEXT    NOT NULL DEFAULT '{}',
+    updated_at TEXT    NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+  )
+`);
+
 // Feedback-Notizen: Lernbegleiter diktiert Text über eine Lernzeit, Claude teilt ihn
 // nach Lernpartner:in auf und ordnet jedem Abschnitt eine Kategorie zu (siehe CLAUDE.md-Briefing)
 db.exec(`
