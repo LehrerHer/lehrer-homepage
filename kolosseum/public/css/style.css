@@ -28,7 +28,7 @@
   --radius: 16px;
   --radius-sm: 10px;
   --transition: 0.25s cubic-bezier(.4,0,.2,1);
-  --seitenbreite: min(1680px, 100%);   /* wie Hauptseite: große Monitore nutzen */
+  --seitenbreite: min(1200px, 100%);   /* wie Hauptseite */
   --schrift-titel: 'Fredoka One', sans-serif;
   --schrift-text: 'Nunito', sans-serif;
 }

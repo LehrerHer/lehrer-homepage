@@ -43,6 +43,7 @@ lehrer-homepage/
 │   ├── blog.js · blog-daten.js · blog-einreichen.js  # Blog-Rendering/-Fallback/-Upload
 │   ├── api-config.js · leaderboard.js  # Globale Quiz-Bestenlisten
 │   ├── quiz-engine.js   # Gemeinsame Quiz-Engine (MC · Bilderraten · stumme Karte · Lückentext), Daten aus JSON
+│   ├── seitenleisten.js # Startseite ≥ 1720 px: Inhaltsverzeichnis (links), Arena-Spalte + „Zuletzt benutzt“ (rechts)
 ├── neuigkeiten.json     # Pflegbare Einträge für „Was ist neu?" (Funktionen)
 ├── inhalte.json         # Pflegbare Einträge für neue Materialien (dynamic-content.js)
 ├── materialien/         # Generierte interaktive Arbeitsblätter/Quizze (HTML)
@@ -584,7 +585,7 @@ Sichtbarer Name des Arena-Bereichs: **„Gladiatorenkämpfe"** (Navbar-Icon blei
   Volk = Körperbau/Ohren/Bart/Gesicht. Ohne gespeicherten Charakter: XP-Gladiator aus `avatar.js`.
   API liefert `avatar_config` in `/api/students/rangliste` und `h_avatar`/`g_avatar` in
   `/api/arena/kampf/:id`.
-- **Seitenbreite:** Kolosseum nutzt `--seitenbreite: min(1680px, 100%)` wie die Hauptseite.
+- **Seitenbreite:** Kolosseum nutzt `--seitenbreite: min(1200px, 100%)` wie die Hauptseite (seit 2026-11 wieder 1200 px).
 
 ---
 
@@ -778,12 +779,44 @@ Nach der HTML-Ausgabe kurz angeben:
 
 ---
 
+## Seitenbreite & Seitenleisten (Stand 2026-11)
+
+- **Inhaltsbreite:** `--seitenbreite: min(1200px, 100%)` in `css/style.css` **und** gespiegelt in
+  `kolosseum/public/css/style.css`. Navbar, Footer, `.container`, Kacheln und RegelRadar-Seiten hängen daran.
+  Nicht wieder auf 1680 px hochsetzen – große Monitore nutzen stattdessen die Seitenleisten.
+- **Seitenleisten (nur Startseite, nur ≥ 1720 px):** Markup in `index.html` direkt unter der Navbar
+  (`<div class="seitenleisten">` mit `<nav id="seiten-inhalt" data-scrollspy>` links und
+  `<aside id="seiten-rand">` rechts), Inhalt per `js/seitenleisten.js`, Stile im Block „SEITENLEISTEN“ in
+  `css/style.css`. `body` trägt `class="hat-seitenleisten"`. Unterhalb von 1720 px komplett ausgeblendet –
+  **nichts darf nur dort erreichbar sein.**
+  - *Links:* mitlaufendes Inhaltsverzeichnis aller `section[id]` (Titel aus `data-inhalt`, sonst erste
+    Überschrift). Der Scroll-Spy in `js/main.js` (Abschnitt 2) markiert `.aktiv` in Navbar **und**
+    `[data-scrollspy]`; vom Login-Gate ausgeblendete Abschnitte verschwinden auch im Verzeichnis.
+  - *Rechts oben:* Arena-Spalte – eingeloggt (`GET /api/auth/me`): Gladiatorenname, XP, Stufe
+    (Stufen wie `LEVELS` in `kolosseum/routes/public.js`, dort und in `js/seitenleisten.js` synchron halten),
+    Top 5 aus `/api/students/rangliste`; ausgeloggt: Teaser mit Login-/Registrier-Link. Ab 1720 px blendet
+    `js/arena-bar.js` die untere Leiste auf Seiten mit `body.hat-seitenleisten` aus, sonst bleibt sie.
+  - *Rechts unten:* „Zuletzt benutzt“ – die 3 zuletzt geöffneten Quizze/Arbeitsblätter. Erfasst in
+    `js/main.js` (Abschnitt 2b) auf Seiten unter `/materialien/` und Root-Seiten mit `quiz`, `rechenblatt`
+    oder `mathe-zahlen-groessen` im Namen; nur `localStorage` (`lh_zuletzt_benutzt`, try/catch, Geheimlink `?k=` bleibt erhalten).
+- **Login-Gate-Fix (2026-11):** `index.html` blendet geschützte Sektionen per Stylesheet aus; `js/homepage-gate.js`
+  setzt deshalb beim Einblenden `display: 'block'` (ein leeres Inline-Style würde die Regel nicht überschreiben).
+
+---
+
 ## Quiz-Engine (`js/quiz-engine.js`, Stand 2026-11)
 
 **Neue Quizze werden mit der gemeinsamen Engine gebaut** – nicht mehr als eigenständige HTML-Datei mit
 kopierter XP-/Bestenlisten-Logik. Ein Quiz besteht aus **einer JSON-Datei** in `materialien/quiz/<slug>.json`
 und einer **HTML-Hülle** in `materialien/` (Beispiele: `materialien/deutsch_was-ist-prosa_9-10_2026-09.html`
-(MC) und `materialien/allgemein_kaefer-quiz_jg5-10_2026-06.html` (Bilderraten)).
+(MC), `materialien/allgemein_kaefer-quiz_jg5-10_2026-06.html` (Bilderraten),
+`materialien/erdkunde_bundeslaender-hauptstaedte_jg5-10_2026-05.html` (Karte mit zwei Gruppen)).
+
+**Bereits auf der Engine (Stand 2026-11):** Prosa-Quiz, Käfer-, Masken-, Wintersport-Legenden (+ Kopie `ws-7f3k9q.html`),
+Fußball-Rebus, stumme Karten Bundesländer / Bundesländer & Hauptstädte / Niedersachsen (Kartenbilder unter
+`img/quiz/erdkunde-*/stumm.webp` + `loesung.webp`). **Noch eigenständig:** Monatsnamen-Rebus (Bonusfrage am Ende),
+Lehrer-Rebus (drei gestaffelte Tipps, 48 Base64-Bilder), Satzglieder & Zeitformen (Einfärben/Sortieren) sowie die
+großen Root-Quizze (Stilmittel, Literaturwissenschaft, Rechtschreibung, Lernquiz 5, Deutsch Sek I) mit eigenen Modi.
 
 ```html
 <link rel="stylesheet" href="/css/style.css">
@@ -817,8 +850,8 @@ Geschützte Quizze: wie bisher `auth-guard.js` per `document.write` im `<head>` 
 | Typ | Fragen-Format | Optionen |
 |-----|---------------|----------|
 | `mc` | `{frage, optionen:[…], richtig: 1` oder `[0,2]` (Mehrfachauswahl)`, erklaerung}` | `mischen`, `optionenMischen`, `anzahl` |
-| `bilder` | `bilder: "/img/quiz/<quiz>/"`, `{bild, antwort, alternativen:[…], frage, tipp, info:{zeilen:[[label,wert]], wissenswertes:[…]}}` | `mischen` (Standard an), `versuche` 1–6, `toleranz` (Levenshtein, Standard 3), `teilantworten` |
-| `karte` | `karte: {stumm, loesung?}`, `{antwort, x, y, alternativen}` (x/y in %) | `modi: ["leicht","mittel","schwer"]` |
+| `bilder` | `bilder: "/img/quiz/<quiz>/"`, `{bild, antwort, alternativen:[…], frage, tipp, bonus, notiz, info:{zeilen:[[label,wert]], wissenswertes:[…]}}` | `mischen` (Standard an), `versuche` 1–6, `toleranz` (Levenshtein, Standard 3), `teilantworten` (Nachname reicht) |
+| `karte` | `karte: {stumm, loesung?}`, `{antwort, x, y, alternativen, gruppe?}` (x/y in %) | `modi: ["leicht","mittel","schwer"]`, `gruppen: {"bl": {name, farbe}, …}` (Auswahloptionen nur aus derselben Gruppe) |
 | `lueckentext` | `fragen: [{titel?, text}]` – Lücken `[antwort|alternative]` (Eingabe) bzw. `{richtig|falsch|falsch}` (Auswahl) | `genau` (Standard true = Groß-/Kleinschreibung zählt), `optionenMischen` |
 
 Jede Lücke / jeder Hotspot / jedes Bild = **eine Frage** für XP.

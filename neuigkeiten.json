@@ -2,6 +2,18 @@
   "_hinweis": "Neue Funktionen für die 'Was ist neu?'-Sektion. Neueste oben einfügen. Felder: titel, datum (JJJJ-MM-TT), meta (Bereich), url. Wird von js/was-ist-neu.js geladen; es werden automatisch die 5 jüngsten angezeigt.",
   "funktionen": [
     {
+      "titel": "Startseite: Inhalt wieder 1200 px breit; auf großen Bildschirmen Inhaltsverzeichnis, Arena-Spalte und „Zuletzt benutzt“ am Rand",
+      "datum": "2026-11-04",
+      "meta": "Startseite",
+      "url": "index.html"
+    },
+    {
+      "titel": "Quiz-Engine: Masken-, Wintersport-, Fußball-Rebus- und die drei Stumme-Karten-Quizze migriert",
+      "datum": "2026-11-04",
+      "meta": "Technik",
+      "url": "fach-erdkunde.html"
+    },
+    {
       "titel": "Neue Quiz-Engine: Quizze bestehen nur noch aus einer JSON-Datei (MC, Bilderraten, stumme Karte, Lückentext)",
       "datum": "2026-11-04",
       "meta": "Technik",
