@@ -785,14 +785,18 @@ Nach der HTML-Ausgabe kurz angeben:
 - **Inhaltsbreite:** `--seitenbreite: min(1200px, 100%)` in `css/style.css` **und** gespiegelt in
   `kolosseum/public/css/style.css`. Navbar, Footer, `.container`, Kacheln und RegelRadar-Seiten hängen daran.
   Nicht wieder auf 1680 px hochsetzen – große Monitore nutzen stattdessen die Seitenleisten.
-- **Seitenleisten (nur Startseite, nur ≥ 1720 px):** Markup in `index.html` direkt unter der Navbar
-  (`<div class="seitenleisten">` mit `<nav id="seiten-inhalt" data-scrollspy>` links und
-  `<aside id="seiten-rand">` rechts), Inhalt per `js/seitenleisten.js`, Stile im Block „SEITENLEISTEN“ in
-  `css/style.css`. `body` trägt `class="hat-seitenleisten"`. Unterhalb von 1720 px komplett ausgeblendet –
-  **nichts darf nur dort erreichbar sein.**
-  - *Links:* mitlaufendes Inhaltsverzeichnis aller `section[id]` (Titel aus `data-inhalt`, sonst erste
-    Überschrift). Der Scroll-Spy in `js/main.js` (Abschnitt 2) markiert `.aktiv` in Navbar **und**
-    `[data-scrollspy]`; vom Login-Gate ausgeblendete Abschnitte verschwinden auch im Verzeichnis.
+- **Seitenleisten (nur ≥ 1720 px):** Inhalt per `js/seitenleisten.js`, Stile im Block „SEITENLEISTEN“ in
+  `css/style.css`. Unterhalb von 1720 px komplett ausgeblendet – **nichts darf nur dort erreichbar sein.**
+  - *Links (alle Seiten):* mitlaufendes Inhaltsverzeichnis. Startseite: aus den `section[id]` (Titel aus `data-inhalt`,
+    sonst erste Überschrift). Unterseiten: aus den sichtbaren `h2` in `<main>` (fehlende Anker-IDs werden als
+    `abschnitt-<slug>` ergänzt, max. 14 Einträge, ab 2 Überschriften). Fehlt das Markup, legt das Script die linke
+    Leiste selbst direkt unter `nav.navbar` an – deshalb genügt auf jeder Root-Seite
+    `<script src="js/seitenleisten.js"></script>` nach `main.js` (bereits auf allen Seiten mit `css/style.css` eingebunden;
+    **bei neuen Root-Seiten ergänzen**). Der Scroll-Spy in `js/main.js` (Abschnitt 2) markiert `.aktiv` in Navbar **und**
+    `[data-scrollspy]`; seine Ziele sind `section[id]` plus alle Elemente, auf die das Verzeichnis zeigt; vom Login-Gate
+    ausgeblendete Abschnitte verschwinden auch im Verzeichnis.
+  - *Startseite zusätzlich:* Markup in `index.html` (`<div class="seitenleisten">` mit `<nav id="seiten-inhalt" data-scrollspy>`
+    links und `<aside id="seiten-rand">` rechts), `body` trägt `class="hat-seitenleisten"` (blendet ab 1720 px die untere Arena-Leiste aus).
   - *Rechts oben:* Arena-Spalte – eingeloggt (`GET /api/auth/me`): Gladiatorenname, XP, Stufe
     (Stufen wie `LEVELS` in `kolosseum/routes/public.js`, dort und in `js/seitenleisten.js` synchron halten),
     Top 5 aus `/api/students/rangliste`; ausgeloggt: Teaser mit Login-/Registrier-Link. Ab 1720 px blendet

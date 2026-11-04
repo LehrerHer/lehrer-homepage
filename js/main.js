@@ -175,23 +175,32 @@
    sichtbaren Sektion als "aktiv" markiert.
    ============================================================ */
 (function () {
-    if (document.querySelectorAll('section[id]').length === 0) return;
+    /* Links und Ziele werden bei jedem Durchlauf neu gesucht: Navbar-Links UND das
+       Inhaltsverzeichnis der Seitenleiste ([data-scrollspy]), das erst nach diesem
+       Script per js/seitenleisten.js entsteht. Ziele sind section[id] und alle
+       Elemente, auf die ein Verzeichnis-Link zeigt (auf Unterseiten: h2-Überschriften). */
+    function ziele() {
+        const liste = Array.from(document.querySelectorAll('section[id]'));
+        document.querySelectorAll('[data-scrollspy] a[href^="#"]').forEach(function (a) {
+            const el = document.getElementById(a.getAttribute('href').slice(1));
+            if (el && liste.indexOf(el) < 0) liste.push(el);
+        });
+        return liste.sort(function (a, b) { return a.getBoundingClientRect().top - b.getBoundingClientRect().top; });
+    }
 
-    /* Links werden bei jedem Durchlauf neu gesucht: Navbar-Links UND das
-       Inhaltsverzeichnis der Seitenleiste ([data-scrollspy]), das erst
-       nach diesem Script per js/seitenleisten.js entsteht. */
     function aktivenLinkAktualisieren() {
-        const sektionen    = document.querySelectorAll('section[id]');
+        const sektionen    = ziele();
         const navLinkListe = document.querySelectorAll('.navbar-links a, [data-scrollspy] a');
-        if (navLinkListe.length === 0) return;
+        if (sektionen.length === 0 || navLinkListe.length === 0) return;
         let aktuelleSektionId = '';
 
         const amEnde = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
         sektionen.forEach(function (sektion) {
             if (sektion.offsetParent === null) return;   // ausgeblendet (z. B. Login-Gate)
-            // 80px Offset wegen der sticky Navbar (Höhe 64px + Puffer);
-            // ganz unten zählt die letzte sichtbare Sektion, auch wenn sie kurz ist
-            if (amEnde || window.scrollY >= sektion.offsetTop - 80) {
+            // 100px Offset wegen der sticky Navbar (Höhe 64px + Puffer);
+            // ganz unten zählt das letzte sichtbare Ziel, auch wenn es kurz ist
+            const oben = sektion.getBoundingClientRect().top + window.scrollY;
+            if (amEnde || window.scrollY >= oben - 100) {
                 aktuelleSektionId = sektion.getAttribute('id');
             }
         });
