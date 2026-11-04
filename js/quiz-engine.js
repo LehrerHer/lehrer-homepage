@@ -148,6 +148,7 @@
     '.qe-eingabe.qe-richtig{border-color:var(--qe-ok);background:var(--qe-ok-bg)}',
     '.qe-eingabe.qe-teil{border-color:var(--qe-teil);background:var(--qe-teil-bg)}',
     '.qe-eingabe.qe-falsch{border-color:var(--qe-fehler);background:var(--qe-fehler-bg)}',
+    '.qe-notiz{text-align:center;font-size:.8rem;color:var(--qe-muted);font-style:italic;margin:-.6rem 0 .9rem}',
     '.qe-tipp{margin-top:.75rem;padding:.6rem .9rem;border-radius:var(--qe-radius);background:rgba(74,158,218,.1);font-size:.9rem;display:none}',
     '.qe-tipp.qe-offen{display:block}',
     '.qe-punkte{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);border-radius:40px;padding:6px 16px;font-weight:700;font-size:.95rem;margin-top:10px}',
@@ -173,6 +174,7 @@
     '.qe-modus{padding:.45rem .9rem;border-radius:20px;border:2px solid var(--qe-rahmen);background:var(--qe-bg);cursor:pointer;font-family:inherit;font-size:.85rem;font-weight:700;color:var(--qe-muted)}',
     '.qe-modus.qe-aktiv{border-color:var(--qe-akzent);color:var(--qe-primaer);background:rgba(74,158,218,.1)}',
     '.qe-modus-hinweis{font-size:.85rem;color:var(--qe-muted);margin:0 0 .75rem}',
+    '.qe-legende{display:inline-flex;align-items:center;gap:6px;margin-right:12px;font-weight:700}.qe-legende::before{content:"";width:12px;height:12px;border-radius:50%;background:var(--qe-g)}',
     '.qe-map{position:relative;display:block;width:100%;line-height:0;user-select:none;-webkit-user-select:none}',
     '.qe-map img{width:100%;height:auto;display:block;border-radius:var(--qe-radius)}',
     '.qe-dot{position:absolute;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:var(--qe-akzent);border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4);cursor:pointer;z-index:2}',
@@ -562,7 +564,7 @@
 
   /* ======================================================================
      TYP 2: BILDERRATEN / REBUS
-     bilder: "/img/quiz/<quiz>/" (Basis-Pfad), fragen: [{bild, antwort, alternativen, frage, tipp, info:{zeilen:[[label,wert]], wissenswertes:[…]}}]
+     bilder: "/img/quiz/<quiz>/" (Basis-Pfad), fragen: [{bild, antwort, alternativen, frage, tipp, bonus, notiz, info:{zeilen:[[label,wert]], wissenswertes:[…]}}]
      Optionen: mischen (Standard true), versuche (1–6, Standard 1), toleranz (Levenshtein, Standard 3; 0 = aus),
                teilantworten (Nachname reicht), anzahl
      Punkte je Frage: 1 (exakt) · ½ (fast richtig) · 0 (falsch); jeder Fehlversuch/Tipp halbiert den Faktor
@@ -599,8 +601,9 @@
       var f = fragen[cur];
       beantwortet = false; versuche = 0; faktor = 1;
       inhalt.innerHTML = '<div class="qe-karte">'
-        + '<div class="qe-bild-wrap"><img class="qe-bild" id="qe-bild" alt="Quiz-Bild"><div class="qe-badge">Frage ' + (cur + 1) + ' / ' + fragen.length + '</div></div>'
+        + '<div class="qe-bild-wrap"><img class="qe-bild" id="qe-bild" alt="Quiz-Bild"><div class="qe-badge">' + (f.bonus ? '⭐ Bonus · ' : '') + 'Frage ' + (cur + 1) + ' / ' + fragen.length + '</div></div>'
         + '<p class="qe-frage" style="text-align:center;font-size:1rem">' + esc(f.frage || daten.frage || 'Wer oder was ist hier zu sehen?') + '</p>'
+        + (f.notiz ? '<p class="qe-notiz">✨ ' + esc(f.notiz) + '</p>' : '')
         + '<div class="qe-eingabe-zeile"><input class="qe-eingabe" id="qe-antwort" type="text" placeholder="Deine Antwort …" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Antwort">'
         + '<button type="button" class="qe-btn qe-btn-primaer" id="qe-pruefen">Prüfen</button></div>'
         + '<div class="qe-tipp" id="qe-tipp"></div>'
@@ -667,7 +670,7 @@
       if ($('qe-loesung')) $('qe-loesung').disabled = true;
       var fb = $('qe-feedback');
       fb.className = 'qe-feedback ' + (klasse === 'qe-richtig' ? 'qe-ok' : klasse === 'qe-teil' ? 'qe-teil' : 'qe-no');
-      fb.innerHTML = '<div class="qe-feedback-kopf">' + kopf
+      fb.innerHTML = '<div class="qe-feedback-kopf">' + kopf + (f.bonus ? ' (Bonus)' : '')
         + (erreicht < 1 ? ' — Richtig: <strong>' + esc(f.antwort) + '</strong>' : '') + '</div>' + infoHTML(f);
       $('qe-weiter').style.display = 'block';
       $('qe-next').focus();
@@ -723,8 +726,9 @@
 
   /* ======================================================================
      TYP 3: STUMME KARTE MIT HOTSPOTS
-     karte: {stumm, loesung?}, fragen: [{antwort, x, y, alternativen?}] (x/y in Prozent)
+     karte: {stumm, loesung?}, fragen: [{antwort, x, y, alternativen?, gruppe?}] (x/y in Prozent)
      modi: ["leicht","mittel","schwer"] – leicht = 4 Auswahloptionen, mittel = Begriffe zuordnen, schwer = freie Eingabe
+     gruppen: {"bl": {name, farbe}, …} – optional; Auswahloptionen kommen nur aus derselben Gruppe, Punkte/Tags tragen die Gruppenfarbe
      ====================================================================== */
   function TypKarte() {
     var HS = [], state = {}, modus, popup = null, drag = null, gewaehltTag = null, zeigeLoesung = false, inhalt;
@@ -745,7 +749,7 @@
 
     function start() {
       inhalt = $('qe-inhalt');
-      HS = (daten.fragen || []).map(function (f, i) { return { id: i, antwort: f.antwort, alternativen: f.alternativen || [], x: f.x, y: f.y }; });
+      HS = (daten.fragen || []).map(function (f, i) { return { id: i, antwort: f.antwort, alternativen: f.alternativen || [], x: f.x, y: f.y, gruppe: f.gruppe || '' }; });
       modus = modus || MODI[0];
       inhalt.innerHTML = '<div class="qe-karte">' + (introHTML() ? '<div class="qe-intro" style="margin-bottom:1rem">' + introHTML() + '</div>' : '')
         + (MODI.length > 1 ? '<div class="qe-modi" id="qe-modi"></div>' : '')
@@ -764,6 +768,13 @@
         $('qe-modi').appendChild(b);
       });
       $('qe-modus-hinweis').textContent = HINWEIS[modus] || '';
+      if (daten.gruppen) {
+        var leg = h('p', 'qe-modus-hinweis');
+        leg.innerHTML = Object.keys(daten.gruppen).map(function (g) {
+          return '<span class="qe-legende" style="--qe-g:' + esc(daten.gruppen[g].farbe || 'var(--qe-akzent)') + '">' + esc(daten.gruppen[g].name || g) + '</span>';
+        }).join(' ');
+        $('qe-modus-hinweis').parentNode.insertBefore(leg, $('qe-modus-hinweis').nextSibling);
+      }
       $('qe-mapimg').src = daten.karte.stumm;
       $('qe-neu').onclick = neustart;
       $('qe-auswerten').onclick = auswertenAlle;
@@ -774,17 +785,22 @@
       aufbauen();
     }
 
+    function farbe(hs) { return daten.gruppen && daten.gruppen[hs.gruppe] && daten.gruppen[hs.gruppe].farbe || ''; }
+    function pool(hs) { return HS.filter(function (o) { return o.gruppe === hs.gruppe; }).map(function (o) { return o.antwort; }); }
+
     function aufbauen() {
       var w = $('qe-map');
       w.querySelectorAll('.qe-dot,.qe-popup,.qe-dz,.qe-hz,.qe-loesung-label').forEach(function (e) { e.remove(); });
       $('qe-bank-wrap').innerHTML = '';
       var alle = HS.map(function (hs) { return hs.antwort; });
+      var farbeVon = {}; HS.forEach(function (hs) { farbeVon[hs.antwort] = farbe(hs); });
       $('qe-auswerten').style.display = modus === 'leicht' ? 'none' : '';
 
       if (modus === 'mittel') {
         var bank = h('div', 'qe-bank'); bank.id = 'qe-bank';
         shuffle(alle).forEach(function (lbl) {
           var t = h('div', 'qe-tag', esc(lbl)); t.draggable = true; t.dataset.label = lbl;
+          if (farbeVon[lbl]) t.style.borderColor = farbeVon[lbl];
           t.addEventListener('dragstart', function (e) { drag = lbl; e.dataTransfer.effectAllowed = 'move'; });
           t.addEventListener('click', function () {
             gewaehltTag = gewaehltTag === lbl ? null : lbl;
@@ -800,12 +816,14 @@
           var d = h('div', 'qe-dot'); d.id = 'qe-dot-' + hs.id; d.setAttribute('role', 'button'); d.tabIndex = 0;
           d.setAttribute('aria-label', 'Ort ' + (hs.id + 1));
           d.style.left = hs.x + '%'; d.style.top = hs.y + '%';
-          d.onclick = function (e) { e.stopPropagation(); if (!state[hs.id].fertig && !zeigeLoesung) popupOeffnen(hs, d, alle); };
+          if (farbe(hs)) d.style.background = farbe(hs);
+          d.onclick = function (e) { e.stopPropagation(); if (!state[hs.id].fertig && !zeigeLoesung) popupOeffnen(hs, d, pool(hs)); };
           d.onkeydown = function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); d.click(); } };
           w.appendChild(d);
         } else if (modus === 'mittel') {
           var dz = h('div', 'qe-dz'); dz.style.left = hs.x + '%'; dz.style.top = hs.y + '%';
           var lbl = h('div', 'qe-dz-lbl', '?'); lbl.id = 'qe-dz-' + hs.id;
+          if (farbe(hs)) lbl.style.borderColor = farbe(hs);
           dz.appendChild(lbl);
           var ablegen = function (wert) {
             if (!wert) return;
@@ -833,6 +851,7 @@
         } else {
           var hz = h('div', 'qe-hz'); hz.style.left = hs.x + '%'; hz.style.top = hs.y + '%';
           var inp = document.createElement('input'); inp.type = 'text'; inp.placeholder = '?'; inp.autocomplete = 'off'; inp.id = 'qe-hi-' + hs.id;
+          if (farbe(hs)) inp.style.borderColor = farbe(hs);
           inp.setAttribute('aria-label', 'Ort ' + (hs.id + 1));
           inp.addEventListener('input', function () { state[hs.id].antwort = inp.value.trim(); });
           hz.appendChild(inp); w.appendChild(hz);
@@ -857,10 +876,12 @@
           var ok = opt === hs.antwort;
           b.className = 'qe-pop-btn ' + (ok ? 'qe-ok' : 'qe-fail');
           if (!ok) liste.querySelectorAll('.qe-pop-btn').forEach(function (x) { if (x.textContent === hs.antwort) x.className = 'qe-pop-btn qe-ok'; });
-          dot.className = 'qe-dot ' + (ok ? 'qe-ok' : 'qe-fail');
+          dot.className = 'qe-dot ' + (ok ? 'qe-ok' : 'qe-fail'); dot.style.background = '';
           state[hs.id].fertig = true; state[hs.id].antwort = opt;
           liste.querySelectorAll('.qe-pop-btn').forEach(function (x) { x.disabled = true; });
           fortschritt();
+          /* Popup nach kurzem Feedback schließen, sonst verdeckt es Nachbar-Punkte */
+          setTimeout(function () { if (popup === p) { p.remove(); popup = null; } }, 700);
         };
         liste.appendChild(b);
       });

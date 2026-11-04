@@ -95,7 +95,7 @@
     <meta property="og:image" content="https://lehrer-herrmann.de/img/logo.svg">
     <meta name="twitter:card" content="summary_large_image">
 </head>
-<body>
+<body class="hat-seitenleisten">
 
     <!-- ========================================================
          LADEBILDSCHIRM – Zeitleisten-Animation (3000 v.Chr. → 2026)
@@ -199,13 +199,16 @@
         </div>
     </nav>
 
-
-
+    <!-- Seitenleisten (nur ab 1720 px sichtbar, Inhalt per js/seitenleisten.js) -->
+    <div class="seitenleisten">
+        <nav class="seitenleiste seitenleiste-links" id="seiten-inhalt" aria-label="Abschnitte dieser Seite" data-scrollspy></nav>
+        <aside class="seitenleiste seitenleiste-rechts" id="seiten-rand" aria-label="Arena und zuletzt benutzt"></aside>
+    </div>
 
     <!-- ========================================================
          BEREICHE-ÜBERSICHT – immer öffentlich sichtbar
          ======================================================== -->
-    <section id="startseite" class="bereiche-uebersicht-section">
+    <section id="startseite" class="bereiche-uebersicht-section" data-inhalt="Bereiche">
         <div class="container">
 
             <div class="bereiche-grid bereiche-grid-gross">
@@ -713,6 +716,7 @@
     <!-- Was ist neu? – automatische Neuigkeiten-Übersicht -->
     <script src="js/was-ist-neu.js"></script>
     <script src="js/arena-bar.js"></script>
+    <script src="js/seitenleisten.js"></script>
     <script src="js/kolosseum-login-widget.js"></script>
     <script src="js/homepage-gate.js"></script>
     <!-- Jahrgangs-Filter für digitale Materialien -->

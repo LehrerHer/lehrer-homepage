@@ -1,0 +1,252 @@
+{
+  "slug": "erdkunde-niedersachsen-landkreise",
+  "typ": "karte",
+  "titel": "Niedersachsen – Landkreise & kreisfreie Städte",
+  "untertitel": "Stumme Karte · drei Schwierigkeitsstufen · 46 Orte",
+  "fach": "erdkunde",
+  "zurueck": {
+    "url": "/fach-erdkunde.html",
+    "text": "Zurück zu Erdkunde"
+  },
+  "karte": {
+    "stumm": "/img/quiz/erdkunde-niedersachsen-landkreise/stumm.webp",
+    "loesung": "/img/quiz/erdkunde-niedersachsen-landkreise/loesung.webp"
+  },
+  "modi": [
+    "leicht",
+    "mittel",
+    "schwer"
+  ],
+  "fragen": [
+    {
+      "antwort": "Ammerland",
+      "x": 30.1,
+      "y": 28.01
+    },
+    {
+      "antwort": "Aurich",
+      "x": 17.14,
+      "y": 18.88
+    },
+    {
+      "antwort": "Braunschweig",
+      "x": 76.81,
+      "y": 61.54
+    },
+    {
+      "antwort": "Celle",
+      "x": 69,
+      "y": 46.16
+    },
+    {
+      "antwort": "Cloppenburg",
+      "x": 29.07,
+      "y": 39.51
+    },
+    {
+      "antwort": "Cuxhaven",
+      "x": 45.75,
+      "y": 12.77
+    },
+    {
+      "antwort": "Delmenhorst",
+      "x": 41.77,
+      "y": 34.09
+    },
+    {
+      "antwort": "Diepholz",
+      "x": 43.91,
+      "y": 44.93
+    },
+    {
+      "antwort": "Emden",
+      "x": 13.46,
+      "y": 23.26
+    },
+    {
+      "antwort": "Emsland",
+      "x": 16.83,
+      "y": 43.01
+    },
+    {
+      "antwort": "Friesland",
+      "x": 30.14,
+      "y": 21.68
+    },
+    {
+      "antwort": "Gifhorn",
+      "x": 79.41,
+      "y": 51.68
+    },
+    {
+      "antwort": "Goslar",
+      "x": 74.05,
+      "y": 74.94
+    },
+    {
+      "antwort": "Grafschaft Bentheim",
+      "x": 11.17,
+      "y": 52.21
+    },
+    {
+      "antwort": "Göttingen",
+      "x": 64.87,
+      "y": 88.68
+    },
+    {
+      "antwort": "Hameln-Pyrmont",
+      "x": 55.08,
+      "y": 67.77
+    },
+    {
+      "antwort": "Harburg",
+      "x": 65.94,
+      "y": 24.65
+    },
+    {
+      "antwort": "Heidekreis",
+      "x": 63.65,
+      "y": 37.94
+    },
+    {
+      "antwort": "Helmstedt",
+      "x": 84,
+      "y": 61.72
+    },
+    {
+      "antwort": "Hildesheim",
+      "x": 65.02,
+      "y": 68.29
+    },
+    {
+      "antwort": "Holzminden",
+      "x": 58.6,
+      "y": 74.24
+    },
+    {
+      "antwort": "Leer",
+      "x": 20.2,
+      "y": 27.63
+    },
+    {
+      "antwort": "Lüchow-Dannenberg",
+      "x": 89.2,
+      "y": 35.18
+    },
+    {
+      "antwort": "Lüneburg",
+      "x": 78.03,
+      "y": 26.4
+    },
+    {
+      "antwort": "Nienburg/Weser",
+      "x": 52.02,
+      "y": 49.13
+    },
+    {
+      "antwort": "Northeim",
+      "x": 65.33,
+      "y": 80.53
+    },
+    {
+      "antwort": "Oldenburg (Landkreis)",
+      "x": 37.03,
+      "y": 35.32
+    },
+    {
+      "antwort": "Oldenburg (Stadt)",
+      "x": 34.27,
+      "y": 30.22
+    },
+    {
+      "antwort": "Osnabrück (Landkreis)",
+      "x": 33.05,
+      "y": 57.87
+    },
+    {
+      "antwort": "Osnabrück (Stadt)",
+      "x": 29.83,
+      "y": 62.14
+    },
+    {
+      "antwort": "Osterholz",
+      "x": 44.06,
+      "y": 26.75
+    },
+    {
+      "antwort": "Osterode am Harz",
+      "x": 73.9,
+      "y": 82.56
+    },
+    {
+      "antwort": "Peine",
+      "x": 71.76,
+      "y": 60.49
+    },
+    {
+      "antwort": "Region Hannover",
+      "x": 61.05,
+      "y": 55.6
+    },
+    {
+      "antwort": "Rotenburg (Wümme)",
+      "x": 54.31,
+      "y": 26.51
+    },
+    {
+      "antwort": "Salzgitter",
+      "x": 74.05,
+      "y": 66.02
+    },
+    {
+      "antwort": "Schaumburg",
+      "x": 51.71,
+      "y": 61.23
+    },
+    {
+      "antwort": "Stade",
+      "x": 56.61,
+      "y": 16.09
+    },
+    {
+      "antwort": "Uelzen",
+      "x": 76.96,
+      "y": 36.19
+    },
+    {
+      "antwort": "Vechta",
+      "x": 33.35,
+      "y": 47.73
+    },
+    {
+      "antwort": "Verden",
+      "x": 51.87,
+      "y": 37.77
+    },
+    {
+      "antwort": "Wesermarsch",
+      "x": 36.41,
+      "y": 24.13
+    },
+    {
+      "antwort": "Wilhelmshaven",
+      "x": 31.21,
+      "y": 15.39
+    },
+    {
+      "antwort": "Wittmund",
+      "x": 23.71,
+      "y": 14.51
+    },
+    {
+      "antwort": "Wolfenbüttel",
+      "x": 79.25,
+      "y": 66.72
+    },
+    {
+      "antwort": "Wolfsburg",
+      "x": 82.01,
+      "y": 56.58
+    }
+  ]
+}

@@ -69,7 +69,7 @@
 
 /* ---- CSS-Variablen: Farben, Abstände, Effekte ---- */
 :root {
-    --seitenbreite: min(1680px, 100%);   /* nutzt große Monitore besser aus */
+    --seitenbreite: min(1200px, 100%);   /* Inhaltsbreite; Ränder nutzen die Seitenleisten (≥ 1720 px) */
     color-scheme: light;                 /* verhindert abweichende Farben durch Dark-Mode/Geräteprofil */
     --farbe-primaer:        #14284b;   /* Tiefes Marineblau – Tinte, Navigation, Überschriften */
     --farbe-primaer-hell:   #2556c4;   /* Kräftiges Blau – Links, Buttons */
@@ -3839,3 +3839,139 @@ body.regelradar-seite > header .cat-scroll { justify-content: safe center; max-w
 #startseite {
     background-color: var(--farbe-hintergrund);
 }
+
+
+/* ================================================================
+   SEITENLEISTEN (nur breite Bildschirme, ab 1720 px)
+   Nutzt die Ränder neben dem 1200-px-Inhalt: links ein mitlaufendes
+   Inhaltsverzeichnis, rechts Arena-Status + „Zuletzt benutzt“.
+   Darunter komplett ausgeblendet – nichts ist nur dort erreichbar.
+   Technik: .seitenleisten ist ein 0 px hoher sticky-Anker direkt unter
+   der Navbar; die Spalten hängen absolut in den Seitenrändern.
+   ================================================================ */
+.seitenleisten { display: none; }
+
+@media (min-width: 1720px) {
+    .seitenleisten {
+        display: block;
+        position: sticky;
+        top: 92px;                       /* unter der schwebenden Navbar */
+        height: 0;
+        z-index: 50;
+    }
+    .seitenleiste {
+        --leiste-breite: 220px;
+        --leiste-abstand: 32px;
+        position: absolute;
+        top: 0;
+        width: var(--leiste-breite);
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+        font-size: 0.9rem;
+        line-height: 1.45;
+    }
+    .seitenleiste-links  { left:  calc(50% - 600px - var(--leiste-abstand) - var(--leiste-breite)); }
+    .seitenleiste-rechts { right: calc(50% - 600px - var(--leiste-abstand) - var(--leiste-breite)); }
+}
+
+.seitenleiste-block {
+    background: var(--farbe-weiss);
+    border: 1px solid var(--farbe-rahmen);
+    border-radius: var(--radius);
+    box-shadow: var(--schatten);
+    padding: 14px 16px;
+    margin-bottom: 14px;
+}
+.seitenleiste-titel {
+    font-family: var(--schrift-akzent);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--farbe-text-hell);
+    margin: 0 0 10px;
+}
+.seitenleiste ul { list-style: none; margin: 0; padding: 0; }
+.seitenleiste li { margin: 0; }
+.seitenleiste a {
+    display: block;
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: var(--farbe-text);
+    text-decoration: none;
+    transition: background var(--transition), color var(--transition);
+}
+.seitenleiste a:hover { background: var(--farbe-hintergrund); color: var(--farbe-primaer-hell); }
+.seitenleiste a:focus-visible,
+.seitenleiste button:focus-visible {
+    outline: 3px solid var(--farbe-highlight);
+    outline-offset: 2px;
+}
+/* Inhaltsverzeichnis: aktiver Abschnitt (Scroll-Spy aus js/main.js) */
+.seitenleiste-links a {
+    border-left: 3px solid transparent;
+    border-radius: 0 8px 8px 0;
+}
+.seitenleiste-links a.aktiv {
+    border-left-color: var(--farbe-highlight);
+    background: var(--farbe-hintergrund);
+    color: var(--farbe-primaer);
+    font-weight: 700;
+}
+/* Arena-Spalte */
+.arena-spalte-kopf { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.arena-spalte-icon { font-size: 1.6rem; line-height: 1; }
+.arena-spalte-name {
+    font-family: var(--schrift-ueberschrift);
+    font-weight: 700;
+    color: var(--farbe-primaer);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.arena-spalte-rang {
+    font-family: var(--schrift-akzent);
+    font-size: 0.78rem;
+    color: var(--farbe-text-hell);
+}
+.arena-spalte-balken {
+    height: 6px;
+    background: var(--farbe-hintergrund);
+    border: 1px solid var(--farbe-rahmen);
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 8px 0 4px;
+}
+.arena-spalte-balken > span { display: block; height: 100%; background: var(--farbe-highlight); }
+.arena-spalte-hinweis { font-size: 0.78rem; color: var(--farbe-text-hell); margin: 0 0 10px; }
+.arena-top { margin-top: 10px; }
+.arena-top li {
+    display: grid;
+    grid-template-columns: 22px 1fr auto;
+    gap: 6px;
+    align-items: center;
+    padding: 4px 0;
+    border-top: 1px solid var(--farbe-rahmen);
+    font-size: 0.85rem;
+}
+.arena-top li.arena-top-ich { font-weight: 700; color: var(--farbe-primaer); }
+.arena-top .arena-top-rang { font-family: var(--schrift-akzent); font-size: 0.75rem; color: var(--farbe-text-hell); }
+.arena-top .arena-top-xp { font-family: var(--schrift-akzent); font-size: 0.75rem; white-space: nowrap; }
+.arena-top .arena-top-nick { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.seitenleiste .btn-klein {
+    display: inline-block;
+    margin-top: 6px;
+    padding: 7px 12px;
+    border-radius: 8px;
+    background: var(--farbe-primaer);
+    color: var(--farbe-weiss);
+    font-weight: 700;
+    font-size: 0.82rem;
+    text-decoration: none;
+}
+.seitenleiste .btn-klein:hover { background: var(--farbe-primaer-hell); color: var(--farbe-weiss); }
+.seitenleiste .btn-klein-hell { background: transparent; color: var(--farbe-primaer); border: 2px solid var(--farbe-primaer); margin-left: 6px; }
+/* Zuletzt benutzt */
+.zuletzt-leer { font-size: 0.82rem; color: var(--farbe-text-hell); margin: 0; }
+.zuletzt-liste a { display: flex; flex-direction: column; gap: 1px; }
+.zuletzt-liste small { font-family: var(--schrift-akzent); font-size: 0.7rem; color: var(--farbe-text-hell); }

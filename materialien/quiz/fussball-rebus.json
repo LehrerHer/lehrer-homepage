@@ -1,0 +1,385 @@
+{
+  "slug": "fussball-rebus",
+  "typ": "bilder",
+  "titel": "⚽ Fußball-Rebus-Quiz",
+  "untertitel": "Errate die Fußballstars! 12 Rätselbilder · 3 Bonusfragen – der Nachname reicht.",
+  "fach": "sport",
+  "zurueck": {
+    "url": "/fach-sport.html",
+    "text": "Zurück zu Sport"
+  },
+  "design": {
+    "thema": "dunkel"
+  },
+  "bilder": "/img/quiz/fussball-rebus/",
+  "frage": "Welcher Fußballstar ist hier gemeint?",
+  "mischen": false,
+  "versuche": 1,
+  "toleranz": 3,
+  "teilantworten": true,
+  "bewertung": [
+    {
+      "ab": 95,
+      "text": "🏆 Weltklasse! Du kennst den Fußball in- und auswendig!"
+    },
+    {
+      "ab": 80,
+      "text": "🌟 Stark! Fast alles richtig – nur Kleinigkeiten fehlen."
+    },
+    {
+      "ab": 60,
+      "text": "⚽ Solide! Du weißt schon einiges über die Stars."
+    },
+    {
+      "ab": 40,
+      "text": "📚 Noch Luft nach oben – die Profis kennst du bald alle!"
+    },
+    {
+      "ab": 0,
+      "text": "😅 Trainingsrückstand! Aber beim nächsten Mal wird's besser."
+    }
+  ],
+  "fragen": [
+    {
+      "bild": "01.webp",
+      "antwort": "Vinícius Júnior",
+      "info": {
+        "zeilen": [
+          [
+            "🇧🇷 Geburtstag:",
+            "12. Juli 2000, São Gonçalo"
+          ],
+          [
+            "⚽ Position:",
+            "Fußball (Sturm/Flügel)"
+          ]
+        ],
+        "wissenswertes": [
+          "Ballon d'Or 2024",
+          "Real Madrid",
+          "Champions-League-Sieger 2024",
+          "Brasilianischer Nationalspieler"
+        ]
+      }
+    },
+    {
+      "bild": "02.webp",
+      "antwort": "Mo Salah",
+      "info": {
+        "zeilen": [
+          [
+            "🇪🇬 Geburtstag:",
+            "15. Juni 1992, Nagrig"
+          ],
+          [
+            "⚽ Position:",
+            "Fußball (Sturm/Flügel)"
+          ]
+        ],
+        "wissenswertes": [
+          "FC Liverpool seit 2017",
+          "Champions-League-Sieger 2019",
+          "3× Premier-League-Torschützenkönig",
+          "Afrikas Fußballer des Jahres (mehrfach)"
+        ]
+      }
+    },
+    {
+      "bild": "03.webp",
+      "antwort": "Jude Bellingham",
+      "info": {
+        "zeilen": [
+          [
+            "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Geburtstag:",
+            "29. Juni 2003, Stourbridge"
+          ],
+          [
+            "⚽ Position:",
+            "Fußball (Mittelfeld)"
+          ]
+        ],
+        "wissenswertes": [
+          "Real Madrid seit 2023",
+          "Champions-League-Sieger 2024",
+          "LaLiga-Meister 2024",
+          "Englischer Nationalspieler"
+        ]
+      }
+    },
+    {
+      "bild": "04.webp",
+      "antwort": "Oliver Baumann",
+      "info": {
+        "zeilen": [
+          [
+            "🇩🇪 Geburtstag:",
+            "2. Juni 1990, Lörrach"
+          ],
+          [
+            "⚽ Position:",
+            "Fußball (Torwart)"
+          ]
+        ],
+        "wissenswertes": [
+          "DFB-Stammtorhüter 2024/25",
+          "TSG Hoffenheim-Legende",
+          "WM 2026 Kader",
+          "Bundesliga-Erfahrung seit 2014"
+        ]
+      },
+      "notiz": "Danke für die Inspiration, Carla"
+    },
+    {
+      "bild": "05.webp",
+      "antwort": "Ashraf Hakimi",
+      "info": {
+        "zeilen": [
+          [
+            "🇲🇦 Geburtstag:",
+            "4. November 1998, Madrid"
+          ],
+          [
+            "⚽ Position:",
+            "Fußball (Außenverteidiger)"
+          ]
+        ],
+        "wissenswertes": [
+          "Paris Saint-Germain",
+          "Marrokos WM-Halbfinalist 2022",
+          "Champions-League-Sieger mit Inter 2021",
+          "Bester Außenverteidiger der Welt"
+        ]
+      }
+    },
+    {
+      "bild": "06.webp",
+      "antwort": "Luka Modric",
+      "info": {
+        "zeilen": [
+          [
+            "🇭🇷 Geburtstag:",
+            "9. September 1985, Zadar"
+          ],
+          [
+            "⚽ Position:",
+            "Fußball (Mittelfeld)"
+          ]
+        ],
+        "wissenswertes": [
+          "Ballon d'Or 2018",
+          "5× Champions League mit Real Madrid",
+          "Kroatien WM-Finalist 2018",
+          "Weltklasse-Regisseur"
+        ]
+      }
+    },
+    {
+      "bild": "07.webp",
+      "antwort": "Harry Kane",
+      "info": {
+        "zeilen": [
+          [
+            "🏴󠁧󠁢󠁥󠁮󠁧󠁿 Geburtstag:",
+            "28. Juli 1993, Walthamstow"
+          ],
+          [
+            "⚽ Position:",
+            "Fußball (Sturm)"
+          ]
+        ],
+        "wissenswertes": [
+          "FC Bayern München seit 2023",
+          "Englands Rekordtorschütze",
+          "Bundesliga-Torschützenkönig 2024",
+          "WM 2026 Kader"
+        ]
+      }
+    },
+    {
+      "bild": "08.webp",
+      "antwort": "Kylian Mbappé",
+      "info": {
+        "zeilen": [
+          [
+            "🇫🇷 Geburtstag:",
+            "20. Dezember 1998, Paris"
+          ],
+          [
+            "⚽ Position:",
+            "Fußball (Sturm)"
+          ]
+        ],
+        "wissenswertes": [
+          "Weltmeister 2018",
+          "Real Madrid seit 2024",
+          "Rekordtorschütze der PSG-Geschichte",
+          "WM 2026 Kader"
+        ]
+      },
+      "notiz": "Danke für die Inspiration, Niklas"
+    },
+    {
+      "bild": "09.webp",
+      "antwort": "Florian Wirtz",
+      "info": {
+        "zeilen": [
+          [
+            "🇩🇪 Geburtstag:",
+            "3. Mai 2003, Leverkusen"
+          ],
+          [
+            "⚽ Position:",
+            "Fußball (Mittelfeld)"
+          ]
+        ],
+        "wissenswertes": [
+          "WM 2026 Kader",
+          "Bayer Leverkusen Meister 2024",
+          "Bundesliga-Toptalent",
+          "DFB-Pokalsieger 2024"
+        ]
+      }
+    },
+    {
+      "bild": "10.webp",
+      "antwort": "Lionel Messi",
+      "info": {
+        "zeilen": [
+          [
+            "🇦🇷 Geburtstag:",
+            "24. Juni 1987, Rosario"
+          ],
+          [
+            "⚽ Position:",
+            "Fußball (Sturm)"
+          ]
+        ],
+        "wissenswertes": [
+          "8× Ballon d'Or",
+          "Weltmeister 2022",
+          "6× Champions League",
+          "Inter Miami seit 2023"
+        ]
+      }
+    },
+    {
+      "bild": "11.webp",
+      "antwort": "Antoine Griezmann",
+      "info": {
+        "zeilen": [
+          [
+            "🇫🇷 Geburtstag:",
+            "21. März 1991, Mâcon"
+          ],
+          [
+            "⚽ Position:",
+            "Fußball (Sturm)"
+          ]
+        ],
+        "wissenswertes": [
+          "Weltmeister 2018",
+          "Atlético Madrid",
+          "EM-Sieger 2016",
+          "Frankreichs Rekordtorschütze"
+        ]
+      },
+      "notiz": "Danke für die Inspiration, Gloria"
+    },
+    {
+      "bild": "12.webp",
+      "antwort": "Jamal Musiala",
+      "info": {
+        "zeilen": [
+          [
+            "🇩🇪 Geburtstag:",
+            "26. Februar 2003, Stuttgart"
+          ],
+          [
+            "⚽ Position:",
+            "Fußball (Mittelfeld/Sturm)"
+          ]
+        ],
+        "wissenswertes": [
+          "FC Bayern München",
+          "Jüngster Bayern-Torschütze in der Champions League",
+          "EM 2024 Highlight-Spieler",
+          "WM 2026 Kader"
+        ]
+      }
+    },
+    {
+      "bild": "13.webp",
+      "antwort": "Falcao",
+      "info": {
+        "zeilen": [
+          [
+            "🇨🇴 Geburtstag:",
+            "10. Februar 1986, Santa Marta"
+          ],
+          [
+            "⚽ Position:",
+            "Fußball (Sturm)"
+          ]
+        ],
+        "wissenswertes": [
+          "Spitzname El Tigre",
+          "Atlético Madrid-Legende",
+          "Monaco-Rekordtorschütze",
+          "Kolumbiens bekanntester Fußballer",
+          "Nicht im WM 2026 Kader"
+        ]
+      },
+      "bonus": true,
+      "notiz": "Vielen Dank für die Inspiration, 10f"
+    },
+    {
+      "bild": "14.webp",
+      "antwort": "Manuel Neuer",
+      "info": {
+        "zeilen": [
+          [
+            "🇩🇪 Geburtstag:",
+            "27. März 1986, Gelsenkirchen"
+          ],
+          [
+            "⚽ Position:",
+            "Fußball (Torwart)"
+          ]
+        ],
+        "wissenswertes": [
+          "Weltmeister 2014",
+          "FC Bayern München Legende",
+          "Bester Torwart der Welt (mehrfach)",
+          "Erfinder des modernen Sweeper-Keepers",
+          "Nicht im WM 2026 Kader"
+        ]
+      },
+      "bonus": true,
+      "notiz": "Vielen Dank für die Inspiration, 10f"
+    },
+    {
+      "bild": "15.webp",
+      "antwort": "Thomas Müller",
+      "info": {
+        "zeilen": [
+          [
+            "🇩🇪 Geburtstag:",
+            "13. September 1989, Weilheim"
+          ],
+          [
+            "⚽ Position:",
+            "Fußball (Sturm/Mittelfeld)"
+          ]
+        ],
+        "wissenswertes": [
+          "Weltmeister 2014",
+          "FC Bayern München Legende",
+          "10× Deutscher Meister",
+          "Nicht im WM 2026 Kader"
+        ]
+      },
+      "bonus": true,
+      "notiz": "Danke für die Inspiration, Joost"
+    }
+  ]
+}

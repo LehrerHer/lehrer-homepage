@@ -60,6 +60,11 @@
     '.ab-btn-primary{background:#4a9eda;color:#fff;}',
     '.ab-btn-primary:hover{background:#3a8ec8;}',
     'body{padding-bottom:44px;}',
+    /* Breite Bildschirme mit Seitenleisten: die Arena-Spalte rechts ersetzt die Leiste */
+    '@media(min-width:1720px){',
+      'body.hat-seitenleisten #arena-bar{display:none;}',
+      'body.hat-seitenleisten{padding-bottom:0;}',
+    '}',
     '@media(max-width:520px){',
       '.ab-muted{display:none;}',
       '.ab-btn-ghost{display:none;}',

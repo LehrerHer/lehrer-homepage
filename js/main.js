@@ -175,32 +175,72 @@
    sichtbaren Sektion als "aktiv" markiert.
    ============================================================ */
 (function () {
-    const sektionen    = document.querySelectorAll('section[id]');
-    const navLinkListe = document.querySelectorAll('.navbar-links a');
+    if (document.querySelectorAll('section[id]').length === 0) return;
 
-    if (sektionen.length === 0 || navLinkListe.length === 0) return;
-
+    /* Links werden bei jedem Durchlauf neu gesucht: Navbar-Links UND das
+       Inhaltsverzeichnis der Seitenleiste ([data-scrollspy]), das erst
+       nach diesem Script per js/seitenleisten.js entsteht. */
     function aktivenLinkAktualisieren() {
+        const sektionen    = document.querySelectorAll('section[id]');
+        const navLinkListe = document.querySelectorAll('.navbar-links a, [data-scrollspy] a');
+        if (navLinkListe.length === 0) return;
         let aktuelleSektionId = '';
 
+        const amEnde = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
         sektionen.forEach(function (sektion) {
-            // 80px Offset wegen der sticky Navbar (Höhe 64px + Puffer)
-            if (window.scrollY >= sektion.offsetTop - 80) {
+            if (sektion.offsetParent === null) return;   // ausgeblendet (z. B. Login-Gate)
+            // 80px Offset wegen der sticky Navbar (Höhe 64px + Puffer);
+            // ganz unten zählt die letzte sichtbare Sektion, auch wenn sie kurz ist
+            if (amEnde || window.scrollY >= sektion.offsetTop - 80) {
                 aktuelleSektionId = sektion.getAttribute('id');
             }
         });
 
         navLinkListe.forEach(function (link) {
+            const href = link.getAttribute('href') || '';
+            const ziel = href.slice(href.indexOf('#'));
             link.classList.remove('aktiv');
-            if (link.getAttribute('href') === '#' + aktuelleSektionId) {
+            if (href.indexOf('#') >= 0 && ziel === '#' + aktuelleSektionId) {
                 link.classList.add('aktiv');
+                if (link.closest('[data-scrollspy]')) link.setAttribute('aria-current', 'location');
+            } else {
+                link.removeAttribute('aria-current');
             }
         });
     }
 
-    // Beim Scrollen und beim Laden der Seite aufrufen
+    // Beim Scrollen, beim Laden und auf Anforderung (Event „scrollspy:aktualisieren“) aufrufen
     window.addEventListener('scroll', aktivenLinkAktualisieren, { passive: true });
+    document.addEventListener('scrollspy:aktualisieren', aktivenLinkAktualisieren);
     aktivenLinkAktualisieren();
+}());
+
+
+/* ============================================================
+   2b. „ZULETZT BENUTZT“ ERFASSEN
+   Merkt sich die drei zuletzt geöffneten Quizze/Arbeitsblätter
+   (Seiten unter /materialien/ und Quiz-Seiten im Root) nur im
+   localStorage des Geräts. Angezeigt wird die Liste in der rechten
+   Seitenleiste der Startseite (js/seitenleisten.js). Die Seite
+   funktioniert ohne localStorage genauso – alles in try/catch.
+   ============================================================ */
+(function () {
+    const SCHLUESSEL = 'lh_zuletzt_benutzt';
+    const pfad = location.pathname;
+    const istMaterial = /^\/materialien\/(?!_template)[^/]+\.html$/.test(pfad);
+    const istRootQuiz = /^\/[^/]*(quiz|rechenblatt|mathe-zahlen-groessen)[^/]*\.html$/i.test(pfad);
+    if (!istMaterial && !istRootQuiz) return;
+
+    try {
+        const titel = (document.title || '').replace(/\s*[–|-]\s*lehrer-herrmann\.de\s*$/i, '').trim() || pfad;
+        const url   = pfad + location.search;   // Geheimlink (?k=…) bleibt erhalten
+        let liste = [];
+        try { liste = JSON.parse(localStorage.getItem(SCHLUESSEL) || '[]'); } catch (e) { liste = []; }
+        if (!Array.isArray(liste)) liste = [];
+        liste = liste.filter(function (e) { return e && e.url !== url; });
+        liste.unshift({ titel: titel.slice(0, 80), url: url, zeit: Date.now() });
+        localStorage.setItem(SCHLUESSEL, JSON.stringify(liste.slice(0, 3)));
+    } catch (e) { /* kein localStorage – kein Problem */ }
 }());
 
 

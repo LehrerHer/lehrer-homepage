@@ -15,7 +15,9 @@
   function setProtectedVisible(visible) {
     PROTECTED_IDS.forEach(function (id) {
       var el = document.getElementById(id);
-      if (el) el.style.display = visible ? '' : 'none';
+      // 'block' statt '' – index.html blendet die Sektionen per Stylesheet aus,
+      // ein leeres Inline-Style würde diese Regel nicht überschreiben.
+      if (el) el.style.display = visible ? 'block' : 'none';
     });
     var gate = document.getElementById(GATE_ID);
     if (gate) gate.style.display = visible ? 'none' : '';
