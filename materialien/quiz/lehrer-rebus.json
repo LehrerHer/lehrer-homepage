@@ -1,0 +1,1411 @@
+{
+  "slug": "lehrer-rebus",
+  "typ": "bilder",
+  "titel": "🏫 Lehrer*innenrätsel",
+  "untertitel": "Erkenne deine Lehrkräfte an den Rebus-Bildern! 48 Kolleg*innen · 2 Tippfehler sind okay · 3 Tipps je Rätsel",
+  "fach": "faecheruebergreifend",
+  "zurueck": {
+    "url": "/fach-faecheruebergreifend.html",
+    "text": "Zurück zu Fächerübergreifend"
+  },
+  "design": {
+    "thema": "hell"
+  },
+  "bilder": "/img/quiz/lehrer-rebus/",
+  "frage": "Welche Lehrkraft steckt hinter diesem Rebus? (Nachname)",
+  "mischen": true,
+  "versuche": 1,
+  "toleranz": 0,
+  "toleranzVoll": 2,
+  "bewertung": [
+    {
+      "ab": 90,
+      "text": "🏆 Du kennst das ganze Kollegium!"
+    },
+    {
+      "ab": 70,
+      "text": "🌟 Sehr gut – fast alle erkannt!"
+    },
+    {
+      "ab": 50,
+      "text": "👍 Ordentlich – ein paar Gesichter fehlen noch."
+    },
+    {
+      "ab": 0,
+      "text": "💪 Schau dich im Lehrerzimmer um und versuch es nochmal!"
+    }
+  ],
+  "fragen": [
+    {
+      "bild": "01.webp",
+      "antwort": "Achterfeld",
+      "tipps": [
+        "Frau",
+        "A",
+        "Das Boot hat einen speziellen Namen, der mit Ruderermenge zusammenhängt."
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Mathematik"
+          ],
+          [
+            "🗓️ Seit:",
+            "2015"
+          ],
+          [
+            "🎨 Bild von:",
+            "Getuar"
+          ]
+        ],
+        "wissenswertes": [
+          "Klassenleitung 7c",
+          "Mathe-AG"
+        ]
+      }
+    },
+    {
+      "bild": "02.webp",
+      "antwort": "Barbier",
+      "tipps": [
+        "Frau",
+        "B",
+        "Es ist kein Frisör."
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Deutsch"
+          ],
+          [
+            "🗓️ Seit:",
+            "2012"
+          ],
+          [
+            "🎨 Bild von:",
+            "Claude & Canva"
+          ]
+        ],
+        "wissenswertes": [
+          "Leseprojekte",
+          "Schülerzeitung"
+        ]
+      }
+    },
+    {
+      "bild": "03.webp",
+      "antwort": "Baumgärtel",
+      "tipps": [
+        "Frau",
+        "B",
+        "Das runde Drumrum um den Baum ist so klein, das ist nur ein ..."
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Kunst"
+          ],
+          [
+            "🗓️ Seit:",
+            "2018"
+          ],
+          [
+            "🎨 Bild von:",
+            "Claude & Canva"
+          ]
+        ],
+        "wissenswertes": [
+          "Kunstprojekte",
+          "Theater-AG"
+        ]
+      }
+    },
+    {
+      "bild": "04.webp",
+      "antwort": "Denker",
+      "tipps": [
+        "Frau",
+        "D",
+        "Benannt ist die Statue danach, wonach der Abgebildete aussehen soll."
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Philosophie / Werte & Normen"
+          ],
+          [
+            "🗓️ Seit:",
+            "2010"
+          ],
+          [
+            "🎨 Bild von:",
+            "Claude & Canva"
+          ]
+        ],
+        "wissenswertes": [
+          "Ethik-Debatten",
+          "Klassenleitung"
+        ]
+      }
+    },
+    {
+      "bild": "05.webp",
+      "antwort": "Dieckmännken",
+      "tipps": [
+        "Frau",
+        "D",
+        "Was (klein und Plattdeutsch) ist da wo (auch Platt) drauf? "
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Erdkunde"
+          ],
+          [
+            "🗓️ Seit:",
+            "2014"
+          ],
+          [
+            "🎨 Bild von:",
+            "Claude & Canva"
+          ]
+        ],
+        "wissenswertes": [
+          "Exkursionen",
+          "Umwelt-AG"
+        ]
+      }
+    },
+    {
+      "bild": "06.webp",
+      "antwort": "Engel",
+      "tipps": [
+        "Frau",
+        "E",
+        "das ist zu einfach für nen Tipp"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Biologie"
+          ],
+          [
+            "🗓️ Seit:",
+            "2016"
+          ],
+          [
+            "🎨 Bild von:",
+            "Claude & Canva"
+          ]
+        ],
+        "wissenswertes": [
+          "Natur-Projekte",
+          "Schulgarten"
+        ]
+      }
+    },
+    {
+      "bild": "07.webp",
+      "antwort": "Fischer",
+      "tipps": [
+        "Frau",
+        "F",
+        "das ist zu einfach für nen Tipp"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Sport"
+          ],
+          [
+            "🗓️ Seit:",
+            "2013"
+          ],
+          [
+            "🎨 Bild von:",
+            "Tayler"
+          ]
+        ],
+        "wissenswertes": [
+          "Sportfest",
+          "Fußball-AG"
+        ]
+      }
+    },
+    {
+      "bild": "08.webp",
+      "antwort": "Leiss",
+      "tipps": [
+        "Frau",
+        "L",
+        "es ist nicht Schweiger, etwas weniger leise…"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Englisch"
+          ],
+          [
+            "🗓️ Seit:",
+            "2019"
+          ],
+          [
+            "🎨 Bild von:",
+            "9f"
+          ]
+        ],
+        "wissenswertes": [
+          "Sprachreisen",
+          "Drama-Club"
+        ]
+      }
+    },
+    {
+      "bild": "09.webp",
+      "antwort": "Pinke",
+      "tipps": [
+        "Frau",
+        "P",
+        "Farbe"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Musik"
+          ],
+          [
+            "🗓️ Seit:",
+            "2017"
+          ],
+          [
+            "🎨 Bild von:",
+            "Lionel"
+          ]
+        ],
+        "wissenswertes": [
+          "Chor",
+          "Musical-AG"
+        ]
+      }
+    },
+    {
+      "bild": "10.webp",
+      "antwort": "Giesecke",
+      "tipps": [
+        "Frau",
+        "G",
+        "Was macht man mit dem Gegenstand, der wovor steht?"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Geschichte"
+          ],
+          [
+            "🗓️ Seit:",
+            "2011"
+          ],
+          [
+            "🎨 Bild von:",
+            "Berg (9f)"
+          ]
+        ],
+        "wissenswertes": [
+          "Geschichts-AG",
+          "Exkursionen"
+        ]
+      }
+    },
+    {
+      "bild": "11.webp",
+      "antwort": "Gläser",
+      "tipps": [
+        "Frau",
+        "G",
+        "Nicht ein …, sondern drei …!"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Chemie"
+          ],
+          [
+            "🗓️ Seit:",
+            "2015"
+          ],
+          [
+            "🎨 Bild von:",
+            "Claude & Canva"
+          ]
+        ],
+        "wissenswertes": [
+          "Schüler-Experimente",
+          "Chemie-Olympiade"
+        ]
+      }
+    },
+    {
+      "bild": "12.webp",
+      "antwort": "Herrmann",
+      "tipps": [
+        "Herr",
+        "H",
+        "Da sind drei Typen drauf, aber es sind keine Jungs, sondern…"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Deutsch / Geschichte"
+          ],
+          [
+            "🗓️ Seit:",
+            "2020"
+          ],
+          [
+            "🎨 Bild von:",
+            "Wjatscheslaw"
+          ]
+        ],
+        "wissenswertes": [
+          "Lernkolosseum",
+          "Blog-Projekt"
+        ]
+      }
+    },
+    {
+      "bild": "13.webp",
+      "antwort": "Saalmann",
+      "tipps": [
+        "Herr",
+        "S",
+        "Wer steht wo drin?"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Physik"
+          ],
+          [
+            "🗓️ Seit:",
+            "2009"
+          ],
+          [
+            "🎨 Bild von:",
+            "Giuzida"
+          ]
+        ],
+        "wissenswertes": [
+          "Physik-AG",
+          "Technik-Projekte"
+        ]
+      }
+    },
+    {
+      "bild": "14.webp",
+      "antwort": "Hofrogge",
+      "tipps": [
+        "Frau",
+        "H",
+        "Der Farmer wohnt auf seinem … und davor sitzt ein … (auf englisch)"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Informatik"
+          ],
+          [
+            "🗓️ Seit:",
+            "2016"
+          ],
+          [
+            "🎨 Bild von:",
+            "Claude & Canva"
+          ]
+        ],
+        "wissenswertes": [
+          "Coding-AG",
+          "Roboter-AG"
+        ]
+      }
+    },
+    {
+      "bild": "15.webp",
+      "antwort": "Kamin",
+      "tipps": [
+        "Frau",
+        "K",
+        "das ist zu einfach für nen Tipp"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Mathematik"
+          ],
+          [
+            "🗓️ Seit:",
+            "2014"
+          ],
+          [
+            "🎨 Bild von:",
+            "Claude & Canva"
+          ]
+        ],
+        "wissenswertes": [
+          "Mathe-Olympiade",
+          "Förderunterricht"
+        ]
+      }
+    },
+    {
+      "bild": "16.webp",
+      "antwort": "Kulüke",
+      "tipps": [
+        "Herr",
+        "K",
+        "links ist ne … und der Mann hat eine (Zahn-)…"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Sport / Biologie"
+          ],
+          [
+            "🗓️ Seit:",
+            "2018"
+          ],
+          [
+            "🎨 Bild von:",
+            "Maximilian"
+          ]
+        ],
+        "wissenswertes": [
+          "Sportfest",
+          "Schwimm-AG"
+        ]
+      }
+    },
+    {
+      "bild": "17.webp",
+      "antwort": "Laufer",
+      "tipps": [
+        "Herr",
+        "L",
+        "und er läuft und er läuft"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Deutsch"
+          ],
+          [
+            "🗓️ Seit:",
+            "2017"
+          ],
+          [
+            "🎨 Bild von:",
+            "9f"
+          ]
+        ],
+        "wissenswertes": [
+          "Leseförderung",
+          "Debattierclub"
+        ]
+      }
+    },
+    {
+      "bild": "18.webp",
+      "antwort": "Meiners",
+      "tipps": [
+        "Frau",
+        "M",
+        "Frau im Mais"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Wipo"
+          ],
+          [
+            "🗓️ Seit:",
+            "2013"
+          ],
+          [
+            "🎨 Bild von:",
+            "Karo"
+          ]
+        ],
+        "wissenswertes": [
+          "Schülerfirma",
+          "WiPo-Projekte"
+        ]
+      }
+    },
+    {
+      "bild": "19.webp",
+      "antwort": "Overberg",
+      "tipps": [
+        "Frau",
+        "O",
+        "Nicht Kellner, sondern ein … auf einem …"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Religion"
+          ],
+          [
+            "🗓️ Seit:",
+            "2012"
+          ],
+          [
+            "🎨 Bild von:",
+            "Claude & Canva"
+          ]
+        ],
+        "wissenswertes": [
+          "Sozialprojekte",
+          "Schulseelsorge"
+        ]
+      }
+    },
+    {
+      "bild": "20.webp",
+      "antwort": "Robben",
+      "tipps": [
+        "Frau",
+        "R",
+        "Wenn … hinter … …, … … … hinterher."
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Englisch"
+          ],
+          [
+            "🗓️ Seit:",
+            "2015"
+          ],
+          [
+            "🎨 Bild von:",
+            "Claude & Canva"
+          ]
+        ],
+        "wissenswertes": [
+          "Austauschprogramme",
+          "Englisch-Theater"
+        ]
+      }
+    },
+    {
+      "bild": "21.webp",
+      "antwort": "Röstermund",
+      "tipps": [
+        "Frau",
+        "R",
+        "Was ist da wo drin?"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Musik / Kunst"
+          ],
+          [
+            "🗓️ Seit:",
+            "2016"
+          ],
+          [
+            "🎨 Bild von:",
+            "Franziska"
+          ]
+        ],
+        "wissenswertes": [
+          "Schulkonzert",
+          "Kunstausstellung"
+        ]
+      }
+    },
+    {
+      "bild": "22.webp",
+      "antwort": "Seeband",
+      "tipps": [
+        "Herr",
+        "S",
+        "Es ist kein Fluss, sondern ein …, über den ein … fliegt."
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Erdkunde"
+          ],
+          [
+            "🗓️ Seit:",
+            "2014"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "See-Projekte",
+          "Umwelt-AG"
+        ]
+      }
+    },
+    {
+      "bild": "23.webp",
+      "antwort": "Sonnenburg",
+      "tipps": [
+        "Frau",
+        "S",
+        "das ist zu einfach für nen Tipp"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Geschichte / Politik"
+          ],
+          [
+            "🗓️ Seit:",
+            "2011"
+          ],
+          [
+            "🎨 Bild von:",
+            "Claude & Canva"
+          ]
+        ],
+        "wissenswertes": [
+          "Projekttage",
+          "Schülerrat"
+        ]
+      }
+    },
+    {
+      "bild": "24.webp",
+      "antwort": "Klus",
+      "tipps": [
+        "Herr",
+        "K",
+        "Zwei von dem hinteren und den Vokal tauschen"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Mathematik / Physik"
+          ],
+          [
+            "🗓️ Seit:",
+            "2010"
+          ],
+          [
+            "🎨 Bild von:",
+            "John"
+          ]
+        ],
+        "wissenswertes": [
+          "Förderunterricht",
+          "MINT-AG"
+        ]
+      }
+    },
+    {
+      "bild": "25.webp",
+      "antwort": "Kolbe",
+      "tipps": [
+        "Frau",
+        "K",
+        "Frau mit Motorteil"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Deutsch / Englisch"
+          ],
+          [
+            "🗓️ Seit:",
+            "2019"
+          ],
+          [
+            "🎨 Bild von:",
+            "Elisabeth"
+          ]
+        ],
+        "wissenswertes": [
+          "Lektüreprojekte",
+          "Sprachkurse"
+        ]
+      }
+    },
+    {
+      "bild": "26.webp",
+      "antwort": "Kohle",
+      "tipps": [
+        "Herr",
+        "K",
+        "Was hat der Herr in der Hand?"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Sport"
+          ],
+          [
+            "🗓️ Seit:",
+            "2013"
+          ],
+          [
+            "🎨 Bild von:",
+            "Anja"
+          ]
+        ],
+        "wissenswertes": [
+          "Sportfest",
+          "Leichtathletik-AG"
+        ]
+      }
+    },
+    {
+      "bild": "27.webp",
+      "antwort": "zum Hebel",
+      "tipps": [
+        "Frau",
+        "H",
+        "der Pfeil zeigt auf einen …"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Mathematik"
+          ],
+          [
+            "🗓️ Seit:",
+            "2008"
+          ],
+          [
+            "🎨 Bild von:",
+            "9f"
+          ]
+        ],
+        "wissenswertes": [
+          "Mathe-AG",
+          "Klassenleitung"
+        ]
+      }
+    },
+    {
+      "bild": "28.webp",
+      "antwort": "Hindricks",
+      "tipps": [
+        "Frau",
+        "H",
+        "One Way, mit welchem Zug und womit entwertet?"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "29.webp",
+      "antwort": "Burrichter",
+      "tipps": [
+        "Frau",
+        "B",
+        "Ein … auf dem …-stuhl."
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "9f"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "30.webp",
+      "antwort": "Bittigau",
+      "tipps": [
+        "Herr",
+        "B",
+        "Der größte anzunehmende Unfall ist dieses Bier sicher nicht."
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Claude & Canva"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "31.webp",
+      "antwort": "Rolfes",
+      "tipps": [
+        "Frau",
+        "R",
+        "Das ist nicht Simone Sommerland, sondern ihr inzwischen älterer Vorgänger Pennywise, dem Protagonisten aus… ."
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "32.webp",
+      "antwort": "Große Maestrup",
+      "tipps": [
+        "Frau",
+        "M",
+        "Das größte Bier auf dem Oktoberfest und dazu ein … Soldaten."
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "9f"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "33.webp",
+      "antwort": "Duisen",
+      "tipps": [
+        "Frau",
+        "D",
+        "Und wir …, …, … im Sauseschritt"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "34.webp",
+      "antwort": "Hartwig",
+      "tipps": [
+        "Frau",
+        "H",
+        "Eine beton… Perücke (englisch)"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "35.webp",
+      "antwort": "Hoppe",
+      "tipps": [
+        "Herr",
+        "H",
+        "…lhase Hans, hohoho"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "36.webp",
+      "antwort": "Litmeyer",
+      "tipps": [
+        "Herr",
+        "L",
+        "Auf einer …-säule prangt ein Plakat von einem mittelalterlichen Verwalter."
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "37.webp",
+      "antwort": "Rein",
+      "tipps": [
+        "Frau",
+        "R",
+        "Klementine wäscht mit … nicht nur sauber, sondern… "
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "38.webp",
+      "antwort": "Völler",
+      "tipps": [
+        "Frau",
+        "V",
+        "Das linke Glas ist … als das rechte. Und über dem Käfer mit den Punkten ist ein + — was bedeutet das?"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "39.webp",
+      "antwort": "Hamke",
+      "tipps": [
+        "Frau",
+        "H",
+        "Schinken und Schlüssel - englisch denken"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "40.webp",
+      "antwort": "Arends",
+      "tipps": [
+        "Herr",
+        "A",
+        "schwierig: gibt’s auch in der Mitte eines Zirkuszeltes und das Band ist am … eines Rennens."
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "41.webp",
+      "antwort": "Sandschulte",
+      "tipps": [
+        "Herr",
+        "S",
+        "eine … aus …"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "42.webp",
+      "antwort": "Schrader",
+      "tipps": [
+        "Herr",
+        "S",
+        "lautes … und das Bild des Querschnitts einer …"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "43.webp",
+      "antwort": "Wergen",
+      "tipps": [
+        "Herr",
+        "W",
+        "keine Staustufe, sondern ein … und daneben gibt es einen Strang Desox…."
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "44.webp",
+      "antwort": "Priesnitz",
+      "tipps": [
+        "Frau",
+        "P",
+        "Ein … ist wo? Und in der Mitte streichen, was auf der Stola steht."
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "45.webp",
+      "antwort": "von Nethen",
+      "tipps": [
+        "Frau",
+        "N",
+        "von wo kommt der Pfeil, der auf (ab hier englisch)was zeigt, wohinter sich was verseteckt."
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "46.webp",
+      "antwort": "Andersen",
+      "tipps": [
+        "Frau",
+        "A",
+        "links ist immer ein ... und rechts ist immer ein … und die sind der Vorname eines berühmten Autoren."
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "47.webp",
+      "antwort": "Asemann",
+      "tipps": [
+        "Frau",
+        "A",
+        "Das eine hat man im Ärmel, der daneben ist Eelektrisiert"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    },
+    {
+      "bild": "48.webp",
+      "antwort": "Schweiger",
+      "tipps": [
+        "Frau",
+        "S",
+        "Das … … und genießt. "
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "📚 Fach:",
+            "Fach"
+          ],
+          [
+            "🗓️ Seit:",
+            "20xx"
+          ],
+          [
+            "🎨 Bild von:",
+            "Jan Herrmann"
+          ]
+        ],
+        "wissenswertes": [
+          "OBS Spelle"
+        ]
+      }
+    }
+  ]
+}

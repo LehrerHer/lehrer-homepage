@@ -12,7 +12,8 @@
  *   <script src="/js/kolosseum-prompt.js"></script>
  *
  * Quiz-Typen (Feld "typ" in der JSON):
- *   "mc"          Multiple Choice (eine oder mehrere richtige Antworten)
+ *   "mc"/"fragen" Frage für Frage: Multiple Choice, Richtig/Falsch, Lücken, Zuordnung, Sortierung,
+ *                 Markierung, Einfärben – optional mit Konfigurationsbildschirm (Filter, Umfang, Modus)
  *   "bilder"      Bilderraten / Rebus (Bild + freie Texteingabe)
  *   "karte"       Stumme Karte mit Hotspots (leicht · mittel · schwer)
  *   "lueckentext" Lückentext ([antwort|alternative] = Eingabe, {richtig|falsch|falsch} = Auswahl)
@@ -203,6 +204,32 @@
     '.qe-luecke.qe-fail{border-bottom-color:var(--qe-fehler);background:var(--qe-fehler-bg);text-decoration:line-through}',
     '.qe-luecke.qe-loesung{border-bottom-color:var(--qe-primaer);background:rgba(30,58,95,.08);font-weight:700;text-decoration:none}',
     '.qe-korrektur{font-size:.8rem;color:#1a7a43;font-weight:700;margin-left:4px}',
+    /* Fragen-Typ: Konfiguration, Kontext, weitere Aufgabenarten */
+    '.qe-konfig-label{font-family:inherit;font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--qe-muted);margin:1rem 0 .4rem}',
+    '.qe-konfig-gruppe:first-child .qe-konfig-label{margin-top:0}',
+    '.qe-modus small{display:block;font-weight:400;font-size:.72rem;opacity:.8}',
+    '.qe-moduskarten{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}',
+    '.qe-moduskarte{text-align:left;padding:.7rem .9rem;border-radius:var(--qe-radius);border:2px solid var(--qe-rahmen);background:var(--qe-bg);cursor:pointer;font-family:inherit;color:var(--qe-text);line-height:1.3}',
+    '.qe-moduskarte.qe-aktiv{border-color:var(--qe-akzent);background:rgba(74,158,218,.1)}',
+    '.qe-moduskarte-icon{display:block;font-size:1.4rem;margin-bottom:4px}.qe-moduskarte strong{display:block;font-size:.9rem}.qe-moduskarte small{display:block;font-size:.75rem;color:var(--qe-muted)}',
+    '.qe-badge-zeile{display:flex;align-items:center;gap:8px;margin:0 0 .5rem}.qe-symbol{font-size:1.4rem}',
+    '.qe-kat{display:inline-block;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--qe-muted);border:1px solid var(--qe-rahmen);border-radius:20px;padding:2px 9px}',
+    '.qe-kontext{margin:0 0 1rem;padding:.7rem 1rem;border-left:4px solid var(--qe-akzent);background:var(--qe-bg);border-radius:0 var(--qe-radius) var(--qe-radius) 0;font-size:1rem;line-height:1.55}',
+    '.qe-luecke-zeile{display:grid;grid-template-columns:1fr;gap:4px;margin-bottom:.8rem}.qe-luecke-zeile .qe-eingabe{width:100%}',
+    '.qe-paar{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--qe-rahmen)}',
+    '.qe-paar-wahl{min-width:160px;padding:6px 8px;background:var(--qe-bg)}.qe-paar-wahl.qe-ok{border-bottom-color:var(--qe-ok)}.qe-paar-wahl.qe-fail{border-bottom-color:var(--qe-fehler)}',
+    '.qe-reihe{list-style:none;margin:0 0 .75rem;padding:0;min-height:44px;border:2px dashed var(--qe-rahmen);border-radius:var(--qe-radius)}',
+    '.qe-reihe-el{padding:.5rem .8rem;border-bottom:1px solid var(--qe-rahmen);cursor:pointer}.qe-reihe-el:last-child{border-bottom:none}',
+    '.qe-reihe-nr{font-weight:700;color:var(--qe-muted);margin-right:4px}.qe-reihe-el.qe-ok{background:var(--qe-ok-bg)}.qe-reihe-el.qe-fail{background:var(--qe-fehler-bg)}',
+    '.qe-marktext{line-height:2.2}.qe-wort{display:inline-block;padding:2px 5px;margin:0 1px;border-radius:5px;cursor:pointer;border:1px solid transparent}',
+    '.qe-wort:hover{border-color:var(--qe-akzent)}.qe-wort.qe-sel{background:rgba(74,158,218,.25);border-color:var(--qe-akzent)}',
+    '.qe-wort.qe-ok{background:var(--qe-ok-bg);border-color:var(--qe-ok)}.qe-wort.qe-fail{background:var(--qe-fehler-bg);border-color:var(--qe-fehler);text-decoration:line-through}',
+    '.qe-wort.qe-fehlt{border-color:var(--qe-ok);border-style:dashed}',
+    '.qe-farbpunkt{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:middle}',
+    '.qe-tipps{display:flex;gap:6px;flex-wrap:wrap;margin-top:.75rem}',
+    '.qe-galerie{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px;margin:1rem 0}',
+    '.qe-galerie figure{margin:0;background:var(--qe-bg);border-radius:var(--qe-radius);overflow:hidden;border:1px solid var(--qe-rahmen)}',
+    '.qe-galerie img{width:100%;aspect-ratio:1;object-fit:cover;display:block}.qe-galerie figcaption{font-size:.72rem;padding:4px 6px;text-align:center}',
     '@media (max-width:480px){.qe-kopf h1{font-size:1.25rem}.qe-karte{padding:1.1rem 1rem}.qe-bild-wrap{margin:-1.1rem -1rem 1rem}.qe-popup{width:170px}}'
   ].join('');
 
@@ -366,6 +393,13 @@
     box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
+  /* Bestenlisten-ID: Basis (bestenlisteSlug oder slug) + optionaler Modus aus der Konfiguration */
+  function lbId() {
+    var basis = daten.bestenlisteSlug || daten.slug;
+    var m = typ && typeof typ.modus === 'function' ? typ.modus() : '';
+    return m ? basis + '-' + m : basis;
+  }
+
   function bestenlisteSpeichern(punkte, total) {
     var inp = $('qe-bl-name'), status = $('qe-bl-status'), btn = $('qe-bl-speichern');
     if (!inp || typeof window.leaderboardSave !== 'function') return;
@@ -373,7 +407,7 @@
     if (!name) { inp.focus(); return; }
     lsSet('quiz_name', name);
     btn.disabled = true;
-    window.leaderboardSave(daten.slug, name, punkte, total).then(function (ok) {
+    window.leaderboardSave(lbId(), name, punkte, total).then(function (ok) {
       status.innerHTML = ok ? '<p class="qe-bl-ok">Gespeichert! 🎉</p>' : '<p class="qe-bl-fehler">Fehler beim Speichern.</p>';
       if (ok) bestenlisteLaden(); else btn.disabled = false;
     });
@@ -384,7 +418,7 @@
     if (!el) return;
     if (typeof window.leaderboardFetch !== 'function') { el.innerHTML = ''; return; }
     el.innerHTML = typeof window.leaderboardHTML === 'function' ? window.leaderboardHTML(null) : 'Lädt…';
-    window.leaderboardFetch(daten.slug, 10).then(function (data) {
+    window.leaderboardFetch(lbId(), 10).then(function (data) {
       el.innerHTML = typeof window.leaderboardHTML === 'function' ? window.leaderboardHTML(data) : '';
     }).catch(function () { el.innerHTML = ''; });
   }
@@ -428,154 +462,555 @@
   }
 
   /* ======================================================================
-     TYP 1: MULTIPLE CHOICE
-     fragen: [{frage, optionen:[...], richtig: 1 | [0,2], erklaerung}]
-     Optionen: mischen, optionenMischen, anzahl, loesungErlaubt (Standard true)
+     TYP 1: FRAGEN (Multiple Choice und weitere Aufgabenarten, Frage für Frage)
+     typ: "mc" (Alias) oder "fragen"
+     fragen: [{art?, frage, kontext?, hinweis?, badge?, symbol?, erklaerung?, gewicht?, …}]
+       art "mc"          optionen:[…], richtig: 1 | [0,2]  – oder antwort + Ablenker aus dem Pool (ablenker: 3)
+       art "rf"          richtig: true | false (Richtig/Falsch)
+       art "luecken"     teile: [{text, antwort}]  – Begriffe eintragen, Teilpunkte
+       art "zuordnung"   paare: [{l, r}]           – links → rechts zuordnen (Auswahlfeld), Teilpunkte
+       art "sortierung"  elemente: [… in richtiger Reihenfolge], akzeptiert?: [[…]] – Reihenfolge bauen
+       art "markierung"  text, ziele: [… Wörter/Wortgruppen] – Wörter im Text anklicken
+       art "einfaerben"  woerter: [{t, k}], kategorien: [{wert, label, farbe}] – Wörter einer Kategorie zuordnen
+     Quiz-Optionen: mischen, optionenMischen, anzahl, loesungErlaubt, teilpunkte (Standard true),
+       ablenker (Zahl: Optionen aus den Antworten anderer Fragen mit gleichem "modus"),
+       auswertungNach (Feldname für die Aufschlüsselung im Ergebnis, z. B. "kapitel"),
+       konfiguration: { hinweis, gruppen:[{feld, label, art:"einfach"|"mehrfach", optionen?:[{wert|werte, label, beschreibung}],
+                        alle?: "Alle", standard?, bestenliste?}], anzahl:{label, optionen:[10,"alle"], standard, bestenliste?},
+                        modus:{feld?, label, optionen:[{wert,label,beschreibung,icon}], zufall?: "mixed", bestenliste?} }
+     gewicht = Punkte je Frage (Standard 1; einfaerben: Anzahl Wörter) – XP-total ist die Summe der Gewichte
      ====================================================================== */
   var BUCHSTABEN = 'ABCDEFGHIJ';
 
-  function TypMC() {
-    var fragen = [], cur = 0, punkte = 0, beantwortet = false, verlauf = [], auswahl = [];
-    var inhalt;
+  function TypFragen() {
+    var alle = [], pool = [], cur = 0, punkte = 0, beantwortet = false, verlauf = [], auswahl = [];
+    var inhalt, konfig = { werte: {}, anzahl: null, modus: null }, zustand = {};
+    var KONF = daten.konfiguration || null;
+    var TEILPUNKTE = daten.teilpunkte !== false;
+    var gestartet = false;
 
-    function gesamt() { return fragen.length || (daten.fragen || []).length; }
+    /* ── Normalisierung ── */
+    function normalisieren(f, i) {
+      var q = {}; for (var k in f) q[k] = f[k];
+      q.nr = i;
+      q.art = f.art || (typeof f.richtig === 'boolean' ? 'rf' : 'mc');
+      if (q.art === 'einfaerben') q.gewicht = f.gewicht || (f.woerter || []).length;
+      else q.gewicht = f.gewicht || 1;
+      return q;
+    }
+
+    function gesamt() {
+      var liste = gestartet ? pool : alle.length ? alle : (daten.fragen || []).map(normalisieren);
+      return liste.reduce(function (a, q) { return a + (q.gewicht || 1); }, 0);
+    }
     function aktuell() { return punkte; }
+    function modus() {
+      if (!KONF) return '';
+      var teile = [];
+      (KONF.gruppen || []).forEach(function (g) {
+        if (!g.bestenliste) return;
+        var w = konfig.werte[g.feld];
+        if (Array.isArray(w)) teile.push(w.map(function (o) { return o.wert; }).join('+'));
+        else if (w && !w.alle) teile.push(w.wert);
+      });
+      if (KONF.anzahl && KONF.anzahl.bestenliste && konfig.anzahl != null) teile.push(String(konfig.anzahl));
+      if (KONF.modus && KONF.modus.bestenliste && konfig.modus) teile.push(konfig.modus.wert);
+      return teile.join('-');
+    }
 
+    /* ── Filter-Hilfen ── */
+    function feldWert(q, feld) { return q[feld]; }
+    function passt(q, feld, werte) {
+      var v = feldWert(q, feld);
+      if (Array.isArray(v)) return v.some(function (x) { return werte.indexOf(x) >= 0; });
+      return werte.indexOf(v) >= 0;
+    }
+    function gruppenWerte(g) {
+      var w = konfig.werte[g.feld];
+      if (!w) return null;
+      if (Array.isArray(w)) { var u = []; w.forEach(function (o) { (o.werte || [o.wert]).forEach(function (x) { if (u.indexOf(x) < 0) u.push(x); }); }); return u; }
+      if (w.alle) return null;
+      return w.werte || [w.wert];
+    }
+    function gefiltert(bisGruppe) {
+      var liste = alle;
+      (KONF.gruppen || []).some(function (g, gi) {
+        if (bisGruppe !== undefined && gi >= bisGruppe) return true;
+        var werte = gruppenWerte(g);
+        if (werte) liste = liste.filter(function (q) { return passt(q, g.feld, werte); });
+        return false;
+      });
+      if (KONF.modus) {
+        var feld = KONF.modus.feld || 'modus';
+        if (konfig.modus && konfig.modus.wert !== KONF.modus.zufall) {
+          liste = liste.filter(function (q) { return q[feld] === konfig.modus.wert; });
+        } else if (konfig.modus && KONF.modus.zufall) {
+          /* zufällig: je Einheit eine zufällige Variante */
+          var je = {};
+          liste.forEach(function (q) { var e = q.einheit != null ? q.einheit : q.nr; (je[e] = je[e] || []).push(q); });
+          liste = Object.keys(je).map(function (e) { return je[e][0 | Math.random() * je[e].length]; });
+        }
+      }
+      return liste;
+    }
+    function autoOptionen(g, gi) {
+      var liste = gefiltert(gi), werte = [];
+      liste.forEach(function (q) {
+        var v = feldWert(q, g.feld);
+        (Array.isArray(v) ? v : [v]).forEach(function (x) { if (x != null && werte.indexOf(x) < 0) werte.push(x); });
+      });
+      return werte.map(function (w) { return { wert: w, label: String(w) }; });
+    }
+
+    /* ── Start ── */
     function start() {
       inhalt = $('qe-inhalt');
-      var basis = (daten.fragen || []).map(function (f, i) {
-        var richtig = Array.isArray(f.richtig) ? f.richtig.slice() : [f.richtig];
-        var optionen = f.optionen.map(function (o, j) { return { text: o, richtig: richtig.indexOf(j) >= 0 }; });
-        return { frage: f.frage, erklaerung: f.erklaerung || '', optionen: optionen, mehrfach: Array.isArray(f.richtig), nr: i };
-      });
-      if (daten.mischen) basis = shuffle(basis);
-      if (daten.anzahl && daten.anzahl < basis.length) basis = basis.slice(0, daten.anzahl);
-      if (daten.optionenMischen) basis.forEach(function (f) { f.optionen = shuffle(f.optionen); });
-      fragen = basis; cur = 0; punkte = 0; verlauf = [];
-      startseite();
+      gestartet = false;
+      alle = (daten.fragen || []).map(normalisieren);
+      if (KONF) konfigScreen(); else startseite();
     }
 
     function startseite() {
       inhalt.innerHTML = '<div class="qe-karte qe-intro">' + introHTML()
         + '<div class="qe-zentriert" style="margin-top:1rem"><button type="button" class="qe-btn qe-btn-primaer" id="qe-start">Quiz starten →</button></div></div>';
-      $('qe-start').onclick = frageZeigen;
+      $('qe-start').onclick = function () { poolBauen(); if (pool.length) { frageZeigen(); } };
+    }
+
+    function konfigScreen() {
+      var html = '<div class="qe-karte qe-konfig">' + introHTML() + (KONF.hinweis ? '<p class="qe-modus-hinweis">' + KONF.hinweis + '</p>' : '');
+      (KONF.gruppen || []).forEach(function (g, gi) {
+        html += '<div class="qe-konfig-gruppe" data-gruppe="' + gi + '"><p class="seitenleiste-titel qe-konfig-label">' + esc(g.label || g.feld) + '</p><div class="qe-modi" id="qe-kg-' + gi + '"></div></div>';
+      });
+      if (KONF.anzahl) html += '<div class="qe-konfig-gruppe"><p class="qe-konfig-label">' + esc(KONF.anzahl.label || 'Umfang') + '</p><div class="qe-modi" id="qe-kanzahl"></div></div>';
+      if (KONF.modus) html += '<div class="qe-konfig-gruppe"><p class="qe-konfig-label">' + esc(KONF.modus.label || 'Spielmodus') + '</p><div class="qe-moduskarten" id="qe-kmodus"></div></div>';
+      html += '<p class="qe-modus-hinweis" id="qe-konfig-info"></p>'
+        + '<div class="qe-zentriert"><button type="button" class="qe-btn qe-btn-primaer" id="qe-start">Quiz starten →</button></div></div>';
+      inhalt.innerHTML = html;
+      (KONF.gruppen || []).forEach(function (g, gi) { gruppeRendern(g, gi); });
+      anzahlRendern();
+      modusRendern();
+      infoAktualisieren();
+      $('qe-start').onclick = function () { poolBauen(); if (pool.length) frageZeigen(); };
+    }
+
+    function gruppeRendern(g, gi, zuruecksetzen) {
+      var box = $('qe-kg-' + gi); if (!box) return;
+      var optionen = (g.optionen || autoOptionen(g, gi)).slice();
+      if (g.alle) optionen.unshift({ wert: '__alle', label: g.alle, alle: true });
+      var mehrfach = g.art === 'mehrfach';
+      /* Vorbelegung / Bereinigung (abhängige Gruppen starten nach einer Änderung davor wieder mit dem Standard) */
+      if (zuruecksetzen) konfig.werte[g.feld] = undefined;
+      var aktuellW = konfig.werte[g.feld];
+      if (mehrfach) {
+        if (!Array.isArray(aktuellW)) {
+          aktuellW = g.standard === 'alle' || g.standard === undefined ? optionen.filter(function (o) { return !o.alle; })
+            : optionen.filter(function (o) { return [].concat(g.standard).indexOf(o.wert) >= 0; });
+        } else {
+          aktuellW = aktuellW.filter(function (o) { return optionen.some(function (p) { return p.wert === o.wert; }); });
+          if (!aktuellW.length) aktuellW = optionen.filter(function (o) { return !o.alle; });
+        }
+      } else {
+        if (!aktuellW || !optionen.some(function (p) { return p.wert === aktuellW.wert; })) {
+          aktuellW = optionen.filter(function (o) { return o.wert === g.standard; })[0] || (g.standard === undefined && g.alle ? optionen[0] : null);
+          if (!aktuellW && g.pflicht === false) aktuellW = null;
+          if (!aktuellW && g.standard === undefined && !g.alle) aktuellW = optionen[0] || null;
+        }
+      }
+      konfig.werte[g.feld] = aktuellW;
+      box.innerHTML = '';
+      optionen.forEach(function (o) {
+        var aktiv = mehrfach ? aktuellW.some(function (x) { return x.wert === o.wert; }) : (aktuellW && aktuellW.wert === o.wert);
+        var b = h('button', 'qe-modus' + (aktiv ? ' qe-aktiv' : ''), esc(o.label) + (o.beschreibung ? '<small>' + esc(o.beschreibung) + '</small>' : ''));
+        b.type = 'button'; b.setAttribute('aria-pressed', aktiv ? 'true' : 'false');
+        b.onclick = function () {
+          if (mehrfach) {
+            var liste = konfig.werte[g.feld];
+            var pos = -1; liste.forEach(function (x, i) { if (x.wert === o.wert) pos = i; });
+            if (pos >= 0) { if (liste.length > 1) liste.splice(pos, 1); } else liste.push(o);
+          } else konfig.werte[g.feld] = o;
+          /* nachfolgende Gruppen neu aufbauen (abhängige Optionen) */
+          (KONF.gruppen || []).forEach(function (g2, gi2) { if (gi2 >= gi) gruppeRendern(g2, gi2, gi2 > gi); });
+          anzahlRendern(); infoAktualisieren();
+        };
+        box.appendChild(b);
+      });
+    }
+
+    function anzahlRendern() {
+      var box = $('qe-kanzahl'); if (!box) return;
+      var n = gefiltert().length;
+      var optionen = (KONF.anzahl.optionen || ['alle']);
+      if (konfig.anzahl == null) konfig.anzahl = KONF.anzahl.standard !== undefined ? KONF.anzahl.standard : optionen[optionen.length - 1];
+      box.innerHTML = '';
+      optionen.forEach(function (o) {
+        var istAlle = o === 'alle';
+        if (!istAlle && Number(o) > n && n > 0) return;   /* mehr als vorhanden → ausblenden */
+        var label = istAlle ? 'Alle (' + n + ')' : String(o);
+        var aktiv = konfig.anzahl === o;
+        var b = h('button', 'qe-modus' + (aktiv ? ' qe-aktiv' : ''), esc(label)); b.type = 'button';
+        b.onclick = function () { konfig.anzahl = o; anzahlRendern(); infoAktualisieren(); };
+        box.appendChild(b);
+      });
+      if (!box.querySelector('.qe-aktiv') && box.firstChild) { konfig.anzahl = optionen.filter(function (o) { return o === 'alle' || Number(o) <= n; })[0]; anzahlRendern(); }
+    }
+
+    function modusRendern() {
+      var box = $('qe-kmodus'); if (!box) return;
+      var optionen = KONF.modus.optionen || [];
+      if (!konfig.modus) konfig.modus = optionen.filter(function (o) { return o.wert === KONF.modus.standard; })[0] || optionen[0];
+      box.innerHTML = '';
+      optionen.forEach(function (o) {
+        var aktiv = konfig.modus && konfig.modus.wert === o.wert;
+        var b = h('button', 'qe-moduskarte' + (aktiv ? ' qe-aktiv' : ''),
+          (o.icon ? '<span class="qe-moduskarte-icon">' + o.icon + '</span>' : '') + '<strong>' + esc(o.label) + '</strong>' + (o.beschreibung ? '<small>' + esc(o.beschreibung) + '</small>' : ''));
+        b.type = 'button'; b.setAttribute('aria-pressed', aktiv ? 'true' : 'false');
+        b.onclick = function () { konfig.modus = o; modusRendern(); anzahlRendern(); infoAktualisieren(); };
+        box.appendChild(b);
+      });
+    }
+
+    function infoAktualisieren() {
+      var info = $('qe-konfig-info'); if (!info) return;
+      var n = gefiltert().length;
+      var min = daten.ablenker ? Math.max(1, daten.ablenker + 1) : 1;
+      var gewaehlt = (konfig.anzahl == null || konfig.anzahl === 'alle') ? n : Math.min(Number(konfig.anzahl), n);
+      info.textContent = n < min ? 'Keine passende Auswahl – bitte mehr Optionen aktivieren.' : gewaehlt + ' von ' + n + ' Fragen werden gespielt.';
+      $('qe-start').disabled = n < min;
+    }
+
+    /* ── Pool ── */
+    function poolBauen() {
+      var liste = KONF ? gefiltert() : alle.slice();
+      var basis = liste.map(function (q) { var c = {}; for (var k in q) c[k] = q[k]; return c; });
+      if (daten.mischen || (KONF && konfig.anzahl != null && konfig.anzahl !== 'alle')) basis = shuffle(basis);
+      var n = KONF && konfig.anzahl != null && konfig.anzahl !== 'alle' ? Number(konfig.anzahl) : (daten.anzahl || basis.length);
+      if (n < basis.length) basis = basis.slice(0, n);
+      /* MC-Optionen aufbereiten (inkl. Ablenker aus dem Pool) */
+      basis.forEach(function (q) {
+        if (q.art === 'rf') { q.optionen = [{ text: 'Richtig', richtig: q.richtig === true }, { text: 'Falsch', richtig: q.richtig === false }]; q.mehrfach = false; return; }
+        if (q.art !== 'mc') return;
+        if (q.optionen && q.optionen.length) {
+          var richtig = Array.isArray(q.richtig) ? q.richtig.slice() : [q.richtig];
+          q.mehrfach = Array.isArray(q.richtig);
+          q.optionen = q.optionen.map(function (o, j) { return { text: o, richtig: richtig.indexOf(j) >= 0 }; });
+        } else {
+          var feld = KONF && KONF.modus ? (KONF.modus.feld || 'modus') : 'modus';
+          var quelle = (liste.length >= (daten.ablenker || 3) + 1 ? liste : alle).filter(function (o) { return o[feld] === q[feld] && norm(o.antwort) !== norm(q.antwort); });
+          var seen = {}, kandidaten = [];
+          shuffle(quelle).forEach(function (o) { var k = norm(o.antwort); if (!seen[k]) { seen[k] = 1; kandidaten.push(o.antwort); } });
+          q.optionen = [{ text: q.antwort, richtig: true }].concat(kandidaten.slice(0, daten.ablenker || 3).map(function (t) { return { text: t, richtig: false }; }));
+          q.optionen = shuffle(q.optionen);
+          q.mehrfach = false;
+        }
+        if (daten.optionenMischen) q.optionen = shuffle(q.optionen);
+      });
+      pool = basis; cur = 0; punkte = 0; verlauf = []; gestartet = true;
+    }
+
+    /* ── Frage anzeigen ── */
+    function kopfHTML(f) {
+      return (f.badge || f.symbol ? '<p class="qe-badge-zeile">' + (f.symbol ? '<span class="qe-symbol">' + f.symbol + '</span>' : '') + (f.badge ? '<span class="qe-kat">' + esc(f.badge) + '</span>' : '') + '</p>' : '')
+        + '<div class="qe-frage" id="qe-frage">' + f.frage + '</div>'
+        + (f.kontext ? '<blockquote class="qe-kontext">' + f.kontext + '</blockquote>' : '')
+        + (f.hinweis ? '<p class="qe-modus-hinweis">' + esc(f.hinweis) + '</p>' : '');
     }
 
     function frageZeigen() {
-      var f = fragen[cur];
-      beantwortet = false; auswahl = [];
+      var f = pool[cur];
+      beantwortet = false; auswahl = []; zustand = {};
+      var pruefenNoetig = f.art !== 'mc' && f.art !== 'rf' || f.mehrfach;
       inhalt.innerHTML = '<div class="qe-karte">'
-        + fortschrittHTML(cur, fragen.length, zahl(punkte) + ' richtig')
-        + '<div class="qe-frage" id="qe-frage"></div>'
+        + fortschrittHTML(cur, pool.length, zahl(punkte) + ' Punkte')
+        + kopfHTML(f)
         + (f.mehrfach ? '<p class="qe-modus-hinweis">Mehrere Antworten können richtig sein.</p>' : '')
-        + '<div class="qe-optionen" id="qe-optionen"></div>'
+        + '<div id="qe-aufgabe"></div>'
         + '<div class="qe-feedback" id="qe-feedback"></div>'
         + '<div class="qe-hilfe">'
-        + (f.mehrfach ? '<button type="button" class="qe-btn qe-btn-primaer qe-btn-klein" id="qe-pruefen" disabled>Prüfen</button>' : '')
+        + (pruefenNoetig ? '<button type="button" class="qe-btn qe-btn-primaer qe-btn-klein" id="qe-pruefen" disabled>Prüfen</button>' : '')
         + (daten.loesungErlaubt !== false ? '<button type="button" class="qe-btn qe-btn-sekundaer qe-btn-klein" id="qe-loesung">Lösung zeigen</button>' : '')
         + '</div>'
         + '<div class="qe-weiter" id="qe-weiter"><button type="button" class="qe-btn qe-btn-primaer" id="qe-next">'
-        + (cur + 1 < fragen.length ? 'Nächste Frage →' : 'Auswertung ansehen →') + '</button></div></div>';
-      $('qe-frage').innerHTML = f.frage;
-      var box = $('qe-optionen');
-      f.optionen.forEach(function (o, i) {
-        var b = h('button', 'qe-opt', '<span class="qe-opt-buchstabe">' + BUCHSTABEN[i] + '</span><span>' + o.text + '</span>');
-        b.type = 'button'; b.dataset.i = i;
-        b.onclick = function () { f.mehrfach ? umschalten(i, b) : antworten([i]); };
-        box.appendChild(b);
-      });
-      if (f.mehrfach) $('qe-pruefen').onclick = function () { antworten(auswahl); };
-      if ($('qe-loesung')) $('qe-loesung').onclick = aufdecken;
+        + (cur + 1 < pool.length ? 'Nächste Frage →' : 'Auswertung ansehen →') + '</button></div></div>';
+      var box = $('qe-aufgabe');
+      var render = RENDER[f.art] || RENDER.mc;
+      render(f, box);
+      if ($('qe-pruefen')) $('qe-pruefen').onclick = function () { pruefen(f); };
+      if ($('qe-loesung')) $('qe-loesung').onclick = function () { aufdecken(f); };
       $('qe-next').onclick = weiter;
     }
 
-    function umschalten(i, btn) {
-      if (beantwortet) return;
-      var p = auswahl.indexOf(i);
-      if (p >= 0) auswahl.splice(p, 1); else auswahl.push(i);
-      btn.classList.toggle('qe-gewaehlt', p < 0);
-      $('qe-pruefen').disabled = !auswahl.length;
-    }
+    function pruefenFreigeben(ok) { var b = $('qe-pruefen'); if (b) b.disabled = !ok; }
 
-    function markieren(f, gewaehlt) {
-      var btns = $('qe-optionen').querySelectorAll('.qe-opt');
-      f.optionen.forEach(function (o, j) {
-        btns[j].disabled = true;
-        btns[j].classList.remove('qe-gewaehlt');
-        if (o.richtig) btns[j].classList.add('qe-richtig');
-        else if (gewaehlt.indexOf(j) >= 0) btns[j].classList.add('qe-falsch');
-      });
+    /* ── Renderer je Aufgabenart ── */
+    var RENDER = {
+      mc: function (f, box) {
+        var liste = h('div', 'qe-optionen'); liste.id = 'qe-optionen';
+        f.optionen.forEach(function (o, i) {
+          var b = h('button', 'qe-opt', '<span class="qe-opt-buchstabe">' + BUCHSTABEN[i] + '</span><span>' + o.text + '</span>');
+          b.type = 'button'; b.dataset.i = i;
+          b.onclick = function () {
+            if (beantwortet) return;
+            if (f.mehrfach) {
+              var p = auswahl.indexOf(i); if (p >= 0) auswahl.splice(p, 1); else auswahl.push(i);
+              b.classList.toggle('qe-gewaehlt', p < 0); pruefenFreigeben(auswahl.length > 0);
+            } else { auswahl = [i]; pruefen(f); }
+          };
+          liste.appendChild(b);
+        });
+        box.appendChild(liste);
+      },
+      luecken: function (f, box) {
+        box.innerHTML = (f.teile || []).map(function (t, i) {
+          return '<div class="qe-luecke-zeile"><div>' + t.text + '</div><input class="qe-eingabe" id="qe-t-' + i + '" type="text" autocomplete="off" placeholder="Begriff eingeben …" aria-label="Antwort ' + (i + 1) + '"><span class="qe-korrektur" id="qe-tk-' + i + '"></span></div>';
+        }).join('');
+        box.querySelectorAll('input').forEach(function (inp) {
+          inp.addEventListener('input', function () { pruefenFreigeben(Array.prototype.some.call(box.querySelectorAll('input'), function (x) { return x.value.trim(); })); });
+          inp.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !$('qe-pruefen').disabled) pruefen(f); });
+        });
+      },
+      zuordnung: function (f, box) {
+        var rechts = []; (f.paare || []).forEach(function (p) { if (rechts.indexOf(p.r) < 0) rechts.push(p.r); });
+        rechts = shuffle(rechts);
+        box.innerHTML = (f.paare || []).map(function (p, i) {
+          return '<div class="qe-paar"><div class="qe-paar-links">' + p.l + '</div><select class="qe-luecke qe-paar-wahl" id="qe-z-' + i + '" aria-label="Zuordnung ' + (i + 1) + '"><option value="">…</option>'
+            + rechts.map(function (r) { return '<option value="' + esc(r) + '">' + esc(r) + '</option>'; }).join('') + '</select><span class="qe-korrektur" id="qe-zk-' + i + '"></span></div>';
+        }).join('');
+        box.querySelectorAll('select').forEach(function (s) { s.addEventListener('change', function () { pruefenFreigeben(Array.prototype.every.call(box.querySelectorAll('select'), function (x) { return x.value; })); }); });
+      },
+      sortierung: function (f, box) {
+        zustand.reihe = [];
+        var elemente = f.elemente || [];
+        var bank = shuffle(elemente.map(function (t, i) { return { t: t, i: i }; }));
+        box.innerHTML = '<p class="qe-modus-hinweis">Tippe die Elemente in der richtigen Reihenfolge an. Antippen in der Reihe entfernt wieder.</p>'
+          + '<ol class="qe-reihe" id="qe-reihe" aria-label="Deine Reihenfolge"></ol><div class="qe-bank" id="qe-sortbank"></div>';
+        function zeichnen() {
+          var reihe = $('qe-reihe'), sb = $('qe-sortbank');
+          reihe.innerHTML = ''; sb.innerHTML = '';
+          zustand.reihe.forEach(function (e, pos) {
+            var li = h('li', 'qe-reihe-el', '<span class="qe-reihe-nr">' + (pos + 1) + '.</span> ' + e.t);
+            li.setAttribute('role', 'button'); li.tabIndex = 0;
+            li.onclick = function () { if (beantwortet) return; zustand.reihe.splice(pos, 1); zeichnen(); };
+            li.onkeydown = function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); li.click(); } };
+            reihe.appendChild(li);
+          });
+          bank.forEach(function (e) {
+            if (zustand.reihe.indexOf(e) >= 0) return;
+            var t = h('button', 'qe-tag', e.t); t.type = 'button';
+            t.onclick = function () { if (beantwortet) return; zustand.reihe.push(e); zeichnen(); };
+            sb.appendChild(t);
+          });
+          pruefenFreigeben(zustand.reihe.length === elemente.length);
+        }
+        zeichnen();
+      },
+      markierung: function (f, box) {
+        zustand.markiert = [];
+        var woerter = String(f.text || '').split(' ');
+        box.innerHTML = '<p class="qe-modus-hinweis">Tippe die passenden Wörter an (nochmal antippen hebt die Markierung auf).</p><p class="qe-text qe-marktext" id="qe-marktext"></p>';
+        var p = $('qe-marktext');
+        woerter.forEach(function (w, i) {
+          var s = h('span', 'qe-wort', esc(w)); s.setAttribute('role', 'button'); s.tabIndex = 0;
+          s.onclick = function () {
+            if (beantwortet) return;
+            var pos = zustand.markiert.indexOf(i);
+            if (pos >= 0) zustand.markiert.splice(pos, 1); else zustand.markiert.push(i);
+            s.classList.toggle('qe-sel', pos < 0); pruefenFreigeben(zustand.markiert.length > 0);
+          };
+          s.onkeydown = function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); s.click(); } };
+          p.appendChild(s); p.appendChild(document.createTextNode(' '));
+        });
+      },
+      einfaerben: function (f, box) {
+        zustand.farbe = (f.kategorien || [])[0] ? f.kategorien[0].wert : null;
+        zustand.wahl = (f.woerter || []).map(function () { return null; });
+        box.innerHTML = '<p class="qe-modus-hinweis">Wähle zuerst eine Kategorie, dann tippe die Wörter im Satz an.</p><div class="qe-modi" id="qe-palette"></div><p class="qe-text qe-marktext" id="qe-satz"></p>';
+        var pal = $('qe-palette');
+        function paletteZeichnen() {
+          pal.innerHTML = '';
+          (f.kategorien || []).forEach(function (k) {
+            var b = h('button', 'qe-modus' + (zustand.farbe === k.wert ? ' qe-aktiv' : ''), '<span class="qe-farbpunkt" style="background:' + esc(k.farbe || 'var(--qe-akzent)') + '"></span>' + esc(k.label || k.wert));
+            b.type = 'button'; b.onclick = function () { zustand.farbe = k.wert; paletteZeichnen(); };
+            pal.appendChild(b);
+          });
+          var x = h('button', 'qe-modus', '✕ Löschen'); x.type = 'button'; x.onclick = function () { zustand.farbe = null; paletteZeichnen(); }; pal.appendChild(x);
+        }
+        paletteZeichnen();
+        var satz = $('qe-satz');
+        (f.woerter || []).forEach(function (w, i) {
+          var s = h('span', 'qe-wort', esc(w.t)); s.setAttribute('role', 'button'); s.tabIndex = 0;
+          s.onclick = function () {
+            if (beantwortet) return;
+            zustand.wahl[i] = zustand.farbe;
+            var k = (f.kategorien || []).filter(function (c) { return c.wert === zustand.farbe; })[0];
+            s.style.background = k ? k.farbe : ''; s.style.color = k ? '#fff' : '';
+            pruefenFreigeben(zustand.wahl.some(function (v) { return v; }));
+          };
+          s.onkeydown = function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); s.click(); } };
+          satz.appendChild(s); satz.appendChild(document.createTextNode(' '));
+        });
+      }
+    };
+    RENDER.rf = RENDER.mc;
+
+    /* ── Bewertung je Aufgabenart: liefert {anteil 0..1, eigene, loesung} und markiert die Oberfläche ── */
+    function vergleichbar(s) { return norm(s); }
+    var BEWERTEN = {
+      mc: function (f) {
+        var btns = $('qe-optionen').querySelectorAll('.qe-opt');
+        var ok = f.optionen.every(function (o, j) { return o.richtig === (auswahl.indexOf(j) >= 0); });
+        f.optionen.forEach(function (o, j) {
+          btns[j].disabled = true; btns[j].classList.remove('qe-gewaehlt');
+          if (o.richtig) btns[j].classList.add('qe-richtig'); else if (auswahl.indexOf(j) >= 0) btns[j].classList.add('qe-falsch');
+        });
+        return { anteil: ok ? 1 : 0, eigene: auswahl.map(function (j) { return f.optionen[j].text; }).join(', ') || '–',
+          loesung: f.optionen.filter(function (o) { return o.richtig; }).map(function (o) { return o.text; }).join(', ') };
+      },
+      luecken: function (f) {
+        var n = f.teile.length, c = 0, eigene = [];
+        f.teile.forEach(function (t, i) {
+          var inp = $('qe-t-' + i), v = inp.value.trim(); inp.disabled = true; eigene.push(v || '–');
+          var erwartet = String(t.antwort);
+          var ok = vergleichbar(v) === vergleichbar(erwartet) || (v.length > 3 && vergleichbar(erwartet).indexOf(vergleichbar(v)) >= 0);
+          inp.classList.add(ok ? 'qe-richtig' : 'qe-falsch');
+          if (!ok) $('qe-tk-' + i).textContent = '→ ' + erwartet;
+          if (ok) c++;
+        });
+        return { anteil: c / n, eigene: eigene.join(' · '), loesung: f.teile.map(function (t) { return t.antwort; }).join(' · ') };
+      },
+      zuordnung: function (f) {
+        var n = f.paare.length, c = 0, eigene = [];
+        f.paare.forEach(function (p, i) {
+          var s = $('qe-z-' + i); s.disabled = true; eigene.push(s.value || '–');
+          var ok = s.value === p.r;
+          s.classList.add(ok ? 'qe-ok' : 'qe-fail');
+          if (!ok) $('qe-zk-' + i).textContent = '→ ' + p.r;
+          if (ok) c++;
+        });
+        return { anteil: c / n, eigene: eigene.join(' · '), loesung: f.paare.map(function (p) { return p.l + ' → ' + p.r; }).join(' · ') };
+      },
+      sortierung: function (f) {
+        var reihe = zustand.reihe.map(function (e) { return e.t; });
+        var ziele = [f.elemente].concat(f.akzeptiert || []);
+        var voll = ziele.some(function (z) { return JSON.stringify(z) === JSON.stringify(reihe); });
+        var treffer = 0; f.elemente.forEach(function (t, i) { if (reihe[i] === t) treffer++; });
+        var items = $('qe-reihe').children;
+        for (var i = 0; i < items.length; i++) items[i].classList.add(voll || reihe[i] === f.elemente[i] ? 'qe-ok' : 'qe-fail');
+        return { anteil: voll ? 1 : treffer / f.elemente.length, eigene: reihe.join(' → '), loesung: f.elemente.join(' → ') };
+      },
+      markierung: function (f) {
+        var woerter = String(f.text || '').split(' ');
+        var zielWoerter = [];
+        (f.ziele || []).forEach(function (z) { norm(z).split(' ').forEach(function (w) { if (w && zielWoerter.indexOf(w) < 0) zielWoerter.push(w); }); });
+        var spans = $('qe-marktext').querySelectorAll('.qe-wort');
+        var gefunden = 0, zielAnzahl = 0;
+        woerter.forEach(function (w, i) {
+          var clean = norm(w).replace(/[.,!?;:"„“”()]/g, '');
+          var istZiel = !!clean && zielWoerter.indexOf(clean) >= 0;
+          var gewaehlt = zustand.markiert.indexOf(i) >= 0;
+          if (istZiel) zielAnzahl++;
+          spans[i].classList.remove('qe-sel');
+          if (istZiel && gewaehlt) { spans[i].classList.add('qe-ok'); gefunden++; }
+          else if (!istZiel && gewaehlt) spans[i].classList.add('qe-fail');
+          else if (istZiel) spans[i].classList.add('qe-fehlt');
+        });
+        var anteil = zielAnzahl ? gefunden / zielAnzahl : 0;
+        if (gefunden === zielAnzahl && zustand.markiert.length > zielAnzahl) anteil = Math.max(0, (zielAnzahl - (zustand.markiert.length - zielAnzahl)) / zielAnzahl);
+        return { anteil: anteil, eigene: zustand.markiert.length + ' Wörter markiert', loesung: (f.ziele || []).join(', ') };
+      },
+      einfaerben: function (f) {
+        var spans = $('qe-satz').querySelectorAll('.qe-wort'), c = 0;
+        f.woerter.forEach(function (w, i) {
+          var ok = zustand.wahl[i] === w.k;
+          spans[i].classList.add(ok ? 'qe-ok' : 'qe-fail');
+          if (!ok) { var k = f.kategorien.filter(function (x) { return x.wert === w.k; })[0]; spans[i].title = 'Richtig: ' + (k ? k.label : w.k); }
+          if (ok) c++;
+        });
+        return { anteil: c / f.woerter.length, eigene: c + ' von ' + f.woerter.length + ' richtig',
+          loesung: f.woerter.map(function (w) { var k = f.kategorien.filter(function (x) { return x.wert === w.k; })[0]; return w.t + ' = ' + (k ? k.label : w.k); }).join(' · ') };
+      }
+    };
+    BEWERTEN.rf = BEWERTEN.mc;
+
+    function abschliessen(f, erg, hilfe) {
+      beantwortet = true;
+      var anteil = hilfe ? 0 : erg.anteil;
+      if (!TEILPUNKTE && anteil < 1) anteil = 0;
+      var erreicht = Math.round(anteil * f.gewicht * 100) / 100;
+      punkte += erreicht;
+      verlauf.push({ frage: f.frage, ok: anteil >= 1, teil: anteil > 0 && anteil < 1, hilfe: hilfe, eigene: erg.eigene, richtig: erg.loesung, gewicht: f.gewicht, erreicht: erreicht, gruppe: daten.auswertungNach ? f[daten.auswertungNach] : null });
       if ($('qe-pruefen')) $('qe-pruefen').disabled = true;
       if ($('qe-loesung')) $('qe-loesung').disabled = true;
+      $('qe-chip').textContent = zahl(punkte) + ' Punkte';
+      var fb = $('qe-feedback');
+      fb.className = 'qe-feedback ' + (hilfe ? 'qe-teil' : anteil >= 1 ? 'qe-ok' : anteil > 0 ? 'qe-teil' : 'qe-no');
+      fb.innerHTML = '<strong>' + (hilfe ? 'Lösung angezeigt – diese Aufgabe zählt nicht.' : anteil >= 1 ? 'Richtig!' : anteil > 0 ? 'Teilweise richtig (' + zahl(erreicht) + ' von ' + f.gewicht + ').' : 'Leider falsch.') + '</strong> '
+        + (anteil < 1 && (hilfe || f.art !== 'mc' && f.art !== 'rf') ? 'Lösung: ' + esc(erg.loesung) + '. ' : '') + (f.erklaerung || '');
       $('qe-weiter').style.display = 'block';
+      $('qe-next').focus();
     }
 
-    function antworten(gewaehlt) {
-      if (beantwortet || !gewaehlt.length) return;
-      beantwortet = true;
-      var f = fragen[cur];
-      var ok = f.optionen.every(function (o, j) { return o.richtig === (gewaehlt.indexOf(j) >= 0); });
-      if (ok) punkte++;
-      verlauf.push({
-        frage: f.frage, ok: ok, hilfe: false,
-        eigene: gewaehlt.map(function (j) { return f.optionen[j].text; }).join(', '),
-        richtig: f.optionen.filter(function (o) { return o.richtig; }).map(function (o) { return o.text; }).join(', ')
-      });
-      markieren(f, gewaehlt);
-      $('qe-chip').textContent = zahl(punkte) + ' richtig';
-      var fb = $('qe-feedback');
-      fb.className = 'qe-feedback ' + (ok ? 'qe-ok' : 'qe-no');
-      fb.innerHTML = (ok ? '<strong>Richtig!</strong> ' : '<strong>Leider falsch.</strong> ') + f.erklaerung;
-    }
-
-    /* Frage-für-Frage-Quiz: Aufdecken verrät nur DIESE Frage → sie zählt 0, der Rest bleibt wertbar */
-    function aufdecken() {
+    function pruefen(f) {
       if (beantwortet) return;
-      beantwortet = true;
-      var f = fragen[cur];
-      verlauf.push({ frage: f.frage, ok: false, hilfe: true, eigene: '–',
-        richtig: f.optionen.filter(function (o) { return o.richtig; }).map(function (o) { return o.text; }).join(', ') });
-      markieren(f, []);
-      var fb = $('qe-feedback');
-      fb.className = 'qe-feedback qe-teil';
-      fb.innerHTML = '<strong>Lösung angezeigt</strong> – diese Frage zählt nicht für XP. ' + f.erklaerung;
+      abschliessen(f, BEWERTEN[f.art](f), false);
+    }
+
+    function aufdecken(f) {
+      if (beantwortet) return;
+      auswahl = []; zustand.reihe = zustand.reihe || []; zustand.markiert = zustand.markiert || []; zustand.wahl = zustand.wahl || [];
+      abschliessen(f, BEWERTEN[f.art](f), true);
     }
 
     function weiter() {
+      if (!beantwortet) return;
       cur++;
-      if (cur >= fragen.length) ergebnis(); else frageZeigen();
+      if (cur >= pool.length) ergebnis(); else frageZeigen();
     }
 
     function ergebnis() {
       inhalt.innerHTML = '';
+      var extra = '';
+      if (daten.auswertungNach) {
+        var gruppen = {}, reihenfolge = [];
+        verlauf.forEach(function (v) { var g = v.gruppe == null ? '–' : String(v.gruppe); if (!gruppen[g]) { gruppen[g] = { e: 0, m: 0 }; reihenfolge.push(g); } gruppen[g].e += v.erreicht; gruppen[g].m += v.gewicht; });
+        var labels = daten.auswertungLabels || {};
+        extra = '<div class="qe-details" style="margin-top:1rem"><p class="qe-konfig-label">Ergebnis nach ' + esc(daten.auswertungTitel || daten.auswertungNach) + '</p>'
+          + reihenfolge.map(function (g) { var x = gruppen[g]; var p = x.m ? Math.round(x.e / x.m * 100) : 0; return '<div class="qe-detail"><span style="min-width:9rem">' + esc(labels[g] || g) + '</span><span class="qe-detail-antwort">' + zahl(x.e) + ' / ' + zahl(x.m) + ' (' + p + ' %)</span></div>'; }).join('') + '</div>';
+      }
       var details = '<div class="qe-karte qe-details" style="text-align:left;margin-top:1.25rem"><h2>Auswertung im Detail</h2>'
         + verlauf.map(function (v) {
-            return '<div class="qe-detail"><span class="qe-detail-icon">' + (v.ok ? '✓' : v.hilfe ? '👁' : '✗') + '</span>'
+            return '<div class="qe-detail"><span class="qe-detail-icon">' + (v.ok ? '✓' : v.hilfe ? '👁' : v.teil ? '◐' : '✗') + '</span>'
               + '<div><div>' + v.frage + '</div><div class="qe-detail-antwort">'
-              + (v.ok ? 'Richtig: ' + v.richtig : (v.hilfe ? 'Lösung angesehen' : 'Deine Antwort: ' + v.eigene) + ' · Richtig: ' + v.richtig)
+              + (v.ok ? 'Richtig: ' + esc(v.richtig) : (v.hilfe ? 'Lösung angesehen' : 'Deine Antwort: ' + esc(v.eigene)) + ' · Richtig: ' + esc(v.richtig))
+              + (v.gewicht !== 1 ? ' · ' + zahl(v.erreicht) + '/' + v.gewicht + ' Punkte' : '')
               + '</div></div></div>';
           }).join('') + '</div>';
-      auswerten(punkte, '');
+      auswerten(punkte, extra);
       $('qe-ergebnis').insertAdjacentHTML('beforeend', details);
     }
 
-    return { start: start, gesamt: gesamt, aktuell: aktuell };
+    return { start: start, gesamt: gesamt, aktuell: aktuell, modus: modus, pool: function () { return pool; }, index: function () { return cur; } };
   }
 
   /* ======================================================================
      TYP 2: BILDERRATEN / REBUS
      bilder: "/img/quiz/<quiz>/" (Basis-Pfad), fragen: [{bild, antwort, alternativen, frage, tipp, bonus, notiz, info:{zeilen:[[label,wert]], wissenswertes:[…]}}]
      Optionen: mischen (Standard true), versuche (1–6, Standard 1), toleranz (Levenshtein, Standard 3; 0 = aus),
-               teilantworten (Nachname reicht), anzahl
+               toleranzVoll (Tippfehler, die noch volle Punkte geben), teilantworten (Nachname reicht), anzahl,
+               treffer: "stichwort" (Schlüsselwort muss in der Antwort vorkommen – antwort + alternativen),
+               tipps: ["…","…"] je Frage (gestaffelt, kostenlos) · tipp: "…" (halbiert die Punkte)
+               abschluss: {titel, hinweis, frage, antwort, alternativen, treffer, gewicht, erklaerung} – Bonusfrage mit Galerie
      Punkte je Frage: 1 (exakt) · ½ (fast richtig) · 0 (falsch); jeder Fehlversuch/Tipp halbiert den Faktor
      ====================================================================== */
   function TypBilder() {
     var fragen = [], cur = 0, punkte = 0, stats, faktor, beantwortet, versuche, inhalt;
     var MAX_VERSUCHE = Math.max(1, Math.min(6, daten.versuche || 1));
     var TOLERANZ = daten.toleranz === undefined ? 3 : daten.toleranz;
+    var TOLERANZ_VOLL = daten.toleranzVoll || 0;      /* Tippfehler, die noch als „exakt“ zählen (Lehrer-Rebus: 2) */
+    var ABSCHLUSS = daten.abschluss || null;          /* optionale Bonusfrage nach dem letzten Bild */
+    var abschlussPunkte = 0, abschlussErg = null;
 
-    function gesamt() { return fragen.length || (daten.fragen || []).length; }
-    function aktuell() { return punkte; }
+    function gesamt() { return (fragen.length || (daten.fragen || []).length) + (ABSCHLUSS ? (ABSCHLUSS.gewicht || 1) : 0); }
+    function aktuell() { return punkte + abschlussPunkte; }
 
     function bildPfad(f) {
       if (!f.bild) return '';
@@ -588,13 +1023,13 @@
       var basis = (daten.fragen || []).map(function (f, i) { f.nr = i; return f; });
       if (daten.mischen !== false) basis = shuffle(basis);
       if (daten.anzahl && daten.anzahl < basis.length) basis = basis.slice(0, daten.anzahl);
-      fragen = basis; cur = 0; punkte = 0; stats = { exakt: 0, fast: 0, falsch: 0 };
+      fragen = basis; cur = 0; punkte = 0; abschlussPunkte = 0; abschlussErg = null; stats = { exakt: 0, fast: 0, falsch: 0 };
       kopfChip();
       frageZeigen();
     }
 
     function kopfChip() {
-      $('qe-kopf-extra').innerHTML = '<div class="qe-punkte">🎯 Punkte: <span id="qe-punkte">' + zahl(punkte) + '</span> / ' + fragen.length + '</div>';
+      $('qe-kopf-extra').innerHTML = '<div class="qe-punkte">🎯 Punkte: <span id="qe-punkte">' + zahl(punkte) + '</span> / ' + gesamt() + '</div>';
     }
 
     function frageZeigen() {
@@ -607,6 +1042,9 @@
         + '<div class="qe-eingabe-zeile"><input class="qe-eingabe" id="qe-antwort" type="text" placeholder="Deine Antwort …" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Antwort">'
         + '<button type="button" class="qe-btn qe-btn-primaer" id="qe-pruefen">Prüfen</button></div>'
         + '<div class="qe-tipp" id="qe-tipp"></div>'
+        + (Array.isArray(f.tipps) && f.tipps.length ? '<div class="qe-tipps" id="qe-tipps">' + f.tipps.map(function (t, i) {
+            return t ? '<button type="button" class="qe-btn qe-btn-sekundaer qe-btn-klein qe-tipp-stufe" data-i="' + i + '">💡 Tipp ' + (i + 1) + '</button>' : '';
+          }).join('') + '</div>' : '')
         + '<div class="qe-hilfe">'
         + (f.tipp ? '<button type="button" class="qe-btn qe-btn-sekundaer qe-btn-klein" id="qe-tipp-btn">💡 Tipp (halbe Punkte)</button>' : '')
         + (daten.loesungErlaubt !== false ? '<button type="button" class="qe-btn qe-btn-sekundaer qe-btn-klein" id="qe-loesung">Lösung zeigen</button>' : '')
@@ -622,6 +1060,13 @@
         faktor /= 2; this.disabled = true;
       };
       if ($('qe-loesung')) $('qe-loesung').onclick = aufdecken;
+      if ($('qe-tipps')) $('qe-tipps').querySelectorAll('.qe-tipp-stufe').forEach(function (b) {
+        b.onclick = function () {
+          var t = $('qe-tipp'); t.classList.add('qe-offen');
+          var z = h('div', '', '💡 <strong>Tipp ' + (Number(b.dataset.i) + 1) + ':</strong> ' + esc(f.tipps[b.dataset.i])); t.appendChild(z);
+          b.disabled = true;
+        };
+      });
       var inp = $('qe-antwort');
       inp.addEventListener('keydown', function (e) {
         if (e.key !== 'Enter') return;
@@ -630,11 +1075,27 @@
       inp.focus();
     }
 
+    /* Stichwort-Treffer (z. B. Monatsnamen-Rebus): ein Schlüsselwort kommt in der Eingabe vor,
+       oder ein Eingabewort weicht nur leicht davon ab (≥ 5 Zeichen: 1 Fehler, ≥ 9 Zeichen: 2) */
+    function stichwortTreffer(n, f) {
+      var woerter = n.split(' ');
+      return [f.antwort].concat(f.alternativen || []).map(norm).some(function (kw) {
+        if (!kw) return false;
+        if (n.indexOf(kw) >= 0) return true;
+        var max = kw.length >= 9 ? 2 : kw.length >= 5 ? 1 : 0;
+        return max > 0 && woerter.some(function (w) { return levenshtein(w, kw) <= max; });
+      });
+    }
+
     function stufe(eingabe, f) {
       var n = norm(eingabe);
       if (!n) return 0;
+      if ((f.treffer || daten.treffer) === 'stichwort') return stichwortTreffer(n, f) ? 1 : 0;
       var kandidaten = [f.antwort].concat(f.alternativen || []).map(norm);
       if (kandidaten.indexOf(n) >= 0) return 1;
+      if (TOLERANZ_VOLL > 0) {
+        for (var v = 0; v < kandidaten.length; v++) if (levenshtein(n, kandidaten[v]) <= TOLERANZ_VOLL) return 1;
+      }
       if (TOLERANZ > 0) {
         for (var i = 0; i < kandidaten.length; i++) if (levenshtein(n, kandidaten[i]) <= TOLERANZ) return 0.5;
         if (daten.teilantworten) {
@@ -656,6 +1117,7 @@
       if (Array.isArray(info.wissenswertes) && info.wissenswertes.length) {
         html += '<ul class="qe-wissen">' + info.wissenswertes.map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul>';
       }
+      if (info.text) html += '<div class="qe-wissen" style="margin-top:.6rem">' + info.text + '</div>';
       return html;
     }
 
@@ -709,16 +1171,52 @@
     function weiter() {
       if (!beantwortet) return;
       cur++;
-      if (cur >= fragen.length) ergebnis(); else frageZeigen();
+      if (cur >= fragen.length) { if (ABSCHLUSS && !abschlussErg) abschlussZeigen(); else ergebnis(); }
+      else frageZeigen();
+    }
+
+    /* Abschluss-/Bonusfrage: alle Bilder als Galerie, dazu eine freie Frage (z. B. „Was verbindet alle Bilder?“) */
+    function abschlussZeigen() {
+      var fr = { antwort: ABSCHLUSS.antwort, alternativen: ABSCHLUSS.alternativen || [], treffer: ABSCHLUSS.treffer };
+      inhalt.innerHTML = '<div class="qe-karte">'
+        + '<h2>' + esc(ABSCHLUSS.titel || '⭐ Abschlussfrage') + '</h2>'
+        + (ABSCHLUSS.hinweis ? '<p class="qe-modus-hinweis">' + esc(ABSCHLUSS.hinweis) + '</p>' : '')
+        + '<div class="qe-galerie">' + fragen.map(function (f) {
+            return '<figure><img src="' + esc(bildPfad(f)) + '" alt="" loading="lazy"><figcaption>' + esc(f.antwort) + '</figcaption></figure>';
+          }).join('') + '</div>'
+        + '<p class="qe-frage" style="text-align:center;font-size:1.05rem">' + esc(ABSCHLUSS.frage) + '</p>'
+        + '<div class="qe-eingabe-zeile"><input class="qe-eingabe" id="qe-abschluss" type="text" placeholder="Deine Antwort …" autocomplete="off" aria-label="Antwort auf die Abschlussfrage">'
+        + '<button type="button" class="qe-btn qe-btn-primaer" id="qe-abschluss-pruefen">Prüfen</button></div>'
+        + '<div class="qe-feedback" id="qe-feedback"></div>'
+        + '<div class="qe-weiter" id="qe-weiter"><button type="button" class="qe-btn qe-btn-primaer" id="qe-next">Auswertung ansehen →</button></div></div>';
+      var pruefenA = function () {
+        if (abschlussErg) return;
+        var roh = $('qe-abschluss').value.trim(); if (!roh) return;
+        var ok = stufe(roh, fr) === 1;
+        abschlussErg = { ok: ok, eigene: roh };
+        abschlussPunkte = ok ? (ABSCHLUSS.gewicht || 1) : 0;
+        $('qe-punkte').textContent = zahl(punkte + abschlussPunkte);
+        $('qe-abschluss').disabled = true; $('qe-abschluss-pruefen').disabled = true;
+        $('qe-abschluss').className = 'qe-eingabe ' + (ok ? 'qe-richtig' : 'qe-falsch');
+        var fb = $('qe-feedback'); fb.className = 'qe-feedback ' + (ok ? 'qe-ok' : 'qe-no');
+        fb.innerHTML = '<div class="qe-feedback-kopf">' + (ok ? '✅ Richtig! +' + (ABSCHLUSS.gewicht || 1) : '❌ Leider falsch') + ' — Lösung: <strong>' + esc(ABSCHLUSS.antwort) + '</strong></div>' + (ABSCHLUSS.erklaerung || '');
+        $('qe-weiter').style.display = 'block';
+      };
+      $('qe-abschluss-pruefen').onclick = pruefenA;
+      $('qe-abschluss').addEventListener('keydown', function (e) { if (e.key === 'Enter') { if (!abschlussErg) pruefenA(); else ergebnis(); } });
+      $('qe-next').onclick = ergebnis;
+      $('qe-abschluss').focus();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function ergebnis() {
       inhalt.innerHTML = '';
-      var extra = '<div class="qe-statistik">'
+      var extra = (ABSCHLUSS ? '<p class="qe-ergebnis-text">' + (abschlussErg ? (abschlussErg.ok ? '⭐ Abschlussfrage richtig: +' + (ABSCHLUSS.gewicht || 1) : '⭐ Abschlussfrage: leider falsch (Lösung: ' + esc(ABSCHLUSS.antwort) + ')') : '⭐ Abschlussfrage nicht beantwortet') + '</p>' : '')
+        + '<div class="qe-statistik">'
         + '<div><div class="qe-stat-zahl g">' + stats.exakt + '</div><div class="qe-stat-label">Exakt richtig</div></div>'
         + '<div><div class="qe-stat-zahl o">' + stats.fast + '</div><div class="qe-stat-label">Fast richtig</div></div>'
         + '<div><div class="qe-stat-zahl r">' + stats.falsch + '</div><div class="qe-stat-label">Falsch</div></div></div>';
-      auswerten(punkte, extra);
+      auswerten(punkte + abschlussPunkte, extra);
     }
 
     return { start: start, gesamt: gesamt, aktuell: aktuell };
@@ -1054,7 +1552,7 @@
   /* ======================================================================
      START: JSON laden, Typ wählen
      ====================================================================== */
-  var TYPEN = { mc: TypMC, bilder: TypBilder, karte: TypKarte, lueckentext: TypLueckentext };
+  var TYPEN = { mc: TypFragen, fragen: TypFragen, bilder: TypBilder, karte: TypKarte, lueckentext: TypLueckentext };
 
   function fehler(msg) {
     ROOT.innerHTML = '<div class="qe-page"><div class="qe-karte"><strong>Quiz konnte nicht geladen werden.</strong><br>' + esc(msg) + '</div></div>';
@@ -1066,7 +1564,8 @@
     geruest();
     typ = TYPEN[daten.typ]();
     typ.start();
-    window.QuizEngine = { daten: daten, anzahlFragen: anzahlFragen, aktuell: function () { return typ.aktuell(); }, eingefroren: function () { return gesperrt; } };
+    window.QuizEngine = { daten: daten, anzahlFragen: anzahlFragen, aktuell: function () { return typ.aktuell(); }, eingefroren: function () { return gesperrt; }, bestenlisteId: lbId,
+      pool: function () { return typ.pool ? typ.pool() : null; }, index: function () { return typ.index ? typ.index() : null; } };
   }
 
   layoutSichern(ROOT);

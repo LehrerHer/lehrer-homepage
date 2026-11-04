@@ -1,0 +1,2300 @@
+{
+  "slug": "stilmittel",
+  "typ": "fragen",
+  "titel": "Stilmittel-Quiz",
+  "untertitel": "Wähle Umfang, Kategorien und Spielmodus · 4 Antwortmöglichkeiten je Frage",
+  "fach": "deutsch",
+  "zurueck": {
+    "url": "/fach-deutsch.html",
+    "text": "Zurück zu Deutsch"
+  },
+  "mischen": true,
+  "ablenker": 3,
+  "auswertungNach": "kategorie",
+  "auswertungTitel": "Kategorie",
+  "konfiguration": {
+    "gruppen": [
+      {
+        "feld": "stufen",
+        "label": "Umfang",
+        "art": "einfach",
+        "alle": "Alle Stilmittel",
+        "optionen": [
+          {
+            "wert": "mittelstufe",
+            "label": "Mittelstufe (Kl. 5–10)"
+          },
+          {
+            "wert": "rs910",
+            "label": "Realschule Jhg. 9/10"
+          }
+        ]
+      },
+      {
+        "feld": "kategorie",
+        "label": "Kategorie",
+        "art": "einfach",
+        "alle": "Alle"
+      }
+    ],
+    "anzahl": {
+      "label": "Anzahl",
+      "optionen": [
+        10,
+        "alle"
+      ],
+      "standard": "alle"
+    },
+    "modus": {
+      "label": "Spielmodus",
+      "bestenliste": true,
+      "zufall": "mixed",
+      "optionen": [
+        {
+          "wert": "name_from_beispiel",
+          "label": "Beispiel → Name",
+          "beschreibung": "Erkenne das Stilmittel am Beispiel",
+          "icon": "✍️"
+        },
+        {
+          "wert": "name_from_erklaerung",
+          "label": "Erklärung → Name",
+          "beschreibung": "Ordne die Definition dem Stilmittel zu",
+          "icon": "📖"
+        },
+        {
+          "wert": "wirkung_from_name",
+          "label": "Name → Wirkung",
+          "beschreibung": "Nenne die Wirkung des Stilmittels",
+          "icon": "💡"
+        },
+        {
+          "wert": "name_from_wirkung",
+          "label": "Wirkung → Name",
+          "beschreibung": "Finde das passende Stilmittel",
+          "icon": "🔍"
+        },
+        {
+          "wert": "mixed",
+          "label": "Gemischt",
+          "beschreibung": "Alle Modi zufällig gemischt",
+          "icon": "🎲"
+        }
+      ]
+    }
+  },
+  "fragen": [
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Metapher",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🔥",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Jemandem das Herz brechen“  ‖  „Das Feuer der Leidenschaft“",
+      "antwort": "Metapher",
+      "erklaerung": "<strong>Metapher</strong>: Bildlicher Ausdruck ohne Vergleichswort – ein Wort wird aus seinem eigentlichen Bedeutungsbereich in einen anderen übertragen. Wirkung: veranschaulicht, verdichtet"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Metapher",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🔥",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Bildlicher Ausdruck ohne Vergleichswort – ein Wort wird aus seinem eigentlichen Bedeutungsbereich in einen anderen übertragen.",
+      "antwort": "Metapher",
+      "erklaerung": "<strong>Metapher</strong>: Bildlicher Ausdruck ohne Vergleichswort – ein Wort wird aus seinem eigentlichen Bedeutungsbereich in einen anderen übertragen. Wirkung: veranschaulicht, verdichtet"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Metapher",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🔥",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Metapher",
+      "hinweis": "Beispiel: „Jemandem das Herz brechen“  ‖  „Das Feuer der Leidenschaft“",
+      "antwort": "veranschaulicht, verdichtet",
+      "erklaerung": "<strong>Metapher</strong> – Bildlicher Ausdruck ohne Vergleichswort – ein Wort wird aus seinem eigentlichen Bedeutungsbereich in einen anderen übertragen."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Metapher",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🔥",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "veranschaulicht, verdichtet",
+      "antwort": "Metapher",
+      "erklaerung": "<strong>Metapher</strong>: Bildlicher Ausdruck ohne Vergleichswort – ein Wort wird aus seinem eigentlichen Bedeutungsbereich in einen anderen übertragen. Wirkung: veranschaulicht, verdichtet"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Vergleich",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "⚖️",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Er kämpft wie ein Löwe“  ‖  „Stärker als der Tod“",
+      "antwort": "Vergleich",
+      "erklaerung": "<strong>Vergleich</strong>: Verknüpfung zweier Bedeutungsbereiche durch „wie“ oder „als“. Wirkung: veranschaulicht, verbindet"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Vergleich",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "⚖️",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Verknüpfung zweier Bedeutungsbereiche durch „wie“ oder „als“.",
+      "antwort": "Vergleich",
+      "erklaerung": "<strong>Vergleich</strong>: Verknüpfung zweier Bedeutungsbereiche durch „wie“ oder „als“. Wirkung: veranschaulicht, verbindet"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Vergleich",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "⚖️",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Vergleich",
+      "hinweis": "Beispiel: „Er kämpft wie ein Löwe“  ‖  „Stärker als der Tod“",
+      "antwort": "veranschaulicht, verbindet",
+      "erklaerung": "<strong>Vergleich</strong> – Verknüpfung zweier Bedeutungsbereiche durch „wie“ oder „als“."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Vergleich",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "⚖️",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "veranschaulicht, verbindet",
+      "antwort": "Vergleich",
+      "erklaerung": "<strong>Vergleich</strong>: Verknüpfung zweier Bedeutungsbereiche durch „wie“ oder „als“. Wirkung: veranschaulicht, verbindet"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Personifikation",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "☀️",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Die Sonne lacht“  ‖  „Der Wind flüstert“",
+      "antwort": "Personifikation",
+      "erklaerung": "<strong>Personifikation</strong>: Menschliche Eigenschaften werden auf Nichtmenschliches übertragen. Wirkung: verlebendigt, vermenschlicht"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Personifikation",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "☀️",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Menschliche Eigenschaften werden auf Nichtmenschliches übertragen.",
+      "antwort": "Personifikation",
+      "erklaerung": "<strong>Personifikation</strong>: Menschliche Eigenschaften werden auf Nichtmenschliches übertragen. Wirkung: verlebendigt, vermenschlicht"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Personifikation",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "☀️",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Personifikation",
+      "hinweis": "Beispiel: „Die Sonne lacht“  ‖  „Der Wind flüstert“",
+      "antwort": "verlebendigt, vermenschlicht",
+      "erklaerung": "<strong>Personifikation</strong> – Menschliche Eigenschaften werden auf Nichtmenschliches übertragen."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Personifikation",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "☀️",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "verlebendigt, vermenschlicht",
+      "antwort": "Personifikation",
+      "erklaerung": "<strong>Personifikation</strong>: Menschliche Eigenschaften werden auf Nichtmenschliches übertragen. Wirkung: verlebendigt, vermenschlicht"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Symbol",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🕊️",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "Rose = Liebe  ‖  Taube = Frieden",
+      "antwort": "Symbol",
+      "erklaerung": "<strong>Symbol</strong>: Ein konkreter Gegenstand steht für eine abstrakte Idee, oft kulturell festgelegt. Wirkung: verdichtend, kulturell"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Symbol",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🕊️",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Ein konkreter Gegenstand steht für eine abstrakte Idee, oft kulturell festgelegt.",
+      "antwort": "Symbol",
+      "erklaerung": "<strong>Symbol</strong>: Ein konkreter Gegenstand steht für eine abstrakte Idee, oft kulturell festgelegt. Wirkung: verdichtend, kulturell"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Symbol",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🕊️",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Symbol",
+      "hinweis": "Beispiel: Rose = Liebe  ‖  Taube = Frieden",
+      "antwort": "verdichtend, kulturell",
+      "erklaerung": "<strong>Symbol</strong> – Ein konkreter Gegenstand steht für eine abstrakte Idee, oft kulturell festgelegt."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Symbol",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🕊️",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "verdichtend, kulturell",
+      "antwort": "Symbol",
+      "erklaerung": "<strong>Symbol</strong>: Ein konkreter Gegenstand steht für eine abstrakte Idee, oft kulturell festgelegt. Wirkung: verdichtend, kulturell"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Allegorie",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🎭",
+      "stufen": [],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Sensenmann“ als Bild für den Tod  ‖  „Justitia“ mit Waage und Augenbinde",
+      "antwort": "Allegorie",
+      "erklaerung": "<strong>Allegorie</strong>: Fortgesetzte Metapher – ein abstraktes Konzept wird als konkretes Bild dargestellt. Wirkung: versinnbildlicht Abstraktes"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Allegorie",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🎭",
+      "stufen": [],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Fortgesetzte Metapher – ein abstraktes Konzept wird als konkretes Bild dargestellt.",
+      "antwort": "Allegorie",
+      "erklaerung": "<strong>Allegorie</strong>: Fortgesetzte Metapher – ein abstraktes Konzept wird als konkretes Bild dargestellt. Wirkung: versinnbildlicht Abstraktes"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Allegorie",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🎭",
+      "stufen": [],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Allegorie",
+      "hinweis": "Beispiel: „Sensenmann“ als Bild für den Tod  ‖  „Justitia“ mit Waage und Augenbinde",
+      "antwort": "versinnbildlicht Abstraktes",
+      "erklaerung": "<strong>Allegorie</strong> – Fortgesetzte Metapher – ein abstraktes Konzept wird als konkretes Bild dargestellt."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Allegorie",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🎭",
+      "stufen": [],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "versinnbildlicht Abstraktes",
+      "antwort": "Allegorie",
+      "erklaerung": "<strong>Allegorie</strong>: Fortgesetzte Metapher – ein abstraktes Konzept wird als konkretes Bild dargestellt. Wirkung: versinnbildlicht Abstraktes"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Metonymie",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🏛️",
+      "stufen": [],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Brecht lesen“ (statt: ein Werk von Brecht)  ‖  „Das Weiße Haus erklärte …“",
+      "antwort": "Metonymie",
+      "erklaerung": "<strong>Metonymie</strong>: Ersetzung eines Begriffs durch einen sachlich verwandten (räumlich, zeitlich, ursächlich). Wirkung: verdichtet, ersetzt Begriff durch verwandten"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Metonymie",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🏛️",
+      "stufen": [],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Ersetzung eines Begriffs durch einen sachlich verwandten (räumlich, zeitlich, ursächlich).",
+      "antwort": "Metonymie",
+      "erklaerung": "<strong>Metonymie</strong>: Ersetzung eines Begriffs durch einen sachlich verwandten (räumlich, zeitlich, ursächlich). Wirkung: verdichtet, ersetzt Begriff durch verwandten"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Metonymie",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🏛️",
+      "stufen": [],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Metonymie",
+      "hinweis": "Beispiel: „Brecht lesen“ (statt: ein Werk von Brecht)  ‖  „Das Weiße Haus erklärte …“",
+      "antwort": "verdichtet, ersetzt Begriff durch verwandten",
+      "erklaerung": "<strong>Metonymie</strong> – Ersetzung eines Begriffs durch einen sachlich verwandten (räumlich, zeitlich, ursächlich)."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Metonymie",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🏛️",
+      "stufen": [],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "verdichtet, ersetzt Begriff durch verwandten",
+      "antwort": "Metonymie",
+      "erklaerung": "<strong>Metonymie</strong>: Ersetzung eines Begriffs durch einen sachlich verwandten (räumlich, zeitlich, ursächlich). Wirkung: verdichtet, ersetzt Begriff durch verwandten"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Synekdoche",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🧩",
+      "stufen": [],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Pro Nase zwei Würste“ (Nase = Person)  ‖  „Deutschland hat gewonnen“ ( = die Mannschaft)  ‖  „Solange du deine Füße unter meinen Tisch stellst …“ (Tisch = Haushalt)",
+      "antwort": "Synekdoche",
+      "erklaerung": "<strong>Synekdoche</strong>: Ein Teil steht für das Ganze (pars pro toto) oder das Ganze für einen Teil (totum pro parte) — Ersetzung innerhalb desselben Begriffsfelds Wirkung: verknappend, verallgemeinernd, eindringlich"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Synekdoche",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🧩",
+      "stufen": [],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Ein Teil steht für das Ganze (pars pro toto) oder das Ganze für einen Teil (totum pro parte) — Ersetzung innerhalb desselben Begriffsfelds",
+      "antwort": "Synekdoche",
+      "erklaerung": "<strong>Synekdoche</strong>: Ein Teil steht für das Ganze (pars pro toto) oder das Ganze für einen Teil (totum pro parte) — Ersetzung innerhalb desselben Begriffsfelds Wirkung: verknappend, verallgemeinernd, eindringlich"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Synekdoche",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🧩",
+      "stufen": [],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Synekdoche",
+      "hinweis": "Beispiel: „Pro Nase zwei Würste“ (Nase = Person)  ‖  „Deutschland hat gewonnen“ ( = die Mannschaft)  ‖  „Solange du deine Füße unter meinen Tisch stellst …“ (Tisch = Haushalt)",
+      "antwort": "verknappend, verallgemeinernd, eindringlich",
+      "erklaerung": "<strong>Synekdoche</strong> – Ein Teil steht für das Ganze (pars pro toto) oder das Ganze für einen Teil (totum pro parte) — Ersetzung innerhalb desselben Begriffsfelds"
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Synekdoche",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🧩",
+      "stufen": [],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "verknappend, verallgemeinernd, eindringlich",
+      "antwort": "Synekdoche",
+      "erklaerung": "<strong>Synekdoche</strong>: Ein Teil steht für das Ganze (pars pro toto) oder das Ganze für einen Teil (totum pro parte) — Ersetzung innerhalb desselben Begriffsfelds Wirkung: verknappend, verallgemeinernd, eindringlich"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Chiffre",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🔐",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„JHWH“ in der hebräischen Bibel  ‖  „Schwarzschimmel nacht“ (Celan)",
+      "antwort": "Chiffre",
+      "erklaerung": "<strong>Chiffre</strong>: Verschlüsseltes Zeichen, das ohne zusätzliches Wissen nicht eindeutig zu entschlüsseln ist. Wirkung: verrätselt, lädt mit Bedeutung auf"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Chiffre",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🔐",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Verschlüsseltes Zeichen, das ohne zusätzliches Wissen nicht eindeutig zu entschlüsseln ist.",
+      "antwort": "Chiffre",
+      "erklaerung": "<strong>Chiffre</strong>: Verschlüsseltes Zeichen, das ohne zusätzliches Wissen nicht eindeutig zu entschlüsseln ist. Wirkung: verrätselt, lädt mit Bedeutung auf"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Chiffre",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🔐",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Chiffre",
+      "hinweis": "Beispiel: „JHWH“ in der hebräischen Bibel  ‖  „Schwarzschimmel nacht“ (Celan)",
+      "antwort": "verrätselt, lädt mit Bedeutung auf",
+      "erklaerung": "<strong>Chiffre</strong> – Verschlüsseltes Zeichen, das ohne zusätzliches Wissen nicht eindeutig zu entschlüsseln ist."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Chiffre",
+      "kategorie": "Bildlichkeit",
+      "badge": "Bildlichkeit",
+      "symbol": "🔐",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "verrätselt, lädt mit Bedeutung auf",
+      "antwort": "Chiffre",
+      "erklaerung": "<strong>Chiffre</strong>: Verschlüsseltes Zeichen, das ohne zusätzliches Wissen nicht eindeutig zu entschlüsseln ist. Wirkung: verrätselt, lädt mit Bedeutung auf"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Hyperbel",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "📢",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„todernst“  ‖  „fuchsteufelswild“  ‖  „ein Meer von Tränen“",
+      "antwort": "Hyperbel",
+      "erklaerung": "<strong>Hyperbel</strong>: Starke Übertreibung eines Sachverhalts. Wirkung: übertreibt, intensiviert"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Hyperbel",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "📢",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Starke Übertreibung eines Sachverhalts.",
+      "antwort": "Hyperbel",
+      "erklaerung": "<strong>Hyperbel</strong>: Starke Übertreibung eines Sachverhalts. Wirkung: übertreibt, intensiviert"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Hyperbel",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "📢",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Hyperbel",
+      "hinweis": "Beispiel: „todernst“  ‖  „fuchsteufelswild“  ‖  „ein Meer von Tränen“",
+      "antwort": "übertreibt, intensiviert",
+      "erklaerung": "<strong>Hyperbel</strong> – Starke Übertreibung eines Sachverhalts."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Hyperbel",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "📢",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "übertreibt, intensiviert",
+      "antwort": "Hyperbel",
+      "erklaerung": "<strong>Hyperbel</strong>: Starke Übertreibung eines Sachverhalts. Wirkung: übertreibt, intensiviert"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Litotes",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "🤏",
+      "stufen": [],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„nicht selten“  ‖  „nicht unüblich“  ‖  „Er hat damit nicht Unrecht.“",
+      "antwort": "Litotes",
+      "erklaerung": "<strong>Litotes</strong>: Hervorhebung eines Begriffs durch doppelte Verneinung oder Verneinung des Gegenteils Wirkung: bekräftigend durch Umweg, erzeugt einen leicht ironischen Ton"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Litotes",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "🤏",
+      "stufen": [],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Hervorhebung eines Begriffs durch doppelte Verneinung oder Verneinung des Gegenteils",
+      "antwort": "Litotes",
+      "erklaerung": "<strong>Litotes</strong>: Hervorhebung eines Begriffs durch doppelte Verneinung oder Verneinung des Gegenteils Wirkung: bekräftigend durch Umweg, erzeugt einen leicht ironischen Ton"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Litotes",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "🤏",
+      "stufen": [],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Litotes",
+      "hinweis": "Beispiel: „nicht selten“  ‖  „nicht unüblich“  ‖  „Er hat damit nicht Unrecht.“",
+      "antwort": "bekräftigend durch Umweg, erzeugt einen leicht ironischen Ton",
+      "erklaerung": "<strong>Litotes</strong> – Hervorhebung eines Begriffs durch doppelte Verneinung oder Verneinung des Gegenteils"
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Litotes",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "🤏",
+      "stufen": [],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "bekräftigend durch Umweg, erzeugt einen leicht ironischen Ton",
+      "antwort": "Litotes",
+      "erklaerung": "<strong>Litotes</strong>: Hervorhebung eines Begriffs durch doppelte Verneinung oder Verneinung des Gegenteils Wirkung: bekräftigend durch Umweg, erzeugt einen leicht ironischen Ton"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Understatement",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "🤫",
+      "stufen": [],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Das war nicht ganz optimal.“ (nach einer Katastrophe)  ‖  „Ich bin nicht ganz unglücklich darüber.“ (bei großer Freude)  ‖  „Das könnte schwierig werden.“ (wenn etwas fast aussichtslos ist)",
+      "antwort": "Understatement",
+      "erklaerung": "<strong>Understatement</strong>: Bewusste Untertreibung eines Sachverhalts — etwas wird als kleiner, harmloser oder weniger bedeutsam dargestellt, als es tatsächlich ist Wirkung: abschwächend, oft ironisch oder humorvoll — kann Distanz, Coolness oder Bescheidenheit ausdrücken"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Understatement",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "🤫",
+      "stufen": [],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Bewusste Untertreibung eines Sachverhalts — etwas wird als kleiner, harmloser oder weniger bedeutsam dargestellt, als es tatsächlich ist",
+      "antwort": "Understatement",
+      "erklaerung": "<strong>Understatement</strong>: Bewusste Untertreibung eines Sachverhalts — etwas wird als kleiner, harmloser oder weniger bedeutsam dargestellt, als es tatsächlich ist Wirkung: abschwächend, oft ironisch oder humorvoll — kann Distanz, Coolness oder Bescheidenheit ausdrücken"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Understatement",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "🤫",
+      "stufen": [],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Understatement",
+      "hinweis": "Beispiel: „Das war nicht ganz optimal.“ (nach einer Katastrophe)  ‖  „Ich bin nicht ganz unglücklich darüber.“ (bei großer Freude)  ‖  „Das könnte schwierig werden.“ (wenn etwas fast aussichtslos ist)",
+      "antwort": "abschwächend, oft ironisch oder humorvoll — kann Distanz, Coolness oder Bescheidenheit ausdrücken",
+      "erklaerung": "<strong>Understatement</strong> – Bewusste Untertreibung eines Sachverhalts — etwas wird als kleiner, harmloser oder weniger bedeutsam dargestellt, als es tatsächlich ist"
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Understatement",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "🤫",
+      "stufen": [],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "abschwächend, oft ironisch oder humorvoll — kann Distanz, Coolness oder Bescheidenheit ausdrücken",
+      "antwort": "Understatement",
+      "erklaerung": "<strong>Understatement</strong>: Bewusste Untertreibung eines Sachverhalts — etwas wird als kleiner, harmloser oder weniger bedeutsam dargestellt, als es tatsächlich ist Wirkung: abschwächend, oft ironisch oder humorvoll — kann Distanz, Coolness oder Bescheidenheit ausdrücken"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Periphrase",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "💬",
+      "stufen": [],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Halbgötter in Weiß“ (statt: Ärzte)  ‖  „der Allmächtige“ (statt: Gott)",
+      "antwort": "Periphrase",
+      "erklaerung": "<strong>Periphrase</strong>: Umschreibung eines Begriffs durch kennzeichnende Eigenschaften. Wirkung: umschreibend, charakterisierend"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Periphrase",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "💬",
+      "stufen": [],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Umschreibung eines Begriffs durch kennzeichnende Eigenschaften.",
+      "antwort": "Periphrase",
+      "erklaerung": "<strong>Periphrase</strong>: Umschreibung eines Begriffs durch kennzeichnende Eigenschaften. Wirkung: umschreibend, charakterisierend"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Periphrase",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "💬",
+      "stufen": [],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Periphrase",
+      "hinweis": "Beispiel: „Halbgötter in Weiß“ (statt: Ärzte)  ‖  „der Allmächtige“ (statt: Gott)",
+      "antwort": "umschreibend, charakterisierend",
+      "erklaerung": "<strong>Periphrase</strong> – Umschreibung eines Begriffs durch kennzeichnende Eigenschaften."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Periphrase",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "💬",
+      "stufen": [],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "umschreibend, charakterisierend",
+      "antwort": "Periphrase",
+      "erklaerung": "<strong>Periphrase</strong>: Umschreibung eines Begriffs durch kennzeichnende Eigenschaften. Wirkung: umschreibend, charakterisierend"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Onomatopoesie",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "🔊",
+      "stufen": [],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Knall“  ‖  „Miau“  ‖  „rumpeln“  ‖  „zischen“",
+      "antwort": "Onomatopoesie",
+      "erklaerung": "<strong>Onomatopoesie</strong>: Sprachliche Nachahmung von Geräuschen oder Klängen. Wirkung: lautmalerisch, klangnachahmend"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Onomatopoesie",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "🔊",
+      "stufen": [],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Sprachliche Nachahmung von Geräuschen oder Klängen.",
+      "antwort": "Onomatopoesie",
+      "erklaerung": "<strong>Onomatopoesie</strong>: Sprachliche Nachahmung von Geräuschen oder Klängen. Wirkung: lautmalerisch, klangnachahmend"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Onomatopoesie",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "🔊",
+      "stufen": [],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Onomatopoesie",
+      "hinweis": "Beispiel: „Knall“  ‖  „Miau“  ‖  „rumpeln“  ‖  „zischen“",
+      "antwort": "lautmalerisch, klangnachahmend",
+      "erklaerung": "<strong>Onomatopoesie</strong> – Sprachliche Nachahmung von Geräuschen oder Klängen."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Onomatopoesie",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "🔊",
+      "stufen": [],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "lautmalerisch, klangnachahmend",
+      "antwort": "Onomatopoesie",
+      "erklaerung": "<strong>Onomatopoesie</strong>: Sprachliche Nachahmung von Geräuschen oder Klängen. Wirkung: lautmalerisch, klangnachahmend"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Emphase",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "❗",
+      "stufen": [],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Menschen! Menschen!“ (Schiller)  ‖  „DAS ist Kunst!“",
+      "antwort": "Emphase",
+      "erklaerung": "<strong>Emphase</strong>: Nachdrückliche Hervorhebung eines Wortes oder Ausdrucks. Wirkung: betont, emotional aufgeladen"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Emphase",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "❗",
+      "stufen": [],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Nachdrückliche Hervorhebung eines Wortes oder Ausdrucks.",
+      "antwort": "Emphase",
+      "erklaerung": "<strong>Emphase</strong>: Nachdrückliche Hervorhebung eines Wortes oder Ausdrucks. Wirkung: betont, emotional aufgeladen"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Emphase",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "❗",
+      "stufen": [],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Emphase",
+      "hinweis": "Beispiel: „Menschen! Menschen!“ (Schiller)  ‖  „DAS ist Kunst!“",
+      "antwort": "betont, emotional aufgeladen",
+      "erklaerung": "<strong>Emphase</strong> – Nachdrückliche Hervorhebung eines Wortes oder Ausdrucks."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Emphase",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "❗",
+      "stufen": [],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "betont, emotional aufgeladen",
+      "antwort": "Emphase",
+      "erklaerung": "<strong>Emphase</strong>: Nachdrückliche Hervorhebung eines Wortes oder Ausdrucks. Wirkung: betont, emotional aufgeladen"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Euphemismus",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "🌸",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„entschlafen“ (statt: sterben)  ‖  „freisetzen“ (statt: entlassen)  ‖  „kollateraler Schaden“ (statt: getötete Zivilisten)",
+      "antwort": "Euphemismus",
+      "erklaerung": "<strong>Euphemismus</strong>: Beschönigende Umschreibung eines unangenehmen oder anstößigen Sachverhalts. Wirkung: abmildernd, verhüllend — kann schützen oder Mitgefühl erzeugen, aber auch gezielt verschleiern und manipulieren (besonders in Politik und Medien)"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Euphemismus",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "🌸",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Beschönigende Umschreibung eines unangenehmen oder anstößigen Sachverhalts.",
+      "antwort": "Euphemismus",
+      "erklaerung": "<strong>Euphemismus</strong>: Beschönigende Umschreibung eines unangenehmen oder anstößigen Sachverhalts. Wirkung: abmildernd, verhüllend — kann schützen oder Mitgefühl erzeugen, aber auch gezielt verschleiern und manipulieren (besonders in Politik und Medien)"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Euphemismus",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "🌸",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Euphemismus",
+      "hinweis": "Beispiel: „entschlafen“ (statt: sterben)  ‖  „freisetzen“ (statt: entlassen)  ‖  „kollateraler Schaden“ (statt: getötete Zivilisten)",
+      "antwort": "abmildernd, verhüllend — kann schützen oder Mitgefühl erzeugen, aber auch gezielt verschleiern und manipulieren (besonders in Politik und Medien)",
+      "erklaerung": "<strong>Euphemismus</strong> – Beschönigende Umschreibung eines unangenehmen oder anstößigen Sachverhalts."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Euphemismus",
+      "kategorie": "Wortfigur",
+      "badge": "Wortfigur",
+      "symbol": "🌸",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "abmildernd, verhüllend — kann schützen oder Mitgefühl erzeugen, aber auch gezielt verschleiern und manipulieren (besonders in Politik und Medien)",
+      "antwort": "Euphemismus",
+      "erklaerung": "<strong>Euphemismus</strong>: Beschönigende Umschreibung eines unangenehmen oder anstößigen Sachverhalts. Wirkung: abmildernd, verhüllend — kann schützen oder Mitgefühl erzeugen, aber auch gezielt verschleiern und manipulieren (besonders in Politik und Medien)"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Ellipse",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "💭",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Je später der Abend, desto schöner die Gäste“  ‖  „Ende gut, alles gut.“",
+      "antwort": "Ellipse",
+      "erklaerung": "<strong>Ellipse</strong>: Auslassung eines Satzteils, der gedanklich ergänzt werden kann. Wirkung: knapp, dramatisch, temporeich"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Ellipse",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "💭",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Auslassung eines Satzteils, der gedanklich ergänzt werden kann.",
+      "antwort": "Ellipse",
+      "erklaerung": "<strong>Ellipse</strong>: Auslassung eines Satzteils, der gedanklich ergänzt werden kann. Wirkung: knapp, dramatisch, temporeich"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Ellipse",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "💭",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Ellipse",
+      "hinweis": "Beispiel: „Je später der Abend, desto schöner die Gäste“  ‖  „Ende gut, alles gut.“",
+      "antwort": "knapp, dramatisch, temporeich",
+      "erklaerung": "<strong>Ellipse</strong> – Auslassung eines Satzteils, der gedanklich ergänzt werden kann."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Ellipse",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "💭",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "knapp, dramatisch, temporeich",
+      "antwort": "Ellipse",
+      "erklaerung": "<strong>Ellipse</strong>: Auslassung eines Satzteils, der gedanklich ergänzt werden kann. Wirkung: knapp, dramatisch, temporeich"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Inversion",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "🔄",
+      "stufen": [],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„In der ungeheuren Weite / Reget keine Welle sich“ (Goethe)  ‖  „Dunkel war’s, der Mond schien helle“",
+      "antwort": "Inversion",
+      "erklaerung": "<strong>Inversion</strong>: Umstellung der üblichen Satzgliedfolge zur Hervorhebung. Wirkung: hervorhebend durch Umstellung"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Inversion",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "🔄",
+      "stufen": [],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Umstellung der üblichen Satzgliedfolge zur Hervorhebung.",
+      "antwort": "Inversion",
+      "erklaerung": "<strong>Inversion</strong>: Umstellung der üblichen Satzgliedfolge zur Hervorhebung. Wirkung: hervorhebend durch Umstellung"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Inversion",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "🔄",
+      "stufen": [],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Inversion",
+      "hinweis": "Beispiel: „In der ungeheuren Weite / Reget keine Welle sich“ (Goethe)  ‖  „Dunkel war’s, der Mond schien helle“",
+      "antwort": "hervorhebend durch Umstellung",
+      "erklaerung": "<strong>Inversion</strong> – Umstellung der üblichen Satzgliedfolge zur Hervorhebung."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Inversion",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "🔄",
+      "stufen": [],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "hervorhebend durch Umstellung",
+      "antwort": "Inversion",
+      "erklaerung": "<strong>Inversion</strong>: Umstellung der üblichen Satzgliedfolge zur Hervorhebung. Wirkung: hervorhebend durch Umstellung"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Parallelismus",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "📏",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Heiß die Liebe, kalt der Tod“  ‖  „Ich kam, ich sah, ich siegte“ (Caesar)",
+      "antwort": "Parallelismus",
+      "erklaerung": "<strong>Parallelismus</strong>: Wiederholung der gleichen syntaktischen Struktur in aufeinanderfolgenden Sätzen oder Satzteilen. Wirkung: ordnend, rhythmisch"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Parallelismus",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "📏",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Wiederholung der gleichen syntaktischen Struktur in aufeinanderfolgenden Sätzen oder Satzteilen.",
+      "antwort": "Parallelismus",
+      "erklaerung": "<strong>Parallelismus</strong>: Wiederholung der gleichen syntaktischen Struktur in aufeinanderfolgenden Sätzen oder Satzteilen. Wirkung: ordnend, rhythmisch"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Parallelismus",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "📏",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Parallelismus",
+      "hinweis": "Beispiel: „Heiß die Liebe, kalt der Tod“  ‖  „Ich kam, ich sah, ich siegte“ (Caesar)",
+      "antwort": "ordnend, rhythmisch",
+      "erklaerung": "<strong>Parallelismus</strong> – Wiederholung der gleichen syntaktischen Struktur in aufeinanderfolgenden Sätzen oder Satzteilen."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Parallelismus",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "📏",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "ordnend, rhythmisch",
+      "antwort": "Parallelismus",
+      "erklaerung": "<strong>Parallelismus</strong>: Wiederholung der gleichen syntaktischen Struktur in aufeinanderfolgenden Sätzen oder Satzteilen. Wirkung: ordnend, rhythmisch"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Klimax",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "📈",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Er sei mein Freund, mein Engel, mein Gott“ (Schiller)  ‖  „Veni, vidi, vici“ (Caesar)",
+      "antwort": "Klimax",
+      "erklaerung": "<strong>Klimax</strong>: Stufenweise Steigerung von Ausdruck zu Ausdruck. Wirkung: steigernd, eindringlich"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Klimax",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "📈",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Stufenweise Steigerung von Ausdruck zu Ausdruck.",
+      "antwort": "Klimax",
+      "erklaerung": "<strong>Klimax</strong>: Stufenweise Steigerung von Ausdruck zu Ausdruck. Wirkung: steigernd, eindringlich"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Klimax",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "📈",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Klimax",
+      "hinweis": "Beispiel: „Er sei mein Freund, mein Engel, mein Gott“ (Schiller)  ‖  „Veni, vidi, vici“ (Caesar)",
+      "antwort": "steigernd, eindringlich",
+      "erklaerung": "<strong>Klimax</strong> – Stufenweise Steigerung von Ausdruck zu Ausdruck."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Klimax",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "📈",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "steigernd, eindringlich",
+      "antwort": "Klimax",
+      "erklaerung": "<strong>Klimax</strong>: Stufenweise Steigerung von Ausdruck zu Ausdruck. Wirkung: steigernd, eindringlich"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Aufzählung / Trikolon",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "🧮",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Einigkeit und Recht und Freiheit“ (Hoffmann von Fallersleben, deutsche Nationalhymne, 1841)",
+      "antwort": "Aufzählung / Trikolon",
+      "erklaerung": "<strong>Aufzählung / Trikolon</strong>: Mehrere (beim Trikolon genau drei) Begriffe oder Satzteile werden hintereinander aufgereiht. Wirkung: reihend, betont, einprägsam"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Aufzählung / Trikolon",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "🧮",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Mehrere (beim Trikolon genau drei) Begriffe oder Satzteile werden hintereinander aufgereiht.",
+      "antwort": "Aufzählung / Trikolon",
+      "erklaerung": "<strong>Aufzählung / Trikolon</strong>: Mehrere (beim Trikolon genau drei) Begriffe oder Satzteile werden hintereinander aufgereiht. Wirkung: reihend, betont, einprägsam"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Aufzählung / Trikolon",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "🧮",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Aufzählung / Trikolon",
+      "hinweis": "Beispiel: „Einigkeit und Recht und Freiheit“ (Hoffmann von Fallersleben, deutsche Nationalhymne, 1841)",
+      "antwort": "reihend, betont, einprägsam",
+      "erklaerung": "<strong>Aufzählung / Trikolon</strong> – Mehrere (beim Trikolon genau drei) Begriffe oder Satzteile werden hintereinander aufgereiht."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Aufzählung / Trikolon",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "🧮",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "reihend, betont, einprägsam",
+      "antwort": "Aufzählung / Trikolon",
+      "erklaerung": "<strong>Aufzählung / Trikolon</strong>: Mehrere (beim Trikolon genau drei) Begriffe oder Satzteile werden hintereinander aufgereiht. Wirkung: reihend, betont, einprägsam"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Akkumulation",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "📦",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Sonne, Mond und Sterne!“  ‖  „Nun ruhen alle Wälder, Vieh, Menschen, Städt und Felder“ (Gerhardt)",
+      "antwort": "Akkumulation",
+      "erklaerung": "<strong>Akkumulation</strong>: Reihung von Begriffen, die einem gemeinsamen Oberbegriff zugeordnet werden können. Wirkung: veranschaulicht, eindringlich"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Akkumulation",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "📦",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Reihung von Begriffen, die einem gemeinsamen Oberbegriff zugeordnet werden können.",
+      "antwort": "Akkumulation",
+      "erklaerung": "<strong>Akkumulation</strong>: Reihung von Begriffen, die einem gemeinsamen Oberbegriff zugeordnet werden können. Wirkung: veranschaulicht, eindringlich"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Akkumulation",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "📦",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Akkumulation",
+      "hinweis": "Beispiel: „Sonne, Mond und Sterne!“  ‖  „Nun ruhen alle Wälder, Vieh, Menschen, Städt und Felder“ (Gerhardt)",
+      "antwort": "veranschaulicht, eindringlich",
+      "erklaerung": "<strong>Akkumulation</strong> – Reihung von Begriffen, die einem gemeinsamen Oberbegriff zugeordnet werden können."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Akkumulation",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "📦",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "veranschaulicht, eindringlich",
+      "antwort": "Akkumulation",
+      "erklaerung": "<strong>Akkumulation</strong>: Reihung von Begriffen, die einem gemeinsamen Oberbegriff zugeordnet werden können. Wirkung: veranschaulicht, eindringlich"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Asyndeton",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "⚡",
+      "stufen": [],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Ein Rot, ein Grün, ein Grau vorbeigesendet“ (Rilke)  ‖  „Alles rennet, rettet, flüchtet“ (Schiller)",
+      "antwort": "Asyndeton",
+      "erklaerung": "<strong>Asyndeton</strong>: Reihung von Wörtern oder Satzteilen ohne verbindende Konjunktionen. Wirkung: temporeich, aufzählend, drängend"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Asyndeton",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "⚡",
+      "stufen": [],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Reihung von Wörtern oder Satzteilen ohne verbindende Konjunktionen.",
+      "antwort": "Asyndeton",
+      "erklaerung": "<strong>Asyndeton</strong>: Reihung von Wörtern oder Satzteilen ohne verbindende Konjunktionen. Wirkung: temporeich, aufzählend, drängend"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Asyndeton",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "⚡",
+      "stufen": [],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Asyndeton",
+      "hinweis": "Beispiel: „Ein Rot, ein Grün, ein Grau vorbeigesendet“ (Rilke)  ‖  „Alles rennet, rettet, flüchtet“ (Schiller)",
+      "antwort": "temporeich, aufzählend, drängend",
+      "erklaerung": "<strong>Asyndeton</strong> – Reihung von Wörtern oder Satzteilen ohne verbindende Konjunktionen."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Asyndeton",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "⚡",
+      "stufen": [],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "temporeich, aufzählend, drängend",
+      "antwort": "Asyndeton",
+      "erklaerung": "<strong>Asyndeton</strong>: Reihung von Wörtern oder Satzteilen ohne verbindende Konjunktionen. Wirkung: temporeich, aufzählend, drängend"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Chiasmus",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "✖️",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Die Kunst ist lang – und kurz ist unser Leben“ (Goethe)",
+      "antwort": "Chiasmus",
+      "erklaerung": "<strong>Chiasmus</strong>: Überkreuzstellung von syntaktisch oder inhaltlich einander entsprechenden Satzgliedern — die Reihenfolge wird in der zweiten Hälfte umgekehrt (Schema: A–B / B–A) Wirkung: pointiert, einprägsam, symmetrisch — erzeugt den Eindruck von Ausgewogenheit oder Gegensätzlichkeit"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Chiasmus",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "✖️",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Überkreuzstellung von syntaktisch oder inhaltlich einander entsprechenden Satzgliedern — die Reihenfolge wird in der zweiten Hälfte umgekehrt (Schema: A–B / B–A)",
+      "antwort": "Chiasmus",
+      "erklaerung": "<strong>Chiasmus</strong>: Überkreuzstellung von syntaktisch oder inhaltlich einander entsprechenden Satzgliedern — die Reihenfolge wird in der zweiten Hälfte umgekehrt (Schema: A–B / B–A) Wirkung: pointiert, einprägsam, symmetrisch — erzeugt den Eindruck von Ausgewogenheit oder Gegensätzlichkeit"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Chiasmus",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "✖️",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Chiasmus",
+      "hinweis": "Beispiel: „Die Kunst ist lang – und kurz ist unser Leben“ (Goethe)",
+      "antwort": "pointiert, einprägsam, symmetrisch — erzeugt den Eindruck von Ausgewogenheit oder Gegensätzlichkeit",
+      "erklaerung": "<strong>Chiasmus</strong> – Überkreuzstellung von syntaktisch oder inhaltlich einander entsprechenden Satzgliedern — die Reihenfolge wird in der zweiten Hälfte umgekehrt (Schema: A–B / B–A)"
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Chiasmus",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "✖️",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "pointiert, einprägsam, symmetrisch — erzeugt den Eindruck von Ausgewogenheit oder Gegensätzlichkeit",
+      "antwort": "Chiasmus",
+      "erklaerung": "<strong>Chiasmus</strong>: Überkreuzstellung von syntaktisch oder inhaltlich einander entsprechenden Satzgliedern — die Reihenfolge wird in der zweiten Hälfte umgekehrt (Schema: A–B / B–A) Wirkung: pointiert, einprägsam, symmetrisch — erzeugt den Eindruck von Ausgewogenheit oder Gegensätzlichkeit"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Polysyndeton",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "🔗",
+      "stufen": [],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Einigkeit und Recht und Freiheit“  ‖  „Und es wallet und siedet und brauset und zischt“ (Schiller)",
+      "antwort": "Polysyndeton",
+      "erklaerung": "<strong>Polysyndeton</strong>: Reihung, bei der zwischen allen Gliedern die gleiche Konjunktion wiederholt wird. Wirkung: verlangsamend, aufzählend, feierlich"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Polysyndeton",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "🔗",
+      "stufen": [],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Reihung, bei der zwischen allen Gliedern die gleiche Konjunktion wiederholt wird.",
+      "antwort": "Polysyndeton",
+      "erklaerung": "<strong>Polysyndeton</strong>: Reihung, bei der zwischen allen Gliedern die gleiche Konjunktion wiederholt wird. Wirkung: verlangsamend, aufzählend, feierlich"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Polysyndeton",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "🔗",
+      "stufen": [],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Polysyndeton",
+      "hinweis": "Beispiel: „Einigkeit und Recht und Freiheit“  ‖  „Und es wallet und siedet und brauset und zischt“ (Schiller)",
+      "antwort": "verlangsamend, aufzählend, feierlich",
+      "erklaerung": "<strong>Polysyndeton</strong> – Reihung, bei der zwischen allen Gliedern die gleiche Konjunktion wiederholt wird."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Polysyndeton",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "🔗",
+      "stufen": [],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "verlangsamend, aufzählend, feierlich",
+      "antwort": "Polysyndeton",
+      "erklaerung": "<strong>Polysyndeton</strong>: Reihung, bei der zwischen allen Gliedern die gleiche Konjunktion wiederholt wird. Wirkung: verlangsamend, aufzählend, feierlich"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Parataxe",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "▶️",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Am Anfang schuf Gott Himmel und Erde. Und die Erde war wüst.“ (1. Mose)",
+      "antwort": "Parataxe",
+      "erklaerung": "<strong>Parataxe</strong>: Aneinanderreihung von Hauptsätzen (Satzreihe) ohne Unterordnung. Wirkung: klar, direkt, schlicht"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Parataxe",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "▶️",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Aneinanderreihung von Hauptsätzen (Satzreihe) ohne Unterordnung.",
+      "antwort": "Parataxe",
+      "erklaerung": "<strong>Parataxe</strong>: Aneinanderreihung von Hauptsätzen (Satzreihe) ohne Unterordnung. Wirkung: klar, direkt, schlicht"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Parataxe",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "▶️",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Parataxe",
+      "hinweis": "Beispiel: „Am Anfang schuf Gott Himmel und Erde. Und die Erde war wüst.“ (1. Mose)",
+      "antwort": "klar, direkt, schlicht",
+      "erklaerung": "<strong>Parataxe</strong> – Aneinanderreihung von Hauptsätzen (Satzreihe) ohne Unterordnung."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Parataxe",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "▶️",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "klar, direkt, schlicht",
+      "antwort": "Parataxe",
+      "erklaerung": "<strong>Parataxe</strong>: Aneinanderreihung von Hauptsätzen (Satzreihe) ohne Unterordnung. Wirkung: klar, direkt, schlicht"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Hypotaxe",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "🌳",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„An einem der letzten Maitage, das Wetter war sommerlich, bog ein Landauer ein …“ (Fontane)",
+      "antwort": "Hypotaxe",
+      "erklaerung": "<strong>Hypotaxe</strong>: Verschachtelung von Haupt- und Nebensätzen (Satzgefüge) mit Unterordnung. Wirkung: komplex, ausschweifend, detailreich"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Hypotaxe",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "🌳",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Verschachtelung von Haupt- und Nebensätzen (Satzgefüge) mit Unterordnung.",
+      "antwort": "Hypotaxe",
+      "erklaerung": "<strong>Hypotaxe</strong>: Verschachtelung von Haupt- und Nebensätzen (Satzgefüge) mit Unterordnung. Wirkung: komplex, ausschweifend, detailreich"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Hypotaxe",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "🌳",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Hypotaxe",
+      "hinweis": "Beispiel: „An einem der letzten Maitage, das Wetter war sommerlich, bog ein Landauer ein …“ (Fontane)",
+      "antwort": "komplex, ausschweifend, detailreich",
+      "erklaerung": "<strong>Hypotaxe</strong> – Verschachtelung von Haupt- und Nebensätzen (Satzgefüge) mit Unterordnung."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Hypotaxe",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "🌳",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "komplex, ausschweifend, detailreich",
+      "antwort": "Hypotaxe",
+      "erklaerung": "<strong>Hypotaxe</strong>: Verschachtelung von Haupt- und Nebensätzen (Satzgefüge) mit Unterordnung. Wirkung: komplex, ausschweifend, detailreich"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Enjambement",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "↩️",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Über allen Gipfeln / Ist Ruh“ (Goethe)  ‖  „Ich bin so wild nach deinem / Erdbeermund“ (Villon/Klammer)",
+      "antwort": "Enjambement",
+      "erklaerung": "<strong>Enjambement</strong>: Zeilensprung – ein Satz wird über das Versende hinaus in der nächsten Zeile fortgesetzt. — Nur in Lyrik, nicht in Prosa Wirkung: fließend, drängend, spannungserzeugend — nur in Gedichten; in Prosatexten nicht anwendbar"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Enjambement",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "↩️",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Zeilensprung – ein Satz wird über das Versende hinaus in der nächsten Zeile fortgesetzt. — Nur in Lyrik, nicht in Prosa",
+      "antwort": "Enjambement",
+      "erklaerung": "<strong>Enjambement</strong>: Zeilensprung – ein Satz wird über das Versende hinaus in der nächsten Zeile fortgesetzt. — Nur in Lyrik, nicht in Prosa Wirkung: fließend, drängend, spannungserzeugend — nur in Gedichten; in Prosatexten nicht anwendbar"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Enjambement",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "↩️",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Enjambement",
+      "hinweis": "Beispiel: „Über allen Gipfeln / Ist Ruh“ (Goethe)  ‖  „Ich bin so wild nach deinem / Erdbeermund“ (Villon/Klammer)",
+      "antwort": "fließend, drängend, spannungserzeugend — nur in Gedichten; in Prosatexten nicht anwendbar",
+      "erklaerung": "<strong>Enjambement</strong> – Zeilensprung – ein Satz wird über das Versende hinaus in der nächsten Zeile fortgesetzt. — Nur in Lyrik, nicht in Prosa"
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Enjambement",
+      "kategorie": "Satzfigur",
+      "badge": "Satzfigur",
+      "symbol": "↩️",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "fließend, drängend, spannungserzeugend — nur in Gedichten; in Prosatexten nicht anwendbar",
+      "antwort": "Enjambement",
+      "erklaerung": "<strong>Enjambement</strong>: Zeilensprung – ein Satz wird über das Versende hinaus in der nächsten Zeile fortgesetzt. — Nur in Lyrik, nicht in Prosa Wirkung: fließend, drängend, spannungserzeugend — nur in Gedichten; in Prosatexten nicht anwendbar"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Antithese",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "↔️",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Klein ist der Strauch, groß ist der Baum“  ‖  „Krieg und Frieden“ (Tolstoi)",
+      "antwort": "Antithese",
+      "erklaerung": "<strong>Antithese</strong>: Gegenüberstellung gegensätzlicher Begriffe oder Gedanken. Wirkung: kontrastierend, gegenüberstellend"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Antithese",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "↔️",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Gegenüberstellung gegensätzlicher Begriffe oder Gedanken.",
+      "antwort": "Antithese",
+      "erklaerung": "<strong>Antithese</strong>: Gegenüberstellung gegensätzlicher Begriffe oder Gedanken. Wirkung: kontrastierend, gegenüberstellend"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Antithese",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "↔️",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Antithese",
+      "hinweis": "Beispiel: „Klein ist der Strauch, groß ist der Baum“  ‖  „Krieg und Frieden“ (Tolstoi)",
+      "antwort": "kontrastierend, gegenüberstellend",
+      "erklaerung": "<strong>Antithese</strong> – Gegenüberstellung gegensätzlicher Begriffe oder Gedanken."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Antithese",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "↔️",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "kontrastierend, gegenüberstellend",
+      "antwort": "Antithese",
+      "erklaerung": "<strong>Antithese</strong>: Gegenüberstellung gegensätzlicher Begriffe oder Gedanken. Wirkung: kontrastierend, gegenüberstellend"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Ironie",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "😏",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Wir haben’s ja“ (wenn Geld knapp ist)  ‖  „Das hast du ja toll hinbekommen!“",
+      "antwort": "Ironie",
+      "erklaerung": "<strong>Ironie</strong>: Das Gegenteil des Gemeinten wird gesagt — die eigentliche Bedeutung ergibt sich erst aus dem Kontext, dem Tonfall oder dem Vorwissen des Lesers Wirkung: doppelbödig, verschlüsselt; in geschriebenen Texten nur durch Kontextanalyse erkennbar — kann belustigen, distanzieren oder verletzen"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Ironie",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "😏",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Das Gegenteil des Gemeinten wird gesagt — die eigentliche Bedeutung ergibt sich erst aus dem Kontext, dem Tonfall oder dem Vorwissen des Lesers",
+      "antwort": "Ironie",
+      "erklaerung": "<strong>Ironie</strong>: Das Gegenteil des Gemeinten wird gesagt — die eigentliche Bedeutung ergibt sich erst aus dem Kontext, dem Tonfall oder dem Vorwissen des Lesers Wirkung: doppelbödig, verschlüsselt; in geschriebenen Texten nur durch Kontextanalyse erkennbar — kann belustigen, distanzieren oder verletzen"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Ironie",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "😏",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Ironie",
+      "hinweis": "Beispiel: „Wir haben’s ja“ (wenn Geld knapp ist)  ‖  „Das hast du ja toll hinbekommen!“",
+      "antwort": "doppelbödig, verschlüsselt; in geschriebenen Texten nur durch Kontextanalyse erkennbar — kann belustigen, distanzieren oder verletzen",
+      "erklaerung": "<strong>Ironie</strong> – Das Gegenteil des Gemeinten wird gesagt — die eigentliche Bedeutung ergibt sich erst aus dem Kontext, dem Tonfall oder dem Vorwissen des Lesers"
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Ironie",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "😏",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "doppelbödig, verschlüsselt; in geschriebenen Texten nur durch Kontextanalyse erkennbar — kann belustigen, distanzieren oder verletzen",
+      "antwort": "Ironie",
+      "erklaerung": "<strong>Ironie</strong>: Das Gegenteil des Gemeinten wird gesagt — die eigentliche Bedeutung ergibt sich erst aus dem Kontext, dem Tonfall oder dem Vorwissen des Lesers Wirkung: doppelbödig, verschlüsselt; in geschriebenen Texten nur durch Kontextanalyse erkennbar — kann belustigen, distanzieren oder verletzen"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Oxymoron",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "☯️",
+      "stufen": [
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Hassliebe“  ‖  „beredtes Schweigen“  ‖  „alter Knabe“",
+      "antwort": "Oxymoron",
+      "erklaerung": "<strong>Oxymoron</strong>: Verbindung zweier sich logisch widersprechender Begriffe in einer Wortgruppe. Wirkung: widersprüchlich, spannungserzeugend"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Oxymoron",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "☯️",
+      "stufen": [
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Verbindung zweier sich logisch widersprechender Begriffe in einer Wortgruppe.",
+      "antwort": "Oxymoron",
+      "erklaerung": "<strong>Oxymoron</strong>: Verbindung zweier sich logisch widersprechender Begriffe in einer Wortgruppe. Wirkung: widersprüchlich, spannungserzeugend"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Oxymoron",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "☯️",
+      "stufen": [
+        "rs910"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Oxymoron",
+      "hinweis": "Beispiel: „Hassliebe“  ‖  „beredtes Schweigen“  ‖  „alter Knabe“",
+      "antwort": "widersprüchlich, spannungserzeugend",
+      "erklaerung": "<strong>Oxymoron</strong> – Verbindung zweier sich logisch widersprechender Begriffe in einer Wortgruppe."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Oxymoron",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "☯️",
+      "stufen": [
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "widersprüchlich, spannungserzeugend",
+      "antwort": "Oxymoron",
+      "erklaerung": "<strong>Oxymoron</strong>: Verbindung zweier sich logisch widersprechender Begriffe in einer Wortgruppe. Wirkung: widersprüchlich, spannungserzeugend"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Paradoxon",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "🌀",
+      "stufen": [],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Ich weiß, dass ich nichts weiß“ (Sokrates)  ‖  „Weniger ist mehr“ (Mies van der Rohe)",
+      "antwort": "Paradoxon",
+      "erklaerung": "<strong>Paradoxon</strong>: Scheinbar widersprüchliche Aussage, die bei näherem Hinsehen einen tieferen Sinn enthält. Wirkung: scheinbar widersprüchlich, zum Nachdenken"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Paradoxon",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "🌀",
+      "stufen": [],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Scheinbar widersprüchliche Aussage, die bei näherem Hinsehen einen tieferen Sinn enthält.",
+      "antwort": "Paradoxon",
+      "erklaerung": "<strong>Paradoxon</strong>: Scheinbar widersprüchliche Aussage, die bei näherem Hinsehen einen tieferen Sinn enthält. Wirkung: scheinbar widersprüchlich, zum Nachdenken"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Paradoxon",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "🌀",
+      "stufen": [],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Paradoxon",
+      "hinweis": "Beispiel: „Ich weiß, dass ich nichts weiß“ (Sokrates)  ‖  „Weniger ist mehr“ (Mies van der Rohe)",
+      "antwort": "scheinbar widersprüchlich, zum Nachdenken",
+      "erklaerung": "<strong>Paradoxon</strong> – Scheinbar widersprüchliche Aussage, die bei näherem Hinsehen einen tieferen Sinn enthält."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Paradoxon",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "🌀",
+      "stufen": [],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "scheinbar widersprüchlich, zum Nachdenken",
+      "antwort": "Paradoxon",
+      "erklaerung": "<strong>Paradoxon</strong>: Scheinbar widersprüchliche Aussage, die bei näherem Hinsehen einen tieferen Sinn enthält. Wirkung: scheinbar widersprüchlich, zum Nachdenken"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Rhetorische Frage",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "❓",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Wie viele Menschen müssen noch sterben?“  ‖  „Bin ich denn der Einzige, der das sieht?“",
+      "antwort": "Rhetorische Frage",
+      "erklaerung": "<strong>Rhetorische Frage</strong>: Eine Frage, auf die keine Antwort erwartet wird – die Antwort ist bereits klar. Wirkung: bindet Leser/Hörer ein — wer die Frage beantwortet, stimmt dem Sprecher bereits zu; erzeugt Zustimmungsdruck, Dringlichkeit oder Nachdenklichkeit"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Rhetorische Frage",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "❓",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Eine Frage, auf die keine Antwort erwartet wird – die Antwort ist bereits klar.",
+      "antwort": "Rhetorische Frage",
+      "erklaerung": "<strong>Rhetorische Frage</strong>: Eine Frage, auf die keine Antwort erwartet wird – die Antwort ist bereits klar. Wirkung: bindet Leser/Hörer ein — wer die Frage beantwortet, stimmt dem Sprecher bereits zu; erzeugt Zustimmungsdruck, Dringlichkeit oder Nachdenklichkeit"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Rhetorische Frage",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "❓",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Rhetorische Frage",
+      "hinweis": "Beispiel: „Wie viele Menschen müssen noch sterben?“  ‖  „Bin ich denn der Einzige, der das sieht?“",
+      "antwort": "bindet Leser/Hörer ein — wer die Frage beantwortet, stimmt dem Sprecher bereits zu; erzeugt Zustimmungsdruck, Dringlichkeit oder Nachdenklichkeit",
+      "erklaerung": "<strong>Rhetorische Frage</strong> – Eine Frage, auf die keine Antwort erwartet wird – die Antwort ist bereits klar."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Rhetorische Frage",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "❓",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "bindet Leser/Hörer ein — wer die Frage beantwortet, stimmt dem Sprecher bereits zu; erzeugt Zustimmungsdruck, Dringlichkeit oder Nachdenklichkeit",
+      "antwort": "Rhetorische Frage",
+      "erklaerung": "<strong>Rhetorische Frage</strong>: Eine Frage, auf die keine Antwort erwartet wird – die Antwort ist bereits klar. Wirkung: bindet Leser/Hörer ein — wer die Frage beantwortet, stimmt dem Sprecher bereits zu; erzeugt Zustimmungsdruck, Dringlichkeit oder Nachdenklichkeit"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Sarkasmus",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "😒",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Gibt’s dein T-Shirt auch in deiner Größe?“  ‖  „Glanzleistung – wie immer!“",
+      "antwort": "Sarkasmus",
+      "erklaerung": "<strong>Sarkasmus</strong>: Beißender, verletzender Spott – schärfer und gemeiner als Ironie. Wirkung: beißend spöttisch, verletzend"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Sarkasmus",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "😒",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Beißender, verletzender Spott – schärfer und gemeiner als Ironie.",
+      "antwort": "Sarkasmus",
+      "erklaerung": "<strong>Sarkasmus</strong>: Beißender, verletzender Spott – schärfer und gemeiner als Ironie. Wirkung: beißend spöttisch, verletzend"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Sarkasmus",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "😒",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Sarkasmus",
+      "hinweis": "Beispiel: „Gibt’s dein T-Shirt auch in deiner Größe?“  ‖  „Glanzleistung – wie immer!“",
+      "antwort": "beißend spöttisch, verletzend",
+      "erklaerung": "<strong>Sarkasmus</strong> – Beißender, verletzender Spott – schärfer und gemeiner als Ironie."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Sarkasmus",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "😒",
+      "stufen": [
+        "mittelstufe"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "beißend spöttisch, verletzend",
+      "antwort": "Sarkasmus",
+      "erklaerung": "<strong>Sarkasmus</strong>: Beißender, verletzender Spott – schärfer und gemeiner als Ironie. Wirkung: beißend spöttisch, verletzend"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Katachrese",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "🧩",
+      "stufen": [],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "Tote Metapher: „Tischbein“  ‖  „Flaschenhals“  ‖  „Arm des Flusses“  ||  Bildbruch: „Das schlägt dem Fass die Krone ins Gesicht“",
+      "antwort": "Katachrese",
+      "erklaerung": "<strong>Katachrese</strong>: Zwei Formen: (a) Tote Metapher — ein Bild, das durch Alltagsgebrauch nicht mehr als Bild wahrgenommen wird; (b) Bildbruch — zwei Metaphern werden widersprüchlich kombiniert Wirkung: Tote Metapher: unauffällig, verblasst; Bildbruch: unfreiwillig komisch oder stilistisch ungeschickt — oft ein Fehler"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Katachrese",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "🧩",
+      "stufen": [],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Zwei Formen: (a) Tote Metapher — ein Bild, das durch Alltagsgebrauch nicht mehr als Bild wahrgenommen wird; (b) Bildbruch — zwei Metaphern werden widersprüchlich kombiniert",
+      "antwort": "Katachrese",
+      "erklaerung": "<strong>Katachrese</strong>: Zwei Formen: (a) Tote Metapher — ein Bild, das durch Alltagsgebrauch nicht mehr als Bild wahrgenommen wird; (b) Bildbruch — zwei Metaphern werden widersprüchlich kombiniert Wirkung: Tote Metapher: unauffällig, verblasst; Bildbruch: unfreiwillig komisch oder stilistisch ungeschickt — oft ein Fehler"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Katachrese",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "🧩",
+      "stufen": [],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Katachrese",
+      "hinweis": "Beispiel: Tote Metapher: „Tischbein“  ‖  „Flaschenhals“  ‖  „Arm des Flusses“  ||  Bildbruch: „Das schlägt dem Fass die Krone ins Gesicht“",
+      "antwort": "Tote Metapher: unauffällig, verblasst; Bildbruch: unfreiwillig komisch oder stilistisch ungeschickt — oft ein Fehler",
+      "erklaerung": "<strong>Katachrese</strong> – Zwei Formen: (a) Tote Metapher — ein Bild, das durch Alltagsgebrauch nicht mehr als Bild wahrgenommen wird; (b) Bildbruch — zwei Metaphern werden widersprüchlich kombiniert"
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Katachrese",
+      "kategorie": "Gedankenfigur",
+      "badge": "Gedankenfigur",
+      "symbol": "🧩",
+      "stufen": [],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "Tote Metapher: unauffällig, verblasst; Bildbruch: unfreiwillig komisch oder stilistisch ungeschickt — oft ein Fehler",
+      "antwort": "Katachrese",
+      "erklaerung": "<strong>Katachrese</strong>: Zwei Formen: (a) Tote Metapher — ein Bild, das durch Alltagsgebrauch nicht mehr als Bild wahrgenommen wird; (b) Bildbruch — zwei Metaphern werden widersprüchlich kombiniert Wirkung: Tote Metapher: unauffällig, verblasst; Bildbruch: unfreiwillig komisch oder stilistisch ungeschickt — oft ein Fehler"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Alliteration",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🔤",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Milch macht müde Männer munter“  ‖  „Mit Mann und Maus“  ‖  „Wer wirbt, wirbt Wähler“",
+      "antwort": "Alliteration",
+      "erklaerung": "<strong>Alliteration</strong>: Wiederholung des gleichen Anfangslauts bei benachbarten Wörtern. Wirkung: betont, einprägsam, klingend"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Alliteration",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🔤",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Wiederholung des gleichen Anfangslauts bei benachbarten Wörtern.",
+      "antwort": "Alliteration",
+      "erklaerung": "<strong>Alliteration</strong>: Wiederholung des gleichen Anfangslauts bei benachbarten Wörtern. Wirkung: betont, einprägsam, klingend"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Alliteration",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🔤",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Alliteration",
+      "hinweis": "Beispiel: „Milch macht müde Männer munter“  ‖  „Mit Mann und Maus“  ‖  „Wer wirbt, wirbt Wähler“",
+      "antwort": "betont, einprägsam, klingend",
+      "erklaerung": "<strong>Alliteration</strong> – Wiederholung des gleichen Anfangslauts bei benachbarten Wörtern."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Alliteration",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🔤",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "betont, einprägsam, klingend",
+      "antwort": "Alliteration",
+      "erklaerung": "<strong>Alliteration</strong>: Wiederholung des gleichen Anfangslauts bei benachbarten Wörtern. Wirkung: betont, einprägsam, klingend"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Anapher",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🔁",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Kein Licht. Kein Ton.“  ‖  „Wer nie sein Brot mit Tränen aß, / Wer nie …“ (Goethe)",
+      "antwort": "Anapher",
+      "erklaerung": "<strong>Anapher</strong>: Wiederholung eines Wortes oder einer Wortgruppe am Anfang aufeinanderfolgender Sätze oder Verse. Wirkung: verstärkend, rhythmisch"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Anapher",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🔁",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Wiederholung eines Wortes oder einer Wortgruppe am Anfang aufeinanderfolgender Sätze oder Verse.",
+      "antwort": "Anapher",
+      "erklaerung": "<strong>Anapher</strong>: Wiederholung eines Wortes oder einer Wortgruppe am Anfang aufeinanderfolgender Sätze oder Verse. Wirkung: verstärkend, rhythmisch"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Anapher",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🔁",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Anapher",
+      "hinweis": "Beispiel: „Kein Licht. Kein Ton.“  ‖  „Wer nie sein Brot mit Tränen aß, / Wer nie …“ (Goethe)",
+      "antwort": "verstärkend, rhythmisch",
+      "erklaerung": "<strong>Anapher</strong> – Wiederholung eines Wortes oder einer Wortgruppe am Anfang aufeinanderfolgender Sätze oder Verse."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Anapher",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🔁",
+      "stufen": [
+        "mittelstufe",
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "verstärkend, rhythmisch",
+      "antwort": "Anapher",
+      "erklaerung": "<strong>Anapher</strong>: Wiederholung eines Wortes oder einer Wortgruppe am Anfang aufeinanderfolgender Sätze oder Verse. Wirkung: verstärkend, rhythmisch"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Wiederholung/Repetitio",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🔂",
+      "stufen": [
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„O Mutter! Was ist Seligkeit? O Mutter!“ (Bürger)  ‖  „Mein Vater, mein Vater“ (Goethe)",
+      "antwort": "Wiederholung/Repetitio",
+      "erklaerung": "<strong>Wiederholung/Repetitio</strong>: Wiederholung eines Wortes oder Ausdrucks innerhalb eines Satzes oder Verses. Wirkung: eindringlich, wiederholend"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Wiederholung/Repetitio",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🔂",
+      "stufen": [
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Wiederholung eines Wortes oder Ausdrucks innerhalb eines Satzes oder Verses.",
+      "antwort": "Wiederholung/Repetitio",
+      "erklaerung": "<strong>Wiederholung/Repetitio</strong>: Wiederholung eines Wortes oder Ausdrucks innerhalb eines Satzes oder Verses. Wirkung: eindringlich, wiederholend"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Wiederholung/Repetitio",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🔂",
+      "stufen": [
+        "rs910"
+      ],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Wiederholung/Repetitio",
+      "hinweis": "Beispiel: „O Mutter! Was ist Seligkeit? O Mutter!“ (Bürger)  ‖  „Mein Vater, mein Vater“ (Goethe)",
+      "antwort": "eindringlich, wiederholend",
+      "erklaerung": "<strong>Wiederholung/Repetitio</strong> – Wiederholung eines Wortes oder Ausdrucks innerhalb eines Satzes oder Verses."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Wiederholung/Repetitio",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🔂",
+      "stufen": [
+        "rs910"
+      ],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "eindringlich, wiederholend",
+      "antwort": "Wiederholung/Repetitio",
+      "erklaerung": "<strong>Wiederholung/Repetitio</strong>: Wiederholung eines Wortes oder Ausdrucks innerhalb eines Satzes oder Verses. Wirkung: eindringlich, wiederholend"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Epipher",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🔚",
+      "stufen": [],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„Ich fordere Moral, du lebst Moral“  ‖  „Doch alle Lust will Ewigkeit, / will tiefe, tiefe Ewigkeit“ (Nietzsche)",
+      "antwort": "Epipher",
+      "erklaerung": "<strong>Epipher</strong>: Wiederholung eines Wortes oder einer Wortgruppe am Ende aufeinanderfolgender Sätze oder Verse. Wirkung: verstärkend am Satzende"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Epipher",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🔚",
+      "stufen": [],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Wiederholung eines Wortes oder einer Wortgruppe am Ende aufeinanderfolgender Sätze oder Verse.",
+      "antwort": "Epipher",
+      "erklaerung": "<strong>Epipher</strong>: Wiederholung eines Wortes oder einer Wortgruppe am Ende aufeinanderfolgender Sätze oder Verse. Wirkung: verstärkend am Satzende"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Epipher",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🔚",
+      "stufen": [],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Epipher",
+      "hinweis": "Beispiel: „Ich fordere Moral, du lebst Moral“  ‖  „Doch alle Lust will Ewigkeit, / will tiefe, tiefe Ewigkeit“ (Nietzsche)",
+      "antwort": "verstärkend am Satzende",
+      "erklaerung": "<strong>Epipher</strong> – Wiederholung eines Wortes oder einer Wortgruppe am Ende aufeinanderfolgender Sätze oder Verse."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Epipher",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🔚",
+      "stufen": [],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "verstärkend am Satzende",
+      "antwort": "Epipher",
+      "erklaerung": "<strong>Epipher</strong>: Wiederholung eines Wortes oder einer Wortgruppe am Ende aufeinanderfolgender Sätze oder Verse. Wirkung: verstärkend am Satzende"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Tautologie",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🫞",
+      "stufen": [],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„voll und ganz“  ‖  „nie und nimmer“  ‖  „immer und ewig“",
+      "antwort": "Tautologie",
+      "erklaerung": "<strong>Tautologie</strong>: Wiederholung desselben Sachverhalts mit anderen Worten oder bedeutungsgleichen Ausdrücken. Wirkung: bekräftigend, redundant"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Tautologie",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🫞",
+      "stufen": [],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Wiederholung desselben Sachverhalts mit anderen Worten oder bedeutungsgleichen Ausdrücken.",
+      "antwort": "Tautologie",
+      "erklaerung": "<strong>Tautologie</strong>: Wiederholung desselben Sachverhalts mit anderen Worten oder bedeutungsgleichen Ausdrücken. Wirkung: bekräftigend, redundant"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Tautologie",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🫞",
+      "stufen": [],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Tautologie",
+      "hinweis": "Beispiel: „voll und ganz“  ‖  „nie und nimmer“  ‖  „immer und ewig“",
+      "antwort": "bekräftigend, redundant",
+      "erklaerung": "<strong>Tautologie</strong> – Wiederholung desselben Sachverhalts mit anderen Worten oder bedeutungsgleichen Ausdrücken."
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Tautologie",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "🫞",
+      "stufen": [],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "bekräftigend, redundant",
+      "antwort": "Tautologie",
+      "erklaerung": "<strong>Tautologie</strong>: Wiederholung desselben Sachverhalts mit anderen Worten oder bedeutungsgleichen Ausdrücken. Wirkung: bekräftigend, redundant"
+    },
+    {
+      "modus": "name_from_beispiel",
+      "einheit": "Elision",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "✂️",
+      "stufen": [],
+      "frage": "Welches Stilmittel liegt vor?",
+      "kontext": "„in ew’gen Tau“ (statt: ewigen)  ‖  „Hab’ ich“ (statt: Habe ich)",
+      "antwort": "Elision",
+      "erklaerung": "<strong>Elision</strong>: Auslassung eines Lautes oder einer Silbe, meist um das Versmaß einzuhalten. — Vor allem in Lyrik, erkennbar am Apostroph (’) Wirkung: Metrum erhaltend, klanglich weich — vor allem in älteren Gedichten; in moderner Prosa kaum vorhanden"
+    },
+    {
+      "modus": "name_from_erklaerung",
+      "einheit": "Elision",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "✂️",
+      "stufen": [],
+      "frage": "Welches Stilmittel wird hier erklärt?",
+      "kontext": "Auslassung eines Lautes oder einer Silbe, meist um das Versmaß einzuhalten. — Vor allem in Lyrik, erkennbar am Apostroph (’)",
+      "antwort": "Elision",
+      "erklaerung": "<strong>Elision</strong>: Auslassung eines Lautes oder einer Silbe, meist um das Versmaß einzuhalten. — Vor allem in Lyrik, erkennbar am Apostroph (’) Wirkung: Metrum erhaltend, klanglich weich — vor allem in älteren Gedichten; in moderner Prosa kaum vorhanden"
+    },
+    {
+      "modus": "wirkung_from_name",
+      "einheit": "Elision",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "✂️",
+      "stufen": [],
+      "frage": "Was ist die Wirkung?",
+      "kontext": "Elision",
+      "hinweis": "Beispiel: „in ew’gen Tau“ (statt: ewigen)  ‖  „Hab’ ich“ (statt: Habe ich)",
+      "antwort": "Metrum erhaltend, klanglich weich — vor allem in älteren Gedichten; in moderner Prosa kaum vorhanden",
+      "erklaerung": "<strong>Elision</strong> – Auslassung eines Lautes oder einer Silbe, meist um das Versmaß einzuhalten. — Vor allem in Lyrik, erkennbar am Apostroph (’)"
+    },
+    {
+      "modus": "name_from_wirkung",
+      "einheit": "Elision",
+      "kategorie": "Klangfigur",
+      "badge": "Klangfigur",
+      "symbol": "✂️",
+      "stufen": [],
+      "frage": "Welches Stilmittel hat diese Wirkung?",
+      "kontext": "Metrum erhaltend, klanglich weich — vor allem in älteren Gedichten; in moderner Prosa kaum vorhanden",
+      "antwort": "Elision",
+      "erklaerung": "<strong>Elision</strong>: Auslassung eines Lautes oder einer Silbe, meist um das Versmaß einzuhalten. — Vor allem in Lyrik, erkennbar am Apostroph (’) Wirkung: Metrum erhaltend, klanglich weich — vor allem in älteren Gedichten; in moderner Prosa kaum vorhanden"
+    }
+  ]
+}

@@ -33,7 +33,7 @@ for (const [key, label] of Object.entries(MATHE_ZG)) {
 // Quizze, die PUNKTE statt Fragen als „total“ melden (Rebus-/Bilderraten-Generator, z. B. 1200).
 // Für die XP zählt hier die feste Fragenanzahl, nicht die gemeldete Punktzahl.
 const PUNKTE_QUIZZE = {
-  'monatsnamen-rebus':    { fragen: 12, label: 'Monatsnamen-Rebus' },
+  // (leer – alle Generator-Quizze laufen inzwischen auf der Quiz-Engine und melden Fragen)
 };
 // Quizze, die Fragen melden, mit ihrer tatsächlichen Höchstzahl an Fragen.
 // Quizze auf Basis von js/quiz-engine.js melden IMMER Fragen – hier mit Fragenanzahl eintragen.
@@ -42,6 +42,8 @@ const FRAGEN_QUIZZE = {
   'masken-quiz':                       { fragen: 12, label: 'Masken-Quiz' },                    // Quiz-Engine (bilder)
   'fussball-rebus':                    { fragen: 15, label: 'Fußball-Rebus' },                  // Quiz-Engine (bilder)
   'wintersport-legenden':              { fragen: 12, label: 'Wintersport-Legenden' },           // Quiz-Engine (bilder)
+  'monatsnamen-rebus':                 { fragen: 15, label: 'Monatsnamen-Rebus' },              // Quiz-Engine (bilder, 12 + Abschlussfrage ×3)
+  'deutsch-das-parfum':                { fragen: 25, label: 'Das Parfum – Lektürequiz' },       // Quiz-Engine (fragen)
   'deutsch-satzglieder-kl4':           { fragen: 26, label: 'Satzglieder & Zeitformen (Kl. 4)' }, // 12 + 4 + 8 + 2 Einzelaufgaben
   'lehrer-rebus':                      { fragen: 48, label: 'Lehrer-Rebus' },
   'erdkunde-bundeslaender':            { fragen: 16, label: 'Stumme Karte: Bundesländer' },

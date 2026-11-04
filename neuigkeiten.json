@@ -2,6 +2,12 @@
   "_hinweis": "Neue Funktionen für die 'Was ist neu?'-Sektion. Neueste oben einfügen. Felder: titel, datum (JJJJ-MM-TT), meta (Bereich), url. Wird von js/was-ist-neu.js geladen; es werden automatisch die 5 jüngsten angezeigt.",
   "funktionen": [
     {
+      "titel": "Quiz-Engine: alle Quizze migriert – Stilmittel, Literaturwissenschaft, Rechtschreibung, Lernquiz 5, Deutsch Sek I, Das Parfum, Satzglieder, Lehrer*innenrätsel und Monatsnamen-Rebus laufen jetzt auf js/quiz-engine.js",
+      "datum": "2026-11-04",
+      "meta": "Technik",
+      "url": "stilmittel-quiz.html"
+    },
+    {
       "titel": "Startseite: Inhalt wieder 1200 px breit; auf großen Bildschirmen Inhaltsverzeichnis, Arena-Spalte und „Zuletzt benutzt“ am Rand",
       "datum": "2026-11-04",
       "meta": "Startseite",

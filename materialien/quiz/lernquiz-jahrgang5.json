@@ -1,0 +1,1330 @@
+{
+  "slug": "lernquiz-jahrgang5",
+  "typ": "fragen",
+  "titel": "Schulwissensquiz Jahrgang 5/6 – Gym",
+  "untertitel": "100 Fragen aus Deutsch, Mathematik, Englisch, Erdkunde, Geschichte, Biologie und mehr",
+  "fach": "faecheruebergreifend",
+  "zurueck": {
+    "url": "/fach-faecheruebergreifend.html",
+    "text": "Zurück zu Fächerübergreifend"
+  },
+  "mischen": true,
+  "optionenMischen": true,
+  "auswertungNach": "fach",
+  "auswertungTitel": "Fach",
+  "konfiguration": {
+    "anzahl": {
+      "label": "Anzahl Fragen",
+      "optionen": [
+        10,
+        25,
+        50,
+        100
+      ],
+      "standard": 10,
+      "bestenliste": true
+    }
+  },
+  "fragen": [
+    {
+      "fach": "Deutsch",
+      "badge": "Deutsch",
+      "frage": "Welche Wortart ist das Wort 'schnell'?",
+      "optionen": [
+        "Adjektiv",
+        "Nomen",
+        "Verb",
+        "Konjunktion"
+      ],
+      "richtig": 0,
+      "erklaerung": "'Schnell' ist ein Adjektiv – es beschreibt eine Eigenschaft."
+    },
+    {
+      "fach": "Deutsch",
+      "badge": "Deutsch",
+      "frage": "Was bezeichnet ein Nomen?",
+      "optionen": [
+        "Personen, Tiere oder Dinge",
+        "Handlungen und Vorgänge",
+        "Eigenschaften von Dingen",
+        "Verbindungen zwischen Sätzen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Nomen bezeichnen Personen, Tiere, Sachen und Begriffe. Sie werden großgeschrieben."
+    },
+    {
+      "fach": "Deutsch",
+      "badge": "Deutsch",
+      "frage": "Was ist der Plural von 'das Kind'?",
+      "optionen": [
+        "die Kinder",
+        "die Kinds",
+        "die Kinde",
+        "die Kindern"
+      ],
+      "richtig": 0,
+      "erklaerung": "Der Plural von 'das Kind' lautet 'die Kinder'."
+    },
+    {
+      "fach": "Deutsch",
+      "badge": "Deutsch",
+      "frage": "'Geh bitte nach Hause!' – welche Satzart ist das?",
+      "optionen": [
+        "Aufforderungssatz",
+        "Aussagesatz",
+        "Fragesatz",
+        "Ausrufesatz"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Aufforderungssatz enthält eine Aufforderung oder einen Befehl."
+    },
+    {
+      "fach": "Deutsch",
+      "badge": "Deutsch",
+      "frage": "Welches Zeichen steht am Ende eines Fragesatzes?",
+      "optionen": [
+        "Fragezeichen",
+        "Ausrufezeichen",
+        "Doppelpunkt",
+        "Semikolon"
+      ],
+      "richtig": 0,
+      "erklaerung": "Fragesätze enden mit einem Fragezeichen (?)."
+    },
+    {
+      "fach": "Deutsch",
+      "badge": "Deutsch",
+      "frage": "Was ist ein Verb?",
+      "optionen": [
+        "Ein Tunwort für Handlungen",
+        "Ein Namenwort für Dinge",
+        "Ein Begleiter des Nomens",
+        "Ein Verbindungswort"
+      ],
+      "richtig": 0,
+      "erklaerung": "Verben drücken Handlungen, Vorgänge oder Zustände aus."
+    },
+    {
+      "fach": "Deutsch",
+      "badge": "Deutsch",
+      "frage": "Welcher Artikel gehört zu 'Sonne'?",
+      "optionen": [
+        "die",
+        "der",
+        "das",
+        "ein"
+      ],
+      "richtig": 0,
+      "erklaerung": "'Die Sonne' – das Wort Sonne ist weiblich."
+    },
+    {
+      "fach": "Deutsch",
+      "badge": "Deutsch",
+      "frage": "'Ich sehe den Hund.' – In welchem Fall steht 'den Hund'?",
+      "optionen": [
+        "Akkusativ",
+        "Nominativ",
+        "Dativ",
+        "Genitiv"
+      ],
+      "richtig": 0,
+      "erklaerung": "'Den Hund' steht im Akkusativ (4. Fall) – er ist das direkte Objekt."
+    },
+    {
+      "fach": "Deutsch",
+      "badge": "Deutsch",
+      "frage": "Wie lautet der Komparativ von 'gut'?",
+      "optionen": [
+        "besser",
+        "guterer",
+        "mehr gut",
+        "gutlicher"
+      ],
+      "richtig": 0,
+      "erklaerung": "'Gut' wird unregelmäßig gesteigert: gut – besser – am besten."
+    },
+    {
+      "fach": "Deutsch",
+      "badge": "Deutsch",
+      "frage": "Was ist ein Synonym?",
+      "optionen": [
+        "Ein bedeutungsähnliches Wort",
+        "Ein bedeutungsgegenteiliges Wort",
+        "Ein fremdsprachiges Wort",
+        "Ein veraltetes Wort"
+      ],
+      "richtig": 0,
+      "erklaerung": "Synonyme sind Wörter mit gleicher oder ähnlicher Bedeutung, z.B. 'groß' und 'riesig'."
+    },
+    {
+      "fach": "Deutsch",
+      "badge": "Deutsch",
+      "frage": "Was ist ein Antonym?",
+      "optionen": [
+        "Ein Wort mit gegenteiliger Bedeutung",
+        "Ein Wort mit gleicher Bedeutung",
+        "Ein zusammengesetztes Wort",
+        "Ein veraltetes Wort"
+      ],
+      "richtig": 0,
+      "erklaerung": "Antonyme sind Wörter mit entgegengesetzter Bedeutung, z.B. 'groß' und 'klein'."
+    },
+    {
+      "fach": "Deutsch",
+      "badge": "Deutsch",
+      "frage": "Was ist ein Kompositum?",
+      "optionen": [
+        "Ein zusammengesetztes Wort",
+        "Ein gebeugtes Verb",
+        "Ein verkürzter Satz",
+        "Ein Fremdwort"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Kompositum ist ein zusammengesetztes Wort, z.B. 'Schultasche'."
+    },
+    {
+      "fach": "Deutsch",
+      "badge": "Deutsch",
+      "frage": "Was ist eine Metapher?",
+      "optionen": [
+        "Ein sprachliches Bild",
+        "Ein Reimschema",
+        "Ein langer Satz",
+        "Ein Fremdwort"
+      ],
+      "richtig": 0,
+      "erklaerung": "Eine Metapher ist ein sprachliches Bild, z.B. 'Er ist ein Löwe' (= tapfer)."
+    },
+    {
+      "fach": "Deutsch",
+      "badge": "Deutsch",
+      "frage": "Was steht vor einer wörtlichen Rede?",
+      "optionen": [
+        "Anführungszeichen",
+        "Ein Komma",
+        "Ein Punkt",
+        "Ein Doppelpunkt"
+      ],
+      "richtig": 0,
+      "erklaerung": "Wörtliche Rede wird in Anführungszeichen gesetzt: Er sagte: \"Guten Morgen!\""
+    },
+    {
+      "fach": "Deutsch",
+      "badge": "Deutsch",
+      "frage": "Welche Zeitform benutzt man mündlich für Vergangenes?",
+      "optionen": [
+        "Perfekt",
+        "Präsens",
+        "Futur",
+        "Konjunktiv"
+      ],
+      "richtig": 0,
+      "erklaerung": "Im mündlichen Deutsch verwendet man für Vergangenes häufig das Perfekt."
+    },
+    {
+      "fach": "Deutsch",
+      "badge": "Deutsch",
+      "frage": "Was ist ein Aufsatz?",
+      "optionen": [
+        "Ein Text zu einem Thema",
+        "Ein kurzes Wortprotokoll",
+        "Eine Liste von Sätzen",
+        "Eine Sammlung von Wörtern"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Aufsatz ist ein längerer zusammenhängender Text zu einem bestimmten Thema."
+    },
+    {
+      "fach": "Deutsch",
+      "badge": "Deutsch",
+      "frage": "Was ist ein Gedicht?",
+      "optionen": [
+        "Ein Text mit Versen und Rhythmus",
+        "Ein langer Erlebnisbericht",
+        "Eine Nacherzählung mit Dialog",
+        "Ein sachlicher Informationstext"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Gedicht ist ein literarischer Text, der in Versen gegliedert ist und oft Rhythmus und Reim verwendet."
+    },
+    {
+      "fach": "Mathematik",
+      "badge": "Mathematik",
+      "frage": "Was ist 7 × 8?",
+      "optionen": [
+        "56",
+        "54",
+        "63",
+        "48"
+      ],
+      "richtig": 0,
+      "erklaerung": "7 × 8 = 56."
+    },
+    {
+      "fach": "Mathematik",
+      "badge": "Mathematik",
+      "frage": "Was ist die Hälfte von 144?",
+      "optionen": [
+        "72",
+        "62",
+        "82",
+        "68"
+      ],
+      "richtig": 0,
+      "erklaerung": "144 ÷ 2 = 72."
+    },
+    {
+      "fach": "Mathematik",
+      "badge": "Mathematik",
+      "frage": "Wie viele Ecken hat ein Würfel?",
+      "optionen": [
+        "8",
+        "6",
+        "12",
+        "4"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Würfel hat 8 Ecken, 6 Flächen und 12 Kanten."
+    },
+    {
+      "fach": "Mathematik",
+      "badge": "Mathematik",
+      "frage": "Was ist 25% von 200?",
+      "optionen": [
+        "50",
+        "25",
+        "75",
+        "40"
+      ],
+      "richtig": 0,
+      "erklaerung": "25% = 1/4. Ein Viertel von 200 ist 50."
+    },
+    {
+      "fach": "Mathematik",
+      "badge": "Mathematik",
+      "frage": "Welche Zahl ist durch 3 teilbar?",
+      "optionen": [
+        "132",
+        "124",
+        "127",
+        "134"
+      ],
+      "richtig": 0,
+      "erklaerung": "132: Quersumme 1+3+2=6, teilbar durch 3."
+    },
+    {
+      "fach": "Mathematik",
+      "badge": "Mathematik",
+      "frage": "Wie viel Grad hat ein rechter Winkel?",
+      "optionen": [
+        "90°",
+        "45°",
+        "60°",
+        "180°"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein rechter Winkel beträgt genau 90°."
+    },
+    {
+      "fach": "Mathematik",
+      "badge": "Mathematik",
+      "frage": "Was ergibt 1000 – 347?",
+      "optionen": [
+        "653",
+        "643",
+        "663",
+        "673"
+      ],
+      "richtig": 0,
+      "erklaerung": "1000 – 347 = 653."
+    },
+    {
+      "fach": "Mathematik",
+      "badge": "Mathematik",
+      "frage": "Wie viele Minuten hat eine Stunde?",
+      "optionen": [
+        "60",
+        "50",
+        "100",
+        "30"
+      ],
+      "richtig": 0,
+      "erklaerung": "Eine Stunde hat 60 Minuten."
+    },
+    {
+      "fach": "Mathematik",
+      "badge": "Mathematik",
+      "frage": "Welche dieser Zahlen ist eine Primzahl?",
+      "optionen": [
+        "17",
+        "1",
+        "9",
+        "15"
+      ],
+      "richtig": 0,
+      "erklaerung": "17 ist eine Primzahl – teilbar nur durch 1 und 17."
+    },
+    {
+      "fach": "Mathematik",
+      "badge": "Mathematik",
+      "frage": "Flächeninhalt eines Rechtecks: 5 cm × 3 cm?",
+      "optionen": [
+        "15 cm²",
+        "8 cm²",
+        "16 cm²",
+        "12 cm²"
+      ],
+      "richtig": 0,
+      "erklaerung": "Flächeninhalt = Länge × Breite = 5 × 3 = 15 cm²."
+    },
+    {
+      "fach": "Mathematik",
+      "badge": "Mathematik",
+      "frage": "Umfang eines Quadrats mit 4 cm Seite?",
+      "optionen": [
+        "16 cm",
+        "8 cm",
+        "12 cm",
+        "20 cm"
+      ],
+      "richtig": 0,
+      "erklaerung": "Umfang = 4 × Seite = 4 × 4 = 16 cm."
+    },
+    {
+      "fach": "Mathematik",
+      "badge": "Mathematik",
+      "frage": "Was ist ein Bruch?",
+      "optionen": [
+        "Ein Teil eines Ganzen",
+        "Eine Zahl über 100",
+        "Eine negative Zahl",
+        "Eine Dezimalzahl"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Bruch stellt einen Teil eines Ganzen dar (Zähler / Nenner)."
+    },
+    {
+      "fach": "Mathematik",
+      "badge": "Mathematik",
+      "frage": "Was ist 10²?",
+      "optionen": [
+        "100",
+        "20",
+        "12",
+        "1000"
+      ],
+      "richtig": 0,
+      "erklaerung": "10² = 10 × 10 = 100."
+    },
+    {
+      "fach": "Mathematik",
+      "badge": "Mathematik",
+      "frage": "Was ist der ggT von 12 und 18?",
+      "optionen": [
+        "6",
+        "3",
+        "4",
+        "9"
+      ],
+      "richtig": 0,
+      "erklaerung": "Teiler von 12 und 18: der größte gemeinsame Teiler ist 6."
+    },
+    {
+      "fach": "Mathematik",
+      "badge": "Mathematik",
+      "frage": "Was ist 0,5 als Bruch?",
+      "optionen": [
+        "1/2",
+        "1/4",
+        "1/3",
+        "2/3"
+      ],
+      "richtig": 0,
+      "erklaerung": "0,5 = 5/10 = 1/2."
+    },
+    {
+      "fach": "Mathematik",
+      "badge": "Mathematik",
+      "frage": "Wie viel ist ein Drittel von 90?",
+      "optionen": [
+        "30",
+        "20",
+        "45",
+        "15"
+      ],
+      "richtig": 0,
+      "erklaerung": "90 ÷ 3 = 30."
+    },
+    {
+      "fach": "Mathematik",
+      "badge": "Mathematik",
+      "frage": "Wie viele Seiten hat ein Sechseck?",
+      "optionen": [
+        "6",
+        "5",
+        "7",
+        "8"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Sechseck (Hexagon) hat genau 6 Seiten und 6 Ecken."
+    },
+    {
+      "fach": "Englisch",
+      "badge": "Englisch",
+      "frage": "Was bedeutet 'school'?",
+      "optionen": [
+        "Schule",
+        "Schuhe",
+        "Stuhl",
+        "Schwimmbad"
+      ],
+      "richtig": 0,
+      "erklaerung": "'School' bedeutet 'Schule'."
+    },
+    {
+      "fach": "Englisch",
+      "badge": "Englisch",
+      "frage": "'How old ___ you?' – welches Wort fehlt?",
+      "optionen": [
+        "are",
+        "is",
+        "am",
+        "be"
+      ],
+      "richtig": 0,
+      "erklaerung": "'How old are you?' – bei 'you' verwendet man 'are'."
+    },
+    {
+      "fach": "Englisch",
+      "badge": "Englisch",
+      "frage": "Wie lautet der Plural von 'child'?",
+      "optionen": [
+        "children",
+        "childs",
+        "childes",
+        "childre"
+      ],
+      "richtig": 0,
+      "erklaerung": "'Child' hat einen unregelmäßigen Plural: children."
+    },
+    {
+      "fach": "Englisch",
+      "badge": "Englisch",
+      "frage": "Was bedeutet 'beautiful'?",
+      "optionen": [
+        "schön",
+        "laut",
+        "mutig",
+        "schnell"
+      ],
+      "richtig": 0,
+      "erklaerung": "'Beautiful' bedeutet 'schön'."
+    },
+    {
+      "fach": "Englisch",
+      "badge": "Englisch",
+      "frage": "Was ist 'summer' auf Deutsch?",
+      "optionen": [
+        "Sommer",
+        "Frühling",
+        "Herbst",
+        "Winter"
+      ],
+      "richtig": 0,
+      "erklaerung": "'Summer' ist der Sommer."
+    },
+    {
+      "fach": "Englisch",
+      "badge": "Englisch",
+      "frage": "Was heißt 'I don't understand'?",
+      "optionen": [
+        "Ich verstehe nicht.",
+        "Ich verstehe.",
+        "Ich höre nicht.",
+        "Ich sehe nicht."
+      ],
+      "richtig": 0,
+      "erklaerung": "'I don't understand' = 'Ich verstehe nicht.'"
+    },
+    {
+      "fach": "Englisch",
+      "badge": "Englisch",
+      "frage": "Verneinung von 'She likes cats' – was ist richtig?",
+      "optionen": [
+        "She doesn't like cats.",
+        "She not likes cats.",
+        "She don't like cats.",
+        "She isn't like cats."
+      ],
+      "richtig": 0,
+      "erklaerung": "Bei she/he/it im Simple Present: doesn't + Infinitiv."
+    },
+    {
+      "fach": "Englisch",
+      "badge": "Englisch",
+      "frage": "Was bedeutet 'hungry'?",
+      "optionen": [
+        "hungrig",
+        "müde",
+        "fröhlich",
+        "wütend"
+      ],
+      "richtig": 0,
+      "erklaerung": "'Hungry' bedeutet 'hungrig'."
+    },
+    {
+      "fach": "Englisch",
+      "badge": "Englisch",
+      "frage": "Wie heißt Mittwoch auf Englisch?",
+      "optionen": [
+        "Wednesday",
+        "Monday",
+        "Tuesday",
+        "Thursday"
+      ],
+      "richtig": 0,
+      "erklaerung": "Wednesday ist Mittwoch."
+    },
+    {
+      "fach": "Englisch",
+      "badge": "Englisch",
+      "frage": "Welches dieser Wörter ist ein Adjektiv?",
+      "optionen": [
+        "happy",
+        "run",
+        "book",
+        "they"
+      ],
+      "richtig": 0,
+      "erklaerung": "'Happy' ist ein Adjektiv und bedeutet 'glücklich'."
+    },
+    {
+      "fach": "Erdkunde",
+      "badge": "Erdkunde",
+      "frage": "Was ist die Hauptstadt von Niedersachsen?",
+      "optionen": [
+        "Hannover",
+        "Osnabrück",
+        "Göttingen",
+        "Braunschweig"
+      ],
+      "richtig": 0,
+      "erklaerung": "Hannover ist die Landeshauptstadt von Niedersachsen."
+    },
+    {
+      "fach": "Erdkunde",
+      "badge": "Erdkunde",
+      "frage": "Welche Meere liegen im Norden Deutschlands?",
+      "optionen": [
+        "Nordsee und Ostsee",
+        "Nordsee und Mittelmeer",
+        "Ostsee und Atlantik",
+        "Nordsee und Schwarzes Meer"
+      ],
+      "richtig": 0,
+      "erklaerung": "Deutschland grenzt im Norden an Nordsee und Ostsee."
+    },
+    {
+      "fach": "Erdkunde",
+      "badge": "Erdkunde",
+      "frage": "Welcher Fluss fließt durch Köln?",
+      "optionen": [
+        "Rhein",
+        "Elbe",
+        "Main",
+        "Weser"
+      ],
+      "richtig": 0,
+      "erklaerung": "Der Rhein fließt durch Köln."
+    },
+    {
+      "fach": "Erdkunde",
+      "badge": "Erdkunde",
+      "frage": "Wie viele Bundesländer hat Deutschland?",
+      "optionen": [
+        "16",
+        "14",
+        "15",
+        "17"
+      ],
+      "richtig": 0,
+      "erklaerung": "Deutschland hat 16 Bundesländer."
+    },
+    {
+      "fach": "Erdkunde",
+      "badge": "Erdkunde",
+      "frage": "Was ist der höchste Berg Deutschlands?",
+      "optionen": [
+        "Zugspitze",
+        "Feldberg",
+        "Brocken",
+        "Watzmann"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Zugspitze (2.962 m) ist der höchste Berg Deutschlands."
+    },
+    {
+      "fach": "Erdkunde",
+      "badge": "Erdkunde",
+      "frage": "Welcher Kontinent ist der größte?",
+      "optionen": [
+        "Asien",
+        "Afrika",
+        "Amerika",
+        "Australien"
+      ],
+      "richtig": 0,
+      "erklaerung": "Asien ist der flächenmäßig größte Kontinent."
+    },
+    {
+      "fach": "Erdkunde",
+      "badge": "Erdkunde",
+      "frage": "Was ist die Hauptstadt Deutschlands?",
+      "optionen": [
+        "Berlin",
+        "München",
+        "Hamburg",
+        "Frankfurt"
+      ],
+      "richtig": 0,
+      "erklaerung": "Berlin ist die Hauptstadt der Bundesrepublik Deutschland."
+    },
+    {
+      "fach": "Erdkunde",
+      "badge": "Erdkunde",
+      "frage": "Wofür steht das Sachsenross im Wappen Niedersachsens?",
+      "optionen": [
+        "Es ist das Wappentier des Landes",
+        "Es ist das Symbol der Polizei",
+        "Es ist das Wappen der Stadt Hannover",
+        "Es ist ein altes Hauszeichen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Das Sachsenross (weißes Pferd auf Rot) ist das Wappentier Niedersachsens."
+    },
+    {
+      "fach": "Erdkunde",
+      "badge": "Erdkunde",
+      "frage": "Was ist ein Vulkan?",
+      "optionen": [
+        "Eine Öffnung, durch die Lava austritt",
+        "Ein sehr tiefer Bergsee",
+        "Ein hohles Gebirgstal",
+        "Eine heiße Quelle"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Vulkan ist eine Öffnung in der Erdkruste, durch die Lava und Gase austreten."
+    },
+    {
+      "fach": "Erdkunde",
+      "badge": "Erdkunde",
+      "frage": "Was sind Kontinente?",
+      "optionen": [
+        "Die großen Landmassen der Erde",
+        "Sehr große Inseln im Ozean",
+        "Tiefe Meeresgebiete",
+        "Gebirgsketten zwischen Ländern"
+      ],
+      "richtig": 0,
+      "erklaerung": "Kontinente sind die sieben großen Landmassen der Erde."
+    },
+    {
+      "fach": "Geschichte",
+      "badge": "Geschichte",
+      "frage": "In welchem Jahr wurde die Berliner Mauer gebaut?",
+      "optionen": [
+        "1961",
+        "1945",
+        "1953",
+        "1968"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Berliner Mauer wurde am 13. August 1961 errichtet."
+    },
+    {
+      "fach": "Geschichte",
+      "badge": "Geschichte",
+      "frage": "Wann endete der Zweite Weltkrieg in Europa?",
+      "optionen": [
+        "1945",
+        "1943",
+        "1944",
+        "1946"
+      ],
+      "richtig": 0,
+      "erklaerung": "Der Zweite Weltkrieg endete in Europa am 8. Mai 1945."
+    },
+    {
+      "fach": "Geschichte",
+      "badge": "Geschichte",
+      "frage": "Was waren Ritter im Mittelalter?",
+      "optionen": [
+        "Bewaffnete Kämpfer zu Pferd",
+        "Wandernde Händler",
+        "Reisende Handwerker",
+        "Gelehrte Mönche"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ritter waren bewaffnete Kämpfer zu Pferd im Dienst eines Adligen."
+    },
+    {
+      "fach": "Geschichte",
+      "badge": "Geschichte",
+      "frage": "Was kennzeichnet die Steinzeit?",
+      "optionen": [
+        "Werkzeuge aus Stein, Jäger und Sammler",
+        "Schmelzen von Metallen",
+        "Bau von Steinburgen",
+        "Handel mit Edelsteinen"
+      ],
+      "richtig": 0,
+      "erklaerung": "In der Steinzeit lebten Menschen als Jäger und Sammler und nutzten Steinwerkzeuge."
+    },
+    {
+      "fach": "Geschichte",
+      "badge": "Geschichte",
+      "frage": "Wofür wurden die ägyptischen Pyramiden gebaut?",
+      "optionen": [
+        "Als Grabmäler für Pharaonen",
+        "Als Tempel für Götter",
+        "Als Speicher für Getreide",
+        "Als Festungen gegen Feinde"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Pyramiden sind gewaltige Grabmäler der altägyptischen Pharaonen."
+    },
+    {
+      "fach": "Geschichte",
+      "badge": "Geschichte",
+      "frage": "Was hinterließen die Römer in Germanien?",
+      "optionen": [
+        "Städte, Straßen und den Limes",
+        "Burgen und Windmühlen",
+        "Häfen und Leuchttürme",
+        "Klöster und Kathedralen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Römer errichteten Legionslager, Städte (z.B. Köln), Straßen und den Limes."
+    },
+    {
+      "fach": "Geschichte",
+      "badge": "Geschichte",
+      "frage": "Was war die Magna Charta (1215)?",
+      "optionen": [
+        "Ein Vertrag über Rechte des Adels",
+        "Ein Friedensvertrag nach einem Krieg",
+        "Ein Kirchendokument des Papstes",
+        "Ein römisches Gesetzeswerk"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Magna Charta war ein Vertrag zwischen König Johann und dem englischen Adel."
+    },
+    {
+      "fach": "Geschichte",
+      "badge": "Geschichte",
+      "frage": "Wo lebten die Germanen zur Römerzeit?",
+      "optionen": [
+        "Nördlich des Rheins und östlich der Elbe",
+        "Im heutigen Griechenland",
+        "Im Römischen Reich selbst",
+        "Im heutigen Spanien"
+      ],
+      "richtig": 0,
+      "erklaerung": "Germanen lebten nördlich des Rheins und östlich der Elbe."
+    },
+    {
+      "fach": "Geschichte",
+      "badge": "Geschichte",
+      "frage": "Was war ein Kloster im Mittelalter?",
+      "optionen": [
+        "Eine Gemeinschaft von Mönchen mit Kirche",
+        "Eine befestigte Adelsburg",
+        "Ein Marktflecken mit Rathaus",
+        "Ein Handwerkerhaus in der Stadt"
+      ],
+      "richtig": 0,
+      "erklaerung": "Klöster waren Gemeinschaften von Mönchen oder Nonnen – wichtige Bildungs- und Kulturzentren."
+    },
+    {
+      "fach": "Geschichte",
+      "badge": "Geschichte",
+      "frage": "Wann fiel die Berliner Mauer?",
+      "optionen": [
+        "1989",
+        "1985",
+        "1991",
+        "1993"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Berliner Mauer fiel am 9. November 1989."
+    },
+    {
+      "fach": "Geschichte",
+      "badge": "Geschichte",
+      "frage": "Was war das Mittelalter?",
+      "optionen": [
+        "Epoche zwischen Antike und Neuzeit",
+        "Die Zeit der Steinwerkzeuge",
+        "Die Epoche nach dem 2. Weltkrieg",
+        "Die Zeit des Römischen Reiches"
+      ],
+      "richtig": 0,
+      "erklaerung": "Das Mittelalter ist die Epoche zwischen Antike (ca. 500 n.Chr.) und Neuzeit (ca. 1500 n.Chr.)."
+    },
+    {
+      "fach": "Biologie",
+      "badge": "Biologie",
+      "frage": "Was ist Photosynthese?",
+      "optionen": [
+        "Pflanzen erzeugen aus Licht Zucker und Sauerstoff",
+        "Pflanzen atmen Sauerstoff ein",
+        "Tiere verdauen ihre Nahrung",
+        "Pilze wachsen im Dunkeln"
+      ],
+      "richtig": 0,
+      "erklaerung": "Bei der Photosynthese wandeln Pflanzen Licht, Wasser und CO₂ in Zucker und Sauerstoff um."
+    },
+    {
+      "fach": "Biologie",
+      "badge": "Biologie",
+      "frage": "Was haben alle Wirbeltiere gemeinsam?",
+      "optionen": [
+        "Eine Wirbelsäule",
+        "Einen Panzer aus Knochen",
+        "Sechs Beine",
+        "Kiemen zum Atmen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Wirbeltiere besitzen eine Wirbelsäule."
+    },
+    {
+      "fach": "Biologie",
+      "badge": "Biologie",
+      "frage": "Was ist die Aufgabe des Herzens?",
+      "optionen": [
+        "Blut durch den Körper pumpen",
+        "Sauerstoff aus der Luft holen",
+        "Nahrung verdauen und filtern",
+        "Wärme im Körper erzeugen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Das Herz pumpt Blut durch den gesamten Körper und versorgt alle Organe mit Sauerstoff."
+    },
+    {
+      "fach": "Biologie",
+      "badge": "Biologie",
+      "frage": "Was kennzeichnet ein Insekt?",
+      "optionen": [
+        "6 Beine und 3 Körperabschnitte",
+        "8 Beine und 2 Körperteile",
+        "4 Beine und Fell",
+        "Flossen und Schuppen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Insekten haben 6 Beine, einen dreigeteilten Körper und oft zwei Flügelpaare."
+    },
+    {
+      "fach": "Biologie",
+      "badge": "Biologie",
+      "frage": "Was kennzeichnet ein Säugetier?",
+      "optionen": [
+        "Warmblütig und säugt Jungtiere",
+        "Legt Eier und ist kaltblütig",
+        "Hat Schuppen und Kiemen",
+        "Hat sechs Beine und Flügel"
+      ],
+      "richtig": 0,
+      "erklaerung": "Säugetiere sind warmblütig und ernähren ihre Jungen mit Muttermilch."
+    },
+    {
+      "fach": "Biologie",
+      "badge": "Biologie",
+      "frage": "Welcher Teil der Pflanze nimmt Wasser auf?",
+      "optionen": [
+        "Die Wurzeln",
+        "Die Blätter",
+        "Die Blüten",
+        "Der Stängel"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Wurzeln nehmen Wasser und Mineralstoffe aus dem Boden auf."
+    },
+    {
+      "fach": "Biologie",
+      "badge": "Biologie",
+      "frage": "Was sind Bakterien?",
+      "optionen": [
+        "Einzeller ohne Zellkern",
+        "Sehr kleine Pflanzen",
+        "Winzige Tierchen",
+        "Schädliche Viren"
+      ],
+      "richtig": 0,
+      "erklaerung": "Bakterien sind einzellige Lebewesen ohne Zellkern (Prokaryoten)."
+    },
+    {
+      "fach": "Biologie",
+      "badge": "Biologie",
+      "frage": "Was zeigt ein Nahrungsnetz?",
+      "optionen": [
+        "Wer wen in einem Ökosystem frisst",
+        "Wie Pflanzen wachsen",
+        "Wie Tiere schlafen",
+        "Welche Tiere zusammenleben"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Nahrungsnetz zeigt die Verflechtung von Fresser-Beute-Beziehungen in einem Ökosystem."
+    },
+    {
+      "fach": "Biologie",
+      "badge": "Biologie",
+      "frage": "Was ist die Aufgabe der Lunge?",
+      "optionen": [
+        "Sauerstoff aufnehmen, CO₂ abgeben",
+        "Blut reinigen und filtern",
+        "Nahrung zerkleinern und verdauen",
+        "Hormone ins Blut abgeben"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Lunge nimmt Sauerstoff auf und gibt Kohlendioxid ab."
+    },
+    {
+      "fach": "Biologie",
+      "badge": "Biologie",
+      "frage": "Was ist Chlorophyll?",
+      "optionen": [
+        "Der grüne Farbstoff in Blättern",
+        "Ein Nährstoff im Boden",
+        "Ein Gas in der Luft",
+        "Ein Stoff im Wasser"
+      ],
+      "richtig": 0,
+      "erklaerung": "Chlorophyll ist der grüne Farbstoff in Pflanzen, der Licht für die Photosynthese aufnimmt."
+    },
+    {
+      "fach": "Biologie",
+      "badge": "Biologie",
+      "frage": "Was ist ein Ökosystem?",
+      "optionen": [
+        "Lebewesen und ihre Umwelt zusammen",
+        "Nur alle Tiere eines Waldes",
+        "Nur die Pflanzen einer Region",
+        "Ein einzelner Organismus"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Ökosystem umfasst alle Lebewesen und ihre unbelebte Umwelt in einem Gebiet."
+    },
+    {
+      "fach": "Physik",
+      "badge": "Physik",
+      "frage": "Was ist Schwerkraft?",
+      "optionen": [
+        "Die Anziehung der Erde auf Körper",
+        "Die Kraft eines Magneten",
+        "Die Kraft des Windes",
+        "Die Kraft beim Schieben"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Schwerkraft (Gravitation) zieht alle Körper zur Erde hin."
+    },
+    {
+      "fach": "Physik",
+      "badge": "Physik",
+      "frage": "Was misst ein Thermometer?",
+      "optionen": [
+        "Temperatur",
+        "Luftdruck",
+        "Windstärke",
+        "Gewicht"
+      ],
+      "richtig": 0,
+      "erklaerung": "Mit einem Thermometer misst man Temperaturen in Grad Celsius (°C)."
+    },
+    {
+      "fach": "Physik",
+      "badge": "Physik",
+      "frage": "Was enthält weißes Licht?",
+      "optionen": [
+        "Alle Farben des Spektrums",
+        "Nur weiße Strahlung",
+        "Nur Rot und Blau",
+        "Nur gelbes Licht"
+      ],
+      "richtig": 0,
+      "erklaerung": "Weißes Licht enthält alle Farben des Spektrums – sichtbar z.B. beim Regenbogen."
+    },
+    {
+      "fach": "Physik",
+      "badge": "Physik",
+      "frage": "Was ist elektrischer Strom?",
+      "optionen": [
+        "Bewegung von Elektronen im Leiter",
+        "Bewegung von Wasser in Rohren",
+        "Wärme aus einer Heizung",
+        "Licht aus einer Lampe"
+      ],
+      "richtig": 0,
+      "erklaerung": "Elektrischer Strom entsteht durch die gerichtete Bewegung von Elektronen."
+    },
+    {
+      "fach": "Physik",
+      "badge": "Physik",
+      "frage": "Was ist ein Hebel?",
+      "optionen": [
+        "Ein starrer Körper mit Drehpunkt",
+        "Ein Werkzeug ohne festen Punkt",
+        "Eine Art Schraube",
+        "Ein Messinstrument"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Hebel ist ein starrer Körper mit Drehpunkt, der Kräfte überträgt oder verstärkt."
+    },
+    {
+      "fach": "Musik",
+      "badge": "Musik",
+      "frage": "Wie viele Töne hat eine Durtonleiter (mit Oktave)?",
+      "optionen": [
+        "8",
+        "5",
+        "6",
+        "10"
+      ],
+      "richtig": 0,
+      "erklaerung": "Eine Durtonleiter hat 7 verschiedene Töne plus die Oktave (8. Ton)."
+    },
+    {
+      "fach": "Musik",
+      "badge": "Musik",
+      "frage": "Was ist ein Takt in der Musik?",
+      "optionen": [
+        "Die rhythmische Grundeinheit",
+        "Eine Pause zwischen Tönen",
+        "Eine besondere Melodie",
+        "Ein Notensymbol"
+      ],
+      "richtig": 0,
+      "erklaerung": "Der Takt ist die regelmäßige rhythmische Grundeinheit, z.B. 4 Schläge beim 4/4-Takt."
+    },
+    {
+      "fach": "Musik",
+      "badge": "Musik",
+      "frage": "Zu welcher Familie gehört die Geige?",
+      "optionen": [
+        "Streichinstrumente",
+        "Blasinstrumente",
+        "Schlaginstrumente",
+        "Tasteninstrumente"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Geige (Violine) gehört zu den Streichinstrumenten."
+    },
+    {
+      "fach": "Musik",
+      "badge": "Musik",
+      "frage": "Was bedeutet 'forte' in der Musik?",
+      "optionen": [
+        "Laut",
+        "Leise",
+        "Langsam",
+        "Schnell"
+      ],
+      "richtig": 0,
+      "erklaerung": "'Forte' (f) bedeutet 'laut'. Das Gegenteil ist 'piano' (p) = leise."
+    },
+    {
+      "fach": "Musik",
+      "badge": "Musik",
+      "frage": "Was ist eine Melodie?",
+      "optionen": [
+        "Eine sinnvolle Folge von Tönen",
+        "Der Rhythmus eines Liedes",
+        "Der Text eines Liedes",
+        "Ein einzelner langer Ton"
+      ],
+      "richtig": 0,
+      "erklaerung": "Eine Melodie ist eine bedeutungsvolle Abfolge von Tönen unterschiedlicher Höhe."
+    },
+    {
+      "fach": "Kunst",
+      "badge": "Kunst",
+      "frage": "Was sind die drei Primärfarben beim Malen?",
+      "optionen": [
+        "Rot, Gelb, Blau",
+        "Grün, Lila, Orange",
+        "Schwarz, Weiß, Grau",
+        "Türkis, Magenta, Gelb"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Primärfarben beim Malen sind Rot, Gelb und Blau."
+    },
+    {
+      "fach": "Kunst",
+      "badge": "Kunst",
+      "frage": "Was entsteht aus Gelb und Blau gemischt?",
+      "optionen": [
+        "Grün",
+        "Orange",
+        "Lila",
+        "Braun"
+      ],
+      "richtig": 0,
+      "erklaerung": "Gelb + Blau = Grün (Sekundärfarbe)."
+    },
+    {
+      "fach": "Kunst",
+      "badge": "Kunst",
+      "frage": "Was ist eine Collage?",
+      "optionen": [
+        "Bild aus aufgeklebten Materialien",
+        "Skulptur aus Ton",
+        "Gemälde mit Ölfarbe",
+        "Zeichnung mit Bleistift"
+      ],
+      "richtig": 0,
+      "erklaerung": "Eine Collage entsteht durch Aufkleben verschiedener Materialien."
+    },
+    {
+      "fach": "Kunst",
+      "badge": "Kunst",
+      "frage": "Was zeigt die Perspektive in der Kunst?",
+      "optionen": [
+        "Raumtiefe auf einer Fläche",
+        "Mischtechnik mit Wasser",
+        "Eine besondere Linienart",
+        "Eine Farbmischungsmethode"
+      ],
+      "richtig": 0,
+      "erklaerung": "Perspektive ist die Darstellung dreidimensionaler Tiefe auf einer zweidimensionalen Fläche."
+    },
+    {
+      "fach": "Sport",
+      "badge": "Sport",
+      "frage": "Wie viele Spieler stehen beim Fußball pro Team auf dem Feld?",
+      "optionen": [
+        "11",
+        "9",
+        "10",
+        "12"
+      ],
+      "richtig": 0,
+      "erklaerung": "Beim Fußball spielen 11 Spieler pro Mannschaft (einschließlich Torwart)."
+    },
+    {
+      "fach": "Sport",
+      "badge": "Sport",
+      "frage": "Wie weit ist ein Marathon?",
+      "optionen": [
+        "42,195 km",
+        "21,1 km",
+        "30 km",
+        "50 km"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Marathon ist 42,195 km lang."
+    },
+    {
+      "fach": "Sport",
+      "badge": "Sport",
+      "frage": "In welchem Sport gibt es einen 'Aufschlag'?",
+      "optionen": [
+        "Tennis",
+        "Fußball",
+        "Basketball",
+        "Leichtathletik"
+      ],
+      "richtig": 0,
+      "erklaerung": "Im Tennis beginnt jeder Punkt mit einem Aufschlag (Service)."
+    },
+    {
+      "fach": "Sport",
+      "badge": "Sport",
+      "frage": "Was kennzeichnet den Brustschwimmstil?",
+      "optionen": [
+        "Froschbeine und symmetrische Arme",
+        "Rückenlage mit Armwechsel",
+        "Schmetterlingsbewegung der Arme",
+        "Seitliche Körperlage"
+      ],
+      "richtig": 0,
+      "erklaerung": "Beim Brustschwimmen werden die Arme symmetrisch gezogen und die Beine wie ein Frosch bewegt."
+    },
+    {
+      "fach": "Sport",
+      "badge": "Sport",
+      "frage": "Wie viele Punkte zählt ein Korb beim Basketball?",
+      "optionen": [
+        "2 Punkte (von innen)",
+        "1 Punkt",
+        "4 Punkte",
+        "3 Punkte"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein normaler Feldkorb zählt 2 Punkte. Würfe von jenseits der Dreierlinie zählen 3, Freiwürfe 1 Punkt."
+    },
+    {
+      "fach": "Informatik",
+      "badge": "Informatik",
+      "frage": "Was ist ein Algorithmus?",
+      "optionen": [
+        "Schrittweise Anleitung zur Problemlösung",
+        "Ein Computerspiel zum Lernen",
+        "Ein Eingabegerät am PC",
+        "Ein Datenspeichermedium"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Algorithmus ist eine eindeutige, schrittweise Anleitung zur Lösung eines Problems."
+    },
+    {
+      "fach": "Informatik",
+      "badge": "Informatik",
+      "frage": "Was ist das Internet?",
+      "optionen": [
+        "Ein weltweites Netzwerk aus Computern",
+        "Ein Programm auf dem PC",
+        "Ein lokales Schulnetzwerk",
+        "Ein Speichermedium"
+      ],
+      "richtig": 0,
+      "erklaerung": "Das Internet ist ein weltweites Netz, das Milliarden von Geräten miteinander verbindet."
+    },
+    {
+      "fach": "Informatik",
+      "badge": "Informatik",
+      "frage": "Was ist eine Datenbank?",
+      "optionen": [
+        "System zur geordneten Datenspeicherung",
+        "Ein Ordner auf dem Desktop",
+        "Ein Computerspiel",
+        "Ein Druckprogramm"
+      ],
+      "richtig": 0,
+      "erklaerung": "Eine Datenbank ist ein System zur strukturierten Speicherung und Verwaltung großer Datenmengen."
+    },
+    {
+      "fach": "Informatik",
+      "badge": "Informatik",
+      "frage": "Was ist ein Pixel?",
+      "optionen": [
+        "Der kleinste Bildpunkt am Bildschirm",
+        "Ein Computerprogramm",
+        "Ein Speicherformat",
+        "Ein Netzwerkkabel"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Pixel (Picture Element) ist der kleinste Bildpunkt eines digitalen Bildes oder Displays."
+    },
+    {
+      "fach": "Informatik",
+      "badge": "Informatik",
+      "frage": "Was ist die Aufgabe einer Tastatur?",
+      "optionen": [
+        "Texte und Befehle eingeben",
+        "Bilder auf dem Bildschirm anzeigen",
+        "Dateien und Dokumente speichern",
+        "Dokumente ausdrucken"
+      ],
+      "richtig": 0,
+      "erklaerung": "Eine Tastatur ist ein Eingabegerät zur Text- und Befehlseingabe."
+    }
+  ]
+}

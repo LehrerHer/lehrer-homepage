@@ -1,0 +1,979 @@
+{
+  "slug": "rechtschreibung",
+  "bestenlisteSlug": "rechtschreib",
+  "typ": "fragen",
+  "titel": "Rechtschreibquiz",
+  "untertitel": "OBS Spelle · Wähle deine Klassenstufe und die Themen",
+  "fach": "deutsch",
+  "zurueck": {
+    "url": "/fach-deutsch.html",
+    "text": "Zurück zu Deutsch"
+  },
+  "mischen": true,
+  "auswertungNach": "kategorie",
+  "auswertungTitel": "Thema",
+  "konfiguration": {
+    "gruppen": [
+      {
+        "feld": "stufe",
+        "label": "Klassenstufe",
+        "art": "einfach",
+        "bestenliste": true,
+        "optionen": [
+          {
+            "wert": "56",
+            "label": "Klasse 5 / 6",
+            "beschreibung": "Nomen, Satzschluss, ss/ß, Wortarten"
+          },
+          {
+            "wert": "78",
+            "label": "Klasse 7 / 8",
+            "beschreibung": "Nominalisierung, Komma, Getrenntschreibung"
+          },
+          {
+            "wert": "913",
+            "label": "Klasse 9 – 13",
+            "beschreibung": "Konjunktiv, Fremdwörter, komplexe Zeichensetzung"
+          }
+        ]
+      },
+      {
+        "feld": "kategorie",
+        "label": "Themen",
+        "art": "mehrfach"
+      }
+    ]
+  },
+  "fragen": [
+    {
+      "stufe": "56",
+      "kategorie": "Groß-/Kleinschreibung",
+      "badge": "Groß-/Kleinschreibung",
+      "frage": "Welche Wörter werden großgeschrieben?",
+      "kontext": "Das ____ bellt laut.",
+      "optionen": [
+        "hund",
+        "Hund",
+        "HUND",
+        "hunD"
+      ],
+      "richtig": 1,
+      "erklaerung": "Nomen (Hauptwörter) werden immer großgeschrieben. ‚Hund' ist ein Nomen → Großschreibung."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "Groß-/Kleinschreibung",
+      "badge": "Groß-/Kleinschreibung",
+      "frage": "Welche Schreibung ist richtig?",
+      "kontext": "Meine ____ heißt Lisa.",
+      "optionen": [
+        "schwester",
+        "Schwester",
+        "SCHWESTER",
+        "Schwesster"
+      ],
+      "richtig": 1,
+      "erklaerung": "‚Schwester' ist ein Nomen → Großschreibung."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "Groß-/Kleinschreibung",
+      "badge": "Groß-/Kleinschreibung",
+      "frage": "Was wird hier großgeschrieben?",
+      "kontext": "Der ____ scheint hell.",
+      "optionen": [
+        "mond",
+        "Mond",
+        "MOND",
+        "moond"
+      ],
+      "richtig": 1,
+      "erklaerung": "‚Mond' ist ein Nomen und wird großgeschrieben."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "Groß-/Kleinschreibung",
+      "badge": "Groß-/Kleinschreibung",
+      "frage": "Welche Form ist richtig?",
+      "kontext": "Sie geht jeden Tag zur ____.",
+      "optionen": [
+        "schule",
+        "Schule",
+        "sCHULE",
+        "schulle"
+      ],
+      "richtig": 1,
+      "erklaerung": "‚Schule' ist ein Nomen → Großschreibung."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "Groß-/Kleinschreibung",
+      "badge": "Groß-/Kleinschreibung",
+      "frage": "Welches Wort muss kleingeschrieben werden?",
+      "kontext": "Er läuft ____ als sein Bruder.",
+      "optionen": [
+        "Schneller",
+        "schneller",
+        "Schneler",
+        "SCHNELLER"
+      ],
+      "richtig": 1,
+      "erklaerung": "‚schneller' ist hier ein Adjektiv, das eine Eigenschaft beschreibt → Kleinschreibung."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "Groß-/Kleinschreibung",
+      "badge": "Groß-/Kleinschreibung",
+      "frage": "Welche Schreibung ist korrekt?",
+      "kontext": "Das ist ein ____ Tag.",
+      "optionen": [
+        "Schöner",
+        "schöner",
+        "SCHÖNER",
+        "schöNer"
+      ],
+      "richtig": 1,
+      "erklaerung": "‚schöner' ist ein Adjektiv vor einem Nomen → Kleinschreibung."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "Satzzeichen",
+      "badge": "Satzzeichen",
+      "frage": "Welches Satzzeichen gehört ans Ende?",
+      "kontext": "Wie heißt du ____",
+      "optionen": [
+        ".",
+        ",",
+        "?",
+        "!"
+      ],
+      "richtig": 2,
+      "erklaerung": "Fragesätze enden mit einem Fragezeichen."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "Satzzeichen",
+      "badge": "Satzzeichen",
+      "frage": "Welches Satzzeichen fehlt?",
+      "kontext": "Ich gehe jetzt nach Hause ____",
+      "optionen": [
+        "?",
+        "!",
+        ".",
+        ","
+      ],
+      "richtig": 2,
+      "erklaerung": "Ein normaler Aussagesatz endet mit einem Punkt."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "Satzzeichen",
+      "badge": "Satzzeichen",
+      "frage": "Welches Zeichen gehört hier hin?",
+      "kontext": "Pass auf ____ sagte die Lehrerin.",
+      "optionen": [
+        "– „",
+        ", „",
+        ": „",
+        "; „"
+      ],
+      "richtig": 2,
+      "erklaerung": "Vor wörtlicher Rede steht ein Doppelpunkt, dann folgen die Anführungszeichen unten."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "Satzzeichen",
+      "badge": "Satzzeichen",
+      "frage": "Wie sieht die korrekte Zeichensetzung aus?",
+      "kontext": "Er rief ____ Hilfe ____",
+      "optionen": [
+        "Er rief: „Hilfe!\"",
+        "Er rief, Hilfe.",
+        "Er rief – Hilfe?",
+        "Er rief; Hilfe,"
+      ],
+      "richtig": 0,
+      "erklaerung": "Wörtliche Rede wird mit Doppelpunkt eingeleitet, steht in Anführungszeichen und endet mit Ausrufezeichen."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "s-Laute (ss/ß)",
+      "badge": "s-Laute (ss/ß)",
+      "frage": "Welche Schreibung ist richtig?",
+      "kontext": "Der Hund bei__t nicht.",
+      "optionen": [
+        "beist",
+        "beißt",
+        "beisst",
+        "beißßt"
+      ],
+      "richtig": 1,
+      "erklaerung": "Nach dem Diphthong ‚ei' steht ‚ß' → ‚beißt'."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "s-Laute (ss/ß)",
+      "badge": "s-Laute (ss/ß)",
+      "frage": "Bitte ergänze richtig:",
+      "kontext": "Das Wa__er ist kalt.",
+      "optionen": [
+        "Waßer",
+        "Wasser",
+        "Waseer",
+        "Wasßer"
+      ],
+      "richtig": 1,
+      "erklaerung": "Nach kurzem Vokal steht ‚ss' → ‚Wasser'."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "s-Laute (ss/ß)",
+      "badge": "s-Laute (ss/ß)",
+      "frage": "Welche Schreibung ist korrekt?",
+      "kontext": "Die Stra__e ist lang.",
+      "optionen": [
+        "Straße",
+        "Strasse",
+        "Strase",
+        "Straase"
+      ],
+      "richtig": 0,
+      "erklaerung": "Nach dem langen ‚a' steht ‚ß' → ‚Straße'."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "s-Laute (ss/ß)",
+      "badge": "s-Laute (ss/ß)",
+      "frage": "Welche Form ist richtig?",
+      "kontext": "Er i__t gerne Pizza.",
+      "optionen": [
+        "ist",
+        "isst",
+        "ißt",
+        "isßt"
+      ],
+      "richtig": 1,
+      "erklaerung": "‚essen' → kurzes ‚e' → ‚isst' mit ‚ss'."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "Wortarten",
+      "badge": "Wortarten",
+      "frage": "Was ist ‚laufen' für eine Wortart?",
+      "kontext": "Er kann schnell ____.",
+      "optionen": [
+        "Nomen",
+        "Verb",
+        "Adjektiv",
+        "Artikel"
+      ],
+      "richtig": 1,
+      "erklaerung": "‚laufen' ist ein Verb (Tun-Wort). Verben beschreiben Handlungen oder Zustände."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "Wortarten",
+      "badge": "Wortarten",
+      "frage": "Was ist ‚klein' für eine Wortart?",
+      "kontext": "Das ist ein ____ Haus.",
+      "optionen": [
+        "Nomen",
+        "Verb",
+        "Adjektiv",
+        "Konjunktion"
+      ],
+      "richtig": 2,
+      "erklaerung": "‚klein' ist ein Adjektiv (Wie-Wort). Adjektive beschreiben Eigenschaften."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "Wortarten",
+      "badge": "Wortarten",
+      "frage": "Was ist ‚weil' für eine Wortart?",
+      "kontext": "Er bleibt zu Hause, ____ er krank ist.",
+      "optionen": [
+        "Adjektiv",
+        "Nomen",
+        "Konjunktion",
+        "Pronomen"
+      ],
+      "richtig": 2,
+      "erklaerung": "‚weil' ist eine unterordnende Konjunktion (Bindewort). Sie leitet einen Nebensatz ein."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "Wortarten",
+      "badge": "Wortarten",
+      "frage": "Was ist ‚schnell' hier für eine Wortart?",
+      "kontext": "Er läuft ____ nach Hause.",
+      "optionen": [
+        "Adjektiv",
+        "Adverb",
+        "Nomen",
+        "Artikel"
+      ],
+      "richtig": 1,
+      "erklaerung": "‚schnell' beschreibt hier das Verb → es ist ein Adverb (Umstandswort)."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "Wortarten",
+      "badge": "Wortarten",
+      "frage": "Was ist ‚der' in diesem Satz?",
+      "kontext": "____ Hund bellt.",
+      "optionen": [
+        "Pronomen",
+        "Adjektiv",
+        "Artikel",
+        "Konjunktion"
+      ],
+      "richtig": 2,
+      "erklaerung": "‚der' ist ein bestimmter Artikel (Geschlechtswort)."
+    },
+    {
+      "stufe": "56",
+      "kategorie": "Wortarten",
+      "badge": "Wortarten",
+      "frage": "Welche Wortart ist ‚ich'?",
+      "kontext": "____ gehe heute ins Kino.",
+      "optionen": [
+        "Nomen",
+        "Artikel",
+        "Konjunktion",
+        "Pronomen"
+      ],
+      "richtig": 3,
+      "erklaerung": "‚ich' ist ein Personalpronomen (persönliches Fürwort)."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "Groß-/Kleinschreibung",
+      "badge": "Groß-/Kleinschreibung",
+      "frage": "Welche Schreibung ist richtig?",
+      "kontext": "Ich habe nach langem Zögern endlich ____ gesagt.",
+      "optionen": [
+        "ja",
+        "Ja",
+        "JA",
+        "jah"
+      ],
+      "richtig": 1,
+      "erklaerung": "‚Ja' wird hier als Nomen verwendet (‚ein klares Ja') → Großschreibung."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "Groß-/Kleinschreibung",
+      "badge": "Groß-/Kleinschreibung",
+      "frage": "Welche Form ist korrekt?",
+      "kontext": "Es geschah im ____ – niemand hatte damit gerechnet.",
+      "optionen": [
+        "verborgenen",
+        "Verborgenen",
+        "VERBORGENEN",
+        "verborgenes"
+      ],
+      "richtig": 1,
+      "erklaerung": "Nach ‚im' (= in dem) steht ein substantiviertes Adjektiv → Großschreibung: ‚im Verborgenen'."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "Groß-/Kleinschreibung",
+      "badge": "Groß-/Kleinschreibung",
+      "frage": "Welche Schreibung ist korrekt?",
+      "kontext": "Das Schwimmen macht Spaß – vor allem das ____ Tauchen.",
+      "optionen": [
+        "Tiefe",
+        "tiefe",
+        "TIEFE",
+        "tieffe"
+      ],
+      "richtig": 1,
+      "erklaerung": "Das Adjektiv ‚tiefe' bezieht sich auf das bereits großgeschriebene Nomen ‚Tauchen' → Kleinschreibung des Adjektivs."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "Groß-/Kleinschreibung",
+      "badge": "Groß-/Kleinschreibung",
+      "frage": "Bitte wähle die korrekte Schreibweise.",
+      "kontext": "Die Züge fahren ____ und ____.",
+      "optionen": [
+        "Hin und Her",
+        "hin und her",
+        "Hin und her",
+        "hin und Her"
+      ],
+      "richtig": 1,
+      "erklaerung": "‚hin und her' ist eine feste Wendung mit Adverbien → Kleinschreibung."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "s-Laute (ss/ß)",
+      "badge": "s-Laute (ss/ß)",
+      "frage": "Welche Schreibung ist richtig?",
+      "kontext": "Der Fluss flie__t nach dem Regen schnell.",
+      "optionen": [
+        "fließt",
+        "fliessst",
+        "fleißt",
+        "fliests"
+      ],
+      "richtig": 0,
+      "erklaerung": "Nach Diphthong ‚ie' steht ‚ß' → ‚fließt'."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "s-Laute (ss/ß)",
+      "badge": "s-Laute (ss/ß)",
+      "frage": "Welche Schreibung ist korrekt?",
+      "kontext": "Sie a__en das ganze Essen auf.",
+      "optionen": [
+        "asen",
+        "assssen",
+        "aßen",
+        "aessen"
+      ],
+      "richtig": 2,
+      "erklaerung": "‚aßen' – Vergangenheitsform von ‚essen'. Langes ‚a' → ‚ß'."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "s-Laute (ss/ß)",
+      "badge": "s-Laute (ss/ß)",
+      "frage": "Welche Form ist richtig?",
+      "kontext": "Ich wei__, dass du recht hast.",
+      "optionen": [
+        "weiss",
+        "weis",
+        "weiß",
+        "weise"
+      ],
+      "richtig": 2,
+      "erklaerung": "Diphthong ‚ei' gilt als langer Vokal → ‚ß'. In der Schweiz: ‚weiss', in Deutschland: ‚weiß'."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "s-Laute (ss/ß)",
+      "badge": "s-Laute (ss/ß)",
+      "frage": "Bitte ergänze:",
+      "kontext": "Der Flu__ mündet ins Meer.",
+      "optionen": [
+        "Fluss",
+        "Fluß",
+        "Flus",
+        "Flußs"
+      ],
+      "richtig": 0,
+      "erklaerung": "Verlängerungsprobe: ‚Flüsse' → kurzes ‚u' → ‚ss'. Seit 1996 gilt in Deutschland: ‚Fluss'."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "Getrennt-/Zusammenschreibung",
+      "badge": "Getrennt-/Zusammenschreibung",
+      "frage": "Welche Form ist korrekt?",
+      "kontext": "Er ist nach dem Unfall im Rollstuhl ____ geblieben.",
+      "optionen": [
+        "sitzen",
+        "Sitzen",
+        "sitzengeblieben",
+        "Sitzengeblieben"
+      ],
+      "richtig": 2,
+      "erklaerung": "‚sitzenbleiben' mit übertragener Bedeutung → Zusammenschreibung: ‚sitzengeblieben'."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "Getrennt-/Zusammenschreibung",
+      "badge": "Getrennt-/Zusammenschreibung",
+      "frage": "Welche Form ist richtig?",
+      "kontext": "Das war nicht ____ gedacht.",
+      "optionen": [
+        "Böse",
+        "böse",
+        "bösegedacht",
+        "boese"
+      ],
+      "richtig": 1,
+      "erklaerung": "Adjektiv + Partizip ohne neue Gesamtbedeutung → Getrenntschreibung: ‚böse gedacht'."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "Getrennt-/Zusammenschreibung",
+      "badge": "Getrennt-/Zusammenschreibung",
+      "frage": "Was ist richtig?",
+      "kontext": "Sie hat ihr Fahrrad ____ gestellt.",
+      "optionen": [
+        "frei",
+        "Frei",
+        "freigestellt",
+        "Freigestellt"
+      ],
+      "richtig": 2,
+      "erklaerung": "‚freistellen' mit übertragener Bedeutung → Zusammenschreibung im Partizip: ‚freigestellt'."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "Getrennt-/Zusammenschreibung",
+      "badge": "Getrennt-/Zusammenschreibung",
+      "frage": "Welche Schreibung ist korrekt?",
+      "kontext": "Er hat die Tür ____ gemacht.",
+      "optionen": [
+        "auf",
+        "Auf",
+        "aufgemacht",
+        "Aufgemacht"
+      ],
+      "richtig": 2,
+      "erklaerung": "‚aufmachen' ist ein trennbares Verb; im Partizip II wird es zusammengeschrieben: ‚aufgemacht'."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "Kommasetzung",
+      "badge": "Kommasetzung",
+      "frage": "Wo fehlt das Komma?",
+      "kontext": "Weil er verschlafen hatte[,] kam er zu spät.",
+      "optionen": [
+        "Kein Komma nötig",
+        "Nach ‚hatte'",
+        "Nach ‚spät'",
+        "Nach ‚er'"
+      ],
+      "richtig": 1,
+      "erklaerung": "Nach einem vorangestellten Nebensatz steht ein Komma, bevor der Hauptsatz beginnt."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "Kommasetzung",
+      "badge": "Kommasetzung",
+      "frage": "Welche Aussage ist richtig?",
+      "kontext": "Er lachte laut und sie weinte leise.",
+      "optionen": [
+        "Kein Komma nötig",
+        "Komma vor ‚und'",
+        "Komma nach ‚laut'",
+        "Komma nach ‚sie'"
+      ],
+      "richtig": 0,
+      "erklaerung": "Zwei mit ‚und' verbundene Hauptsätze brauchen kein Komma – es ist aber möglich."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "Kommasetzung",
+      "badge": "Kommasetzung",
+      "frage": "Wo gehört das Komma?",
+      "kontext": "Das Buch[,] das ich gestern kaufte[,] ist spannend.",
+      "optionen": [
+        "Nur nach ‚Buch'",
+        "Nur nach ‚kaufte'",
+        "Nach ‚Buch' und ‚kaufte'",
+        "Kein Komma"
+      ],
+      "richtig": 2,
+      "erklaerung": "Eingeschobene Relativsätze werden beidseitig durch Komma abgegrenzt."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "Kommasetzung",
+      "badge": "Kommasetzung",
+      "frage": "Welche Kommasetzung ist korrekt?",
+      "kontext": "Obwohl es regnete, gingen wir spazieren.",
+      "optionen": [
+        "Korrekt so",
+        "Kein Komma nötig",
+        "Komma nach ‚gingen'",
+        "Komma nach ‚spazieren'"
+      ],
+      "richtig": 0,
+      "erklaerung": "Nach einem vorangestellten Nebensatz mit ‚obwohl' steht ein Komma."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "Kommasetzung",
+      "badge": "Kommasetzung",
+      "frage": "Ist die Kommasetzung richtig?",
+      "kontext": "Ich kaufte Äpfel, Birnen und Orangen.",
+      "optionen": [
+        "Ja, korrekt",
+        "Nein, auch vor ‚und' ein Komma",
+        "Nein, kein Komma nach ‚Äpfel'",
+        "Nein, Komma nach ‚Orangen'"
+      ],
+      "richtig": 0,
+      "erklaerung": "Bei Aufzählungen werden die Glieder durch Komma getrennt, aber vor dem abschließenden ‚und' steht kein Komma."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "Verb-Formen",
+      "badge": "Verb-Formen",
+      "frage": "Welche Zeitform ist das?",
+      "kontext": "Er hatte das Buch schon gelesen.",
+      "optionen": [
+        "Präteritum",
+        "Perfekt",
+        "Plusquamperfekt",
+        "Futur"
+      ],
+      "richtig": 2,
+      "erklaerung": "‚hatte … gelesen' ist das Plusquamperfekt. Es bezeichnet eine Handlung, die vor einer anderen vergangenen Handlung abgeschlossen war."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "Verb-Formen",
+      "badge": "Verb-Formen",
+      "frage": "Welche Form ist richtig (Passiv)?",
+      "kontext": "Das Fenster ____ geöffnet.",
+      "optionen": [
+        "hat",
+        "wird",
+        "ist geworden",
+        "hätte"
+      ],
+      "richtig": 1,
+      "erklaerung": "Vorgangspassiv: ‚wird geöffnet' = die Handlung läuft gerade ab."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "Verb-Formen",
+      "badge": "Verb-Formen",
+      "frage": "Welche Zeitform ist das?",
+      "kontext": "Sie wird morgen kommen.",
+      "optionen": [
+        "Präsens",
+        "Präteritum",
+        "Perfekt",
+        "Futur I"
+      ],
+      "richtig": 3,
+      "erklaerung": "‚wird … kommen' ist das Futur I. Es drückt eine zukünftige Handlung aus."
+    },
+    {
+      "stufe": "78",
+      "kategorie": "Verb-Formen",
+      "badge": "Verb-Formen",
+      "frage": "Welche Form gehört in den Satz?",
+      "kontext": "Er fragte, ob sie mitkommen ____ .",
+      "optionen": [
+        "will",
+        "wollte",
+        "wolle",
+        "würde"
+      ],
+      "richtig": 2,
+      "erklaerung": "In der indirekten Rede nach Konjunktiv I: ‚Er fragte, ob sie mitkommen wolle.' (Konjunktiv I von ‚wollen')."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Groß-/Kleinschreibung",
+      "badge": "Groß-/Kleinschreibung",
+      "frage": "Welche Schreibung ist richtig?",
+      "kontext": "Er argumentierte ____ und überzeugend.",
+      "optionen": [
+        "Sachlich",
+        "sachlich",
+        "SACHLICH",
+        "sächlich"
+      ],
+      "richtig": 1,
+      "erklaerung": "‚sachlich' ist hier Adverb zum Verb ‚argumentierte' → Kleinschreibung."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Groß-/Kleinschreibung",
+      "badge": "Groß-/Kleinschreibung",
+      "frage": "Welche Schreibung ist korrekt?",
+      "kontext": "Sie traf eine Entscheidung ____.",
+      "optionen": [
+        "Fürs Erste",
+        "fürs Erste",
+        "fürs erste",
+        "Fürs erste"
+      ],
+      "richtig": 1,
+      "erklaerung": "‚fürs' (= für das) ist kleinzuschreiben; ‚Erste' ist ein substantiviertes Adjektiv nach Präposition → Großschreibung: ‚fürs Erste'."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Groß-/Kleinschreibung",
+      "badge": "Groß-/Kleinschreibung",
+      "frage": "Welche Form ist korrekt?",
+      "kontext": "Das ist ein Problem, das mich ____ beschäftigt.",
+      "optionen": [
+        "Im Innersten",
+        "im Innersten",
+        "im innersten",
+        "Im innersten"
+      ],
+      "richtig": 1,
+      "erklaerung": "‚im Innersten' – substantivierter Superlativ nach Präposition → Großschreibung."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Kommasetzung",
+      "badge": "Kommasetzung",
+      "frage": "Ist die Zeichensetzung korrekt?",
+      "kontext": "Sie sagte, dass sie morgen früh käme.",
+      "optionen": [
+        "Ja, korrekt",
+        "Nein, kein Komma nötig",
+        "Nein, zwei Kommas nötig",
+        "Nein, Komma nach ‚morgen'"
+      ],
+      "richtig": 0,
+      "erklaerung": "Korrekt: Komma vor dem ‚dass'-Satz. ‚käme' ist der richtige Konjunktiv II als Form der indirekten Rede."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Kommasetzung",
+      "badge": "Kommasetzung",
+      "frage": "Welche Zeichensetzung ist korrekt?",
+      "kontext": "Der Zeuge, ein alter Mann, schwieg beharrlich.",
+      "optionen": [
+        "Korrekt so",
+        "Kein Komma nötig",
+        "Nur ein Komma nach ‚Zeuge'",
+        "Komma nach ‚Mann' und nach ‚schwieg'"
+      ],
+      "richtig": 0,
+      "erklaerung": "Eine nachgestellte erklärende Apposition wird beidseitig durch Komma abgegrenzt."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Kommasetzung",
+      "badge": "Kommasetzung",
+      "frage": "Welche Form der Zeichensetzung ist richtig?",
+      "kontext": "Wer lügt[,] dem ist nicht zu trauen.",
+      "optionen": [
+        "Kein Komma nötig",
+        "Komma nach ‚lügt'",
+        "Komma nach ‚dem'",
+        "Komma nach ‚trauen'"
+      ],
+      "richtig": 1,
+      "erklaerung": "Zwischen vorangestelltem Gliedsatz (‚Wer lügt') und dem Hauptsatz steht ein Komma."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Kommasetzung",
+      "badge": "Kommasetzung",
+      "frage": "Welche Aussage zur Kommasetzung ist richtig?",
+      "kontext": "Er behauptet, er habe nichts gewusst.",
+      "optionen": [
+        "Korrekt, Komma vor dem Nebensatz",
+        "Falsch, kein Komma nötig",
+        "Falsch, Komma nach ‚habe'",
+        "Falsch, nur Doppelpunkt nötig"
+      ],
+      "richtig": 0,
+      "erklaerung": "Vor einem uneingeleiteten Nebensatz (ohne Konjunktion) steht ein Komma."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Konjunktiv / Indirekte Rede",
+      "badge": "Konjunktiv / Indirekte Rede",
+      "frage": "Welche Form ist korrekt (Konjunktiv I)?",
+      "kontext": "Er sagte, er ____ morgen kommen.",
+      "optionen": [
+        "kommt",
+        "käme",
+        "werde kommen",
+        "würde kommen"
+      ],
+      "richtig": 2,
+      "erklaerung": "Konjunktiv I Futur: ‚er werde kommen'. Da ‚komme' (Konjunktiv I Präsens) gleichlautend mit dem Indikativ wäre, wird als Ersatzform ‚werde kommen' bevorzugt."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Konjunktiv / Indirekte Rede",
+      "badge": "Konjunktiv / Indirekte Rede",
+      "frage": "Was ist die korrekte indirekte Rede?",
+      "kontext": "Anna sagte: „Ich habe das Buch gelesen.\"",
+      "optionen": [
+        "Anna sagte, sie hat das Buch gelesen.",
+        "Anna sagte, sie habe das Buch gelesen.",
+        "Anna sagte, sie hätte das Buch gelesen.",
+        "Anna sagte, sie hatte das Buch gelesen."
+      ],
+      "richtig": 1,
+      "erklaerung": "Konjunktiv I Perfekt: ‚sie habe gelesen'. ‚Hat' (Indikativ) wäre falsch; ‚hätte' wäre Konjunktiv II und nur als Ersatzform nötig."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Konjunktiv / Indirekte Rede",
+      "badge": "Konjunktiv / Indirekte Rede",
+      "frage": "Welche Form ist die korrekte Ersatzform?",
+      "kontext": "Sie sagten, sie ____ heute Unterricht.",
+      "optionen": [
+        "haben",
+        "hatten",
+        "hätten",
+        "haben gehabt"
+      ],
+      "richtig": 2,
+      "erklaerung": "‚haben' (Konjunktiv I) ist mit dem Indikativ gleichlautend → Ersatzform: Konjunktiv II: ‚hätten'."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Konjunktiv / Indirekte Rede",
+      "badge": "Konjunktiv / Indirekte Rede",
+      "frage": "Welche Form gehört hier hin?",
+      "kontext": "Er fragte, ob sie die Aufgabe ____.",
+      "optionen": [
+        "verstehen",
+        "verstehe",
+        "versteht",
+        "verstand"
+      ],
+      "richtig": 1,
+      "erklaerung": "In indirekter Rede nach ‚ob' steht Konjunktiv I: ‚verstehe'. ‚Versteht' wäre Indikativ – das darf in indirekter Rede nicht stehen."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Fremdwörter",
+      "badge": "Fremdwörter",
+      "frage": "Welche Form ist richtig (Akkusativ)?",
+      "kontext": "Der Zeuge beschrieb einen ____ Vorfall.",
+      "optionen": [
+        "grotesken",
+        "groteske",
+        "grotesker",
+        "groteskes"
+      ],
+      "richtig": 0,
+      "erklaerung": "‚grotesk' im Akkusativ Singular maskulin nach unbestimmtem Artikel: ‚einen grotesken Vorfall'."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Fremdwörter",
+      "badge": "Fremdwörter",
+      "frage": "Welche Schreibung ist korrekt?",
+      "kontext": "Das Restaurant hatte eine tolle ____.",
+      "optionen": [
+        "Atmosphäre",
+        "Atmosfäre",
+        "Athmosphäre",
+        "Atmosphähre"
+      ],
+      "richtig": 0,
+      "erklaerung": "‚Atmosphäre' – griechisch: atmos + sphaira. Das ‚ph' bleibt, Umlaut ‚ä' ist korrekt."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Fremdwörter",
+      "badge": "Fremdwörter",
+      "frage": "Welche Schreibung ist richtig?",
+      "kontext": "Das war eine ____ Situation.",
+      "optionen": [
+        "absurde",
+        "absuurde",
+        "apssurde",
+        "absürd"
+      ],
+      "richtig": 0,
+      "erklaerung": "‚absurd' (lateinisch: absurdus) → Adjektiv: ‚absurde' im Nominativ/Akkusativ feminin."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Fremdwörter",
+      "badge": "Fremdwörter",
+      "frage": "Wie schreibt man das Wort?",
+      "kontext": "Die ____ des Lehrers war beeindruckend.",
+      "optionen": [
+        "Kompetenz",
+        "Kompetanze",
+        "Komeptenz",
+        "Compétenz"
+      ],
+      "richtig": 0,
+      "erklaerung": "‚Kompetenz' – lateinisch: competentia. Betonung auf der dritten Silbe."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Getrennt-/Zusammenschreibung",
+      "badge": "Getrennt-/Zusammenschreibung",
+      "frage": "Welche Schreibung ist korrekt?",
+      "kontext": "Die ____ Industrie wächst.",
+      "optionen": [
+        "Stahl erzeugende",
+        "Stahl Erzeugende",
+        "stahlerzeugende",
+        "Stahler zeugende"
+      ],
+      "richtig": 2,
+      "erklaerung": "Zusammengesetzte Adjektive, deren erster Bestandteil ein Nomen ist, werden zusammengeschrieben: ‚die stahlerzeugende Industrie'."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Getrennt-/Zusammenschreibung",
+      "badge": "Getrennt-/Zusammenschreibung",
+      "frage": "Welche Form ist richtig?",
+      "kontext": "Ich komme, ____ ich fertig bin.",
+      "optionen": [
+        "sobald",
+        "so bald",
+        "So bald",
+        "So Bald"
+      ],
+      "richtig": 0,
+      "erklaerung": "Als Konjunktion, die einen Gliedsatz einleitet, wird ‚sobald' zusammengeschrieben."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Getrennt-/Zusammenschreibung",
+      "badge": "Getrennt-/Zusammenschreibung",
+      "frage": "Was ist hier korrekt?",
+      "kontext": "Er wurde im Prozess ____.",
+      "optionen": [
+        "frei gesprochen",
+        "freigesprochen",
+        "Frei gesprochen",
+        "Freigesprochen"
+      ],
+      "richtig": 1,
+      "erklaerung": "‚freisprechen' in übertragener Bedeutung (= für unschuldig erklären) → Zusammenschreibung im Partizip: ‚freigesprochen'."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Zeichensetzung (Semikolon/Gedankenstrich)",
+      "badge": "Zeichensetzung (Semikolon/Gedankenstrich)",
+      "frage": "Welches Zeichen passt hier am besten?",
+      "kontext": "Er liebte sie ____ sie liebte ihn nicht.",
+      "optionen": [
+        "und",
+        "oder",
+        "; aber",
+        ", obwohl"
+      ],
+      "richtig": 2,
+      "erklaerung": "Das Semikolon trennt zwei inhaltlich eng zusammengehörende, aber entgegengesetzte Hauptsätze. ‚; aber' ist hier die stilistisch präziseste Variante."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Zeichensetzung (Semikolon/Gedankenstrich)",
+      "badge": "Zeichensetzung (Semikolon/Gedankenstrich)",
+      "frage": "Welche Aussage zur Zeichensetzung ist richtig?",
+      "kontext": "Der Angeklagte – so schien es – wusste mehr, als er zugab.",
+      "optionen": [
+        "Korrekt: Gedankenstriche rahmen einen Einschub",
+        "Falsch: Kommas nötig statt Gedankenstriche",
+        "Falsch: Klammern wären korrekt",
+        "Falsch: Semikolon nötig"
+      ],
+      "richtig": 0,
+      "erklaerung": "Gedankenstriche können – wie Kommas oder Klammern – einen eingeschobenen Satzteil hervorheben. Hier ist der Einschub ‚so schien es' betont abgesetzt."
+    },
+    {
+      "stufe": "913",
+      "kategorie": "Zeichensetzung (Semikolon/Gedankenstrich)",
+      "badge": "Zeichensetzung (Semikolon/Gedankenstrich)",
+      "frage": "Welche Zeichensetzung ist richtig?",
+      "kontext": "Sie brachte alles mit ____",
+      "optionen": [
+        "– Stift, Heft und Lineal.",
+        ": Stift, Heft und Lineal.",
+        ", Stift, Heft und Lineal.",
+        ". Stift, Heft und Lineal."
+      ],
+      "richtig": 1,
+      "erklaerung": "Vor einer erläuternden Aufzählung, die das Vorhergehende konkretisiert, steht ein Doppelpunkt."
+    }
+  ]
+}

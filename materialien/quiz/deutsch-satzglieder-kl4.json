@@ -1,0 +1,376 @@
+{
+  "slug": "deutsch-satzglieder-kl4",
+  "typ": "fragen",
+  "titel": "🌟 Satzglieder & Zeitformen",
+  "untertitel": "Klasse 4 · 17 Aufgaben · 26 Punkte: Einfärben, Bestimmen, Zeitformen, Satz ordnen",
+  "fach": "deutsch",
+  "zurueck": {
+    "url": "/fach-deutsch.html",
+    "text": "Zurück zu Deutsch"
+  },
+  "mischen": false,
+  "auswertungNach": "teil",
+  "auswertungTitel": "Übung",
+  "intro": [
+    "<strong>Vier Übungen:</strong> Satzglieder einfärben, Satzglieder bestimmen, Zeitformen erkennen und Sätze ordnen.",
+    "Jede Aufgabe wird sofort ausgewertet. Beim Einfärben gibt es für jedes richtige Satzglied einen Punkt."
+  ],
+  "fragen": [
+    {
+      "art": "einfaerben",
+      "teil": "Einfärben",
+      "badge": "🎨 Einfärben · Aufgabe 1",
+      "frage": "Färbe die Satzglieder ein (Satz 1).",
+      "woerter": [
+        {
+          "t": "Die kleine Katze",
+          "k": "subjekt"
+        },
+        {
+          "t": "spielt",
+          "k": "praedikat"
+        },
+        {
+          "t": "mit dem roten Ball",
+          "k": "objekt"
+        },
+        {
+          "t": "im Garten",
+          "k": "adverbiale"
+        }
+      ],
+      "kategorien": [
+        {
+          "wert": "subjekt",
+          "label": "Subjekt",
+          "farbe": "#e74c8b"
+        },
+        {
+          "wert": "praedikat",
+          "label": "Prädikat",
+          "farbe": "#2ecc71"
+        },
+        {
+          "wert": "objekt",
+          "label": "Objekt",
+          "farbe": "#e67e22"
+        },
+        {
+          "wert": "adverbiale",
+          "label": "Adverbiale Bestimmung",
+          "farbe": "#9b59b6"
+        }
+      ]
+    },
+    {
+      "art": "einfaerben",
+      "teil": "Einfärben",
+      "badge": "🎨 Einfärben · Aufgabe 2",
+      "frage": "Färbe die Satzglieder ein (Satz 2).",
+      "woerter": [
+        {
+          "t": "Mein Bruder",
+          "k": "subjekt"
+        },
+        {
+          "t": "liest",
+          "k": "praedikat"
+        },
+        {
+          "t": "ein spannendes Buch",
+          "k": "objekt"
+        },
+        {
+          "t": "jeden Abend",
+          "k": "adverbiale"
+        }
+      ],
+      "kategorien": [
+        {
+          "wert": "subjekt",
+          "label": "Subjekt",
+          "farbe": "#e74c8b"
+        },
+        {
+          "wert": "praedikat",
+          "label": "Prädikat",
+          "farbe": "#2ecc71"
+        },
+        {
+          "wert": "objekt",
+          "label": "Objekt",
+          "farbe": "#e67e22"
+        },
+        {
+          "wert": "adverbiale",
+          "label": "Adverbiale Bestimmung",
+          "farbe": "#9b59b6"
+        }
+      ]
+    },
+    {
+      "art": "einfaerben",
+      "teil": "Einfärben",
+      "badge": "🎨 Einfärben · Aufgabe 3",
+      "frage": "Färbe die Satzglieder ein (Satz 3).",
+      "woerter": [
+        {
+          "t": "Die Lehrerin",
+          "k": "subjekt"
+        },
+        {
+          "t": "erklärt",
+          "k": "praedikat"
+        },
+        {
+          "t": "die Aufgabe",
+          "k": "objekt"
+        },
+        {
+          "t": "an der Tafel",
+          "k": "adverbiale"
+        }
+      ],
+      "kategorien": [
+        {
+          "wert": "subjekt",
+          "label": "Subjekt",
+          "farbe": "#e74c8b"
+        },
+        {
+          "wert": "praedikat",
+          "label": "Prädikat",
+          "farbe": "#2ecc71"
+        },
+        {
+          "wert": "objekt",
+          "label": "Objekt",
+          "farbe": "#e67e22"
+        },
+        {
+          "wert": "adverbiale",
+          "label": "Adverbiale Bestimmung",
+          "farbe": "#9b59b6"
+        }
+      ]
+    },
+    {
+      "art": "mc",
+      "teil": "Bestimmen",
+      "badge": "🏷️ Bestimmen · Aufgabe 1",
+      "frage": "Welches Satzglied ist markiert?",
+      "kontext": "Die Kinder <mark>spielen</mark> Fußball auf dem Schulhof",
+      "hinweis": "spielen → Was tun die Kinder?",
+      "optionen": [
+        "Subjekt",
+        "Prädikat",
+        "Objekt",
+        "Adverbiale Bestimmung"
+      ],
+      "richtig": 1
+    },
+    {
+      "art": "mc",
+      "teil": "Bestimmen",
+      "badge": "🏷️ Bestimmen · Aufgabe 2",
+      "frage": "Welches Satzglied ist markiert?",
+      "kontext": "<mark>Meine Mutter</mark> backt einen Kuchen für uns",
+      "hinweis": "Meine Mutter → Wer backt?",
+      "optionen": [
+        "Subjekt",
+        "Prädikat",
+        "Objekt",
+        "Adverbiale Bestimmung"
+      ],
+      "richtig": 0
+    },
+    {
+      "art": "mc",
+      "teil": "Bestimmen",
+      "badge": "🏷️ Bestimmen · Aufgabe 3",
+      "frage": "Welches Satzglied ist markiert?",
+      "kontext": "Das Pferd galoppiert <mark>über die Wiese</mark> schnell",
+      "hinweis": "über die Wiese → Wo?",
+      "optionen": [
+        "Subjekt",
+        "Prädikat",
+        "Objekt",
+        "Adverbiale Bestimmung"
+      ],
+      "richtig": 3
+    },
+    {
+      "art": "mc",
+      "teil": "Bestimmen",
+      "badge": "🏷️ Bestimmen · Aufgabe 4",
+      "frage": "Welches Satzglied ist markiert?",
+      "kontext": "Der Junge wirft <mark>den Ball</mark> weit",
+      "hinweis": "den Ball → Wen oder Was?",
+      "optionen": [
+        "Subjekt",
+        "Prädikat",
+        "Objekt",
+        "Adverbiale Bestimmung"
+      ],
+      "richtig": 2
+    },
+    {
+      "art": "mc",
+      "teil": "Zeitformen",
+      "badge": "⏰ Zeitformen · Aufgabe 1",
+      "frage": "Welche Zeitform ist das?",
+      "kontext": "Die Sonne scheint hell.",
+      "optionen": [
+        "Präsens",
+        "Präteritum",
+        "Perfekt",
+        "Futur I"
+      ],
+      "richtig": 0
+    },
+    {
+      "art": "mc",
+      "teil": "Zeitformen",
+      "badge": "⏰ Zeitformen · Aufgabe 2",
+      "frage": "Welche Zeitform ist das?",
+      "kontext": "Gestern regnete es den ganzen Tag.",
+      "optionen": [
+        "Präsens",
+        "Präteritum",
+        "Futur I",
+        "Plusquamperfekt"
+      ],
+      "richtig": 1
+    },
+    {
+      "art": "mc",
+      "teil": "Zeitformen",
+      "badge": "⏰ Zeitformen · Aufgabe 3",
+      "frage": "Welche Zeitform ist das?",
+      "kontext": "Wir haben das Spiel gewonnen.",
+      "optionen": [
+        "Präsens",
+        "Perfekt",
+        "Futur I",
+        "Präteritum"
+      ],
+      "richtig": 1
+    },
+    {
+      "art": "mc",
+      "teil": "Zeitformen",
+      "badge": "⏰ Zeitformen · Aufgabe 4",
+      "frage": "Welche Zeitform ist das?",
+      "kontext": "Morgen werden wir ins Schwimmbad gehen.",
+      "optionen": [
+        "Präteritum",
+        "Perfekt",
+        "Futur I",
+        "Futur II"
+      ],
+      "richtig": 2
+    },
+    {
+      "art": "mc",
+      "teil": "Zeitformen",
+      "badge": "⏰ Zeitformen · Aufgabe 5",
+      "frage": "Welche Zeitform ist das?",
+      "kontext": "<u class=\"sg-mark\">Nachdem er gegessen hatte</u>, spielte er draußen.",
+      "optionen": [
+        "Präteritum",
+        "Perfekt",
+        "Plusquamperfekt",
+        "Futur II"
+      ],
+      "richtig": 2
+    },
+    {
+      "art": "mc",
+      "teil": "Zeitformen",
+      "badge": "⏰ Zeitformen · Aufgabe 6",
+      "frage": "Welche Zeitform ist das?",
+      "kontext": "<u class=\"sg-mark\">Wenn du morgen früh aufgestanden sein wirst</u>, können wir starten.",
+      "optionen": [
+        "Futur I",
+        "Futur II",
+        "Perfekt",
+        "Präsens"
+      ],
+      "richtig": 1
+    },
+    {
+      "art": "mc",
+      "teil": "Zeitformen",
+      "badge": "⏰ Zeitformen · Aufgabe 7",
+      "frage": "Welche Zeitform ist das?",
+      "kontext": "Die Schüler lernten fleißig für die Klassenarbeit.",
+      "optionen": [
+        "Präsens",
+        "Präteritum",
+        "Perfekt",
+        "Plusquamperfekt"
+      ],
+      "richtig": 1
+    },
+    {
+      "art": "mc",
+      "teil": "Zeitformen",
+      "badge": "⏰ Zeitformen · Aufgabe 8",
+      "frage": "Welche Zeitform ist das?",
+      "kontext": "Ich habe meine Hausaufgaben vergessen.",
+      "optionen": [
+        "Präsens",
+        "Futur I",
+        "Perfekt",
+        "Präteritum"
+      ],
+      "richtig": 2
+    },
+    {
+      "art": "sortierung",
+      "teil": "Satz ordnen",
+      "badge": "🔀 Satz ordnen · Aufgabe 1",
+      "frage": "Bringe die Wörter in eine richtige Satzreihenfolge.",
+      "elemente": [
+        "Das",
+        "Vöglein",
+        "singt",
+        "laut",
+        "am",
+        "Morgen"
+      ],
+      "akzeptiert": [
+        [
+          "Das",
+          "Vöglein",
+          "singt",
+          "am",
+          "Morgen",
+          "laut"
+        ]
+      ]
+    },
+    {
+      "art": "sortierung",
+      "teil": "Satz ordnen",
+      "badge": "🔀 Satz ordnen · Aufgabe 2",
+      "frage": "Bringe die Wörter in eine richtige Satzreihenfolge.",
+      "elemente": [
+        "Lisa",
+        "füttert",
+        "ihren",
+        "Hund",
+        "täglich"
+      ],
+      "akzeptiert": [
+        [
+          "Lisa",
+          "füttert",
+          "täglich",
+          "ihren",
+          "Hund"
+        ]
+      ]
+    }
+  ]
+}
