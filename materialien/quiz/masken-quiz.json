@@ -1,0 +1,318 @@
+{
+  "slug": "masken-quiz",
+  "typ": "bilder",
+  "titel": "🎭 Masken-Quiz – Bilderraten",
+  "untertitel": "12 berühmte Masken aus Popkultur, Film, Geschichte und Musik – erkennst du sie alle?",
+  "fach": "faecheruebergreifend",
+  "zurueck": {
+    "url": "/fach-faecheruebergreifend.html",
+    "text": "Zurück zu Fächerübergreifend"
+  },
+  "design": {
+    "thema": "dunkel"
+  },
+  "bilder": "/img/quiz/masken-quiz/",
+  "mischen": true,
+  "versuche": 1,
+  "toleranz": 3,
+  "bewertung": [
+    {
+      "ab": 95,
+      "text": "🏆 Unglaublich! Du bist ein echter Masken-Experte!"
+    },
+    {
+      "ab": 75,
+      "text": "🎉 Super Ergebnis – du kennst dich wirklich gut aus!"
+    },
+    {
+      "ab": 50,
+      "text": "👍 Solides Ergebnis! Ein paar Masken waren wirklich knifflig."
+    },
+    {
+      "ab": 25,
+      "text": "😐 Nicht schlecht – beim nächsten Mal schaffst du mehr!"
+    },
+    {
+      "ab": 0,
+      "text": "😅 Da ist noch Luft nach oben – versuch es nochmal!"
+    }
+  ],
+  "fragen": [
+    {
+      "bild": "01.webp",
+      "antwort": "Daft Punk",
+      "frage": "Wie heißt dieses Musik-Duo / diese Band?",
+      "info": {
+        "zeilen": [
+          [
+            "🇫🇷 Ursprung:",
+            "Paris, 1993 gegründet"
+          ],
+          [
+            "📌 Kategorie:",
+            "Electronic Music / House"
+          ]
+        ],
+        "wissenswertes": [
+          "Alben Discovery (2001) & Random Access Memories (2013)",
+          "Grammys für Get Lucky & Lose Yourself to Dance",
+          "Ikonische Roboter-Helme als Markenzeichen",
+          "2021 nach 28 Jahren aufgelöst"
+        ]
+      }
+    },
+    {
+      "bild": "02.webp",
+      "antwort": "Pink Ranger",
+      "frage": "Wie heißt diese Figur / dieser Charakter?",
+      "info": {
+        "zeilen": [
+          [
+            "🇯🇵 Ursprung:",
+            "Japan, 1993 (Super Sentai)"
+          ],
+          [
+            "📌 Kategorie:",
+            "TV-Superheldin"
+          ]
+        ],
+        "wissenswertes": [
+          "Teil der Power Rangers-Franchise seit 1993",
+          "Pinke Farbe steht für die Rangerin Kimberly Hart",
+          "Vorlage: Japanische Serie Kyōryū Sentai Zyuranger",
+          "Weltweit bekannte Popkultur-Ikone"
+        ]
+      }
+    },
+    {
+      "bild": "03.webp",
+      "antwort": "Jason",
+      "frage": "Wie heißt diese Filmfigur?",
+      "info": {
+        "zeilen": [
+          [
+            "🇺🇸 Ursprung:",
+            "Crystal Lake (fiktiv), 1980"
+          ],
+          [
+            "📌 Kategorie:",
+            "Horrorfilm-Figur"
+          ]
+        ],
+        "wissenswertes": [
+          "Hauptfigur der Freitag der 13. Reihe (13 Filme)",
+          "Hockeymaske ab Teil 3 (1982) sein Markenzeichen",
+          "Eine der bekanntesten Horrorfilm-Ikonen überhaupt",
+          "Maske wurde 2023 versteigert für 45.000 USD"
+        ]
+      }
+    },
+    {
+      "bild": "04.webp",
+      "antwort": "Kalkriese",
+      "frage": "Wo wurde diese Maske gefunden? (Ortsname)",
+      "info": {
+        "zeilen": [
+          [
+            "🇩🇪 Ursprung:",
+            "Kalkriese bei Osnabrück, 9 n. Chr."
+          ],
+          [
+            "📌 Kategorie:",
+            "Römische Reitermaske / Archäologie"
+          ]
+        ],
+        "wissenswertes": [
+          "Gefunden am Fundort der Varusschlacht",
+          "Museum und Park Kalkriese bei Osnabrück",
+          "Eisenmaske mit Silberüberzug, ca. 9 n. Chr.",
+          "Wichtigster archäologischer Fund der Varusschlacht"
+        ]
+      }
+    },
+    {
+      "bild": "05.webp",
+      "antwort": "Hannibal Lecter",
+      "frage": "Wie heißt diese Filmfigur?",
+      "info": {
+        "zeilen": [
+          [
+            "🇺🇸 Ursprung:",
+            "Baltimore (fiktiv), Film 1991"
+          ],
+          [
+            "📌 Kategorie:",
+            "Filmfigur / Thriller"
+          ]
+        ],
+        "wissenswertes": [
+          "Figur aus Das Schweigen der Lämmer (1991)",
+          "Gespielt von Anthony Hopkins (Oscar-Gewinner)",
+          "Beißmaske als ikonisches Filmsymbol",
+          "Einer der größten Filmschurken der Kinogeschichte"
+        ]
+      }
+    },
+    {
+      "bild": "06.webp",
+      "antwort": "Deadmau5",
+      "frage": "Wie heißt dieser Musiker / DJ?",
+      "info": {
+        "zeilen": [
+          [
+            "🇨🇦 Ursprung:",
+            "Niagara Falls, 10. Januar 1985"
+          ],
+          [
+            "📌 Kategorie:",
+            "Electronic Music / Progressive House"
+          ]
+        ],
+        "wissenswertes": [
+          "Bürgerlicher Name: Joel Thomas Zimmerman",
+          "Maus-Helm mit LED-Augen als Markenzeichen",
+          "Hits wie Ghosts 'n' Stuff & Professional Griefers",
+          "Verkaufte über 1 Mio. Alben weltweit"
+        ]
+      }
+    },
+    {
+      "bild": "07.webp",
+      "antwort": "Maske des Agamemnon",
+      "frage": "Wie heißt diese berühmte Goldmaske?",
+      "info": {
+        "zeilen": [
+          [
+            "🇬🇷 Ursprung:",
+            "Mykene, ca. 1550–1500 v. Chr."
+          ],
+          [
+            "📌 Kategorie:",
+            "Archäologie / Goldmaske"
+          ]
+        ],
+        "wissenswertes": [
+          "Ausgegraben 1876 von Heinrich Schliemann",
+          "Aus getriebenem Gold, 16. Jh. v. Chr.",
+          "Ausgestellt im Nationalmuseum Athen",
+          "Schliemann glaubte, Agamemnon selbst gefunden zu haben"
+        ]
+      }
+    },
+    {
+      "bild": "08.webp",
+      "antwort": "Guy Fawkes",
+      "frage": "Wie heißt das historische Vorbild dieser Maske?",
+      "info": {
+        "zeilen": [
+          [
+            "🇬🇧 Ursprung:",
+            "York, 13. April 1570"
+          ],
+          [
+            "📌 Kategorie:",
+            "Historische Figur / Revolutionär"
+          ]
+        ],
+        "wissenswertes": [
+          "Plante 1605 das Gunpowder Plot gegen das Parlament",
+          "Maske wurde Symbol der Anonymous-Bewegung",
+          "Film V wie Vendetta (2005) machte sie weltberühmt",
+          "Millionen Masken jährlich rund um den 5. November verkauft"
+        ]
+      }
+    },
+    {
+      "bild": "09.webp",
+      "antwort": "Tutanchamun",
+      "frage": "Wie heißt dieser Pharao?",
+      "info": {
+        "zeilen": [
+          [
+            "🇪🇬 Ursprung:",
+            "Ägypten, ca. 1341 v. Chr."
+          ],
+          [
+            "📌 Kategorie:",
+            "Pharao / Goldmaske"
+          ]
+        ],
+        "wissenswertes": [
+          "Grab 1922 von Howard Carter entdeckt",
+          "Totenmaske aus massivem Gold, 10 kg schwer",
+          "Herrschte ca. 1332–1323 v. Chr.",
+          "Ausgestellt im Ägyptischen Museum Kairo"
+        ]
+      }
+    },
+    {
+      "bild": "10.webp",
+      "antwort": "Michael Myers",
+      "frage": "Wie heißt diese Filmfigur?",
+      "info": {
+        "zeilen": [
+          [
+            "🇺🇸 Ursprung:",
+            "Haddonfield (fiktiv), Film 1978"
+          ],
+          [
+            "📌 Kategorie:",
+            "Horrorfilm-Figur"
+          ]
+        ],
+        "wissenswertes": [
+          "Hauptfigur der Halloween-Filmreihe (1978–2022)",
+          "Maske: modifizierte William-Shatner-Maske",
+          "Regisseur: John Carpenter",
+          "Eine der meistverkauften Halloween-Masken aller Zeiten"
+        ]
+      }
+    },
+    {
+      "bild": "11.webp",
+      "antwort": "Pussy Riot",
+      "frage": "Wie heißt diese Band?",
+      "info": {
+        "zeilen": [
+          [
+            "🇷🇺 Ursprung:",
+            "Moskau, 2011 gegründet"
+          ],
+          [
+            "📌 Kategorie:",
+            "Punkband / Aktionskunst"
+          ]
+        ],
+        "wissenswertes": [
+          "Bekannt durch politische Proteste gegen Putin",
+          "Verhaftung 2012 nach Kirchenaktion machte sie weltberühmt",
+          "Bunte Sturmhauben als unverwechselbares Markenzeichen",
+          "Amnesty International erklärte sie zu Gewissensgefangenen"
+        ]
+      }
+    },
+    {
+      "bild": "12.webp",
+      "antwort": "Haus des Geldes",
+      "frage": "Wie heißt diese Netflix-Serie?",
+      "info": {
+        "zeilen": [
+          [
+            "🇪🇸 Ursprung:",
+            "Spanien, Netflix 2017"
+          ],
+          [
+            "📌 Kategorie:",
+            "TV-Serie / Streaming"
+          ]
+        ],
+        "wissenswertes": [
+          "Spanische Erfolgsserie La Casa de Papel",
+          "Dalí-Maske als Symbol der Räuber-Bande",
+          "Meistgestreamte nicht-englische Serie auf Netflix (2018)",
+          "Maske wurde globales Symbol für Widerstand und Rebellion"
+        ]
+      }
+    }
+  ]
+}

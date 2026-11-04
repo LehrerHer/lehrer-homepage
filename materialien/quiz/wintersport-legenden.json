@@ -1,0 +1,304 @@
+{
+  "slug": "wintersport-legenden",
+  "typ": "bilder",
+  "titel": "⛷️ Wintersport-Legenden – Erkennst du sie?",
+  "untertitel": "Schreibe den Namen der gesuchten Sportlerin / des gesuchten Sportlers – der Nachname reicht.",
+  "fach": "sport",
+  "zurueck": {
+    "url": "/fach-sport.html",
+    "text": "Zurück zu Sport"
+  },
+  "design": {
+    "thema": "dunkel"
+  },
+  "bilder": "/img/quiz/wintersport-legenden/",
+  "frage": "Wer ist das?",
+  "mischen": false,
+  "versuche": 1,
+  "toleranz": 3,
+  "teilantworten": true,
+  "bewertung": [
+    {
+      "ab": 100,
+      "text": "🥇 Perfekt! Alle Legenden erkannt!"
+    },
+    {
+      "ab": 75,
+      "text": "🏆 Klasse! Fast alle Legenden erkannt."
+    },
+    {
+      "ab": 50,
+      "text": "🥈 Gut gemacht!"
+    },
+    {
+      "ab": 0,
+      "text": "⛷️ Noch etwas üben!"
+    }
+  ],
+  "fragen": [
+    {
+      "bild": "01.webp",
+      "antwort": "Franz Klammer",
+      "info": {
+        "zeilen": [
+          [
+            "🇦🇹 Geboren:",
+            "3. Dezember 1953 in Mooswald, Kärnten (Österreich)"
+          ],
+          [
+            "🏅 Sportart:",
+            "Ski Alpin - Abfahrt"
+          ]
+        ],
+        "wissenswertes": [
+          "Olympiasieger Abfahrt 1976 (Innsbruck) - legendärster Lauf der Skigeschichte",
+          "5x Abfahrts-Weltcup-Gesamtsieger",
+          "Weltmeister Abfahrt 1974",
+          "Insgesamt 26 Weltcupsiege"
+        ]
+      }
+    },
+    {
+      "bild": "02.webp",
+      "antwort": "Claudia Pechstein",
+      "info": {
+        "zeilen": [
+          [
+            "🇩🇪 Geboren:",
+            "22. Februar 1972 in Berlin"
+          ],
+          [
+            "🏅 Sportart:",
+            "Eisschnelllauf"
+          ]
+        ],
+        "wissenswertes": [
+          "5x Olympiasiegerin (1992-2006)",
+          "9x Weltmeisterin",
+          "Deutschlands erfolgreichste Winter-Olympionikin",
+          "Teilnahme an 8 Olympischen Winterspielen (1992-2022)"
+        ]
+      }
+    },
+    {
+      "bild": "03.webp",
+      "antwort": "Sven Hannawald",
+      "info": {
+        "zeilen": [
+          [
+            "🇩🇪 Geboren:",
+            "7. Februar 1974 in Lauscha, Thüringen"
+          ],
+          [
+            "🏅 Sportart:",
+            "Skispringen"
+          ]
+        ],
+        "wissenswertes": [
+          "Erster Springer mit Vierschanzentournee-Grand-Slam (2001/02)",
+          "Olympiasieger Teamspringen 2002 (Salt Lake City)",
+          "Weltmeister Teamspringen 2001",
+          "Gesamtweltcupsieger 2001/02"
+        ]
+      }
+    },
+    {
+      "bild": "04.webp",
+      "antwort": "Katharina Witt",
+      "info": {
+        "zeilen": [
+          [
+            "🇩🇪 Geboren:",
+            "3. Dezember 1965 in Karl-Marx-Stadt (heute Chemnitz)"
+          ],
+          [
+            "🏅 Sportart:",
+            "Eiskunstlauf"
+          ]
+        ],
+        "wissenswertes": [
+          "2x Olympiasiegerin (1984 Sarajevo, 1988 Calgary)",
+          "4x Weltmeisterin (1984-1988)",
+          "6x Europameisterin",
+          "Gilt als eine der größten Eiskunstläuferinnen aller Zeiten"
+        ]
+      }
+    },
+    {
+      "bild": "05.webp",
+      "antwort": "Karl Geiger",
+      "info": {
+        "zeilen": [
+          [
+            "🇩🇪 Geboren:",
+            "11. Februar 1993 in Oberstdorf, Bayern"
+          ],
+          [
+            "🏅 Sportart:",
+            "Skispringen"
+          ]
+        ],
+        "wissenswertes": [
+          "Vierschanzentournee-Sieger 2021/22",
+          "Olympia-Silber Einzel & Gold Team 2022 (Peking)",
+          "Weltmeister Teamspringen 2019 & 2021",
+          "Mehrfacher Weltcupsieger"
+        ]
+      }
+    },
+    {
+      "bild": "06.webp",
+      "antwort": "Uschi Disl",
+      "info": {
+        "zeilen": [
+          [
+            "🇩🇪 Geboren:",
+            "15. Mai 1970 in Bad Tölz, Bayern"
+          ],
+          [
+            "🏅 Sportart:",
+            "Biathlon"
+          ]
+        ],
+        "wissenswertes": [
+          "9 olympische Medaillen (1992-2006) - Rekord für deutsche Biathletinnen",
+          "2x Weltmeisterin",
+          "Über 30 Weltcupsiege",
+          "Eine der erfolgreichsten Biathletinnen der Geschichte"
+        ]
+      }
+    },
+    {
+      "bild": "07.webp",
+      "antwort": "Anni Friesinger",
+      "info": {
+        "zeilen": [
+          [
+            "🇩🇪 Geboren:",
+            "5. März 1977 in Inzell, Bayern"
+          ],
+          [
+            "🏅 Sportart:",
+            "Eisschnelllauf"
+          ]
+        ],
+        "wissenswertes": [
+          "2x Olympiasiegerin (2002 Salt Lake City, 2006 Turin)",
+          "4x Weltmeisterin",
+          "Mehrfache Weltrekordlerin über 1500 m",
+          "Gesamtweltcupsiegerin 2000/01 und 2001/02"
+        ]
+      }
+    },
+    {
+      "bild": "08.webp",
+      "antwort": "Markus Wasmeier",
+      "info": {
+        "zeilen": [
+          [
+            "🇩🇪 Geboren:",
+            "5. Juli 1963 in Schliersee, Bayern"
+          ],
+          [
+            "🏅 Sportart:",
+            "Ski Alpin"
+          ]
+        ],
+        "wissenswertes": [
+          "2x Olympiasieger 1994 (Lillehammer): Riesenslalom & Super-G",
+          "Weltmeister Super-G 1985",
+          "Europameister 1986",
+          "Betreibt heute den Freilichtmuseum Schliersee"
+        ]
+      }
+    },
+    {
+      "bild": "09.webp",
+      "antwort": "Lindsey Vonn",
+      "info": {
+        "zeilen": [
+          [
+            "🇺🇸 Geboren:",
+            "18. Oktober 1984 in Saint Paul, Minnesota (USA)"
+          ],
+          [
+            "🏅 Sportart:",
+            "Ski Alpin - Abfahrt & Speed"
+          ]
+        ],
+        "wissenswertes": [
+          "Olympiasiegerin Abfahrt 2010 (Vancouver)",
+          "4x Gesamtweltcupsiegerin",
+          "82 Weltcupsiege - Rekord bei den Frauen",
+          "Weltmeisterin Abfahrt 2009 & 2011"
+        ]
+      }
+    },
+    {
+      "bild": "10.webp",
+      "antwort": "Magdalena Neuner",
+      "info": {
+        "zeilen": [
+          [
+            "🇩🇪 Geboren:",
+            "9. Februar 1987 in Garmisch-Partenkirchen, Bayern"
+          ],
+          [
+            "🏅 Sportart:",
+            "Biathlon"
+          ]
+        ],
+        "wissenswertes": [
+          "2x Olympiasiegerin 2010 (Vancouver)",
+          "12x Weltmeisterin - Rekord im Biathlon",
+          "34 Weltcupsiege",
+          "Gesamtweltcupsiegerin 3x - Rücktritt mit 25 Jahren auf dem Höhepunkt"
+        ]
+      }
+    },
+    {
+      "bild": "11.webp",
+      "antwort": "Felix Neureuther",
+      "info": {
+        "zeilen": [
+          [
+            "🇩🇪 Geboren:",
+            "26. März 1984 in Garmisch-Partenkirchen, Bayern"
+          ],
+          [
+            "🏅 Sportart:",
+            "Ski Alpin - Slalom & Riesenslalom"
+          ]
+        ],
+        "wissenswertes": [
+          "13 Weltcupsiege",
+          "Weltcup-Gesamtdritter 2013",
+          "Sohn von Rosi Mittermaier und Christian Neureuther",
+          "Heute TV-Experte und Botschafter für Kindersport"
+        ]
+      }
+    },
+    {
+      "bild": "12.webp",
+      "antwort": "Georg Hackl",
+      "info": {
+        "zeilen": [
+          [
+            "🇩🇪 Geboren:",
+            "9. September 1966 in Berchtesgaden, Bayern"
+          ],
+          [
+            "🏅 Sportart:",
+            "Rodeln"
+          ]
+        ],
+        "wissenswertes": [
+          "3x Olympiasieger (1992, 1994, 1998)",
+          "5x Weltmeister",
+          "Insgesamt 5 olympische Medaillen",
+          "Baute seine Rennschlitten selbst - Spitzname: Speedy"
+        ]
+      }
+    }
+  ]
+}
