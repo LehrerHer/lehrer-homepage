@@ -170,6 +170,24 @@ db.exec(`
 `);
 db.exec('CREATE INDEX IF NOT EXISTS idx_informatik_cp_student ON informatik_checkpoints(student_id)');
 
+// Informatikwerkstatt: Profi-Teile je Station – selbst gelöst oder Lösung angesehen.
+// Die erste Meldung zählt und wird nicht überschrieben (wer Lösungen angesehen hat,
+// kann den Teil später nicht mehr als „selbst gelöst" melden).
+db.exec(`
+  CREATE TABLE IF NOT EXISTS informatik_profi (
+    student_id     INTEGER NOT NULL,
+    station        INTEGER NOT NULL,
+    teil           INTEGER NOT NULL,
+    status         TEXT    NOT NULL CHECK (status IN ('geloest', 'angesehen')),
+    geloest_vorher INTEGER NOT NULL DEFAULT 0,
+    gesamt         INTEGER NOT NULL,
+    fehlversuche   INTEGER NOT NULL DEFAULT 0,
+    created_at     TEXT    NOT NULL DEFAULT (datetime('now')),
+    PRIMARY KEY (student_id, station, teil),
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+  )
+`);
+
 // Feedback-Notizen: Lernbegleiter diktiert Text über eine Lernzeit, Claude teilt ihn
 // nach Lernpartner:in auf und ordnet jedem Abschnitt eine Kategorie zu (siehe CLAUDE.md-Briefing)
 db.exec(`

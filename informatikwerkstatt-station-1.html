@@ -118,6 +118,25 @@
     .bit button { font-size: 1rem; border-width: 2px; }
   }
 
+  /* === PROFI: LÖSUNGEN + BONUS === */
+  .iw-seite [hidden] { display: none !important; }
+  .iw-btn:disabled { opacity: 0.5; cursor: default; }
+  .loesung-freigabe { margin: 12px 0 0; }
+  .loesung-frage { background: var(--orange-zart); border: 2px solid var(--orange); border-radius: 8px; padding: 10px 14px; margin-top: 8px; }
+  .loesung-frage p { margin: 0 0 8px; }
+  .loesung-frage .iw-btn { margin: 0 6px 6px 0; }
+  .loesung-text { flex: 1 1 100%; background: var(--blau-zart); border-left: 4px solid var(--grau); border-radius: 6px; padding: 8px 12px; font-size: 0.95rem; }
+  .aufgabe.angesehen input { background: #f2f2f2; }
+  .rueck.angesehen { color: var(--grau); }
+  .denk-loesung { background: var(--blau-zart); border-left: 4px solid var(--grau); border-radius: 6px; padding: 8px 12px; margin-top: 8px; font-size: 0.95rem; }
+  .belohnung { margin-top: 18px; border: 3px solid var(--orange); border-radius: 12px; padding: 16px; background: var(--orange-zart); }
+  .belohnung h3 { margin-top: 0; }
+  .belohnung:focus { outline: none; }
+  table.einheiten { border-collapse: collapse; width: 100%; background: var(--weiss); font-size: 0.95rem; }
+  table.einheiten th, table.einheiten td { border: 1px solid var(--rand); padding: 6px 10px; text-align: left; }
+  table.einheiten th { background: var(--blau); color: var(--weiss); }
+  .hinweis-klein { font-size: 0.9rem; color: var(--grau); margin-bottom: 0; }
+
   /* === LOGIN-BOX === */
   .iw-login { border-radius: 10px; padding: 12px 16px; margin: 24px 0; }
   .iw-login p { margin: 0 0 8px; }
@@ -220,11 +239,37 @@
   <details><summary>Tipp</summary>Welche Werte (8, 4, 2, 1 …) ergeben zusammen deine Zahl? Diese Bits sind an. Prüfe mit den Lampen oben.</details>
 
   <h3><span class="badge b-profi">Profi</span>Weiterdenken</h3>
-  <div class="aufgabe" data-loesung="255"><span class="frage"><code>11111111</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="100" data-typ="bin"><span class="frage">Schreibe <b>100</b> als Binärzahl.</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="256"><span class="frage">Wie viele verschiedene Zahlen kann ein Byte darstellen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="31"><span class="frage">Jeder Finger ist ein Bit. Bis zu welcher Zahl kannst du mit einer Hand zählen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="profi-block" data-block="t1">
+  <div class="aufgabe" data-loesung="255" data-anzeige="255" data-erklaerung="Alle acht Bits sind an: 128 + 64 + 32 + 16 + 8 + 4 + 2 + 1 = 255. Das ist die größte Zahl, die in ein Byte passt."><span class="frage"><code>11111111</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="100" data-anzeige="1100100 (mit 8 Stellen: 01100100)" data-erklaerung="Such die größten Werte, die in 100 passen: 64 bleibt Rest 36, 32 bleibt Rest 4, dann 4. Also sind die Bits 64, 32 und 4 an." data-typ="bin"><span class="frage">Schreibe <b>100</b> als Binärzahl.</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="256" data-anzeige="256" data-erklaerung="Ein Byte reicht von 0 bis 255. Mit der 0 sind das 256 Zahlen. Jedes weitere Bit verdoppelt die Möglichkeiten: 2 · 2 · 2 · 2 · 2 · 2 · 2 · 2 = 256."><span class="frage">Wie viele verschiedene Zahlen kann ein Byte darstellen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="31" data-anzeige="31" data-erklaerung="Eine Hand hat 5 Finger, also 5 Bits mit den Werten 16, 8, 4, 2 und 1. Sind alle oben, ergibt das 16 + 8 + 4 + 2 + 1 = 31."><span class="frage">Jeder Finger ist ein Bit. Bis zu welcher Zahl kannst du mit einer Hand zählen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <details><summary>Tipp</summary>Bei der Anzahl zählt die 0 mit. Bei der Hand: Wie viele Bits hast du? Was ergibt sich, wenn alle an sind?</details>
+    <div class="loesung-freigabe">
+      <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
+      <div class="loesung-frage" hidden>
+        <p>Wenn du die Lösungen ansiehst, zählt dieser Profi-Teil nicht als selbst gelöst. Deine Lernbegleitung sieht das. Trotzdem anzeigen?</p>
+        <button type="button" class="iw-btn" data-loesung-ja>Ja, Lösungen anzeigen</button>
+        <button type="button" class="iw-btn leise" data-loesung-nein>Nein, ich versuche es weiter</button>
+      </div>
+    </div>
+    <div class="belohnung" id="einheiten" hidden tabindex="-1">
+      <h3>🏆 Alle Profi-Aufgaben geschafft! Bonus: Wie groß sind Dateien?</h3>
+      <p>Bits und Bytes werden schnell sehr viele. Deshalb gibt es größere Einheiten – wie bei Gramm und Kilogramm.</p>
+      <div class="tabelle-scroll">
+        <table class="einheiten">
+          <tr><th>Einheit</th><th>Kürzel</th><th>Größe</th><th>Zum Vergleich (ungefähr)</th></tr>
+          <tr><td>Bit</td><td>bit</td><td>0 oder 1</td><td>eine Lampe: an oder aus</td></tr>
+          <tr><td>Byte</td><td>B</td><td>8 Bit</td><td>ein Buchstabe im ASCII-Code</td></tr>
+          <tr><td>Kilobyte</td><td>KB</td><td>1000 Byte</td><td>eine kurze Textnachricht ohne Bild</td></tr>
+          <tr><td>Megabyte</td><td>MB</td><td>1000 KB</td><td>ein Handyfoto hat meist einige MB</td></tr>
+          <tr><td>Gigabyte</td><td>GB</td><td>1000 MB</td><td>ein Spielfilm hat meist einige GB</td></tr>
+          <tr><td>Terabyte</td><td>TB</td><td>1000 GB</td><td>eine große Festplatte</td></tr>
+        </table>
+      </div>
+      <p class="hinweis-klein">Gut zu wissen: Manchmal wird mit 1024 statt 1000 gerechnet (2 · 2 · 2 · 2 · 2 · 2 · 2 · 2 · 2 · 2 = 1024). Deshalb zeigt dein Computer bei Speichergrößen manchmal etwas andere Zahlen an.</p>
+    </div>
+  </div>
 </section>
 
 <!-- ========== TEIL 2 ========== -->
@@ -247,9 +292,20 @@
   <details><summary>Tipp</summary>Nutze den Umwandler. Großbuchstaben und Kleinbuchstaben haben verschiedene Nummern.</details>
 
   <h3><span class="badge b-profi">Profi</span>Weiterdenken</h3>
-  <div class="aufgabe" data-loesung="32"><span class="frage">Wie groß ist der Abstand zwischen <code>A</code> und <code>a</code>?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="ok"><span class="frage">Welches Wort ist das? <code>01001111 01001011</code></span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="profi-block" data-block="t2">
+  <div class="aufgabe" data-loesung="32" data-anzeige="32" data-erklaerung="A hat die Nummer 65, a hat die Nummer 97. 97 − 65 = 32. Das gilt für alle Buchstaben: Kleinbuchstabe = Großbuchstabe + 32."><span class="frage">Wie groß ist der Abstand zwischen <code>A</code> und <code>a</code>?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="ok" data-anzeige="OK" data-erklaerung="01001111 = 64 + 8 + 4 + 2 + 1 = 79 = O. 01001011 = 64 + 8 + 2 + 1 = 75 = K. Zusammen: OK."><span class="frage">Welches Wort ist das? <code>01001111 01001011</code></span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <details><summary>Denkfrage</summary>Tipp „ä“ in den Umwandler. Der ASCII-Code hat nur 128 Zeichen. Was meinst du: Wie speichert ein Handy dann Umlaute oder Emojis?</details>
+    <div class="loesung-freigabe">
+      <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
+      <div class="loesung-frage" hidden>
+        <p>Wenn du die Lösungen ansiehst, zählt dieser Profi-Teil nicht als selbst gelöst. Deine Lernbegleitung sieht das. Trotzdem anzeigen?</p>
+        <button type="button" class="iw-btn" data-loesung-ja>Ja, Lösungen anzeigen</button>
+        <button type="button" class="iw-btn leise" data-loesung-nein>Nein, ich versuche es weiter</button>
+      </div>
+    </div>
+    <div class="denk-loesung" hidden><b>Lösung zur Denkfrage:</b> Heute nutzen Computer und Handys statt ASCII meist <b>Unicode</b>. Darin hat fast jedes Zeichen der Welt eine Nummer. In der üblichen Speicherform UTF-8 bleibt ein Buchstabe wie „A“ bei 1 Byte, „ä“ braucht 2 Bytes und die meisten Emojis 4 Bytes.</div>
+  </div>
 </section>
 
 <!-- ========== TEIL 3 ========== -->
@@ -289,9 +345,19 @@
   <div class="aufgabe" data-loesung="gelb"><span class="frage">Welche Farbe ergibt <code>(255, 255, 0)</code>?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
 
   <h3><span class="badge b-profi">Profi</span>Weiterdenken</h3>
-  <div class="aufgabe" data-loesung="24"><span class="frage">Jede Farbe braucht ein Byte. Wie viele Bits braucht ein farbiges Pixel?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="16777216"><span class="frage">Wie viele verschiedene Farben gibt es damit?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="profi-block" data-block="t3">
+  <div class="aufgabe" data-loesung="24" data-anzeige="24" data-erklaerung="Ein Pixel hat drei Farbwerte (Rot, Grün, Blau). Jeder braucht 1 Byte = 8 Bits. 3 · 8 = 24 Bits."><span class="frage">Jede Farbe braucht ein Byte. Wie viele Bits braucht ein farbiges Pixel?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="16777216" data-anzeige="16.777.216 (rund 16,7 Millionen)" data-erklaerung="Jede Farbe hat 256 Stufen. Alle Kombinationen: 256 · 256 · 256 = 16.777.216."><span class="frage">Wie viele verschiedene Farben gibt es damit?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <details><summary>Tipp</summary>Jede Farbe hat 256 Stufen. Für jede Rot-Stufe gibt es alle Grün-Stufen, und für jede davon alle Blau-Stufen.</details>
+    <div class="loesung-freigabe">
+      <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
+      <div class="loesung-frage" hidden>
+        <p>Wenn du die Lösungen ansiehst, zählt dieser Profi-Teil nicht als selbst gelöst. Deine Lernbegleitung sieht das. Trotzdem anzeigen?</p>
+        <button type="button" class="iw-btn" data-loesung-ja>Ja, Lösungen anzeigen</button>
+        <button type="button" class="iw-btn leise" data-loesung-nein>Nein, ich versuche es weiter</button>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ========== TEIL 4 ========== -->
@@ -373,9 +439,95 @@
       inp.classList.toggle("falsch", !richtig);
       rk.className = "rueck " + (richtig ? "ok" : "falsch");
       rk.textContent = richtig ? "✓ Richtig" : "Noch nicht – schau dir den Tipp an.";
+      if (richtig) a.dataset.geloest = "1";
+      var block = a.closest(".profi-block");
+      if (block) profiNachPruefen(block, richtig);
     }
     btn.addEventListener("click", pruefen);
     inp.addEventListener("keydown", function (e) { if (e.key === "Enter") pruefen(); });
+  });
+
+
+  /* ---------- Profi: Bonus, Lösungen, Meldung an Lernbegleitung ---------- */
+  var STATION = 1;
+  function teilVon(block) { return parseInt(block.dataset.block.replace("t", ""), 10); }
+  function anzahlGeloest(block) { return block.querySelectorAll('.aufgabe[data-geloest="1"]').length; }
+
+  function hinweis(block, text) {
+    var alt = block.querySelector(".profi-hinweis");
+    if (alt) alt.remove();
+    var p = document.createElement("p");
+    p.className = "hinweis-klein profi-hinweis";
+    p.textContent = text;
+    block.querySelector(".loesung-freigabe").appendChild(p);
+  }
+
+  function alsGeloestZeigen(block, melden) {
+    if (block.dataset.status) return;
+    block.dataset.status = "geloest";
+    block.querySelector("[data-loesung-start]").hidden = true;
+    block.querySelector(".loesung-frage").hidden = true;
+    var bonus = block.querySelector(".belohnung");
+    if (bonus) bonus.hidden = false;
+    hinweis(block, "✓ Diesen Profi-Teil hast du selbst gelöst.");
+    if (melden) {
+      var alle = block.querySelectorAll(".aufgabe").length;
+      InformatikLogin.profiMelden(STATION, teilVon(block), "geloest", alle, alle, parseInt(block.dataset.fehler || "0", 10));
+      if (bonus) bonus.focus();
+    }
+  }
+
+  function loesungenZeigen(block, melden) {
+    if (block.dataset.status) return;
+    block.dataset.status = "angesehen";
+    block.querySelector("[data-loesung-start]").hidden = true;
+    block.querySelector(".loesung-frage").hidden = true;
+    var alle = block.querySelectorAll(".aufgabe");
+    var vorher = anzahlGeloest(block);
+    alle.forEach(function (a) {
+      var inp = a.querySelector("input"), btn = a.querySelector("button"), rk = a.querySelector(".rueck");
+      inp.disabled = true;
+      btn.disabled = true;
+      a.classList.add("angesehen");
+      if (a.dataset.geloest !== "1") { rk.className = "rueck angesehen"; rk.textContent = "Lösung angesehen"; }
+      var box = document.createElement("div");
+      box.className = "loesung-text";
+      var b = document.createElement("b");
+      b.textContent = "Lösung: " + a.dataset.anzeige + ". ";
+      box.appendChild(b);
+      box.appendChild(document.createTextNode(a.dataset.erklaerung));
+      a.appendChild(box);
+    });
+    var denk = block.querySelector(".denk-loesung");
+    if (denk) denk.hidden = false;
+    hinweis(block, "Du hast dir die Lösungen angesehen. Dieser Profi-Teil zählt nicht als selbst gelöst – das sieht auch deine Lernbegleitung.");
+    if (melden) {
+      InformatikLogin.profiMelden(STATION, teilVon(block), "angesehen", vorher, alle.length, parseInt(block.dataset.fehler || "0", 10));
+    }
+  }
+
+  function profiNachPruefen(block, richtig) {
+    if (block.dataset.status) return;
+    if (!richtig) block.dataset.fehler = String(parseInt(block.dataset.fehler || "0", 10) + 1);
+    if (anzahlGeloest(block) === block.querySelectorAll(".aufgabe").length) alsGeloestZeigen(block, true);
+  }
+
+  document.querySelectorAll(".profi-block").forEach(function (block) {
+    var start = block.querySelector("[data-loesung-start]");
+    var frage = block.querySelector(".loesung-frage");
+    start.addEventListener("click", function () { start.hidden = true; frage.hidden = false; });
+    block.querySelector("[data-loesung-nein]").addEventListener("click", function () { frage.hidden = true; start.hidden = false; });
+    block.querySelector("[data-loesung-ja]").addEventListener("click", function () { loesungenZeigen(block, true); });
+  });
+
+  // Gespeicherten Stand laden: früher gelöste bzw. aufgedeckte Teile wieder so anzeigen
+  InformatikLogin.bereit.then(function (z) {
+    if (!z.eingeloggt) return;
+    document.querySelectorAll(".profi-block").forEach(function (block) {
+      var st = z.profi[STATION + "-" + teilVon(block)];
+      if (st === "geloest") alsGeloestZeigen(block, false);
+      else if (st === "angesehen") loesungenZeigen(block, false);
+    });
   });
 
   /* ---------- Teil 2: ASCII ---------- */
