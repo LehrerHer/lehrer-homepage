@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Informatikwerkstatt – Admin</title>
+  <link rel="stylesheet" href="/css/style.css?v=20260615c">
+  <style>
+    .admin-nav { background: #12122a; }
+    .iw-tabelle-wrap { overflow-x: auto; }
+    table.iw-tabelle { border-collapse: collapse; width: 100%; font-size: .95rem; }
+    .iw-tabelle th, .iw-tabelle td { border: 1px solid #d5dce8; padding: .45rem .6rem; text-align: center; vertical-align: middle; }
+    .iw-tabelle th { background: #e9eef6; }
+    .iw-tabelle td.name { text-align: left; white-space: nowrap; }
+    .iw-tabelle .nick { color: #5b6577; font-size: .8rem; display: block; }
+    .iw-ok { background: #eaf6ee; font-weight: 700; color: #1a7a40; }
+    .iw-offen { background: #fff1e3; color: #6b4a00; }
+    .iw-zelle small { display: block; color: #5b6577; font-weight: 400; font-size: .75rem; }
+    .iw-name-btn { border: 0; background: none; color: #2d6a9f; cursor: pointer; font-size: .8rem; padding: 0; text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+      <a href="https://lehrer-herrmann.de" class="navbar-logo">lehrer-herrmann.de</a>
+      <button class="hamburger" id="hamburger" aria-label="Menü öffnen" aria-expanded="false" aria-controls="navbar-links">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="navbar-links" id="navbar-links">
+        <li><a href="https://lehrer-herrmann.de/#was-ist-neu">Was ist neu?</a></li>
+        <li><a href="https://lehrer-herrmann.de/kontakt.html">Kontakt</a></li>
+        <li class="navbar-gb-trenner" aria-hidden="true"><span class="navbar-gb-label">Geschützter Bereich</span></li>
+        <li><a href="https://lehrer-herrmann.de/blog.html" class="navbar-gb-link">✍️ Blog</a></li>
+        <li><a href="https://lehrer-herrmann.de/faecher.html" class="navbar-gb-link">📚 Fächer</a></li>
+        <li><a href="/profil.html" class="navbar-gb-link">⚔️ Arena</a></li>
+      </ul>
+      <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+    </div>
+  </nav>
+
+  <nav class="nav admin-nav">
+    <a href="/admin/dashboard.html" class="nav-brand">⚙️ Admin</a>
+    <div class="nav-links">
+      <a href="/admin/dashboard.html">Dashboard</a>
+      <a href="/admin/schueler.html">Schüler</a>
+      <a href="/admin/quiz.html">Quizze</a>
+      <a href="/admin/vokabelpakete.html">Vokabeln</a>
+      <a href="/admin/leseabenteuer.html">Leseabenteuer</a>
+      <a href="/admin/informatik.html" class="active">Informatik</a>
+      <a href="/admin/deutschclub.html">Deutschclub</a>
+      <a href="/admin/blog.html">Blog</a>
+      <a href="/feedback.html">Feedback</a>
+      <button id="logout-btn" class="btn btn-ghost nav-action" style="font-size:.85rem">Ausloggen</button>
+    </div>
+  </nav>
+
+  <main class="container" style="padding-bottom:3rem">
+    <h1 style="margin-top:1.5rem">Informatikwerkstatt 7/8 – Lernpfad</h1>
+    <p class="text-soft">Bestes Checkpoint-Ergebnis je Station. Grün = geschafft (ab 70 %), orange = noch nicht. Der Vorname ist nur hier sichtbar.</p>
+    <div class="card iw-tabelle-wrap" style="margin-top:1rem">
+      <table class="iw-tabelle" id="tabelle"><tr><td>Wird geladen …</td></tr></table>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+      function datum(s) { if (!s) return ''; var d = new Date(s.replace(' ', 'T') + 'Z'); return d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' }); }
+
+      async function laden() {
+        var tab = document.getElementById('tabelle');
+        try {
+          var res = await fetch('/api/informatik/admin/uebersicht');
+          if (!res.ok) throw new Error('Laden fehlgeschlagen (' + res.status + ').');
+          var d = await res.json();
+          var kopf = '<tr><th>Lernpartner:in</th>';
+          for (var i = 1; i <= d.stationen; i++) kopf += '<th>Station ' + i + '</th>';
+          var html = kopf + '</tr>';
+          if (!d.personen.length) html += '<tr><td colspan="' + (d.stationen + 1) + '">Noch keine Einträge.</td></tr>';
+          d.personen.forEach(function (p) {
+            html += '<tr><td class="name"><strong>' + esc(p.vorname || '– kein Vorname –') + '</strong>' +
+              '<span class="nick">' + esc(p.nick) + ' · <button class="iw-name-btn" data-id="' + p.id + '" data-name="' + esc(p.vorname || '') + '">Vorname ändern</button></span></td>';
+            for (var s = 1; s <= d.stationen; s++) {
+              var e = p.stationen[s];
+              if (!e) { html += '<td>–</td>'; continue; }
+              html += '<td class="iw-zelle ' + (e.bestanden ? 'iw-ok' : 'iw-offen') + '">' + (e.bestanden ? '✓ ' : '') + e.beste + '/' + e.max +
+                '<small>' + e.versuche + (e.versuche === 1 ? ' Versuch' : ' Versuche') + ' · ' + datum(e.zuletzt) + '</small></td>';
+            }
+            html += '</tr>';
+          });
+          tab.innerHTML = html;
+        } catch (err) {
+          tab.innerHTML = '<tr><td>' + esc(err.message) + '</td></tr>';
+        }
+      }
+
+      document.getElementById('tabelle').addEventListener('click', async function (e) {
+        var b = e.target.closest('.iw-name-btn');
+        if (!b) return;
+        var neu = window.prompt('Vorname:', b.dataset.name);
+        if (neu === null || neu.trim().length < 2) return;
+        await fetch('/api/informatik/admin/vorname/' + b.dataset.id, {
+          method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ vorname: neu.trim() })
+        });
+        laden();
+      });
+
+      document.getElementById('logout-btn').addEventListener('click', async function () {
+        await fetch('/api/auth/admin/logout', { method: 'POST' });
+        window.location.href = '/admin/index.html';
+      });
+
+      (async function () {
+        var chk = await fetch('/api/auth/admin/check');
+        if (!chk.ok) { window.location.href = '/admin/index.html'; return; }
+        laden();
+      })();
+    })();
+  </script>
+
+  <footer class="site-footer" style="margin-top:3rem">
+    <div class="site-footer-inner">
+      <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+      <nav class="site-footer-links" aria-label="Rechtliche Links">
+        <a href="https://lehrer-herrmann.de/impressum.html">Impressum</a>
+        <a href="https://lehrer-herrmann.de/datenschutz.html">Datenschutz</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="/js/main.js?v=20260615c"></script>
+  <script src="/js/kolosseum-login-widget.js"></script>
+</body>
+</html>

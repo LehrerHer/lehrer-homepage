@@ -648,6 +648,30 @@ systemctl daemon-reload && systemctl restart reso-api
 
 ---
 
+## Informatikwerkstatt 7/8 – Lernpfad (Stand 2026-11)
+
+Selbstlern-Lernpfad (6 Stationen) für die Informatikwerkstatt Jg. 7/8, verlinkt auf `fach-informatik.html`.
+
+- **Seiten (Root):** `informatikwerkstatt.html` (Start/Lernpfad), `informatikwerkstatt-station-<n>.html`
+  (bisher Station 1), geplant `informatikwerkstatt-knobelkiste.html`. Eigene Gestaltung (Dunkelblau/Weiß,
+  orange Akzente) mit `iw-`-Präfix, Navbar/Footer wie überall.
+- **Login:** `js/informatik-login.js` vor dem Seiten-Script einbinden, Box `<div id="iw-login" hidden>`.
+  Kolosseum-Login Pflicht; beim ersten Mal Vorname (eigene Tabelle `informatik_vornamen`, nur im Admin
+  „Informatik" sichtbar, bewusst getrennt von `student_names`).
+  Ergebnis senden: `InformatikLogin.senden(station, punkte, max)`; bestanden ab 70 %.
+- **Backend:** `kolosseum/routes/informatik.js`, Tabelle `informatik_checkpoints` (jeder Versuch).
+- **Admin:** `kolosseum/public/admin/informatik.html` (bestes Ergebnis je Station, Versuche, Vorname ändern).
+
+| Methode | Pfad (Kolosseum) | Auth | Zweck |
+|---------|------------------|------|-------|
+| GET | `/api/informatik/status` | Schüler-Login | Vorname + Stationsstand |
+| POST | `/api/informatik/vorname` | Schüler-Login | Vorname einmalig speichern |
+| POST | `/api/informatik/checkpoint` | Schüler-Login | Ergebnis speichern |
+| GET | `/api/informatik/admin/uebersicht` | Admin | Übersicht aller Lernpartner:innen |
+| PUT | `/api/informatik/admin/vorname/:id` | Admin | Vorname korrigieren |
+
+---
+
 ## Interaktive Arbeitsblätter (Worksheet-Generator)
 
 Dieser Assistent unterstützt Jan Herrmann und sein Kollegium dabei, hochgeladene Arbeitsblätter (PDF, Bild oder Text) in interaktive, eigenständige HTML-Dateien umzuwandeln.

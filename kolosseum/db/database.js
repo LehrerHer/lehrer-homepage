@@ -144,6 +144,32 @@ db.exec(`
   )
 `);
 
+// Informatikwerkstatt 7/8 (Lernpfad): Vorname nur für den Informatikbereich
+// (bewusst getrennt von student_names, damit er nirgends sonst im Admin auftaucht)
+db.exec(`
+  CREATE TABLE IF NOT EXISTS informatik_vornamen (
+    student_id INTEGER PRIMARY KEY,
+    vorname    TEXT    NOT NULL,
+    created_at TEXT    NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+  )
+`);
+
+// Informatikwerkstatt: jeder Checkpoint-Versuch wird gespeichert
+db.exec(`
+  CREATE TABLE IF NOT EXISTS informatik_checkpoints (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    student_id INTEGER NOT NULL,
+    station    INTEGER NOT NULL,
+    punkte     INTEGER NOT NULL,
+    max_punkte INTEGER NOT NULL,
+    bestanden  INTEGER NOT NULL DEFAULT 0,
+    created_at TEXT    NOT NULL DEFAULT (datetime('now')),
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+  )
+`);
+db.exec('CREATE INDEX IF NOT EXISTS idx_informatik_cp_student ON informatik_checkpoints(student_id)');
+
 // Feedback-Notizen: Lernbegleiter diktiert Text über eine Lernzeit, Claude teilt ihn
 // nach Lernpartner:in auf und ordnet jedem Abschnitt eine Kategorie zu (siehe CLAUDE.md-Briefing)
 db.exec(`
