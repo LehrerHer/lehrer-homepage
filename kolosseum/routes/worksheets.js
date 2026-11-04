@@ -9,15 +9,39 @@ function validId(id) {
   return typeof id === 'string' && /^[a-z0-9_-]{1,80}$/i.test(id);
 }
 
+// Whitelist: Höchst-XP je Arbeitsblatt (Wert, den die Seite selbst per worksheetComplete meldet).
+// Unbekannte IDs werden abgelehnt – sonst könnte jeder beliebige IDs mit bis zu 100 XP einreichen.
+// Neues Arbeitsblatt mit XP → hier eintragen.
+const WORKSHEET_XP = {
+  'deutsch-drama-ppp-jg10':      25,
+  'geschichte-ab1-prag-stunde1': 25,
+  'geschichte-prag-stunde1':     25,
+  'geschichte-prag-stunde2':     25,
+  'ki-werkstatt-a':             100,
+  'ki-werkstatt-c1':             20,
+  'ki-werkstatt-c2':             20,
+  'ki-werkstatt-c3':             20,
+  'ki-werkstatt-c4':             20,
+  'ki-werkstatt-c5':             20,
+  'ki-werkstatt-c6':             20,
+  'ki-werkstatt-c7':             20,
+  'ki-werkstatt-c8':             20,
+  'ki-werkstatt-c9':             20,
+  'ki-werkstatt-c10':            20,
+  'ki-werkstatt-c11':            20,
+  'rechenblatt-1000':            20, // fehlerZuXP: 20/10/5/1
+  'rechenblatt-klasse45':        20,
+};
+
 // POST /api/worksheets/submit – XP für abgeschlossenes Arbeitsblatt einreichen
 router.post('/submit', requireStudent, (req, res) => {
   const studentId = req.session.studentId;
   const { worksheetId, title, xp } = req.body;
 
-  if (!validId(worksheetId)) {
-    return res.status(400).json({ error: 'Ungültige Worksheet-ID.' });
+  if (!validId(worksheetId) || !WORKSHEET_XP[worksheetId]) {
+    return res.status(400).json({ error: 'Unbekanntes Arbeitsblatt.' });
   }
-  if (typeof xp !== 'number' || !Number.isInteger(xp) || xp < 1 || xp > 100) {
+  if (typeof xp !== 'number' || !Number.isInteger(xp) || xp < 1 || xp > WORKSHEET_XP[worksheetId]) {
     return res.status(400).json({ error: 'Ungültiger XP-Wert.' });
   }
 
