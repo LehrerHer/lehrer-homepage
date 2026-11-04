@@ -673,6 +673,7 @@ Selbstlern-Lernpfad (6 Stationen) für die Informatikwerkstatt Jg. 7/8, verlinkt
   nicht umnummerieren, sonst gibt es doppelte XP). Selbst gelöst → `xpGeloest(el, rueck)` → 5 XP; alle `[data-xp-id]`
   eines `section.teil` gelöst → 25 XP. Checkpoint: 5 XP je richtiger Frage (nur Verbesserung) + 25 XP fürs Bestehen,
   serverseitig in `POST /checkpoint`. Tabelle `informatik_xp` (Schlüssel `a:`/`t:`/`q:`/`c:`), jeder Schlüssel nur einmal.
+  Beim Serverstart werden gespeicherte Checkpoint-Ergebnisse nachvergütet (idempotent).
 - **Admin:** `kolosseum/public/admin/informatik.html` (bestes Ergebnis je Station, Versuche, Vorname ändern).
 
 | Methode | Pfad (Kolosseum) | Auth | Zweck |

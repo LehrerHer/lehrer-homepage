@@ -31,6 +31,22 @@ function xpVergeben(studentId, eintraege, grund) {
   return summe;
 }
 
+// Nachvergütung beim Serverstart: bereits gespeicherte Checkpoint-Ergebnisse bekommen ihre XP.
+// Läuft bei jedem Start, vergibt aber dank fester Schlüssel nichts doppelt.
+try {
+  db.prepare(`
+    SELECT student_id, station, MAX(punkte) AS beste, MAX(bestanden) AS bestanden
+    FROM informatik_checkpoints GROUP BY student_id, station
+  `).all().forEach(r => {
+    const eintraege = [];
+    for (let n = 1; n <= r.beste; n++) eintraege.push(['q:' + r.station + ':' + n, XP_FRAGE]);
+    if (r.bestanden) eintraege.push(['c:' + r.station, XP_BESTANDEN]);
+    xpVergeben(r.student_id, eintraege, 'Informatikwerkstatt Station ' + r.station + ': Checkpoint (nachträglich)');
+  });
+} catch (e) {
+  console.error('Informatik-XP-Nachvergütung fehlgeschlagen:', e.message);
+}
+
 // GET /api/informatik/status – Login-, Vornamen- und Stationsstatus der eingeloggten Person
 router.get('/status', requireStudent, (req, res) => {
   const id = req.session.studentId;
