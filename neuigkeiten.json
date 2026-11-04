@@ -2,6 +2,12 @@
   "_hinweis": "Neue Funktionen für die 'Was ist neu?'-Sektion. Neueste oben einfügen. Felder: titel, datum (JJJJ-MM-TT), meta (Bereich), url. Wird von js/was-ist-neu.js geladen; es werden automatisch die 5 jüngsten angezeigt.",
   "funktionen": [
     {
+      "titel": "Informatikwerkstatt: Station 2 „Algorithmen ohne PC“ ist online",
+      "datum": "2026-11-04",
+      "meta": "Informatik",
+      "url": "informatikwerkstatt-station-2.html"
+    },
+    {
       "titel": "Informatikwerkstatt 7/8: Lernpfad mit gespeicherten Checkpoints",
       "datum": "2026-11-04",
       "meta": "Informatik",
