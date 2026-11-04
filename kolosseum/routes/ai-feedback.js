@@ -75,6 +75,14 @@ router.post('/', limiter, async (req, res) => {
 
   const cfg = WORKSHEETS[worksheet];
 
+  // Antworten begrenzen: der Endpunkt ist ohne Login erreichbar, lange Eingaben kosten API-Guthaben
+  const MAX_ZEICHEN = 2000;
+  const roh = (answers && typeof answers === 'object') ? answers : {};
+  const gekuerzt = {};
+  for (const [schluessel, wert] of Object.entries(roh)) {
+    if (/^a\d{1,2}$/.test(schluessel)) gekuerzt[schluessel] = String(wert ?? '').slice(0, MAX_ZEICHEN);
+  }
+
   try {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
@@ -84,10 +92,12 @@ router.post('/', limiter, async (req, res) => {
         'anthropic-version': '2023-06-01'
       },
       body: JSON.stringify({
-        model: 'claude-3-5-haiku-20241022',
-        max_tokens: 1200,
+        // claude-3-5-haiku-20241022 wurde am 19.02.2026 abgeschaltet
+        // Haiku 5.5 denkt adaptiv; Denk-Tokens zählen zu max_tokens → Puffer lassen
+        model: 'claude-haiku-5-5',
+        max_tokens: 4000,
         system: cfg.systemPrompt,
-        messages: [{ role: 'user', content: cfg.buildUserPrompt(answers || {}) }]
+        messages: [{ role: 'user', content: cfg.buildUserPrompt(gekuerzt) }]
       })
     });
 

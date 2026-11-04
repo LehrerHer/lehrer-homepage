@@ -802,8 +802,15 @@ beim Sichten/Anpassen einer hochgeladenen Datei nicht mit einem Fehler verwechse
    (ohne diesen Schritt bleibt die Bestenliste leer bzw. wird kein XP vergeben – **und zwar
    ohne sichtbare Fehlermeldung** für die Schüler*innen):
    - `kolosseum/routes/leaderboard.js` → Array `VALID_QUIZZES`: die Quiz-ID ergänzen.
-   - `kolosseum/routes/external.js` → Array `VALID_SLUGS` **und** Objekt `QUIZ_LABELS`: die
-     Quiz-ID exakt (vollständiger String) plus ein sprechendes Label für den XP-Log ergänzen.
+   - `kolosseum/routes/external.js`: Quiz-ID exakt (vollständiger String) mit Label **und
+     Fragenanzahl** eintragen – und zwar je nachdem, was das Quiz als `total` an
+     `kolosseumReport(score, total, id)` meldet:
+     - meldet es **Punkte** (Rebus-/Bilderraten-Generator, z. B. `MAX_SCORE = 1200`) →
+       in `PUNKTE_QUIZZE` mit der Anzahl der Rätsel (`fragen: 12`). Sonst gäbe es
+       Notenpunkte × 1200 XP.
+     - meldet es **Fragen** → in `FRAGEN_QUIZZE` mit der höchstmöglichen Fragenanzahl.
+     - Alte Einträge in `VALID_SLUGS`/`QUIZ_LABELS` bleiben gültig; dort greift die
+       Obergrenze `MAX_FRAGEN_STANDARD`.
    - **Hintergrund (beide Prüfungen sind unabhängig voneinander, deshalb immer beide
      ergänzen):** `js/leaderboard.js` leitet für die Bestenliste die Basis-ID vor dem
      ersten Bindestrich ab (`quiz.split('-')[0]`) und prüft diese per `startsWith` gegen

@@ -4,7 +4,7 @@ const path    = require('path');
 const fs      = require('fs');
 const rateLimit = require('express-rate-limit');
 const { db }  = require('../db/database');
-const { requireAdmin } = require('../middleware/auth');
+const { requireAdmin, sichereEndung } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -16,7 +16,7 @@ fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, UPLOAD_DIR),
   filename:    (_req, file, cb) => {
-    const ext    = path.extname(file.originalname).toLowerCase();
+    const ext    = sichereEndung(file.mimetype);
     const random = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
     cb(null, random + ext);
   }

@@ -31,6 +31,13 @@ const deutschclubRoutes      = require('./routes/deutschclub');
 const fortbildungRoutes      = require('./routes/fortbildung');
 const fortbildungBogenRoutes = require('./routes/fortbildung-bogen');
 
+// Ohne eigenes SESSION_SECRET könnte jede*r Sessions fälschen (der Fallback steht
+// im öffentlichen Repo). Im Live-Betrieb deshalb nicht starten.
+if (process.env.NODE_ENV === 'production' && !process.env.SESSION_SECRET) {
+  console.error('FEHLER: SESSION_SECRET fehlt in .env – Server startet aus Sicherheitsgründen nicht.');
+  process.exit(1);
+}
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 

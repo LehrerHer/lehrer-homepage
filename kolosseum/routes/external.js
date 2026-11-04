@@ -30,6 +30,37 @@ for (const [key, label] of Object.entries(MATHE_ZG)) {
   }
 }
 
+// Quizze, die PUNKTE statt Fragen als „total“ melden (Rebus-/Bilderraten-Generator, z. B. 1200).
+// Für die XP zählt hier die feste Fragenanzahl, nicht die gemeldete Punktzahl.
+const PUNKTE_QUIZZE = {
+  'kaefer-quiz':          { fragen: 12, label: 'Käfer-Quiz' },
+  'masken-quiz':          { fragen: 12, label: 'Masken-Quiz' },
+  'fussball-rebus':       { fragen: 15, label: 'Fußball-Rebus' },
+  'wintersport-legenden': { fragen: 12, label: 'Wintersport-Legenden' },
+  'monatsnamen-rebus':    { fragen: 12, label: 'Monatsnamen-Rebus' },
+};
+// Quizze, die Fragen melden, mit ihrer tatsächlichen Höchstzahl an Fragen
+const FRAGEN_QUIZZE = {
+  'lehrer-rebus':                      { fragen: 48, label: 'Lehrer-Rebus' },
+  'erdkunde-bundeslaender':            { fragen: 16, label: 'Stumme Karte: Bundesländer' },
+  'erdkunde-laender-hauptstaedte':     { fragen: 29, label: 'Stumme Karte: Länder & Hauptstädte' },
+  'erdkunde-niedersachsen-landkreise': { fragen: 46, label: 'Stumme Karte: Niedersachsens Landkreise' },
+};
+for (const [slug, q] of Object.entries({ ...PUNKTE_QUIZZE, ...FRAGEN_QUIZZE })) {
+  VALID_SLUGS.push(slug);
+  QUIZ_LABELS[slug] = q.label;
+}
+// Obergrenze für alle übrigen Quizze: verhindert, dass ein manipuliertes „total“
+// (z. B. 100000) beliebig viele XP erzeugt. Größtes Quiz (Stand 2026-11):
+// Deutsch-Quiz Sek I mit Option „alle Fragen“ = bis zu 124 Fragen.
+const MAX_FRAGEN_STANDARD = 150;
+
+function xpFragen(quizSlug, total) {
+  if (PUNKTE_QUIZZE[quizSlug]) return PUNKTE_QUIZZE[quizSlug].fragen;
+  if (FRAGEN_QUIZZE[quizSlug]) return Math.min(total, FRAGEN_QUIZZE[quizSlug].fragen);
+  return Math.min(total, MAX_FRAGEN_STANDARD);
+}
+
 // Notenpunkte-Tabelle (Oberstufe, 0–15 Punkte)
 function computeNotenpunkte(score, total) {
   const pct = total > 0 ? (score / total) * 100 : 0;
@@ -75,7 +106,7 @@ router.post('/submit', requireStudent, (req, res) => {
   const bestXpSoFar = prevBest.best_xp || 0;
 
   const notenpunkte = computeNotenpunkte(score, total);
-  const xpEarned = notenpunkte * total;
+  const xpEarned = notenpunkte * xpFragen(quizSlug, total);
   // Verbesserungs-Differenz: nur die XP gutschreiben, die über das bisherige Bestergebnis hinausgehen
   const xpToAdd = Math.max(0, xpEarned - bestXpSoFar);
 
