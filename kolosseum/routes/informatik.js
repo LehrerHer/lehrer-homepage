@@ -24,7 +24,10 @@ router.get('/status', requireStudent, (req, res) => {
   const profi = {};
   db.prepare('SELECT station, teil, status FROM informatik_profi WHERE student_id = ?').all(id)
     .forEach(r => { profi[r.station + '-' + r.teil] = r.status; });
-  res.json({ vorname: vn ? vn.vorname : null, stationen, profi });
+  const antworten = {};
+  db.prepare('SELECT station, frage, antwort FROM informatik_antworten WHERE student_id = ?').all(id)
+    .forEach(r => { antworten[r.station + '-' + r.frage] = r.antwort; });
+  res.json({ vorname: vn ? vn.vorname : null, stationen, profi, antworten });
 });
 
 // POST /api/informatik/vorname – Vorname einmalig speichern (später nur noch im Admin änderbar)
@@ -79,6 +82,22 @@ router.post('/profi', requireStudent, (req, res) => {
   res.json({ ok: true, status: row.status });
 });
 
+// POST /api/informatik/antwort – freie Antwort (z. B. Denkfrage). Nur die erste Antwort zählt.
+router.post('/antwort', requireStudent, (req, res) => {
+  const station = parseInt(req.body?.station, 10);
+  const frage = String(req.body?.frage || '');
+  const text = String(req.body?.text || '').trim();
+  if (!(station >= 1 && station <= STATIONEN) || !/^[a-z0-9-]{1,30}$/.test(frage)
+      || text.length < 10 || text.length > 1000) {
+    return res.status(400).json({ error: 'Ungültige Antwort.' });
+  }
+  db.prepare('INSERT OR IGNORE INTO informatik_antworten (student_id, station, frage, antwort) VALUES (?, ?, ?, ?)')
+    .run(req.session.studentId, station, frage, text);
+  const row = db.prepare('SELECT antwort FROM informatik_antworten WHERE student_id = ? AND station = ? AND frage = ?')
+    .get(req.session.studentId, station, frage);
+  res.json({ ok: true, text: row.antwort });
+});
+
 // ── Admin ─────────────────────────────────────────────────────────────
 
 // GET /api/informatik/admin/uebersicht – alle Lernpartner:innen mit Vorname und bestem Ergebnis je Station
@@ -90,6 +109,7 @@ router.get('/admin/uebersicht', requireAdmin, (req, res) => {
     WHERE v.student_id IS NOT NULL
        OR s.id IN (SELECT DISTINCT student_id FROM informatik_checkpoints)
        OR s.id IN (SELECT DISTINCT student_id FROM informatik_profi)
+       OR s.id IN (SELECT DISTINCT student_id FROM informatik_antworten)
     ORDER BY COALESCE(v.vorname, s.nick) COLLATE NOCASE
   `).all();
   const ergebnisse = db.prepare(`
@@ -113,10 +133,18 @@ router.get('/admin/uebersicht', requireAdmin, (req, res) => {
       gesamt: r.gesamt, fehlversuche: r.fehlversuche, am: r.created_at,
     });
   });
+  const antworten = {};
+  db.prepare('SELECT student_id, station, frage, antwort, created_at FROM informatik_antworten ORDER BY station, frage')
+    .all().forEach(r => {
+      (antworten[r.student_id] = antworten[r.student_id] || []).push({
+        station: r.station, frage: r.frage, antwort: r.antwort, am: r.created_at,
+      });
+    });
   res.json({
     stationen: STATIONEN,
     personen: personen.map(p => ({
       id: p.id, nick: p.nick, vorname: p.vorname, stationen: map[p.id] || {}, profi: profi[p.id] || [],
+      antworten: antworten[p.id] || [],
     })),
   });
 });

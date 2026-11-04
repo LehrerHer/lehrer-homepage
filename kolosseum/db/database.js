@@ -170,6 +170,20 @@ db.exec(`
 `);
 db.exec('CREATE INDEX IF NOT EXISTS idx_informatik_cp_student ON informatik_checkpoints(student_id)');
 
+// Informatikwerkstatt: freie Antworten (z. B. Denkfragen). Erste Antwort ist endgültig,
+// weil danach die Musterlösung angezeigt wird.
+db.exec(`
+  CREATE TABLE IF NOT EXISTS informatik_antworten (
+    student_id INTEGER NOT NULL,
+    station    INTEGER NOT NULL,
+    frage      TEXT    NOT NULL,
+    antwort    TEXT    NOT NULL,
+    created_at TEXT    NOT NULL DEFAULT (datetime('now')),
+    PRIMARY KEY (student_id, station, frage),
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+  )
+`);
+
 // Informatikwerkstatt: Profi-Teile je Station – selbst gelöst oder Lösung angesehen.
 // Die erste Meldung zählt und wird nicht überschrieben (wer Lösungen angesehen hat,
 // kann den Teil später nicht mehr als „selbst gelöst" melden).
