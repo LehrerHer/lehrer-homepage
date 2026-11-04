@@ -1,0 +1,236 @@
+{
+  "slug": "monatsnamen-rebus",
+  "typ": "bilder",
+  "titel": "Es gibt ein verbindendes Element",
+  "untertitel": "Fächerübergreifendes Rätsel · 12 Bilder · 1 Geheimnis · Was steckt drin?",
+  "fach": "faecheruebergreifend",
+  "zurueck": {
+    "url": "/fach-faecheruebergreifend.html",
+    "text": "Zurück zu Fächerübergreifend"
+  },
+  "design": {
+    "thema": "dunkel"
+  },
+  "bilder": "/img/quiz/monatsnamen-rebus/",
+  "frage": "Wer oder was ist hier zu sehen? Welches Wort steckt darin?",
+  "mischen": true,
+  "versuche": 1,
+  "treffer": "stichwort",
+  "bewertung": [
+    {
+      "ab": 90,
+      "text": "🏆 Hervorragend! Du hast fast alle Monatsnamen entdeckt!"
+    },
+    {
+      "ab": 70,
+      "text": "🌟 Sehr gut! Du hast ein gutes Gespür für versteckte Wörter!"
+    },
+    {
+      "ab": 50,
+      "text": "👍 Gut gemacht! Manche Verstecke sind wirklich knifflig."
+    },
+    {
+      "ab": 0,
+      "text": "💡 Beim nächsten Mal findest du bestimmt noch mehr Monatsnamen!"
+    }
+  ],
+  "abschluss": {
+    "titel": "⭐ Fast geschafft!",
+    "hinweis": "Alle 12 Bilder beantwortet. Jetzt die große Abschlussfrage (zählt dreifach):",
+    "frage": "🔍 Was verbindet alle 12 Bilder?",
+    "antwort": "Monatsnamen",
+    "alternativen": [
+      "monate",
+      "monatsname",
+      "monat"
+    ],
+    "treffer": "stichwort",
+    "gewicht": 3,
+    "erklaerung": "In jedem Bild steckt ein Monatsname – von Janus (Januar) bis zu den Decemberists (Dezember)."
+  },
+  "fragen": [
+    {
+      "bild": "08.webp",
+      "antwort": "Januar",
+      "alternativen": [
+        "janus"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "🔎 Bild:",
+            "Janus (röm. Gott)"
+          ]
+        ],
+        "text": "→ Janus gab dem Januar seinen Namen<br>Der zweigesichtige Gott Janus schaut gleichzeitig vorwärts in die Zukunft und rückwärts in die Vergangenheit – perfekt für den Jahreswechsel! Der Monat <strong>Januar</strong> ist nach ihm benannt."
+      }
+    },
+    {
+      "bild": "11.webp",
+      "antwort": "Februar",
+      "alternativen": [],
+      "info": {
+        "zeilen": [
+          [
+            "🔎 Bild:",
+            "Februarrevolution 1917"
+          ]
+        ],
+        "text": "→ Die russische Februarrevolution<br>Im <strong>Februar</strong> 1917 begannen in Petrograd (St. Petersburg) Massendemonstrationen gegen den Zar – die sogenannte <em>Februarrevolution</em>, die das Ende der Romanow-Herrschaft einleitete."
+      }
+    },
+    {
+      "bild": "06.webp",
+      "antwort": "März",
+      "alternativen": [
+        "merz"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "🔎 Bild:",
+            "Friedrich Merz"
+          ]
+        ],
+        "text": "→ Friedrich <strong>Merz</strong> → klingt wie März<br>Friedrich <strong>Merz</strong>, CDU-Politiker und Bundeskanzler seit 2025 – sein Nachname klingt fast wie <strong>März</strong>!"
+      }
+    },
+    {
+      "bild": "01.webp",
+      "antwort": "April",
+      "alternativen": [
+        "avril"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "🔎 Bild:",
+            "Avril Lavigne"
+          ]
+        ],
+        "text": "→ <strong>Avril</strong> Lavigne: „Avril\" = April auf Französisch<br><strong>Avril</strong> Lavigne – der Vorname der kanadischen Pop-Punk-Sängerin bedeutet auf Französisch schlicht <strong>April</strong>!"
+      }
+    },
+    {
+      "bild": "05.webp",
+      "antwort": "Mai",
+      "alternativen": [],
+      "info": {
+        "zeilen": [
+          [
+            "🔎 Bild:",
+            "Vanessa Mai"
+          ]
+        ],
+        "text": "→ Vanessa <strong>Mai</strong> – Nachname = Mai<br><strong>Vanessa Mai</strong> ist eine deutsche Schlagersängerin – ihr Künstlername enthält den Monat <strong>Mai</strong>!"
+      }
+    },
+    {
+      "bild": "03.webp",
+      "antwort": "Juni",
+      "alternativen": [
+        "juno"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "🔎 Bild:",
+            "Juno (Film, 2007)"
+          ]
+        ],
+        "text": "→ <strong>Juno</strong> → klingt wie Juni<br><strong>Juno</strong> ist ein US-amerikanischer Indie-Film aus 2007. Der Name der Hauptfigur klingt wie <strong>Juni</strong> – und Juno ist auch eine römische Göttin, die dem Monat Juni ihren Namen gab!"
+      }
+    },
+    {
+      "bild": "07.webp",
+      "antwort": "Juli",
+      "alternativen": [
+        "julia"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "🔎 Bild:",
+            "Julia Roberts"
+          ]
+        ],
+        "text": "→ <strong>Juli</strong>a Roberts: „Juli\" steckt in „Julia\"<br><strong>Juli</strong>a Roberts, US-amerikanische Schauspielerin und Oscar-Gewinnerin (Erin Brockovich) – der Monatsname <strong>Juli</strong> steckt direkt in ihrem Vornamen."
+      }
+    },
+    {
+      "bild": "04.webp",
+      "antwort": "August",
+      "alternativen": [],
+      "info": {
+        "zeilen": [
+          [
+            "🔎 Bild:",
+            "Auguste Rodin"
+          ]
+        ],
+        "text": "→ <strong>August</strong>e Rodin: „August\" steckt in „Auguste\"<br><strong>August</strong>e Rodin (1840–1917), der berühmte französische Bildhauer (u.a. „Der Denker\"). Sein Vorname <strong>Auguste</strong> enthält den Monat <strong>August</strong>."
+      }
+    },
+    {
+      "bild": "09.webp",
+      "antwort": "September",
+      "alternativen": [],
+      "info": {
+        "zeilen": [
+          [
+            "🔎 Bild:",
+            "Green Day – „Wake Me Up When September Ends\""
+          ]
+        ],
+        "text": "→ Green Day: <strong>September</strong> steckt im Songtitel<br><em>Wake Me Up When <strong>September</strong> Ends</em> (2005) von <strong>Green Day</strong> – der Titel nennt den Monat <strong>September</strong> direkt. Billie Joe Armstrong schrieb das Lied als Trauerarbeit nach dem Tod seines Vaters."
+      }
+    },
+    {
+      "bild": "10.webp",
+      "antwort": "Oktober",
+      "alternativen": [],
+      "info": {
+        "zeilen": [
+          [
+            "🔎 Bild:",
+            "Oktoberfest München"
+          ]
+        ],
+        "text": "→ <strong>Oktober</strong>fest: Oktober direkt im Namen<br>Das <strong>Oktober</strong>fest in München ist das größte Volksfest der Welt. Es beginnt Ende September und endet Anfang <strong>Oktober</strong> – der Monat steckt direkt im Namen!"
+      }
+    },
+    {
+      "bild": "12.webp",
+      "antwort": "November",
+      "alternativen": [
+        "movember"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "🔎 Bild:",
+            "Movember (No-Shave November)"
+          ]
+        ],
+        "text": "→ Mo(ustache) + <strong>November</strong> = Movember<br><strong>Movember</strong> ist eine weltweite Gesundheitskampagne für Männer: Im <strong>November</strong> (No-Shave November) lassen Männer Schnurrbärte stehen, um auf Prostatakrebs aufmerksam zu machen. Der Name ist ein Kofferwort aus „Moustache\" und „<strong>November</strong>\"."
+      }
+    },
+    {
+      "bild": "02.webp",
+      "antwort": "Dezember",
+      "alternativen": [
+        "december",
+        "decemberist"
+      ],
+      "info": {
+        "zeilen": [
+          [
+            "🔎 Bild:",
+            "The Decemberists"
+          ]
+        ],
+        "text": "→ The <strong>December</strong>ists = Dezember<br><strong>The Decemberists</strong> sind eine US-amerikanische Indie-Folk-Band. Ihr Name leitet sich vom englischen <em>December</em> ab – <strong>Dezember</strong>!"
+      }
+    }
+  ]
+}

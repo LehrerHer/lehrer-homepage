@@ -1,0 +1,406 @@
+{
+  "slug": "deutsch-das-parfum",
+  "typ": "fragen",
+  "titel": "Das Parfum – Lektürequiz",
+  "untertitel": "Patrick Süskind · Handlung, Figuren, Themen & Form · Jahrgang 10",
+  "fach": "deutsch",
+  "zurueck": {
+    "url": "/deutsch-das-parfum.html",
+    "text": "Zurück zu „Das Parfum“"
+  },
+  "mischen": true,
+  "auswertungNach": "kategorie",
+  "auswertungTitel": "Kategorie",
+  "konfiguration": {
+    "gruppen": [
+      {
+        "feld": "kategorie",
+        "label": "Modus",
+        "art": "einfach",
+        "alle": "Vollständig",
+        "optionen": [
+          {
+            "wert": "Handlung",
+            "label": "Nur Handlung",
+            "beschreibung": "Was passiert wann und wie?"
+          },
+          {
+            "wert": "Figuren",
+            "label": "Nur Figuren",
+            "beschreibung": "Wer ist wer im Roman?"
+          },
+          {
+            "wert": "Themen",
+            "label": "Themen & Form",
+            "beschreibung": "Motive, Sprache, Literatur",
+            "werte": [
+              "Themen",
+              "Sprache & Form"
+            ]
+          }
+        ]
+      }
+    ],
+    "anzahl": {
+      "label": "Anzahl Fragen",
+      "optionen": [
+        10,
+        20,
+        "alle"
+      ],
+      "standard": 20
+    }
+  },
+  "fragen": [
+    {
+      "kategorie": "Handlung",
+      "schwierigkeit": "einfach",
+      "badge": "Handlung · einfach",
+      "frage": "An welchem Ort wird Jean-Baptiste Grenouille am 17. Juli 1738 geboren?",
+      "optionen": [
+        "Auf dem Pont au Change in Paris",
+        "Im Armenhaus der Rue Saint-Antoine",
+        "An einer Fischbude neben dem Cimetière des Innocents",
+        "In einer Gerberei im Faubourg Saint-Antoine"
+      ],
+      "richtig": 2,
+      "erklaerung": "Grenouille kommt buchstäblich unter einem Fischhändlertisch nahe dem Cimetière des Innocents zur Welt – dem „allerstinkendsten Ort des gesamten Königreichs”."
+    },
+    {
+      "kategorie": "Handlung",
+      "schwierigkeit": "einfach",
+      "badge": "Handlung · einfach",
+      "frage": "Was geschieht mit Grenouilles Mutter kurz nach seiner Geburt?",
+      "optionen": [
+        "Sie stirbt an einer Krankheit",
+        "Sie wird wegen mehrfachen Kindsmords verurteilt und auf der Place de Grève hingerichtet",
+        "Sie gibt ihn freiwillig ins Waisenhaus",
+        "Sie flieht aus Paris"
+      ],
+      "richtig": 1,
+      "erklaerung": "Weil sie gesteht, schon vier Kinder zuvor sterben gelassen zu haben, wird sie wegen mehrfachen Kindsmords verurteilt und auf der Place de Grève geköpft."
+    },
+    {
+      "kategorie": "Handlung",
+      "schwierigkeit": "mittel",
+      "badge": "Handlung · mittel",
+      "frage": "Warum tötet Grenouille das rothaarige Mädchen in der Rue des Marais?",
+      "optionen": [
+        "Er will sie ausrauben",
+        "Er hasst Frauen grundsätzlich",
+        "Er will ihren einzigartigen Duft besitzen – und kennt noch keine Technik, ihn zu konservieren",
+        "Er handelt in Notwehr"
+      ],
+      "richtig": 2,
+      "erklaerung": "Der Duft des Mädchens – das gerade Mirabellen putzt – überwältigt ihn vollkommen. Da er noch keine Methode kennt, Düfte zu fixieren, tötet er es. Der Duft entweicht dennoch."
+    },
+    {
+      "kategorie": "Handlung",
+      "schwierigkeit": "mittel",
+      "badge": "Handlung · mittel",
+      "frage": "Für wie viele Jahre zieht sich Grenouille in eine Höhle am Plomb du Cantal zurück?",
+      "optionen": [
+        "Drei Jahre",
+        "Fünf Jahre",
+        "Sieben Jahre",
+        "Zehn Jahre"
+      ],
+      "richtig": 2,
+      "erklaerung": "Sieben Jahre verbringt Grenouille in völliger Einsamkeit, tief in einem Stollen des Plomb du Cantal im Massif Central."
+    },
+    {
+      "kategorie": "Handlung",
+      "schwierigkeit": "mittel",
+      "badge": "Handlung · mittel",
+      "frage": "Welche erschreckende Entdeckung macht Grenouille während seines Höhlenlebens?",
+      "optionen": [
+        "Er kann keine Düfte mehr wahrnehmen",
+        "Er selbst besitzt keinen eigenen Körpergeruch",
+        "Er ist schwer erkrankt",
+        "Er hat sein Gedächtnis für Düfte verloren"
+      ],
+      "richtig": 1,
+      "erklaerung": "In seiner inneren Duftlandschaft fehlt er selbst vollständig – er besitzt kein Odeur. Diese Erkenntnis, kein wahrnehmbarer Mensch zu sein, treibt ihn zurück unter die Menschen."
+    },
+    {
+      "kategorie": "Handlung",
+      "schwierigkeit": "einfach",
+      "badge": "Handlung · einfach",
+      "frage": "Wie endet das Leben Giuseppe Baldinis?",
+      "optionen": [
+        "Er stirbt friedlich im Alter",
+        "Er wird von Grenouille ermordet",
+        "Er ertrinkt, als sein Haus auf dem Pont au Change in die Seine stürzt",
+        "Er wird wegen Betrugs verhaftet und stirbt im Gefängnis"
+      ],
+      "richtig": 2,
+      "erklaerung": "Kurz nach Grenouilles Abgang bricht der Pont au Change ein. Baldini und seine Frau Teresa ertrinken – die Bediensteten hatten Ausgang, Chenier kommt spät nach Hause."
+    },
+    {
+      "kategorie": "Handlung",
+      "schwierigkeit": "schwer",
+      "badge": "Handlung · schwer",
+      "frage": "Wie viele Mädchen tötet Grenouille insgesamt in der Umgebung von Grasse für sein Parfüm?",
+      "optionen": [
+        "Dreizehn",
+        "Siebzehn",
+        "Vierundzwanzig",
+        "Fünfundzwanzig"
+      ],
+      "richtig": 3,
+      "erklaerung": "Grenouille tötet 25 junge Frauen. Vierundzwanzig bilden die Noten des Parfüms; Laure Richis soll die fünfundzwanzigste und wichtigste – die „Herznote” – sein."
+    },
+    {
+      "kategorie": "Handlung",
+      "schwierigkeit": "mittel",
+      "badge": "Handlung · mittel",
+      "frage": "Welche Technik erlernt Grenouille bei Madame Arnulfi in Grasse, um Düfte aus zarten Blüten zu gewinnen?",
+      "optionen": [
+        "Die Destillation",
+        "Die Mazeration",
+        "Die Enfleurage",
+        "Die Rektifikation"
+      ],
+      "richtig": 2,
+      "erklaerung": "Die Enfleurage (Auflegen auf Fett) ermöglicht es, flüchtige Blütendüfte zu extrahieren, die die Hitze der Destillation zerstören würde. Grenouille braucht sie, um den Duft menschlicher Haut zu konservieren."
+    },
+    {
+      "kategorie": "Handlung",
+      "schwierigkeit": "mittel",
+      "badge": "Handlung · mittel",
+      "frage": "Welche Wirkung erzielt das fertige Parfüm beim Richtplatz von Grasse?",
+      "optionen": [
+        "Die Menge steinigt ihn trotzdem",
+        "Die Menge verfällt in kollektive Liebesekstase und hält Grenouille für einen Engel",
+        "Die Menge flieht in Panik",
+        "Die Richter verschieben die Hinrichtung skeptisch"
+      ],
+      "richtig": 1,
+      "erklaerung": "Ein einziger Tropfen genügt: Die Menge glaubt, einen Heiligen vor sich zu haben. Sogar Antoine Richis, der Vater des letzten Opfers, umarmt den Mörder seiner Tochter wie einen Sohn."
+    },
+    {
+      "kategorie": "Handlung",
+      "schwierigkeit": "mittel",
+      "badge": "Handlung · mittel",
+      "frage": "Wie stirbt Grenouille am Ende des Romans?",
+      "optionen": [
+        "Er ertrinkt in der Seine",
+        "Er kehrt in seine Höhle zurück und verhungert",
+        "Er übergießt sich in Paris mit dem ganzen Parfüm und wird von einer Menschenmenge zerrissen und gefressen",
+        "Er wird schließlich doch hingerichtet"
+      ],
+      "richtig": 2,
+      "erklaerung": "Am Cimetière des Innocents übergießt er sich mit dem restlichen Parfüm. Die Verbrecherbande verzehrt ihn buchstäblich. Der Erzähler nennt es: „Sie hatten zum ersten Mal etwas aus Liebe getan.”"
+    },
+    {
+      "kategorie": "Handlung",
+      "schwierigkeit": "schwer",
+      "badge": "Handlung · schwer",
+      "frage": "Wohin täuscht Antoine Richis seinen Aufbruch vor – und wohin fährt er wirklich?",
+      "optionen": [
+        "Täuscht Paris vor, fährt nach Marseille",
+        "Täuscht Grenoble vor, biegt heimlich zur Küste ab",
+        "Täuscht Lyon vor, fährt nach Genua",
+        "Täuscht Nizza vor, fährt nach Avignon"
+      ],
+      "richtig": 1,
+      "erklaerung": "Richis schickt einen Prunktross ostentativ nach Grenoble, wo gerade ein Mörder vermutet wird. Er selbst flieht heimlich mit Laure zur Küste – Grenouille folgt dem Duft trotzdem."
+    },
+    {
+      "kategorie": "Handlung",
+      "schwierigkeit": "schwer",
+      "badge": "Handlung · schwer",
+      "frage": "Was trägt Richis in einem wattegepolsterten Kästchen mit sich?",
+      "optionen": [
+        "Goldmünzen für die Flucht",
+        "Eine geladene Pistole",
+        "Vierundzwanzig Haarlocken der ermordeten Mädchen als Beweis",
+        "Ein Parfümfläschchen, das er gefunden hat"
+      ],
+      "richtig": 2,
+      "erklaerung": "Richis hat die Locken der vierundzwanzig Opfer als Beweismittel gesammelt. Er erkennt das Muster des Mörders – und ahnt, dass Laure das letzte Opfer sein soll."
+    },
+    {
+      "kategorie": "Figuren",
+      "schwierigkeit": "einfach",
+      "badge": "Figuren · einfach",
+      "frage": "Bei wem wächst Grenouille als Kind auf, bevor er zur Gerberei kommt?",
+      "optionen": [
+        "Im staatlichen Waisenhaus in Rouen",
+        "Bei seiner Großmutter",
+        "Bei Madame Gaillard, die eine Ammenanstalt führt",
+        "Bei einem Pfarrer namens Terrier"
+      ],
+      "richtig": 2,
+      "erklaerung": "Madame Gaillard führt eine Ammenanstalt und nimmt alle Kinder ohne Unterschied an – da sie selbst keinen Geruchssinn hat, stört sie Grenouilles Geruchlosigkeit nicht."
+    },
+    {
+      "kategorie": "Figuren",
+      "schwierigkeit": "mittel",
+      "badge": "Figuren · mittel",
+      "frage": "Welches besondere Merkmal macht Madame Gaillard als Pflegemutter geeignet?",
+      "optionen": [
+        "Sie kann selbst nicht riechen – ihr Geruchssinn ist erloschen",
+        "Sie hat großes Mitleid mit allen Kindern",
+        "Sie ist selbst Waise und kennt das Leid",
+        "Sie ist die reichste Frau im Viertel"
+      ],
+      "richtig": 0,
+      "erklaerung": "Durch ein frühes Unglück hat Madame Gaillard ihren Geruchssinn verloren. Alle anderen Ammen weisen Grenouille ab, weil er ihnen unheimlich ist – ihr fällt nichts auf."
+    },
+    {
+      "kategorie": "Figuren",
+      "schwierigkeit": "einfach",
+      "badge": "Figuren · einfach",
+      "frage": "Wer ist Giuseppe Baldini?",
+      "optionen": [
+        "Ein Gendarm, der Grenouille verhaftet",
+        "Ein alternder Pariser Parfümeur auf dem Pont au Change",
+        "Ein Gastwirt, der Grenouille Unterschlupf gewährt",
+        "Der Bürgermeister von Grasse"
+      ],
+      "richtig": 1,
+      "erklaerung": "Baldini ist ein einst angesehener, nun von Pelissier überschatteter Parfümeur. Grenouille schafft für ihn Meisterwerke und erhält dafür handwerkliches Wissen und den Gesellenbrief."
+    },
+    {
+      "kategorie": "Figuren",
+      "schwierigkeit": "mittel",
+      "badge": "Figuren · mittel",
+      "frage": "Was ist die Theorie des Marquis de la Taillade-Espinasse?",
+      "optionen": [
+        "Eine Theorie über die heilende Kraft von Parfüm",
+        "Die Behauptung, bodenfernes Lebensgas revitalisiere den Menschen",
+        "Die Ansicht, Geruchslosigkeit sei ein Zeichen von Adel",
+        "Eine Lehre über die Kraft des Schlafes"
+      ],
+      "richtig": 1,
+      "erklaerung": "Taillade-Espinasse glaubt an ein erdnahes Fluidum, das Vitalität zerstört. Grenouille, aus sieben Jahren Höhle kommend und entsprechend ausgemergelt, ist sein ideales Demonstrationsobjekt."
+    },
+    {
+      "kategorie": "Figuren",
+      "schwierigkeit": "mittel",
+      "badge": "Figuren · mittel",
+      "frage": "Welche Rolle spielt Druot bei Madame Arnulfi?",
+      "optionen": [
+        "Er ist ihr Buchhalter",
+        "Er ist ihr kräftiger Geselle für die Enfleurage – und ihr heimlicher Geliebter",
+        "Er ist Grenouilles Aufseher",
+        "Er ist der zukünftige Erbe der Firma"
+      ],
+      "richtig": 1,
+      "erklaerung": "Druot erledigt die schwere körperliche Arbeit der Enfleurage und ist insgeheim Madame Arnulfis Liebhaber. Grenouille erkennt das sofort an seinem Geruch."
+    },
+    {
+      "kategorie": "Figuren",
+      "schwierigkeit": "mittel",
+      "badge": "Figuren · mittel",
+      "frage": "Wie beschreibt der Erzähler Grenouille gleich im ersten Satz des Romans?",
+      "optionen": [
+        "Als einen unschuldigen Außenseiter",
+        "Als einen der genialsten und abscheulichsten Gestalten seiner Epoche",
+        "Als einen Helden, der Grenzen auslotet",
+        "Als ein missverstandenes Genie ohne Schuld"
+      ],
+      "richtig": 1,
+      "erklaerung": "„Er hieß Jean-Baptiste Grenouille und gehörte zu den genialsten und abscheulichsten Gestalten dieser an genialen und abscheulichen Gestalten nicht armen Epoche.” Genie und Scheußlichkeit sind untrennbar."
+    },
+    {
+      "kategorie": "Themen",
+      "schwierigkeit": "mittel",
+      "badge": "Themen · mittel",
+      "frage": "Was symbolisiert Grenouilles fehlender Eigengeruch im Roman?",
+      "optionen": [
+        "Seine besondere Reinheit",
+        "Seine Seelen- und Identitätslosigkeit – er existiert sozial nicht",
+        "Seine Überlegenheit gegenüber anderen",
+        "Seinen Ekel vor sich selbst"
+      ],
+      "richtig": 1,
+      "erklaerung": "Grenouille hat keine Seele, keine soziale Identität. Das Parfüm, das er sich als „Menschengeruch” erschafft, ist eine Maske – dahinter ist Leere."
+    },
+    {
+      "kategorie": "Themen",
+      "schwierigkeit": "schwer",
+      "badge": "Themen · schwer",
+      "frage": "Warum verwirft Grenouille sein Parfüm und sucht den Tod, obwohl er die ganze Welt bezaubern könnte?",
+      "optionen": [
+        "Er fürchtet die Strafverfolgung",
+        "Er kann sich selbst nicht riechen – das Parfüm ist für ihn selbst sinnlos",
+        "Er hat sein Ziel erreicht und ist zufrieden",
+        "Er glaubt, die Welt zu retten"
+      ],
+      "richtig": 1,
+      "erklaerung": "„Die Macht, den Menschen Liebe einzuflößen – nur eines konnte diese Macht nicht: sie konnte ihn nicht vor sich selber riechen machen.” Ohne Selbstwahrnehmung ist alle Macht leer."
+    },
+    {
+      "kategorie": "Themen",
+      "schwierigkeit": "schwer",
+      "badge": "Themen · schwer",
+      "frage": "Worin besteht die Ironie der Schlussszene, als die Menge Grenouille verspeist?",
+      "optionen": [
+        "Sie zeigt, wie grausam das 18. Jahrhundert war",
+        "Sie handelten aus Hass – das ist ihre Strafe",
+        "Sie handelten aus Liebe – erzwungen durch das Parfüm – und hatten kein schlechtes Gewissen",
+        "Sie wussten genau, was sie taten"
+      ],
+      "richtig": 2,
+      "erklaerung": "„Sie hatten zum ersten Mal etwas aus Liebe getan” – Süskind nennt Kannibalismus eine Liebeshandlung. Das Parfüm macht selbst das Abscheulichste zu einem Akt der Zuneigung."
+    },
+    {
+      "kategorie": "Sprache & Form",
+      "schwierigkeit": "einfach",
+      "badge": "Sprache & Form · einfach",
+      "frage": "In welchem Jahrhundert spielt der Roman?",
+      "optionen": [
+        "17. Jahrhundert",
+        "18. Jahrhundert",
+        "19. Jahrhundert",
+        "Frühes 20. Jahrhundert"
+      ],
+      "richtig": 1,
+      "erklaerung": "Grenouille wird 1738 geboren – mitten im 18. Jahrhundert, kurz vor der Französischen Revolution."
+    },
+    {
+      "kategorie": "Sprache & Form",
+      "schwierigkeit": "mittel",
+      "badge": "Sprache & Form · mittel",
+      "frage": "Welche Erzählperspektive verwendet Süskind?",
+      "optionen": [
+        "Ich-Erzähler aus Grenouilles Sicht",
+        "Allwissender auktorialer Erzähler in der dritten Person, der kommentiert und bewertet",
+        "Wechselnde Innenperspektiven",
+        "Briefroman-Form"
+      ],
+      "richtig": 1,
+      "erklaerung": "Der auktoriale Erzähler schafft kritische Distanz: Er urteilt über Grenouille, kommentiert ironisch und gibt dem Leser stets mehr Information als die handelnden Figuren."
+    },
+    {
+      "kategorie": "Sprache & Form",
+      "schwierigkeit": "mittel",
+      "badge": "Sprache & Form · mittel",
+      "frage": "Zu welchen literarischen Gattungen lässt sich „Das Parfum” zählen?",
+      "optionen": [
+        "Idylle und Liebesroman",
+        "Historischer Kriminalroman, Schauerroman und parodierter Künstler-/Bildungsroman",
+        "Politisches Pamphlet der Aufklärung",
+        "Reiseroman und Abenteuergeschichte"
+      ],
+      "richtig": 1,
+      "erklaerung": "Süskind spielt bewusst mit mehreren Gattungen: Lebensgeschichte eines Genies, Schauer-Atmosphäre, Kriminalhandlung. Der Bildungsroman wird parodiert – Grenouilles „Bildung” führt ins Nichts."
+    },
+    {
+      "kategorie": "Sprache & Form",
+      "schwierigkeit": "schwer",
+      "badge": "Sprache & Form · schwer",
+      "frage": "Warum ist ein Roman über Gerüche literarisch eine besondere Herausforderung?",
+      "optionen": [
+        "Weil Gerüche im 18. Jahrhundert kein Thema für die Literatur waren",
+        "Weil Gerüche nicht visuell darstellbar sind – Sprache muss leisten, was sie eigentlich nicht kann",
+        "Weil das Thema als anstößig galt",
+        "Weil kein Verleger solch ein Buch drucken wollte"
+      ],
+      "richtig": 1,
+      "erklaerung": "Gerüche sind flüchtig und entziehen sich der Sprache. Süskind macht genau das zum Thema: Grenouilles Welt ist nicht mitteilbar, was seine Isolation verstärkt und den Leser vor dieselbe Grenze stellt."
+    }
+  ]
+}

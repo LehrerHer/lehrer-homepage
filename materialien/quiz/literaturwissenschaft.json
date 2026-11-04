@@ -1,0 +1,1200 @@
+{
+  "slug": "literaturwissenschaft",
+  "typ": "fragen",
+  "titel": "Literaturwissenschaft – Interaktives Quiz",
+  "untertitel": "Kapitel, Schwierigkeit und Aufgabenarten frei wählen · nur komplett richtige Aufgaben zählen",
+  "fach": "deutsch",
+  "zurueck": {
+    "url": "/fach-deutsch.html",
+    "text": "Zurück zu Deutsch"
+  },
+  "mischen": true,
+  "teilpunkte": false,
+  "auswertungNach": "kapitel",
+  "auswertungTitel": "Kapitel",
+  "auswertungLabels": {
+    "1": "📖 Kap. 1 – Was ist Literatur?",
+    "2": "✍️ Kap. 2 – Epik",
+    "3": "🎭 Kap. 3 – Lyrik",
+    "4": "🎬 Kap. 4 – Drama",
+    "5": "🎥 Kap. 5 – Film",
+    "6": "🎮 Kap. 6 – Lit. Spiele"
+  },
+  "konfiguration": {
+    "gruppen": [
+      {
+        "feld": "kapitel",
+        "label": "Kapitel",
+        "art": "mehrfach",
+        "optionen": [
+          {
+            "wert": 1,
+            "label": "📖 Kap. 1",
+            "beschreibung": "Was ist Literatur?"
+          },
+          {
+            "wert": 2,
+            "label": "✍️ Kap. 2",
+            "beschreibung": "Epik"
+          },
+          {
+            "wert": 3,
+            "label": "🎭 Kap. 3",
+            "beschreibung": "Lyrik"
+          },
+          {
+            "wert": 4,
+            "label": "🎬 Kap. 4",
+            "beschreibung": "Drama"
+          },
+          {
+            "wert": 5,
+            "label": "🎥 Kap. 5",
+            "beschreibung": "Film"
+          },
+          {
+            "wert": 6,
+            "label": "🎮 Kap. 6",
+            "beschreibung": "Lit. Spiele"
+          }
+        ]
+      },
+      {
+        "feld": "schwierigkeit",
+        "label": "Schwierigkeit",
+        "art": "einfach",
+        "alle": "🎯 Alle",
+        "optionen": [
+          {
+            "wert": "leicht",
+            "label": "🟢 Leicht"
+          },
+          {
+            "wert": "mittel",
+            "label": "🟡 Mittel"
+          },
+          {
+            "wert": "schwer",
+            "label": "🔴 Schwer"
+          }
+        ]
+      },
+      {
+        "feld": "art",
+        "label": "Aufgabenarten",
+        "art": "mehrfach",
+        "optionen": [
+          {
+            "wert": "mc",
+            "label": "🔘 Multiple Choice"
+          },
+          {
+            "wert": "rf",
+            "label": "✅ Richtig / Falsch"
+          },
+          {
+            "wert": "luecken",
+            "label": "✏️ Lückentext"
+          },
+          {
+            "wert": "zuordnung",
+            "label": "🔗 Zuordnung"
+          },
+          {
+            "wert": "sortierung",
+            "label": "🔢 Sortierung"
+          },
+          {
+            "wert": "markierung",
+            "label": "🖊 Markierung"
+          }
+        ]
+      }
+    ],
+    "anzahl": {
+      "label": "Umfang",
+      "optionen": [
+        10,
+        25,
+        "alle"
+      ],
+      "standard": "alle"
+    }
+  },
+  "fragen": [
+    {
+      "kapitel": 1,
+      "schwierigkeit": "leicht",
+      "badge": "Kap. 1 · Was ist Literatur? · leicht",
+      "frage": "Welche drei Großgattungen der Literatur unterscheidet die Literaturwissenschaft?",
+      "erklaerung": "Die drei Großgattungen sind Epik (Erzähler spricht), Lyrik (gebundene Sprache) und Dramatik (Sprache für verteilte Rollen). Diese Einteilung ist seit der Antike grundlegend. <small>(6/1)</small>",
+      "art": "mc",
+      "optionen": [
+        "Epik, Lyrik und Dramatik",
+        "Roman, Gedicht und Theater",
+        "Prosa, Vers und Dialog",
+        "Erzählung, Lyrik und Film"
+      ],
+      "richtig": 0
+    },
+    {
+      "kapitel": 1,
+      "schwierigkeit": "leicht",
+      "badge": "Kap. 1 · Was ist Literatur? · leicht",
+      "frage": "Filme und Computerspiele mit einem Plot können als Teil der Großgattung Epik betrachtet werden.",
+      "erklaerung": "Richtig! Filme und Computerspiele mit einer Fabel/einem Plot können der Epik zugeordnet werden – das Analysevokabular bleibt dasselbe. <small>(6/10)</small>",
+      "art": "rf",
+      "richtig": true
+    },
+    {
+      "kapitel": 1,
+      "schwierigkeit": "leicht",
+      "badge": "Kap. 1 · Was ist Literatur? · leicht",
+      "frage": "Ordne die Merkmale den Großgattungen zu.",
+      "erklaerung": "Epik = Erzähler; Lyrik = Gedichte / gebundene Sprache; Dramatik = Theater / verteilte Rollen. <small>(6/1)</small>",
+      "art": "zuordnung",
+      "paare": [
+        {
+          "l": "Ein Erzähler spricht",
+          "r": "Epik"
+        },
+        {
+          "l": "Sprache für verteilte Rollen",
+          "r": "Dramatik"
+        },
+        {
+          "l": "Gebundene Sprache – der Autor entscheidet, wo die Zeile endet",
+          "r": "Lyrik"
+        },
+        {
+          "l": "Roman als typische Textsorte",
+          "r": "Epik"
+        }
+      ]
+    },
+    {
+      "kapitel": 1,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 1 · Was ist Literatur? · mittel",
+      "frage": "Wer ist im erzählenden Computerspiel die Entsprechung zum Erzähler eines Romans?",
+      "erklaerung": "In narrativen Computerspielen erfinden die „Game Writer\" die Diegese und die Handlung – sie entsprechen dem Erzähler der Epik. <small>(6/13)</small>",
+      "art": "mc",
+      "optionen": [
+        "Der Regisseur",
+        "Der Game Writer / die Game Writerin",
+        "Der Publisher",
+        "Der Cutter"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 2,
+      "schwierigkeit": "leicht",
+      "badge": "Kap. 2 · Epik · leicht",
+      "frage": "Was versteht man unter der „Diegese\"?",
+      "erklaerung": "Diegese = die im Werk dargestellte Welt (z. B. die Welt von Star Wars oder die Welt in „Der Junge im gestreiften Pyjama\"). <small>(7/5)</small>",
+      "art": "mc",
+      "optionen": [
+        "Die Biografie des Autors",
+        "Die im Werk dargestellte Welt",
+        "Die Erzählzeit des Textes",
+        "Der Verlag des Buches"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 2,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 2 · Epik · mittel",
+      "frage": "Autor*in und Erzähler*in sind in einem literarischen Werk immer identisch.",
+      "erklaerung": "Falsch! Autor ≠ Erzähler. Der Autor schreibt das Buch in der Realität, der Erzähler ist eine Figur innerhalb des Textes, die die Geschichte erzählt. <small>(7/1)</small>",
+      "art": "rf",
+      "richtig": false
+    },
+    {
+      "kapitel": 2,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 2 · Epik · mittel",
+      "frage": "Was bedeutet „homodiegetisch\"?",
+      "erklaerung": "Homodiegetisch (gr. homo = gleich): Der Erzähler ist Teil der Diegese, taucht also selbst in der erzählten Welt auf. <small>(8/4)</small>",
+      "art": "mc",
+      "optionen": [
+        "Der Erzähler ist kein Teil der Diegese",
+        "Der Erzähler ist Teil der Diegese",
+        "Der Erzähler ist zugleich die Hauptfigur",
+        "Der Erzähler weiß mehr als alle Figuren"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 2,
+      "schwierigkeit": "schwer",
+      "badge": "Kap. 2 · Epik · schwer",
+      "frage": "Ordne die Erzählstandorte ihren Definitionen zu.",
+      "erklaerung": "Diese vier Begriffe beschreiben die Positionierung des Erzählers relativ zur erzählten Welt. <small>(8/4)</small>",
+      "art": "zuordnung",
+      "paare": [
+        {
+          "l": "Homodiegetisch",
+          "r": "Erzähler ist Teil der Diegese"
+        },
+        {
+          "l": "Heterodiegetisch",
+          "r": "Erzähler ist kein Teil der Diegese"
+        },
+        {
+          "l": "Autodiegetisch",
+          "r": "Erzähler ist zugleich die Hauptfigur"
+        },
+        {
+          "l": "Extradiegetisch",
+          "r": "Erzähler der äußersten Rahmenhandlung"
+        }
+      ]
+    },
+    {
+      "kapitel": 2,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 2 · Epik · mittel",
+      "frage": "In „Forrest Gump\" sitzt der Protagonist auf einer Parkbank und erzählt seine Lebensgeschichte. Die Parkbank-Szene ist …",
+      "erklaerung": "Die Parkbank bildet die Rahmenerzählung. Die Lebensgeschichte, die Forrest dort erzählt, ist die Binnenerzählung. <small>(8/12)</small>",
+      "art": "mc",
+      "optionen": [
+        "die Binnenerzählung",
+        "die Rahmenerzählung",
+        "eine Analepse",
+        "der intradiegetische Erzähler"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 2,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 2 · Epik · mittel",
+      "frage": "Nullfokalisierung bedeutet: Der Erzähler weiß …",
+      "erklaerung": "Nullfokalisierung: Erzähler > Figur. Der allwissende Erzähler weiß mehr als jede einzelne Figur. <small>(9/5)</small>",
+      "art": "mc",
+      "optionen": [
+        "… genauso viel wie die Figur",
+        "… weniger als die Figur",
+        "… mehr als die Figur",
+        "… gar nichts über die Figuren"
+      ],
+      "richtig": 2
+    },
+    {
+      "kapitel": 2,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 2 · Epik · mittel",
+      "frage": "Isochronie (zeitdeckendes Erzählen) liegt vor, wenn Erzählzeit und erzählte Zeit in etwa gleich lang sind.",
+      "erklaerung": "Richtig! Isochronie = Erzählzeit ≈ erzählte Zeit. Das tritt oft bei Dialogen/Szenen auf. <small>(10/8)</small>",
+      "art": "rf",
+      "richtig": true
+    },
+    {
+      "kapitel": 2,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 2 · Epik · mittel",
+      "frage": "Die Beschreibung eines einzigen Blitzes nimmt in einem Roman mehrere Seiten ein. Das nennt man …",
+      "erklaerung": "Zeitdehnend: Die Erzählzeit ist länger als die erzählte Zeit. Ein kurzes Ereignis wird ausführlich beschrieben. <small>(10/4)</small>",
+      "art": "mc",
+      "optionen": [
+        "Zeitraffung",
+        "Zeitdeckendes Erzählen",
+        "Zeitdehnende Erzählweise",
+        "Iteratives Erzählen"
+      ],
+      "richtig": 2
+    },
+    {
+      "kapitel": 2,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 2 · Epik · mittel",
+      "frage": "Ordne die Zeitfrequenz-Begriffe ihren Definitionen zu.",
+      "erklaerung": "Singulativ (1→1), Repetitiv (1→mehrmals), Iterativ (mehrmals→1, z. B. „Wie jeden Morgen um sechs …\"). <small>(11/4)</small>",
+      "art": "zuordnung",
+      "paare": [
+        {
+          "l": "Singulativ",
+          "r": "Was einmal geschieht, wird einmal erzählt"
+        },
+        {
+          "l": "Repetitiv",
+          "r": "Was einmal geschieht, wird mehrmals erzählt"
+        },
+        {
+          "l": "Iterativ",
+          "r": "Was mehrmals geschieht, wird einmal erzählt"
+        }
+      ]
+    },
+    {
+      "kapitel": 2,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 2 · Epik · mittel",
+      "frage": "Bringe die fünf Zeitordnungs-Begriffe in die richtige Reihenfolge von „Rückblick\" bis „Vorausschau\":",
+      "erklaerung": "Analepse = Rückblick; spätere Narration = klassisches Präteritum; gleichzeitig = Präsens; frühere Narration = Futur; Prolepse = Vorausschau. <small>(11-12)</small>",
+      "art": "sortierung",
+      "elemente": [
+        "Analepse (Rückblende)",
+        "Spätere Narration (Vergangenheitsform)",
+        "Gleichzeitige Narration",
+        "Frühere Narration (Futur)",
+        "Prolepse (Vorausschau)"
+      ]
+    },
+    {
+      "kapitel": 2,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 2 · Epik · mittel",
+      "frage": "Welcher Satz ist ein Beispiel für <em>Erlebte Rede</em>?",
+      "erklaerung": "Erlebte Rede steht zwischen direkter und indirekter Rede – sie gibt den Sachverhalt aus dem Inneren der Figur wieder, ohne vollständig zur Figur zu wechseln. <small>(13/6)</small>",
+      "art": "mc",
+      "optionen": [
+        "Sie sagte: „Ich muss ihn sehen!\"",
+        "Sie sagte, sie müsse ihn treffen.",
+        "Sie musste ihn sehen. Durfte nicht zu spät sein.",
+        "Hoffentlich sehe ich ihn. Bloß nicht zu spät!"
+      ],
+      "richtig": 2
+    },
+    {
+      "kapitel": 2,
+      "schwierigkeit": "schwer",
+      "badge": "Kap. 2 · Epik · schwer",
+      "frage": "Ordne die Beispielsätze der richtigen Redeform zu.",
+      "erklaerung": "Die vier Formen der Figurenrede unterscheiden sich in Distanz zum Erzähler, Stil und Wirkung. <small>(12-14)</small>",
+      "art": "zuordnung",
+      "paare": [
+        {
+          "l": "„Ich muss ihn sehen!\"",
+          "r": "Direkte Rede"
+        },
+        {
+          "l": "Sie sagte, sie müsse ihn treffen.",
+          "r": "Indirekte Rede"
+        },
+        {
+          "l": "Sie musste ihn sehen. Durfte nicht zu spät sein.",
+          "r": "Erlebte Rede"
+        },
+        {
+          "l": "Hoffentlich sehe ich ihn. Bloß nicht vermasseln!",
+          "r": "Innerer Monolog"
+        }
+      ]
+    },
+    {
+      "kapitel": 2,
+      "schwierigkeit": "leicht",
+      "badge": "Kap. 2 · Epik · leicht",
+      "frage": "Ergänze die Textsorten-Begriffe:",
+      "erklaerung": "Sage = reale Orte + Wunderbares; Kalendergeschichte = Volkskalender; Märchen = Wunderwelt; Parabel = Bildebene + Sachebene. <small>(15-17)</small>",
+      "art": "luecken",
+      "teile": [
+        {
+          "text": "Kurze Erzählung mit realen Orten, übernatürlichen Elementen, unbekannter Verfasser*in:",
+          "antwort": "Sage"
+        },
+        {
+          "text": "Erschien in „Volkskalendern\", zeigt Alltagsleben: ",
+          "antwort": "Kalendergeschichte"
+        },
+        {
+          "text": "Wunderwelt, Gut vs. Böse, unbekannter Ort und Zeit:",
+          "antwort": "Märchen"
+        },
+        {
+          "text": "Bildebene + Sachebene mit moralischer Lehre:",
+          "antwort": "Parabel"
+        }
+      ]
+    },
+    {
+      "kapitel": 2,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 2 · Epik · mittel",
+      "frage": "Was unterscheidet die Novelle vom Roman?",
+      "erklaerung": "Novelle vs. Roman: weniger Protagonisten, geringere Erzählzeit, Konzentration auf eine Haupthandlung. Oft gibt es eine überraschende Wendung. <small>(16/8)</small>",
+      "art": "mc",
+      "optionen": [
+        "Die Novelle hat keine Hauptfiguren",
+        "Novelle: nur wenige, eindimensionale Protagonisten, eine Haupthandlung",
+        "Die Novelle spielt immer in der Gegenwart",
+        "Die Novelle ist kürzer als jede Kurzgeschichte"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 2,
+      "schwierigkeit": "schwer",
+      "badge": "Kap. 2 · Epik · schwer",
+      "frage": "Markiere im Text alle Wörter, die Formen der <strong>Figurenrede</strong> benennen.",
+      "erklaerung": "Figurenrede umfasst: Direkte Rede, Indirekte Rede, Erlebte Rede, Innerer Monolog und Bewusstseinsstrom. Der Erzählerbericht ist keine Figurenrede. <small>(12-14)</small>",
+      "art": "markierung",
+      "text": "In einem epischen Text findet man verschiedene Erzählweisen. Der Erzählerbericht informiert über die Diegese. Direkte Rede gibt wörtlich wieder, was eine Figur sagt. Die Indirekte Rede dagegen fasst zusammen und schafft Distanz. Mit der Erlebten Rede tritt der Erzähler in den Hintergrund. Beim Inneren Monolog spricht die Figur zu sich selbst. Schließlich gibt es noch den Bewusstseinsstrom mit seinen assoziativen Gedankenfetzen. Der Erzählerbericht ist hingegen kein Teil der Figurenrede.",
+      "ziele": [
+        "Direkte Rede",
+        "Indirekte Rede",
+        "Erlebten Rede",
+        "Inneren Monolog",
+        "Bewusstseinsstrom"
+      ]
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "leicht",
+      "badge": "Kap. 3 · Lyrik · leicht",
+      "frage": "In der Lyrik ist der Autor immer identisch mit dem lyrischen Ich.",
+      "erklaerung": "Falsch! Wie Autor ≠ Erzähler in der Epik gilt: Autor ≠ lyrisches Ich. Das lyrische Ich ist eine Sprechinstanz im Gedicht, die der Autor erschafft. <small>(20/1)</small>",
+      "art": "rf",
+      "richtig": false
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "leicht",
+      "badge": "Kap. 3 · Lyrik · leicht",
+      "frage": "Das Reimschema <code>abab</code> bezeichnet den …",
+      "erklaerung": "Schema abab = Kreuzreim: 1. Vers reimt mit 3., 2. Vers reimt mit 4. <small>(20/8)</small>",
+      "art": "mc",
+      "optionen": [
+        "Paarreim",
+        "Kreuzreim",
+        "Umarmenden Reim",
+        "Schweifreim"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 3 · Lyrik · mittel",
+      "frage": "Ordne die Reimschemata den Reimnamen zu.",
+      "erklaerung": "Paarreim (aa), Kreuzreim (abab), Umarmender Reim (abba), Schweifreim (aabccb). <small>(20-21)</small>",
+      "art": "zuordnung",
+      "paare": [
+        {
+          "l": "aa bb",
+          "r": "Paarreim"
+        },
+        {
+          "l": "abab",
+          "r": "Kreuzreim"
+        },
+        {
+          "l": "abba",
+          "r": "Umarmender Reim"
+        },
+        {
+          "l": "aabccb",
+          "r": "Schweifreim"
+        }
+      ]
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 3 · Lyrik · mittel",
+      "frage": "Was ist eine „Waise\" in der Lyrik?",
+      "erklaerung": "Eine Waise ist ein reimloser Vers innerhalb eines Gedichts, das sich sonst reimt – dadurch besonders auffällig und isoliert. <small>(22/10)</small>",
+      "art": "mc",
+      "optionen": [
+        "Ein sehr kurzer Vers",
+        "Ein reimloser Vers in einem sich ansonsten reimenden Gedicht",
+        "Ein Gedicht ganz ohne Reim",
+        "Ein Vers, der zweimal vorkommt"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 3 · Lyrik · mittel",
+      "frage": "Welches Metrum liegt im Wort <em>Gedicht</em> vor?",
+      "erklaerung": "Ge-DICHT: unbetont–betont = Jambus (◡–). Der Jambus ist ein ansteigender Versfuß. <small>(22/6)</small>",
+      "art": "mc",
+      "optionen": [
+        "Trochäus",
+        "Daktylus",
+        "Jambus",
+        "Anapäst"
+      ],
+      "richtig": 2
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 3 · Lyrik · mittel",
+      "frage": "Ordne die Versfüße ihren Betonungsmustern zu.",
+      "erklaerung": "Jambus (Ge-DICHT), Trochäus (DICH-ter), Daktylus (ACH-ter-bahn), Anapäst (E-le-FANT). <small>(22-23)</small>",
+      "art": "zuordnung",
+      "paare": [
+        {
+          "l": "Jambus",
+          "r": "◡– (unbetont–betont)"
+        },
+        {
+          "l": "Trochäus",
+          "r": "–◡ (betont–unbetont)"
+        },
+        {
+          "l": "Daktylus",
+          "r": "–◡◡ (betont–unbetont–unbetont)"
+        },
+        {
+          "l": "Anapäst",
+          "r": "◡◡– (unbetont–unbetont–betont)"
+        }
+      ]
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "schwer",
+      "badge": "Kap. 3 · Lyrik · schwer",
+      "frage": "Was ist ein Enjambement?",
+      "erklaerung": "Enjambement (Zeilensprung): Ein Satz wird über das Versende hinaus fortgeführt. Wirkung: fließend, drängend, spannungserzeugend. <small>(25/3)</small>",
+      "art": "mc",
+      "optionen": [
+        "Eine besondere Art des Endreims",
+        "Ein Satz, der über das Versende hinweg fortgesetzt wird",
+        "Das Fehlen eines Metrums",
+        "Die Wiederholung desselben Verses"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "leicht",
+      "badge": "Kap. 3 · Lyrik · leicht",
+      "frage": "Wie heißen die Strophenformen nach ihrer Zeilenzahl?",
+      "erklaerung": "Distichon (2), Terzett (3), Quartett (4), Quintett (5), Sextett (6). <small>(26/1)</small>",
+      "art": "luecken",
+      "teile": [
+        {
+          "text": "2 Verse:",
+          "antwort": "Distichon"
+        },
+        {
+          "text": "3 Verse:",
+          "antwort": "Terzett"
+        },
+        {
+          "text": "4 Verse:",
+          "antwort": "Quartett"
+        },
+        {
+          "text": "6 Verse:",
+          "antwort": "Sextett"
+        }
+      ]
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 3 · Lyrik · mittel",
+      "frage": "Wie ist ein Sonett aufgebaut?",
+      "erklaerung": "Sonett: 2 Quartette (je 4 Verse) + 2 Terzette (je 3 Verse), meist im Jambus verfasst. <small>(27/12)</small>",
+      "art": "mc",
+      "optionen": [
+        "Drei Quartette und ein Terzett",
+        "Zwei Quartette und zwei Terzette",
+        "14 Verse in einer Strophe",
+        "Vier gleich lange Strophen"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 3 · Lyrik · mittel",
+      "frage": "Ordne die Gedichtformen ihren Merkmalen zu.",
+      "erklaerung": "Jede Gedichtform hat charakteristische formale und/oder inhaltliche Merkmale. <small>(25-27)</small>",
+      "art": "zuordnung",
+      "paare": [
+        {
+          "l": "5-7-5 Silben, 3 Verse, japanische Form",
+          "r": "Haiku"
+        },
+        {
+          "l": "2 Quartette + 2 Terzette, meist Jambus",
+          "r": "Sonett"
+        },
+        {
+          "l": "Klagegedicht, wehmütige Stimmung",
+          "r": "Elegie"
+        },
+        {
+          "l": "Lobgesang, keine festgelegte Form",
+          "r": "Hymne"
+        }
+      ]
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 3 · Lyrik · mittel",
+      "frage": "Was ist eine Metapher?",
+      "erklaerung": "Metapher: Übertragung ohne „wie\". Beispiel: „Jemandem das Herz brechen.\" Im Gegensatz: Vergleich mit „wie\": „Er kämpft wie ein Löwe.\" <small>(29/8)</small>",
+      "art": "mc",
+      "optionen": [
+        "Ein Vergleich mit „wie\" oder „als ob\"",
+        "Ein Vergleich ohne „wie\" und „ob\" – eine Übertragung",
+        "Wiederholung am Satzanfang",
+        "Verneinung des Gegenteils"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "schwer",
+      "badge": "Kap. 3 · Lyrik · schwer",
+      "frage": "Ordne die Beispiele den rhetorischen Figuren zu.",
+      "erklaerung": "Vergleich = mit „wie/als\"; Personifikation = menschliche Züge für Nichtmenschliches; Metapher = Übertragung ohne „wie\"; Allegorie = bildhaft-konkrete Darstellung des Abstrakten. <small>(29-31)</small>",
+      "art": "zuordnung",
+      "paare": [
+        {
+          "l": "Er kämpft wie ein Löwe.",
+          "r": "Vergleich"
+        },
+        {
+          "l": "Der Wind heult.",
+          "r": "Personifikation"
+        },
+        {
+          "l": "Jemandem das Herz brechen.",
+          "r": "Metapher"
+        },
+        {
+          "l": "Sensenmann",
+          "r": "Allegorie"
+        }
+      ]
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 3 · Lyrik · mittel",
+      "frage": "Was versteht man unter einer Hyperbel?",
+      "erklaerung": "Hyperbel = Übertreibung. Beispiele: „todernst\", „fuchsteufelswild\". Sie betont einen Sachverhalt durch extreme Steigerung. <small>(32/5)</small>",
+      "art": "mc",
+      "optionen": [
+        "Eine beschönigende Umschreibung",
+        "Eine Übertreibung",
+        "Eine doppelte Verneinung",
+        "Eine Umschreibung durch Einzelmerkmale"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 3 · Lyrik · mittel",
+      "frage": "Was ist ein Chiasmus?",
+      "erklaerung": "Chiasmus (A-B / B-A): „Die Kunst ist lang – und kurz ist unser Leben.\" Erkennungshilfe: Bleibt die Reihenfolge gleich → Parallelismus; kehrt sie sich um → Chiasmus. <small>(33/7)</small>",
+      "art": "mc",
+      "optionen": [
+        "Gleichartig aufgebaute Sätze (a-b / a-b)",
+        "Überkreuzstellung von Satzgliedern (A-B / B-A)",
+        "Auslassung von Satzteilen",
+        "Unverbundene Reihung ohne Konjunktionen"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "schwer",
+      "badge": "Kap. 3 · Lyrik · schwer",
+      "frage": "Ordne die Satzfiguren ihren Beispielen zu.",
+      "erklaerung": "Asyndeton = keine Konjunktionen; Polysyndeton = häufig wiederholte Konjunktionen; Ellipse = Auslassung; Chiasmus = Überkreuzstellung. <small>(33-35)</small>",
+      "art": "zuordnung",
+      "paare": [
+        {
+          "l": "Ich kam, ich sah, ich siegte.",
+          "r": "Asyndeton"
+        },
+        {
+          "l": "Einigkeit und Recht und Freiheit",
+          "r": "Polysyndeton"
+        },
+        {
+          "l": "Je später der Abend, desto schöner die Gäste.",
+          "r": "Ellipse"
+        },
+        {
+          "l": "Die Kunst ist lang – kurz ist unser Leben.",
+          "r": "Chiasmus"
+        }
+      ]
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 3 · Lyrik · mittel",
+      "frage": "Eine rhetorische Frage ist eine Frage, auf die keine Antwort erwartet wird.",
+      "erklaerung": "Richtig! Die rhetorische Frage (Scheinfrage) erwartet keine Antwort. Beispiel: „Wie viele Menschen müssen noch sterben?\" Wirkung: Dringlichkeit, Zustimmungsdruck. <small>(38/5)</small>",
+      "art": "rf",
+      "richtig": true
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 3 · Lyrik · mittel",
+      "frage": "Was ist der Unterschied zwischen Antithese und Oxymoron?",
+      "erklaerung": "Antithese: „Klein ist der Strauch, groß ist der Baum.\" (zwei Satzteile). Oxymoron: „Hassliebe\", „beredtes Schweigen\" (ein Ausdruck). <small>(36-38)</small>",
+      "art": "mc",
+      "optionen": [
+        "Kein Unterschied – beide sind Übertreibungen",
+        "Antithese: zwei Satzteile; Oxymoron: Widerspruch auf engstem Raum (ein Ausdruck)",
+        "Oxymoron = Frage ohne Antwort",
+        "Antithese kommt nur in Gedichten vor"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "leicht",
+      "badge": "Kap. 3 · Lyrik · leicht",
+      "frage": "Was ist eine Alliteration?",
+      "erklaerung": "Alliteration: gleiche Anfangslaute. Beispiel: „Milch macht müde Männer munter.\" <small>(38/4)</small>",
+      "art": "mc",
+      "optionen": [
+        "Wiederholung gleicher Wörter am Satzende",
+        "Gleiche Anfangsbuchstaben bei aufeinander folgenden Wörtern",
+        "Lautmalerische Wiedergabe von Geräuschen",
+        "Auslassung eines unbetonten Vokals"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "schwer",
+      "badge": "Kap. 3 · Lyrik · schwer",
+      "frage": "Ergänze die fehlenden Klangfiguren:",
+      "erklaerung": "Klangfiguren entfalten ihre Wirkung besonders beim Vorlesen. <small>(38-39)</small>",
+      "art": "luecken",
+      "teile": [
+        {
+          "text": "Gleiche Anfangsbuchstaben aufeinander folgender Wörter:",
+          "antwort": "Alliteration"
+        },
+        {
+          "text": "Lautmalerische Wiedergabe von Geräuschen:",
+          "antwort": "Onomatopoesie"
+        },
+        {
+          "text": "Wiederholung am Satzanfang:",
+          "antwort": "Anapher"
+        },
+        {
+          "text": "Wiederholung am Satzende:",
+          "antwort": "Epipher"
+        }
+      ]
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "schwer",
+      "badge": "Kap. 3 · Lyrik · schwer",
+      "frage": "Markiere alle Wörter im Text, die <strong>Stilmittel der Kategorie „Satzfiguren\"</strong> benennen.",
+      "erklaerung": "Satzfiguren: Asyndeton, Polysyndeton, Anapher, Parallelismus, Chiasmus, Ellipse, Enjambement, Klimax, Inversion, Parataxe/Hypotaxe. <small>(31-35)</small>",
+      "art": "markierung",
+      "text": "Rhetorische Figuren lassen sich in vier Gruppen einteilen. Wortfiguren wie die Hyperbel oder Periphrase wirken auf einzelne Wörter. Satzfiguren wie das Asyndeton, die Anapher oder der Parallelismus verändern den Satzbau. Das Enjambement gilt als Satzfigur, die nur in Gedichten vorkommt. Gedankenfiguren wie Ironie und Antithese wirken auf der Ebene des Sinns. Klangfiguren wie die Alliteration oder Onomatopoesie betreffen den Klang. Der Chiasmus ist ebenfalls eine Satzfigur.",
+      "ziele": [
+        "Asyndeton",
+        "Anapher",
+        "Parallelismus",
+        "Enjambement",
+        "Chiasmus"
+      ]
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "leicht",
+      "badge": "Kap. 3 · Lyrik · leicht",
+      "frage": "Die Litotes hebt einen Begriff durch doppelte Verneinung oder Verneinung des Gegenteils hervor.",
+      "erklaerung": "Richtig! Litotes: „nicht selten\", „nicht unüblich\". Wirkung: bekräftigend durch Umweg, leicht ironisch. <small>(32/8)</small>",
+      "art": "rf",
+      "richtig": true
+    },
+    {
+      "kapitel": 3,
+      "schwierigkeit": "schwer",
+      "badge": "Kap. 3 · Lyrik · schwer",
+      "frage": "Bringe diese vier Kategorien rhetorischer Figuren in die Reihenfolge des Skripts (von der kleinsten Sprachebene zur größten):",
+      "erklaerung": "Im Skript werden Wortfiguren (Ebene einzelner Wörter), Satzfiguren (Syntax), Klangfiguren (Laut/Klang) und Gedankenfiguren (Sinn/Aussage) unterschieden. <small>(31)</small>",
+      "art": "sortierung",
+      "elemente": [
+        "Wortfiguren",
+        "Satzfiguren",
+        "Klangfiguren",
+        "Gedankenfiguren"
+      ]
+    },
+    {
+      "kapitel": 4,
+      "schwierigkeit": "leicht",
+      "badge": "Kap. 4 · Drama · leicht",
+      "frage": "Was ist das Besondere des Dramas gegenüber der Epik?",
+      "erklaerung": "Im Drama erlebt das Publikum die Handlung unmittelbar. Es gibt keinen Erzähler als Vermittler – die Figuren sprechen direkt auf der Bühne. <small>(41/5)</small>",
+      "art": "mc",
+      "optionen": [
+        "Das Drama hat immer einen Erzähler",
+        "Das Drama wird durch einen Erzähler vermittelt",
+        "Das Publikum erlebt die Handlung unmittelbar – ohne Erzähler",
+        "Das Drama besteht ausschließlich aus Monologen"
+      ],
+      "richtig": 2
+    },
+    {
+      "kapitel": 4,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 4 · Drama · mittel",
+      "frage": "Ordne die Dramenwerke ihren Gattungen zu.",
+      "erklaerung": "Tragödie: unlösbarer Konflikt, Untergang; Komödie: lösbarer Konflikt, heiteres Ende; Tragikomödie: beides gemischt; Absurdes Theater: keine logische Handlung. <small>(41-43)</small>",
+      "art": "zuordnung",
+      "paare": [
+        {
+          "l": "Sophokles: König Ödipus",
+          "r": "Tragödie"
+        },
+        {
+          "l": "Lessing: Minna von Barnhelm",
+          "r": "Komödie"
+        },
+        {
+          "l": "Dürrenmatt: Besuch der alten Dame",
+          "r": "Tragikomödie"
+        },
+        {
+          "l": "Beckett: Warten auf Godot",
+          "r": "Absurdes Theater"
+        }
+      ]
+    },
+    {
+      "kapitel": 4,
+      "schwierigkeit": "schwer",
+      "badge": "Kap. 4 · Drama · schwer",
+      "frage": "Was ist ein typischer Verfremdungseffekt in Brechts Epischem Theater?",
+      "erklaerung": "Verfremdungseffekte bei Brecht: Schauspieler verlassen die Rolle, Lieder unterbrechen, Spruchbänder kommentieren. Ziel: kritische Distanz statt Empathie. <small>(43/5)</small>",
+      "art": "mc",
+      "optionen": [
+        "Schauspieler verstärken die Empathie des Zuschauers",
+        "Lieder unterbrechen das Geschehen oder Schauspieler sprechen Zuschauer direkt an",
+        "Das Bühnenbild zeigt stets realistische Schauplätze",
+        "Der Zuschauer soll sich vollständig mit dem Helden identifizieren"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 4,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 4 · Drama · mittel",
+      "frage": "Bringe die Akte des Dramas nach Gustav Freytag in die richtige Reihenfolge:",
+      "erklaerung": "1. Exposition → 2. Erregendes Moment → 3. Peripetie → 4. Retardierendes Moment → 5. Katastrophe/Lösung. <small>(45-47)</small>",
+      "art": "sortierung",
+      "elemente": [
+        "Exposition",
+        "Erregendes Moment",
+        "Peripetie (Höhepunkt)",
+        "Retardierendes Moment",
+        "Katastrophe / Lösung"
+      ]
+    },
+    {
+      "kapitel": 4,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 4 · Drama · mittel",
+      "frage": "Was versteht man unter „Katharsis\" in der Tragödie?",
+      "erklaerung": "Katharsis (gr. Reinigung): Das Schicksal der Hauptfigur soll Mitleid und Furcht erzeugen und so eine innere Reinigung/Läuterung beim Betrachter bewirken. <small>(42/5)</small>",
+      "art": "mc",
+      "optionen": [
+        "Der Tod der Hauptfigur",
+        "Eine innere Läuterung beim Betrachter durch Mitleid und Furcht",
+        "Die Auflösung des Konflikts in der Komödie",
+        "Der Konflikt zwischen den Figuren"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 4,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 4 · Drama · mittel",
+      "frage": "Ergänze die Monologarten:",
+      "erklaerung": "Die vier Monologarten unterscheiden sich in ihrer Funktion: Emotion, Entscheidung, Reflexion oder Selbsterforschung. <small>(47/7)</small>",
+      "art": "luecken",
+      "teile": [
+        {
+          "text": "Starke Affekte – Selbstgespräch aus Emotion heraus:",
+          "antwort": "Affektmonolog"
+        },
+        {
+          "text": "Abwägen von Für und Wider mit Entschlussfassung:",
+          "antwort": "Entschlussmonolog"
+        },
+        {
+          "text": "Durchdenken und Kommentieren von Geschehen:",
+          "antwort": "Reflexionsmonolog"
+        },
+        {
+          "text": "Erforschung der eigenen Persönlichkeit:",
+          "antwort": "Selbstcharakterisierungsmonolog"
+        }
+      ]
+    },
+    {
+      "kapitel": 4,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 4 · Drama · mittel",
+      "frage": "In der klassischen Tragödie muss die Hauptfigur immer aus dem Adel stammen (Ständeklausel).",
+      "erklaerung": "Richtig! In der klassischen Tragödie stammt die Hauptfigur aus dem Adel, um ihr die nötige „Fallhöhe\" zu geben. Erst die Aufklärung überwindet diese Ständeklausel (bürgerliches Trauerspiel). <small>(42/2)</small>",
+      "art": "rf",
+      "richtig": true
+    },
+    {
+      "kapitel": 4,
+      "schwierigkeit": "schwer",
+      "badge": "Kap. 4 · Drama · schwer",
+      "frage": "Was ist der Unterschied zwischen „analytischem Drama\" und „synthetischem Drama\"?",
+      "erklaerung": "Analytisches Drama (Enthüllungsdrama): Bsp. König Ödipus. Synthetisches Drama (Zieldrama): Bsp. Antigone. Der Unterschied liegt in der Richtung des Spannungsaufbaus. <small>(45/3)</small>",
+      "art": "mc",
+      "optionen": [
+        "Kein Unterschied",
+        "Analytisch: Ein Verbrechen liegt vor der Bühnenhandlung und wird enthüllt. Synthetisch: Spannung entsteht in der Entwicklung auf das Ereignis hin.",
+        "Analytisch: nur Dialoge. Synthetisch: nur Monologe.",
+        "Analytisch: Komödie. Synthetisch: Tragödie."
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 4,
+      "schwierigkeit": "leicht",
+      "badge": "Kap. 4 · Drama · leicht",
+      "frage": "Das Drama ist primär für den Leser bestimmt, nicht für den Zuschauer.",
+      "erklaerung": "Falsch! Das Drama ist für den Zuschauer bestimmt. Deshalb müssen bei der Analyse auch akustische (Sprache, Geräusche, Musik) und optische Zeichen (Gestik, Mimik, Bühnenbild) berücksichtigt werden. <small>(48/1)</small>",
+      "art": "rf",
+      "richtig": false
+    },
+    {
+      "kapitel": 5,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 5 · Film · mittel",
+      "frage": "Was ist der Unterschied zwischen „Erzählung\" und „Narration\" im Film?",
+      "erklaerung": "Erzählung = das WAS des Films. Narration = das WIE (sprachlich, audiovisuell, Stil). <small>(50/5)</small>",
+      "art": "mc",
+      "optionen": [
+        "Kein Unterschied",
+        "Erzählung = das WAS (Reihe der Geschehen); Narration = das WIE (Stil, Präsentation)",
+        "Narration = das WAS; Erzählung = das WIE",
+        "Nur Erzählung existiert im Film"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 5,
+      "schwierigkeit": "leicht",
+      "badge": "Kap. 5 · Film · leicht",
+      "frage": "Was bewirkt die Froschperspektive (Kamera von unten)?",
+      "erklaerung": "Froschperspektive (von unten): Personen wirken mächtiger, bedrohlicher. Vogelperspektive (von oben): Personen wirken kleiner, schwächer. <small>(53/5)</small>",
+      "art": "mc",
+      "optionen": [
+        "Personen wirken schwächer",
+        "Personen wirken mächtiger und bedrohlicher",
+        "Personen wirken sympathischer",
+        "Neutrale Wirkung"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 5,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 5 · Film · mittel",
+      "frage": "Ordne die Filmberufe ihren Hauptaufgaben zu.",
+      "erklaerung": "Der Film ist eine kollaborative Arbeit. Jeder Beruf trägt auf spezifische Weise zur Gesamtwirkung bei. <small>(56-58)</small>",
+      "art": "zuordnung",
+      "paare": [
+        {
+          "l": "Regisseur/in",
+          "r": "Künstlerische Gesamtvision, leitet Schauspieler"
+        },
+        {
+          "l": "Kameramann/-frau",
+          "r": "Visuelle Umsetzung, Einstellungen, Bildkomposition"
+        },
+        {
+          "l": "Cutter/in",
+          "r": "Montage – fügt Material zu schlüssigem Film zusammen"
+        },
+        {
+          "l": "Komponist/in",
+          "r": "Erschafft originale Filmmusik und Leitmotive"
+        }
+      ]
+    },
+    {
+      "kapitel": 5,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 5 · Film · mittel",
+      "frage": "Was ist eine Parallelmontage?",
+      "erklaerung": "Parallelmontage: Zwei (oder mehr) Handlungsorte werden abwechselnd gezeigt – so werden gleichzeitige Ereignisse an verschiedenen Orten dargestellt. <small>(55/12)</small>",
+      "art": "mc",
+      "optionen": [
+        "Zwei Einstellungen gehen ohne Schnitt ineinander über",
+        "Verschiedene Handlungsorte werden abwechselnd gezeigt",
+        "Kamera zeigt den Blick einer Figur",
+        "Harter Schnitt zwischen zwei unähnlichen Einstellungen"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 5,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 5 · Film · mittel",
+      "frage": "Extradiegetischer Ton (Off-Ton) ist Ton, den nur der Zuschauer hört – nicht die Figuren im Film.",
+      "erklaerung": "Richtig! Extradiegetisch = Off-Ton (nur Zuschauer hört ihn). Intradiegetisch = On-Ton (auch die Figuren in der Diegese hören ihn). <small>(55/4)</small>",
+      "art": "rf",
+      "richtig": true
+    },
+    {
+      "kapitel": 5,
+      "schwierigkeit": "schwer",
+      "badge": "Kap. 5 · Film · schwer",
+      "frage": "Was kennzeichnet den „Unreliable Narrator\" im Film?",
+      "erklaerung": "Unzuverlässige Erzählung: Erzähler/Perspektivfigur verschweigt Infos, Erinnerungen sind verfälscht. Klassiker: „Fight Club\", „The Usual Suspects\", „Memento\". <small>(55/1)</small>",
+      "art": "mc",
+      "optionen": [
+        "Der Erzähler spricht sehr leise",
+        "Die gezeigte Realität entspricht nicht den tatsächlichen Ereignissen",
+        "Es gibt keinen Erzähler",
+        "Der Erzähler wechselt jede Szene"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 5,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 5 · Film · mittel",
+      "frage": "Ergänze die Begriffe zu Montage-Techniken:",
+      "erklaerung": "Montagetechniken bestimmen Rhythmus und Wirkung einer Filmszene entscheidend mit. <small>(55/5)</small>",
+      "art": "luecken",
+      "teile": [
+        {
+          "text": "Zwei sehr unterschiedliche Einstellungen folgen direkt aufeinander:",
+          "antwort": "harter Schnitt"
+        },
+        {
+          "text": "Zwei ähnliche Einstellungen folgen einander:",
+          "antwort": "weicher Schnitt"
+        },
+        {
+          "text": "Verschiedene Handlungsorte werden abwechselnd gezeigt:",
+          "antwort": "Parallelmontage"
+        },
+        {
+          "text": "Gesprächsdarstellung, Kamera wechselt mit Sprecher:",
+          "antwort": "Schuss-Gegenschuss"
+        }
+      ]
+    },
+    {
+      "kapitel": 6,
+      "schwierigkeit": "leicht",
+      "badge": "Kap. 6 · Lit. Spiele · leicht",
+      "frage": "Welches Spiel hat KEINE epischen Elemente?",
+      "erklaerung": "Tetris ist ein abstraktes Videospiel ohne narrative Elemente. Spielreiz entsteht durch Problemlösung/Geschicklichkeit. <small>(59/8)</small>",
+      "art": "mc",
+      "optionen": [
+        "The Witcher",
+        "Red Dead Redemption 2",
+        "Tetris",
+        "Dungeons & Dragons"
+      ],
+      "richtig": 2
+    },
+    {
+      "kapitel": 6,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 6 · Lit. Spiele · mittel",
+      "frage": "Ordne die Spiele ihrer Kategorie zu.",
+      "erklaerung": "Spiele lassen sich nach dem Grad narrativer Elemente einteilen – von keinen bis zu vollständig narrativen Spielen. <small>(59-61)</small>",
+      "art": "zuordnung",
+      "paare": [
+        {
+          "l": "Tetris, Pong, Snake",
+          "r": "Digitale Spiele ohne epische Elemente"
+        },
+        {
+          "l": "Catan, Monopoly",
+          "r": "Analoge Spiele mit narrativer Rahmung"
+        },
+        {
+          "l": "Dungeons & Dragons",
+          "r": "Narratives analoges Spiel"
+        },
+        {
+          "l": "The Witcher, Life is Strange",
+          "r": "Narrative digitale Spiele"
+        }
+      ]
+    },
+    {
+      "kapitel": 6,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 6 · Lit. Spiele · mittel",
+      "frage": "Pen-&-Paper-Rollenspiele wie D&D können mit klassischen narratologischen Werkzeugen analysiert werden.",
+      "erklaerung": "Richtig! Pen-&-Paper-Rollenspiele verschmelzen Spiel und Erzählung vollständig. Die entstehenden Geschichten können narratologisch analysiert werden (vgl. Kap. 2.2). <small>(61/1)</small>",
+      "art": "rf",
+      "richtig": true
+    },
+    {
+      "kapitel": 6,
+      "schwierigkeit": "schwer",
+      "badge": "Kap. 6 · Lit. Spiele · schwer",
+      "frage": "Digitale Open-World-Spiele bieten dieselbe kreative Freiheit wie analoge Pen-&-Paper-Rollenspiele.",
+      "erklaerung": "Falsch! Digitale Spielwelten sind trotz „Open World\" limitiert. Kreative Ausbrüche (z. B. ein nicht vorgesehener fliegender Teppich) erlaubt Software nicht. <small>(61/8)</small>",
+      "art": "rf",
+      "richtig": false
+    },
+    {
+      "kapitel": 6,
+      "schwierigkeit": "mittel",
+      "badge": "Kap. 6 · Lit. Spiele · mittel",
+      "frage": "Was ist der Hauptunterschied zwischen Spielen mit „Narration als Rahmen\" und „narrativen Spielen\"?",
+      "erklaerung": "Narration als Rahmen: Geschichte motiviert (Catan, Monopoly), beeinflusst aber nicht die Mechanik. Narrative Spiele: Geschichte ist zentral und beeinflusst alles (The Witcher). <small>(59-61)</small>",
+      "art": "mc",
+      "optionen": [
+        "Kein Unterschied",
+        "Narration als Rahmen: Geschichte dient der Atmosphäre ohne Einfluss auf Spielmechanik; narrative Spiele: Geschichte ist zentral",
+        "Narrative Spiele sind immer digital",
+        "Spiele mit Rahmen sind immer analog"
+      ],
+      "richtig": 1
+    },
+    {
+      "kapitel": 6,
+      "schwierigkeit": "schwer",
+      "badge": "Kap. 6 · Lit. Spiele · schwer",
+      "frage": "Ergänze die spielspezifischen Analysekategorien (über die klassischen Methoden hinaus):",
+      "erklaerung": "Spielspezifische Analyse berücksichtigt: Interaktivität, ludische Elemente, Balance Narration/Gameplay, Grad der spielerischen Freiheit. <small>(62/1)</small>",
+      "art": "luecken",
+      "teile": [
+        {
+          "text": "Spielmechaniken und Regeln: ludische ___",
+          "antwort": "Elemente"
+        },
+        {
+          "text": "Zusammenspiel von Geschichte und Spielgeschehen:",
+          "antwort": "Balance"
+        },
+        {
+          "text": "Entscheidungen der Spieler*innen:",
+          "antwort": "Interaktivität"
+        },
+        {
+          "text": "Eigenständiges Medium mit neuen Erzählformen: narratives ___",
+          "antwort": "Medium"
+        }
+      ]
+    }
+  ]
+}

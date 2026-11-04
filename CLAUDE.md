@@ -82,7 +82,8 @@ lehrer-homepage/
 ```
 
 > **Weitere eigenständige Lernseiten im Root** (öffentlich bzw. teils per `auth-guard.js`/Geheimlink
-> geschützt), von den Fachseiten verlinkt: `narratologische-analyse.html`,
+> geschützt), von den Fachseiten verlinkt (die vier Quiz-Seiten `stilmittel-quiz`, `literaturwissenschaft_quiz_v2`,
+> `rechtschreibquiz`, `lernquiz_jahrgang5` sind seit 2026-11 nur noch Hüllen für `js/quiz-engine.js` + `materialien/quiz/*.json`): `narratologische-analyse.html`,
 > `deutsch-dialektische-eroerterung.html`, `deutsch-das-parfum.html`, `deutsch-theaterprojekt.html`,
 > `fuenfschrittlesemethode.html`, `stilmittel-quiz.html`, `literaturwissenschaft_quiz_v2.html`,
 > `rechtschreibquiz.html`, `lernquiz_jahrgang5.html`, `ab-herrschaft-mittelalter.html`,
@@ -812,11 +813,12 @@ und einer **HTML-Hülle** in `materialien/` (Beispiele: `materialien/deutsch_was
 (MC), `materialien/allgemein_kaefer-quiz_jg5-10_2026-06.html` (Bilderraten),
 `materialien/erdkunde_bundeslaender-hauptstaedte_jg5-10_2026-05.html` (Karte mit zwei Gruppen)).
 
-**Bereits auf der Engine (Stand 2026-11):** Prosa-Quiz, Käfer-, Masken-, Wintersport-Legenden (+ Kopie `ws-7f3k9q.html`),
-Fußball-Rebus, stumme Karten Bundesländer / Bundesländer & Hauptstädte / Niedersachsen (Kartenbilder unter
-`img/quiz/erdkunde-*/stumm.webp` + `loesung.webp`). **Noch eigenständig:** Monatsnamen-Rebus (Bonusfrage am Ende),
-Lehrer-Rebus (drei gestaffelte Tipps, 48 Base64-Bilder), Satzglieder & Zeitformen (Einfärben/Sortieren) sowie die
-großen Root-Quizze (Stilmittel, Literaturwissenschaft, Rechtschreibung, Lernquiz 5, Deutsch Sek I) mit eigenen Modi.
+**Alle Quizze laufen auf der Engine (Stand 2026-11):** Prosa, Käfer, Masken, Wintersport-Legenden (+ Kopie `ws-7f3k9q.html`),
+Fußball-Rebus, Lehrer*innenrätsel, Monatsnamen-Rebus, drei stumme Karten, Satzglieder & Zeitformen, Das Parfum, Deutsch Sek I
+sowie die Root-Seiten `stilmittel-quiz.html`, `literaturwissenschaft_quiz_v2.html`, `rechtschreibquiz.html`,
+`lernquiz_jahrgang5.html` (Dateinamen/Pfade unverändert, jeweils nur noch Hülle + JSON). Alle Bilder liegen unter `img/quiz/<slug>/`.
+**Einzige Ausnahme:** `mathe-zahlen-groessen-k7m4p.html` – ein Mathe-Training, das seine Aufgaben per Code erzeugt (keine Datenliste),
+bleibt eigenständig.
 
 ```html
 <link rel="stylesheet" href="/css/style.css">
@@ -849,17 +851,36 @@ Geschützte Quizze: wie bisher `auth-guard.js` per `document.write` im `<head>` 
 
 | Typ | Fragen-Format | Optionen |
 |-----|---------------|----------|
-| `mc` | `{frage, optionen:[…], richtig: 1` oder `[0,2]` (Mehrfachauswahl)`, erklaerung}` | `mischen`, `optionenMischen`, `anzahl` |
-| `bilder` | `bilder: "/img/quiz/<quiz>/"`, `{bild, antwort, alternativen:[…], frage, tipp, bonus, notiz, info:{zeilen:[[label,wert]], wissenswertes:[…]}}` | `mischen` (Standard an), `versuche` 1–6, `toleranz` (Levenshtein, Standard 3), `teilantworten` (Nachname reicht) |
+| `fragen` (Alias `mc`) | je Frage `art` (Standard `mc`): `mc` `{frage, optionen, richtig: 1` oder `[0,2]}` · `rf` `{richtig: true/false}` · `luecken` `{teile:[{text, antwort}]}` · `zuordnung` `{paare:[{l, r}]}` · `sortierung` `{elemente:[…richtig geordnet], akzeptiert?:[[…]]}` · `markierung` `{text, ziele:[…]}` · `einfaerben` `{woerter:[{t, k}], kategorien:[{wert, label, farbe}]}`; gemeinsam: `kontext` (Zitat/Satz, HTML), `hinweis`, `badge`, `symbol`, `erklaerung`, `gewicht` (Punkte, Standard 1; einfaerben = Wortzahl) | `mischen`, `optionenMischen`, `anzahl`, `teilpunkte: false` (nur ganz richtige Aufgaben zählen), `ablenker: 3` (Optionen aus den Antworten anderer Fragen mit gleichem `modus` – Frage hat dann nur `antwort`), `auswertungNach` + `auswertungTitel`/`auswertungLabels` (Ergebnis-Aufschlüsselung), `konfiguration` (siehe unten) |
+| `bilder` | `bilder: "/img/quiz/<quiz>/"`, `{bild, antwort, alternativen:[…], frage, tipp, tipps:[…], bonus, notiz, info:{zeilen:[[label,wert]], wissenswertes:[…], text (HTML)}}` | `mischen` (Standard an), `versuche` 1–6, `toleranz` (Levenshtein → halbe Punkte, Standard 3), `toleranzVoll` (Tippfehler mit vollen Punkten), `teilantworten` (Nachname reicht), `treffer: "stichwort"` (Schlüsselwort muss in der Antwort vorkommen), `abschluss: {titel, hinweis, frage, antwort, alternativen, treffer, gewicht, erklaerung}` (Bonusfrage mit Galerie nach dem letzten Bild) |
 | `karte` | `karte: {stumm, loesung?}`, `{antwort, x, y, alternativen, gruppe?}` (x/y in %) | `modi: ["leicht","mittel","schwer"]`, `gruppen: {"bl": {name, farbe}, …}` (Auswahloptionen nur aus derselben Gruppe) |
 | `lueckentext` | `fragen: [{titel?, text}]` – Lücken `[antwort|alternative]` (Eingabe) bzw. `{richtig|falsch|falsch}` (Auswahl) | `genau` (Standard true = Groß-/Kleinschreibung zählt), `optionenMischen` |
 
-Jede Lücke / jeder Hotspot / jedes Bild = **eine Frage** für XP.
+Jede Lücke / jeder Hotspot / jedes Bild = **eine Frage** für XP; bei `fragen` zählt die Summe der `gewicht`-Werte.
+
+**Konfigurationsbildschirm (`konfiguration`, nur Typ `fragen`):** Vor dem Start wählen Lernende Filter, Umfang und Modus.
+```json
+"konfiguration": {
+  "gruppen": [
+    { "feld": "stufe", "label": "Klassenstufe", "art": "einfach", "bestenliste": true,
+      "optionen": [{ "wert": "56", "label": "Klasse 5 / 6", "beschreibung": "…" }, { "wert": "78cum", "label": "Jg 5–8", "werte": ["5/6", "7/8"] }] },
+    { "feld": "kategorie", "label": "Themen", "art": "mehrfach" }        // Optionen automatisch aus den Fragen (abhängig von den Gruppen davor)
+  ],
+  "anzahl": { "label": "Anzahl Fragen", "optionen": [10, 25, "alle"], "standard": 10, "bestenliste": true },
+  "modus":  { "label": "Spielmodus", "zufall": "mixed", "bestenliste": true, "optionen": [{ "wert": "name_from_beispiel", "label": "…", "icon": "✍️" }] }
+}
+```
+`art: "einfach"` = genau eine Option (optional `alle: "Alle"`), `"mehrfach"` = mehrere; `werte` fasst mehrere Feldwerte zusammen;
+Felder dürfen Arrays sein (z. B. `stufen: ["mittelstufe","rs910"]`). `modus` filtert das Feld `modus` der Fragen, `zufall` wählt je `einheit`
+eine zufällige Variante. Gruppen/Anzahl/Modus mit `bestenliste: true` bilden den Bestenlisten-Modus: ID = `bestenlisteSlug` (oder `slug`)
++ `-` + Werte, z. B. `rechtschreib-56`, `deutsch-seki-78cum`, `stilmittel-mixed`, `lernquiz-jahrgang5-10` (kompatibel zu den alten Einträgen).
+XP werden immer unter `slug` gemeldet.
 
 ### Pflichtschritte für ein neues Engine-Quiz
 1. JSON in `materialien/quiz/` + Hülle in `materialien/` (Dateinamen-Konvention `fach_thema_klasse_JJJJ-MM.html`).
-2. **Backend registrieren:** `kolosseum/routes/external.js` → `FRAGEN_QUIZZE` (Slug + **Fragenanzahl** + Label) und
-   `kolosseum/routes/leaderboard.js` → `VALID_QUIZZES` (Basis-ID vor dem ersten Bindestrich). Ohne beides: keine XP / leere Bestenliste, ohne Fehlermeldung.
+2. **Backend registrieren:** `kolosseum/routes/external.js` → `FRAGEN_QUIZZE` (Slug + **höchste Fragen-/Punktzahl** + Label) und
+   `kolosseum/routes/leaderboard.js` → `VALID_QUIZZES` (Basis-ID vor dem ersten Bindestrich, auch für `bestenlisteSlug`). Ohne beides: keine XP / leere Bestenliste, ohne Fehlermeldung.
+   `PUNKTE_QUIZZE` ist seit 2026-11 leer – kein Quiz meldet mehr Punkte statt Fragen.
 3. Auf der passenden `fach-<fach>.html` verlinken, Eintrag in `inhalte.json`.
 4. Test im Browser: `/api/auth/me` liefert bei lokalem Aufruf keinen Login → Quizze mit `auth-guard.js` nur mit Geheimlink öffnen.
 

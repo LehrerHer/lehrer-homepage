@@ -1,0 +1,1813 @@
+{
+  "slug": "deutsch-seki-quiz",
+  "bestenlisteSlug": "deutsch-seki",
+  "typ": "fragen",
+  "titel": "Deutsch-Quiz Sek I – Jahrgänge 5–10",
+  "untertitel": "124 Fragen zu Textsorten, Grammatik, Stilmitteln und Rechtschreibung",
+  "fach": "deutsch",
+  "zurueck": {
+    "url": "/fach-deutsch.html",
+    "text": "Zurück zu Deutsch"
+  },
+  "mischen": true,
+  "optionenMischen": true,
+  "auswertungNach": "jahrgang",
+  "auswertungTitel": "Jahrgang",
+  "konfiguration": {
+    "gruppen": [
+      {
+        "feld": "jahrgang",
+        "label": "Jahrgang",
+        "art": "einfach",
+        "bestenliste": true,
+        "optionen": [
+          {
+            "wert": "56",
+            "label": "Jahrgang 5/6",
+            "werte": [
+              "5/6"
+            ]
+          },
+          {
+            "wert": "78own",
+            "label": "Jahrgang 7/8",
+            "werte": [
+              "7/8"
+            ]
+          },
+          {
+            "wert": "78cum",
+            "label": "Jg 5–8 kombiniert",
+            "werte": [
+              "5/6",
+              "7/8"
+            ]
+          },
+          {
+            "wert": "910own",
+            "label": "Jahrgang 9/10",
+            "werte": [
+              "9/10"
+            ]
+          },
+          {
+            "wert": "910all",
+            "label": "Alle Jahrgänge (5–10)",
+            "werte": [
+              "5/6",
+              "7/8",
+              "9/10"
+            ]
+          }
+        ]
+      }
+    ],
+    "anzahl": {
+      "label": "Anzahl Fragen",
+      "optionen": [
+        10,
+        20,
+        "alle"
+      ],
+      "standard": 10
+    }
+  },
+  "fragen": [
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Welche Textsorte erzählt eine kurze Geschichte mit Tieren, die wie Menschen handeln, und endet oft mit einer Lehre?",
+      "optionen": [
+        "Fabel",
+        "Märchen",
+        "Sage",
+        "Gedicht"
+      ],
+      "richtig": 0,
+      "erklaerung": "Eine Fabel nutzt sprechende Tiere als Figuren und vermittelt am Ende eine Moral oder Lehre."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was ist ein Märchen?",
+      "optionen": [
+        "Eine erfundene Erzählung mit Zauber und oft mit „Es war einmal“",
+        "Ein Bericht über ein echtes Ereignis",
+        "Ein Sachtext über Tiere",
+        "Ein Gedicht mit Reimen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Märchen sind fiktionale Erzählungen, oft mit übernatürlichen Elementen und festen Eröffnungsformeln."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Wer erzählt in einer Geschichte das Geschehen?",
+      "optionen": [
+        "Der Erzähler",
+        "Der Autor",
+        "Der Leser",
+        "Die Hauptfigur immer selbst"
+      ],
+      "richtig": 0,
+      "erklaerung": "Der Erzähler ist die Instanz im Text, die das Geschehen vermittelt – nicht zu verwechseln mit dem Autor."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Wenn eine Figur „Ich ging nach Hause“ erzählt, liegt welche Erzählform vor?",
+      "optionen": [
+        "Ich-Form (Ich-Erzähler)",
+        "Er/Sie-Form",
+        "Du-Form",
+        "Wir-Form"
+      ],
+      "richtig": 0,
+      "erklaerung": "Erzählt eine Figur aus der eigenen Perspektive mit „ich“, spricht man vom Ich-Erzähler."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was ist ein Konflikt in einer Erzählung?",
+      "optionen": [
+        "Ein Gegensatz oder Streit, der die Handlung vorantreibt",
+        "Das Ende der Geschichte",
+        "Die Überschrift",
+        "Eine Beschreibung des Wetters"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Konflikt ist die Spannung zwischen Figuren oder Kräften, die die Handlung in Gang hält."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was ist ein Vers in einem Gedicht?",
+      "optionen": [
+        "Eine einzelne Zeile",
+        "Eine ganze Strophe",
+        "Der Titel",
+        "Der Reim am Ende"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Vers ist eine einzelne Zeile eines Gedichts."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Mehrere zusammengehörige Verse, die durch eine Leerzeile abgetrennt sind, nennt man …",
+      "optionen": [
+        "Strophe",
+        "Reim",
+        "Metrum",
+        "Zeile"
+      ],
+      "richtig": 0,
+      "erklaerung": "Eine Strophe ist ein Abschnitt aus mehreren Versen, vergleichbar mit einem Absatz."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was bedeutet „Reim“?",
+      "optionen": [
+        "Gleichklang am Ende von Versen (z. B. Haus – Maus)",
+        "Die Anzahl der Strophen",
+        "Der Titel des Gedichts",
+        "Eine Figur im Gedicht"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Reim ist der Gleichklang von Lauten, meist am Versende."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "„Stark wie ein Löwe“ – welches sprachliche Mittel ist das?",
+      "optionen": [
+        "Vergleich",
+        "Personifikation",
+        "Wiederholung",
+        "Reim"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Vergleich verbindet zwei Dinge mit „wie“ oder „als“."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "„Die Sonne lacht“ – welches sprachliche Mittel ist das?",
+      "optionen": [
+        "Personifikation",
+        "Vergleich",
+        "Wiederholung",
+        "Metapher"
+      ],
+      "richtig": 0,
+      "erklaerung": "Bei der Personifikation bekommt etwas Unbelebtes menschliche Eigenschaften (lachen)."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Welche Zeitform (Tempus) beschreibt das Jetzt: „Ich gehe“?",
+      "optionen": [
+        "Präsens",
+        "Präteritum",
+        "Perfekt",
+        "Futur I"
+      ],
+      "richtig": 0,
+      "erklaerung": "Das Präsens (Gegenwart) beschreibt, was gerade geschieht."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "In welchem Fall (Kasus) steht das Wort in der Frage „Wem gibst du das Buch?“",
+      "optionen": [
+        "Dativ",
+        "Nominativ",
+        "Genitiv",
+        "Akkusativ"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Frage „Wem?“ erfragt den Dativ."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was sind Genus, Numerus und Kasus bei einem Nomen?",
+      "optionen": [
+        "Geschlecht, Zahl und Fall",
+        "Drei Zeitformen",
+        "Drei Wortarten",
+        "Drei Satzglieder"
+      ],
+      "richtig": 0,
+      "erklaerung": "Genus = grammatisches Geschlecht, Numerus = Einzahl/Mehrzahl, Kasus = Fall."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Welches Satzglied erfragt man mit „Wer oder was?“",
+      "optionen": [
+        "Subjekt",
+        "Prädikat",
+        "Objekt",
+        "Adverb"
+      ],
+      "richtig": 0,
+      "erklaerung": "Das Subjekt ist der Satzgegenstand und wird mit „Wer/Was?“ erfragt."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Welches Satzglied ist die Satzaussage und enthält das Verb?",
+      "optionen": [
+        "Prädikat",
+        "Subjekt",
+        "Objekt",
+        "Attribut"
+      ],
+      "richtig": 0,
+      "erklaerung": "Das Prädikat ist die Satzaussage und besteht aus dem (finiten) Verb."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was gehört zu gutem Zuhören in einem Gespräch?",
+      "optionen": [
+        "Aufmerksam sein und nachfragen, wenn man etwas nicht versteht",
+        "Sofort dazwischenreden",
+        "Auf das Handy schauen",
+        "Über etwas anderes nachdenken"
+      ],
+      "richtig": 0,
+      "erklaerung": "Sinnverstehendes Zuhören heißt, aufmerksam zu folgen und Nichtverstehen zu äußern."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was ist beim Vortragen vor der Klasse wichtig?",
+      "optionen": [
+        "Deutlich sprechen und Pausen machen",
+        "So leise wie möglich sprechen",
+        "Möglichst schnell fertig werden",
+        "Den Text nur ablesen ohne Blickkontakt"
+      ],
+      "richtig": 0,
+      "erklaerung": "Betonung, Pausen, Lautstärke und Körpersprache unterstützen die Wirkung eines Vortrags."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was hilft beim Planen eines Textes ganz am Anfang?",
+      "optionen": [
+        "Ideen sammeln, z. B. in einem Cluster",
+        "Den Text sofort fehlerfrei abschreiben",
+        "Die Note ausrechnen",
+        "Das Blatt schön bemalen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Vor dem Schreiben sammelt man Ideen, etwa in einem Cluster oder einer Liste."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Welches Satzzeichen steht am Ende einer Frage?",
+      "optionen": [
+        "Fragezeichen",
+        "Punkt",
+        "Ausrufezeichen",
+        "Komma"
+      ],
+      "richtig": 0,
+      "erklaerung": "Fragesätze enden mit einem Fragezeichen."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was bedeutet „eine Textstelle markieren“ beim Lesen?",
+      "optionen": [
+        "Wichtige Wörter oder Sätze hervorheben",
+        "Den Text abschreiben",
+        "Den Text vorlesen",
+        "Den Text wegwerfen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Markieren ist eine Lesestrategie, um Schlüsselwörter und wichtige Stellen sichtbar zu machen."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Wo kann man verlässlich Informationen für ein Referat suchen?",
+      "optionen": [
+        "In der Bibliothek und in geprüften Online-Quellen",
+        "Nur in privaten Chats",
+        "Nur auf Werbeplakaten",
+        "Gar nicht"
+      ],
+      "richtig": 0,
+      "erklaerung": "Bibliothek, Mediathek und seriöse Internetquellen eignen sich zur Recherche."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was ist „Standardsprache“?",
+      "optionen": [
+        "Die allgemein verständliche Hochsprache",
+        "Ein regionaler Dialekt",
+        "Eine Geheimsprache",
+        "Eine Fremdsprache"
+      ],
+      "richtig": 0,
+      "erklaerung": "Standardsprache ist die überregionale, normgerechte Form des Deutschen."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was ist ein Jugendbuch?",
+      "optionen": [
+        "Ein längeres Erzählwerk für junge Leserinnen und Leser",
+        "Ein Sachbuch über Berufe",
+        "Ein Wörterbuch",
+        "Eine Zeitung"
+      ],
+      "richtig": 0,
+      "erklaerung": "Das Jugendbuch ist ein epischer Text, der sich an Jugendliche richtet."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Welche drei großen Gattungen der Literatur unterscheidet man?",
+      "optionen": [
+        "Epik, Lyrik und Dramatik",
+        "Märchen, Sage, Fabel",
+        "Roman, Brief, Liste",
+        "Prosa, Reim, Strophe"
+      ],
+      "richtig": 0,
+      "erklaerung": "Epik (Erzähltexte), Lyrik (Gedichte) und Dramatik (Theatertexte) sind die drei Hauptgattungen."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was ist typisch für einen dramatischen (szenischen) Text?",
+      "optionen": [
+        "Er besteht überwiegend aus Figurenrede und ist zum Spielen gedacht",
+        "Er reimt sich immer",
+        "Er hat keinen Konflikt",
+        "Er besteht nur aus Beschreibung"
+      ],
+      "richtig": 0,
+      "erklaerung": "Dramatische Texte bestehen aus Dialogen/Monologen und sind für die Bühne gedacht."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was ist ein „Dialog“?",
+      "optionen": [
+        "Ein Gespräch zwischen mindestens zwei Figuren",
+        "Ein einzelner langer Satz",
+        "Eine Überschrift",
+        "Ein Reim"
+      ],
+      "richtig": 0,
+      "erklaerung": "Im Dialog sprechen zwei oder mehr Figuren miteinander."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was meint „Handlung“ in einer Erzählung?",
+      "optionen": [
+        "Die Abfolge der Ereignisse",
+        "Die Anzahl der Seiten",
+        "Der Name des Autors",
+        "Die Schriftart"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Handlung ist das, was in der Geschichte geschieht – die Abfolge der Ereignisse."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was beschreibt das „Metrum“ eines Gedichts?",
+      "optionen": [
+        "Den regelmäßigen Wechsel betonter und unbetonter Silben",
+        "Die Anzahl der Strophen",
+        "Den Titel",
+        "Die Sprache des Gedichts"
+      ],
+      "richtig": 0,
+      "erklaerung": "Das Metrum ist das rhythmische Grundmuster aus betonten und unbetonten Silben."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "„Wieder und wieder und wieder klopfte es“ – welches Mittel ist das?",
+      "optionen": [
+        "Wiederholung",
+        "Vergleich",
+        "Personifikation",
+        "Metapher"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Wiederholung betont durch das mehrfache Nennen desselben Wortes."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was meint „Wortwahl“ als Gestaltungsmittel?",
+      "optionen": [
+        "Die bewusste Auswahl von Wörtern für eine bestimmte Wirkung",
+        "Die Reihenfolge der Strophen",
+        "Die Anzahl der Sätze",
+        "Die Schriftgröße"
+      ],
+      "richtig": 0,
+      "erklaerung": "Mit der Wortwahl erzeugen Autorinnen und Autoren gezielt Stimmungen oder Bewertungen."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Welche Zeitform ist Vergangenheit: „Ich ging nach Hause“?",
+      "optionen": [
+        "Präteritum",
+        "Präsens",
+        "Futur I",
+        "Perfekt"
+      ],
+      "richtig": 0,
+      "erklaerung": "Das Präteritum ist die einfache Vergangenheitsform, typisch in Erzähltexten."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Welche Zeitform drückt die Zukunft aus: „Ich werde gehen“?",
+      "optionen": [
+        "Futur I",
+        "Präsens",
+        "Präteritum",
+        "Perfekt"
+      ],
+      "richtig": 0,
+      "erklaerung": "Das Futur I beschreibt zukünftiges Geschehen mit „werden“ + Infinitiv."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was bedeutet „Komparation“?",
+      "optionen": [
+        "Die Steigerung von Adjektiven (groß – größer – am größten)",
+        "Die Mehrzahlbildung",
+        "Die Fallbildung",
+        "Die Zeitform"
+      ],
+      "richtig": 0,
+      "erklaerung": "Komparation ist die Steigerung: Positiv, Komparativ, Superlativ."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was erfragt man mit „Wen oder was?“",
+      "optionen": [
+        "Den Akkusativ",
+        "Den Nominativ",
+        "Den Dativ",
+        "Den Genitiv"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Frage „Wen/Was?“ erfragt den Akkusativ (4. Fall)."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Welches Satzglied erfragt man mit „Wen oder was?“ bzw. „Wem?“",
+      "optionen": [
+        "Objekt",
+        "Subjekt",
+        "Prädikat",
+        "Attribut"
+      ],
+      "richtig": 0,
+      "erklaerung": "Objekte ergänzen das Prädikat und werden u. a. mit „Wen/Was?“ oder „Wem?“ erfragt."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "An welcher Stelle steht das finite Verb im einfachen Aussagesatz?",
+      "optionen": [
+        "An zweiter Stelle",
+        "Immer am Anfang",
+        "Immer am Ende",
+        "Egal wo"
+      ],
+      "richtig": 0,
+      "erklaerung": "Im deutschen Aussagesatz steht das finite (gebeugte) Verb an zweiter Position."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Welche Textsorte gibt sachlich wieder, was passiert ist?",
+      "optionen": [
+        "Bericht",
+        "Märchen",
+        "Gedicht",
+        "Werbeanzeige"
+      ],
+      "richtig": 0,
+      "erklaerung": "Der Bericht informiert sachlich und chronologisch über ein Geschehen."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was beschreibt eine „Beschreibung“ (z. B. Tierbeschreibung)?",
+      "optionen": [
+        "Merkmale sachlich und genau in eigenen Worten",
+        "Eine erfundene Abenteuergeschichte",
+        "Die Meinung des Autors",
+        "Einen Reim"
+      ],
+      "richtig": 0,
+      "erklaerung": "Eine Beschreibung gibt Merkmale eines Gegenstands oder Lebewesens sachlich wieder."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was ist beim Erzählen einer spannenden Geschichte hilfreich?",
+      "optionen": [
+        "Anschaulich und in sinnvoller Reihenfolge erzählen",
+        "Möglichst viele Fremdwörter nutzen",
+        "Das Ende zuerst verraten",
+        "Monoton sprechen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Erzählen heißt, Erlebtes oder Erfundenes anschaulich und adressatengerecht darzustellen."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Welches Satzzeichen trennt Aufzählungen wie „Äpfel, Birnen, Pflaumen“?",
+      "optionen": [
+        "Komma",
+        "Punkt",
+        "Doppelpunkt",
+        "Fragezeichen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Bei Aufzählungen werden die Glieder durch Kommas getrennt."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Wozu dient das „Vorwissen aktivieren“ vor dem Lesen?",
+      "optionen": [
+        "Man verknüpft den Text leichter mit dem, was man schon weiß",
+        "Man muss dann nicht mehr lesen",
+        "Man lernt Vokabeln",
+        "Man schreibt schneller"
+      ],
+      "richtig": 0,
+      "erklaerung": "Vorwissen zu aktivieren ist eine Lesestrategie, die das Verstehen erleichtert."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "5/6",
+      "badge": "Deutsch · Jg 5/6",
+      "frage": "Was bedeutet „adressatengerecht“ schreiben oder sprechen?",
+      "optionen": [
+        "Passend für die Person, an die man sich richtet",
+        "Möglichst kompliziert",
+        "Immer gleich, egal für wen",
+        "Nur mit Bildern"
+      ],
+      "richtig": 0,
+      "erklaerung": "Adressatengerecht heißt, Sprache und Inhalt an die Zielgruppe anzupassen."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Welches Merkmal ist typisch für eine Kurzgeschichte?",
+      "optionen": [
+        "Unvermittelter Anfang und offenes Ende",
+        "Ausführliche Einleitung über mehrere Seiten",
+        "Immer ein Happy End",
+        "Reime in jeder Zeile"
+      ],
+      "richtig": 0,
+      "erklaerung": "Kurzgeschichten beginnen oft mitten im Geschehen und enden offen, ohne ausführlichen Schluss."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was ist eine Ballade?",
+      "optionen": [
+        "Ein erzählendes Gedicht mit dramatischer Handlung",
+        "Ein Sachtext",
+        "Ein kurzer Witz",
+        "Eine Nachricht in der Zeitung"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Ballade vereint epische (erzählende), lyrische und dramatische Elemente."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was beschreibt die „Erzählperspektive“?",
+      "optionen": [
+        "Aus welchem Blickwinkel das Geschehen erzählt wird",
+        "Wie lang der Text ist",
+        "Wann der Text geschrieben wurde",
+        "Wie viele Figuren vorkommen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Erzählperspektive bestimmt, aus wessen Sicht und mit welchem Wissen erzählt wird."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was ist ein „innerer Monolog“?",
+      "optionen": [
+        "Die ungefilterten Gedanken einer Figur",
+        "Ein lautes Streitgespräch",
+        "Eine Regieanweisung",
+        "Eine Überschrift"
+      ],
+      "richtig": 0,
+      "erklaerung": "Im inneren Monolog werden die Gedanken einer Figur unmittelbar wiedergegeben."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was ist das „lyrische Ich“?",
+      "optionen": [
+        "Die Sprechinstanz in einem Gedicht",
+        "Der Autor selbst",
+        "Der Leser",
+        "Die Hauptfigur eines Romans"
+      ],
+      "richtig": 0,
+      "erklaerung": "Das lyrische Ich ist die fiktive Stimme, die im Gedicht spricht – nicht der Autor."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was ist eine „Regieanweisung“ in einem Drama?",
+      "optionen": [
+        "Ein Hinweis zu Handlung, Mimik oder Bühne (meist kursiv)",
+        "Der gesprochene Text einer Figur",
+        "Der Titel des Stücks",
+        "Eine Strophe"
+      ],
+      "richtig": 0,
+      "erklaerung": "Regieanweisungen geben Hinweise zur Darstellung und stehen nicht im Figurentext."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Wie heißt ein Hauptabschnitt eines Dramas?",
+      "optionen": [
+        "Akt",
+        "Strophe",
+        "Vers",
+        "Kapitel"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Drama gliedert sich in Akte, diese wiederum in Szenen."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "„Mein Herz ist ein Stein“ – welches sprachliche Mittel ist das?",
+      "optionen": [
+        "Metapher",
+        "Vergleich",
+        "Personifikation",
+        "Wiederholung"
+      ],
+      "richtig": 0,
+      "erklaerung": "Eine Metapher überträgt Bedeutung ohne „wie“; das Herz wird bildlich mit einem Stein gleichgesetzt."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was ist ein „Symbol“ in einem literarischen Text?",
+      "optionen": [
+        "Ein Zeichen, das für etwas Abstraktes steht (z. B. Taube = Frieden)",
+        "Ein Rechtschreibfehler",
+        "Ein Reimschema",
+        "Eine Zeitform"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Symbol verweist über sich hinaus auf eine allgemeinere Bedeutung."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was bezeichnet die „Kameraperspektive“ im Film?",
+      "optionen": [
+        "Den Blickwinkel, aus dem gefilmt wird (z. B. Frosch-, Vogelperspektive)",
+        "Die Lautstärke der Musik",
+        "Die Länge des Films",
+        "Den Filmtitel"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Kameraperspektive bestimmt den Blickwinkel und beeinflusst die Wirkung einer Einstellung."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Welche Zeitform drückt die Vorvergangenheit aus: „Ich hatte gegessen“?",
+      "optionen": [
+        "Plusquamperfekt",
+        "Perfekt",
+        "Präteritum",
+        "Futur II"
+      ],
+      "richtig": 0,
+      "erklaerung": "Das Plusquamperfekt beschreibt etwas, das vor einem anderen vergangenen Ereignis liegt."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was unterscheidet Aktiv und Passiv (Genus verbi)?",
+      "optionen": [
+        "Aktiv betont den Handelnden, Passiv das Geschehen/den Betroffenen",
+        "Es sind zwei Zeitformen",
+        "Es sind zwei Fälle",
+        "Es sind zwei Wortarten"
+      ],
+      "richtig": 0,
+      "erklaerung": "Das Genus verbi (Aktiv/Passiv) regelt, ob der Handelnde oder die Handlung im Vordergrund steht."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Welcher Modus liegt in „Er sagte, er sei krank“ vor?",
+      "optionen": [
+        "Konjunktiv",
+        "Indikativ",
+        "Imperativ",
+        "Infinitiv"
+      ],
+      "richtig": 0,
+      "erklaerung": "Der Konjunktiv kennzeichnet u. a. die indirekte Rede."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was ist ein „Satzgefüge“?",
+      "optionen": [
+        "Ein Hauptsatz mit mindestens einem Nebensatz",
+        "Zwei gleichrangige Hauptsätze",
+        "Ein einzelnes Wort",
+        "Ein Satz ohne Verb"
+      ],
+      "richtig": 0,
+      "erklaerung": "Im Satzgefüge ist ein Nebensatz von einem Hauptsatz abhängig."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was ist eine „adverbiale Bestimmung“?",
+      "optionen": [
+        "Eine Angabe zu Ort, Zeit, Art oder Grund",
+        "Das Subjekt des Satzes",
+        "Das Prädikat",
+        "Ein Eigenname"
+      ],
+      "richtig": 0,
+      "erklaerung": "Adverbiale Bestimmungen geben Umstände an, z. B. „gestern“, „im Garten“, „aus Angst“."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Welche drei Ebenen unterscheidet man beim Sprachhandeln?",
+      "optionen": [
+        "Handlungs-, Inhalts- und Beziehungsebene",
+        "Vergangenheit, Gegenwart, Zukunft",
+        "Anfang, Mitte, Schluss",
+        "Subjekt, Prädikat, Objekt"
+      ],
+      "richtig": 0,
+      "erklaerung": "Eine Äußerung wirkt auf der Handlungs-, der Inhalts- und der Beziehungsebene zugleich."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was ist eine „Entlehnung“?",
+      "optionen": [
+        "Ein aus einer anderen Sprache übernommenes Wort",
+        "Ein Rechtschreibfehler",
+        "Ein veraltetes Wort",
+        "Ein Reimwort"
+      ],
+      "richtig": 0,
+      "erklaerung": "Entlehnungen sind Wörter, die aus anderen Sprachen ins Deutsche übernommen wurden (z. B. „Computer“)."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Welche Textsorte bewertet ein Buch oder einen Film begründet?",
+      "optionen": [
+        "Rezension",
+        "Nachricht",
+        "Protokoll",
+        "Bericht"
+      ],
+      "richtig": 0,
+      "erklaerung": "Eine Rezension beurteilt ein Werk argumentativ und begründet das Urteil."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was ist die Hauptfunktion eines Kommentars?",
+      "optionen": [
+        "Eine Meinung argumentativ vertreten",
+        "Nur sachlich informieren",
+        "Eine Geschichte erzählen",
+        "Eine Anleitung geben"
+      ],
+      "richtig": 0,
+      "erklaerung": "Der Kommentar ist ein meinungsbetonter, argumentierender Text."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was prüft man bei einer Internetquelle für ein Referat?",
+      "optionen": [
+        "Ob sie zuverlässig und für das Thema relevant ist",
+        "Ob sie bunt gestaltet ist",
+        "Ob sie als erste in der Trefferliste steht",
+        "Ob sie kurz ist"
+      ],
+      "richtig": 0,
+      "erklaerung": "Quellen werden kriteriengeleitet auf Relevanz und Qualität geprüft."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was gehört zu einer guten Inhaltsangabe?",
+      "optionen": [
+        "Knappe Wiedergabe im Präsens, sachlich und in eigenen Worten",
+        "Wörtliches Abschreiben des Textes",
+        "Die eigene Meinung in jedem Satz",
+        "Möglichst viele Adjektive"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Inhaltsangabe fasst sachlich, im Präsens und in eigenen Worten zusammen."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was bedeutet „formelle“ Sprache?",
+      "optionen": [
+        "Eine sachliche, höfliche Ausdrucksweise, z. B. in einem Bewerbungsschreiben",
+        "Umgangssprache unter Freunden",
+        "Dialekt",
+        "Eine Geheimsprache"
+      ],
+      "richtig": 0,
+      "erklaerung": "Formelle Sprache ist normgerecht und situationsangemessen für offizielle Anlässe."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was ist eine „Kalendergeschichte“?",
+      "optionen": [
+        "Eine kurze, oft lehrhafte Erzählung mit überraschender Wendung",
+        "Ein Kalender mit Terminen",
+        "Ein Gedicht über die Monate",
+        "Eine Wettervorhersage"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Kalendergeschichte ist eine kurze, häufig pointierte Erzählform mit moralischem oder überraschendem Schluss."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was ist ein „Erlebnisbericht“ im Unterschied zu einer Erzählung?",
+      "optionen": [
+        "Eine sachliche Wiedergabe eines tatsächlichen Erlebnisses",
+        "Eine frei erfundene Geschichte",
+        "Ein Gedicht",
+        "Eine Werbeanzeige"
+      ],
+      "richtig": 0,
+      "erklaerung": "Der Erlebnisbericht gibt ein reales Erlebnis sachlich und geordnet wieder."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was leistet ein „Erzählerbericht“?",
+      "optionen": [
+        "Der Erzähler fasst Geschehen zusammen oder kommentiert es",
+        "Eine Figur spricht direkt",
+        "Eine Bühnenanweisung",
+        "Ein Reim"
+      ],
+      "richtig": 0,
+      "erklaerung": "Im Erzählerbericht vermittelt der Erzähler Geschehen, im Unterschied zur direkten Figurenrede."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Wie heißt der kleinere Abschnitt innerhalb eines Aktes?",
+      "optionen": [
+        "Szene",
+        "Strophe",
+        "Vers",
+        "Kapitel"
+      ],
+      "richtig": 0,
+      "erklaerung": "Akte gliedern sich in Szenen, die meist durch Auf- oder Abtritt von Figuren begrenzt sind."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was ist eine „Ellipse“ als sprachliches Mittel?",
+      "optionen": [
+        "Ein unvollständiger Satz, bei dem Teile weggelassen sind",
+        "Ein langer Schachtelsatz",
+        "Ein Vergleich mit „wie“",
+        "Eine Wiederholung"
+      ],
+      "richtig": 0,
+      "erklaerung": "Bei der Ellipse werden Satzteile ausgelassen, ohne dass der Sinn verloren geht."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was meint die „Kamerabewegung“ (z. B. Schwenk, Zoom)?",
+      "optionen": [
+        "Die Bewegung der Kamera während einer Einstellung",
+        "Die Lautstärke",
+        "Die Filmlänge",
+        "Den Titel"
+      ],
+      "richtig": 0,
+      "erklaerung": "Kamerabewegungen wie Schwenk oder Zoom lenken den Blick und erzeugen Wirkung."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was bedeutet „Schnitt“ im Film?",
+      "optionen": [
+        "Der Übergang von einer Einstellung zur nächsten",
+        "Die Filmmusik",
+        "Das Drehbuch",
+        "Der Vorspann"
+      ],
+      "richtig": 0,
+      "erklaerung": "Der Schnitt verbindet einzelne Einstellungen miteinander."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "In welchem Modus steht ein Befehl wie „Geh nach Hause!“?",
+      "optionen": [
+        "Imperativ",
+        "Indikativ",
+        "Konjunktiv",
+        "Infinitiv"
+      ],
+      "richtig": 0,
+      "erklaerung": "Der Imperativ ist die Befehlsform."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was ist eine „Satzreihe“?",
+      "optionen": [
+        "Zwei oder mehr gleichrangige Hauptsätze",
+        "Ein Hauptsatz mit Nebensatz",
+        "Ein einzelnes Wort",
+        "Ein Satz ohne Subjekt"
+      ],
+      "richtig": 0,
+      "erklaerung": "In der Satzreihe (Parataxe) stehen gleichrangige Hauptsätze nebeneinander."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Welche Zeitform ist „vollendete Zukunft“: „Ich werde gegessen haben“?",
+      "optionen": [
+        "Futur II",
+        "Futur I",
+        "Perfekt",
+        "Plusquamperfekt"
+      ],
+      "richtig": 0,
+      "erklaerung": "Das Futur II beschreibt etwas, das in der Zukunft abgeschlossen sein wird."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was ist ein „Dialekt“?",
+      "optionen": [
+        "Eine regional gesprochene Sprachvariante",
+        "Eine Fremdsprache",
+        "Die Hochsprache",
+        "Eine Geheimschrift"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Dialekt ist eine regionale Ausprägung einer Sprache."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was versteht man unter „Mehrsprachigkeit“?",
+      "optionen": [
+        "Die Fähigkeit, mehrere Sprachen zu nutzen",
+        "Sehr schnell sprechen",
+        "Viele Dialekte erfinden",
+        "Nur Schriftsprache verwenden"
+      ],
+      "richtig": 0,
+      "erklaerung": "Mehrsprachigkeit bezeichnet die Verfügbarkeit über mehr als eine Sprache."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was ist ein „Protokoll“?",
+      "optionen": [
+        "Eine geordnete schriftliche Festhaltung von Verlauf oder Ergebnissen",
+        "Eine erfundene Geschichte",
+        "Ein Gedicht",
+        "Eine Werbung"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Protokoll hält Verlauf (Verlaufsprotokoll) oder Ergebnisse (Ergebnisprotokoll) sachlich fest."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Welche Absicht hat eine Werbeanzeige vor allem?",
+      "optionen": [
+        "Überzeugen bzw. zum Kauf anregen (appellieren)",
+        "Sachlich informieren",
+        "Eine Geschichte erzählen",
+        "Ein Protokoll führen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Werbeanzeigen sind appellative Texte mit überzeugender Wirkungsabsicht."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was kennzeichnet einen „Leserbrief“?",
+      "optionen": [
+        "Eine begründete Stellungnahme zu einem Artikel oder Thema",
+        "Eine private Einkaufsliste",
+        "Eine Filmszene",
+        "Ein Märchen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Der Leserbrief äußert meinungsbetont und begründet eine Position zu einem Thema."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was gehört zu einer guten Gliederung vor dem Schreiben?",
+      "optionen": [
+        "Gedanken sinnvoll ordnen, z. B. in einer Mindmap",
+        "Den Text auswendig lernen",
+        "Die Seitenzahl festlegen",
+        "Bunte Stifte wählen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Eine Gliederung oder Mindmap strukturiert die Gedanken vor dem Formulieren."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was bedeutet „über den Text hinausdenken“ als Lesestrategie?",
+      "optionen": [
+        "Schlüsse ziehen und Vermutungen über den Text hinaus anstellen",
+        "Den Text laut vorlesen",
+        "Den Text abschreiben",
+        "Nur die Überschrift lesen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Elaborierende Lesestrategien verknüpfen Textinhalte mit eigenem Wissen und Vermutungen."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Wozu dient ein „Verlaufsprotokoll“?",
+      "optionen": [
+        "Den Ablauf eines Gesprächs oder einer Stunde festzuhalten",
+        "Ergebnisse zu bewerten",
+        "Eine Geschichte zu erfinden",
+        "Werbung zu machen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Das Verlaufsprotokoll dokumentiert den zeitlichen Ablauf eines Geschehens."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "7/8",
+      "badge": "Deutsch · Jg 7/8",
+      "frage": "Was ist beim Vergleich von Buch und Hörspiel sinnvoll?",
+      "optionen": [
+        "Gemeinsamkeiten und Unterschiede kriteriengeleitet herausarbeiten",
+        "Nur das Hörspiel anhören",
+        "Nur die Lautstärke beachten",
+        "Beides ignorieren"
+      ],
+      "richtig": 0,
+      "erklaerung": "Der mediale Vergleich untersucht Gestaltung und Wirkung in verschiedenen Medien."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was kennzeichnet die „Novelle“ als Gattung?",
+      "optionen": [
+        "Eine straffe Erzählung um ein zentrales, oft außergewöhnliches Ereignis",
+        "Ein Gedicht mit festem Reim",
+        "Einen reinen Sachtext",
+        "Ein mehrbändiges Werk ohne Handlung"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Novelle ist eine konzentrierte Erzählung mit einer „unerhörten Begebenheit“ im Zentrum."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Wodurch unterscheidet sich die Komödie von der Tragödie?",
+      "optionen": [
+        "Die Komödie nimmt meist einen heiteren, versöhnlichen Ausgang",
+        "Die Komödie hat keine Figuren",
+        "Die Tragödie ist immer lustig",
+        "Beide sind identisch"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Tragödie endet meist unheilvoll, die Komödie heiter; beide sind dramatische Gattungen."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was meint der Unterschied von „Erzählzeit“ und „erzählter Zeit“?",
+      "optionen": [
+        "Erzählzeit = Dauer des Erzählens, erzählte Zeit = Dauer der Handlung",
+        "Zwei Tempusformen",
+        "Anfang und Ende",
+        "Haupt- und Nebensatz"
+      ],
+      "richtig": 0,
+      "erklaerung": "Erzählzeit ist die Lesedauer, erzählte Zeit der Zeitraum, den die Handlung umfasst."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was bezeichnet die „Exposition“ in einem Drama oder Erzähltext?",
+      "optionen": [
+        "Die Einführung in Figuren, Ort und Ausgangssituation",
+        "Den Höhepunkt",
+        "Das Ende",
+        "Eine rhetorische Figur"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Exposition stellt zu Beginn die Voraussetzungen der Handlung vor."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was ist die „Peripetie“?",
+      "optionen": [
+        "Der entscheidende Wendepunkt der Handlung",
+        "Die Einleitung",
+        "Eine Nebenfigur",
+        "Ein Reimschema"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Peripetie ist der Umschwung, der die Handlung in eine neue Richtung lenkt."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was ist ein „Leitmotiv“?",
+      "optionen": [
+        "Ein wiederkehrendes Motiv mit besonderer Bedeutung",
+        "Die Hauptfigur",
+        "Der Titel",
+        "Eine Zeitform"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Leitmotiv ist ein bedeutungstragendes Element, das im Werk mehrfach auftaucht."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "„Der eine baut auf, der andere reißt nieder“ – welches Mittel liegt vor?",
+      "optionen": [
+        "Antithese",
+        "Vergleich",
+        "Personifikation",
+        "Alliteration"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Antithese stellt gegensätzliche Aussagen einander gegenüber."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "„Wer rastet, der rostet“ – welches sprachliche Mittel betont die parallele Struktur?",
+      "optionen": [
+        "Parallelismus",
+        "Metapher",
+        "Symbol",
+        "Ellipse"
+      ],
+      "richtig": 0,
+      "erklaerung": "Der Parallelismus wiederholt denselben syntaktischen Aufbau in aufeinanderfolgenden Teilen."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was bezeichnet die „Montage“ im Film?",
+      "optionen": [
+        "Das gezielte Zusammenfügen einzelner Einstellungen zu einer Wirkung",
+        "Die Filmmusik",
+        "Den Titelvorspann",
+        "Die Länge eines Films"
+      ],
+      "richtig": 0,
+      "erklaerung": "Montage meint die bedeutungsvolle Anordnung und Verknüpfung von Einstellungen im Schnitt."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was ist ein „Attribut“?",
+      "optionen": [
+        "Eine nähere Bestimmung zu einem Nomen (z. B. „das rote Auto“)",
+        "Das Prädikat",
+        "Ein eigenständiger Hauptsatz",
+        "Eine Zeitform"
+      ],
+      "richtig": 0,
+      "erklaerung": "Ein Attribut bestimmt ein Nomen näher und ist Teil einer Nominalgruppe."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was ist eine „Apposition“?",
+      "optionen": [
+        "Ein erläuternder Beisatz, meist durch Kommas abgetrennt",
+        "Ein Nebensatz mit Verb",
+        "Ein Fragezeichen",
+        "Ein Stilmittel der Lyrik"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Apposition ist ein nachgestellter Beisatz, z. B. „Berlin, die Hauptstadt, …“."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was meint „Bedeutungswandel“ eines Wortes?",
+      "optionen": [
+        "Dass sich die Bedeutung eines Wortes im Lauf der Zeit verändert",
+        "Ein Rechtschreibfehler",
+        "Eine neue Zeitform",
+        "Ein Synonym"
+      ],
+      "richtig": 0,
+      "erklaerung": "Beim Bedeutungswandel verschiebt, erweitert oder verengt sich die Wortbedeutung historisch."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was kennzeichnet „elaborierte“ Schriftlichkeit?",
+      "optionen": [
+        "Eine durchdachte, komplexe und differenzierte Ausdrucksweise",
+        "Einfache Stichworte",
+        "Umgangssprache",
+        "Emojis und Abkürzungen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Elaborierte Schriftlichkeit ist anspruchsvoll strukturiert und sprachlich differenziert."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was ist das Ziel einer (textgebundenen) Erörterung?",
+      "optionen": [
+        "Argumente abwägen und zu einem begründeten Urteil kommen",
+        "Eine Geschichte erfinden",
+        "Nur Fakten auflisten",
+        "Ein Gedicht analysieren ohne Wertung"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Erörterung wägt Pro- und Kontra-Argumente ab und gelangt zu einem begründeten Fazit."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was leistet eine „Charakterisierung“ einer literarischen Figur?",
+      "optionen": [
+        "Sie arbeitet Eigenarten und ihre Funktion für die Handlung heraus",
+        "Sie zählt nur das Aussehen auf",
+        "Sie gibt die eigene Meinung wieder",
+        "Sie fasst nur den Inhalt zusammen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Charakterisierung beschreibt belegt Merkmale der Figur und ihre Bedeutung im Text."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Welche Wirkungsabsicht verfolgt eine politische Rede vor allem?",
+      "optionen": [
+        "Überzeugen und zu Haltung oder Handeln bewegen",
+        "Sachlich-neutral informieren",
+        "Unterhalten ohne Ziel",
+        "Eine Anleitung geben"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die politische Rede ist ein appellativer Text mit überzeugender Wirkungsabsicht."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Wie integriert man ein Zitat formal richtig in einen eigenen Text?",
+      "optionen": [
+        "Wörtlich in Anführungszeichen mit Quellen-/Stellenangabe",
+        "Ohne Kennzeichnung im eigenen Text",
+        "Nur sinngemäß ohne Beleg",
+        "Als Überschrift"
+      ],
+      "richtig": 0,
+      "erklaerung": "Belege werden korrekt zitiert oder paraphrasiert und mit Quellenangabe versehen."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was sollte man bei digitalen Inhalten kritisch prüfen?",
+      "optionen": [
+        "Echtheit und Verlässlichkeit (z. B. Fake News, Deep Fakes)",
+        "Nur die Farbgestaltung",
+        "Nur die Länge",
+        "Gar nichts"
+      ],
+      "richtig": 0,
+      "erklaerung": "Quellen sind auf Echtheit und Qualität zu prüfen, gerade bei Manipulationsrisiken."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was bewirkt eine „Filterblase“ bei Algorithmen?",
+      "optionen": [
+        "Man sieht v. a. Inhalte, die die eigene Meinung bestätigen",
+        "Schnelleres Internet",
+        "Bessere Rechtschreibung",
+        "Mehr Speicherplatz"
+      ],
+      "richtig": 0,
+      "erklaerung": "Algorithmen können Inhalte so vorselektieren, dass abweichende Sichtweisen ausgeblendet werden."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was zeichnet einen gelungenen argumentativen Beitrag in einer Debatte aus?",
+      "optionen": [
+        "Eigener Standpunkt, Begründung und sachlicher Bezug auf Gegenargumente",
+        "Lautstärke",
+        "Persönliche Angriffe",
+        "Möglichst viele Fremdwörter"
+      ],
+      "richtig": 0,
+      "erklaerung": "Überzeugende Argumentation vertritt einen Standpunkt begründet und geht sachlich auf Gegenpositionen ein."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was bedeutet „intermedialer Vergleich“ (z. B. Buch und Verfilmung)?",
+      "optionen": [
+        "Dasselbe Werk in verschiedenen Medien vergleichend deuten und werten",
+        "Zwei Bücher desselben Autors lesen",
+        "Nur den Film anschauen",
+        "Nur die Lautstärke vergleichen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Beim intermedialen Vergleich werden Gestaltung und Wirkung eines Stoffes in verschiedenen Medien untersucht."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was ist ein „Roman“?",
+      "optionen": [
+        "Ein umfangreiches episches Werk mit komplexer Handlung",
+        "Ein kurzes Gedicht",
+        "Ein Theaterstück",
+        "Ein Sachtext mit Tabellen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Der Roman ist die umfangreichste epische Großform mit meist vielschichtiger Handlung."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was meint „Lyrik in epochalen Bezügen“?",
+      "optionen": [
+        "Gedichte im Zusammenhang mit ihrer literarischen Epoche deuten",
+        "Gedichte ohne Reim",
+        "Nur moderne Songtexte",
+        "Gedichte über Geschichte"
+      ],
+      "richtig": 0,
+      "erklaerung": "Lyrik wird hier im Kontext von Entstehungszeit und Epoche betrachtet und gedeutet."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was ist das „retardierende Moment“?",
+      "optionen": [
+        "Eine Verzögerung kurz vor dem Höhepunkt, die Spannung steigert",
+        "Der Anfang der Handlung",
+        "Eine Nebenfigur",
+        "Ein Reimschema"
+      ],
+      "richtig": 0,
+      "erklaerung": "Das retardierende Moment verzögert die Auflösung und erhöht so die Spannung."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was unterscheidet „Figurenrede“ vom „Erzählerbericht“?",
+      "optionen": [
+        "Figurenrede ist das, was Figuren selbst sagen; der Erzählerbericht vermittelt",
+        "Beides ist dasselbe",
+        "Figurenrede steht nur in Gedichten",
+        "Erzählerbericht ist eine Regieanweisung"
+      ],
+      "richtig": 0,
+      "erklaerung": "Figurenrede gibt Äußerungen der Figuren wieder, der Erzählerbericht ist die vermittelnde Erzählerstimme."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was meint „Rede und Replik“ im Drama?",
+      "optionen": [
+        "Aussage einer Figur und die Erwiderung einer anderen",
+        "Zwei Akte",
+        "Vor- und Nachspiel",
+        "Bühnenbild und Kostüm"
+      ],
+      "richtig": 0,
+      "erklaerung": "Rede und Replik bezeichnen Äußerung und Gegenäußerung im dramatischen Dialog."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was ist eine „rhetorische Frage“?",
+      "optionen": [
+        "Eine Frage, auf die keine Antwort erwartet wird",
+        "Eine Frage im Test",
+        "Eine Frage des Lehrers",
+        "Eine Frage mit mehreren Antworten"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die rhetorische Frage zielt nicht auf eine Antwort, sondern auf Wirkung beim Publikum."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Welche Wirkung hat eine „Klimax“ (z. B. „kam, sah, siegte“)?",
+      "optionen": [
+        "Eine Steigerung, die zum Höhepunkt führt",
+        "Ein Gegensatz",
+        "Eine Wiederholung ohne Steigerung",
+        "Eine Auslassung"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Klimax ordnet Begriffe steigernd an und erzeugt so eine Zuspitzung."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Welche Satzart ist ein Relativsatz?",
+      "optionen": [
+        "Ein Nebensatz, der ein Nomen näher bestimmt (z. B. „… der lacht“)",
+        "Ein Hauptsatz",
+        "Eine Aufzählung",
+        "Ein Imperativsatz"
+      ],
+      "richtig": 0,
+      "erklaerung": "Der Relativsatz ist ein Attributsatz, der sich auf ein Bezugswort bezieht."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Wann verwendet man häufig den Konjunktiv I?",
+      "optionen": [
+        "Bei der indirekten Rede",
+        "Bei Befehlen",
+        "Bei Aufzählungen",
+        "Bei der Mehrzahl"
+      ],
+      "richtig": 0,
+      "erklaerung": "Der Konjunktiv I kennzeichnet typischerweise die indirekte Rede."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was beschreibt das Modell der Handlungs-, Inhalts- und Beziehungsebene?",
+      "optionen": [
+        "Dass jede Äußerung zugleich handelt, informiert und Beziehung gestaltet",
+        "Drei Tempusformen",
+        "Drei Textsorten",
+        "Drei Satzglieder"
+      ],
+      "richtig": 0,
+      "erklaerung": "Kommunikation wirkt gleichzeitig auf der Handlungs-, Inhalts- und Beziehungsebene."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was meint „Sprachwandel durch digitale Kommunikation“?",
+      "optionen": [
+        "Sprache verändert sich durch Chats, Emojis und neue Wörter",
+        "Sprache bleibt immer gleich",
+        "Nur die Schrift ändert sich",
+        "Nur Dialekte verschwinden"
+      ],
+      "richtig": 0,
+      "erklaerung": "Digitale Kommunikation prägt Wortschatz, Stil und Konventionen und treibt Sprachwandel voran."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was ist der Unterschied zwischen linearer und dialektischer Erörterung?",
+      "optionen": [
+        "Linear behandelt eine Seite, dialektisch wägt Pro und Kontra ab",
+        "Beide sind identisch",
+        "Linear ist mündlich, dialektisch schriftlich",
+        "Dialektisch hat keine Argumente"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die lineare Erörterung entfaltet eine These; die dialektische wägt gegensätzliche Positionen ab."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was leistet eine „Rezension“ über die reine Inhaltsangabe hinaus?",
+      "optionen": [
+        "Sie bewertet das Werk begründet",
+        "Sie erzählt nur nach",
+        "Sie nennt nur den Titel",
+        "Sie zählt Seiten"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Rezension verbindet knappe Information mit einer begründeten Bewertung."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Welche sprachlichen Mittel sind in einer politischen Rede zentral?",
+      "optionen": [
+        "Rhetorische Mittel zur Überzeugung (z. B. Wiederholung, rhetorische Frage)",
+        "Nur Fachbegriffe",
+        "Nur Zahlen",
+        "Nur Zitate ohne Quelle"
+      ],
+      "richtig": 0,
+      "erklaerung": "Politische Reden setzen rhetorische Mittel gezielt zur Überzeugung ein."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was bedeutet „paraphrasieren“ beim Umgang mit Quellen?",
+      "optionen": [
+        "Eine fremde Aussage sinngemäß in eigenen Worten wiedergeben",
+        "Wörtlich abschreiben",
+        "Die Quelle verschweigen",
+        "Den Text übersetzen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Paraphrasieren heißt, fremde Gedanken sinngemäß und mit Quellenangabe wiederzugeben."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was kennzeichnet eine seriöse Quelle bei der Internetrecherche?",
+      "optionen": [
+        "Nachvollziehbarer Urheber, Aktualität und Belege",
+        "Viele bunte Werbebanner",
+        "Eine reißerische Überschrift",
+        "Anonyme Behauptungen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Seriöse Quellen sind transparent in Urheberschaft, aktuell und belegen ihre Aussagen."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Wie wirkt sich ein Algorithmus auf einer Social-Media-Plattform aus?",
+      "optionen": [
+        "Er wählt anhand des Verhaltens aus, welche Inhalte angezeigt werden",
+        "Er korrigiert Rechtschreibung",
+        "Er übersetzt automatisch",
+        "Er löscht alte Beiträge"
+      ],
+      "richtig": 0,
+      "erklaerung": "Algorithmen steuern die Auswahl und Reihenfolge von Inhalten nach Nutzerverhalten."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was ist beim Halten einer Stegreifrede besonders gefordert?",
+      "optionen": [
+        "Spontanes, strukturiertes Sprechen ohne lange Vorbereitung",
+        "Auswendiglernen eines Skripts",
+        "Vorlesen vom Blatt",
+        "Schweigen"
+      ],
+      "richtig": 0,
+      "erklaerung": "Die Stegreifrede erfordert spontanes, dennoch geordnetes und adressatengerechtes Sprechen."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was prüft man beim „Beurteilen“ einer Aussage (Operator)?",
+      "optionen": [
+        "Man schätzt sie kriterienbezogen und begründet ein",
+        "Man schreibt sie ab",
+        "Man erzählt eine Geschichte",
+        "Man ignoriert sie"
+      ],
+      "richtig": 0,
+      "erklaerung": "Beim Beurteilen wird eine Aussage anhand begründeter Wertmaßstäbe eingeschätzt."
+    },
+    {
+      "fach": "Deutsch",
+      "jahrgang": "9/10",
+      "badge": "Deutsch · Jg 9/10",
+      "frage": "Was bedeutet der Operator „analysieren“?",
+      "optionen": [
+        "Inhaltliche, formale und sprachliche Aspekte erschließen und das Ergebnis darlegen",
+        "Eine Meinung äußern",
+        "Auswendig lernen",
+        "Abschreiben"
+      ],
+      "richtig": 0,
+      "erklaerung": "Analysieren heißt, Aspekte im funktionalen Zusammenhang zu erschließen und darzustellen."
+    }
+  ]
+}
