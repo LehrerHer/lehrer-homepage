@@ -83,8 +83,11 @@ lehrer-homepage/
 > `deutsch-dialektische-eroerterung.html`, `deutsch-das-parfum.html`, `deutsch-theaterprojekt.html`,
 > `fuenfschrittlesemethode.html`, `stilmittel-quiz.html`, `literaturwissenschaft_quiz_v2.html`,
 > `rechtschreibquiz.html`, `lernquiz_jahrgang5.html`, `ab-herrschaft-mittelalter.html`,
-> `leseabenteuer.html` (+ `-regeln`, `-heldenbogen`), `kroatien-2026.html`, `wintersport-q8z2x.html`,
+> `leseabenteuer.html` (+ `-regeln`, `-heldenbogen`), `wintersport-q8z2x.html`,
 > `lehrer-upload.html`, `blog.html`, `blog-einreichen.html`, `kolosseum.html`.
+>
+> **Archiviert (2026-11):** `kroatien-2026.html` ist offline (in der Git-Historie wiederherstellbar);
+> die Daten bleiben in `kv_store` und sind nur noch per Admin-Login über `GET /api/kroatien` lesbar.
 
 ### Manuell bereitgestellte Quelldateien (`Material manuell von mir/`)
 

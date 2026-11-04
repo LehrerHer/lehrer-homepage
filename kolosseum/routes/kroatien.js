@@ -1,35 +1,20 @@
+// Kroatien 2026 – ARCHIVIERT (Stand 2026-11)
+// Die Seite kroatien-2026.html ist offline (liegt noch in der Git-Historie).
+// Die gespeicherten Daten bleiben in kv_store und sind nur noch mit Admin-Login lesbar.
+// Das frühere Geheimwort-Verfahren entfällt, weil das Geheimwort im öffentlichen Repo stand.
 const express = require('express');
 const { db } = require('../db/database');
+const { requireAdmin } = require('../middleware/auth');
 
 const router = express.Router();
 const KV_KEY = 'kroatien_2026';
-const SECRET = process.env.KROATIEN_SECRET || 'kroatien-sommer-2026';
 
-function checkSecret(req, res, next) {
-  if (req.headers['x-kroatien-secret'] !== SECRET) {
-    return res.status(403).json({ error: 'Kein Zugriff.' });
-  }
-  next();
-}
-
-// GET /api/kroatien – aktuellen Stand laden
-router.get('/', checkSecret, (req, res) => {
-  const row = db.prepare('SELECT value FROM kv_store WHERE key = ?').get(KV_KEY);
+// GET /api/kroatien – archivierten Stand lesen (nur Admin)
+router.get('/', requireAdmin, (req, res) => {
+  const row = db.prepare('SELECT value, updated_at FROM kv_store WHERE key = ?').get(KV_KEY);
   if (!row) return res.json(null);
-  try { res.json(JSON.parse(row.value)); }
+  try { res.json({ archiviert: true, zuletzt_geaendert: row.updated_at, daten: JSON.parse(row.value) }); }
   catch { res.json(null); }
-});
-
-// PUT /api/kroatien – Stand speichern
-router.put('/', checkSecret, (req, res) => {
-  const data = req.body;
-  if (!data || typeof data !== 'object') {
-    return res.status(400).json({ error: 'Ungültige Daten.' });
-  }
-  db.prepare(
-    'INSERT OR REPLACE INTO kv_store (key, value, updated_at) VALUES (?, ?, CURRENT_TIMESTAMP)'
-  ).run(KV_KEY, JSON.stringify(data));
-  res.json({ ok: true });
 });
 
 module.exports = router;
