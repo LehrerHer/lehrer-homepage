@@ -3,7 +3,7 @@ const multer  = require('multer');
 const path    = require('path');
 const fs      = require('fs');
 const { db }  = require('../db/database');
-const { requireAdmin } = require('../middleware/auth');
+const { requireAdmin, sichereEndung } = require('../middleware/auth');
 
 const router = express.Router();
 const UPLOAD_DIR = path.join(__dirname, '../uploads/materials');
@@ -33,7 +33,7 @@ const VALID_TYPEN = ['Arbeitsblatt','Material','Quiz'];
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, UPLOAD_DIR),
   filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname).toLowerCase() || '.bin';
+    const ext = sichereEndung(file.mimetype);
     cb(null, Date.now() + '-' + Math.random().toString(36).slice(2) + ext);
   },
 });
