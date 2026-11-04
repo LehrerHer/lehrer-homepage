@@ -248,7 +248,7 @@
     <div class="loesung-freigabe">
       <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
       <div class="loesung-frage" hidden>
-        <p>Wenn du die Lösungen ansiehst, zählt dieser Profi-Teil nicht als selbst gelöst. Trotzdem anzeigen?</p>
+        <p>Wenn du die Lösungen ansiehst, zählt dieser Profi-Teil nicht als selbst gelöst. Deine Lernbegleitung sieht das. Trotzdem anzeigen?</p>
         <button type="button" class="iw-btn" data-loesung-ja>Ja, Lösungen anzeigen</button>
         <button type="button" class="iw-btn leise" data-loesung-nein>Nein, ich versuche es weiter</button>
       </div>
@@ -299,7 +299,7 @@
     <div class="loesung-freigabe">
       <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
       <div class="loesung-frage" hidden>
-        <p>Wenn du die Lösungen ansiehst, zählt dieser Profi-Teil nicht als selbst gelöst. Trotzdem anzeigen?</p>
+        <p>Wenn du die Lösungen ansiehst, zählt dieser Profi-Teil nicht als selbst gelöst. Deine Lernbegleitung sieht das. Trotzdem anzeigen?</p>
         <button type="button" class="iw-btn" data-loesung-ja>Ja, Lösungen anzeigen</button>
         <button type="button" class="iw-btn leise" data-loesung-nein>Nein, ich versuche es weiter</button>
       </div>
@@ -352,7 +352,7 @@
     <div class="loesung-freigabe">
       <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
       <div class="loesung-frage" hidden>
-        <p>Wenn du die Lösungen ansiehst, zählt dieser Profi-Teil nicht als selbst gelöst. Trotzdem anzeigen?</p>
+        <p>Wenn du die Lösungen ansiehst, zählt dieser Profi-Teil nicht als selbst gelöst. Deine Lernbegleitung sieht das. Trotzdem anzeigen?</p>
         <button type="button" class="iw-btn" data-loesung-ja>Ja, Lösungen anzeigen</button>
         <button type="button" class="iw-btn leise" data-loesung-nein>Nein, ich versuche es weiter</button>
       </div>
@@ -441,52 +441,92 @@
       rk.textContent = richtig ? "✓ Richtig" : "Noch nicht – schau dir den Tipp an.";
       if (richtig) a.dataset.geloest = "1";
       var block = a.closest(".profi-block");
-      if (block) bonusPruefen(block);
+      if (block) profiNachPruefen(block, richtig);
     }
     btn.addEventListener("click", pruefen);
     inp.addEventListener("keydown", function (e) { if (e.key === "Enter") pruefen(); });
   });
 
 
-  /* ---------- Profi: Bonus und Lösungen ---------- */
-  function bonusPruefen(block) {
+  /* ---------- Profi: Bonus, Lösungen, Meldung an Lernbegleitung ---------- */
+  var STATION = 1;
+  function teilVon(block) { return parseInt(block.dataset.block.replace("t", ""), 10); }
+  function anzahlGeloest(block) { return block.querySelectorAll('.aufgabe[data-geloest="1"]').length; }
+
+  function hinweis(block, text) {
+    var alt = block.querySelector(".profi-hinweis");
+    if (alt) alt.remove();
+    var p = document.createElement("p");
+    p.className = "hinweis-klein profi-hinweis";
+    p.textContent = text;
+    block.querySelector(".loesung-freigabe").appendChild(p);
+  }
+
+  function alsGeloestZeigen(block, melden) {
+    if (block.dataset.status) return;
+    block.dataset.status = "geloest";
+    block.querySelector("[data-loesung-start]").hidden = true;
+    block.querySelector(".loesung-frage").hidden = true;
     var bonus = block.querySelector(".belohnung");
-    if (!bonus || block.dataset.angesehen) return;
-    var alle = block.querySelectorAll(".aufgabe");
-    var geloest = block.querySelectorAll('.aufgabe[data-geloest="1"]');
-    if (alle.length && geloest.length === alle.length && bonus.hidden) {
-      bonus.hidden = false;
-      bonus.focus();
+    if (bonus) bonus.hidden = false;
+    hinweis(block, "✓ Diesen Profi-Teil hast du selbst gelöst.");
+    if (melden) {
+      var alle = block.querySelectorAll(".aufgabe").length;
+      InformatikLogin.profiMelden(STATION, teilVon(block), "geloest", alle, alle, parseInt(block.dataset.fehler || "0", 10));
+      if (bonus) bonus.focus();
     }
   }
+
+  function loesungenZeigen(block, melden) {
+    if (block.dataset.status) return;
+    block.dataset.status = "angesehen";
+    block.querySelector("[data-loesung-start]").hidden = true;
+    block.querySelector(".loesung-frage").hidden = true;
+    var alle = block.querySelectorAll(".aufgabe");
+    var vorher = anzahlGeloest(block);
+    alle.forEach(function (a) {
+      var inp = a.querySelector("input"), btn = a.querySelector("button"), rk = a.querySelector(".rueck");
+      inp.disabled = true;
+      btn.disabled = true;
+      a.classList.add("angesehen");
+      if (a.dataset.geloest !== "1") { rk.className = "rueck angesehen"; rk.textContent = "Lösung angesehen"; }
+      var box = document.createElement("div");
+      box.className = "loesung-text";
+      var b = document.createElement("b");
+      b.textContent = "Lösung: " + a.dataset.anzeige + ". ";
+      box.appendChild(b);
+      box.appendChild(document.createTextNode(a.dataset.erklaerung));
+      a.appendChild(box);
+    });
+    var denk = block.querySelector(".denk-loesung");
+    if (denk) denk.hidden = false;
+    hinweis(block, "Du hast dir die Lösungen angesehen. Dieser Profi-Teil zählt nicht als selbst gelöst – das sieht auch deine Lernbegleitung.");
+    if (melden) {
+      InformatikLogin.profiMelden(STATION, teilVon(block), "angesehen", vorher, alle.length, parseInt(block.dataset.fehler || "0", 10));
+    }
+  }
+
+  function profiNachPruefen(block, richtig) {
+    if (block.dataset.status) return;
+    if (!richtig) block.dataset.fehler = String(parseInt(block.dataset.fehler || "0", 10) + 1);
+    if (anzahlGeloest(block) === block.querySelectorAll(".aufgabe").length) alsGeloestZeigen(block, true);
+  }
+
   document.querySelectorAll(".profi-block").forEach(function (block) {
     var start = block.querySelector("[data-loesung-start]");
     var frage = block.querySelector(".loesung-frage");
     start.addEventListener("click", function () { start.hidden = true; frage.hidden = false; });
     block.querySelector("[data-loesung-nein]").addEventListener("click", function () { frage.hidden = true; start.hidden = false; });
-    block.querySelector("[data-loesung-ja]").addEventListener("click", function () {
-      block.dataset.angesehen = "1";
-      frage.hidden = true;
-      block.querySelectorAll(".aufgabe").forEach(function (a) {
-        var inp = a.querySelector("input"), btn = a.querySelector("button"), rk = a.querySelector(".rueck");
-        inp.disabled = true;
-        btn.disabled = true;
-        a.classList.add("angesehen");
-        if (a.dataset.geloest !== "1") { rk.className = "rueck angesehen"; rk.textContent = "Lösung angesehen"; }
-        var box = document.createElement("div");
-        box.className = "loesung-text";
-        var b = document.createElement("b");
-        b.textContent = "Lösung: " + a.dataset.anzeige + ". ";
-        box.appendChild(b);
-        box.appendChild(document.createTextNode(a.dataset.erklaerung));
-        a.appendChild(box);
-      });
-      var denk = block.querySelector(".denk-loesung");
-      if (denk) denk.hidden = false;
-      var hinweis = document.createElement("p");
-      hinweis.className = "hinweis-klein";
-      hinweis.textContent = "Du hast dir die Lösungen angesehen. Dieser Profi-Teil zählt nicht als selbst gelöst.";
-      block.querySelector(".loesung-freigabe").appendChild(hinweis);
+    block.querySelector("[data-loesung-ja]").addEventListener("click", function () { loesungenZeigen(block, true); });
+  });
+
+  // Gespeicherten Stand laden: früher gelöste bzw. aufgedeckte Teile wieder so anzeigen
+  InformatikLogin.bereit.then(function (z) {
+    if (!z.eingeloggt) return;
+    document.querySelectorAll(".profi-block").forEach(function (block) {
+      var st = z.profi[STATION + "-" + teilVon(block)];
+      if (st === "geloest") alsGeloestZeigen(block, false);
+      else if (st === "angesehen") loesungenZeigen(block, false);
     });
   });
 

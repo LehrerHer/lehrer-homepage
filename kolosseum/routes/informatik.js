@@ -21,7 +21,10 @@ router.get('/status', requireStudent, (req, res) => {
   `).all(id);
   const stationen = {};
   rows.forEach(r => { stationen[r.station] = { beste: r.beste, max: r.max_punkte, bestanden: !!r.bestanden }; });
-  res.json({ vorname: vn ? vn.vorname : null, stationen });
+  const profi = {};
+  db.prepare('SELECT station, teil, status FROM informatik_profi WHERE student_id = ?').all(id)
+    .forEach(r => { profi[r.station + '-' + r.teil] = r.status; });
+  res.json({ vorname: vn ? vn.vorname : null, stationen, profi });
 });
 
 // POST /api/informatik/vorname – Vorname einmalig speichern (später nur noch im Admin änderbar)
@@ -51,6 +54,31 @@ router.post('/checkpoint', requireStudent, (req, res) => {
   res.json({ ok: true, bestanden: !!bestanden });
 });
 
+// POST /api/informatik/profi – Profi-Teil melden: 'geloest' (alles selbst) oder 'angesehen' (Lösung aufgedeckt).
+// Nur die erste Meldung je Teil zählt.
+router.post('/profi', requireStudent, (req, res) => {
+  const station = parseInt(req.body?.station, 10);
+  const teil = parseInt(req.body?.teil, 10);
+  const status = req.body?.status;
+  const gesamt = parseInt(req.body?.gesamt, 10);
+  const geloest = parseInt(req.body?.geloest, 10);
+  const fehlversuche = parseInt(req.body?.fehlversuche, 10) || 0;
+  if (!(station >= 1 && station <= STATIONEN) || !(teil >= 1 && teil <= 9)
+      || !['geloest', 'angesehen'].includes(status)
+      || !(gesamt >= 1 && gesamt <= 30) || !(geloest >= 0 && geloest <= gesamt)
+      || (status === 'geloest' && geloest !== gesamt)
+      || !(fehlversuche >= 0 && fehlversuche <= 9999)) {
+    return res.status(400).json({ error: 'Ungültige Meldung.' });
+  }
+  db.prepare(`
+    INSERT OR IGNORE INTO informatik_profi (student_id, station, teil, status, geloest_vorher, gesamt, fehlversuche)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+  `).run(req.session.studentId, station, teil, status, geloest, gesamt, fehlversuche);
+  const row = db.prepare('SELECT status FROM informatik_profi WHERE student_id = ? AND station = ? AND teil = ?')
+    .get(req.session.studentId, station, teil);
+  res.json({ ok: true, status: row.status });
+});
+
 // ── Admin ─────────────────────────────────────────────────────────────
 
 // GET /api/informatik/admin/uebersicht – alle Lernpartner:innen mit Vorname und bestem Ergebnis je Station
@@ -61,6 +89,7 @@ router.get('/admin/uebersicht', requireAdmin, (req, res) => {
     LEFT JOIN informatik_vornamen v ON v.student_id = s.id
     WHERE v.student_id IS NOT NULL
        OR s.id IN (SELECT DISTINCT student_id FROM informatik_checkpoints)
+       OR s.id IN (SELECT DISTINCT student_id FROM informatik_profi)
     ORDER BY COALESCE(v.vorname, s.nick) COLLATE NOCASE
   `).all();
   const ergebnisse = db.prepare(`
@@ -74,9 +103,21 @@ router.get('/admin/uebersicht', requireAdmin, (req, res) => {
       beste: e.beste, max: e.max_punkte, bestanden: !!e.bestanden, versuche: e.versuche, zuletzt: e.zuletzt,
     };
   });
+  const profi = {};
+  db.prepare(`
+    SELECT student_id, station, teil, status, geloest_vorher, gesamt, fehlversuche, created_at
+    FROM informatik_profi ORDER BY station, teil
+  `).all().forEach(r => {
+    (profi[r.student_id] = profi[r.student_id] || []).push({
+      station: r.station, teil: r.teil, status: r.status, geloestVorher: r.geloest_vorher,
+      gesamt: r.gesamt, fehlversuche: r.fehlversuche, am: r.created_at,
+    });
+  });
   res.json({
     stationen: STATIONEN,
-    personen: personen.map(p => ({ id: p.id, nick: p.nick, vorname: p.vorname, stationen: map[p.id] || {} })),
+    personen: personen.map(p => ({
+      id: p.id, nick: p.nick, vorname: p.vorname, stationen: map[p.id] || {}, profi: profi[p.id] || [],
+    })),
   });
 });
 

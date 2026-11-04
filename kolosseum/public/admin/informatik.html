@@ -16,6 +16,8 @@
     .iw-ok { background: #eaf6ee; font-weight: 700; color: #1a7a40; }
     .iw-offen { background: #fff1e3; color: #6b4a00; }
     .iw-zelle small { display: block; color: #5b6577; font-weight: 400; font-size: .75rem; }
+    .iw-profi { display: block; font-size: .78rem; font-weight: 400; color: #1b2433; margin-top: .2rem; text-align: left; }
+    .iw-sum { white-space: nowrap; font-size: .85rem; }
     .iw-name-btn { border: 0; background: none; color: #2d6a9f; cursor: pointer; font-size: .8rem; padding: 0; text-decoration: underline; }
   </style>
 </head>
@@ -56,7 +58,7 @@
 
   <main class="container" style="padding-bottom:3rem">
     <h1 style="margin-top:1.5rem">Informatikwerkstatt 7/8 – Lernpfad</h1>
-    <p class="text-soft">Bestes Checkpoint-Ergebnis je Station. Grün = geschafft (ab 70 %), orange = noch nicht. Der Vorname ist nur hier sichtbar.</p>
+    <p class="text-soft">Bestes Checkpoint-Ergebnis je Station. Grün = geschafft (ab 70 %), orange = noch nicht. Darunter die Profi-Teile: <strong>★ selbst gelöst</strong>, <strong>👁 Lösung angesehen</strong> (mit Anzahl vorher selbst gelöster Aufgaben). Fehlversuche = falsche „Prüfen“-Klicks im Profi-Teil. Der Vorname ist nur hier sichtbar.</p>
     <div class="card iw-tabelle-wrap" style="margin-top:1rem">
       <table class="iw-tabelle" id="tabelle"><tr><td>Wird geladen …</td></tr></table>
     </div>
@@ -73,18 +75,28 @@
           var res = await fetch('/api/informatik/admin/uebersicht');
           if (!res.ok) throw new Error('Laden fehlgeschlagen (' + res.status + ').');
           var d = await res.json();
-          var kopf = '<tr><th>Lernpartner:in</th>';
+          var kopf = '<tr><th>Lernpartner:in</th><th>Profi gesamt</th>';
           for (var i = 1; i <= d.stationen; i++) kopf += '<th>Station ' + i + '</th>';
           var html = kopf + '</tr>';
-          if (!d.personen.length) html += '<tr><td colspan="' + (d.stationen + 1) + '">Noch keine Einträge.</td></tr>';
+          if (!d.personen.length) html += '<tr><td colspan="' + (d.stationen + 2) + '">Noch keine Einträge.</td></tr>';
           d.personen.forEach(function (p) {
             html += '<tr><td class="name"><strong>' + esc(p.vorname || '– kein Vorname –') + '</strong>' +
               '<span class="nick">' + esc(p.nick) + ' · <button class="iw-name-btn" data-id="' + p.id + '" data-name="' + esc(p.vorname || '') + '">Vorname ändern</button></span></td>';
+            var selbst = p.profi.filter(function (x) { return x.status === 'geloest'; }).length;
+            var gesehen = p.profi.length - selbst;
+            html += '<td class="iw-sum">★ ' + selbst + ' selbst<br>👁 ' + gesehen + ' angesehen</td>';
             for (var s = 1; s <= d.stationen; s++) {
               var e = p.stationen[s];
-              if (!e) { html += '<td>–</td>'; continue; }
+              var profiZeilen = p.profi.filter(function (x) { return x.station === s; }).map(function (x) {
+                return 'Teil ' + x.teil + ': ' + (x.status === 'geloest'
+                  ? '★ selbst gelöst'
+                  : '👁 Lösung angesehen (' + x.geloestVorher + '/' + x.gesamt + ' vorher)') +
+                  ' · ' + x.fehlversuche + ' Fehlvers.';
+              });
+              var profiHtml = profiZeilen.length ? '<span class="iw-profi">' + profiZeilen.map(esc).join('<br>') + '</span>' : '';
+              if (!e) { html += '<td>–' + profiHtml + '</td>'; continue; }
               html += '<td class="iw-zelle ' + (e.bestanden ? 'iw-ok' : 'iw-offen') + '">' + (e.bestanden ? '✓ ' : '') + e.beste + '/' + e.max +
-                '<small>' + e.versuche + (e.versuche === 1 ? ' Versuch' : ' Versuche') + ' · ' + datum(e.zuletzt) + '</small></td>';
+                '<small>' + e.versuche + (e.versuche === 1 ? ' Versuch' : ' Versuche') + ' · ' + datum(e.zuletzt) + '</small>' + profiHtml + '</td>';
             }
             html += '</tr>';
           });

@@ -659,7 +659,10 @@ Selbstlern-Lernpfad (6 Stationen) für die Informatikwerkstatt Jg. 7/8, verlinkt
   Kolosseum-Login Pflicht; beim ersten Mal Vorname (eigene Tabelle `informatik_vornamen`, nur im Admin
   „Informatik" sichtbar, bewusst getrennt von `student_names`).
   Ergebnis senden: `InformatikLogin.senden(station, punkte, max)`; bestanden ab 70 %.
-- **Backend:** `kolosseum/routes/informatik.js`, Tabelle `informatik_checkpoints` (jeder Versuch).
+- **Backend:** `kolosseum/routes/informatik.js`, Tabellen `informatik_checkpoints` (jeder Versuch) und
+  `informatik_profi` (je Station + Profi-Teil: selbst gelöst oder Lösung angesehen, mit Fehlversuchen).
+- **Profi-Teile:** `<div class="profi-block" data-block="t<n>">`, Aufgaben mit `data-anzeige` + `data-erklaerung`;
+  Lösungsfreigabe mit Rückfrage, `InformatikLogin.profiMelden(...)`. Wer aufdeckt, kann nicht mehr „selbst gelöst“ werden.
 - **Admin:** `kolosseum/public/admin/informatik.html` (bestes Ergebnis je Station, Versuche, Vorname ändern).
 
 | Methode | Pfad (Kolosseum) | Auth | Zweck |
@@ -667,6 +670,7 @@ Selbstlern-Lernpfad (6 Stationen) für die Informatikwerkstatt Jg. 7/8, verlinkt
 | GET | `/api/informatik/status` | Schüler-Login | Vorname + Stationsstand |
 | POST | `/api/informatik/vorname` | Schüler-Login | Vorname einmalig speichern |
 | POST | `/api/informatik/checkpoint` | Schüler-Login | Ergebnis speichern |
+| POST | `/api/informatik/profi` | Schüler-Login | Profi-Teil: `geloest` oder `angesehen` (erste Meldung zählt) |
 | GET | `/api/informatik/admin/uebersicht` | Admin | Übersicht aller Lernpartner:innen |
 | PUT | `/api/informatik/admin/vorname/:id` | Admin | Vorname korrigieren |
 
