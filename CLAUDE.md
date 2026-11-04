@@ -42,9 +42,11 @@ lehrer-homepage/
 │   ├── was-ist-neu.js            # „Was ist neu?": 8 Fenster (neuigkeiten.json + inhalte.json + Kolosseum-API)
 │   ├── blog.js · blog-daten.js · blog-einreichen.js  # Blog-Rendering/-Fallback/-Upload
 │   ├── api-config.js · leaderboard.js  # Globale Quiz-Bestenlisten
+│   ├── quiz-engine.js   # Gemeinsame Quiz-Engine (MC · Bilderraten · stumme Karte · Lückentext), Daten aus JSON
 ├── neuigkeiten.json     # Pflegbare Einträge für „Was ist neu?" (Funktionen)
 ├── inhalte.json         # Pflegbare Einträge für neue Materialien (dynamic-content.js)
 ├── materialien/         # Generierte interaktive Arbeitsblätter/Quizze (HTML)
+│   ├── quiz/            # JSON-Datendateien für quiz-engine.js (<slug>.json)
 │   └── _template-karten-quiz.html  # Vorlage für Bilderraten-/Karten-Quizze
 ├── ANLEITUNG-Bilderraten-Quiz.md   # Schritt-für-Schritt-Anleitung Bilderraten-Quiz
 ├── Material manuell von mir/  # Quelldateien (PPTX, Bilder, HTML-Entwürfe) von Jan Herrmann
@@ -773,6 +775,63 @@ Nach der HTML-Ausgabe kurz angeben:
 - Welche Inhalte nicht eindeutig erkannt werden konnten
 - Ob Musterlösungen fehlen und nachgereicht werden sollten
 - Ob Annahmen über das Niveau getroffen wurden
+
+---
+
+## Quiz-Engine (`js/quiz-engine.js`, Stand 2026-11)
+
+**Neue Quizze werden mit der gemeinsamen Engine gebaut** – nicht mehr als eigenständige HTML-Datei mit
+kopierter XP-/Bestenlisten-Logik. Ein Quiz besteht aus **einer JSON-Datei** in `materialien/quiz/<slug>.json`
+und einer **HTML-Hülle** in `materialien/` (Beispiele: `materialien/deutsch_was-ist-prosa_9-10_2026-09.html`
+(MC) und `materialien/allgemein_kaefer-quiz_jg5-10_2026-06.html` (Bilderraten)).
+
+```html
+<link rel="stylesheet" href="/css/style.css">
+…
+<main><div id="quiz" data-quiz="/materialien/quiz/<slug>.json"></div></main>
+<script src="/js/quiz-engine.js"></script>   <!-- VOR main.js: baut Navbar + Footer ein -->
+<script src="/js/main.js?v=20260615c"></script>
+<script src="/js/kolosseum-login-widget.js"></script>
+<script src="/js/api-config.js"></script>
+<script src="/js/leaderboard.js"></script>
+<script src="/js/kolosseum-prompt.js"></script>
+```
+
+Geschützte Quizze: wie bisher `auth-guard.js` per `document.write` im `<head>` (optional mit Geheimlink `?k=…`).
+
+### Was die Engine zentral übernimmt
+- **XP:** `kolosseumReport(richtig, anzahlFragen, slug)` – `total` ist **immer die Fragenanzahl**, nie Punkte.
+  Halbe Punkte (Bilderraten „fast richtig“, Tipp, Fehlversuche) werden für XP/Bestenliste gerundet.
+- **Bestenliste:** Namenseingabe + Top 10 über `leaderboard.js` (Name wird in `localStorage.quiz_name` gemerkt).
+- **Lösung zeigen:** Bei `karte`/`lueckentext` ein Toggle („Lösung“ ↔ „↩ Meine Antworten zeigen“); beim ersten
+  Aufdecken wird die XP-würdige Punktzahl eingefroren, Anzeige zeigt das echte Ergebnis plus Hinweis. Bei `mc`/`bilder`
+  (Frage für Frage) verrät der Button nur die aktuelle Frage → sie zählt 0, der Rest bleibt wertbar.
+- **Navbar + Footer** (verbindliches Snippet, absolute Pfade), Start-/Fortschritts-/Ergebnisansicht, „Nochmal spielen“, Zurück-Link.
+- **Bilder nur als Dateipfade** (`img/quiz/<quiz>/01.webp` …), keine Base64-Blöcke.
+
+### JSON-Felder (gemeinsam)
+`slug` (= Quiz-ID für XP + Bestenliste) · `typ` (`mc` | `bilder` | `karte` | `lueckentext`) · `titel` · `untertitel` ·
+`intro` (String oder Array, HTML erlaubt) · `zurueck: {url, text}` · `bewertung: [{ab: 100, text}, …]` ·
+`design: {thema: "hell"|"dunkel", akzent: "#hex"}` · `bestenliste: false` (aus) · `loesungErlaubt: false` (kein Lösungs-Button).
+
+| Typ | Fragen-Format | Optionen |
+|-----|---------------|----------|
+| `mc` | `{frage, optionen:[…], richtig: 1` oder `[0,2]` (Mehrfachauswahl)`, erklaerung}` | `mischen`, `optionenMischen`, `anzahl` |
+| `bilder` | `bilder: "/img/quiz/<quiz>/"`, `{bild, antwort, alternativen:[…], frage, tipp, info:{zeilen:[[label,wert]], wissenswertes:[…]}}` | `mischen` (Standard an), `versuche` 1–6, `toleranz` (Levenshtein, Standard 3), `teilantworten` |
+| `karte` | `karte: {stumm, loesung?}`, `{antwort, x, y, alternativen}` (x/y in %) | `modi: ["leicht","mittel","schwer"]` |
+| `lueckentext` | `fragen: [{titel?, text}]` – Lücken `[antwort|alternative]` (Eingabe) bzw. `{richtig|falsch|falsch}` (Auswahl) | `genau` (Standard true = Groß-/Kleinschreibung zählt), `optionenMischen` |
+
+Jede Lücke / jeder Hotspot / jedes Bild = **eine Frage** für XP.
+
+### Pflichtschritte für ein neues Engine-Quiz
+1. JSON in `materialien/quiz/` + Hülle in `materialien/` (Dateinamen-Konvention `fach_thema_klasse_JJJJ-MM.html`).
+2. **Backend registrieren:** `kolosseum/routes/external.js` → `FRAGEN_QUIZZE` (Slug + **Fragenanzahl** + Label) und
+   `kolosseum/routes/leaderboard.js` → `VALID_QUIZZES` (Basis-ID vor dem ersten Bindestrich). Ohne beides: keine XP / leere Bestenliste, ohne Fehlermeldung.
+3. Auf der passenden `fach-<fach>.html` verlinken, Eintrag in `inhalte.json`.
+4. Test im Browser: `/api/auth/me` liefert bei lokalem Aufruf keinen Login → Quizze mit `auth-guard.js` nur mit Geheimlink öffnen.
+
+Für `/api/worksheets/submit` (Arbeitsblätter mit `worksheetComplete`) gilt analog: neue Worksheet-ID mit Höchst-XP in
+`WORKSHEET_XP` in `kolosseum/routes/worksheets.js` eintragen, sonst wird die Meldung mit 400 abgelehnt.
 
 ---
 

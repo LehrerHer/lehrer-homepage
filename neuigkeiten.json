@@ -2,6 +2,12 @@
   "_hinweis": "Neue Funktionen für die 'Was ist neu?'-Sektion. Neueste oben einfügen. Felder: titel, datum (JJJJ-MM-TT), meta (Bereich), url. Wird von js/was-ist-neu.js geladen; es werden automatisch die 5 jüngsten angezeigt.",
   "funktionen": [
     {
+      "titel": "Neue Quiz-Engine: Quizze bestehen nur noch aus einer JSON-Datei (MC, Bilderraten, stumme Karte, Lückentext)",
+      "datum": "2026-11-04",
+      "meta": "Technik",
+      "url": "materialien/deutsch_was-ist-prosa_9-10_2026-09.html"
+    },
+    {
       "titel": "Informatikwerkstatt: XP für Aufgaben, Teile und Checkpoints",
       "datum": "2026-11-04",
       "meta": "Informatik",

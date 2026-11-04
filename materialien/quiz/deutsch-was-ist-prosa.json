@@ -1,0 +1,123 @@
+{
+  "slug": "deutsch-was-ist-prosa",
+  "typ": "mc",
+  "titel": "Was ist Prosa? – Epik, Lyrik und Drama im Vergleich",
+  "untertitel": "Fach: Deutsch · Klasse 9/10 · 10 Fragen",
+  "fach": "deutsch",
+  "zurueck": { "url": "/fach-deutsch.html", "text": "Zurück zu Deutsch" },
+  "intro": [
+    "<strong>Worum geht es?</strong> Dieses Quiz überprüft dein Wissen über den Begriff <strong>Prosa</strong> und seine Abgrenzung zu Gedichten (Lyrik) und Theaterstücken (Drama).",
+    "10 Fragen, jeweils genau eine Antwort richtig. Nach jeder Antwort bekommst du sofort eine Rückmeldung mit Begründung.",
+    "⚔️ Am Ende erfährst du deine Notenpunkte und kannst dein Ergebnis für deinen Gladiator in der Arena einreichen."
+  ],
+  "mischen": false,
+  "optionenMischen": false,
+  "bewertung": [
+    { "ab": 100, "text": "Perfekt! Du kennst die Abgrenzung von Prosa, Lyrik und Drama genau." },
+    { "ab": 70, "text": "Sehr gut! Schau dir die offenen Punkte noch einmal in Ruhe an." },
+    { "ab": 40, "text": "Solider Ansatz – ein zweiter Blick ins Arbeitsblatt lohnt sich." },
+    { "ab": 0, "text": "Die Unterscheidung von Prosa, Lyrik und Drama braucht noch etwas Übung." }
+  ],
+  "fragen": [
+    {
+      "frage": "Was versteht man unter dem Begriff „Prosa“?",
+      "optionen": [
+        "Texte in gebundener Sprache (Versen), wie zum Beispiel Gedichte.",
+        "Alle Texte, die in freier, ungebundener Sprache verfasst sind.",
+        "Theaterstücke, bei denen die Schauspieler auf der Bühne stehen.",
+        "Ausschließlich Sachtexte aus Zeitungen und Lexika."
+      ],
+      "richtig": 1,
+      "erklaerung": "Als Prosa bezeichnet man alle Texte in freier/ungebundener Sprache – im Gegensatz zur gebundenen Sprache der Lyrik oder der reinen Figurensprache des Dramas."
+    },
+    {
+      "frage": "Welches Merkmal unterscheidet ein Gedicht (Lyrik) grundlegend von einem Prosatext?",
+      "optionen": [
+        "In Gedichten entscheiden Autorinnen und Autoren selbst über die Zeilenumbrüche (Verse).",
+        "Gedichte dürfen keine erfundenen (fiktionalen) Geschichten erzählen.",
+        "Ein Gedicht ist immer mindestens zehn Seiten lang.",
+        "In der Lyrik kommen niemals Gefühle oder Gedanken vor."
+      ],
+      "richtig": 0,
+      "erklaerung": "Bei Gedichten entscheidet die Autorin oder der Autor, welche Wörter in welcher Zeile stehen. Diese Zeile eines Gedichts wird als Vers bezeichnet (gebundene Sprache)."
+    },
+    {
+      "frage": "Warum gehört ein Drama (Theaterstück) im Normalfall nicht zur Prosa?",
+      "optionen": [
+        "Weil es fast ausschließlich die Sprache der Figuren (Figurensprache) wiedergibt.",
+        "Weil Dramen immer eine wahre Geschichte beschreiben müssen.",
+        "Weil darin niemals gesprochen wird, sondern nur Handlungen stattfinden.",
+        "Weil ein Drama immer in Reimen verfasst sein muss."
+      ],
+      "richtig": 0,
+      "erklaerung": "Das Drama ist keine Prosa, da dort beinahe ausschließlich die direkte Sprache der Figuren (Dialoge und Monologe) ungefiltert abgedruckt wird."
+    },
+    {
+      "frage": "Zu welcher Textkategorie gehört der Bericht über das „Fußballduell“?",
+      "optionen": [
+        "Fiktionaler Text (Literatur zur Unterhaltung)",
+        "Nicht-fiktionaler Text (Sachtext zur Information)",
+        "Dramatischer Text (Theaterstück)",
+        "Lyrischer Text (Gedicht in Versen)"
+      ],
+      "richtig": 1,
+      "erklaerung": "Der Bericht über das Fußballspiel beschreibt eine echte, nicht-erfundene Realität und hat das Ziel, sachlich zu informieren."
+    },
+    {
+      "frage": "Welches Hauptziel verfolgt ein Text wie der Bericht über das „Fußballduell“?",
+      "optionen": [
+        "Er soll eine erfundene Geschichte erzählen, um das Publikum zu unterhalten.",
+        "Er beschreibt die echte Wirklichkeit und soll sachlich informieren.",
+        "Er drückt die persönlichen Gefühle des Autors in Reimen aus.",
+        "Er dient als Regieanweisung für ein Theaterstück."
+      ],
+      "richtig": 1,
+      "erklaerung": "Sachtexte (nicht-fiktional) wie Zeitungsberichte haben den Zweck, echte Informationen aus der realen Welt, in der wir leben, zu vermitteln."
+    },
+    {
+      "frage": "Welcher der folgenden Auszüge ist ein Beispiel für fiktionale epische Prosa?",
+      "optionen": [
+        "Der Zeitungsbericht über das Fußballspiel der Friedensschule.",
+        "Der Roman-Auszug von Thomas Mann über die Figur Gustav Aschenbach.",
+        "Das Gedicht „Das Göttliche“ von Johann Wolfgang von Goethe.",
+        "Der Dialog zwischen dem Maler Conti und dem Prinzen."
+      ],
+      "richtig": 1,
+      "erklaerung": "Der Textauszug handelt von einer erfundenen Figur (Gustav Aschenbach) und ist in erzählender Prosa (Fließtext ohne Verse) verfasst."
+    },
+    {
+      "frage": "Was unterscheidet Sachtexte (nicht-fiktional) grundsätzlich von literarischen Texten (fiktional)?",
+      "optionen": [
+        "Sachtexte beschreiben die echte Wirklichkeit und informieren; literarische Texte erzählen eine erfundene Geschichte zur Unterhaltung.",
+        "Sachtexte sind immer in Reimen geschrieben, während Literatur immer Prosa ist.",
+        "Literarische Texte dienen der wissenschaftlichen Information, Sachtexte nur der Fantasie.",
+        "Es gibt überhaupt keinen Unterschied, beide Bezeichnungen meinen das Gleiche."
+      ],
+      "richtig": 0,
+      "erklaerung": "Dies ist der Kernunterschied zwischen Sachtexten (echte Information aus der echten Welt) und Literatur (erfundene Geschichten zur Unterhaltung)."
+    },
+    {
+      "frage": "Zu welcher literarischen Gattung gehört der Roman?",
+      "optionen": ["Dramatik", "Lyrik", "Epik", "Sachtext"],
+      "richtig": 2,
+      "erklaerung": "Der Roman gehört zur Gattung der Epik (erzählende Texte). Typischerweise werden epische Werke in freier Prosa verfasst."
+    },
+    {
+      "frage": "Zu welcher literarischen Gattung gehört Goethes Gedicht „Das Göttliche“?",
+      "optionen": ["Epik", "Lyrik", "Dramatik", "Sachtext"],
+      "richtig": 1,
+      "erklaerung": "Das Werk „Das Göttliche“ ist ein Gedicht (eine Ode) und gehört damit zur Lyrik, erkennbar an der gebundenen Sprache in Versen."
+    },
+    {
+      "frage": "Welche literarische Gattung wird durch den Dialog zwischen dem Maler Conti und dem Prinzen dargestellt?",
+      "optionen": [
+        "Epik (erzählender Prosatext)",
+        "Lyrik (Gedicht in Versen)",
+        "Dramatik (Theaterstück in Figurensprache)",
+        "Nicht-fiktionaler Sachtext"
+      ],
+      "richtig": 2,
+      "erklaerung": "Das Gespräch zwischen dem Maler Conti und dem Prinzen stellt eine Szene aus einem Theaterstück (Emilia Galotti) dar. Weil es Figurensprache ist, gehört es zur Gattung der Dramatik."
+    }
+  ]
+}
