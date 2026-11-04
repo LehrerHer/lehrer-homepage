@@ -85,12 +85,21 @@
   .tabelle-scroll { overflow-x: auto; }
 
   /* Pixel */
-  .pixel-flex { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
-  .raster { display: grid; grid-template-columns: repeat(8, 32px); gap: 2px; background: var(--rand); padding: 2px; border-radius: 4px; }
-  .raster button { width: 32px; height: 32px; border: 0; background: var(--weiss); cursor: pointer; padding: 0; }
-  .raster button[aria-pressed="true"] { background: var(--blau); }
-  .codes { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.95rem; line-height: 34px; }
-  .vorlage { font-family: "JetBrains Mono", ui-monospace, monospace; background: var(--blau-zart); padding: 10px 14px; border-radius: 6px; line-height: 1.6; }
+  .vorlage { list-style: none; margin: 10px 0 18px; padding: 0; display: grid; grid-template-columns: repeat(4, max-content); gap: 6px; }
+  .vorlage li { background: var(--blau-zart); border-radius: 6px; padding: 4px 10px; font-size: 0.95rem; white-space: nowrap; }
+  .vorlage .v-nr { font-weight: 700; color: var(--blau); margin-right: 6px; }
+  .vorlage code { letter-spacing: 0.05em; }
+  .zeichenflaeche { display: inline-block; }
+  .zf-kopf, .zf-zeile { display: grid; grid-template-columns: 52px auto 130px; align-items: center; column-gap: 12px; }
+  .zf-kopf { font-size: 0.8rem; color: var(--grau); font-weight: 600; margin-bottom: 4px; }
+  .zf-nr { text-align: right; font-weight: 700; color: var(--blau); font-size: 0.95rem; }
+  .zf-pixel { display: grid; grid-template-columns: repeat(8, 32px); gap: 2px; background: var(--rand); padding: 1px 2px; }
+  .zf-zeile:first-of-type .zf-pixel { padding-top: 2px; border-radius: 4px 4px 0 0; }
+  .zf-zeile:last-of-type .zf-pixel { padding-bottom: 2px; border-radius: 0 0 4px 4px; }
+  .zf-pixel button { width: 32px; height: 32px; border: 0; background: var(--weiss); cursor: pointer; padding: 0; }
+  .zf-pixel button[aria-pressed="true"] { background: var(--blau); }
+  .zf-ist { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.95rem; }
+  .zf-ist.passt { color: var(--gruen); font-weight: 700; }
 
   /* RGB */
   .rgb-flex { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
@@ -112,9 +121,11 @@
 
 
   @media (max-width: 520px) {
-    .raster { grid-template-columns: repeat(8, 28px); }
-    .raster button { width: 28px; height: 28px; }
-    .codes { line-height: 30px; }
+    .vorlage { grid-template-columns: repeat(2, max-content); }
+    .zf-kopf, .zf-zeile { grid-template-columns: 34px auto 96px; column-gap: 6px; }
+    .zf-pixel { grid-template-columns: repeat(8, 26px); }
+    .zf-pixel button { width: 26px; height: 26px; }
+    .zf-ist { font-size: 0.8rem; }
     .bit button { font-size: 1rem; border-width: 2px; }
   }
 
@@ -128,6 +139,15 @@
   .loesung-text { flex: 1 1 100%; background: var(--blau-zart); border-left: 4px solid var(--grau); border-radius: 6px; padding: 8px 12px; font-size: 0.95rem; }
   .aufgabe.angesehen input { background: #f2f2f2; }
   .rueck.angesehen { color: var(--grau); }
+  .denkfrage { margin-top: 22px; border: 2px solid var(--blau); border-radius: 10px; padding: 14px 16px; }
+  .denkfrage h3 { margin-top: 0; }
+  .denk-label { display: block; font-weight: 600; margin-bottom: 4px; }
+  .denkfrage textarea { width: 100%; padding: 8px 10px; border: 2px solid var(--rand); border-radius: 6px; font: inherit; font-size: 1rem; resize: vertical; }
+  .denkfrage textarea:disabled { background: #f2f2f2; color: var(--text); }
+  .denk-aktion { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 8px; }
+  .denk-meldung { font-size: 0.9rem; }
+  .denk-meldung.ok { color: var(--gruen); font-weight: 600; }
+  .denk-meldung.falsch { color: var(--rot); }
   .denk-loesung { background: var(--blau-zart); border-left: 4px solid var(--grau); border-radius: 6px; padding: 8px 12px; margin-top: 8px; font-size: 0.95rem; }
   .belohnung { margin-top: 18px; border: 3px solid var(--orange); border-radius: 12px; padding: 16px; background: var(--orange-zart); }
   .belohnung h3 { margin-top: 0; }
@@ -295,7 +315,6 @@
   <div class="profi-block" data-block="t2">
   <div class="aufgabe" data-loesung="32" data-anzeige="32" data-erklaerung="A hat die Nummer 65, a hat die Nummer 97. 97 − 65 = 32. Das gilt für alle Buchstaben: Kleinbuchstabe = Großbuchstabe + 32."><span class="frage">Wie groß ist der Abstand zwischen <code>A</code> und <code>a</code>?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <div class="aufgabe" data-loesung="ok" data-anzeige="OK" data-erklaerung="01001111 = 64 + 8 + 4 + 2 + 1 = 79 = O. 01001011 = 64 + 8 + 2 + 1 = 75 = K. Zusammen: OK."><span class="frage">Welches Wort ist das? <code>01001111 01001011</code></span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <details><summary>Denkfrage</summary>Tipp „ä“ in den Umwandler. Der ASCII-Code hat nur 128 Zeichen. Was meinst du: Wie speichert ein Handy dann Umlaute oder Emojis?</details>
     <div class="loesung-freigabe">
       <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
       <div class="loesung-frage" hidden>
@@ -304,7 +323,19 @@
         <button type="button" class="iw-btn leise" data-loesung-nein>Nein, ich versuche es weiter</button>
       </div>
     </div>
-    <div class="denk-loesung" hidden><b>Lösung zur Denkfrage:</b> Heute nutzen Computer und Handys statt ASCII meist <b>Unicode</b>. Darin hat fast jedes Zeichen der Welt eine Nummer. In der üblichen Speicherform UTF-8 bleibt ein Buchstabe wie „A“ bei 1 Byte, „ä“ braucht 2 Bytes und die meisten Emojis 4 Bytes.</div>
+  </div>
+
+  <div class="denkfrage" id="denkfrage" data-frage="t2-denk">
+    <h3>💭 Denkfrage</h3>
+    <p>Tipp „ä“ in den Umwandler. Der ASCII-Code hat nur 128 Zeichen. Was meinst du: Wie speichert ein Handy dann Umlaute oder Emojis?</p>
+    <label for="denkText" class="denk-label">Deine Vermutung:</label>
+    <textarea id="denkText" rows="4" maxlength="1000" placeholder="Schreib deine Idee in ganzen Sätzen."></textarea>
+    <div class="denk-aktion">
+      <button type="button" class="iw-btn" id="denkSenden">An Lernbegleitung senden</button>
+      <span class="denk-meldung" id="denkMeldung" aria-live="polite"></span>
+    </div>
+    <p class="hinweis-klein">Nach dem Senden siehst du eine Musterlösung. Deine Antwort kannst du danach nicht mehr ändern.</p>
+    <div class="denk-loesung" hidden><b>Musterlösung:</b> Heute nutzen Computer und Handys statt ASCII meist <b>Unicode</b>. Darin hat fast jedes Zeichen der Welt eine Nummer. In der üblichen Speicherform UTF-8 bleibt ein Buchstabe wie „A“ bei 1 Byte, „ä“ braucht 2 Bytes und die meisten Emojis 4 Bytes.</div>
   </div>
 </section>
 
@@ -316,18 +347,17 @@
   <p>Ein Bild besteht aus vielen kleinen Quadraten: den <b>Pixeln</b>. Bei einem Schwarz-Weiß-Bild reicht ein Bit pro Pixel. Hier gilt: <code>1</code> = blau, <code>0</code> = weiß.</p>
 
   <h3><span class="badge b-basis">Basis</span>Zeichne nach Code</h3>
-  <p>Klick die Pixel so an, dass das Bild zu diesem Code passt. Rechts neben dem Raster siehst du deinen Code.</p>
-  <div class="pixel-flex">
-    <div class="vorlage" id="vorlage"></div>
-    <div class="raster" id="raster" aria-label="Pixelraster 8 mal 8"></div>
-    <div class="codes" id="zeilenCodes"></div>
+  <p>Oben steht, welcher Code in welche Zeile gehört. Klick die Pixel so an, dass jede Zeile zu ihrem Code passt. Rechts neben dem Bild siehst du, was du gerade gezeichnet hast.</p>
+  <ol class="vorlage" id="vorlage" aria-label="Vorgabe: Code je Zeile"></ol>
+  <div class="zeichenflaeche" id="raster" role="group" aria-label="Pixelbild 8 mal 8 zum Anklicken">
+    <div class="zf-kopf"><span>Zeile</span><span>Dein Bild</span><span>Dein Code</span></div>
   </div>
   <p>
     <button class="iw-btn" id="pixelPruefen">Bild prüfen</button>
     <button class="iw-btn leise" id="pixelLeeren">Leeren</button>
     <span class="rueck" id="pixelRueck"></span>
   </p>
-  <div class="aufgabe" data-loesung="64"><span class="frage">Aus wie vielen Pixeln besteht das Bild?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="64" data-hinweis-falsch="Noch nicht. Zähl auch die weißen Pixel mit: Ein leeres Pixel ist trotzdem ein Pixel – es hat nur keine oder eine andere Farbe. Wie viele Zeilen hat das Bild, und wie viele Pixel sind in jeder Zeile?"><span class="frage">Aus wie vielen Pixeln besteht das Bild?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
 
   <h3>Farben mischen</h3>
   <p>Farbige Pixel mischen drei Farben: <b>R</b>ot, <b>G</b>rün und <b>B</b>lau. Jede hat einen Wert von 0 bis 255.</p>
@@ -438,7 +468,7 @@
       inp.classList.toggle("ok", richtig);
       inp.classList.toggle("falsch", !richtig);
       rk.className = "rueck " + (richtig ? "ok" : "falsch");
-      rk.textContent = richtig ? "✓ Richtig" : "Noch nicht – schau dir den Tipp an.";
+      rk.textContent = richtig ? "✓ Richtig" : (a.dataset.hinweisFalsch || "Noch nicht – schau dir den Tipp an.");
       if (richtig) a.dataset.geloest = "1";
       var block = a.closest(".profi-block");
       if (block) profiNachPruefen(block, richtig);
@@ -498,8 +528,6 @@
       box.appendChild(document.createTextNode(a.dataset.erklaerung));
       a.appendChild(box);
     });
-    var denk = block.querySelector(".denk-loesung");
-    if (denk) denk.hidden = false;
     hinweis(block, "Du hast dir die Lösungen angesehen. Dieser Profi-Teil zählt nicht als selbst gelöst – das sieht auch deine Lernbegleitung.");
     if (melden) {
       InformatikLogin.profiMelden(STATION, teilVon(block), "angesehen", vorher, alle.length, parseInt(block.dataset.fehler || "0", 10));
@@ -530,6 +558,45 @@
     });
   });
 
+
+  /* ---------- Denkfrage: Antwort senden, danach Musterlösung ---------- */
+  (function () {
+    var box = document.getElementById("denkfrage");
+    var frage = box.dataset.frage;
+    var feld = document.getElementById("denkText");
+    var knopf = document.getElementById("denkSenden");
+    var meldung = document.getElementById("denkMeldung");
+    var loesung = box.querySelector(".denk-loesung");
+    function abgeschlossen(text) {
+      feld.value = text;
+      feld.disabled = true;
+      knopf.hidden = true;
+      meldung.className = "denk-meldung ok";
+      meldung.textContent = "✓ Gesendet. Deine Lernbegleitung sieht deine Antwort.";
+      loesung.hidden = false;
+    }
+    knopf.addEventListener("click", async function () {
+      var text = feld.value.trim();
+      if (text.length < 10) {
+        meldung.className = "denk-meldung falsch";
+        meldung.textContent = "Schreib bitte mindestens einen ganzen Satz.";
+        return;
+      }
+      knopf.disabled = true;
+      var r = await InformatikLogin.antwortSenden(STATION, frage, text);
+      knopf.disabled = false;
+      if (r.ok) { abgeschlossen(r.text); return; }
+      meldung.className = "denk-meldung falsch";
+      meldung.textContent = r.grund === "login" ? "Nicht gesendet: Du bist nicht angemeldet. Melde dich oben an."
+        : r.grund === "vorname" ? "Nicht gesendet: Trag oben zuerst deinen Vornamen ein."
+        : "Nicht gesendet: Keine Verbindung. Versuch es gleich noch einmal.";
+    });
+    InformatikLogin.bereit.then(function (z) {
+      var alt = z.antworten && z.antworten[STATION + "-" + frage];
+      if (alt) abgeschlossen(alt);
+    });
+  })();
+
   /* ---------- Teil 2: ASCII ---------- */
   var ein = document.getElementById("asciiEin"), tab = document.getElementById("asciiTab");
   function asciiAktualisieren() {
@@ -551,17 +618,37 @@
 
   /* ---------- Teil 3: Pixel ---------- */
   var ziel = ["00111100","01000010","10100101","10000001","10100101","10011001","01000010","00111100"];
-  document.getElementById("vorlage").innerHTML = ziel.join("<br>");
-  var raster = document.getElementById("raster"), codes = document.getElementById("zeilenCodes");
-  for (var i = 0; i < 64; i++) {
-    var p = document.createElement("button");
-    p.type = "button";
-    p.setAttribute("aria-pressed", "false");
-    p.setAttribute("aria-label", "Zeile " + (Math.floor(i / 8) + 1) + ", Spalte " + (i % 8 + 1));
-    raster.appendChild(p);
+  // Vorgabe-Tabelle: Zeile 1–8 mit Soll-Code
+  var vorlage = document.getElementById("vorlage");
+  vorlage.innerHTML = ziel.map(function (c, i) {
+    return '<li><span class="v-nr">Zeile ' + (i + 1) + ':</span><code>' + c + '</code></li>';
+  }).join("");
+  // Zeichenfläche: je Zeile Nummer · 8 Pixel · eigener Code
+  var raster = document.getElementById("raster");
+  var istFelder = [];
+  for (var z = 0; z < 8; z++) {
+    var zeile = document.createElement("div");
+    zeile.className = "zf-zeile";
+    var nr = document.createElement("span");
+    nr.className = "zf-nr";
+    nr.textContent = z + 1;
+    var px = document.createElement("div");
+    px.className = "zf-pixel";
+    for (var sp = 0; sp < 8; sp++) {
+      var p = document.createElement("button");
+      p.type = "button";
+      p.setAttribute("aria-pressed", "false");
+      p.setAttribute("aria-label", "Zeile " + (z + 1) + ", Spalte " + (sp + 1));
+      px.appendChild(p);
+    }
+    var ist = document.createElement("span");
+    ist.className = "zf-ist";
+    zeile.appendChild(nr); zeile.appendChild(px); zeile.appendChild(ist);
+    raster.appendChild(zeile);
+    istFelder.push(ist);
   }
   function rasterCode() {
-    var px = raster.querySelectorAll("button"), zeilen = [];
+    var px = raster.querySelectorAll(".zf-pixel button"), zeilen = [];
     for (var z = 0; z < 8; z++) {
       var s = "";
       for (var s2 = 0; s2 < 8; s2++) s += px[z * 8 + s2].getAttribute("aria-pressed") === "true" ? "1" : "0";
@@ -569,7 +656,13 @@
     }
     return zeilen;
   }
-  function codesAktualisieren() { codes.innerHTML = rasterCode().join("<br>"); }
+  function codesAktualisieren() {
+    rasterCode().forEach(function (c, z) {
+      var passt = c === ziel[z];
+      istFelder[z].textContent = c + (passt ? " ✓" : "");
+      istFelder[z].classList.toggle("passt", passt);
+    });
+  }
   raster.addEventListener("click", function (e) {
     var b = e.target.closest("button");
     if (!b) return;
@@ -585,7 +678,7 @@
     rk.textContent = fehler === 0 ? "✓ Richtig gezeichnet!" : fehler + (fehler === 1 ? " Zeile stimmt" : " Zeilen stimmen") + " noch nicht. Vergleiche Zeile für Zeile.";
   });
   document.getElementById("pixelLeeren").addEventListener("click", function () {
-    raster.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+    raster.querySelectorAll(".zf-pixel button").forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
     codesAktualisieren();
     document.getElementById("pixelRueck").textContent = "";
   });

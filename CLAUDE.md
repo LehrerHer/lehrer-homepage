@@ -663,6 +663,9 @@ Selbstlern-Lernpfad (6 Stationen) für die Informatikwerkstatt Jg. 7/8, verlinkt
   `informatik_profi` (je Station + Profi-Teil: selbst gelöst oder Lösung angesehen, mit Fehlversuchen).
 - **Profi-Teile:** `<div class="profi-block" data-block="t<n>">`, Aufgaben mit `data-anzeige` + `data-erklaerung`;
   Lösungsfreigabe mit Rückfrage, `InformatikLogin.profiMelden(...)`. Wer aufdeckt, kann nicht mehr „selbst gelöst“ werden.
+- **Denkfragen:** `<div class="denkfrage" data-frage="<id>">` mit Textfeld; `InformatikLogin.antwortSenden(station, frage, text)`,
+  Tabelle `informatik_antworten`; Musterlösung erst nach dem Senden. Im Admin unter „Freie Antworten“
+  (Fragetitel in `FRAGEN` in `admin/informatik.html` ergänzen).
 - **Admin:** `kolosseum/public/admin/informatik.html` (bestes Ergebnis je Station, Versuche, Vorname ändern).
 
 | Methode | Pfad (Kolosseum) | Auth | Zweck |
@@ -671,6 +674,7 @@ Selbstlern-Lernpfad (6 Stationen) für die Informatikwerkstatt Jg. 7/8, verlinkt
 | POST | `/api/informatik/vorname` | Schüler-Login | Vorname einmalig speichern |
 | POST | `/api/informatik/checkpoint` | Schüler-Login | Ergebnis speichern |
 | POST | `/api/informatik/profi` | Schüler-Login | Profi-Teil: `geloest` oder `angesehen` (erste Meldung zählt) |
+| POST | `/api/informatik/antwort` | Schüler-Login | freie Antwort (z. B. Denkfrage), erste Antwort zählt |
 | GET | `/api/informatik/admin/uebersicht` | Admin | Übersicht aller Lernpartner:innen |
 | PUT | `/api/informatik/admin/vorname/:id` | Admin | Vorname korrigieren |
 

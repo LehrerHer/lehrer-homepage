@@ -8,6 +8,7 @@
    - InformatikLogin.senden(station, punkte, max) → speichert Checkpoint-Ergebnis
    - InformatikLogin.profiMelden(station, teil, status, geloest, gesamt, fehlversuche)
      → Profi-Teil 'geloest' oder 'angesehen' (erste Meldung zählt)
+   - InformatikLogin.antwortSenden(station, frage, text) → freie Antwort (erste zählt)
 
    Der Vorname liegt in einer eigenen Tabelle und ist nur im Admin-Bereich
    „Informatik" sichtbar (kolosseum/public/admin/informatik.html).
@@ -18,19 +19,19 @@
 
   var K = 'https://kolosseum.lehrer-herrmann.de';
   var API = K + '/api/informatik';
-  var zustand = { eingeloggt: false, vorname: null, stationen: {}, profi: {}, fehler: false };
+  var zustand = { eingeloggt: false, vorname: null, stationen: {}, profi: {}, antworten: {}, fehler: false };
   var aufloesen;
   var bereit = new Promise(function (r) { aufloesen = r; });
 
   async function ladeStatus() {
     try {
       var res = await fetch(API + '/status', { credentials: 'include' });
-      if (res.status === 401) return { eingeloggt: false, vorname: null, stationen: {}, profi: {} };
+      if (res.status === 401) return { eingeloggt: false, vorname: null, stationen: {}, profi: {}, antworten: {} };
       if (!res.ok) throw new Error('Status ' + res.status);
       var d = await res.json();
-      return { eingeloggt: true, vorname: d.vorname, stationen: d.stationen || {}, profi: d.profi || {} };
+      return { eingeloggt: true, vorname: d.vorname, stationen: d.stationen || {}, profi: d.profi || {}, antworten: d.antworten || {} };
     } catch (_) {
-      return { eingeloggt: false, vorname: null, stationen: {}, profi: {}, fehler: true };
+      return { eingeloggt: false, vorname: null, stationen: {}, profi: {}, antworten: {}, fehler: true };
     }
   }
 
@@ -148,13 +149,33 @@
     }
   }
 
+  // Freie Antwort senden (z. B. Denkfrage) – erste Antwort ist endgültig
+  async function antwortSenden(station, frage, text) {
+    var s = await bereit;
+    if (!s.eingeloggt) return { ok: false, grund: 'login' };
+    if (!s.vorname) return { ok: false, grund: 'vorname' };
+    try {
+      var res = await fetch(API + '/antwort', {
+        method: 'POST', credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ station: station, frage: frage, text: text })
+      });
+      if (!res.ok) throw new Error();
+      var d = await res.json();
+      s.antworten[station + '-' + frage] = d.text;
+      return { ok: true, text: d.text };
+    } catch (_) {
+      return { ok: false, grund: 'netz' };
+    }
+  }
+
   async function init() {
     zustand = await ladeStatus();
     zeige();
     aufloesen(zustand);
   }
 
-  window.InformatikLogin = { bereit: bereit, senden: senden, profiMelden: profiMelden };
+  window.InformatikLogin = { bereit: bereit, senden: senden, profiMelden: profiMelden, antwortSenden: antwortSenden };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
