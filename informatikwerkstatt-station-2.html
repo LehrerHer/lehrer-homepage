@@ -225,6 +225,39 @@
     .tausch { width: 24px; }
   }
 
+  /* === STATION 2: ERGÄNZUNGEN === */
+  .rf-aktion { margin-top: 14px; }
+  .rf-zeile { transition: background 0.3s, transform 0.3s; }
+  .rf-zeile:nth-child(odd) { background: #dfe7f3; }
+  .rf-zeile.bewegt { background: var(--orange-zart); outline: 2px solid var(--orange); animation: rf-ruck 0.35s ease-out; }
+  @keyframes rf-ruck { from { transform: translateX(14px); } to { transform: none; } }
+  .partner-titel { display: block; font-size: 1.05rem; margin-bottom: 4px; }
+  .robo-feld.gross { grid-template-columns: repeat(7, 46px); grid-template-rows: repeat(7, 46px); }
+  .spiel-eingabe { width: 100%; max-width: 320px; padding: 8px 10px; border: 2px solid var(--rand); border-radius: 6px; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 1.05rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .robo-zelle.lernbuero { background: var(--orange-zart); }
+  .robo-zelle.spur { background: var(--blau-zart); }
+  .info-paar { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin: 8px 0 14px; }
+  .info-kasten { border: 2px solid var(--blau); border-radius: 10px; padding: 10px 14px; background: var(--weiss); }
+  .info-kasten h4 { margin: 0 0 6px; color: var(--blau); font-family: "Merriweather", Georgia, serif; }
+  .info-kasten p { margin: 0 0 6px; }
+  .scratch-hinweis p { margin: 0 0 8px; }
+  .scratch-reihe { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 6px; }
+  .scratch-reihe figure { margin: 0; }
+  .scratch-reihe figcaption { font-size: 0.85rem; color: var(--grau); margin-top: 4px; }
+  :root { --sb-steuerung: #ffab19; --sb-steuerung-rand: #cf8b17; --sb-aussehen: #9966ff; --sb-variable: #ff8c1a; }
+  .sb-c { display: inline-block; font-family: "Open Sans", system-ui, sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--weiss); }
+  .sb-kopf, .sb-mitte, .sb-fuss { background: var(--sb-steuerung); border: 1px solid var(--sb-steuerung-rand); padding: 6px 10px; border-radius: 6px; }
+  .sb-kopf { border-bottom-left-radius: 0; }
+  .sb-mitte { border-radius: 0 6px 6px 0; }
+  .sb-fuss { height: 14px; padding: 0; width: 100px; border-top-left-radius: 0; }
+  .sb-innen { border-left: 14px solid var(--sb-steuerung); padding: 3px 0 3px 4px; display: flex; flex-direction: column; gap: 3px; }
+  .sb-block { padding: 6px 10px; border-radius: 6px; width: max-content; }
+  .sb-aussehen { background: var(--sb-aussehen); }
+  .sb-variable { background: var(--sb-variable); }
+  .sb-wert { background: var(--weiss); color: var(--text); border-radius: 10px; padding: 1px 8px; font-weight: 400; }
+  .sb-bed { background: #5cb712; border-radius: 4px; padding: 1px 8px; clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 8px 100%, 0 50%); }
+  @media (max-width: 520px) { .robo-feld.gross { grid-template-columns: repeat(7, 40px); grid-template-rows: repeat(7, 40px); } }
+
   /* === LOGIN-BOX === */
   .iw-login { border-radius: 10px; padding: 12px 16px; margin: 24px 0; }
   .iw-login p { margin: 0 0 8px; }
@@ -319,8 +352,8 @@
 
   <h3><span class="badge b-basis">Basis</span>Bring die Schritte in die richtige Reihenfolge</h3>
   <p>Eine Nachricht mit dem Handy verschicken. Schiebe die Schritte mit ▲ und ▼ an die richtige Stelle.</p>
-  <div class="reihenfolge" id="reihenfolge" data-richtig="Handy entsperren|Messenger-App öffnen|Kontakt auswählen|Nachricht eintippen|Auf „Senden“ tippen"></div>
-  <p><button type="button" class="iw-btn leise" id="reihenfolgePruefen">Prüfen</button> <span class="rueck" id="reihenfolgeRueck"></span></p>
+  <div class="reihenfolge" id="reihenfolge" data-richtig="Handy entsperren|Messenger-App öffnen|Kontakt auswählen|Nachricht eintippen|Auf „Senden“ tippen" data-tauschbar="2,3"></div>
+  <p class="rf-aktion"><button type="button" class="iw-btn leise" id="reihenfolgePruefen">Prüfen</button> <span class="rueck" id="reihenfolgeRueck"></span></p>
 
   <h3><span class="badge b-basis">Basis</span>Was stimmt hier nicht?</h3>
   <div class="beispiel-anleitung"><b>Nudeln kochen</b><br>1. Wasser zum Kochen bringen.<br>2. Nudeln hineingeben.<br>3. Warten, bis sie fertig sind.</div>
@@ -333,7 +366,7 @@
     <div class="mc-erklaerung" hidden>Richtig: Ein Algorithmus muss <b>eindeutig</b> sein. Besser wäre: „Lass die Nudeln 10 Minuten kochen.“</div>
   </div>
 
-  <div class="partner-box"><b>👥 Zu zweit, ohne PC:</b> Eine Person ist der Roboter und darf nur genau das tun, was gesagt wird. Die andere führt ihn mit den Befehlen „Schritt vor“, „links drehen“ und „rechts drehen“ zur Tür. Merkt ihr, wie genau man sein muss?</div>
+  <div class="partner-box"><b class="partner-titel">🏃 Lust auf Bewegung?</b> Zu zweit, ohne PC: Eine Person ist der Roboter und darf nur genau das tun, was gesagt wird. Die andere führt ihn mit den Befehlen „Schritt vor“, „links drehen“ und „rechts drehen“ zur Tür. Merkt ihr, wie genau man sein muss?</div>
 
   <h3><span class="badge b-profi">Profi</span>Steuere den Roboter</h3>
   <p>Der Roboter 🤖 soll zur Flagge 🏁. Er kennt nur drei Befehle: <b>V</b> = ein Feld vorwärts, <b>L</b> = nach links drehen, <b>R</b> = nach rechts drehen. Am Anfang schaut er nach rechts. Graue Felder sind Mauern.</p>
@@ -357,7 +390,7 @@
   <div class="profi-block" data-block="t1">
   <div class="aufgabe" data-loesung="9" data-anzeige="9" data-erklaerung="Der Weg ist 8 Felder lang (4 nach rechts, 4 nach oben). Dazu kommt eine Drehung nach links. 8 + 1 = 9 Befehle."><span class="frage">Wie viele Befehle braucht der Roboter mindestens bis zur Flagge?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <div class="aufgabe" data-loesung="vvvvlvvvv" data-anzeige="VVVVLVVVV" data-erklaerung="Viermal vorwärts nach rechts, einmal links drehen (jetzt schaut er nach oben), viermal vorwärts nach oben."><span class="frage">Schreib das kürzeste Programm auf (nur Buchstaben, z. B. VVL…).</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="10" data-anzeige="10" data-erklaerung="Der Weg nach oben ist in der obersten Reihe durch eine Mauer versperrt. Also muss der Roboter erst nach rechts: einmal R drehen, 4 × V, einmal L drehen, 4 × V. Das sind 10 Befehle."><span class="frage">Am Anfang schaut der Roboter nach oben statt nach rechts. Wie viele Befehle braucht er dann mindestens?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="10" data-anzeige="10" data-erklaerung="Der Weg nach oben ist in der obersten Reihe durch eine Mauer versperrt. Also muss der Roboter erst nach rechts: einmal R drehen, 4 × V, einmal L drehen, 4 × V. Das sind 10 Befehle."><span class="frage">Wenn der Roboter am Anfang nach oben schaut statt nach rechts, wie viele Befehle braucht er dann mindestens?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <details><summary>Tipp</summary>Zähl die Felder bis zur Flagge und denk an die Drehungen. Probier es mit dem Roboter aus!</details>
   <div class="loesung-freigabe">
       <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
@@ -366,6 +399,22 @@
         <button type="button" class="iw-btn" data-loesung-ja>Ja, Lösungen anzeigen</button>
         <button type="button" class="iw-btn leise" data-loesung-nein>Nein, ich versuche es weiter</button>
       </div>
+  </div>
+
+  <h3>🎮 Spiel: Bring den Lernbegleiter ins Lernbüro</h3>
+  <p>Der Lernbegleiter 🧑‍🏫 hat sich im Schulgebäude verlaufen. Bring ihn ins Lernbüro 📚 – nur mit Buchstaben: <b>V</b> = ein Feld vorwärts, <b>L</b> = links drehen, <b>R</b> = rechts drehen. Am Anfang schaut er nach oben. Tipp das ganze Programm ein und drück „Los!“.</p>
+  <div class="roboter" id="spielLB">
+    <div class="robo-feld gross" aria-label="Schulgebäude 7 mal 7"></div>
+    <div class="robo-steuerung">
+      <label class="denk-label" for="spielEingabe">Dein Programm:</label>
+      <input type="text" id="spielEingabe" class="spiel-eingabe" autocomplete="off" spellcheck="false" placeholder="z. B. VVRVV">
+      <div class="robo-knopfreihe" style="margin-top:8px">
+        <button type="button" class="iw-btn" data-los>▶ Los!</button>
+        <button type="button" class="iw-btn leise" data-neu>Zurück auf Start</button>
+      </div>
+      <div class="robo-meldung" aria-live="polite"></div>
+      <p class="hinweis-klein">Tipp: Du darfst Leerzeichen einfügen, z. B. <code>VVV R VVV</code>. Kleinbuchstaben gehen auch.</p>
+    </div>
   </div>
 </section>
 
@@ -422,7 +471,30 @@
     </svg>
   </figure>
   <div class="aufgabe" data-loesung="123" data-typ="ziffern"><span class="frage">Welche Zahlen sagt das Programm nacheinander?</span><input type="text" aria-label="Antwort" placeholder="z. B. 5, 6, 7"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <p class="scratch-hinweis">💡 <b>In Scratch</b> heißt die Raute „falls … dann … sonst“, und die Schleife heißt „wiederhole bis …“.</p>
+  <div class="scratch-hinweis">
+    <p>💡 <b>So sieht das in Scratch aus</b> (Kategorie „Steuerung“):</p>
+    <div class="scratch-reihe">
+      <figure>
+        <div class="sb-c">
+          <div class="sb-kopf">falls <span class="sb-bed">Zahl &gt; 10</span> dann</div>
+          <div class="sb-innen"><div class="sb-block sb-aussehen">sage <span class="sb-wert">groß</span></div></div>
+          <div class="sb-mitte">sonst</div>
+          <div class="sb-innen"><div class="sb-block sb-aussehen">sage <span class="sb-wert">klein</span></div></div>
+          <div class="sb-fuss"></div>
+        </div>
+        <figcaption>= die Raute (Entscheidung)</figcaption>
+      </figure>
+      <figure>
+        <div class="sb-c">
+          <div class="sb-kopf">wiederhole bis <span class="sb-bed">Zähler &gt; 3</span></div>
+          <div class="sb-innen"><div class="sb-block sb-aussehen">sage <span class="sb-wert">Zähler</span></div><div class="sb-block sb-variable">ändere Zähler um <span class="sb-wert">1</span></div></div>
+          <div class="sb-fuss"></div>
+        </div>
+        <figcaption>= die Schleife</figcaption>
+      </figure>
+    </div>
+    <p class="hinweis-klein">Nachgezeichnet im Scratch-Stil. Achtung: „wiederhole bis“ fragt in Scratch <b>vor</b> jedem Durchgang – Flussdiagramm B fragt erst danach.</p>
+  </div>
 
   <h3><span class="badge b-profi">Profi</span>Weiterdenken mit Flussdiagramm B</h3>
   <div class="profi-block" data-block="t2">
@@ -457,14 +529,14 @@
   </div>
 
   <p>Es gibt zwei Arten zu suchen:</p>
-  <ul class="merkliste">
-    <li><b>Lineare Suche:</b> Du schaust ein Element nach dem anderen an. Das klappt immer, dauert aber lange.</li>
-    <li><b>Binäre Suche (Halbieren):</b> Du fängst in der Mitte an. Nach jeder Antwort fällt die Hälfte weg. Das klappt nur, wenn die Daten <b>sortiert</b> sind.</li>
-  </ul>
+  <div class="info-paar">
+    <div class="info-kasten"><h4>🔍 Lineare Suche</h4><p>Du schaust ein Element nach dem anderen an.</p><p>✓ klappt immer<br>✗ dauert lange</p></div>
+    <div class="info-kasten"><h4>✂️ Binäre Suche (Halbieren)</h4><p>Du fängst in der Mitte an. Nach jeder Antwort fällt die Hälfte weg.</p><p>✓ sehr schnell<br>✗ klappt nur, wenn die Daten <b>sortiert</b> sind</p></div>
+  </div>
   <p>Beim Zahlenraten bleibt nach jedem Tipp höchstens die Hälfte übrig: 100 → 50 → 25 → 12 → 6 → 3 → 1. Spätestens beim 7. Versuch triffst du.</p>
 
   <h3><span class="badge b-basis">Basis</span>Rechne nach</h3>
-  <div class="aufgabe" data-loesung="20"><span class="frage">20 Karten liegen verdeckt und durcheinander. Wie oft musst du im schlimmsten Fall umdrehen, bis du das Herz-Ass findest?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="20|19" data-info-richtig="Gut zu wissen: 20 und 19 stimmen beide. Wenn die ersten 19 Karten nicht passen, muss es die letzte sein – die musst du nicht mehr umdrehen."><span class="frage">20 Karten liegen verdeckt und durcheinander. Wie oft musst du im schlimmsten Fall umdrehen, bis du eine bestimmte Karte, zum Beispiel das Herz-Ass, findest?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <div class="aufgabe" data-loesung="50|51"><span class="frage">Die Zahl liegt zwischen 1 und 100. Mit welcher Zahl fängst du beim Halbieren an?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <div class="aufgabe" data-loesung="7"><span class="frage">Wie viele Versuche brauchst du mit Halbieren bei 1 bis 100 höchstens?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <details><summary>Tipp</summary>Halbiere immer wieder, bis nur noch eine Zahl übrig ist. Zähl mit, wie oft du halbiert hast.</details>
@@ -599,7 +671,7 @@
       inp.classList.toggle("ok", richtig);
       inp.classList.toggle("falsch", !richtig);
       rk.className = "rueck " + (richtig ? "ok" : "falsch");
-      rk.textContent = richtig ? "✓ Richtig" : (a.dataset.hinweisFalsch || "Noch nicht – schau dir den Tipp an.");
+      rk.textContent = richtig ? "✓ Richtig" + (a.dataset.infoRichtig ? " – " + a.dataset.infoRichtig : "") : (a.dataset.hinweisFalsch || "Noch nicht – schau dir den Tipp an.");
       if (richtig) a.dataset.geloest = "1";
       var block = a.closest(".profi-block");
       if (block) profiNachPruefen(block, richtig);
@@ -733,12 +805,14 @@
   (function () {
     var box = document.getElementById("reihenfolge");
     var richtig = box.dataset.richtig.split("|");
+    var tausch = (box.dataset.tauschbar || "").split(",").map(Number);
+    var zuletzt = -1;
     var liste = [richtig[2], richtig[4], richtig[0], richtig[3], richtig[1]];
     function zeichnen() {
       box.innerHTML = "";
       liste.forEach(function (text, i) {
         var z = document.createElement("div");
-        z.className = "rf-zeile";
+        z.className = "rf-zeile" + (i === zuletzt ? " bewegt" : "");
         z.innerHTML = '<span class="rf-nr">' + (i + 1) + '.</span><span class="rf-text"></span>' +
           '<button type="button" class="rf-knopf" data-i="' + i + '" data-r="-1" aria-label="nach oben">▲</button>' +
           '<button type="button" class="rf-knopf" data-i="' + i + '" data-r="1" aria-label="nach unten">▼</button>';
@@ -752,15 +826,19 @@
       var i = parseInt(b.dataset.i, 10), j = i + parseInt(b.dataset.r, 10);
       if (j < 0 || j >= liste.length) return;
       var t = liste[i]; liste[i] = liste[j]; liste[j] = t;
+      zuletzt = j;
       zeichnen();
       document.getElementById("reihenfolgeRueck").textContent = "";
       box.querySelectorAll(".rf-knopf")[j * 2 + (b.dataset.r === "-1" ? 0 : 1)].focus();
     });
     document.getElementById("reihenfolgePruefen").addEventListener("click", function () {
-      var falsch = liste.filter(function (t, i) { return t !== richtig[i]; }).length;
+      var alt = richtig.slice();
+      if (tausch.length === 2) { var x = alt[tausch[0]]; alt[tausch[0]] = alt[tausch[1]]; alt[tausch[1]] = x; }
+      function fehler(ziel) { return liste.filter(function (t, i) { return t !== ziel[i]; }).length; }
+      var falsch = Math.min(fehler(richtig), fehler(alt));
       var rk = document.getElementById("reihenfolgeRueck");
       rk.className = "rueck " + (falsch ? "falsch" : "ok");
-      rk.textContent = falsch ? falsch + " Schritte stehen noch an der falschen Stelle." : "✓ Richtig! So klappt es.";
+      rk.textContent = falsch ? falsch + " Schritte stehen noch an der falschen Stelle." : "✓ Richtig! So klappt es." + (tausch.length === 2 ? " (Schritt 3 und 4 dürfen auch andersherum stehen.)" : "");
     });
     zeichnen();
   })();
@@ -837,6 +915,84 @@
         zeige(p);
       }, 450);
     });
+    zeige(START);
+  })();
+
+
+  /* ---------- Teil 1: Spiel „Lernbegleiter ins Lernbüro“ ---------- */
+  (function () {
+    var box = document.getElementById("spielLB");
+    var feld = box.querySelector(".robo-feld"), mel = box.querySelector(".robo-meldung"), ein = document.getElementById("spielEingabe");
+    var N = 7;
+    var FLUR = ["6-0","5-0","4-0","3-0","3-1","3-2","3-3","2-3","1-3","0-3","0-4","0-5","0-6","5-1","5-2","2-1","1-1","1-5","2-5"];
+    var START = { z: 6, s: 0, r: 0 }, ZIEL = { z: 0, s: 6 };
+    var PFEILE = ["⬆", "➡", "⬇", "⬅"], DZ = [-1, 0, 1, 0], DS = [0, 1, 0, -1], laeuft = false;
+    function frei(z, s) { return z >= 0 && z < N && s >= 0 && s < N && FLUR.indexOf(z + "-" + s) >= 0; }
+    // kürzestes Programm per Breitensuche über (Zeile, Spalte, Blickrichtung)
+    var kuerzest = (function () {
+      var dist = {}, q = [[START.z, START.s, START.r]]; dist[START.z + "," + START.s + "," + START.r] = 0;
+      while (q.length) {
+        var c = q.shift(), d = dist[c.join(",")];
+        if (c[0] === ZIEL.z && c[1] === ZIEL.s) return d;
+        var nach = [[c[0], c[1], (c[2] + 3) % 4], [c[0], c[1], (c[2] + 1) % 4]];
+        if (frei(c[0] + DZ[c[2]], c[1] + DS[c[2]])) nach.push([c[0] + DZ[c[2]], c[1] + DS[c[2]], c[2]]);
+        nach.forEach(function (n) { var k = n.join(","); if (!(k in dist)) { dist[k] = d + 1; q.push(n); } });
+      }
+      return null;
+    })();
+    for (var z = 0; z < N; z++) for (var s2 = 0; s2 < N; s2++) {
+      var c = document.createElement("div");
+      c.className = "robo-zelle" + (frei(z, s2) ? "" : " mauer") + (z === ZIEL.z && s2 === ZIEL.s ? " lernbuero" : "");
+      c.dataset.pos = z + "-" + s2;
+      feld.appendChild(c);
+    }
+    function zeige(p, spur) {
+      feld.querySelectorAll(".robo-zelle").forEach(function (c) { c.textContent = ""; c.classList.remove("robo", "spur"); });
+      (spur || []).forEach(function (k) { feld.querySelector('[data-pos="' + k + '"]').classList.add("spur"); });
+      feld.querySelector('[data-pos="' + ZIEL.z + "-" + ZIEL.s + '"]').textContent = "📚";
+      var c = feld.querySelector('[data-pos="' + p.z + "-" + p.s + '"]');
+      c.classList.add("robo");
+      c.innerHTML = '<span class="robo-figur">🧑‍🏫</span><span class="robo-blick">' + PFEILE[p.r] + "</span>";
+    }
+    function los() {
+      if (laeuft) return;
+      var prog = ein.value.toUpperCase().replace(/\s/g, "");
+      if (!prog) { mel.className = "robo-meldung falsch"; mel.textContent = "Tipp zuerst ein Programm ein."; return; }
+      var bad = prog.replace(/[VLR]/g, "");
+      if (bad) { mel.className = "robo-meldung falsch"; mel.textContent = "Erlaubt sind nur V, L und R – nicht „" + bad[0] + "“."; return; }
+      laeuft = true;
+      var p = { z: START.z, s: START.s, r: START.r }, i = 0, spur = [START.z + "-" + START.s];
+      zeige(p, spur);
+      mel.className = "robo-meldung"; mel.textContent = "Der Lernbegleiter läuft los …";
+      var t = setInterval(function () {
+        if (i >= prog.length) {
+          clearInterval(t); laeuft = false;
+          var am = p.z === ZIEL.z && p.s === ZIEL.s;
+          mel.className = "robo-meldung " + (am ? "ok" : "falsch");
+          mel.textContent = am
+            ? "📚 Geschafft! Der Lernbegleiter ist im Lernbüro – mit " + prog.length + " Befehlen." + (prog.length > kuerzest ? " Schaffst du es auch mit " + kuerzest + "?" : " Kürzer geht es nicht!")
+            : "Das Programm ist zu Ende, aber der Lernbegleiter ist noch nicht im Lernbüro.";
+          return;
+        }
+        var b = prog[i++];
+        if (b === "L") p.r = (p.r + 3) % 4;
+        else if (b === "R") p.r = (p.r + 1) % 4;
+        else {
+          var nz = p.z + DZ[p.r], ns = p.s + DS[p.r];
+          if (!frei(nz, ns)) {
+            clearInterval(t); laeuft = false;
+            mel.className = "robo-meldung falsch";
+            mel.textContent = "💥 Autsch! Beim " + i + ". Befehl läuft der Lernbegleiter gegen die Wand.";
+            return;
+          }
+          p.z = nz; p.s = ns; spur.push(nz + "-" + ns);
+        }
+        zeige(p, spur);
+      }, 380);
+    }
+    box.querySelector("[data-los]").addEventListener("click", los);
+    ein.addEventListener("keydown", function (e) { if (e.key === "Enter") los(); });
+    box.querySelector("[data-neu]").addEventListener("click", function () { if (laeuft) return; zeige(START); mel.textContent = ""; });
     zeige(START);
   })();
 
