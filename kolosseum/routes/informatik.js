@@ -5,11 +5,31 @@
 const express = require('express');
 const { db } = require('../db/database');
 const { requireStudent, requireAdmin } = require('../middleware/auth');
+const { checkAndAwardBadges } = require('../db/badges');
 
 const router = express.Router();
 
 const STATIONEN = 6;
 const BESTEHEN_AB = 0.7; // 70 % der Punkte
+const XP_AUFGABE = 5, XP_TEIL = 25, XP_FRAGE = 5, XP_BESTANDEN = 25;
+const ID_MUSTER = /^[a-z0-9-]{1,40}$/;
+
+// XP einmalig je Schlüssel gutschreiben; liefert die tatsächlich vergebenen XP
+const xpEintragen = db.transaction((studentId, eintraege, grund) => {
+  const ins = db.prepare('INSERT OR IGNORE INTO informatik_xp (student_id, schluessel, xp) VALUES (?, ?, ?)');
+  let summe = 0;
+  eintraege.forEach(([schluessel, xp]) => { if (ins.run(studentId, schluessel, xp).changes) summe += xp; });
+  if (summe > 0) {
+    db.prepare('UPDATE students SET xp = xp + ?, last_active = CURRENT_TIMESTAMP WHERE id = ?').run(summe, studentId);
+    db.prepare('INSERT INTO xp_log (student_id, amount, reason) VALUES (?, ?, ?)').run(studentId, summe, grund);
+  }
+  return summe;
+});
+function xpVergeben(studentId, eintraege, grund) {
+  const summe = xpEintragen(studentId, eintraege, grund);
+  if (summe > 0) { try { checkAndAwardBadges(studentId); } catch (e) { /* Badges sind optional */ } }
+  return summe;
+}
 
 // GET /api/informatik/status – Login-, Vornamen- und Stationsstatus der eingeloggten Person
 router.get('/status', requireStudent, (req, res) => {
@@ -27,7 +47,8 @@ router.get('/status', requireStudent, (req, res) => {
   const antworten = {};
   db.prepare('SELECT station, frage, antwort FROM informatik_antworten WHERE student_id = ?').all(id)
     .forEach(r => { antworten[r.station + '-' + r.frage] = r.antwort; });
-  res.json({ vorname: vn ? vn.vorname : null, stationen, profi, antworten });
+  const xp = db.prepare('SELECT schluessel FROM informatik_xp WHERE student_id = ?').all(id).map(r => r.schluessel);
+  res.json({ vorname: vn ? vn.vorname : null, stationen, profi, antworten, xp });
 });
 
 // POST /api/informatik/vorname – Vorname einmalig speichern (später nur noch im Admin änderbar)
@@ -54,7 +75,12 @@ router.post('/checkpoint', requireStudent, (req, res) => {
   db.prepare(
     'INSERT INTO informatik_checkpoints (student_id, station, punkte, max_punkte, bestanden) VALUES (?, ?, ?, ?, ?)'
   ).run(req.session.studentId, station, punkte, max, bestanden);
-  res.json({ ok: true, bestanden: !!bestanden });
+  // 5 XP je richtiger Frage (nur Verbesserungen zählen) + 25 XP fürs erste Bestehen
+  const eintraege = [];
+  for (let n = 1; n <= punkte; n++) eintraege.push(['q:' + station + ':' + n, XP_FRAGE]);
+  if (bestanden) eintraege.push(['c:' + station, XP_BESTANDEN]);
+  const xp = xpVergeben(req.session.studentId, eintraege, 'Informatikwerkstatt Station ' + station + ': Checkpoint');
+  res.json({ ok: true, bestanden: !!bestanden, xp });
 });
 
 // POST /api/informatik/profi – Profi-Teil melden: 'geloest' (alles selbst) oder 'angesehen' (Lösung aufgedeckt).
@@ -96,6 +122,33 @@ router.post('/antwort', requireStudent, (req, res) => {
   const row = db.prepare('SELECT antwort FROM informatik_antworten WHERE student_id = ? AND station = ? AND frage = ?')
     .get(req.session.studentId, station, frage);
   res.json({ ok: true, text: row.antwort });
+});
+
+// POST /api/informatik/xp/aufgabe – selbst gelöste Aufgabe: 5 XP (einmalig)
+router.post('/xp/aufgabe', requireStudent, (req, res) => {
+  const station = parseInt(req.body?.station, 10);
+  const id = String(req.body?.id || '');
+  if (!(station >= 1 && station <= STATIONEN) || !ID_MUSTER.test(id)) return res.status(400).json({ error: 'Ungültige Aufgabe.' });
+  const xp = xpVergeben(req.session.studentId, [['a:' + station + ':' + id, XP_AUFGABE]], 'Informatikwerkstatt Station ' + station + ': Aufgabe');
+  res.json({ ok: true, xp });
+});
+
+// POST /api/informatik/xp/teil – ganzer Teil selbst gelöst: 25 XP (einmalig).
+// Alle genannten Aufgaben des Teils müssen vorher als gelöst gespeichert sein.
+router.post('/xp/teil', requireStudent, (req, res) => {
+  const station = parseInt(req.body?.station, 10);
+  const teil = String(req.body?.teil || '');
+  const aufgaben = Array.isArray(req.body?.aufgaben) ? req.body.aufgaben.map(String) : [];
+  if (!(station >= 1 && station <= STATIONEN) || !ID_MUSTER.test(teil) || aufgaben.length < 1 || aufgaben.length > 40
+      || !aufgaben.every(a => ID_MUSTER.test(a) && a.indexOf(teil + '-') === 0)) {
+    return res.status(400).json({ error: 'Ungültiger Teil.' });
+  }
+  const pruef = db.prepare('SELECT 1 FROM informatik_xp WHERE student_id = ? AND schluessel = ?');
+  if (!aufgaben.every(a => pruef.get(req.session.studentId, 'a:' + station + ':' + a))) {
+    return res.status(409).json({ error: 'Noch nicht alle Aufgaben des Teils gelöst.' });
+  }
+  const xp = xpVergeben(req.session.studentId, [['t:' + station + ':' + teil, XP_TEIL]], 'Informatikwerkstatt Station ' + station + ': Teil komplett');
+  res.json({ ok: true, xp });
 });
 
 // ── Admin ─────────────────────────────────────────────────────────────

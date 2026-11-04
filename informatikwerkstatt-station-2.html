@@ -258,6 +258,12 @@
   .sb-bed { background: #5cb712; border-radius: 4px; padding: 1px 8px; clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 8px 100%, 0 50%); }
   @media (max-width: 520px) { .robo-feld.gross { grid-template-columns: repeat(7, 40px); grid-template-rows: repeat(7, 40px); } }
 
+  /* === XP === */
+  .xp-plus { display: inline-block; background: var(--orange); color: var(--blau); font-weight: 700; font-size: 0.85rem; border-radius: 12px; padding: 1px 8px; animation: xp-pop 0.5s ease-out; }
+  @keyframes xp-pop { 0% { transform: scale(0.4); opacity: 0; } 70% { transform: scale(1.2); } 100% { transform: scale(1); opacity: 1; } }
+  .xp-banner { background: var(--orange); color: var(--blau); font-weight: 700; border-radius: 10px; padding: 10px 14px; margin: 0 0 14px; animation: xp-pop 0.6s ease-out; }
+  .xp-schon { display: inline-block; font-size: 0.8rem; font-weight: 600; color: var(--gruen); background: #eaf6ee; border-radius: 10px; padding: 1px 8px; margin-bottom: 6px; }
+
   /* === LOGIN-BOX === */
   .iw-login { border-radius: 10px; padding: 12px 16px; margin: 24px 0; }
   .iw-login p { margin: 0 0 8px; }
@@ -352,12 +358,12 @@
 
   <h3><span class="badge b-basis">Basis</span>Bring die Schritte in die richtige Reihenfolge</h3>
   <p>Eine Nachricht mit dem Handy verschicken. Schiebe die Schritte mit ▲ und ▼ an die richtige Stelle.</p>
-  <div class="reihenfolge" id="reihenfolge" data-richtig="Handy entsperren|Messenger-App öffnen|Kontakt auswählen|Nachricht eintippen|Auf „Senden“ tippen" data-tauschbar="2,3"></div>
+  <div class="reihenfolge" id="reihenfolge" data-xp-id="teil1-1" data-richtig="Handy entsperren|Messenger-App öffnen|Kontakt auswählen|Nachricht eintippen|Auf „Senden“ tippen" data-tauschbar="2,3"></div>
   <p class="rf-aktion"><button type="button" class="iw-btn leise" id="reihenfolgePruefen">Prüfen</button> <span class="rueck" id="reihenfolgeRueck"></span></p>
 
   <h3><span class="badge b-basis">Basis</span>Was stimmt hier nicht?</h3>
   <div class="beispiel-anleitung"><b>Nudeln kochen</b><br>1. Wasser zum Kochen bringen.<br>2. Nudeln hineingeben.<br>3. Warten, bis sie fertig sind.</div>
-  <div class="mc-aufgabe" data-richtig="1">
+  <div class="mc-aufgabe" data-xp-id="teil1-2" data-richtig="1">
     <label><input type="radio" name="mc-nudeln" value="0"> Es sind zu wenige Schritte.</label>
     <label><input type="radio" name="mc-nudeln" value="1"> „Warten, bis sie fertig sind“ ist ungenau – wie lange genau?</label>
     <label><input type="radio" name="mc-nudeln" value="2"> Die Reihenfolge ist falsch.</label>
@@ -388,9 +394,9 @@
     </div>
   </div>
   <div class="profi-block" data-block="t1">
-  <div class="aufgabe" data-loesung="9" data-anzeige="9" data-erklaerung="Der Weg ist 8 Felder lang (4 nach rechts, 4 nach oben). Dazu kommt eine Drehung nach links. 8 + 1 = 9 Befehle."><span class="frage">Wie viele Befehle braucht der Roboter mindestens bis zur Flagge?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="vvvvlvvvv" data-anzeige="VVVVLVVVV" data-erklaerung="Viermal vorwärts nach rechts, einmal links drehen (jetzt schaut er nach oben), viermal vorwärts nach oben."><span class="frage">Schreib das kürzeste Programm auf (nur Buchstaben, z. B. VVL…).</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="10" data-anzeige="10" data-erklaerung="Der Weg nach oben ist in der obersten Reihe durch eine Mauer versperrt. Also muss der Roboter erst nach rechts: einmal R drehen, 4 × V, einmal L drehen, 4 × V. Das sind 10 Befehle."><span class="frage">Wenn der Roboter am Anfang nach oben schaut statt nach rechts, wie viele Befehle braucht er dann mindestens?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil1-3" data-loesung="9" data-anzeige="9" data-erklaerung="Der Weg ist 8 Felder lang (4 nach rechts, 4 nach oben). Dazu kommt eine Drehung nach links. 8 + 1 = 9 Befehle."><span class="frage">Wie viele Befehle braucht der Roboter mindestens bis zur Flagge?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil1-4" data-loesung="vvvvlvvvv" data-anzeige="VVVVLVVVV" data-erklaerung="Viermal vorwärts nach rechts, einmal links drehen (jetzt schaut er nach oben), viermal vorwärts nach oben."><span class="frage">Schreib das kürzeste Programm auf (nur Buchstaben, z. B. VVL…).</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil1-5" data-loesung="10" data-anzeige="10" data-erklaerung="Der Weg nach oben ist in der obersten Reihe durch eine Mauer versperrt. Also muss der Roboter erst nach rechts: einmal R drehen, 4 × V, einmal L drehen, 4 × V. Das sind 10 Befehle."><span class="frage">Wenn der Roboter am Anfang nach oben schaut statt nach rechts, wie viele Befehle braucht er dann mindestens?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <details><summary>Tipp</summary>Zähl die Felder bis zur Flagge und denk an die Drehungen. Probier es mit dem Roboter aus!</details>
   <div class="loesung-freigabe">
       <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
@@ -403,7 +409,7 @@
 
   <h3>🎮 Spiel: Bring den Lernbegleiter ins Lernbüro</h3>
   <p>Der Lernbegleiter 🧑‍🏫 hat sich im Schulgebäude verlaufen. Bring ihn ins Lernbüro 📚 – nur mit Buchstaben: <b>V</b> = ein Feld vorwärts, <b>L</b> = links drehen, <b>R</b> = rechts drehen. Am Anfang schaut er nach oben. Tipp das ganze Programm ein und drück „Los!“.</p>
-  <div class="roboter" id="spielLB">
+  <div class="roboter" id="spielLB" data-xp-id="teil1-6">
     <div class="robo-feld gross" aria-label="Schulgebäude 7 mal 7"></div>
     <div class="robo-steuerung">
       <label class="denk-label" for="spielEingabe">Dein Programm:</label>
@@ -447,10 +453,10 @@
       <rect x="150" y="290" width="120" height="32" rx="16" class="sv-oval"/><text x="210" y="311">Ende</text>
     </svg>
   </figure>
-  <div class="aufgabe" data-loesung="klein"><span class="frage">Du gibst <b>7</b> ein. Was sagt das Programm?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="groß|gross"><span class="frage">Du gibst <b>15</b> ein. Was sagt das Programm?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="klein" data-hinweis-falsch="Noch nicht. Lies die Frage in der Raute ganz genau: Ist 10 größer als 10?"><span class="frage">Du gibst <b>10</b> ein. Was sagt das Programm?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="raute"><span class="frage">Welche Form hat das Symbol für eine Entscheidung?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil2-1" data-loesung="klein"><span class="frage">Du gibst <b>7</b> ein. Was sagt das Programm?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil2-2" data-loesung="groß|gross"><span class="frage">Du gibst <b>15</b> ein. Was sagt das Programm?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil2-3" data-loesung="klein" data-hinweis-falsch="Noch nicht. Lies die Frage in der Raute ganz genau: Ist 10 größer als 10?"><span class="frage">Du gibst <b>10</b> ein. Was sagt das Programm?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil2-4" data-loesung="raute"><span class="frage">Welche Form hat das Symbol für eine Entscheidung?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
 
   <h3><span class="badge b-basis">Basis</span>Flussdiagramm B: eine Schleife</h3>
   <p>Hier führt ein Pfeil wieder nach oben. Das nennt man <b>Schleife</b>: Schritte werden wiederholt, bis eine Bedingung erfüllt ist.</p>
@@ -470,7 +476,7 @@
       <rect x="300" y="358" width="110" height="32" rx="16" class="sv-oval"/><text x="355" y="379">Ende</text>
     </svg>
   </figure>
-  <div class="aufgabe" data-loesung="123" data-typ="ziffern"><span class="frage">Welche Zahlen sagt das Programm nacheinander?</span><input type="text" aria-label="Antwort" placeholder="z. B. 5, 6, 7"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil2-5" data-loesung="123" data-typ="ziffern"><span class="frage">Welche Zahlen sagt das Programm nacheinander?</span><input type="text" aria-label="Antwort" placeholder="z. B. 5, 6, 7"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <div class="scratch-hinweis">
     <p>💡 <b>So sieht das in Scratch aus</b> (Kategorie „Steuerung“):</p>
     <div class="scratch-reihe">
@@ -498,9 +504,9 @@
 
   <h3><span class="badge b-profi">Profi</span>Weiterdenken mit Flussdiagramm B</h3>
   <div class="profi-block" data-block="t2">
-  <div class="aufgabe" data-loesung="5" data-anzeige="5" data-erklaerung="Die Figur sagt 1, 2, 3, 4 und 5. Erst wenn der Zähler 6 ist, ist er größer als 5 – dann endet die Schleife."><span class="frage">Die Frage in der Raute wird zu „Ist der Zähler größer als 5?“. Wie oft sagt die Figur etwas?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="1" data-anzeige="1" data-erklaerung="Die Figur sagt zuerst „4“. Danach wird der Zähler 5. Erst jetzt kommt die Frage: 5 ist größer als 3 – also Ende. In diesem Diagramm wird erst gehandelt und dann gefragt."><span class="frage">Der Zähler startet bei 4 statt bei 1 (Raute wie im Bild). Wie oft sagt die Figur etwas?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="5" data-anzeige="5" data-erklaerung="Die Figur sagt 1, dann 3, dann 5. Danach ist der Zähler 7 – und 7 ist größer als 6. Die letzte Zahl ist also 5."><span class="frage">Der Zähler startet bei 1, wird jedes Mal um 2 erhöht, und die Raute fragt „Ist der Zähler größer als 6?“. Welche Zahl sagt die Figur zuletzt?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil2-6" data-loesung="5" data-anzeige="5" data-erklaerung="Die Figur sagt 1, 2, 3, 4 und 5. Erst wenn der Zähler 6 ist, ist er größer als 5 – dann endet die Schleife."><span class="frage">Die Frage in der Raute wird zu „Ist der Zähler größer als 5?“. Wie oft sagt die Figur etwas?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil2-7" data-loesung="1" data-anzeige="1" data-erklaerung="Die Figur sagt zuerst „4“. Danach wird der Zähler 5. Erst jetzt kommt die Frage: 5 ist größer als 3 – also Ende. In diesem Diagramm wird erst gehandelt und dann gefragt."><span class="frage">Der Zähler startet bei 4 statt bei 1 (Raute wie im Bild). Wie oft sagt die Figur etwas?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil2-8" data-loesung="5" data-anzeige="5" data-erklaerung="Die Figur sagt 1, dann 3, dann 5. Danach ist der Zähler 7 – und 7 ist größer als 6. Die letzte Zahl ist also 5."><span class="frage">Der Zähler startet bei 1, wird jedes Mal um 2 erhöht, und die Raute fragt „Ist der Zähler größer als 6?“. Welche Zahl sagt die Figur zuletzt?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <details><summary>Tipp</summary>Spiel das Diagramm mit Stift und Zettel durch. Schreib nach jedem Schritt auf, welchen Wert der Zähler hat.</details>
   <div class="loesung-freigabe">
       <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
@@ -536,16 +542,16 @@
   <p>Beim Zahlenraten bleibt nach jedem Tipp höchstens die Hälfte übrig: 100 → 50 → 25 → 12 → 6 → 3 → 1. Spätestens beim 7. Versuch triffst du.</p>
 
   <h3><span class="badge b-basis">Basis</span>Rechne nach</h3>
-  <div class="aufgabe" data-loesung="20|19" data-info-richtig="Gut zu wissen: 20 und 19 stimmen beide. Wenn die ersten 19 Karten nicht passen, muss es die letzte sein – die musst du nicht mehr umdrehen."><span class="frage">20 Karten liegen verdeckt und durcheinander. Wie oft musst du im schlimmsten Fall umdrehen, bis du eine bestimmte Karte, zum Beispiel das Herz-Ass, findest?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="50|51"><span class="frage">Die Zahl liegt zwischen 1 und 100. Mit welcher Zahl fängst du beim Halbieren an?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="7"><span class="frage">Wie viele Versuche brauchst du mit Halbieren bei 1 bis 100 höchstens?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil3-1" data-loesung="20|19" data-info-richtig="Gut zu wissen: 20 und 19 stimmen beide. Wenn die ersten 19 Karten nicht passen, muss es die letzte sein – die musst du nicht mehr umdrehen."><span class="frage">20 Karten liegen verdeckt und durcheinander. Wie oft musst du im schlimmsten Fall umdrehen, bis du eine bestimmte Karte, zum Beispiel das Herz-Ass, findest?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil3-2" data-loesung="50|51"><span class="frage">Die Zahl liegt zwischen 1 und 100. Mit welcher Zahl fängst du beim Halbieren an?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil3-3" data-loesung="7"><span class="frage">Wie viele Versuche brauchst du mit Halbieren bei 1 bis 100 höchstens?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <details><summary>Tipp</summary>Halbiere immer wieder, bis nur noch eine Zahl übrig ist. Zähl mit, wie oft du halbiert hast.</details>
 
   <h3><span class="badge b-profi">Profi</span>Weiterdenken</h3>
   <div class="profi-block" data-block="t3">
-  <div class="aufgabe" data-loesung="10" data-anzeige="10" data-erklaerung="1000 → 500 → 250 → 125 → 62 → 31 → 15 → 7 → 3 → 1. Spätestens beim 10. Versuch triffst du. Zehnmal so viele Zahlen – aber nur 3 Versuche mehr."><span class="frage">Wie viele Versuche brauchst du mit Halbieren bei 1 bis 1000 höchstens?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="20" data-anzeige="20" data-erklaerung="Zwanzigmal verdoppeln ergibt 2 · 2 · … · 2 = 1.048.576. Das ist mehr als eine Million. Also reichen 20 Vergleiche, um einen Namen unter einer Million zu finden."><span class="frage">Ein Telefonbuch hat 1.000.000 Namen, alphabetisch sortiert. Wie viele Vergleiche brauchst du mit Halbieren höchstens?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="7" data-anzeige="7" data-erklaerung="Mit 1 Versuch findest du sicher 1 Zahl, mit 2 Versuchen 3 Zahlen, mit 3 Versuchen 7 Zahlen. Jeder Versuch verdoppelt die Menge und legt noch 1 dazu: 1 → 3 → 7."><span class="frage">Wie viele Zahlen kannst du mit 3 Versuchen sicher erraten (mit „größer“/„kleiner“ als Antwort)?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil3-4" data-loesung="10" data-anzeige="10" data-erklaerung="1000 → 500 → 250 → 125 → 62 → 31 → 15 → 7 → 3 → 1. Spätestens beim 10. Versuch triffst du. Zehnmal so viele Zahlen – aber nur 3 Versuche mehr."><span class="frage">Wie viele Versuche brauchst du mit Halbieren bei 1 bis 1000 höchstens?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil3-5" data-loesung="20" data-anzeige="20" data-erklaerung="Zwanzigmal verdoppeln ergibt 2 · 2 · … · 2 = 1.048.576. Das ist mehr als eine Million. Also reichen 20 Vergleiche, um einen Namen unter einer Million zu finden."><span class="frage">Ein Telefonbuch hat 1.000.000 Namen, alphabetisch sortiert. Wie viele Vergleiche brauchst du mit Halbieren höchstens?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil3-6" data-loesung="7" data-anzeige="7" data-erklaerung="Mit 1 Versuch findest du sicher 1 Zahl, mit 2 Versuchen 3 Zahlen, mit 3 Versuchen 7 Zahlen. Jeder Versuch verdoppelt die Menge und legt noch 1 dazu: 1 → 3 → 7."><span class="frage">Wie viele Zahlen kannst du mit 3 Versuchen sicher erraten (mit „größer“/„kleiner“ als Antwort)?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <details><summary>Tipp</summary>Rechne rückwärts: Mit dem letzten Versuch triffst du genau eine Zahl. Was passt davor links und rechts daneben?</details>
   <div class="loesung-freigabe">
       <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
@@ -596,15 +602,15 @@
   <div class="partner-box"><b class="partner-titel">🏃 Lust auf Bewegung?</b> Zu viert, ohne PC: Stellt euch in eine Reihe. Sortiert euch nach Größe – aber nur zwei Nachbarn dürfen jeweils tauschen. Wer zählt die Tausche?</div>
 
   <h3><span class="badge b-basis">Basis</span>Ein Durchgang</h3>
-  <div class="aufgabe" data-loesung="3518" data-typ="ziffern"><span class="frage">Die Liste ist <code>5 3 8 1</code>. Wie sieht sie nach dem <b>ersten</b> Durchgang aus?</span><input type="text" aria-label="Antwort" placeholder="z. B. 1 2 3 4"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="hinten|ganzhinten|amende|rechts|ganzrechts|amschluss" data-hinweis-falsch="Noch nicht. Schau dir dein Ergebnis von eben an: Wo ist die 8 gelandet?"><span class="frage">Wo steht nach dem ersten Durchgang immer die größte Zahl?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil4-1" data-loesung="3518" data-typ="ziffern"><span class="frage">Die Liste ist <code>5 3 8 1</code>. Wie sieht sie nach dem <b>ersten</b> Durchgang aus?</span><input type="text" aria-label="Antwort" placeholder="z. B. 1 2 3 4"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil4-2" data-loesung="hinten|ganzhinten|amende|rechts|ganzrechts|amschluss" data-hinweis-falsch="Noch nicht. Schau dir dein Ergebnis von eben an: Wo ist die 8 gelandet?"><span class="frage">Wo steht nach dem ersten Durchgang immer die größte Zahl?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <details><summary>Tipp</summary>Vergleiche 5 und 3, dann (nach dem Tausch) die nächsten beiden, dann die letzten beiden. Schreib die Liste nach jedem Schritt neu auf.</details>
 
   <h3><span class="badge b-profi">Profi</span>Weiterdenken</h3>
   <div class="profi-block" data-block="t4">
-  <div class="aufgabe" data-loesung="5" data-anzeige="5" data-erklaerung="Bei 6 Zahlen gibt es 5 Nachbarpaare: 1.+2., 2.+3., 3.+4., 4.+5., 5.+6. Jedes Paar wird einmal verglichen."><span class="frage">Wie viele Vergleiche macht Bubblesort im ersten Durchgang bei 6 Zahlen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="0" data-anzeige="0" data-erklaerung="Die Liste ist schon sortiert. Bei jedem Vergleich steht die kleinere Zahl links – es wird nie getauscht. Nach einem Durchgang ohne Tausch ist Bubblesort fertig."><span class="frage">Wie viele Tausche braucht Bubblesort für <code>1 2 3 4</code>?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="6" data-anzeige="6" data-erklaerung="Jede Zahl steht falsch herum zu jeder anderen. 1. Durchgang: 3 Tausche → 3 2 1 4. 2. Durchgang: 2 Tausche → 2 1 3 4. 3. Durchgang: 1 Tausch → 1 2 3 4. Zusammen 3 + 2 + 1 = 6."><span class="frage">Wie viele Tausche braucht Bubblesort für <code>4 3 2 1</code> insgesamt?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil4-3" data-loesung="5" data-anzeige="5" data-erklaerung="Bei 6 Zahlen gibt es 5 Nachbarpaare: 1.+2., 2.+3., 3.+4., 4.+5., 5.+6. Jedes Paar wird einmal verglichen."><span class="frage">Wie viele Vergleiche macht Bubblesort im ersten Durchgang bei 6 Zahlen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil4-4" data-loesung="0" data-anzeige="0" data-erklaerung="Die Liste ist schon sortiert. Bei jedem Vergleich steht die kleinere Zahl links – es wird nie getauscht. Nach einem Durchgang ohne Tausch ist Bubblesort fertig."><span class="frage">Wie viele Tausche braucht Bubblesort für <code>1 2 3 4</code>?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil4-5" data-loesung="6" data-anzeige="6" data-erklaerung="Jede Zahl steht falsch herum zu jeder anderen. 1. Durchgang: 3 Tausche → 3 2 1 4. 2. Durchgang: 2 Tausche → 2 1 3 4. 3. Durchgang: 1 Tausch → 1 2 3 4. Zusammen 3 + 2 + 1 = 6."><span class="frage">Wie viele Tausche braucht Bubblesort für <code>4 3 2 1</code> insgesamt?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <details><summary>Tipp</summary>Probier es mit den Karten oben aus: Lege die Zahlen so hin und zähl die Tausche.</details>
   <div class="loesung-freigabe">
       <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
@@ -672,7 +678,7 @@
       inp.classList.toggle("falsch", !richtig);
       rk.className = "rueck " + (richtig ? "ok" : "falsch");
       rk.textContent = richtig ? "✓ Richtig" + (a.dataset.infoRichtig ? " – " + a.dataset.infoRichtig : "") : (a.dataset.hinweisFalsch || "Noch nicht – schau dir den Tipp an.");
-      if (richtig) a.dataset.geloest = "1";
+      if (richtig) xpGeloest(a, rk);
       var block = a.closest(".profi-block");
       if (block) profiNachPruefen(block, richtig);
     }
@@ -680,6 +686,66 @@
     inp.addEventListener("keydown", function (e) { if (e.key === "Enter") pruefen(); });
   });
 
+
+
+  /* ---------- XP: 5 je selbst gelöster Aufgabe, 25 je komplett gelöstem Teil ---------- */
+  function xpPlus(ziel, text) {
+    if (!ziel) return;
+    var t = document.createElement("span");
+    t.className = "xp-plus";
+    t.textContent = text;
+    ziel.appendChild(document.createTextNode(" "));
+    ziel.appendChild(t);
+  }
+  function teilPruefen(el) {
+    var sec = el.closest("section.teil");
+    if (!sec || sec.dataset.teilXp) return;
+    var alle = Array.prototype.slice.call(sec.querySelectorAll("[data-xp-id]"));
+    if (!alle.length || !alle.every(function (x) { return x.dataset.geloest === "1"; })) return;
+    sec.dataset.teilXp = "1";
+    InformatikLogin.xpTeil(STATION, sec.id, alle.map(function (x) { return x.dataset.xpId; })).then(function (r) {
+      if (!r.ok) { delete sec.dataset.teilXp; return; }
+      if (r.xp > 0) teilBanner(sec, "🏆 Teil komplett selbst gelöst! +" + r.xp + " XP");
+    });
+  }
+  function teilBanner(sec, text) {
+    if (sec.querySelector(".xp-banner")) return;
+    var b = document.createElement("div");
+    b.className = "xp-banner";
+    b.setAttribute("role", "status");
+    b.textContent = text;
+    var h = sec.querySelector("h2");
+    h.parentNode.insertBefore(b, h.nextSibling);
+  }
+  function xpGeloest(el, rueck) {
+    el.dataset.geloest = "1";
+    if (!el.dataset.xpId || el.dataset.xpGemeldet) { teilPruefen(el); return; }
+    el.dataset.xpGemeldet = "1";
+    InformatikLogin.xpAufgabe(STATION, el.dataset.xpId).then(function (r) {
+      if (!r.ok) { delete el.dataset.xpGemeldet; return; }
+      if (r.xp > 0) xpPlus(rueck, "+" + r.xp + " XP");
+      teilPruefen(el);
+    });
+  }
+  // Gespeicherten XP-Stand laden: schon gelöste Aufgaben und Teile markieren
+  InformatikLogin.bereit.then(function (z) {
+    if (!z.eingeloggt) return;
+    document.querySelectorAll("[data-xp-id]").forEach(function (el) {
+      if (z.xp.indexOf("a:" + STATION + ":" + el.dataset.xpId) < 0) return;
+      el.dataset.geloest = "1";
+      el.dataset.xpGemeldet = "1";
+      var hin = document.createElement("span");
+      hin.className = "xp-schon";
+      hin.textContent = "✓ schon gelöst";
+      var rk = el.classList.contains("aufgabe") ? el.querySelector(".rueck") : null;
+      if (rk && !rk.textContent) { rk.className = "rueck ok"; rk.textContent = "✓ schon gelöst"; }
+      else if (!rk) el.insertBefore(hin, el.firstChild);
+    });
+    document.querySelectorAll("section.teil").forEach(function (sec) {
+      if (z.xp.indexOf("t:" + STATION + ":" + sec.id) >= 0) { sec.dataset.teilXp = "1"; teilBanner(sec, "🏆 Teil komplett selbst gelöst (+25 XP erhalten)"); }
+      else { var e = sec.querySelector("[data-xp-id]"); if (e) teilPruefen(e); }
+    });
+  });
 
   /* ---------- Profi: Bonus, Lösungen, Meldung an Lernbegleitung ---------- */
   var STATION = 2;
@@ -838,6 +904,7 @@
       var falsch = Math.min(fehler(richtig), fehler(alt));
       var rk = document.getElementById("reihenfolgeRueck");
       rk.className = "rueck " + (falsch ? "falsch" : "ok");
+      if (!falsch) setTimeout(function () { xpGeloest(box, rk); }, 0);
       rk.textContent = falsch ? falsch + " Schritte stehen noch an der falschen Stelle." : "✓ Richtig! So klappt es." + (tausch.length === 2 ? " (Schritt 3 und 4 dürfen auch andersherum stehen.)" : "");
     });
     zeichnen();
@@ -852,6 +919,7 @@
       rk.className = "rueck " + (ok ? "ok" : "falsch");
       rk.textContent = ok ? "✓ Richtig" : "Noch nicht – lies die drei Merkmale oben noch einmal.";
       m.querySelector(".mc-erklaerung").hidden = !ok;
+      if (ok) xpGeloest(m, rk);
     });
   });
 
@@ -972,6 +1040,7 @@
           mel.textContent = am
             ? "📚 Geschafft! Der Lernbegleiter ist im Lernbüro – mit " + prog.length + " Befehlen." + (prog.length > kuerzest ? " Schaffst du es auch mit " + kuerzest + "?" : " Kürzer geht es nicht!")
             : "Das Programm ist zu Ende, aber der Lernbegleiter ist noch nicht im Lernbüro.";
+          if (am) xpGeloest(box, mel);
           return;
         }
         var b = prog[i++];
@@ -1130,7 +1199,7 @@
     InformatikLogin.senden(2, punkte, 10).then(function (r) {
       var st = document.getElementById("speicherStatus");
       if (!st) return;
-      if (r.ok) st.textContent = "✓ Gespeichert. Deine Lernbegleitung sieht dein Ergebnis.";
+      if (r.ok) { st.textContent = "✓ Gespeichert. Deine Lernbegleitung sieht dein Ergebnis."; if (r.xp > 0) xpPlus(st, "+" + r.xp + " XP"); }
       else if (r.grund === "login") st.textContent = "Nicht gespeichert: Du bist nicht angemeldet. Melde dich oben an und mach das Quiz noch einmal.";
       else if (r.grund === "vorname") st.textContent = "Nicht gespeichert: Trag oben zuerst deinen Vornamen ein und werte dann noch einmal aus.";
       else st.textContent = "Nicht gespeichert: Keine Verbindung. Versuch es gleich noch einmal.";

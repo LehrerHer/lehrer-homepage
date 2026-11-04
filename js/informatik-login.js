@@ -9,6 +9,7 @@
    - InformatikLogin.profiMelden(station, teil, status, geloest, gesamt, fehlversuche)
      → Profi-Teil 'geloest' oder 'angesehen' (erste Meldung zählt)
    - InformatikLogin.antwortSenden(station, frage, text) → freie Antwort (erste zählt)
+   - InformatikLogin.xpAufgabe(station, id) / xpTeil(station, teil, [ids]) → 5 bzw. 25 XP (einmalig)
 
    Der Vorname liegt in einer eigenen Tabelle und ist nur im Admin-Bereich
    „Informatik" sichtbar (kolosseum/public/admin/informatik.html).
@@ -19,19 +20,19 @@
 
   var K = 'https://kolosseum.lehrer-herrmann.de';
   var API = K + '/api/informatik';
-  var zustand = { eingeloggt: false, vorname: null, stationen: {}, profi: {}, antworten: {}, fehler: false };
+  var zustand = { eingeloggt: false, vorname: null, stationen: {}, profi: {}, antworten: {}, xp: [], fehler: false };
   var aufloesen;
   var bereit = new Promise(function (r) { aufloesen = r; });
 
   async function ladeStatus() {
     try {
       var res = await fetch(API + '/status', { credentials: 'include' });
-      if (res.status === 401) return { eingeloggt: false, vorname: null, stationen: {}, profi: {}, antworten: {} };
+      if (res.status === 401) return { eingeloggt: false, vorname: null, stationen: {}, profi: {}, antworten: {}, xp: [] };
       if (!res.ok) throw new Error('Status ' + res.status);
       var d = await res.json();
-      return { eingeloggt: true, vorname: d.vorname, stationen: d.stationen || {}, profi: d.profi || {}, antworten: d.antworten || {} };
+      return { eingeloggt: true, vorname: d.vorname, stationen: d.stationen || {}, profi: d.profi || {}, antworten: d.antworten || {}, xp: d.xp || [] };
     } catch (_) {
-      return { eingeloggt: false, vorname: null, stationen: {}, profi: {}, antworten: {}, fehler: true };
+      return { eingeloggt: false, vorname: null, stationen: {}, profi: {}, antworten: {}, xp: [], fehler: true };
     }
   }
 
@@ -124,7 +125,7 @@
       });
       if (!res.ok) throw new Error();
       var d = await res.json();
-      return { ok: true, bestanden: d.bestanden };
+      return { ok: true, bestanden: d.bestanden, xp: d.xp || 0 };
     } catch (_) {
       return { ok: false, grund: 'netz' };
     }
@@ -169,13 +170,43 @@
     }
   }
 
+  // XP: selbst gelöste Aufgabe (5) bzw. ganzer Teil (25) – der Server vergibt jeden Schlüssel nur einmal
+  async function xpPost(pfad, daten) {
+    var s = await bereit;
+    if (!s.eingeloggt || !s.vorname) return { ok: false, xp: 0 };
+    try {
+      var res = await fetch(API + pfad, {
+        method: 'POST', credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(daten)
+      });
+      if (!res.ok) throw new Error();
+      var d = await res.json();
+      return { ok: true, xp: d.xp || 0 };
+    } catch (_) {
+      return { ok: false, xp: 0 };
+    }
+  }
+  function xpAufgabe(station, id) {
+    return xpPost('/xp/aufgabe', { station: station, id: id }).then(function (r) {
+      if (r.ok) zustand.xp.push('a:' + station + ':' + id);
+      return r;
+    });
+  }
+  function xpTeil(station, teil, aufgaben) {
+    return xpPost('/xp/teil', { station: station, teil: teil, aufgaben: aufgaben }).then(function (r) {
+      if (r.ok) zustand.xp.push('t:' + station + ':' + teil);
+      return r;
+    });
+  }
+
   async function init() {
     zustand = await ladeStatus();
     zeige();
     aufloesen(zustand);
   }
 
-  window.InformatikLogin = { bereit: bereit, senden: senden, profiMelden: profiMelden, antwortSenden: antwortSenden };
+  window.InformatikLogin = { bereit: bereit, senden: senden, profiMelden: profiMelden, antwortSenden: antwortSenden, xpAufgabe: xpAufgabe, xpTeil: xpTeil };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();

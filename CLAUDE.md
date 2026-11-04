@@ -669,6 +669,10 @@ Selbstlern-Lernpfad (6 Stationen) für die Informatikwerkstatt Jg. 7/8, verlinkt
 - **Denkfragen:** `<div class="denkfrage" data-frage="<id>">` mit Textfeld; `InformatikLogin.antwortSenden(station, frage, text)`,
   Tabelle `informatik_antworten`; Musterlösung erst nach dem Senden. Im Admin unter „Freie Antworten“
   (Fragetitel in `FRAGEN` in `admin/informatik.html` ergänzen).
+- **XP:** jede bewertbare Aufgabe trägt `data-xp-id="teil<n>-<k>"` (feste IDs – bei neuen Aufgaben **anhängen**,
+  nicht umnummerieren, sonst gibt es doppelte XP). Selbst gelöst → `xpGeloest(el, rueck)` → 5 XP; alle `[data-xp-id]`
+  eines `section.teil` gelöst → 25 XP. Checkpoint: 5 XP je richtiger Frage (nur Verbesserung) + 25 XP fürs Bestehen,
+  serverseitig in `POST /checkpoint`. Tabelle `informatik_xp` (Schlüssel `a:`/`t:`/`q:`/`c:`), jeder Schlüssel nur einmal.
 - **Admin:** `kolosseum/public/admin/informatik.html` (bestes Ergebnis je Station, Versuche, Vorname ändern).
 
 | Methode | Pfad (Kolosseum) | Auth | Zweck |
@@ -678,6 +682,8 @@ Selbstlern-Lernpfad (6 Stationen) für die Informatikwerkstatt Jg. 7/8, verlinkt
 | POST | `/api/informatik/checkpoint` | Schüler-Login | Ergebnis speichern |
 | POST | `/api/informatik/profi` | Schüler-Login | Profi-Teil: `geloest` oder `angesehen` (erste Meldung zählt) |
 | POST | `/api/informatik/antwort` | Schüler-Login | freie Antwort (z. B. Denkfrage), erste Antwort zählt |
+| POST | `/api/informatik/xp/aufgabe` | Schüler-Login | 5 XP für selbst gelöste Aufgabe (einmalig) |
+| POST | `/api/informatik/xp/teil` | Schüler-Login | 25 XP für komplett gelösten Teil (Aufgaben müssen gespeichert sein) |
 | GET | `/api/informatik/admin/uebersicht` | Admin | Übersicht aller Lernpartner:innen |
 | PUT | `/api/informatik/admin/vorname/:id` | Admin | Vorname korrigieren |
 

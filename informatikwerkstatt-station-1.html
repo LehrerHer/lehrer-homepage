@@ -169,6 +169,12 @@
   .rechner-tasten button.leer { background: #eef0f3; color: var(--grau); }
   .rechner-tasten button.gleich { grid-column: 1 / -1; background: var(--blau); color: var(--weiss); }
 
+  /* === XP === */
+  .xp-plus { display: inline-block; background: var(--orange); color: var(--blau); font-weight: 700; font-size: 0.85rem; border-radius: 12px; padding: 1px 8px; animation: xp-pop 0.5s ease-out; }
+  @keyframes xp-pop { 0% { transform: scale(0.4); opacity: 0; } 70% { transform: scale(1.2); } 100% { transform: scale(1); opacity: 1; } }
+  .xp-banner { background: var(--orange); color: var(--blau); font-weight: 700; border-radius: 10px; padding: 10px 14px; margin: 0 0 14px; animation: xp-pop 0.6s ease-out; }
+  .xp-schon { display: inline-block; font-size: 0.8rem; font-weight: 600; color: var(--gruen); background: #eaf6ee; border-radius: 10px; padding: 1px 8px; margin-bottom: 6px; }
+
   /* === LOGIN-BOX === */
   .iw-login { border-radius: 10px; padding: 12px 16px; margin: 24px 0; }
   .iw-login p { margin: 0 0 8px; }
@@ -263,19 +269,19 @@
   </div>
 
   <h3><span class="badge b-basis">Basis</span>Rechne um</h3>
-  <div class="aufgabe" data-loesung="5"><span class="frage"><code>00000101</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="10"><span class="frage"><code>00001010</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="17"><span class="frage"><code>00010001</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="6" data-typ="bin"><span class="frage">Schreibe <b>6</b> als Binärzahl.</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="12" data-typ="bin"><span class="frage">Schreibe <b>12</b> als Binärzahl.</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil1-1" data-loesung="5"><span class="frage"><code>00000101</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil1-2" data-loesung="10"><span class="frage"><code>00001010</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil1-3" data-loesung="17"><span class="frage"><code>00010001</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil1-4" data-loesung="6" data-typ="bin"><span class="frage">Schreibe <b>6</b> als Binärzahl.</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil1-5" data-loesung="12" data-typ="bin"><span class="frage">Schreibe <b>12</b> als Binärzahl.</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <details><summary>Tipp</summary>Welche Werte (8, 4, 2, 1 …) ergeben zusammen deine Zahl? Diese Bits sind an. Prüfe mit den Lampen oben.</details>
 
   <h3><span class="badge b-profi">Profi</span>Weiterdenken</h3>
   <div class="profi-block" data-block="t1">
-  <div class="aufgabe" data-loesung="255" data-anzeige="255" data-erklaerung="Alle acht Bits sind an: 128 + 64 + 32 + 16 + 8 + 4 + 2 + 1 = 255. Das ist die größte Zahl, die in ein Byte passt."><span class="frage"><code>11111111</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="100" data-anzeige="1100100 (mit 8 Stellen: 01100100)" data-erklaerung="Such die größten Werte, die in 100 passen: 64 bleibt Rest 36, 32 bleibt Rest 4, dann 4. Also sind die Bits 64, 32 und 4 an." data-typ="bin"><span class="frage">Schreibe <b>100</b> als Binärzahl.</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="256" data-anzeige="256" data-erklaerung="Ein Byte reicht von 0 bis 255. Mit der 0 sind das 256 Zahlen. Jedes weitere Bit verdoppelt die Möglichkeiten: 2 · 2 · 2 · 2 · 2 · 2 · 2 · 2 = 256."><span class="frage">Wie viele verschiedene Zahlen kann ein Byte darstellen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="31" data-anzeige="31" data-erklaerung="Eine Hand hat 5 Finger, also 5 Bits mit den Werten 16, 8, 4, 2 und 1. Sind alle oben, ergibt das 16 + 8 + 4 + 2 + 1 = 31."><span class="frage">Jeder Finger ist ein Bit. Bis zu welcher Zahl kannst du mit einer Hand zählen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil1-6" data-loesung="255" data-anzeige="255" data-erklaerung="Alle acht Bits sind an: 128 + 64 + 32 + 16 + 8 + 4 + 2 + 1 = 255. Das ist die größte Zahl, die in ein Byte passt."><span class="frage"><code>11111111</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil1-7" data-loesung="100" data-anzeige="1100100 (mit 8 Stellen: 01100100)" data-erklaerung="Such die größten Werte, die in 100 passen: 64 bleibt Rest 36, 32 bleibt Rest 4, dann 4. Also sind die Bits 64, 32 und 4 an." data-typ="bin"><span class="frage">Schreibe <b>100</b> als Binärzahl.</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil1-8" data-loesung="256" data-anzeige="256" data-erklaerung="Ein Byte reicht von 0 bis 255. Mit der 0 sind das 256 Zahlen. Jedes weitere Bit verdoppelt die Möglichkeiten: 2 · 2 · 2 · 2 · 2 · 2 · 2 · 2 = 256."><span class="frage">Wie viele verschiedene Zahlen kann ein Byte darstellen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil1-9" data-loesung="31" data-anzeige="31" data-erklaerung="Eine Hand hat 5 Finger, also 5 Bits mit den Werten 16, 8, 4, 2 und 1. Sind alle oben, ergibt das 16 + 8 + 4 + 2 + 1 = 31."><span class="frage">Jeder Finger ist ein Bit. Bis zu welcher Zahl kannst du mit einer Hand zählen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <details><summary>Tipp</summary>Bei der Anzahl zählt die 0 mit. Bei der Hand: Wie viele Bits hast du? Was ergibt sich, wenn alle an sind?</details>
     <div class="loesung-freigabe">
       <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
@@ -318,15 +324,15 @@
   </div>
 
   <h3><span class="badge b-basis">Basis</span>Entschlüsseln</h3>
-  <div class="aufgabe" data-loesung="hallo"><span class="frage">Welches Wort ist das? <code>72 65 76 76 79</code></span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="67"><span class="frage">Welche Nummer hat <code>C</code>?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="32"><span class="frage">Welche Nummer hat ein Leerzeichen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil2-1" data-loesung="hallo"><span class="frage">Welches Wort ist das? <code>72 65 76 76 79</code></span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil2-2" data-loesung="67"><span class="frage">Welche Nummer hat <code>C</code>?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil2-3" data-loesung="32"><span class="frage">Welche Nummer hat ein Leerzeichen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <details><summary>Tipp</summary>Nutze den Umwandler. Großbuchstaben und Kleinbuchstaben haben verschiedene Nummern.</details>
 
   <h3><span class="badge b-profi">Profi</span>Weiterdenken</h3>
   <div class="profi-block" data-block="t2">
-  <div class="aufgabe" data-loesung="32" data-anzeige="32" data-erklaerung="A hat die Nummer 65, a hat die Nummer 97. 97 − 65 = 32. Das gilt für alle Buchstaben: Kleinbuchstabe = Großbuchstabe + 32."><span class="frage">Wie groß ist der Abstand zwischen <code>A</code> und <code>a</code>?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="ok" data-anzeige="OK" data-erklaerung="01001111 = 64 + 8 + 4 + 2 + 1 = 79 = O. 01001011 = 64 + 8 + 2 + 1 = 75 = K. Zusammen: OK."><span class="frage">Welches Wort ist das? <code>01001111 01001011</code></span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil2-4" data-loesung="32" data-anzeige="32" data-erklaerung="A hat die Nummer 65, a hat die Nummer 97. 97 − 65 = 32. Das gilt für alle Buchstaben: Kleinbuchstabe = Großbuchstabe + 32."><span class="frage">Wie groß ist der Abstand zwischen <code>A</code> und <code>a</code>?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil2-5" data-loesung="ok" data-anzeige="OK" data-erklaerung="01001111 = 64 + 8 + 4 + 2 + 1 = 79 = O. 01001011 = 64 + 8 + 2 + 1 = 75 = K. Zusammen: OK."><span class="frage">Welches Wort ist das? <code>01001111 01001011</code></span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
     <div class="loesung-freigabe">
       <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
       <div class="loesung-frage" hidden>
@@ -361,7 +367,7 @@
   <h3><span class="badge b-basis">Basis</span>Zeichne nach Code</h3>
   <p>Oben steht, welcher Code in welche Zeile gehört. Klick die Pixel so an, dass jede Zeile zu ihrem Code passt. Rechts neben dem Bild siehst du, was du gerade gezeichnet hast.</p>
   <ol class="vorlage" id="vorlage" aria-label="Vorgabe: Code je Zeile"></ol>
-  <div class="zeichenflaeche" id="raster" role="group" aria-label="Pixelbild 8 mal 8 zum Anklicken">
+  <div class="zeichenflaeche" id="raster" data-xp-id="teil3-1" role="group" aria-label="Pixelbild 8 mal 8 zum Anklicken">
     <div class="zf-kopf"><span>Zeile</span><span>Dein Bild</span><span>Dein Code</span></div>
   </div>
   <p>
@@ -369,7 +375,7 @@
     <button class="iw-btn leise" id="pixelLeeren">Leeren</button>
     <span class="rueck" id="pixelRueck"></span>
   </p>
-  <div class="aufgabe" data-loesung="64" data-hinweis-falsch="Noch nicht. Zähl auch die weißen Pixel mit: Ein leeres Pixel ist trotzdem ein Pixel – es hat nur keine oder eine andere Farbe. Wie viele Zeilen hat das Bild, und wie viele Pixel sind in jeder Zeile?"><span class="frage">Aus wie vielen Pixeln besteht das Bild?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil3-2" data-loesung="64" data-hinweis-falsch="Noch nicht. Zähl auch die weißen Pixel mit: Ein leeres Pixel ist trotzdem ein Pixel – es hat nur keine oder eine andere Farbe. Wie viele Zeilen hat das Bild, und wie viele Pixel sind in jeder Zeile?"><span class="frage">Aus wie vielen Pixeln besteht das Bild?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
 
   <h3>Farben mischen</h3>
   <p>Farbige Pixel mischen drei Grundfarben: <b>R</b>ot, <b>G</b>rün und <b>B</b>lau. Jede Grundfarbe hat einen Wert von 0 bis 255.</p>
@@ -383,13 +389,13 @@
       <div id="farbe" role="img" aria-label="Farbvorschau"></div>
     </div>
   </div>
-  <div class="aufgabe" data-loesung="schwarz"><span class="frage">Welche Farbe ergibt <code>(0, 0, 0)</code>?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="gelb"><span class="frage">Welche Farbe ergibt <code>(255, 255, 0)</code>?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil3-3" data-loesung="schwarz"><span class="frage">Welche Farbe ergibt <code>(0, 0, 0)</code>?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil3-4" data-loesung="gelb"><span class="frage">Welche Farbe ergibt <code>(255, 255, 0)</code>?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
 
   <h3><span class="badge b-profi">Profi</span>Weiterdenken</h3>
   <div class="profi-block" data-block="t3">
-  <div class="aufgabe" data-loesung="24" data-anzeige="24" data-erklaerung="Ein Pixel mischt drei Grundfarben (Rot, Grün, Blau). Jede Grundfarbe braucht 1 Byte = 8 Bits. 3 · 8 = 24 Bits."><span class="frage">Jede Grundfarbe (Rot, Grün, Blau) braucht ein Byte. Wie viele Bits braucht ein farbiges Pixel?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-loesung="16777216" data-typ="rechnung" data-anzeige="16.777.216 (rund 16,7 Millionen)" data-erklaerung="Jede Grundfarbe hat 256 Stufen. Alle Kombinationen: 256 · 256 · 256 = 16.777.216."><span class="frage">Wie viele verschiedene Farben gibt es damit? <small class="hinweis-klein">Du darfst auch die Rechnung eintippen, z. B. mit x oder *.</small></span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil3-5" data-loesung="24" data-anzeige="24" data-erklaerung="Ein Pixel mischt drei Grundfarben (Rot, Grün, Blau). Jede Grundfarbe braucht 1 Byte = 8 Bits. 3 · 8 = 24 Bits."><span class="frage">Jede Grundfarbe (Rot, Grün, Blau) braucht ein Byte. Wie viele Bits braucht ein farbiges Pixel?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil3-6" data-loesung="16777216" data-typ="rechnung" data-anzeige="16.777.216 (rund 16,7 Millionen)" data-erklaerung="Jede Grundfarbe hat 256 Stufen. Alle Kombinationen: 256 · 256 · 256 = 16.777.216."><span class="frage">Wie viele verschiedene Farben gibt es damit? <small class="hinweis-klein">Du darfst auch die Rechnung eintippen, z. B. mit x oder *.</small></span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <div class="rechner" role="group" aria-label="Taschenrechner">
     <div class="rechner-titel">🧮 Taschenrechner</div>
     <input type="text" class="rechner-anzeige" aria-label="Rechnung" placeholder="z. B. 256 x 256" autocomplete="off">
@@ -496,7 +502,7 @@
       inp.classList.toggle("falsch", !richtig);
       rk.className = "rueck " + (richtig ? "ok" : "falsch");
       rk.textContent = richtig ? "✓ Richtig" : (a.dataset.hinweisFalsch || "Noch nicht – schau dir den Tipp an.");
-      if (richtig) a.dataset.geloest = "1";
+      if (richtig) xpGeloest(a, rk);
       var block = a.closest(".profi-block");
       if (block) profiNachPruefen(block, richtig);
     }
@@ -504,6 +510,66 @@
     inp.addEventListener("keydown", function (e) { if (e.key === "Enter") pruefen(); });
   });
 
+
+
+  /* ---------- XP: 5 je selbst gelöster Aufgabe, 25 je komplett gelöstem Teil ---------- */
+  function xpPlus(ziel, text) {
+    if (!ziel) return;
+    var t = document.createElement("span");
+    t.className = "xp-plus";
+    t.textContent = text;
+    ziel.appendChild(document.createTextNode(" "));
+    ziel.appendChild(t);
+  }
+  function teilPruefen(el) {
+    var sec = el.closest("section.teil");
+    if (!sec || sec.dataset.teilXp) return;
+    var alle = Array.prototype.slice.call(sec.querySelectorAll("[data-xp-id]"));
+    if (!alle.length || !alle.every(function (x) { return x.dataset.geloest === "1"; })) return;
+    sec.dataset.teilXp = "1";
+    InformatikLogin.xpTeil(STATION, sec.id, alle.map(function (x) { return x.dataset.xpId; })).then(function (r) {
+      if (!r.ok) { delete sec.dataset.teilXp; return; }
+      if (r.xp > 0) teilBanner(sec, "🏆 Teil komplett selbst gelöst! +" + r.xp + " XP");
+    });
+  }
+  function teilBanner(sec, text) {
+    if (sec.querySelector(".xp-banner")) return;
+    var b = document.createElement("div");
+    b.className = "xp-banner";
+    b.setAttribute("role", "status");
+    b.textContent = text;
+    var h = sec.querySelector("h2");
+    h.parentNode.insertBefore(b, h.nextSibling);
+  }
+  function xpGeloest(el, rueck) {
+    el.dataset.geloest = "1";
+    if (!el.dataset.xpId || el.dataset.xpGemeldet) { teilPruefen(el); return; }
+    el.dataset.xpGemeldet = "1";
+    InformatikLogin.xpAufgabe(STATION, el.dataset.xpId).then(function (r) {
+      if (!r.ok) { delete el.dataset.xpGemeldet; return; }
+      if (r.xp > 0) xpPlus(rueck, "+" + r.xp + " XP");
+      teilPruefen(el);
+    });
+  }
+  // Gespeicherten XP-Stand laden: schon gelöste Aufgaben und Teile markieren
+  InformatikLogin.bereit.then(function (z) {
+    if (!z.eingeloggt) return;
+    document.querySelectorAll("[data-xp-id]").forEach(function (el) {
+      if (z.xp.indexOf("a:" + STATION + ":" + el.dataset.xpId) < 0) return;
+      el.dataset.geloest = "1";
+      el.dataset.xpGemeldet = "1";
+      var hin = document.createElement("span");
+      hin.className = "xp-schon";
+      hin.textContent = "✓ schon gelöst";
+      var rk = el.classList.contains("aufgabe") ? el.querySelector(".rueck") : null;
+      if (rk && !rk.textContent) { rk.className = "rueck ok"; rk.textContent = "✓ schon gelöst"; }
+      else if (!rk) el.insertBefore(hin, el.firstChild);
+    });
+    document.querySelectorAll("section.teil").forEach(function (sec) {
+      if (z.xp.indexOf("t:" + STATION + ":" + sec.id) >= 0) { sec.dataset.teilXp = "1"; teilBanner(sec, "🏆 Teil komplett selbst gelöst (+25 XP erhalten)"); }
+      else { var e = sec.querySelector("[data-xp-id]"); if (e) teilPruefen(e); }
+    });
+  });
 
   /* ---------- Profi: Bonus, Lösungen, Meldung an Lernbegleitung ---------- */
   var STATION = 1;
@@ -747,6 +813,7 @@
     var rk = document.getElementById("pixelRueck");
     rk.className = "rueck " + (fehler === 0 ? "ok" : "falsch");
     rk.textContent = fehler === 0 ? "✓ Richtig gezeichnet!" : fehler + (fehler === 1 ? " Zeile stimmt" : " Zeilen stimmen") + " noch nicht. Vergleiche Zeile für Zeile.";
+    if (fehler === 0) xpGeloest(raster, rk);
   });
   document.getElementById("pixelLeeren").addEventListener("click", function () {
     raster.querySelectorAll(".zf-pixel button").forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
@@ -820,7 +887,7 @@
     InformatikLogin.senden(1, punkte, 10).then(function (r) {
       var st = document.getElementById("speicherStatus");
       if (!st) return;
-      if (r.ok) st.textContent = "✓ Gespeichert. Deine Lernbegleitung sieht dein Ergebnis.";
+      if (r.ok) { st.textContent = "✓ Gespeichert. Deine Lernbegleitung sieht dein Ergebnis."; if (r.xp > 0) xpPlus(st, "+" + r.xp + " XP"); }
       else if (r.grund === "login") st.textContent = "Nicht gespeichert: Du bist nicht angemeldet. Melde dich oben an und mach das Quiz noch einmal.";
       else if (r.grund === "vorname") st.textContent = "Nicht gespeichert: Trag oben zuerst deinen Vornamen ein und werte dann noch einmal aus.";
       else st.textContent = "Nicht gespeichert: Keine Verbindung. Versuch es gleich noch einmal.";

@@ -170,6 +170,20 @@ db.exec(`
 `);
 db.exec('CREATE INDEX IF NOT EXISTS idx_informatik_cp_student ON informatik_checkpoints(student_id)');
 
+// Informatikwerkstatt: vergebene XP. Jeder Schlüssel nur einmal je Person:
+//   a:<station>:<aufgabe>  5 XP · t:<station>:<teil> 25 XP · q:<station>:<n> 5 XP (n-te richtige Checkpoint-Frage)
+//   c:<station> 25 XP (Checkpoint bestanden)
+db.exec(`
+  CREATE TABLE IF NOT EXISTS informatik_xp (
+    student_id INTEGER NOT NULL,
+    schluessel TEXT    NOT NULL,
+    xp         INTEGER NOT NULL,
+    created_at TEXT    NOT NULL DEFAULT (datetime('now')),
+    PRIMARY KEY (student_id, schluessel),
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+  )
+`);
+
 // Informatikwerkstatt: freie Antworten (z. B. Denkfragen). Erste Antwort ist endgültig,
 // weil danach die Musterlösung angezeigt wird.
 db.exec(`
