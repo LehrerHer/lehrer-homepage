@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Station 1 – Daten codieren</title>
+<link rel="stylesheet" href="css/style.css?v=20261018">
+<style>
+  :root {
+    --blau: var(--farbe-primaer, #1e3a5f); --blau-hell: #1f3d6e; --blau-zart: #e9eef6;
+    --orange: #f28c28; --orange-zart: #fff1e3;
+    --weiss: #ffffff; --text: #1b2433; --grau: #5b6577; --rand: #d5dce8;
+    --gruen: #1e7a46; --rot: #b3261e;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--weiss); color: var(--text);
+    font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 17px; line-height: 1.55; }
+  h1, h2, h3 { font-family: "Merriweather", Georgia, serif; line-height: 1.25; }
+  .mono, code { font-family: "JetBrains Mono", ui-monospace, Consolas, monospace; }
+  .iw-wrap { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+
+  .iw-kopf { background: var(--blau); color: var(--weiss); padding: 28px 0 24px; border-bottom: 6px solid var(--orange); }
+  .iw-kopf a { color: #d9e2f1; font-size: 0.9rem; text-decoration: none; }
+  .iw-kopf a:hover { text-decoration: underline; }
+  .iw-kopf .label { color: var(--orange); font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 14px; }
+  .iw-kopf h1 { margin: 4px 0 8px; font-size: 1.9rem; }
+  .iw-kopf p { margin: 0; color: #d9e2f1; max-width: 620px; }
+
+  .iw-seite nav.teile { position: sticky; top: 0; background: var(--weiss); border-bottom: 1px solid var(--rand); z-index: 5; }
+  nav.teile .iw-wrap { display: flex; gap: 6px; overflow-x: auto; padding-top: 10px; padding-bottom: 10px; }
+  nav.teile a { flex: 0 0 auto; text-decoration: none; color: var(--blau); background: var(--blau-zart);
+    padding: 6px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; }
+  nav.teile a:hover, nav.teile a:focus { background: var(--orange); }
+
+  main { padding: 24px 0 48px; }
+  .iw-seite section.teil { padding-top: 20px; padding-bottom: 0; margin-bottom: 36px; scroll-margin-top: 60px; }
+  h2 { color: var(--blau); font-size: 1.45rem; margin: 0 0 12px; }
+  h2::after { content: ""; display: block; width: 48px; height: 4px; background: var(--orange); margin-top: 8px; border-radius: 2px; }
+  h3 { color: var(--blau); font-size: 1.1rem; margin: 22px 0 8px; }
+  .ziel { background: var(--blau-zart); border-left: 5px solid var(--blau); padding: 10px 14px; border-radius: 6px; margin-bottom: 16px; }
+  .ziel b { color: var(--blau); }
+
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; vertical-align: middle; margin-right: 6px; font-family: "Open Sans", system-ui, sans-serif; }
+  .b-basis { background: var(--blau); color: var(--weiss); }
+  .b-profi { background: var(--orange); color: var(--blau); }
+
+  .werkzeug { border: 2px solid var(--blau); border-radius: 10px; padding: 16px; margin: 14px 0; }
+  .werkzeug .titel { font-weight: 700; color: var(--blau); margin-bottom: 10px; }
+
+  /* Bits */
+  .bits { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+  .bit { text-align: center; }
+  .bit .wert { font-size: 0.8rem; color: var(--grau); }
+  .bit button { width: 100%; aspect-ratio: 1 / 1; max-width: 64px; border: 3px solid var(--blau); border-radius: 50%;
+    background: var(--weiss); color: var(--blau); font-size: 1.3rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .bit button[aria-pressed="true"] { background: var(--orange); border-color: var(--orange); box-shadow: 0 0 12px var(--orange); }
+  .ergebnis { margin-top: 12px; font-size: 1.15rem; }
+  .ergebnis b { color: var(--blau); font-size: 1.5rem; }
+
+  /* Aufgaben */
+  .aufgabe { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 10px 0; border-bottom: 1px dashed var(--rand); }
+  .aufgabe .frage { flex: 1 1 260px; }
+  .aufgabe input[type=text] { width: 150px; padding: 7px 10px; border: 2px solid var(--rand); border-radius: 6px; font-size: 1rem; font-family: "JetBrains Mono", ui-monospace, monospace; }
+  .aufgabe input.ok { border-color: var(--gruen); background: #eaf6ee; }
+  .aufgabe input.falsch { border-color: var(--rot); }
+  .rueck { font-size: 0.9rem; min-width: 110px; }
+  .rueck.ok { color: var(--gruen); font-weight: 600; }
+  .rueck.falsch { color: var(--rot); }
+
+  .iw-btn { display: inline-block; background: var(--blau); color: var(--weiss); border: 0; text-decoration: none;
+    padding: 8px 14px; border-radius: 6px; font-weight: 600; font-size: 0.95rem; cursor: pointer; font-family: inherit; }
+  .iw-btn:hover, .iw-btn:focus { background: var(--blau-hell); }
+  .iw-btn.orange { background: var(--orange); color: var(--blau); }
+  .iw-btn.leise { background: var(--blau-zart); color: var(--blau); }
+  button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+
+  details { background: var(--orange-zart); border-radius: 6px; padding: 6px 12px; margin: 8px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--blau); }
+
+  /* ASCII */
+  #asciiEin { width: 100%; max-width: 360px; padding: 8px 10px; border: 2px solid var(--rand); border-radius: 6px; font-size: 1rem; }
+  table.ascii { border-collapse: collapse; margin-top: 10px; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.95rem; }
+  table.ascii th, table.ascii td { border: 1px solid var(--rand); padding: 4px 10px; text-align: center; }
+  table.ascii th { background: var(--blau-zart); color: var(--blau); }
+  .tabelle-scroll { overflow-x: auto; }
+
+  /* Pixel */
+  .pixel-flex { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; }
+  .raster { display: grid; grid-template-columns: repeat(8, 32px); gap: 2px; background: var(--rand); padding: 2px; border-radius: 4px; }
+  .raster button { width: 32px; height: 32px; border: 0; background: var(--weiss); cursor: pointer; padding: 0; }
+  .raster button[aria-pressed="true"] { background: var(--blau); }
+  .codes { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.95rem; line-height: 34px; }
+  .vorlage { font-family: "JetBrains Mono", ui-monospace, monospace; background: var(--blau-zart); padding: 10px 14px; border-radius: 6px; line-height: 1.6; }
+
+  /* RGB */
+  .rgb-flex { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
+  .regler label { display: flex; align-items: center; gap: 10px; margin: 6px 0; font-weight: 600; }
+  .regler input[type=range] { width: 180px; }
+  .regler output { font-family: "JetBrains Mono", ui-monospace, monospace; min-width: 36px; }
+  #farbe { width: 120px; height: 120px; border-radius: 10px; border: 2px solid var(--rand); }
+
+  /* Quiz */
+  .quizfrage { border: 2px solid var(--rand); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+  .quizfrage p { margin: 0 0 8px; font-weight: 600; }
+  .quizfrage label { display: block; padding: 4px 0; cursor: pointer; }
+  .quizfrage.ok { border-color: var(--gruen); }
+  .quizfrage.falsch { border-color: var(--rot); }
+  #quizErgebnis { margin-top: 16px; }
+  .code-box { background: var(--blau); color: var(--weiss); border-radius: 10px; padding: 18px; text-align: center; }
+  .code-box .speichern { margin-top: 8px; color: var(--orange); font-weight: 600; }
+  .code-box .code { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 1.8rem; color: var(--orange); letter-spacing: 0.1em; margin: 6px 0; }
+
+
+  @media (max-width: 520px) {
+    .raster { grid-template-columns: repeat(8, 28px); }
+    .raster button { width: 28px; height: 28px; }
+    .codes { line-height: 30px; }
+    .bit button { font-size: 1rem; border-width: 2px; }
+  }
+
+  /* === LOGIN-BOX === */
+  .iw-login { border-radius: 10px; padding: 12px 16px; margin: 24px 0; }
+  .iw-login p { margin: 0 0 8px; }
+  .iw-login p:last-child { margin-bottom: 0; }
+  .iw-login-fehlt { background: var(--orange-zart); border: 2px solid var(--orange); }
+  .iw-login-name { background: var(--blau-zart); border: 2px solid var(--blau); }
+  .iw-login-ok { background: #eaf6ee; border: 2px solid var(--gruen); }
+  .iw-name-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .iw-name-form input { padding: 8px 10px; border: 2px solid var(--rand); border-radius: 6px; font-size: 1rem; width: 200px; }
+  .iw-meldung { color: var(--rot); font-size: 0.9rem; }
+  .iw-seite section { background: transparent; padding-bottom: 0; }
+  .iw-kopf { margin-top: 16px; }
+</style>
+</head>
+<body class="iw-seite">
+<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+        <a href="index.html" class="navbar-logo" aria-label="Zur Startseite">
+            <img src="img/logo.svg" alt="" class="navbar-logo-img" width="47" height="38">
+            <span class="navbar-logo-text">lehrer-herrmann.de</span>
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Menü öffnen"
+                aria-expanded="false" aria-controls="navbar-links">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="navbar-links" id="navbar-links">
+            <li><a href="index.html#was-ist-neu" class="nav-item" data-tooltip="Was ist neu?">
+                <span class="nav-icon" aria-hidden="true">✨</span>
+                <span class="nav-label">Was ist neu?</span></a></li>
+            <li><a href="https://lehrer-herrmann.de/kontakt.html" class="nav-item" data-tooltip="Kontakt">
+                <span class="nav-icon" aria-hidden="true">✉️</span>
+                <span class="nav-label">Kontakt</span></a></li>
+            <li class="navbar-gb-trenner" aria-hidden="true">
+                <span class="navbar-gb-label">Geschützter Bereich</span>
+            </li>
+            <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="nav-item navbar-gb-link" data-tooltip="Arena – Gladiatorenkämpfe">
+                <span class="nav-icon" aria-hidden="true">⚔️</span>
+                <span class="nav-label">Arena</span></a></li>
+            <li><a href="blog.html" class="nav-item navbar-gb-link" data-tooltip="Schüler*innenblog">
+                <span class="nav-icon" aria-hidden="true">✍️</span>
+                <span class="nav-label">Blog</span></a></li>
+            <li class="navbar-dropdown">
+                <button class="navbar-dropdown-toggle navbar-gb-link nav-item" aria-expanded="false" aria-haspopup="true" data-tooltip="Fächer" aria-label="Fächer">
+                    <span class="nav-icon" aria-hidden="true">📚</span>
+                    <span class="nav-label">Fächer</span>
+                </button>
+                <ul class="navbar-dropdown-menu" role="menu">
+                    <li><a href="faecher.html" role="menuitem">Alle Fächer</a></li>
+                    <li><a href="fach-informatik.html" role="menuitem">Informatik</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+    </div>
+</nav>
+
+
+<header class="iw-kopf">
+  <div class="iw-wrap">
+    <a href="informatikwerkstatt.html">← zurück zum Lernpfad</a>
+    <div class="label mono">Station 1 von 6</div>
+    <h1>Daten codieren</h1>
+    <p>Ein Computer kennt nur zwei Zustände: Strom an oder Strom aus. Trotzdem speichert er Zahlen, Texte und Bilder. Wie geht das?</p>
+  </div>
+</header>
+
+<nav class="teile" aria-label="Teile der Station">
+  <div class="iw-wrap">
+    <a href="#teil1">1 · Binärzahlen</a>
+    <a href="#teil2">2 · Texte</a>
+    <a href="#teil3">3 · Bilder</a>
+    <a href="#teil4">4 · Checkpoint</a>
+  </div>
+</nav>
+
+<main class="iw-wrap">
+
+<div id="iw-login" hidden></div>
+
+<!-- ========== TEIL 1 ========== -->
+<section class="teil" id="teil1">
+  <h2>Teil 1 · Zählen mit 0 und 1</h2>
+  <div class="ziel"><b>Ziel:</b> Du kannst Binärzahlen in normale Zahlen umrechnen – und umgekehrt.</div>
+
+  <p>Ein <b>Bit</b> ist die kleinste Einheit im Computer. Es ist entweder <code>0</code> (aus) oder <code>1</code> (an). Acht Bits zusammen heißen <b>Byte</b>.</p>
+  <p>Jede Stelle hat einen Wert. Von rechts nach links verdoppelt er sich: 1, 2, 4, 8, 16 … Ist ein Bit an, zählt sein Wert mit.</p>
+
+  <div class="werkzeug">
+    <div class="titel">Probier's aus: Klick die Lampen an.</div>
+    <div class="bits" id="bits"></div>
+    <div class="ergebnis">Binär: <span class="mono" id="binText">00000000</span> &nbsp;=&nbsp; <b id="dezText">0</b></div>
+  </div>
+
+  <h3><span class="badge b-basis">Basis</span>Rechne um</h3>
+  <div class="aufgabe" data-loesung="5"><span class="frage"><code>00000101</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="10"><span class="frage"><code>00001010</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="17"><span class="frage"><code>00010001</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="6" data-typ="bin"><span class="frage">Schreibe <b>6</b> als Binärzahl.</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="12" data-typ="bin"><span class="frage">Schreibe <b>12</b> als Binärzahl.</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <details><summary>Tipp</summary>Welche Werte (8, 4, 2, 1 …) ergeben zusammen deine Zahl? Diese Bits sind an. Prüfe mit den Lampen oben.</details>
+
+  <h3><span class="badge b-profi">Profi</span>Weiterdenken</h3>
+  <div class="aufgabe" data-loesung="255"><span class="frage"><code>11111111</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="100" data-typ="bin"><span class="frage">Schreibe <b>100</b> als Binärzahl.</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="256"><span class="frage">Wie viele verschiedene Zahlen kann ein Byte darstellen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="31"><span class="frage">Jeder Finger ist ein Bit. Bis zu welcher Zahl kannst du mit einer Hand zählen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <details><summary>Tipp</summary>Bei der Anzahl zählt die 0 mit. Bei der Hand: Wie viele Bits hast du? Was ergibt sich, wenn alle an sind?</details>
+</section>
+
+<!-- ========== TEIL 2 ========== -->
+<section class="teil" id="teil2">
+  <h2>Teil 2 · Texte als Zahlen</h2>
+  <div class="ziel"><b>Ziel:</b> Du weißt, wie ein Computer Buchstaben als Zahlen speichert.</div>
+
+  <p>Jeder Buchstabe bekommt eine feste Nummer. Diese Liste heißt <b>ASCII-Code</b>. Zum Beispiel ist <code>A</code> die 65, <code>B</code> die 66. Der Computer speichert die Nummer als Binärzahl.</p>
+
+  <div class="werkzeug">
+    <div class="titel">Text-Umwandler: Tipp etwas ein.</div>
+    <input type="text" id="asciiEin" value="Hallo" maxlength="20" aria-label="Text zum Umwandeln">
+    <div class="tabelle-scroll"><table class="ascii" id="asciiTab"></table></div>
+  </div>
+
+  <h3><span class="badge b-basis">Basis</span>Entschlüsseln</h3>
+  <div class="aufgabe" data-loesung="hallo"><span class="frage">Welches Wort ist das? <code>72 65 76 76 79</code></span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="67"><span class="frage">Welche Nummer hat <code>C</code>?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="32"><span class="frage">Welche Nummer hat ein Leerzeichen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <details><summary>Tipp</summary>Nutze den Umwandler. Großbuchstaben und Kleinbuchstaben haben verschiedene Nummern.</details>
+
+  <h3><span class="badge b-profi">Profi</span>Weiterdenken</h3>
+  <div class="aufgabe" data-loesung="32"><span class="frage">Wie groß ist der Abstand zwischen <code>A</code> und <code>a</code>?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="ok"><span class="frage">Welches Wort ist das? <code>01001111 01001011</code></span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <details><summary>Denkfrage</summary>Tipp „ä“ in den Umwandler. Der ASCII-Code hat nur 128 Zeichen. Was meinst du: Wie speichert ein Handy dann Umlaute oder Emojis?</details>
+</section>
+
+<!-- ========== TEIL 3 ========== -->
+<section class="teil" id="teil3">
+  <h2>Teil 3 · Bilder aus Pixeln</h2>
+  <div class="ziel"><b>Ziel:</b> Du weißt, wie ein Bild aus Pixeln und Zahlen entsteht.</div>
+
+  <p>Ein Bild besteht aus vielen kleinen Quadraten: den <b>Pixeln</b>. Bei einem Schwarz-Weiß-Bild reicht ein Bit pro Pixel. Hier gilt: <code>1</code> = blau, <code>0</code> = weiß.</p>
+
+  <h3><span class="badge b-basis">Basis</span>Zeichne nach Code</h3>
+  <p>Klick die Pixel so an, dass das Bild zu diesem Code passt. Rechts neben dem Raster siehst du deinen Code.</p>
+  <div class="pixel-flex">
+    <div class="vorlage" id="vorlage"></div>
+    <div class="raster" id="raster" aria-label="Pixelraster 8 mal 8"></div>
+    <div class="codes" id="zeilenCodes"></div>
+  </div>
+  <p>
+    <button class="iw-btn" id="pixelPruefen">Bild prüfen</button>
+    <button class="iw-btn leise" id="pixelLeeren">Leeren</button>
+    <span class="rueck" id="pixelRueck"></span>
+  </p>
+  <div class="aufgabe" data-loesung="64"><span class="frage">Aus wie vielen Pixeln besteht das Bild?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+
+  <h3>Farben mischen</h3>
+  <p>Farbige Pixel mischen drei Farben: <b>R</b>ot, <b>G</b>rün und <b>B</b>lau. Jede hat einen Wert von 0 bis 255.</p>
+  <div class="werkzeug">
+    <div class="rgb-flex">
+      <div class="regler">
+        <label>R <input type="range" min="0" max="255" value="242" id="rR"><output id="oR">242</output></label>
+        <label>G <input type="range" min="0" max="255" value="140" id="rG"><output id="oG">140</output></label>
+        <label>B <input type="range" min="0" max="255" value="40" id="rB"><output id="oB">40</output></label>
+      </div>
+      <div id="farbe" role="img" aria-label="Farbvorschau"></div>
+    </div>
+  </div>
+  <div class="aufgabe" data-loesung="schwarz"><span class="frage">Welche Farbe ergibt <code>(0, 0, 0)</code>?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="gelb"><span class="frage">Welche Farbe ergibt <code>(255, 255, 0)</code>?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+
+  <h3><span class="badge b-profi">Profi</span>Weiterdenken</h3>
+  <div class="aufgabe" data-loesung="24"><span class="frage">Jede Farbe braucht ein Byte. Wie viele Bits braucht ein farbiges Pixel?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-loesung="16777216"><span class="frage">Wie viele verschiedene Farben gibt es damit?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <details><summary>Tipp</summary>Jede Farbe hat 256 Stufen. Für jede Rot-Stufe gibt es alle Grün-Stufen, und für jede davon alle Blau-Stufen.</details>
+</section>
+
+<!-- ========== TEIL 4 ========== -->
+<section class="teil" id="teil4">
+  <h2>Teil 4 · Checkpoint</h2>
+  <div class="ziel"><b>So geht's:</b> Beantworte alle Fragen. Ab 7 von 10 Punkten hast du Station 1 geschafft. Dein Ergebnis wird automatisch gespeichert, wenn du angemeldet bist. Du kannst das Quiz wiederholen – es zählt dein bestes Ergebnis.</div>
+
+  <form id="quiz"></form>
+  <p><button class="iw-btn orange" id="quizAuswerten" type="button">Auswerten</button></p>
+  <div id="quizErgebnis" aria-live="polite"></div>
+
+  <h3><span class="badge b-profi">Profi</span>Projekt: Binär-Umrechner in Scratch</h3>
+  <p>Baue ein Scratch-Programm: Die Figur fragt nach einer Zahl von 0 bis 255 und sagt dann die Binärzahl.</p>
+  <details><summary>Tipp 1</summary>Teile die Zahl durch 2. Der Rest (0 oder 1) ist die letzte Stelle der Binärzahl. Den Rest liefert der Block <code>( ) mod ( )</code>.</details>
+  <details><summary>Tipp 2</summary>Rechne mit dem halbierten Ergebnis (abgerundet) weiter. Wiederhole das 8-mal. Setze jeden neuen Rest <i>vorne</i> an das bisherige Ergebnis.</details>
+  <details><summary>Tipp 3</summary>Für das Zusammensetzen hilft der Block <code>verbinde ( ) und ( )</code>.</details>
+</section>
+
+</main>
+
+<footer>
+    <div class="container footer-inner">
+        <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+        <nav class="footer-links" aria-label="Rechtliche Links">
+            <a href="impressum.html">Impressum</a>
+            <a href="datenschutz.html">Datenschutz</a>
+        </nav>
+        <a href="https://kolosseum.lehrer-herrmann.de/admin/" id="admin-footer-link" class="admin-footer-link" aria-label="Admin-Bereich">⚙</a>
+    </div>
+</footer>
+<script src="js/main.js?v=20260615c"></script>
+<script src="js/kolosseum-login-widget.js"></script>
+
+
+<script src="js/informatik-login.js"></script>
+<script>
+(function () {
+  /* ---------- Teil 1: Bits ---------- */
+  var bitBox = document.getElementById("bits");
+  var werte = [128, 64, 32, 16, 8, 4, 2, 1];
+  werte.forEach(function (w) {
+    var d = document.createElement("div");
+    d.className = "bit";
+    d.innerHTML = '<div class="wert">' + w + '</div><button type="button" aria-pressed="false" aria-label="Bit mit Wert ' + w + '">0</button>';
+    bitBox.appendChild(d);
+  });
+  function bitsAktualisieren() {
+    var sum = 0, bin = "";
+    bitBox.querySelectorAll("button").forEach(function (b, i) {
+      var an = b.getAttribute("aria-pressed") === "true";
+      if (an) sum += werte[i];
+      bin += an ? "1" : "0";
+    });
+    document.getElementById("binText").textContent = bin;
+    document.getElementById("dezText").textContent = sum;
+  }
+  bitBox.addEventListener("click", function (e) {
+    var b = e.target.closest("button");
+    if (!b) return;
+    var an = b.getAttribute("aria-pressed") !== "true";
+    b.setAttribute("aria-pressed", an);
+    b.textContent = an ? "1" : "0";
+    bitsAktualisieren();
+  });
+
+  /* ---------- Selbstkontrolle ---------- */
+  function normal(s) { return s.trim().toLowerCase().replace(/[\s.]/g, ""); }
+  document.querySelectorAll(".aufgabe").forEach(function (a) {
+    var inp = a.querySelector("input"), btn = a.querySelector("button"), rk = a.querySelector(".rueck");
+    function pruefen() {
+      var eingabe = normal(inp.value), richtig;
+      if (eingabe === "") return;
+      if (a.dataset.typ === "bin") {
+        richtig = /^[01]+$/.test(eingabe) && parseInt(eingabe, 2) === parseInt(a.dataset.loesung, 10);
+      } else {
+        richtig = eingabe === a.dataset.loesung;
+      }
+      inp.classList.toggle("ok", richtig);
+      inp.classList.toggle("falsch", !richtig);
+      rk.className = "rueck " + (richtig ? "ok" : "falsch");
+      rk.textContent = richtig ? "✓ Richtig" : "Noch nicht – schau dir den Tipp an.";
+    }
+    btn.addEventListener("click", pruefen);
+    inp.addEventListener("keydown", function (e) { if (e.key === "Enter") pruefen(); });
+  });
+
+  /* ---------- Teil 2: ASCII ---------- */
+  var ein = document.getElementById("asciiEin"), tab = document.getElementById("asciiTab");
+  function asciiAktualisieren() {
+    var zeichen = Array.from(ein.value);
+    var html = "<tr><th>Zeichen</th><th>Nummer</th><th>Binär</th></tr>";
+    zeichen.forEach(function (z) {
+      var n = z.codePointAt(0);
+      var anzeige = z === " " ? "(Leer)" : z.replace(/[<>&]/g, function (c) { return {"<":"&lt;",">":"&gt;","&":"&amp;"}[c]; });
+      if (n < 128) {
+        html += "<tr><td>" + anzeige + "</td><td>" + n + "</td><td>" + n.toString(2).padStart(8, "0") + "</td></tr>";
+      } else {
+        html += "<tr><td>" + anzeige + '</td><td colspan="2">nicht im ASCII-Code</td></tr>';
+      }
+    });
+    tab.innerHTML = html;
+  }
+  ein.addEventListener("input", asciiAktualisieren);
+  asciiAktualisieren();
+
+  /* ---------- Teil 3: Pixel ---------- */
+  var ziel = ["00111100","01000010","10100101","10000001","10100101","10011001","01000010","00111100"];
+  document.getElementById("vorlage").innerHTML = ziel.join("<br>");
+  var raster = document.getElementById("raster"), codes = document.getElementById("zeilenCodes");
+  for (var i = 0; i < 64; i++) {
+    var p = document.createElement("button");
+    p.type = "button";
+    p.setAttribute("aria-pressed", "false");
+    p.setAttribute("aria-label", "Zeile " + (Math.floor(i / 8) + 1) + ", Spalte " + (i % 8 + 1));
+    raster.appendChild(p);
+  }
+  function rasterCode() {
+    var px = raster.querySelectorAll("button"), zeilen = [];
+    for (var z = 0; z < 8; z++) {
+      var s = "";
+      for (var s2 = 0; s2 < 8; s2++) s += px[z * 8 + s2].getAttribute("aria-pressed") === "true" ? "1" : "0";
+      zeilen.push(s);
+    }
+    return zeilen;
+  }
+  function codesAktualisieren() { codes.innerHTML = rasterCode().join("<br>"); }
+  raster.addEventListener("click", function (e) {
+    var b = e.target.closest("button");
+    if (!b) return;
+    b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") !== "true");
+    codesAktualisieren();
+    document.getElementById("pixelRueck").textContent = "";
+  });
+  document.getElementById("pixelPruefen").addEventListener("click", function () {
+    var ist = rasterCode(), fehler = 0;
+    for (var z = 0; z < 8; z++) if (ist[z] !== ziel[z]) fehler++;
+    var rk = document.getElementById("pixelRueck");
+    rk.className = "rueck " + (fehler === 0 ? "ok" : "falsch");
+    rk.textContent = fehler === 0 ? "✓ Richtig gezeichnet!" : fehler + (fehler === 1 ? " Zeile stimmt" : " Zeilen stimmen") + " noch nicht. Vergleiche Zeile für Zeile.";
+  });
+  document.getElementById("pixelLeeren").addEventListener("click", function () {
+    raster.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+    codesAktualisieren();
+    document.getElementById("pixelRueck").textContent = "";
+  });
+  codesAktualisieren();
+
+  /* RGB */
+  ["R", "G", "B"].forEach(function (k) {
+    document.getElementById("r" + k).addEventListener("input", rgbAktualisieren);
+  });
+  function rgbAktualisieren() {
+    var r = document.getElementById("rR").value, g = document.getElementById("rG").value, b = document.getElementById("rB").value;
+    document.getElementById("oR").textContent = r;
+    document.getElementById("oG").textContent = g;
+    document.getElementById("oB").textContent = b;
+    document.getElementById("farbe").style.background = "rgb(" + r + "," + g + "," + b + ")";
+  }
+  rgbAktualisieren();
+
+  /* ---------- Teil 4: Quiz ---------- */
+  var fragen = [
+    { f: "Wie viele Zustände kann ein Bit haben?", a: ["1", "2", "8", "10"], r: 1 },
+    { f: "Welche Zahl ist <code>00001001</code>?", a: ["9", "11", "1001", "18"], r: 0 },
+    { f: "Wie viele Bits hat ein Byte?", a: ["2", "4", "8", "16"], r: 2 },
+    { f: "Was ist die größte Zahl, die ein Byte darstellen kann?", a: ["99", "128", "255", "256"], r: 2 },
+    { f: "Welche Zahl ist <code>10000000</code>?", a: ["1", "8", "100", "128"], r: 3 },
+    { f: "Im ASCII-Code steht 65 für …", a: ["a", "A", "Z", "das Leerzeichen"], r: 1 },
+    { f: "Warum findest du „ä“ nicht im ASCII-Code?", a: ["Der Code hat nur 128 Zeichen.", "Umlaute sind keine Buchstaben.", "Computer können keine Umlaute.", "„ä“ ist zu lang."], r: 0 },
+    { f: "Wie viele Bits braucht ein Pixel in einem Schwarz-Weiß-Bild?", a: ["1", "2", "8", "24"], r: 0 },
+    { f: "Welche Farbe ergibt <code>(255, 255, 0)</code>?", a: ["Rot", "Grün", "Gelb", "Weiß"], r: 2 },
+    { f: "Wie viele Bits braucht ein farbiges RGB-Pixel?", a: ["3", "8", "16", "24"], r: 3 }
+  ];
+  var quiz = document.getElementById("quiz");
+  fragen.forEach(function (q, i) {
+    var div = document.createElement("div");
+    div.className = "quizfrage";
+    var html = "<p>" + (i + 1) + ". " + q.f + "</p>";
+    q.a.forEach(function (ant, j) {
+      html += '<label><input type="radio" name="q' + i + '" value="' + j + '"> ' + ant + "</label>";
+    });
+    div.innerHTML = html;
+    quiz.appendChild(div);
+  });
+
+  document.getElementById("quizAuswerten").addEventListener("click", function () {
+    var punkte = 0, offen = 0;
+    fragen.forEach(function (q, i) {
+      var gew = quiz.querySelector('input[name="q' + i + '"]:checked');
+      var box = quiz.children[i];
+      box.classList.remove("ok", "falsch");
+      if (!gew) { offen++; return; }
+    });
+    var erg = document.getElementById("quizErgebnis");
+    if (offen > 0) {
+      erg.innerHTML = '<p class="rueck falsch">Du hast noch ' + offen + (offen === 1 ? " Frage" : " Fragen") + " offen.</p>";
+      return;
+    }
+    fragen.forEach(function (q, i) {
+      var gew = quiz.querySelector('input[name="q' + i + '"]:checked');
+      var richtig = parseInt(gew.value, 10) === q.r;
+      if (richtig) punkte++;
+      quiz.children[i].classList.add(richtig ? "ok" : "falsch");
+    });
+    var geschafft = punkte >= 7;
+    erg.innerHTML =
+      '<div class="code-box"><div>' + punkte + " von 10 Punkten – " +
+      (geschafft ? "Station 1 geschafft!" : "noch nicht geschafft. Schau dir die rot markierten Fragen noch einmal an.") +
+      '</div><div class="speichern" id="speicherStatus">Ergebnis wird gespeichert …</div></div>';
+    InformatikLogin.senden(1, punkte, 10).then(function (r) {
+      var st = document.getElementById("speicherStatus");
+      if (!st) return;
+      if (r.ok) st.textContent = "✓ Gespeichert. Deine Lernbegleitung sieht dein Ergebnis.";
+      else if (r.grund === "login") st.textContent = "Nicht gespeichert: Du bist nicht angemeldet. Melde dich oben an und mach das Quiz noch einmal.";
+      else if (r.grund === "vorname") st.textContent = "Nicht gespeichert: Trag oben zuerst deinen Vornamen ein und werte dann noch einmal aus.";
+      else st.textContent = "Nicht gespeichert: Keine Verbindung. Versuch es gleich noch einmal.";
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
