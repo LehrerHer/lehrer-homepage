@@ -1,10 +1,13 @@
 /**
- * seitenleisten.js – Randspalten der Startseite (nur ab 1720 px sichtbar, siehe css/style.css)
+ * seitenleisten.js – Randspalten (nur ab 1720 px sichtbar, siehe css/style.css)
  *
- *   links  (#seiten-inhalt): mitlaufendes Inhaltsverzeichnis der Seitenabschnitte;
- *                            aktiver Abschnitt wird vom Scroll-Spy in js/main.js markiert
- *   rechts (#seiten-rand):   Arena-Spalte (eigener Gladiator + Top 5 bzw. Login-Teaser)
- *                            und „Zuletzt benutzt“ (localStorage, geschrieben von js/main.js)
+ *   links  (#seiten-inhalt): mitlaufendes Inhaltsverzeichnis – auf der Startseite aus den
+ *                            section[id], auf Unterseiten aus den h2-Überschriften in <main>
+ *                            (fehlende Anker-IDs werden ergänzt); aktiver Abschnitt wird vom
+ *                            Scroll-Spy in js/main.js markiert. Fehlt das Markup, legt das Script
+ *                            die linke Leiste selbst direkt unter der Navbar an (alle Unterseiten).
+ *   rechts (#seiten-rand):   nur wo das Markup vorhanden ist (Startseite): Arena-Spalte (eigener
+ *                            Gladiator + Top 5 bzw. Login-Teaser) und „Zuletzt benutzt“ (localStorage)
  *
  * Nichts hier ist exklusiv: dieselben Inhalte sind über Navbar, Arena-Leiste und
  * die Seite selbst erreichbar. Unterhalb von 1720 px bleibt alles ausgeblendet.
@@ -27,7 +30,18 @@
 
   var inhalt = document.getElementById('seiten-inhalt');
   var rand   = document.getElementById('seiten-rand');
-  if (!inhalt && !rand) return;
+  var MAX_EINTRAEGE = 14;
+
+  /* Unterseiten ohne eigenes Markup: linke Leiste direkt unter der Navbar anlegen */
+  if (!inhalt && !rand) {
+    var navbar = document.querySelector('nav.navbar');
+    if (!navbar || !navbar.parentNode) return;
+    var wrap = document.createElement('div');
+    wrap.className = 'seitenleisten';
+    wrap.innerHTML = '<nav class="seitenleiste seitenleiste-links" id="seiten-inhalt" aria-label="Abschnitte dieser Seite" data-scrollspy></nav>';
+    navbar.parentNode.insertBefore(wrap, navbar.nextSibling);
+    inhalt = document.getElementById('seiten-inhalt');
+  }
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -42,22 +56,45 @@
   }
 
   /* ───────────── Inhaltsverzeichnis (links) ───────────── */
+  function slug(text) {
+    return String(text || '').toLowerCase()
+      .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+      .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'abschnitt';
+  }
+  function sichtbar(el) { return !!el && el.offsetParent !== null; }
+
+  /* Einträge: Startseite → section[id]; Unterseiten → h2 in <main> (IDs werden ergänzt) */
+  function eintraegeSammeln() {
+    var sektionen = Array.prototype.slice.call(document.querySelectorAll('section[id]'));
+    if (sektionen.length >= 3) {
+      return sektionen.map(function (s) {
+        var titel = s.getAttribute('data-inhalt');
+        if (!titel) { var h = s.querySelector('h1, h2, h3'); if (h) titel = h.textContent; }
+        if (!titel && s.getAttribute('aria-labelledby')) { var l = document.getElementById(s.getAttribute('aria-labelledby')); if (l) titel = l.textContent; }
+        return { el: s, id: s.id, titel: (titel || s.id).replace(/\s+/g, ' ').trim() };
+      });
+    }
+    var wurzel = document.querySelector('main') || document.body;
+    var vergeben = {};
+    return Array.prototype.slice.call(wurzel.querySelectorAll('h2'))
+      .filter(function (h) { return sichtbar(h) && !h.closest('nav, footer, .seitenleiste, [hidden]') && h.textContent.trim(); })
+      .map(function (h) {
+        var titel = h.textContent.replace(/\s+/g, ' ').trim();
+        if (!h.id) {
+          var basis = 'abschnitt-' + slug(titel), id = basis, n = 2;
+          while (document.getElementById(id) || vergeben[id]) id = basis + '-' + (n++);
+          h.id = id;
+        }
+        vergeben[h.id] = true;
+        return { el: h, id: h.id, titel: titel.length > 60 ? titel.slice(0, 57) + '…' : titel };
+      });
+  }
+
   function inhaltsverzeichnis() {
     if (!inhalt) return;
-    var sektionen = Array.prototype.slice.call(document.querySelectorAll('section[id]'));
-    var eintraege = sektionen.map(function (s) {
-      var titel = s.getAttribute('data-inhalt');
-      if (!titel) {
-        var h = s.querySelector('h1, h2, h3');
-        if (h) titel = h.textContent;
-      }
-      if (!titel && s.getAttribute('aria-labelledby')) {
-        var l = document.getElementById(s.getAttribute('aria-labelledby'));
-        if (l) titel = l.textContent;
-      }
-      return { el: s, id: s.id, titel: (titel || s.id).replace(/\s+/g, ' ').trim() };
-    });
-    if (eintraege.length < 3) { inhalt.hidden = true; return; }
+    var eintraege = eintraegeSammeln();
+    if (eintraege.length < 2) { inhalt.hidden = true; return; }
+    if (eintraege.length > MAX_EINTRAEGE) eintraege = eintraege.slice(0, MAX_EINTRAEGE);
 
     inhalt.innerHTML = '<div class="seitenleiste-block"><p class="seitenleiste-titel">Auf dieser Seite</p><ul>'
       + eintraege.map(function (e) {
@@ -76,7 +113,7 @@
     sichtbarkeit();
     if (window.MutationObserver) {
       var mo = new MutationObserver(sichtbarkeit);
-      eintraege.forEach(function (e) { mo.observe(e.el, { attributes: true, attributeFilter: ['style', 'hidden', 'class'] }); });
+      eintraege.forEach(function (e) { mo.observe(e.el.tagName === 'SECTION' ? e.el : (e.el.parentNode || e.el), { attributes: true, attributeFilter: ['style', 'hidden', 'class'] }); });
     }
   }
 
