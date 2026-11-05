@@ -262,6 +262,9 @@ Startseite (index.html, <body class="hat-seitenleisten startseite">)
 │                      3. „Außerdem hier" (.nb-ausserdem): Blog, Leseabenteuer, RegelRadar,
 │                         Vokabeltrainer, AGs & Projekte als schlichte Textliste
 ├── #was-ist-neu     → kurze datierte Liste (js/was-ist-neu.js), leer → Abschnitt ausgeblendet
+├── #projekte        → „Größere Projekte“: Karteikarten zu Startseiten großer Unterprojekte
+│                      (KI-Werkstatt → kolosseum…/ki-werkstatt.html, Informatik-Lernpfad → informatikwerkstatt.html);
+│                      neue Großprojekte hier als weitere .nb-projekt-Karte ergänzen
 ├── #regelradar-teaser  → RegelRadar (Rechtschreibung & Zeichensetzung) → regelradar.html
 ├── Login-Gate       → sichtbar wenn NICHT eingeloggt (#homepage-login-gate)
 ├── #lernkolosseum   → Lernkolosseum-Teaser, sichtbar wenn eingeloggt
@@ -347,7 +350,7 @@ XP werden nur bei **Verbesserungen** gutgeschrieben (Differenz zum bisherigen Be
 ## Key Files and Their Roles
 
 ### `index.html`
-- **Sektionsreihenfolge:** `#ladebildschirm` → Navbar → `#startseite` (Notizbuch-Einstieg) → `#was-ist-neu` → `#regelradar-teaser` → Login-Gate (`#homepage-login-gate`) → `#lernkolosseum` → `#digitale-materialien` → `#blog-teaser` → `#kontakt` → Footer
+- **Sektionsreihenfolge:** `#ladebildschirm` → Navbar → `#startseite` (Notizbuch-Einstieg) → `#was-ist-neu` → `#projekte` → `#regelradar-teaser` → Login-Gate (`#homepage-login-gate`) → `#lernkolosseum` → `#digitale-materialien` → `#blog-teaser` → `#kontakt` → Footer
 - **Einstieg (Stand 2026-11):** siehe Seitenstruktur oben und Abschnitt „Design: Notizbuch". Keine gleichförmigen Kachelraster mehr: wichtige Bereiche als Karteikarten, Nebensachen als Textliste. Die alten `.bereich-karte`-Klassen werden auf der Startseite nicht mehr benutzt (CSS bleibt vorerst).
 - **Begrüßungstext** (`.nb-gruss`) und Randnotiz (`.nb-randnotiz`) stammen wörtlich von Jan – **nie umformulieren oder erfinden**; Änderungen nur nach seinem Wortlaut. Für künftige Platzhalter gibt es die Klasse `.nb-platzhalter`.
 - Digitalematerialien-Sektion: Jahrgang-Filterleiste (`.dm-filter-leiste`) über dem Grid; Karten tragen `data-jahrgang="5-6|7-8|9-10"` Attribute

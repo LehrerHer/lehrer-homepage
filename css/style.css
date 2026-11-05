@@ -4416,3 +4416,37 @@ body.fachseite .material-icon { display: none; }
         background-image: linear-gradient(90deg, transparent 20px, var(--farbe-heftrand) 20px, var(--farbe-heftrand) 21px, transparent 21px);
     }
 }
+
+
+/* --- Startseite: Größere Projekte (zwischen „Was ist neu?“ und RegelRadar) --- */
+.nb-projekte {
+    padding: 8px 0 48px;
+}
+body.startseite #projekte { background-color: transparent; }
+.nb-projekt-raster {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px;
+    max-width: 960px;
+}
+.nb-projekt h3 {
+    margin: 0 0 1.3rem;
+    font-family: var(--schrift-ueberschrift);
+    font-size: 1.3rem;
+    line-height: 1.3;
+}
+.nb-projekt h3 a {
+    color: var(--farbe-primaer);
+    text-decoration: none;
+}
+.nb-projekt h3 a:hover,
+.nb-projekt h3 a:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+.nb-projekt:nth-child(1) { transform: rotate(.4deg); }
+.nb-projekt:nth-child(2) { transform: rotate(-.3deg); }
+@media (max-width: 768px) {
+    .nb-projekt-raster { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .nb-projekt:nth-child(n) { transform: none; }
+}
