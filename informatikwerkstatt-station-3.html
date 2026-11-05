@@ -282,6 +282,21 @@
   .hn-knoten { border: 2px solid var(--blau); border-radius: 10px; padding: 8px 14px; text-align: center; font-size: 1.4rem; line-height: 1.3; }
   .hn-knoten b, .cs-knoten b { font-size: 0.95rem; color: var(--blau); }
   .zuordnen { max-width: 640px; }
+  .zo-tabelle { border-collapse: collapse; width: 100%; max-width: 640px; margin: 6px 0 8px; font-size: 0.95rem; }
+  .zo-tabelle th, .zo-tabelle td { border: 1px solid var(--rand); padding: 6px 10px; }
+  .zo-tabelle thead th { background: var(--blau); color: var(--weiss); font-weight: 600; text-align: center; }
+  .zo-tabelle tbody th { text-align: left; font-weight: 400; }
+  .zo-tabelle td { text-align: center; width: 26%; }
+  .zo-tabelle tr.ok th { background: #eaf6ee; }
+  .zo-tabelle tr.falsch th { background: #fbeceb; }
+  .zo-feld { width: 40px; height: 40px; border: 2px solid var(--blau); border-radius: 8px; background: var(--weiss); color: var(--blau); font-size: 1.3rem; font-weight: 700; cursor: pointer; }
+  .zo-feld:hover { background: var(--blau-zart); }
+  .zo-feld[aria-pressed="true"] { background: var(--orange); border-color: var(--orange); }
+  .zo-tabelle tr.falsch .zo-feld[aria-pressed="true"] { background: #fbeceb; border-color: var(--rot); color: var(--rot); }
+  .zo-tabelle tr.ok .zo-feld[aria-pressed="true"] { background: #eaf6ee; border-color: var(--gruen); color: var(--gruen); }
+  .sr-nur { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .hilfe-link { background: var(--blau-zart); border-radius: 8px; padding: 8px 12px; font-size: 0.95rem; }
+  .hilfe-link a { color: var(--blau); font-weight: 600; }
   .zo-zeile { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; padding: 8px 0; border-bottom: 1px dashed var(--rand); }
   .zo-zeile select { padding: 6px 8px; border: 2px solid var(--rand); border-radius: 6px; font: inherit; font-size: 0.95rem; max-width: 100%; background: var(--weiss); }
   .zo-zeile select.ok { border-color: var(--gruen); background: #eaf6ee; }
@@ -461,8 +476,8 @@
   </div>
 
   <h3><span class="badge b-basis">Basis</span>WWW oder anderer Dienst?</h3>
-  <p>Ordne zu: Nutzt du hier das WWW (eine Webseite im Browser) oder einen anderen Internetdienst?</p>
-  <div class="zuordnen" data-xp-id="teil1-2" data-optionen="www=WWW (Webseite im Browser)|dienst=anderer Internetdienst">
+  <p>Nutzt du hier das WWW (eine Webseite im Browser) oder einen anderen Internetdienst? Klick in jeder Zeile das passende Feld an.</p>
+  <div class="zuordnen" data-art="tabelle" data-xp-id="teil1-2" data-optionen="www=WWW (Webseite im Browser)|dienst=anderer Internetdienst">
     <div class="zo-zeile" data-richtig="www">Einen Artikel bei Wikipedia im Browser lesen</div>
     <div class="zo-zeile" data-richtig="dienst">Eine Sprachnachricht im Messenger schicken</div>
     <div class="zo-zeile" data-richtig="www">Im Browser in einem Online-Shop stöbern</div>
@@ -485,6 +500,7 @@
 
   <h3><span class="badge b-profi">Profi</span>Wie lange dauert der Download?</h3>
   <p>Internetanbieter geben die Geschwindigkeit in <b>Mbit/s</b> an (Megabit pro Sekunde). Dateigrößen stehen meist in <b>MB</b> (Megabyte). Aus Station 1 weißt du: 1 Byte = 8 Bit. Wir rechnen ohne Verluste.</p>
+  <p class="hilfe-link">📏 Hilfe: <a href="informatikwerkstatt-station-1.html#einheiten" target="_blank" rel="noopener">Tabelle der Speichergrößen in Station 1</a> (Bit, Byte, KB, MB, GB, TB – öffnet sich in einem neuen Tab)</p>
   <div class="profi-block" data-block="t1">
   <div class="aufgabe" data-xp-id="teil1-4" data-loesung="16" data-anzeige="16 Sekunden" data-erklaerung="100 MB sind 100 · 8 = 800 Mbit. Bei 50 Mbit pro Sekunde: 800 : 50 = 16 Sekunden."><span class="frage">Euer Anschluss schafft 50 Mbit/s. Wie viele Sekunden dauert der Download einer Datei mit 100 MB?</span><input type="text" inputmode="numeric" aria-label="Antwort in Sekunden"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
   <div class="aufgabe" data-xp-id="teil1-5" data-loesung="160" data-anzeige="160 Sekunden" data-erklaerung="2000 MB sind 2000 · 8 = 16.000 Mbit. Bei 100 Mbit pro Sekunde: 16.000 : 100 = 160 Sekunden, also knapp 3 Minuten."><span class="frage">Ein Film hat 2 GB (= 2000 MB). Wie viele Sekunden dauert der Download mit 100 Mbit/s?</span><input type="text" inputmode="numeric" aria-label="Antwort in Sekunden"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
@@ -1040,32 +1056,79 @@
     zeichnen();
   });
 
-  /* ---------- Zuordnen mit Auswahllisten ---------- */
+  /* ---------- Zuordnen: Auswahllisten oder Klick-Tabelle (data-art="tabelle") ---------- */
   document.querySelectorAll(".zuordnen").forEach(function (z) {
     var optionen = z.dataset.optionen.split("|").map(function (o) { var t = o.split("="); return { wert: t[0], text: t[1] }; });
-    z.querySelectorAll(".zo-zeile").forEach(function (zeile, i) {
-      var sel = document.createElement("select");
-      sel.setAttribute("aria-label", "Zuordnung für: " + zeile.textContent.trim());
-      sel.innerHTML = '<option value="">– bitte wählen –</option>';
-      optionen.forEach(function (o) {
-        var opt = document.createElement("option");
-        opt.value = o.wert; opt.textContent = o.text;
-        sel.appendChild(opt);
+    var zeilen = Array.prototype.slice.call(z.querySelectorAll(".zo-zeile"));
+    var tabelle = z.dataset.art === "tabelle";
+    var rk = z.querySelector(".rueck");
+    function wahl(zeile) { return tabelle ? (zeile.dataset.wahl || "") : zeile.querySelector("select").value; }
+    function markieren(zeile, klasse) {
+      var ziel = tabelle ? zeile.tr : zeile.querySelector("select");
+      ziel.classList.remove("ok", "falsch");
+      if (klasse) ziel.classList.add(klasse);
+    }
+    if (tabelle) {
+      var wrap = document.createElement("div");
+      wrap.className = "tabelle-scroll";
+      var t = document.createElement("table");
+      t.className = "zo-tabelle";
+      var kopf = "<thead><tr><th scope=\"col\"><span class=\"sr-nur\">Tätigkeit</span></th>";
+      optionen.forEach(function (o) { kopf += "<th scope=\"col\"></th>"; });
+      t.innerHTML = kopf + "</tr></thead><tbody></tbody>";
+      optionen.forEach(function (o, i) { t.querySelectorAll("thead th")[i + 1].textContent = o.text; });
+      zeilen.forEach(function (zeile) {
+        var tr = document.createElement("tr");
+        var th = document.createElement("th");
+        th.scope = "row";
+        th.innerHTML = zeile.innerHTML;
+        tr.appendChild(th);
+        optionen.forEach(function (o) {
+          var td = document.createElement("td");
+          var b = document.createElement("button");
+          b.type = "button";
+          b.className = "zo-feld";
+          b.setAttribute("aria-pressed", "false");
+          b.setAttribute("aria-label", zeile.textContent.trim() + ": " + o.text);
+          b.addEventListener("click", function () {
+            zeile.dataset.wahl = o.wert;
+            tr.querySelectorAll(".zo-feld").forEach(function (x) { x.setAttribute("aria-pressed", String(x === b)); x.textContent = x === b ? "✓" : ""; });
+            markieren(zeile, "");
+            rk.textContent = "";
+          });
+          td.appendChild(b);
+          tr.appendChild(td);
+        });
+        zeile.tr = tr;
+        t.querySelector("tbody").appendChild(tr);
+        zeile.hidden = true;
       });
-      sel.addEventListener("change", function () { sel.classList.remove("ok", "falsch"); });
-      zeile.appendChild(sel);
-    });
-    z.querySelector("button").addEventListener("click", function () {
-      var rk = z.querySelector(".rueck"), offen = 0, falsch = 0;
-      z.querySelectorAll(".zo-zeile").forEach(function (zeile) {
-        var sel = zeile.querySelector("select");
-        sel.classList.remove("ok", "falsch");
-        if (!sel.value) { offen++; return; }
-        var ok = sel.value === zeile.dataset.richtig;
+      wrap.appendChild(t);
+      z.insertBefore(wrap, zeilen[0]);
+    } else {
+      zeilen.forEach(function (zeile) {
+        var sel = document.createElement("select");
+        sel.setAttribute("aria-label", "Zuordnung für: " + zeile.textContent.trim());
+        sel.innerHTML = '<option value="">– bitte wählen –</option>';
+        optionen.forEach(function (o) {
+          var opt = document.createElement("option");
+          opt.value = o.wert; opt.textContent = o.text;
+          sel.appendChild(opt);
+        });
+        sel.addEventListener("change", function () { markieren(zeile, ""); });
+        zeile.appendChild(sel);
+      });
+    }
+    z.querySelector("button.iw-btn").addEventListener("click", function () {
+      var offen = 0, falsch = 0;
+      zeilen.forEach(function (zeile) {
+        markieren(zeile, "");
+        if (!wahl(zeile)) { offen++; return; }
+        var ok = wahl(zeile) === zeile.dataset.richtig;
         if (!ok) falsch++;
-        sel.classList.add(ok ? "ok" : "falsch");
+        markieren(zeile, ok ? "ok" : "falsch");
       });
-      if (offen) { rk.className = "rueck falsch"; rk.textContent = "Wähle bei jeder Zeile etwas aus."; return; }
+      if (offen) { rk.className = "rueck falsch"; rk.textContent = tabelle ? "Klick in jeder Zeile ein Feld an." : "Wähle bei jeder Zeile etwas aus."; return; }
       rk.className = "rueck " + (falsch ? "falsch" : "ok");
       rk.textContent = falsch ? falsch + (falsch === 1 ? " Zuordnung stimmt" : " Zuordnungen stimmen") + " noch nicht." : "✓ Alles richtig zugeordnet.";
       if (!falsch) xpGeloest(z, rk);
