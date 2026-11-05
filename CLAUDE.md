@@ -6,7 +6,7 @@ This file provides context for AI assistants (e.g., Claude Code) working on this
 
 ## Project Overview
 
-**lehrer-homepage** is a static teacher homepage for Jan Herrmann at Oberschule Spelle (Lower Saxony, Germany). It consists of HTML pages, one CSS file, and JavaScript files — no build tools, frameworks, or package managers are used.
+**lehrer-homepage** is a static teacher homepage for Jan Herrmann, Lernbegleiter at Friedensschule Osnabrück since summer 2026 (Lower Saxony, Germany; previously Oberschule Spelle). It consists of HTML pages, one CSS file, and JavaScript files — no build tools, frameworks, or package managers are used.
 
 - **Language**: German (UI content and code comments are in German)
 - **Tech stack**: HTML5, CSS3, Vanilla JavaScript (ES6+)
@@ -256,7 +256,7 @@ Startseite (index.html, <body class="hat-seitenleisten startseite">)
 ├── #ladebildschirm  → Kurze History-Timeline-Ladeanimation (blendet sich aus)
 ├── #startseite      → Einstieg „Notizbuch" (Stand 2026-11, immer öffentlich):
 │                      1. Liniertes Blatt (.nb-blatt): Name (einziger Textmarker), Rolle,
-│                         Begrüßung (Ich-Form, PLATZHALTER bis Jan den Wortlaut liefert), „Mehr über mich"
+│                         Begrüßung (Ich-Form, Wortlaut von Jan), „Mehr über mich"
 │                      2. Drei Karteikarten (.nb-karte): Fächer (groß, alle Fächer als Textliste),
 │                         Arbeitsblätter & Quizze, Gladiatorenkämpfe (Notiz „mit Login")
 │                      3. „Außerdem hier" (.nb-ausserdem): Blog, Leseabenteuer, RegelRadar,
@@ -349,7 +349,7 @@ XP werden nur bei **Verbesserungen** gutgeschrieben (Differenz zum bisherigen Be
 ### `index.html`
 - **Sektionsreihenfolge:** `#ladebildschirm` → Navbar → `#startseite` (Notizbuch-Einstieg) → `#was-ist-neu` → `#regelradar-teaser` → Login-Gate (`#homepage-login-gate`) → `#lernkolosseum` → `#digitale-materialien` → `#blog-teaser` → `#kontakt` → Footer
 - **Einstieg (Stand 2026-11):** siehe Seitenstruktur oben und Abschnitt „Design: Notizbuch". Keine gleichförmigen Kachelraster mehr: wichtige Bereiche als Karteikarten, Nebensachen als Textliste. Die alten `.bereich-karte`-Klassen werden auf der Startseite nicht mehr benutzt (CSS bleibt vorerst).
-- **Begrüßungstext:** `.nb-gruss.nb-platzhalter` ist ein sichtbarer Platzhalter – Text **nie erfinden**, Wortlaut von Jan abwarten; danach Klasse `nb-platzhalter` entfernen.
+- **Begrüßungstext** (`.nb-gruss`) und Randnotiz (`.nb-randnotiz`) stammen wörtlich von Jan – **nie umformulieren oder erfinden**; Änderungen nur nach seinem Wortlaut. Für künftige Platzhalter gibt es die Klasse `.nb-platzhalter`.
 - Digitalematerialien-Sektion: Jahrgang-Filterleiste (`.dm-filter-leiste`) über dem Grid; Karten tragen `data-jahrgang="5-6|7-8|9-10"` Attribute
 - `id="startseite"` sitzt auf der `<section class="nb-start">`; die einzige `<h1>` ist der Name im Blatt
 - Copyright year dynamisch via `id="footer-jahr"`
@@ -431,9 +431,10 @@ Ziel: menschlich und ruhig statt „generiert" – Schreibtisch/Notizbuch eines 
 - **Karten:** dünne Linie (`--farbe-rahmen`) + Papierkante `--schatten-papier` (Hover `--schatten-papier-hoch`), Radius 2–4 px. **Keine** harten versetzten Schatten und keine dicken Tintenkonturen mehr – das gilt auch für die gemeinsame Kartenregel (`.material-karte`, `.fach-karte`, `.mat-card`, `.dm-karte`, `.portal-karte`, `.formular-box`), also auch auf Fachseiten.
 - **Gewichte statt Raster:** ein klarer Einstieg oben, Wichtiges größer (Karteikarte über zwei Zeilen), Nebensachen als Textliste. Leichte Drehung (±0,5°) nur bei Karteikarten/Notizzettel, auf Handy und bei `prefers-reduced-motion` aus.
 - **Emojis:** nicht in Überschriften, Kategorien, Badges oder Buttons der Startseite. Login-Hinweis als Handschrift-Notiz statt 🔒.
-- **Textmarker:** nur einmal pro Seite als bewusster Akzent (Startseite: der Name). `body.startseite .section-titel` hat keinen Marker; auf anderen Seiten besteht er vorerst weiter.
+- **Textmarker:** nur einmal pro Seite als bewusster Akzent (Startseite: der Name, Fachseiten: der Seitentitel). `.section-titel` hat seit 2026-11 überall **keinen** Marker mehr.
 - **Heftrand-Rot** `--farbe-heftrand`, Tinte `--farbe-tinte-blau` / `--farbe-tinte-rot` (nur für Handschrift-Notizen, Kontrast ≥ 7:1 geprüft).
 - CSS-Block „STARTSEITE – NOTIZBUCH" am Ende von `css/style.css` (Präfix `nb-`). Arena-Welt (`body.arena-welt`) bleibt im Fantasy-Look.
+- **Fachseiten** (`fach-*.html`, `faecher.html`) tragen `<body class="fachseite">` → Block „FACHSEITEN – NOTIZBUCH" am Ende von `css/style.css`: Papier mit Karoraster, Seitentitel auf dem Papier (statt Marine-Band) mit Marker, „Jan Herrmann" als Handschrift-Signatur, Fachbeschreibung als Blatt mit Heftrand, Hinweisboxen als Notizzettel. Keine Emojis in `<h1>`, Badges oder Themenkarten (`.material-icon` entfernt bzw. ausgeblendet). **Neue Fachseiten bekommen ebenfalls `class="fachseite"`.**
 
 ### CSS
 - **Kein Präprozessor** — reines CSS

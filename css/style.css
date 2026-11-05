@@ -3348,13 +3348,9 @@ h1, h2, h3, .section-titel {
     line-height: 1.15;
 }
 
-/* Gelber Marker unter Abschnittstiteln */
+/* Abschnittstitel ohne Textmarker (seit 2026-11: Marker nur einmal je Seite, am Seitentitel) */
 .section-titel {
     display: inline-block;
-    background-image: linear-gradient(var(--farbe-highlight), var(--farbe-highlight));
-    background-repeat: no-repeat;
-    background-size: 100% 0.32em;
-    background-position: 0 90%;
 }
 
 :focus-visible {
@@ -4020,11 +4016,6 @@ body.startseite section:nth-child(even):not(.lernkolosseum-section) {
     background-color: transparent;
 }
 
-/* Gelber Marker unter Abschnittstiteln: auf der Startseite nur noch am Namen */
-body.startseite .section-titel {
-    background-image: none;
-}
-
 /* --- Einstieg: liniertes Blatt mit Heftrand --- */
 .nb-start {
     padding: 56px 0 32px;
@@ -4310,4 +4301,118 @@ body.startseite .material-icon { display: none; }
     .nb-ausserdem li { display: block; }
     .nb-ausserdem li > a { display: inline-block; margin-right: .5rem; }
     .nb-beschr { display: block; min-width: 0; }
+}
+
+
+/* ================================================================
+   FACHSEITEN – NOTIZBUCH (Stand 2026-11)
+   fach-*.html und faecher.html tragen <body class="fachseite">.
+   Papier mit Karoraster, Seitentitel auf dem Papier statt Marine-Band
+   (Textmarker nur dort), Name als kleine Handschrift-Signatur.
+   Karten erben die Papierkante aus der gemeinsamen Kartenregel.
+   ================================================================ */
+
+body.fachseite {
+    background-color: var(--farbe-papier-grund);
+    background-image:
+        linear-gradient(rgba(20, 40, 75, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(20, 40, 75, 0.045) 1px, transparent 1px);
+    background-size: 22px 22px;
+}
+body.fachseite section:nth-child(even) {
+    background-color: transparent;
+}
+
+body.fachseite .abgabe-header {
+    background: transparent;
+    color: var(--farbe-primaer);
+    text-align: left;
+    padding: 48px 0 0;
+}
+body.fachseite .abgabe-header h1 {
+    display: inline;
+    font-family: var(--schrift-ueberschrift);
+    font-size: 2.3rem;
+    line-height: 1.25;
+    color: var(--farbe-primaer);
+    /* der eine bewusste Textmarker der Seite */
+    background-image: linear-gradient(transparent 62%, #ffd86b 62%, #ffd86b 90%, transparent 90%);
+}
+body.fachseite .abgabe-header p {
+    margin-top: .2rem;
+    font-family: var(--schrift-hand);
+    font-size: 1.45rem;
+    color: var(--farbe-tinte-blau);
+}
+body.fachseite .abgabe-bereich {
+    padding-top: 28px;
+}
+
+/* Beschreibungstext wie ein Blatt mit Heftrand */
+body.fachseite .fach-beschreibung {
+    background-color: var(--farbe-papier);
+    background-image: linear-gradient(90deg, transparent 40px, var(--farbe-heftrand) 40px, var(--farbe-heftrand) 41px, transparent 41px);
+    border: 1px solid #e4dccb;
+    border-left: 1px solid #e4dccb;
+    border-radius: 3px;
+    padding: 24px 28px 20px 64px;
+    box-shadow: var(--schatten-papier);
+}
+
+/* Hinweisboxen als Notizzettel */
+body.fachseite .hinweis-box {
+    background: #fff8d6;
+    border: 1px solid #eadb9e;
+    border-radius: 2px;
+    box-shadow: var(--schatten-papier);
+}
+
+/* Badges als kleine Etiketten (nicht über die ganze Kartenbreite), lesbarer Kontrast */
+body.fachseite .mat-badge {
+    align-self: flex-start;
+    border-radius: 2px;
+    font-size: .8rem;
+}
+body.fachseite .mat-badge.quiz { color: #7a4600; }
+
+/* Beschreibung bündig mit dem Seitentitel, Absätze mit Luft */
+body.fachseite .fach-beschreibung {
+    margin-left: 0;
+    margin-right: 0;
+}
+body.fachseite .fach-beschreibung p + p {
+    margin-top: .6em;
+}
+
+/* Kategorie-Überschriften wie im Heft statt Versal-Labels */
+body.fachseite .mat-kategorie {
+    font-family: var(--schrift-ueberschrift);
+    font-size: 1.2rem;
+    color: var(--farbe-primaer);
+    text-transform: none;
+    letter-spacing: 0;
+    border-bottom: 1px solid var(--farbe-rahmen);
+}
+
+/* Hervorgehobene Angebote: Papierkarte statt dickem Farbbalken */
+body.fachseite .fach-highlight {
+    background: var(--farbe-papier);
+    border: 1px solid var(--farbe-rahmen);
+    border-radius: 4px;
+    box-shadow: var(--schatten-papier);
+}
+body.fachseite .fach-highlight:hover {
+    box-shadow: var(--schatten-papier-hoch);
+}
+
+/* Emoji-Symbole aus dynamisch geladenen Karten ausblenden */
+body.fachseite .material-icon { display: none; }
+
+@media (max-width: 768px) {
+    body.fachseite .abgabe-header { padding-top: 32px; }
+    body.fachseite .abgabe-header h1 { font-size: 1.9rem; }
+    body.fachseite .fach-beschreibung {
+        padding: 18px 16px 16px 36px;
+        background-image: linear-gradient(90deg, transparent 20px, var(--farbe-heftrand) 20px, var(--farbe-heftrand) 21px, transparent 21px);
+    }
 }
