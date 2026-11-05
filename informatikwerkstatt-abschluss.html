@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Abschluss – Informatikwerkstatt 7/8</title>
+<link rel="stylesheet" href="css/style.css?v=20261105c">
+<style>
+  :root {
+    --blau: var(--farbe-primaer, #1e3a5f); --blau-hell: #1f3d6e; --blau-zart: #e9eef6;
+    --orange: #f28c28; --orange-zart: #fff1e3;
+    --weiss: #ffffff; --text: #1b2433; --grau: #5b6577; --rand: #d5dce8;
+    --gruen: #1e7a46; --rot: #b3261e;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--weiss); color: var(--text);
+    font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 17px; line-height: 1.55; }
+  h1, h2, h3 { font-family: "Merriweather", Georgia, serif; line-height: 1.25; }
+  .mono, code { font-family: "JetBrains Mono", ui-monospace, Consolas, monospace; }
+  .iw-wrap { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+
+  .iw-kopf { background: var(--blau); color: var(--weiss); padding: 28px 0 24px; border-bottom: 6px solid var(--orange); }
+  .iw-kopf a { color: #d9e2f1; font-size: 0.9rem; text-decoration: none; }
+  .iw-kopf a:hover { text-decoration: underline; }
+  .iw-kopf .label { color: var(--orange); font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 14px; }
+  .iw-kopf h1 { margin: 4px 0 8px; font-size: 1.9rem; }
+  .iw-kopf p { margin: 0; color: #d9e2f1; max-width: 620px; }
+
+  .iw-seite nav.teile { position: sticky; top: 0; background: var(--weiss); border-bottom: 1px solid var(--rand); z-index: 5; }
+  nav.teile .iw-wrap { display: flex; gap: 6px; overflow-x: auto; padding-top: 10px; padding-bottom: 10px; }
+  nav.teile a { flex: 0 0 auto; text-decoration: none; color: var(--blau); background: var(--blau-zart);
+    padding: 6px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; }
+  nav.teile a:hover, nav.teile a:focus { background: var(--orange); }
+
+  main { padding: 24px 0 48px; }
+  .iw-seite section.teil { padding-top: 20px; padding-bottom: 0; margin-bottom: 36px; scroll-margin-top: 60px; }
+  h2 { color: var(--blau); font-size: 1.45rem; margin: 0 0 12px; }
+  h2::after { content: ""; display: block; width: 48px; height: 4px; background: var(--orange); margin-top: 8px; border-radius: 2px; }
+  h3 { color: var(--blau); font-size: 1.1rem; margin: 22px 0 8px; }
+  .ziel { background: var(--blau-zart); border-left: 5px solid var(--blau); padding: 10px 14px; border-radius: 6px; margin-bottom: 16px; }
+  .ziel b { color: var(--blau); }
+
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; vertical-align: middle; margin-right: 6px; font-family: "Open Sans", system-ui, sans-serif; }
+  .b-basis { background: var(--blau); color: var(--weiss); }
+  .b-profi { background: var(--orange); color: var(--blau); }
+
+  .werkzeug { border: 2px solid var(--blau); border-radius: 10px; padding: 16px; margin: 14px 0; }
+  .werkzeug .titel { font-weight: 700; color: var(--blau); margin-bottom: 10px; }
+
+  /* Bits */
+  .bits { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+  .bit { text-align: center; }
+  .bit .wert { font-size: 0.8rem; color: var(--grau); }
+  .bit button { width: 100%; aspect-ratio: 1 / 1; max-width: 64px; border: 3px solid var(--blau); border-radius: 50%;
+    background: var(--weiss); color: var(--blau); font-size: 1.3rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .bit button[aria-pressed="true"] { background: var(--orange); border-color: var(--orange); box-shadow: 0 0 12px var(--orange); }
+  .ergebnis { margin-top: 12px; font-size: 1.15rem; }
+  .ergebnis b { color: var(--blau); font-size: 1.5rem; }
+
+  /* Aufgaben */
+  .aufgabe { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 10px 0; border-bottom: 1px dashed var(--rand); }
+  .aufgabe .frage { flex: 1 1 260px; }
+  .aufgabe input[type=text] { width: 150px; padding: 7px 10px; border: 2px solid var(--rand); border-radius: 6px; font-size: 1rem; font-family: "JetBrains Mono", ui-monospace, monospace; }
+  .aufgabe input.ok { border-color: var(--gruen); background: #eaf6ee; }
+  .aufgabe input.falsch { border-color: var(--rot); }
+  .rueck { font-size: 0.9rem; min-width: 110px; }
+  .rueck.ok { color: var(--gruen); font-weight: 600; }
+  .rueck.falsch { color: var(--rot); }
+
+  .iw-btn { display: inline-block; background: var(--blau); color: var(--weiss); border: 0; text-decoration: none;
+    padding: 8px 14px; border-radius: 6px; font-weight: 600; font-size: 0.95rem; cursor: pointer; font-family: inherit; }
+  .iw-btn:hover, .iw-btn:focus { background: var(--blau-hell); }
+  .iw-btn.orange { background: var(--orange); color: var(--blau); }
+  .iw-btn.leise { background: var(--blau-zart); color: var(--blau); }
+  button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+
+  details { background: var(--orange-zart); border-radius: 6px; padding: 6px 12px; margin: 8px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--blau); }
+
+  /* ASCII */
+  #asciiEin { width: 100%; max-width: 360px; padding: 8px 10px; border: 2px solid var(--rand); border-radius: 6px; font-size: 1rem; }
+  table.ascii { border-collapse: collapse; margin-top: 10px; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.95rem; }
+  table.ascii th, table.ascii td { border: 1px solid var(--rand); padding: 4px 10px; text-align: center; }
+  table.ascii th { background: var(--blau-zart); color: var(--blau); }
+  .tabelle-scroll { overflow-x: auto; }
+
+  /* Pixel */
+  .vorlage { list-style: none; margin: 10px 0 18px; padding: 0; display: grid; grid-template-columns: repeat(4, max-content); gap: 6px; }
+  .vorlage li { background: var(--blau-zart); border-radius: 6px; padding: 4px 10px; font-size: 0.95rem; white-space: nowrap; }
+  .vorlage .v-nr { font-weight: 700; color: var(--blau); margin-right: 6px; }
+  .vorlage code { letter-spacing: 0.05em; }
+  .zeichenflaeche { display: inline-block; }
+  .zf-kopf, .zf-zeile { display: grid; grid-template-columns: 52px auto 130px; align-items: center; column-gap: 12px; }
+  .zf-kopf { font-size: 0.8rem; color: var(--grau); font-weight: 600; margin-bottom: 4px; }
+  .zf-nr { text-align: right; font-weight: 700; color: var(--blau); font-size: 0.95rem; }
+  .zf-pixel { display: grid; grid-template-columns: repeat(8, 32px); gap: 2px; background: var(--rand); padding: 1px 2px; }
+  .zf-zeile:first-of-type .zf-pixel { padding-top: 2px; border-radius: 4px 4px 0 0; }
+  .zf-zeile:last-of-type .zf-pixel { padding-bottom: 2px; border-radius: 0 0 4px 4px; }
+  .zf-pixel button { width: 32px; height: 32px; border: 0; background: var(--weiss); cursor: pointer; padding: 0; }
+  .zf-pixel button[aria-pressed="true"] { background: var(--blau); }
+  .zf-ist { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.95rem; }
+  .zf-ist.passt { color: var(--gruen); font-weight: 700; }
+
+  /* RGB */
+  .rgb-flex { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
+  .regler label { display: flex; align-items: center; gap: 10px; margin: 6px 0; font-weight: 600; }
+  .regler input[type=range] { width: 180px; }
+  .regler output { font-family: "JetBrains Mono", ui-monospace, monospace; min-width: 36px; }
+  #farbe { width: 120px; height: 120px; border-radius: 10px; border: 2px solid var(--rand); }
+
+  /* Quiz */
+  .quizfrage { border: 2px solid var(--rand); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+  .quizfrage p { margin: 0 0 8px; font-weight: 600; }
+  .quizfrage label { display: block; padding: 4px 0; cursor: pointer; }
+  .quizfrage.ok { border-color: var(--gruen); }
+  .quizfrage.falsch { border-color: var(--rot); }
+  #quizErgebnis { margin-top: 16px; }
+  .code-box { background: var(--blau); color: var(--weiss); border-radius: 10px; padding: 18px; text-align: center; }
+  .code-box .speichern { margin-top: 8px; color: var(--orange); font-weight: 600; }
+  .code-box .code { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 1.8rem; color: var(--orange); letter-spacing: 0.1em; margin: 6px 0; }
+
+
+  @media (max-width: 520px) {
+    .vorlage { grid-template-columns: repeat(2, max-content); }
+    .zf-kopf, .zf-zeile { grid-template-columns: 34px auto 96px; column-gap: 6px; }
+    .zf-pixel { grid-template-columns: repeat(8, 26px); }
+    .zf-pixel button { width: 26px; height: 26px; }
+    .zf-ist { font-size: 0.8rem; }
+    .bit button { font-size: 1rem; border-width: 2px; }
+  }
+
+  /* === PROFI: LÖSUNGEN + BONUS === */
+  .iw-seite [hidden] { display: none !important; }
+  .iw-btn:disabled { opacity: 0.5; cursor: default; }
+  .loesung-freigabe { margin: 12px 0 0; }
+  .loesung-frage { background: var(--orange-zart); border: 2px solid var(--orange); border-radius: 8px; padding: 10px 14px; margin-top: 8px; }
+  .loesung-frage p { margin: 0 0 8px; }
+  .loesung-frage .iw-btn { margin: 0 6px 6px 0; }
+  .loesung-text { flex: 1 1 100%; background: var(--blau-zart); border-left: 4px solid var(--grau); border-radius: 6px; padding: 8px 12px; font-size: 0.95rem; }
+  .aufgabe.angesehen input { background: #f2f2f2; }
+  .rueck.angesehen { color: var(--grau); }
+  .neu-scratch { background: var(--blau-zart); border-left: 5px solid var(--blau); border-radius: 6px; padding: 10px 14px; margin: 10px 0 14px; }
+  .neu-scratch ul { margin: 6px 0 0; padding-left: 20px; }
+  .neu-scratch li { margin-bottom: 4px; }
+  .denkfrage { margin-top: 22px; border: 2px solid var(--blau); border-radius: 10px; padding: 14px 16px; }
+  .denkfrage h3 { margin-top: 0; }
+  .denk-label { display: block; font-weight: 600; margin-bottom: 4px; }
+  .denkfrage textarea { width: 100%; padding: 8px 10px; border: 2px solid var(--rand); border-radius: 6px; font: inherit; font-size: 1rem; resize: vertical; }
+  .denkfrage textarea:disabled { background: #f2f2f2; color: var(--text); }
+  .denk-aktion { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 8px; }
+  .denk-meldung { font-size: 0.9rem; }
+  .denk-meldung.ok { color: var(--gruen); font-weight: 600; }
+  .denk-meldung.falsch { color: var(--rot); }
+  .denk-loesung { background: var(--blau-zart); border-left: 4px solid var(--grau); border-radius: 6px; padding: 8px 12px; margin-top: 8px; font-size: 0.95rem; }
+  .belohnung { margin-top: 18px; border: 3px solid var(--orange); border-radius: 12px; padding: 16px; background: var(--orange-zart); }
+  .belohnung h3 { margin-top: 0; }
+  .belohnung:focus { outline: none; }
+  table.einheiten { border-collapse: collapse; width: 100%; background: var(--weiss); font-size: 0.95rem; }
+  table.einheiten th, table.einheiten td { border: 1px solid var(--rand); padding: 6px 10px; text-align: left; }
+  table.einheiten th { background: var(--blau); color: var(--weiss); }
+  .hinweis-klein { font-size: 0.9rem; color: var(--grau); margin-bottom: 0; }
+
+  /* === TASCHENRECHNER === */
+  .rechner { margin: 10px 0 6px; border: 2px solid var(--rand); border-radius: 10px; padding: 10px; width: 100%; max-width: 260px; background: var(--weiss); }
+  .rechner-titel { font-weight: 700; color: var(--blau); font-size: 0.9rem; margin-bottom: 6px; }
+  .rechner-anzeige { width: 100%; padding: 6px 8px; border: 2px solid var(--rand); border-radius: 6px; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 1rem; text-align: right; }
+  .rechner-ergebnis { min-height: 1.6em; text-align: right; font-family: "JetBrains Mono", ui-monospace, monospace; font-weight: 700; color: var(--blau); margin: 4px 2px; }
+  .rechner-ergebnis.fehler { color: var(--rot); font-weight: 400; font-size: 0.85rem; }
+  .rechner-tasten { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .rechner-tasten button { padding: 9px 0; border: 0; border-radius: 6px; background: var(--blau-zart); color: var(--blau); font-size: 1.05rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .rechner-tasten button.op { background: var(--orange-zart); }
+  .rechner-tasten button.leer { background: #eef0f3; color: var(--grau); }
+  .rechner-tasten button.gleich { grid-column: 1 / -1; background: var(--blau); color: var(--weiss); }
+
+  /* === STATION 2: ALGORITHMEN === */
+  .merkliste { margin: 8px 0 16px; padding-left: 22px; }
+  .merkliste li { margin-bottom: 6px; }
+  .reihenfolge { display: flex; flex-direction: column; gap: 6px; max-width: 520px; }
+  .rf-zeile { display: flex; align-items: center; gap: 8px; background: var(--blau-zart); border-radius: 8px; padding: 6px 10px; }
+  .rf-nr { font-weight: 700; color: var(--blau); width: 1.6em; }
+  .rf-text { flex: 1; }
+  .rf-knopf { border: 0; background: var(--weiss); color: var(--blau); border-radius: 6px; width: 34px; height: 30px; cursor: pointer; font-size: 0.9rem; }
+  .beispiel-anleitung { background: var(--blau-zart); border-left: 4px solid var(--blau); border-radius: 6px; padding: 10px 14px; margin: 8px 0; max-width: 420px; }
+  .mc-aufgabe label { display: block; padding: 4px 0; cursor: pointer; }
+  .mc-erklaerung { background: #eaf6ee; border-left: 4px solid var(--gruen); border-radius: 6px; padding: 8px 12px; font-size: 0.95rem; }
+  .partner-box { background: var(--orange-zart); border: 2px dashed var(--orange); border-radius: 10px; padding: 10px 14px; margin: 18px 0; }
+  .roboter { display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; margin: 10px 0 14px; }
+  .robo-feld { display: grid; grid-template-columns: repeat(5, 54px); grid-template-rows: repeat(5, 54px); gap: 3px; background: var(--rand); padding: 3px; border-radius: 8px; }
+  .robo-zelle { background: var(--weiss); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; position: relative; border-radius: 4px; }
+  .robo-zelle.mauer { background: var(--grau); }
+  .robo-figur { font-size: 1.6rem; }
+  .robo-blick { position: absolute; right: 2px; bottom: 0; font-size: 0.85rem; color: var(--orange); }
+  .robo-steuerung { flex: 1 1 260px; }
+  .robo-knopfreihe { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+  .robo-programm { margin-bottom: 8px; }
+  .robo-programm code { font-size: 1.05rem; letter-spacing: 0.12em; word-break: break-all; }
+  .robo-meldung { min-height: 1.4em; font-weight: 600; }
+  .robo-meldung.ok { color: var(--gruen); }
+  .robo-meldung.falsch { color: var(--rot); }
+  .symbole { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin: 8px 0 14px; }
+  .symbol { display: flex; flex-direction: column; gap: 4px; background: var(--blau-zart); border-radius: 8px; padding: 8px 10px; font-size: 0.95rem; }
+  .symbol svg { width: 120px; height: 50px; }
+  .fluss { margin: 8px 0 14px; }
+  .fluss svg { width: 100%; max-width: 420px; height: auto; }
+  .sv-oval { fill: var(--orange-zart); stroke: var(--orange); stroke-width: 2; }
+  .sv-rechteck { fill: var(--weiss); stroke: var(--blau); stroke-width: 2; }
+  .sv-raute { fill: var(--blau-zart); stroke: var(--blau); stroke-width: 2; }
+  .sv-pfeil { stroke: var(--blau); stroke-width: 2; fill: none; }
+  .sv-spitze { fill: var(--blau); }
+  svg text { font-family: "Open Sans", system-ui, sans-serif; font-size: 14px; text-anchor: middle; fill: var(--text); }
+  svg text.sv-klein { font-size: 12px; font-weight: 700; fill: var(--blau); text-anchor: start; }
+  .scratch-hinweis { background: var(--blau-zart); border-radius: 8px; padding: 8px 12px; font-size: 0.95rem; }
+  .raten { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .raten input { width: 120px; padding: 8px 10px; border: 2px solid var(--rand); border-radius: 6px; font-size: 1rem; font-family: "JetBrains Mono", ui-monospace, monospace; }
+  .raten-meldung { margin-top: 8px; font-weight: 600; min-height: 1.4em; }
+  .raten-meldung.ok { color: var(--gruen); }
+  .raten-meldung.falsch { color: var(--rot); }
+  .karten { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin: 6px 0; }
+  .karte-z { width: 48px; height: 64px; display: flex; align-items: center; justify-content: center; background: var(--weiss); border: 2px solid var(--blau); border-radius: 8px; font-size: 1.3rem; font-weight: 700; color: var(--blau); transition: background 0.2s; }
+  .karte-z.markiert { background: var(--orange-zart); border-color: var(--orange); }
+  .tausch { border: 0; background: var(--blau-zart); color: var(--blau); border-radius: 6px; width: 30px; height: 30px; cursor: pointer; font-size: 1rem; }
+  .tausch:disabled { opacity: 0.4; cursor: default; }
+  .karten-info { display: flex; flex-wrap: wrap; gap: 14px; font-weight: 600; }
+  #kartenMeldung.ok { color: var(--gruen); }
+  @media (max-width: 520px) {
+    .robo-feld { grid-template-columns: repeat(5, 46px); grid-template-rows: repeat(5, 46px); }
+    .karte-z { width: 38px; height: 54px; font-size: 1.1rem; }
+    .tausch { width: 24px; }
+  }
+
+  /* === STATION 2: ERGÄNZUNGEN === */
+  .rf-aktion { margin-top: 14px; }
+  .rf-zeile { transition: background 0.3s, transform 0.3s; }
+  .rf-zeile:nth-child(odd) { background: #dfe7f3; }
+  .rf-zeile.bewegt { background: var(--orange-zart); outline: 2px solid var(--orange); animation: rf-ruck 0.35s ease-out; }
+  @keyframes rf-ruck { from { transform: translateX(14px); } to { transform: none; } }
+  .partner-titel { display: block; font-size: 1.05rem; margin-bottom: 4px; }
+  .robo-feld.gross { grid-template-columns: repeat(7, 46px); grid-template-rows: repeat(7, 46px); }
+  .spiel-eingabe { width: 100%; max-width: 320px; padding: 8px 10px; border: 2px solid var(--rand); border-radius: 6px; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 1.05rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .robo-zelle.lernbuero { background: var(--orange-zart); }
+  .robo-zelle.spur { background: var(--blau-zart); }
+  .info-paar { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; margin: 8px 0 14px; }
+  .info-kasten { border: 2px solid var(--blau); border-radius: 10px; padding: 10px 14px; background: var(--weiss); }
+  .info-kasten h4 { margin: 0 0 6px; color: var(--blau); font-family: "Merriweather", Georgia, serif; }
+  .info-kasten p { margin: 0 0 6px; }
+  .scratch-hinweis p { margin: 0 0 8px; }
+  .scratch-reihe { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 6px; }
+  .scratch-reihe figure { margin: 0; }
+  .scratch-reihe figcaption { font-size: 0.85rem; color: var(--grau); margin-top: 4px; }
+  :root { --sb-steuerung: #ffab19; --sb-steuerung-rand: #cf8b17; --sb-aussehen: #9966ff; --sb-variable: #ff8c1a; }
+  .sb-c { display: inline-block; font-family: "Open Sans", system-ui, sans-serif; font-size: 0.9rem; font-weight: 600; color: var(--weiss); }
+  .sb-kopf, .sb-mitte, .sb-fuss { background: var(--sb-steuerung); border: 1px solid var(--sb-steuerung-rand); padding: 6px 10px; border-radius: 6px; }
+  .sb-kopf { border-bottom-left-radius: 0; }
+  .sb-mitte { border-radius: 0 6px 6px 0; }
+  .sb-fuss { height: 14px; padding: 0; width: 100px; border-top-left-radius: 0; }
+  .sb-innen { border-left: 14px solid var(--sb-steuerung); padding: 3px 0 3px 4px; display: flex; flex-direction: column; gap: 3px; }
+  .sb-block { padding: 6px 10px; border-radius: 6px; width: max-content; }
+  .sb-aussehen { background: var(--sb-aussehen); }
+  .sb-variable { background: var(--sb-variable); }
+  .sb-wert { background: var(--weiss); color: var(--text); border-radius: 10px; padding: 1px 8px; font-weight: 400; }
+  .sb-bed { background: #5cb712; border-radius: 4px; padding: 1px 8px; clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 50%, calc(100% - 8px) 100%, 8px 100%, 0 50%); }
+  @media (max-width: 520px) { .robo-feld.gross { grid-template-columns: repeat(7, 40px); grid-template-rows: repeat(7, 40px); } }
+
+  /* === XP === */
+  .xp-plus { display: inline-block; background: var(--orange); color: var(--blau); font-weight: 700; font-size: 0.85rem; border-radius: 12px; padding: 1px 8px; animation: xp-pop 0.5s ease-out; }
+  @keyframes xp-pop { 0% { transform: scale(0.4); opacity: 0; } 70% { transform: scale(1.2); } 100% { transform: scale(1); opacity: 1; } }
+  .xp-banner { background: var(--orange); color: var(--blau); font-weight: 700; border-radius: 10px; padding: 10px 14px; margin: 0 0 14px; animation: xp-pop 0.6s ease-out; }
+  .xp-schon { display: inline-block; font-size: 0.8rem; font-weight: 600; color: var(--gruen); background: #eaf6ee; border-radius: 10px; padding: 1px 8px; margin-bottom: 6px; }
+
+  /* === STATION 3: NETZWERKE === */
+  .netzbild { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin: 10px 0 16px; }
+  .hn-geraete { display: grid; grid-template-columns: repeat(2, max-content); gap: 6px; }
+  .hn-geraete span { background: var(--blau-zart); border-radius: 6px; padding: 4px 10px; font-size: 0.95rem; }
+  .hn-pfeil { font-size: 1.6rem; color: var(--orange); font-weight: 700; }
+  .hn-router { margin: 0; text-align: center; }
+  .hn-router img { display: block; width: 100%; max-width: 240px; height: auto; }
+  .hn-router figcaption b { color: var(--blau); font-size: 0.95rem; }
+  .internet-bild { border: 3px solid var(--blau); border-radius: 14px; padding: 10px 14px 14px; margin: 10px 0 18px; background: var(--blau-zart); }
+  .ib-titel { font-family: "Merriweather", Georgia, serif; font-weight: 700; color: var(--blau); font-size: 1.15rem; margin-bottom: 8px; }
+  .ib-dienste { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+  .ib-dienst { background: var(--weiss); border: 2px solid var(--rand); border-radius: 8px; padding: 6px 10px; display: flex; flex-direction: column; }
+  .ib-dienst b { color: var(--blau); }
+  .ib-dienst span { font-size: 0.85rem; color: var(--grau); }
+  .ib-dienst.www { border-color: var(--orange); background: var(--orange-zart); }
+  .hn-knoten { border: 2px solid var(--blau); border-radius: 10px; padding: 8px 14px; text-align: center; font-size: 1.4rem; line-height: 1.3; }
+  .hn-knoten b, .cs-knoten b { font-size: 0.95rem; color: var(--blau); }
+  .zuordnen { max-width: 640px; }
+  .zo-tabelle { border-collapse: collapse; width: 100%; max-width: 640px; margin: 6px 0 8px; font-size: 0.95rem; }
+  .zo-tabelle th, .zo-tabelle td { border: 1px solid var(--rand); padding: 6px 10px; }
+  .zo-tabelle thead th { background: var(--blau); color: var(--weiss); font-weight: 600; text-align: center; }
+  .zo-tabelle tbody th { text-align: left; font-weight: 400; }
+  .zo-tabelle td { text-align: center; width: 26%; }
+  .zo-tabelle tr.ok th { background: #eaf6ee; }
+  .zo-tabelle tr.falsch th { background: #fbeceb; }
+  .zo-feld { width: 40px; height: 40px; border: 2px solid var(--blau); border-radius: 8px; background: var(--weiss); color: var(--blau); font-size: 1.3rem; font-weight: 700; cursor: pointer; }
+  .zo-feld:hover { background: var(--blau-zart); }
+  .zo-feld[aria-pressed="true"] { background: var(--orange); border-color: var(--orange); }
+  .zo-tabelle tr.falsch .zo-feld[aria-pressed="true"] { background: #fbeceb; border-color: var(--rot); color: var(--rot); }
+  .zo-tabelle tr.ok .zo-feld[aria-pressed="true"] { background: #eaf6ee; border-color: var(--gruen); color: var(--gruen); }
+  .sr-nur { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .hilfe-link { background: var(--blau-zart); border-radius: 8px; padding: 8px 12px; font-size: 0.95rem; }
+  .hilfe-link a { color: var(--blau); font-weight: 600; }
+  .zo-zeile { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; padding: 8px 0; border-bottom: 1px dashed var(--rand); }
+  .zo-zeile select { padding: 6px 8px; border: 2px solid var(--rand); border-radius: 6px; font: inherit; font-size: 0.95rem; max-width: 100%; background: var(--weiss); }
+  .zo-zeile select.ok { border-color: var(--gruen); background: #eaf6ee; }
+  .zo-zeile select.falsch { border-color: var(--rot); }
+  .mc-frage { margin: 0 0 4px; font-style: italic; }
+  .spiel-schritte { margin: 6px 0; padding-left: 22px; }
+  .spiel-schritte li { margin-bottom: 4px; }
+  kbd { font-family: "JetBrains Mono", ui-monospace, monospace; background: var(--weiss); border: 1px solid var(--grau); border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; font-size: 0.9rem; }
+  .paket-muster { display: inline-block; border: 2px dashed var(--orange); background: var(--orange-zart); border-radius: 8px; padding: 8px 14px; margin: 4px 0 12px; font-size: 0.95rem; }
+  .pm-kopf { font-weight: 700; color: var(--blau); margin-bottom: 2px; }
+  .paket-eingabe, .ip-eingabe { width: 100%; max-width: 420px; padding: 8px 10px; border: 2px solid var(--rand); border-radius: 6px; font-size: 1rem; }
+  .ip-eingabe { max-width: 220px; font-family: "JetBrains Mono", ui-monospace, monospace; }
+  .paket-reihe { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .paket { border: 2px solid var(--blau); border-radius: 8px; padding: 4px 8px; background: var(--weiss); font-size: 0.85rem; animation: paket-rein 0.4s ease-out both; }
+  .paket .p-nr { display: block; font-weight: 700; color: var(--orange); font-size: 0.8rem; }
+  .paket .p-inhalt { font-family: "JetBrains Mono", ui-monospace, monospace; white-space: pre; }
+  @keyframes paket-rein { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: none; } }
+  .paket-meldung { margin-top: 8px; font-weight: 600; min-height: 1.4em; }
+  .netz-sim svg { width: 100%; max-width: 640px; height: auto; display: block; }
+  .netz-sim .leitung { stroke: var(--rand); stroke-width: 4; }
+  .netz-sim .leitung.weg { stroke: var(--orange); stroke-width: 6; }
+  .netz-sim .leitung.tot { stroke-dasharray: 6 6; }
+  .netz-sim .knoten { cursor: pointer; }
+  .netz-sim .knoten circle { fill: var(--weiss); stroke: var(--blau); stroke-width: 3; }
+  .netz-sim .knoten.endpunkt circle { fill: var(--blau-zart); }
+  .netz-sim .knoten.imweg circle { fill: var(--orange-zart); stroke: var(--orange); }
+  .netz-sim .knoten.aus circle { fill: #e4e4e4; stroke: var(--grau); }
+  .netz-sim .knoten:focus { outline: none; }
+  .netz-sim .knoten:focus-visible circle { stroke: var(--orange); stroke-width: 5; }
+  .netz-sim text.k-name { font-size: 18px; font-weight: 700; fill: var(--blau); }
+  .netz-sim text.k-symbol { font-size: 22px; }
+  .netz-sim text.k-x { font-size: 22px; fill: var(--rot); font-weight: 700; }
+  .netz-sim .paket-punkt { fill: var(--orange); stroke: var(--blau); stroke-width: 2; }
+  .netz-steuerung { margin-top: 10px; }
+  .netz-weg { margin-bottom: 8px; }
+  .netz-weg code { font-size: 1rem; }
+  .netz-ausfall { border: 1px solid var(--rand); border-radius: 8px; padding: 6px 12px; margin: 0 0 8px; }
+  .netz-ausfall legend { font-weight: 600; color: var(--blau); font-size: 0.95rem; padding: 0 4px; }
+  .netz-ausfall label { display: inline-flex; align-items: center; gap: 4px; margin-right: 14px; cursor: pointer; }
+  .ip-bits { margin-top: 6px; font-size: 0.95rem; line-height: 1.8; }
+  .ip-bits span { display: inline-block; background: var(--blau-zart); border-radius: 6px; padding: 0 8px; margin-right: 6px; }
+  .url-bild { display: flex; flex-wrap: wrap; margin: 6px 0 4px; font-size: 1.05rem; }
+  .url-teil { padding: 6px 4px; border-bottom: 4px solid; }
+  :root { --lila: #6b4fbb; }
+  .k-protokoll { --k: var(--orange); } .k-sub { --k: var(--lila); } .k-name { --k: var(--blau); } .k-endung { --k: var(--gruen); } .k-pfad { --k: var(--grau); }
+  .url-teil { border-color: var(--k); }
+  .url-legende { list-style: none; padding: 0; margin: 10px 0 6px; }
+  .url-legende li { padding: 6px 0; border-bottom: 1px dashed var(--rand); }
+  .url-marke { display: inline-block; border-bottom: 4px solid var(--k); padding: 0 4px; margin-right: 8px; font-size: 0.95rem; }
+  .uz-karten { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .uz-karte { border: 2px solid var(--k); border-left-width: 8px; background: var(--weiss); color: var(--text); border-radius: 8px; padding: 6px 12px; font: inherit; font-size: 0.95rem; font-weight: 600; cursor: grab; touch-action: manipulation; }
+  .uz-karte[aria-pressed="true"] { background: var(--orange-zart); outline: 3px solid var(--orange); }
+  .uz-adresse { display: flex; flex-wrap: wrap; gap: 2px; margin: 8px 0; font-size: 1rem; }
+  .uz-teil { padding: 6px 4px; border: 2px dashed var(--rand); border-bottom-width: 4px; border-radius: 4px; background: var(--weiss); cursor: pointer; }
+  .uz-teil.ziel { background: var(--blau-zart); border-color: var(--blau); }
+  .uz-teil.fertig { border-style: solid; border-color: transparent; border-bottom-color: var(--k); background: transparent; cursor: default; }
+  .uz-teil.fertig::after { content: attr(data-name); display: block; font-family: "Open Sans", system-ui, sans-serif; font-size: 0.7rem; color: var(--grau); }
+  .uz-teil.falsch { animation: wackeln 0.4s; border-color: var(--rot); }
+  .uz-stand { margin: 8px 0 0; }
+  .cs-bild { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 10px 0 14px; }
+  .cs-knoten { border: 2px solid var(--blau); border-radius: 10px; padding: 8px 14px; text-align: center; font-size: 1.4rem; line-height: 1.3; }
+  .cs-pfeile { flex: 1 1 240px; display: flex; flex-direction: column; gap: 8px; }
+  .cs-pfeil { border-radius: 6px; padding: 6px 10px; font-size: 0.9rem; }
+  .cs-pfeil.hin { background: var(--orange-zart); text-align: right; }
+  .cs-pfeil.zurueck { background: var(--blau-zart); }
+  @media (max-width: 520px) {
+    .netz-sim text.k-name { font-size: 22px; }
+    .netzbild { flex-direction: column; }
+    .hn-pfeil { transform: rotate(90deg); }
+    .hn-router img { max-width: 200px; }
+  }
+
+  /* === STATION 4: REIHENFOLGE IM WERKZEUG-STIL + FUNKMAST === */
+  .rf-werkzeug .reihenfolge { max-width: none; gap: 0; }
+  .rf-werkzeug .rf-zeile { background: transparent; border-radius: 6px; border-bottom: 1px dashed var(--rand); padding: 8px 6px; gap: 10px; }
+  .rf-werkzeug .rf-zeile:nth-child(odd) { background: transparent; }
+  .rf-werkzeug .rf-zeile.ok { background: #eaf6ee; }
+  .rf-werkzeug .rf-zeile.falsch { background: #fbeceb; }
+  .rf-werkzeug .rf-zeile.bewegt { background: var(--orange-zart); }
+  .rf-werkzeug .rf-nr { flex: 0 0 28px; width: 28px; height: 28px; border-radius: 50%; background: var(--blau); color: var(--weiss); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+  .rf-werkzeug .ic { flex: 0 0 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: var(--blau-zart); border-radius: 10px; }
+  .rf-werkzeug .rf-knoepfe { display: flex; gap: 6px; }
+  .rf-werkzeug .rf-knopf { width: 40px; height: 34px; border: 2px solid var(--blau); background: var(--weiss); color: var(--blau); border-radius: 20px; font-size: 0.9rem; cursor: pointer; }
+  .rf-werkzeug .rf-knopf:hover:not(:disabled) { background: var(--blau); color: var(--weiss); }
+  .rf-werkzeug .rf-knopf:disabled { opacity: 0.3; cursor: default; }
+  .rf-werkzeug .rf-aktion { margin: 10px 0 0; }
+  .exkurs { border: 2px dashed var(--blau); border-radius: 10px; padding: 12px 16px; margin: 18px 0; }
+  .exkurs h3 { margin-top: 0; }
+  .bau-flex { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; }
+  .bau-flex .tabelle-scroll { flex: 1 1 360px; }
+  .mast { flex: 0 0 120px; display: flex; flex-direction: column; align-items: center; margin-bottom: 8px; }
+  .mast-stapel { display: flex; flex-direction: column-reverse; align-items: center; min-height: 10px; }
+  .mast-block { width: 54px; height: 26px; background: var(--blau); border: 2px solid var(--weiss); border-radius: 4px; margin-top: -2px; animation: block-rein 0.4s ease-out; }
+  .mast-block.hell { background: var(--orange); width: 46px; }
+  .mast-block.faellt { background: var(--rot); animation: block-faellt 0.9s ease-in forwards; }
+  .mast-boden { width: 110px; height: 8px; background: var(--grau); border-radius: 4px; }
+  .mast-antenne { width: 6px; height: 0; background: var(--blau); border-radius: 3px; transition: height 0.5s; }
+  .mast.sendet .mast-antenne { height: 34px; }
+  .mast-wellen { position: relative; width: 90px; height: 34px; opacity: 0; }
+  .mast.sendet .mast-wellen { opacity: 1; }
+  .mast-wellen span { position: absolute; left: 50%; bottom: 0; border: 3px solid var(--orange); border-bottom-color: transparent; border-left-color: transparent; border-radius: 50%; transform: translateX(-50%) rotate(-45deg); }
+  .mast-wellen span:nth-child(1) { width: 20px; height: 20px; bottom: -6px; }
+  .mast-wellen span:nth-child(2) { width: 46px; height: 46px; bottom: -19px; }
+  .mast-wellen span:nth-child(3) { width: 74px; height: 74px; bottom: -33px; }
+  .mast.sendet .mast-wellen span { animation: welle 1.4s ease-out infinite; }
+  .mast.sendet .mast-wellen span:nth-child(2) { animation-delay: 0.2s; }
+  .mast.sendet .mast-wellen span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes block-rein { from { transform: translateY(-60px); opacity: 0; } to { transform: none; opacity: 1; } }
+  @keyframes block-faellt { 0% { transform: translateY(-60px); opacity: 1; } 30% { transform: translateY(0) rotate(0); } 50% { transform: translateX(-6px) rotate(-8deg); } 100% { transform: translate(60px, 120px) rotate(70deg); opacity: 0; } }
+  @keyframes welle { 0% { opacity: 0.2; } 50% { opacity: 1; } 100% { opacity: 0.2; } }
+  .zo-feld.wackelt { animation: wackeln 0.4s; border-color: var(--rot); }
+  @keyframes wackeln { 0%, 100% { transform: none; } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+  .zo-feld:disabled { cursor: default; }
+  @media (prefers-reduced-motion: reduce) { .mast-block, .mast-block.faellt, .zo-feld.wackelt, .mast.sendet .mast-wellen span { animation: none; } }
+  @media (max-width: 520px) { .rf-werkzeug .ic { flex-basis: 38px; height: 38px; } .rf-werkzeug .ic svg { width: 30px; height: 30px; } .rf-werkzeug .rf-zeile { gap: 6px; padding: 8px 2px; } .rf-werkzeug .rf-knoepfe { flex-direction: column; gap: 4px; } }
+
+  /* === LOGIN-BOX === */
+  .iw-login { border-radius: 10px; padding: 12px 16px; margin: 24px 0; }
+  .iw-login p { margin: 0 0 8px; }
+  .iw-login p:last-child { margin-bottom: 0; }
+  .iw-login-fehlt { background: var(--orange-zart); border: 2px solid var(--orange); }
+  .iw-login-name { background: var(--blau-zart); border: 2px solid var(--blau); }
+  .iw-login-ok { background: #eaf6ee; border: 2px solid var(--gruen); }
+  .iw-name-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .iw-name-form input { padding: 8px 10px; border: 2px solid var(--rand); border-radius: 6px; font-size: 1rem; width: 200px; }
+  .iw-meldung { color: var(--rot); font-size: 0.9rem; }
+  .iw-seite section { background: transparent; padding-bottom: 0; }
+  .iw-kopf { margin-top: 16px; }
+  .iw-bild { margin: 14px 0 18px; }
+  .iw-bild img { display: block; width: 100%; max-width: 420px; height: auto; border: 1px solid var(--rand); border-radius: 8px; background: var(--weiss); }
+  .iw-bild figcaption { font-size: 0.9rem; color: var(--grau); margin-top: 6px; }
+  .pw-balken { height: 12px; background: var(--blau-zart); border-radius: 6px; overflow: hidden; margin: 10px 0 6px; max-width: 420px; }
+  .pw-balken div { height: 100%; width: 0; background: var(--rot); transition: width 0.3s; }
+  .pw-balken div.st1 { background: var(--rot); }
+  .pw-balken div.st2 { background: var(--orange); }
+  .pw-balken div.st3 { background: var(--gruen); }
+  .caesar-reihe { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 10px 0; }
+  .caesar-reihe input[type=range] { flex: 1 1 200px; max-width: 320px; accent-color: var(--orange); }
+  .caesar-ausgabe { min-height: 1.6em; margin-top: 10px; font-size: 1.15rem; font-weight: 700; color: var(--blau); word-break: break-word; }
+  .link-liste code { word-break: break-all; }
+  code.gross { font-size: 1.15rem; letter-spacing: 0.08em; }
+  @media (prefers-reduced-motion: reduce) { .pw-balken div { transition: none; } }
+  .termine li { margin-bottom: 6px; }
+  .ideen { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; margin: 10px 0 16px; }
+  .ideen > div { border: 1px solid var(--rand); border-left: 4px solid var(--orange); border-radius: 6px; padding: 8px 12px; background: var(--weiss); }
+  .ideen b { display: block; color: var(--blau); }
+  .check-liste { list-style: none; padding-left: 0; }
+  .check-liste li { margin: 6px 0; }
+  .check-liste input { accent-color: var(--orange); width: 18px; height: 18px; vertical-align: -3px; margin-right: 6px; }
+  .steckbrief { display: grid; gap: 12px; max-width: 640px; }
+  .steckbrief label { font-weight: 600; display: grid; gap: 4px; }
+  .steckbrief input, .steckbrief textarea { padding: 8px 10px; border: 2px solid var(--rand); border-radius: 6px; font: inherit; font-weight: 400; font-size: 1rem; }
+  .steckbrief input:focus, .steckbrief textarea:focus { border-color: var(--blau); outline: none; }
+  .upload { border: 3px solid var(--orange); border-radius: 12px; padding: 4px 16px 14px; margin-top: 18px; }
+  .upload input[type=file] { font: inherit; margin: 6px 0 10px; max-width: 100%; }
+  .upload-status { font-weight: 600; }
+  .upload-status.ok { color: var(--gruen); }
+  .upload-status.falsch { color: var(--rot); }
+  .ausweis { max-width: 520px; border-radius: 14px; overflow: hidden; background: var(--weiss); border: 3px solid var(--blau); box-shadow: 0 4px 14px rgba(30, 58, 95, 0.18); margin: 12px 0 16px; }
+  .aw-kopf { background: var(--blau); color: var(--weiss); padding: 14px 18px; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .aw-titel { font-family: Merriweather, Georgia, serif; font-size: 1.3rem; font-weight: 900; }
+  .aw-schule { font-size: 0.85rem; opacity: 0.9; }
+  .aw-siegel { width: 54px; height: 54px; border-radius: 50%; border: 3px solid var(--orange); color: var(--orange); display: grid; place-items: center; font-family: "JetBrains Mono", monospace; font-weight: 700; flex: none; }
+  .aw-name { font-family: Merriweather, Georgia, serif; font-size: 1.5rem; font-weight: 700; color: var(--blau); padding: 14px 18px 4px; border-bottom: 3px solid var(--orange); margin: 0 18px; }
+  .aw-stationen { list-style: none; padding: 12px 18px 4px; margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 14px; font-size: 0.92rem; }
+  .aw-stationen li::before { content: "○ "; color: var(--grau); }
+  .aw-stationen li.ok::before { content: "✓ "; color: var(--gruen); font-weight: 700; }
+  .aw-stationen li:not(.ok) { color: var(--grau); }
+  .aw-zahlen { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 12px 18px; text-align: center; }
+  .aw-zahlen b { display: block; font-size: 1.6rem; color: var(--orange); font-family: "JetBrains Mono", monospace; }
+  .aw-zahlen span { font-size: 0.8rem; color: var(--grau); }
+  .aw-fuss { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; padding: 10px 18px 14px; font-size: 0.85rem; color: var(--grau); border-top: 1px dashed var(--rand); }
+  @media (max-width: 480px) { .aw-stationen { grid-template-columns: 1fr; } }
+  @media print {
+    body.druck-ausweis > *:not(main), body.druck-ausweis main > *:not(#ausweis), body.druck-ausweis #ausweis > *:not(.ausweis) { display: none !important; }
+    body.druck-steckbrief > *:not(main), body.druck-steckbrief main > *:not(#automat), body.druck-steckbrief #automat > *:not(.steckbrief):not(h2) { display: none !important; }
+    body.druck-steckbrief #steckbriefDruck { display: none !important; }
+    .ausweis { box-shadow: none; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body class="iw-seite">
+<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+        <a href="index.html" class="navbar-logo" aria-label="Zur Startseite">
+            <img src="img/logo.svg" alt="" class="navbar-logo-img" width="47" height="38">
+            <span class="navbar-logo-text">lehrer-herrmann.de</span>
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Menü öffnen"
+                aria-expanded="false" aria-controls="navbar-links">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="navbar-links" id="navbar-links">
+            <li><a href="index.html#was-ist-neu" class="nav-item" data-tooltip="Was ist neu?">
+                <span class="nav-icon" aria-hidden="true">✨</span>
+                <span class="nav-label">Was ist neu?</span></a></li>
+            <li><a href="https://lehrer-herrmann.de/kontakt.html" class="nav-item" data-tooltip="Kontakt">
+                <span class="nav-icon" aria-hidden="true">✉️</span>
+                <span class="nav-label">Kontakt</span></a></li>
+            <li class="navbar-gb-trenner" aria-hidden="true">
+                <span class="navbar-gb-label">Geschützter Bereich</span>
+            </li>
+            <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="nav-item navbar-gb-link" data-tooltip="Arena – Gladiatorenkämpfe">
+                <span class="nav-icon" aria-hidden="true">⚔️</span>
+                <span class="nav-label">Arena</span></a></li>
+            <li><a href="blog.html" class="nav-item navbar-gb-link" data-tooltip="Schüler*innenblog">
+                <span class="nav-icon" aria-hidden="true">✍️</span>
+                <span class="nav-label">Blog</span></a></li>
+            <li class="navbar-dropdown">
+                <button class="navbar-dropdown-toggle navbar-gb-link nav-item" aria-expanded="false" aria-haspopup="true" data-tooltip="Fächer" aria-label="Fächer">
+                    <span class="nav-icon" aria-hidden="true">📚</span>
+                    <span class="nav-label">Fächer</span>
+                </button>
+                <ul class="navbar-dropdown-menu" role="menu">
+                    <li><a href="faecher.html" role="menuitem">Alle Fächer</a></li>
+                    <li><a href="fach-informatik.html" role="menuitem">Informatik</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+    </div>
+</nav>
+
+
+
+<header class="iw-kopf">
+  <div class="iw-wrap">
+    <a href="informatikwerkstatt.html">← zurück zum Lernpfad</a>
+    <div class="label mono">Abschluss</div>
+    <h1>Zeig, was du kannst!</h1>
+    <p>Du hast alle Stationen geschafft. Jetzt wendest du dein Wissen an: erst im Team beim Escape-Room, dann allein mit deinem eigenen Automaten fürs Klassenzimmer.</p>
+  </div>
+</header>
+
+<nav class="teile" aria-label="Teile des Abschlusses">
+  <div class="iw-wrap">
+    <a href="#ablauf">Ablauf</a>
+    <a href="#escape">A · Escape-Room</a>
+    <a href="#automat">B · Automat</a>
+    <a href="#vorstellung">Vorstellung</a>
+    <a href="#ausweis">Informatik-Ausweis</a>
+  </div>
+</nav>
+
+<main class="iw-wrap">
+
+<div id="iw-login" hidden></div>
+
+<section class="teil" id="ablauf">
+  <h2>So läuft der Abschluss</h2>
+  <ol class="termine">
+    <li><b>Termin 1 · Escape-Room bauen:</b> Ihr baut im Team eine Rätselkette aus den Stationen.</li>
+    <li><b>Termin 2 · Escape-Room tauschen:</b> Ein anderes Team versucht, aus eurem Raum zu entkommen – und ihr aus seinem.</li>
+    <li><b>Termin 3 · Automat planen:</b> Du suchst ein Problem an der Schule und füllst den Steckbrief aus.</li>
+    <li><b>Termin 4 · Automat bauen und testen:</b> Du programmierst in Scratch und lässt andere testen.</li>
+    <li><b>Termin 5 · Vorstellung:</b> Alle stellen ihren Automaten in 3 Minuten vor. Danach gibt es den Informatik-Ausweis.</li>
+  </ol>
+  <p class="hinweis-klein">Wer schneller fertig ist oder warten muss: In der <a href="informatikwerkstatt-knobelkiste.html">Knobelkiste</a> gibt es Extra-Aufgaben, oder du hilfst einem anderen Team beim Testen.</p>
+</section>
+
+<!-- ========== A: ESCAPE-ROOM ========== -->
+<section class="teil" id="escape">
+  <h2>Teil A · Informatik-Escape-Room</h2>
+  <div class="ziel"><b>Auftrag:</b> Baut im Team (3–4 Personen) eine Kette aus 4 Rätseln. Jedes Rätsel verrät eine Ziffer. Die 4 Ziffern zusammen sind der Code, mit dem das andere Team „entkommt“.</div>
+
+  <h3>Regeln für euren Raum</h3>
+  <ul>
+    <li>Die Rätsel kommen aus <b>mindestens 3 verschiedenen Stationen</b>.</li>
+    <li>Jedes Rätsel lässt sich mit dem Wissen aus der Werkstatt lösen – ohne Internet.</li>
+    <li>Zu jedem Rätsel schreibt ihr <b>zwei Tippkarten</b>: Tipp 1 gibt einen kleinen Anstoß, Tipp 2 hilft mehr. Die Lösung verratet ihr nie.</li>
+    <li>Die Lösungen schreibt ihr auf einen extra Zettel für eure Lernbegleitung.</li>
+    <li>Ihr dürft auf Papier bauen oder in Scratch. Für Scratch: <code>frage [Wie lautet der Code?] und warte</code> und <code>falls &lt;(Antwort) = (4711)&gt; dann</code>.</li>
+  </ul>
+
+  <h3>Ideen-Kiste: Welches Rätsel passt zu welcher Station?</h3>
+  <div class="ideen">
+    <div><b>Station 1 · Computer</b> Bauteile beschriften – die Anzahl der Eingabegeräte ist die Ziffer.</div>
+    <div><b>Station 2 · Daten codieren</b> Eine Ziffer als Binärzahl verstecken, z. B. <code>0111</code>.</div>
+    <div><b>Station 3 · Algorithmen</b> Ein Weg nach Anweisungen auf Karopapier: Auf welchem Feld landet man?</div>
+    <div><b>Station 4 · Internet</b> Welches Datenpaket fehlt? Die Nummer ist die Ziffer.</div>
+    <div><b>Station 5 · Sicherheit</b> Ein Caesar-Geheimtext, der eine Zahl als Wort enthält, z. B. <code>GUHL</code>.</div>
+    <div><b>Station 6 · Automatisierung</b> Eine Wenn-dann-Regel: Wie oft geht das Licht an?</div>
+    <div><b>Station 7 · KI</b> Welches Obst rät die KI? Jede Sorte steht für eine Ziffer.</div>
+  </div>
+
+  <h3>Checkliste vor dem Tausch</h3>
+  <ul class="check-liste">
+    <li><label><input type="checkbox"> 4 Rätsel aus mindestens 3 Stationen</label></li>
+    <li><label><input type="checkbox"> Jedes Rätsel hat genau eine richtige Ziffer</label></li>
+    <li><label><input type="checkbox"> Zu jedem Rätsel 2 Tippkarten</label></li>
+    <li><label><input type="checkbox"> Jemand außerhalb des Teams hat ein Rätsel probegelöst</label></li>
+    <li><label><input type="checkbox"> Lösungszettel liegt bei der Lernbegleitung</label></li>
+  </ul>
+
+  <div class="partner-box"><b class="partner-titel">🔑 Beim Tausch</b> Jedes Team hat 25 Minuten. Tippkarten dürft ihr jederzeit ziehen – aber erst, wenn ihr es selbst versucht habt. Danach erzählt das Team, das gebaut hat: Welches Rätsel war am schwierigsten und warum?</div>
+</section>
+
+<!-- ========== B: AUTOMAT ========== -->
+<section class="teil" id="automat">
+  <h2>Teil B · Ein Automat fürs Klassenzimmer</h2>
+  <div class="ziel"><b>Auftrag:</b> Finde ein kleines Problem an deiner Schule und baue in Scratch einen Automaten, der dabei hilft. Er soll nach dem Prinzip Eingabe → Regel → Ausgabe arbeiten.</div>
+
+  <h3>Ideen, falls dir nichts einfällt</h3>
+  <ul>
+    <li><b>Lautstärke-Ampel:</b> Das Mikrofon misst, wie laut es im Raum ist. Grün, gelb oder rot zeigt, ob es zu laut wird.</li>
+    <li><b>Lüftungs-Wecker:</b> Nach einer eingestellten Zeit erinnert er ans Fensteröffnen.</li>
+    <li><b>Dienste-Würfel:</b> Er lost fair aus, wer heute Tafeldienst hat, und merkt sich, wer schon dran war.</li>
+    <li><b>Pausen-Countdown:</b> Er zählt die Minuten bis zur Pause und gibt am Ende ein Signal.</li>
+    <li><b>Hausaufgaben-Bot:</b> Er fragt nach dem Fach und sagt die gespeicherte Hausaufgabe.</li>
+  </ul>
+  <p class="hinweis-klein">Am besten ist ein Problem, das du selbst gefunden hast. Frag doch mal in deiner Lerngruppe, was nervt.</p>
+
+  <h3>Dein Steckbrief</h3>
+  <p>Füll den Steckbrief aus, bevor du programmierst. Er wird nur in diesem Browser gespeichert – druck ihn aus oder schreib ihn ab, wenn du an einem anderen Gerät weitermachst.</p>
+  <form class="steckbrief" id="steckbrief">
+    <label>Mein Automat heißt:<input type="text" data-feld="name" maxlength="60"></label>
+    <label>Welches Problem löst er?<textarea data-feld="problem" rows="2" maxlength="400"></textarea></label>
+    <label>Eingabe – was misst oder fragt er? (Sensor, Taste, Frage …)<textarea data-feld="eingabe" rows="2" maxlength="400"></textarea></label>
+    <label>Regel – nach welcher WENN-DANN-Regel entscheidet er?<textarea data-feld="regel" rows="2" maxlength="400"></textarea></label>
+    <label>Ausgabe – was tut er dann? (Farbe, Ton, Text …)<textarea data-feld="ausgabe" rows="2" maxlength="400"></textarea></label>
+    <label>Datenschutz-Check – speichert er Daten über Menschen? Ist das nötig?<textarea data-feld="datenschutz" rows="2" maxlength="400"></textarea></label>
+    <label>KI-Frage – könnte eine KI das besser? Was wäre ein Risiko?<textarea data-feld="ki" rows="2" maxlength="400"></textarea></label>
+    <p><button type="button" class="iw-btn leise" id="steckbriefDruck">🖨 Steckbrief drucken</button> <span class="hinweis-klein" id="steckbriefStatus" aria-live="polite"></span></p>
+  </form>
+
+  <h3>Selbstcheck: Ist mein Automat fertig?</h3>
+  <ul class="check-liste">
+    <li><label><input type="checkbox"> Er startet mit der grünen Flagge und läuft ohne Fehler.</label></li>
+    <li><label><input type="checkbox"> Er hat eine Eingabe, eine Regel (<code>falls … dann</code>) und eine Ausgabe.</label></li>
+    <li><label><input type="checkbox"> Er benutzt mindestens eine Variable.</label></li>
+    <li><label><input type="checkbox"> Zwei andere Personen haben ihn getestet und ich habe ihre Hinweise ausprobiert.</label></li>
+    <li><label><input type="checkbox"> Der Steckbrief ist vollständig.</label></li>
+  </ul>
+  <p class="hinweis-klein"><b>Profi-Ideen:</b> eine Einstellung, die man ändern kann (z. B. die Lautstärke-Grenze), eine Liste, ein Regelkreis, eine zweite Figur, die per Nachricht reagiert.</p>
+
+  <div class="upload" id="upload">
+    <h3>Abgabe: Lade deinen Automaten hoch</h3>
+    <p>In Scratch: „Datei → Auf deinem Computer speichern“. Dann hier die <code>.sb3</code>-Datei auswählen.</p>
+    <input type="file" id="sb3Datei" accept=".sb3" aria-label="Scratch-Datei auswählen">
+    <p><button type="button" class="iw-btn orange" id="sb3Senden">Hochladen</button></p>
+    <p class="upload-status" id="sb3Status" aria-live="polite"></p>
+    <p class="hinweis-klein" id="sb3Mein"></p>
+  </div>
+</section>
+
+<!-- ========== VORSTELLUNG ========== -->
+<section class="teil" id="vorstellung">
+  <h2>Die Vorstellung</h2>
+  <p>Du hast <b>3 Minuten</b>. So kannst du sie aufbauen:</p>
+  <ol>
+    <li><b>Das Problem:</b> Was nervt, und wen betrifft es?</li>
+    <li><b>Die Vorführung:</b> Zeig deinen Automaten live.</li>
+    <li><b>Ein Blick ins Programm:</b> Zeig die wichtigste Regel und erkläre sie in einem Satz.</li>
+    <li><b>Ehrlich:</b> Was klappt noch nicht? Was würdest du als Nächstes verbessern?</li>
+  </ol>
+  <div class="partner-box"><b class="partner-titel">⭐⭐💡 Feedback: Zwei Sterne und ein Wunsch</b> Nach jeder Vorstellung sagen zwei Zuhörende je einen Stern („Das ist dir richtig gut gelungen: …“). Eine Person sagt einen Wunsch („Ich wünsche mir noch …“).</div>
+</section>
+
+<!-- ========== AUSWEIS ========== -->
+<section class="teil" id="ausweis">
+  <h2>Dein Informatik-Ausweis</h2>
+  <p>Hier siehst du, was du in der Informatikwerkstatt geschafft hast. Melde dich an, damit dein Stand geladen wird.</p>
+  <div class="ausweis" id="ausweisKarte" aria-live="polite">
+    <div class="aw-kopf">
+      <div><div class="aw-titel">Informatik-Ausweis</div><div class="aw-schule">Informatikwerkstatt 7/8 · Friedensschule Osnabrück</div></div>
+      <div class="aw-siegel" aria-hidden="true">&lt;/&gt;</div>
+    </div>
+    <div class="aw-name" id="awName">–</div>
+    <ul class="aw-stationen" id="awStationen"></ul>
+    <div class="aw-zahlen">
+      <div><b id="awGeschafft">0</b><span>von 8 Stationen</span></div>
+      <div><b id="awProfi">0</b><span>Profi-Teile selbst gelöst</span></div>
+      <div><b id="awXp">0</b><span>Informatik-XP</span></div>
+    </div>
+    <div class="aw-fuss"><span id="awAbschluss">Abschlussprojekt: noch nicht hochgeladen</span><span id="awDatum"></span></div>
+  </div>
+  <p><button type="button" class="iw-btn" id="ausweisDruck">🖨 Ausweis drucken</button></p>
+</section>
+
+</main>
+
+
+<footer>
+    <div class="container footer-inner">
+        <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+        <nav class="footer-links" aria-label="Rechtliche Links">
+            <a href="impressum.html">Impressum</a>
+            <a href="datenschutz.html">Datenschutz</a>
+        </nav>
+        <a href="https://kolosseum.lehrer-herrmann.de/admin/" id="admin-footer-link" class="admin-footer-link" aria-label="Admin-Bereich">⚙</a>
+    </div>
+</footer>
+<script src="js/main.js?v=20260615c"></script>
+<script src="js/seitenleisten.js"></script>
+<script src="js/kolosseum-login-widget.js"></script>
+<script src="js/arena-bar.js?v=20261105"></script>
+
+
+<script src="js/informatik-login.js?v=20261106"></script>
+<script>
+(function () {
+  var InformatikLogin = window.InformatikLogin || {
+    bereit: Promise.resolve({ eingeloggt: false, stationen: {}, profi: {}, scratch: {}, xp: [] }),
+    scratchHochladen: function () { return Promise.resolve({ ok: false, grund: "login" }); }
+  };
+  var ABSCHLUSS = 8;
+
+  /* ---------- Drucken: nur Ausweis bzw. nur Steckbrief ---------- */
+  function drucken(klasse) {
+    document.body.classList.add(klasse);
+    window.print();
+    setTimeout(function () { document.body.classList.remove(klasse); }, 500);
+  }
+  document.getElementById("ausweisDruck").addEventListener("click", function () { drucken("druck-ausweis"); });
+  document.getElementById("steckbriefDruck").addEventListener("click", function () { drucken("druck-steckbrief"); });
+
+  /* ---------- Steckbrief: im Browser merken (nur dieses Gerät) ---------- */
+  var SPEICHER = "informatik78-steckbrief";
+  var felder = document.querySelectorAll("#steckbrief [data-feld]");
+  var gespeichert = {};
+  try { gespeichert = JSON.parse(localStorage.getItem(SPEICHER)) || {}; } catch (e) { gespeichert = {}; }
+  felder.forEach(function (f) {
+    if (gespeichert[f.dataset.feld]) f.value = gespeichert[f.dataset.feld];
+    f.addEventListener("input", function () {
+      gespeichert[f.dataset.feld] = f.value;
+      try { localStorage.setItem(SPEICHER, JSON.stringify(gespeichert)); document.getElementById("steckbriefStatus").textContent = "✓ in diesem Browser gemerkt"; }
+      catch (e) { document.getElementById("steckbriefStatus").textContent = "Speichern im Browser nicht möglich – bitte drucken oder abschreiben."; }
+    });
+  });
+
+  /* ---------- Abgabe des Abschlussprojekts ---------- */
+  var datei = document.getElementById("sb3Datei");
+  var status = document.getElementById("sb3Status");
+  var sendKnopf = document.getElementById("sb3Senden");
+  var mein = document.getElementById("sb3Mein");
+  function zeigeMein(name) {
+    mein.innerHTML = "";
+    if (!name) return;
+    var a = document.createElement("a");
+    a.href = "https://kolosseum.lehrer-herrmann.de/api/informatik/scratch/mein/" + ABSCHLUSS;
+    a.textContent = "⬇ " + name;
+    mein.append("Hochgeladen: ", a, " (ein neues Hochladen ersetzt diese Datei)");
+  }
+  sendKnopf.addEventListener("click", function () {
+    var d = datei.files && datei.files[0];
+    status.className = "upload-status";
+    if (!d) { status.textContent = "Wähle zuerst deine .sb3-Datei aus."; return; }
+    if (!/\.sb3$/i.test(d.name)) { status.className = "upload-status falsch"; status.textContent = "Das ist keine Scratch-Datei. Sie muss auf .sb3 enden."; return; }
+    sendKnopf.disabled = true;
+    status.textContent = "Wird hochgeladen …";
+    InformatikLogin.scratchHochladen(ABSCHLUSS, d).then(function (r) {
+      sendKnopf.disabled = false;
+      if (r.ok) {
+        status.className = "upload-status ok";
+        status.textContent = "✓ Hochgeladen. Deine Lernbegleitung kann deinen Automaten jetzt öffnen." + (r.xp > 0 ? " +" + r.xp + " XP" : "");
+        zeigeMein(r.name);
+        abschlussDa = true;
+        ausweisFuellen();
+      } else {
+        status.className = "upload-status falsch";
+        if (r.grund === "login") status.textContent = "Nicht hochgeladen: Du bist nicht angemeldet. Melde dich oben an.";
+        else if (r.grund === "vorname") status.textContent = "Nicht hochgeladen: Trag oben zuerst deinen Vornamen ein.";
+        else if (r.grund === "netz") status.textContent = "Nicht hochgeladen: Keine Verbindung. Versuch es gleich noch einmal.";
+        else status.textContent = "Nicht hochgeladen: " + (r.meldung || "unbekannter Fehler");
+      }
+    });
+  });
+
+  /* ---------- Informatik-Ausweis ---------- */
+  var NAMEN = ["Erste Schritte in Scratch", "Wie funktioniert ein Computer?", "Daten codieren", "Algorithmen ohne PC",
+    "Internet & Netzwerke", "Datenschutz & Sicherheit", "Automatisierung im Alltag", "KI-Grundlagen"];
+  var abschlussDa = false;
+  function ausweisFuellen(z) {
+    if (z) ausweisFuellen.z = z;
+    z = ausweisFuellen.z || { stationen: {}, profi: {}, scratch: {} };
+    var liste = document.getElementById("awStationen"), geschafft = 0;
+    liste.innerHTML = "";
+    NAMEN.forEach(function (n, i) {
+      var ok = i === 0 ? !!(z.scratch && z.scratch[0]) : !!(z.stationen[i] && z.stationen[i].bestanden);
+      if (ok) geschafft++;
+      var li = document.createElement("li");
+      li.textContent = i + " · " + n;
+      if (ok) li.className = "ok";
+      li.setAttribute("aria-label", "Station " + i + " " + n + (ok ? ": geschafft" : ": noch offen"));
+      liste.appendChild(li);
+    });
+    var profi = Object.keys(z.profi || {}).filter(function (k) { return z.profi[k] === "geloest"; }).length;
+    document.getElementById("awName").textContent = z.vorname || (z.eingeloggt ? "Vorname fehlt" : "Bitte anmelden");
+    document.getElementById("awGeschafft").textContent = geschafft;
+    document.getElementById("awProfi").textContent = profi;
+    document.getElementById("awXp").textContent = typeof z.xpSumme === "number" ? z.xpSumme.toLocaleString("de-DE") : "–";
+    if (z.scratch && z.scratch[ABSCHLUSS]) abschlussDa = true;
+    document.getElementById("awAbschluss").textContent = abschlussDa ? "✓ Abschlussprojekt abgegeben" : "Abschlussprojekt: noch nicht hochgeladen";
+    document.getElementById("awDatum").textContent = new Date().toLocaleDateString("de-DE", { day: "numeric", month: "long", year: "numeric" });
+  }
+  ausweisFuellen();
+  InformatikLogin.bereit.then(function (z) {
+    ausweisFuellen(z);
+    if (z.scratch && z.scratch[ABSCHLUSS]) zeigeMein(z.scratch[ABSCHLUSS].name);
+  });
+})();
+</script>
+
+</body>
+</html>
