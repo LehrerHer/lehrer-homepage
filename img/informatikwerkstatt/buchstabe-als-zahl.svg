@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 170" font-family="system-ui, sans-serif">
+  <rect width="560" height="170" fill="#ffffff"/>
+  <!-- Taste -->
+  <rect x="20" y="30" width="100" height="100" rx="14" fill="#c9d2df"/>
+  <rect x="26" y="34" width="88" height="86" rx="11" fill="#e9eef6" stroke="#1e3a5f" stroke-width="3"/>
+  <text x="70" y="96" font-size="52" font-weight="700" text-anchor="middle" fill="#1e3a5f">A</text>
+  <text x="70" y="158" font-size="14" text-anchor="middle" fill="#5b6577">Taste</text>
+  <!-- Pfeil -->
+  <g stroke="#f28c28" stroke-width="4" fill="#f28c28"><line x1="132" y1="80" x2="162" y2="80"/><polygon points="160,72 174,80 160,88" stroke="none"/></g>
+  <!-- Zahl -->
+  <rect x="184" y="45" width="90" height="70" rx="10" fill="#fff1e3" stroke="#f28c28" stroke-width="3"/>
+  <text x="229" y="93" font-size="36" font-weight="700" text-anchor="middle" fill="#1e3a5f">65</text>
+  <text x="229" y="158" font-size="14" text-anchor="middle" fill="#5b6577">ASCII-Nummer</text>
+  <!-- Pfeil -->
+  <g stroke="#f28c28" stroke-width="4" fill="#f28c28"><line x1="284" y1="80" x2="306" y2="80"/><polygon points="304,72 318,80 304,88" stroke="none"/></g>
+  <!-- Bits 01000001 -->
+  <g font-size="22" font-weight="700" text-anchor="middle">
+    <rect x="326" y="55" width="26" height="50" rx="4" fill="#ffffff" stroke="#1e3a5f" stroke-width="2"/><text x="339" y="88" fill="#1e3a5f">0</text>
+    <rect x="354" y="55" width="26" height="50" rx="4" fill="#1e3a5f"/><text x="367" y="88" fill="#ffffff">1</text>
+    <rect x="382" y="55" width="26" height="50" rx="4" fill="#ffffff" stroke="#1e3a5f" stroke-width="2"/><text x="395" y="88" fill="#1e3a5f">0</text>
+    <rect x="410" y="55" width="26" height="50" rx="4" fill="#ffffff" stroke="#1e3a5f" stroke-width="2"/><text x="423" y="88" fill="#1e3a5f">0</text>
+    <rect x="438" y="55" width="26" height="50" rx="4" fill="#ffffff" stroke="#1e3a5f" stroke-width="2"/><text x="451" y="88" fill="#1e3a5f">0</text>
+    <rect x="466" y="55" width="26" height="50" rx="4" fill="#ffffff" stroke="#1e3a5f" stroke-width="2"/><text x="479" y="88" fill="#1e3a5f">0</text>
+    <rect x="494" y="55" width="26" height="50" rx="4" fill="#ffffff" stroke="#1e3a5f" stroke-width="2"/><text x="507" y="88" fill="#1e3a5f">0</text>
+    <rect x="522" y="55" width="26" height="50" rx="4" fill="#1e3a5f"/><text x="535" y="88" fill="#ffffff">1</text>
+  </g>
+  <g font-size="12" text-anchor="middle" fill="#5b6577"><text x="339" y="45">128</text><text x="367" y="45" fill="#f28c28" font-weight="700">64</text><text x="395" y="45">32</text><text x="423" y="45">16</text><text x="451" y="45">8</text><text x="479" y="45">4</text><text x="507" y="45">2</text><text x="535" y="45" fill="#f28c28" font-weight="700">1</text></g>
+  <text x="437" y="132" font-size="14" text-anchor="middle" fill="#1e3a5f">64 + 1 = 65</text>
+  <text x="437" y="158" font-size="14" text-anchor="middle" fill="#5b6577">1 Byte im Speicher</text>
+</svg>

@@ -139,6 +139,11 @@
   .loesung-text { flex: 1 1 100%; background: var(--blau-zart); border-left: 4px solid var(--grau); border-radius: 6px; padding: 8px 12px; font-size: 0.95rem; }
   .aufgabe.angesehen input { background: #f2f2f2; }
   .rueck.angesehen { color: var(--grau); }
+  .exkurs { border: 2px dashed var(--blau); border-radius: 10px; padding: 12px 16px; margin: 18px 0; }
+  .exkurs h3 { margin-top: 0; }
+  .iw-bild { margin: 14px 0 18px; }
+  .iw-bild img { display: block; width: 100%; max-width: 560px; height: auto; border: 1px solid var(--rand); border-radius: 8px; background: var(--weiss); }
+  .iw-bild figcaption { font-size: 0.9rem; color: var(--grau); margin-top: 6px; }
   .denkfrage { margin-top: 22px; border: 2px solid var(--blau); border-radius: 10px; padding: 14px 16px; }
   .denkfrage h3 { margin-top: 0; }
   .denk-label { display: block; font-weight: 600; margin-bottom: 4px; }
@@ -375,6 +380,14 @@
     <p class="hinweis-klein">Nach dem Senden siehst du eine Musterlösung. Deine Antwort kannst du danach nicht mehr ändern.</p>
     <div class="denk-loesung" hidden><b>Musterlösung:</b> Ja, ungefähr. Augen und Ohren nehmen etwas auf (Eingabe). Das Gehirn denkt darüber nach (Verarbeitung). Du sprichst oder bewegst dich (Ausgabe). Dein Gedächtnis ist dein Speicher. Anders als ein Computer folgt ein Mensch aber keinem festen Programm.</div>
   </div>
+  <div class="exkurs">
+    <h3>😺 Exkurs in Scratch: Die Katze als EVA-Maschine</h3>
+    <p>Bau ein Mini-Programm: Drückst du die Leertaste, springt die Katze hoch und miaut. Danach überlegst du: Welcher Block ist die Eingabe, welcher die Verarbeitung, welcher die Ausgabe?</p>
+    <details><summary>Tipp 1: Der Start</summary>Unter „Ereignisse“ findest du <code>Wenn Taste [Leertaste] gedrückt wird</code>. Darunter hängst du <code>ändere y um (50)</code>, <code>warte (0.3) Sekunden</code> und <code>ändere y um (-50)</code>.</details>
+    <details><summary>Tipp 2: Der Ton</summary>Unter „Klang“ gibt es <code>spiele Klang [Miau] ganz</code>. Häng ihn mit in den Stapel.</details>
+    <details><summary>Tipp 3: EVA finden</summary>Was tust <i>du</i>? Was rechnet der Computer aus, wenn sich die Katze bewegt? Was siehst und hörst du am Ende – und über welches Gerät?</details>
+    <p class="hinweis-klein">Wenn du in Scratch nicht weiterweißt, schau ins Scratch-Tutorial der Schule.</p>
+  </div>
 </section>
 
 <!-- ========== TEIL 2 ========== -->
@@ -397,6 +410,10 @@
   </div>
 
   <h3>Die Bauteile im Inneren</h3>
+  <figure class="iw-bild">
+    <img src="img/informatikwerkstatt/rechner-innen.svg" width="560" height="360" loading="lazy" alt="Zeichnung eines geöffneten Computers: Auf der grünen Hauptplatine sitzen der Prozessor unter einem Kühler mit Lüfter, zwei schmale Riegel Arbeitsspeicher und eine SSD als kleiner Streifen. Unten im Gehäuse steckt das Netzteil.">
+    <figcaption>So sieht es in einem Computer aus. Vergleiche mit dem alten PC im PC-Raum.</figcaption>
+  </figure>
   <div class="tabelle-scroll">
     <table class="einheiten">
       <tr><th>Bauteil</th><th>Woran du es erkennst</th><th>Was es tut</th></tr>
@@ -543,9 +560,10 @@
 <script src="js/main.js?v=20260615c"></script>
 <script src="js/seitenleisten.js"></script>
 <script src="js/kolosseum-login-widget.js"></script>
+<script src="js/arena-bar.js?v=20261105"></script>
 
 
-<script src="js/informatik-login.js"></script>
+<script src="js/informatik-login.js?v=20261105"></script>
 <script>
 (function () {
 

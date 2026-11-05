@@ -49,6 +49,9 @@
       'white-space:nowrap;',
     '}',
     '.ab-nick{font-weight:700;color:#fff;}',
+    '.ab-plus{background:#f39c12;color:#0f1d35;border-radius:10px;padding:1px 8px;font-weight:700;font-size:.74rem;white-space:nowrap;animation:ab-pop .5s ease-out;}',
+    '@keyframes ab-pop{0%{transform:scale(.4);opacity:0}70%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}',
+    '@media (prefers-reduced-motion:reduce){.ab-plus{animation:none}}',
     '.ab-muted{color:rgba(255,255,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}',
     '.ab-btn{',
       'padding:5px 13px;border-radius:6px;font-size:.78rem;font-weight:700;',
@@ -79,17 +82,36 @@
   bar.setAttribute('aria-live', 'polite');
   document.body.appendChild(bar);
 
+  /* ── Live-XP: andere Scripts melden gutgeschriebene XP per Event ──
+     window.dispatchEvent(new CustomEvent('kolosseum:xp', { detail: { xp: 5 } })) */
+  var aktuelleXp = null;
+  function chipText(xp) { return esc(levelName(xp)) + ' &middot; ' + xp + '&thinsp;XP'; }
+  window.addEventListener('kolosseum:xp', function (e) {
+    var plus = Number(e.detail && e.detail.xp) || 0;
+    var chip = document.getElementById('ab-xp-chip');
+    if (plus <= 0 || aktuelleXp === null || !chip) return;
+    aktuelleXp += plus;
+    chip.innerHTML = chipText(aktuelleXp);
+    var alt = bar.querySelector('.ab-plus');
+    if (alt) alt.remove();
+    var p = document.createElement('span');
+    p.className = 'ab-plus';
+    p.textContent = '+' + plus + ' XP';
+    chip.parentNode.insertBefore(p, chip.nextSibling);
+    setTimeout(function () { if (p.parentNode) p.remove(); }, 3000);
+  });
+
   /* ── Fetch & Render ── */
   fetch(K + '/api/auth/me', { credentials: 'include' })
     .then(function (r) {
       if (r.ok) {
         return r.json().then(function (d) {
-          var lvl = levelName(d.xp || 0);
+          aktuelleXp = Number(d.xp) || 0;
           bar.innerHTML =
             '<div class="ab-left">'
             + '<span aria-hidden="true">⚔️</span>'
             + '<span>Eingeloggt als <span class="ab-nick">' + esc(d.nick) + '</span></span>'
-            + '<span class="ab-chip">' + esc(lvl) + ' &middot; ' + (d.xp || 0) + '&thinsp;XP</span>'
+            + '<span class="ab-chip" id="ab-xp-chip">' + chipText(aktuelleXp) + '</span>'
             + '</div>'
             + '<div class="ab-right">'
             + '<a href="' + K + '/profil.html" class="ab-btn ab-btn-ghost" target="_blank" rel="noopener">Profil&nbsp;→</a>'

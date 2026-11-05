@@ -688,6 +688,12 @@ Selbstlern-Lernpfad (7 Stationen) für die Informatikwerkstatt Jg. 7/8, verlinkt
   serverseitig in `POST /checkpoint`. Tabelle `informatik_xp` (Schlüssel `a:`/`t:`/`q:`/`c:`), jeder Schlüssel nur einmal.
   Beim Serverstart werden gespeicherte Checkpoint-Ergebnisse nachvergütet (idempotent).
 - **Admin:** `kolosseum/public/admin/informatik.html` (bestes Ergebnis je Station, Versuche, Vorname ändern).
+- **Jede Station hat (Stand 2026-11-05):** ein Bild/eine Grafik (`.iw-bild`, Dateien in `img/informatikwerkstatt/`),
+  einen kurzen Scratch-Exkurs (`.exkurs`, ohne `data-xp-id`), eine Denkfrage, ein Profi-Projekt in Scratch.
+  Neue Stationen ebenso aufbauen.
+- **XP-Leiste:** Stationsseiten binden `js/arena-bar.js` ein. `informatik-login.js` meldet jede Gutschrift per
+  `window.dispatchEvent(new CustomEvent('kolosseum:xp', {detail:{xp}}))`; die Leiste zählt live mit und zeigt kurz „+n XP“.
+  Andere Seiten können dasselbe Event nutzen.
 
 | Methode | Pfad (Kolosseum) | Auth | Zweck |
 |---------|------------------|------|-------|

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 230" font-family="system-ui, sans-serif">
+  <rect width="560" height="230" fill="#ffffff"/>
+  <!-- Anleitungskarte -->
+  <rect x="20" y="15" width="250" height="200" rx="8" fill="#fff1e3" stroke="#f28c28" stroke-width="3"/>
+  <text x="40" y="45" font-size="18" font-weight="700" fill="#1e3a5f">Anleitung: Tee kochen</text>
+  <g font-size="15" fill="#1b2433">
+    <text x="40" y="78">1. Wasserkocher füllen</text>
+    <text x="40" y="106">2. Wasserkocher einschalten</text>
+    <text x="40" y="134">3. Warten, bis er ausgeht</text>
+    <text x="40" y="162">4. Teebeutel in die Tasse</text>
+    <text x="40" y="190">5. Wasser eingießen. Fertig!</text>
+  </g>
+  <!-- Pfeil -->
+  <g stroke="#f28c28" stroke-width="4" fill="#f28c28"><line x1="280" y1="115" x2="298" y2="115"/><polygon points="296,106 312,115 296,124" stroke="none"/></g>
+  <!-- Roboter -->
+  <rect x="380" y="20" width="4" height="18" fill="#1e3a5f"/><circle cx="382" cy="18" r="6" fill="#f28c28"/>
+  <rect x="345" y="38" width="74" height="56" rx="10" fill="#e9eef6" stroke="#1e3a5f" stroke-width="3"/>
+  <circle cx="367" cy="62" r="7" fill="#1e3a5f"/><circle cx="397" cy="62" r="7" fill="#1e3a5f"/>
+  <rect x="368" y="78" width="28" height="5" rx="2" fill="#1e3a5f"/>
+  <rect x="340" y="100" width="84" height="74" rx="8" fill="#1e3a5f"/>
+  <rect x="360" y="114" width="44" height="22" rx="3" fill="#ffffff"/><text x="382" y="131" font-size="13" font-weight="700" text-anchor="middle" fill="#1e3a5f">2 / 5</text>
+  <rect x="322" y="108" width="16" height="50" rx="6" fill="#1e3a5f"/><rect x="426" y="108" width="16" height="50" rx="6" fill="#1e3a5f"/>
+  <rect x="356" y="174" width="16" height="30" rx="4" fill="#1e3a5f"/><rect x="392" y="174" width="16" height="30" rx="4" fill="#1e3a5f"/>
+  <!-- Merkmale -->
+  <g font-size="14" fill="#1e3a5f">
+    <text x="455" y="70" font-weight="700">✓ eindeutig</text>
+    <text x="455" y="115" font-weight="700">✓ endlich</text>
+    <text x="455" y="160" font-weight="700">✓ ausführbar</text>
+  </g>
+  <text x="382" y="222" font-size="13" text-anchor="middle" fill="#5b6577">führt Schritt für Schritt aus</text>
+</svg>

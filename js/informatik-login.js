@@ -125,6 +125,7 @@
       });
       if (!res.ok) throw new Error();
       var d = await res.json();
+      xpMelden(d.xp);
       return { ok: true, bestanden: d.bestanden, xp: d.xp || 0 };
     } catch (_) {
       return { ok: false, grund: 'netz' };
@@ -170,6 +171,12 @@
     }
   }
 
+  // Gutgeschriebene XP an die XP-Leiste (js/arena-bar.js) melden, damit sie live mitzählt
+  function xpMelden(xp) {
+    if (!(xp > 0)) return;
+    try { window.dispatchEvent(new CustomEvent('kolosseum:xp', { detail: { xp: xp } })); } catch (_) {}
+  }
+
   // XP: selbst gelöste Aufgabe (5) bzw. ganzer Teil (25) – der Server vergibt jeden Schlüssel nur einmal
   async function xpPost(pfad, daten) {
     var s = await bereit;
@@ -182,6 +189,7 @@
       });
       if (!res.ok) throw new Error();
       var d = await res.json();
+      xpMelden(d.xp);
       return { ok: true, xp: d.xp || 0 };
     } catch (_) {
       return { ok: false, xp: 0 };

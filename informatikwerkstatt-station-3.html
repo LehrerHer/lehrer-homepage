@@ -139,6 +139,11 @@
   .loesung-text { flex: 1 1 100%; background: var(--blau-zart); border-left: 4px solid var(--grau); border-radius: 6px; padding: 8px 12px; font-size: 0.95rem; }
   .aufgabe.angesehen input { background: #f2f2f2; }
   .rueck.angesehen { color: var(--grau); }
+  .exkurs { border: 2px dashed var(--blau); border-radius: 10px; padding: 12px 16px; margin: 18px 0; }
+  .exkurs h3 { margin-top: 0; }
+  .iw-bild { margin: 14px 0 18px; }
+  .iw-bild img { display: block; width: 100%; max-width: 560px; height: auto; border: 1px solid var(--rand); border-radius: 8px; background: var(--weiss); }
+  .iw-bild figcaption { font-size: 0.9rem; color: var(--grau); margin-top: 6px; }
   .denkfrage { margin-top: 22px; border: 2px solid var(--blau); border-radius: 10px; padding: 14px 16px; }
   .denkfrage h3 { margin-top: 0; }
   .denk-label { display: block; font-weight: 600; margin-bottom: 4px; }
@@ -355,6 +360,10 @@
     <li><b>endlich:</b> Die Anleitung hört irgendwann auf.</li>
     <li><b>ausführbar:</b> Jeder Schritt lässt sich wirklich ausführen.</li>
   </ul>
+  <figure class="iw-bild">
+    <img src="img/informatikwerkstatt/algorithmus-rezept.svg" width="560" height="230" loading="lazy" alt="Eine Anleitung zum Tee kochen mit fünf nummerierten Schritten. Ein Roboter führt sie aus und ist gerade bei Schritt 2 von 5. Daneben stehen die Merkmale eindeutig, endlich und ausführbar.">
+    <figcaption>Ein Computer macht genau das, was in der Anleitung steht – nicht mehr und nicht weniger.</figcaption>
+  </figure>
 
   <h3><span class="badge b-basis">Basis</span>Bring die Schritte in die richtige Reihenfolge</h3>
   <p>Eine Nachricht mit dem Handy verschicken. Schiebe die Schritte mit ▲ und ▼ an die richtige Stelle.</p>
@@ -421,6 +430,13 @@
       <div class="robo-meldung" aria-live="polite"></div>
       <p class="hinweis-klein">Tipp: Du darfst Leerzeichen einfügen, z. B. <code>VVV R VVV</code>. Kleinbuchstaben gehen auch.</p>
     </div>
+  </div>
+  <div class="exkurs">
+    <h3>😺 Exkurs in Scratch: Endlich oder endlos?</h3>
+    <p>Lass die Katze mit dem Stift ein Quadrat malen. Dann änderst du einen einzigen Block und schaust, was passiert. Welches Merkmal eines Algorithmus ist dann verletzt?</p>
+    <details><summary>Tipp 1: Das Quadrat</summary>Füge die Erweiterung „Malstift“ hinzu. <code>schalte Stift ein</code>, dann <code>wiederhole (4) mal</code> mit <code>gehe (100) er Schritt</code> und <code>drehe dich um (90) Grad</code>.</details>
+    <details><summary>Tipp 2: Der Umbau</summary>Tausche <code>wiederhole (4) mal</code> gegen <code>wiederhole fortlaufend</code>. Hört die Katze noch auf? Und was passiert, wenn du statt 90 Grad 91 Grad nimmst?</details>
+    <p class="hinweis-klein">Wenn du in Scratch nicht weiterweißt, schau ins Scratch-Tutorial der Schule.</p>
   </div>
 </section>
 
@@ -653,9 +669,10 @@
 <script src="js/main.js?v=20260615c"></script>
 <script src="js/seitenleisten.js"></script>
 <script src="js/kolosseum-login-widget.js"></script>
+<script src="js/arena-bar.js?v=20261105"></script>
 
 
-<script src="js/informatik-login.js"></script>
+<script src="js/informatik-login.js?v=20261105"></script>
 <script>
 (function () {
   /* ---------- Selbstkontrolle ---------- */
