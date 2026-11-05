@@ -48,6 +48,12 @@ router.post('/logout', (req, res) => {
 
 // GET /api/auth/me
 router.get('/me', requireStudent, (req, res) => {
+  // Jeder eingeloggte Seitenaufruf zählt als Aktivität (höchstens alle 10 Minuten schreiben)
+  db.prepare(`
+    UPDATE students SET last_active = CURRENT_TIMESTAMP
+    WHERE id = ? AND (last_active IS NULL OR last_active < datetime('now', '-10 minutes'))
+  `).run(req.session.studentId);
+
   const student = db.prepare(
     'SELECT id, nick, xp, created_at, last_active FROM students WHERE id = ?'
   ).get(req.session.studentId);
