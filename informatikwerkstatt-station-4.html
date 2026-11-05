@@ -340,7 +340,22 @@
   .ip-bits span { display: inline-block; background: var(--blau-zart); border-radius: 6px; padding: 0 8px; margin-right: 6px; }
   .url-bild { display: flex; flex-wrap: wrap; margin: 6px 0 4px; font-size: 1.05rem; }
   .url-teil { padding: 6px 4px; border-bottom: 4px solid; }
-  .u1 { border-color: var(--orange); } .u2 { border-color: var(--blau); } .u3 { border-color: var(--gruen); } .u4 { border-color: var(--grau); }
+  :root { --lila: #6b4fbb; }
+  .k-protokoll { --k: var(--orange); } .k-sub { --k: var(--lila); } .k-name { --k: var(--blau); } .k-endung { --k: var(--gruen); } .k-pfad { --k: var(--grau); }
+  .url-teil { border-color: var(--k); }
+  .url-legende { list-style: none; padding: 0; margin: 10px 0 6px; }
+  .url-legende li { padding: 6px 0; border-bottom: 1px dashed var(--rand); }
+  .url-marke { display: inline-block; border-bottom: 4px solid var(--k); padding: 0 4px; margin-right: 8px; font-size: 0.95rem; }
+  .uz-karten { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .uz-karte { border: 2px solid var(--k); border-left-width: 8px; background: var(--weiss); color: var(--text); border-radius: 8px; padding: 6px 12px; font: inherit; font-size: 0.95rem; font-weight: 600; cursor: grab; touch-action: manipulation; }
+  .uz-karte[aria-pressed="true"] { background: var(--orange-zart); outline: 3px solid var(--orange); }
+  .uz-adresse { display: flex; flex-wrap: wrap; gap: 2px; margin: 8px 0; font-size: 1rem; }
+  .uz-teil { padding: 6px 4px; border: 2px dashed var(--rand); border-bottom-width: 4px; border-radius: 4px; background: var(--weiss); cursor: pointer; }
+  .uz-teil.ziel { background: var(--blau-zart); border-color: var(--blau); }
+  .uz-teil.fertig { border-style: solid; border-color: transparent; border-bottom-color: var(--k); background: transparent; cursor: default; }
+  .uz-teil.fertig::after { content: attr(data-name); display: block; font-family: "Open Sans", system-ui, sans-serif; font-size: 0.7rem; color: var(--grau); }
+  .uz-teil.falsch { animation: wackeln 0.4s; border-color: var(--rot); }
+  .uz-stand { margin: 8px 0 0; }
   .cs-bild { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin: 10px 0 14px; }
   .cs-knoten { border: 2px solid var(--blau); border-radius: 10px; padding: 8px 14px; text-align: center; font-size: 1.4rem; line-height: 1.3; }
   .cs-pfeile { flex: 1 1 240px; display: flex; flex-direction: column; gap: 8px; }
@@ -512,9 +527,9 @@
   <h3><span class="badge b-basis">Basis</span>Was ist das Internet?</h3>
   <div class="mc-aufgabe" data-xp-id="teil1-1" data-richtig="2">
     <label><input type="radio" name="mc-internet" value="0"> Ein großer Computer, auf dem alle Webseiten gespeichert sind</label>
-    <label><input type="radio" name="mc-internet" value="1"> Ein anderes Wort für WLAN</label>
+    <label><input type="radio" name="mc-internet" value="1"> Ein anderes Wort für das WLAN, das der Router zu Hause macht</label>
     <label><input type="radio" name="mc-internet" value="2"> Ein weltweiter Verbund aus vielen Netzwerken</label>
-    <label><input type="radio" name="mc-internet" value="3"> Ein anderes Wort für WWW</label>
+    <label><input type="radio" name="mc-internet" value="3"> Ein anderes Wort für das WWW mit all seinen Webseiten</label>
     <p><button type="button" class="iw-btn leise">Prüfen</button> <span class="rueck"></span></p>
     <div class="mc-erklaerung" hidden>Richtig: Das Internet besteht aus vielen Netzen, die miteinander verbunden sind. Es gibt keinen einzelnen Computer, auf dem „das Internet“ liegt.</div>
   </div>
@@ -532,10 +547,10 @@
 
   <h3><span class="badge b-basis">Basis</span>Was macht der Router?</h3>
   <div class="mc-aufgabe" data-xp-id="teil1-3" data-richtig="1">
-    <label><input type="radio" name="mc-router" value="0"> Er speichert alle Webseiten, die man oft besucht.</label>
+    <label><input type="radio" name="mc-router" value="0"> Er speichert die Webseiten, die man oft besucht, für später.</label>
     <label><input type="radio" name="mc-router" value="1"> Er verbindet die Geräte zu Hause untereinander und mit dem Internet.</label>
-    <label><input type="radio" name="mc-router" value="2"> Er macht das Internet schneller.</label>
-    <label><input type="radio" name="mc-router" value="3"> Er schützt vor allen Viren.</label>
+    <label><input type="radio" name="mc-router" value="2"> Er macht das Internet schneller, indem er Daten zusammenpresst.</label>
+    <label><input type="radio" name="mc-router" value="3"> Er schützt alle Geräte zuverlässig vor Viren und Hackern.</label>
     <p><button type="button" class="iw-btn leise">Prüfen</button> <span class="rueck"></span></p>
     <div class="mc-erklaerung" hidden>Richtig: Der Router ist die Verbindung zwischen eurem Heimnetz und dem Internet. Er schickt ankommende Daten an das richtige Gerät.</div>
   </div>
@@ -597,10 +612,10 @@
   <h3><span class="badge b-basis">Basis</span>Wozu hat jedes Paket eine Nummer?</h3>
   <div class="mc-aufgabe" data-xp-id="teil2-2" data-richtig="3">
     <p class="mc-frage">Auf jedem Paket steht eine Nummer, zum Beispiel „Paket 2 von 4“. Wozu braucht man sie?</p>
-    <label><input type="radio" name="mc-nummer" value="0"> Damit der Router weiß, wohin das Paket muss</label>
-    <label><input type="radio" name="mc-nummer" value="1"> Damit die Pakete schneller sind</label>
-    <label><input type="radio" name="mc-nummer" value="2"> Damit man sieht, wer das Paket geschickt hat</label>
-    <label><input type="radio" name="mc-nummer" value="3"> Damit der Empfänger die Pakete richtig zusammensetzen und fehlende erkennen kann</label>
+    <label><input type="radio" name="mc-nummer" value="0"> Damit der Router weiß, an welche Adresse er das Paket schicken muss</label>
+    <label><input type="radio" name="mc-nummer" value="1"> Damit die Pakete unterwegs schneller weitergeleitet werden können</label>
+    <label><input type="radio" name="mc-nummer" value="2"> Damit der Empfänger sieht, wer ihm das Paket geschickt hat</label>
+    <label><input type="radio" name="mc-nummer" value="3"> Damit der Empfänger die Pakete richtig zusammensetzen kann</label>
     <p><button type="button" class="iw-btn leise">Prüfen</button> <span class="rueck"></span></p>
     <div class="mc-erklaerung" hidden>Richtig: Wohin das Paket muss, steht in der Empfänger-Adresse. Die Nummer braucht der Empfänger, um die Reihenfolge wiederherzustellen und Lücken zu bemerken.</div>
   </div>
@@ -678,10 +693,18 @@
   </div>
 
   <p>Adressen aus Zahlen kann sich kaum jemand merken. Deshalb gibt es das <b>DNS</b> (Domain Name System). Es funktioniert wie die Kontaktliste im Handy: Du wählst den Namen, das Handy kennt die Nummer. Der Browser fragt einen DNS-Server: „Welche IP-Adresse hat <code>lehrer-herrmann.de</code>?“ – und bekommt eine Zahl zurück, zum Beispiel <code>178.105.35.83</code>.</p>
-  <p>Die vollständige Adresse einer Webseite heißt <b>URL</b>:</p>
-  <div class="url-bild mono" aria-label="Aufbau einer URL">
-    <span class="url-teil u1">https://</span><span class="url-teil u2">lehrer-herrmann</span><span class="url-teil u3">.de</span><span class="url-teil u4">/fach-informatik.html</span>
+  <p>Die vollständige Adresse einer Webseite heißt <b>URL</b>. Sie besteht aus mehreren Teilen. Jede Farbe steht für einen Teil:</p>
+  <div class="url-bild mono" aria-label="Aufbau einer URL: https://www.lehrer-herrmann.de/fach-informatik.html">
+    <span class="url-teil k-protokoll">https://</span><span class="url-teil k-sub">www.</span><span class="url-teil k-name">lehrer-herrmann</span><span class="url-teil k-endung">.de</span><span class="url-teil k-pfad">/fach-informatik.html</span>
   </div>
+  <ul class="url-legende">
+    <li><span class="url-marke k-protokoll mono">https://</span><b>Protokoll:</b> die Sprache, in der Browser und Server miteinander sprechen. Das „s“ heißt: verschlüsselt.</li>
+    <li><span class="url-marke k-sub mono">www.</span><b>Subdomain:</b> ein Unterbereich der Webseite. „www“ steht für World Wide Web. Manche Adressen haben keine Subdomain, andere einen eigenen Namen.</li>
+    <li><span class="url-marke k-name mono">lehrer-herrmann</span><b>Domainname:</b> der Name der Webseite. Er wird angemeldet und gehört dann einer Person oder Firma.</li>
+    <li><span class="url-marke k-endung mono">.de</span><b>Endung:</b> zeigt oft das Land oder die Art der Seite, z. B. <code>.de</code> für Deutschland, <code>.at</code> für Österreich, <code>.org</code> für Organisationen.</li>
+    <li><span class="url-marke k-pfad mono">/fach-informatik.html</span><b>Pfad:</b> welche Seite oder Datei auf dem Server gemeint ist. Steht nur <code>/</code> da, ist es die Startseite.</li>
+  </ul>
+  <p class="hinweis-klein">Domainname und Endung zusammen (<code>lehrer-herrmann.de</code>) nennt man auch einfach die <b>Domain</b>.</p>
 
   <h3><span class="badge b-basis">Basis</span>Welche Adresse ist gültig?</h3>
   <div class="mc-aufgabe" data-xp-id="teil3-1" data-richtig="1">
@@ -697,23 +720,31 @@
 
   <h3><span class="badge b-basis">Basis</span>Was macht das DNS?</h3>
   <div class="mc-aufgabe" data-xp-id="teil3-3" data-richtig="0">
-    <label><input type="radio" name="mc-dns" value="0"> Es übersetzt einen Namen wie <code>lehrer-herrmann.de</code> in eine IP-Adresse.</label>
-    <label><input type="radio" name="mc-dns" value="1"> Es speichert alle Webseiten.</label>
-    <label><input type="radio" name="mc-dns" value="2"> Es verschlüsselt die Daten.</label>
-    <label><input type="radio" name="mc-dns" value="3"> Es zerlegt Daten in Pakete.</label>
+    <label><input type="radio" name="mc-dns" value="0"> Es übersetzt einen Namen wie <code>lehrer-herrmann.de</code> in die passende IP-Adresse.</label>
+    <label><input type="radio" name="mc-dns" value="1"> Es speichert die Webseiten und schickt sie an den Browser, wenn man sie aufruft.</label>
+    <label><input type="radio" name="mc-dns" value="2"> Es verschlüsselt die Verbindung, damit unterwegs niemand mitlesen kann.</label>
+    <label><input type="radio" name="mc-dns" value="3"> Es zerlegt große Dateien in kleine Pakete und gibt ihnen Nummern.</label>
     <p><button type="button" class="iw-btn leise">Prüfen</button> <span class="rueck"></span></p>
     <div class="mc-erklaerung" hidden>Richtig: Das DNS ist das „Telefonbuch“ des Internets. Erst mit der IP-Adresse kann dein Gerät den Server finden.</div>
   </div>
 
-  <h3><span class="badge b-basis">Basis</span>Zerlege die URL</h3>
-  <p>Ordne die Teile von <code>https://lehrer-herrmann.de/fach-informatik.html</code> zu.</p>
-  <div class="zuordnen" data-xp-id="teil3-4" data-optionen="protokoll=Protokoll: So sprechen Browser und Server miteinander|domain=Domain: der Name des Servers|tld=Endung der Domain (hier: Deutschland)|datei=Datei auf dem Server">
-    <div class="zo-zeile" data-richtig="protokoll"><code>https</code></div>
-    <div class="zo-zeile" data-richtig="domain"><code>lehrer-herrmann.de</code></div>
-    <div class="zo-zeile" data-richtig="tld"><code>.de</code></div>
-    <div class="zo-zeile" data-richtig="datei"><code>fach-informatik.html</code></div>
-    <p><button type="button" class="iw-btn leise">Prüfen</button> <span class="rueck"></span></p>
+  <h3><span class="badge b-basis">Basis</span>Färbe die Adressen ein</h3>
+  <div class="werkzeug url-zerlegen" data-xp-id="teil3-4">
+    <div class="titel">Zieh jede Karte auf den passenden Teil der Adresse. Auf dem Handy: erst die Karte antippen, dann den Teil.</div>
+    <div class="uz-karten" role="group" aria-label="Karten">
+      <button type="button" class="uz-karte k-protokoll" draggable="true" data-teil="protokoll" aria-pressed="false">Protokoll</button>
+      <button type="button" class="uz-karte k-sub" draggable="true" data-teil="sub" aria-pressed="false">Subdomain</button>
+      <button type="button" class="uz-karte k-name" draggable="true" data-teil="name" aria-pressed="false">Domainname</button>
+      <button type="button" class="uz-karte k-endung" draggable="true" data-teil="endung" aria-pressed="false">Endung</button>
+      <button type="button" class="uz-karte k-pfad" draggable="true" data-teil="pfad" aria-pressed="false">Pfad</button>
+    </div>
+    <div class="uz-adresse mono"><span class="uz-teil" data-teil="protokoll">https://</span><span class="uz-teil" data-teil="name">friedensschule-os</span><span class="uz-teil" data-teil="endung">.de</span><span class="uz-teil" data-teil="pfad">/iserv/</span></div>
+    <div class="uz-adresse mono"><span class="uz-teil" data-teil="protokoll">https://</span><span class="uz-teil" data-teil="sub">diler.</span><span class="uz-teil" data-teil="name">friedensschule-osnabrueck</span><span class="uz-teil" data-teil="endung">.de</span><span class="uz-teil" data-teil="pfad">/</span></div>
+    <div class="uz-adresse mono"><span class="uz-teil" data-teil="protokoll">https://</span><span class="uz-teil" data-teil="sub">www.</span><span class="uz-teil" data-teil="name">tagesschau</span><span class="uz-teil" data-teil="endung">.de</span><span class="uz-teil" data-teil="pfad">/</span></div>
+    <div class="uz-adresse mono"><span class="uz-teil" data-teil="protokoll">https://</span><span class="uz-teil" data-teil="sub">www.</span><span class="uz-teil" data-teil="name">bvb</span><span class="uz-teil" data-teil="endung">.de</span><span class="uz-teil" data-teil="pfad">/de/de.html</span></div>
+    <p class="uz-stand"><span class="rueck" aria-live="polite"></span></p>
   </div>
+  <details><summary>Tipp</summary>Lies jede Adresse von links nach rechts: Zuerst kommt immer das Protokoll, dann die Domain. Alles ab dem ersten einzelnen <code>/</code> nach der Endung ist der Pfad.</details>
 
   <h3><span class="badge b-profi">Profi</span>Adressen in Bits</h3>
   <div class="profi-block" data-block="t3">
@@ -781,10 +812,10 @@
 
   <h3><span class="badge b-basis">Basis</span>Was bedeutet HTTPS?</h3>
   <div class="mc-aufgabe" data-xp-id="teil4-3" data-richtig="1">
-    <label><input type="radio" name="mc-https" value="0"> Die Seite lädt schneller.</label>
+    <label><input type="radio" name="mc-https" value="0"> Die Seite lädt schneller, weil sie auf einem neueren Server liegt.</label>
     <label><input type="radio" name="mc-https" value="1"> Die Verbindung zwischen Browser und Server ist verschlüsselt.</label>
-    <label><input type="radio" name="mc-https" value="2"> Die Seite ist garantiert ehrlich und ungefährlich.</label>
-    <label><input type="radio" name="mc-https" value="3"> Die Seite ist kostenlos.</label>
+    <label><input type="radio" name="mc-https" value="2"> Die Seite wurde geprüft und ist deshalb ehrlich und ungefährlich.</label>
+    <label><input type="radio" name="mc-https" value="3"> Die Seite ist kostenlos und braucht keine Anmeldung.</label>
     <p><button type="button" class="iw-btn leise">Prüfen</button> <span class="rueck"></span></p>
     <div class="mc-erklaerung" hidden>Richtig: HTTPS schützt die Daten unterwegs vor Mitlesern. Ob die Seite selbst vertrauenswürdig ist, sagt das Schloss aber nicht.</div>
   </div>
@@ -1267,6 +1298,61 @@
     });
   });
 
+  /* ---------- Teil 3: Adressen einfärben (Ziehen oder Antippen) ---------- */
+  document.querySelectorAll(".url-zerlegen").forEach(function (box) {
+    var karten = Array.prototype.slice.call(box.querySelectorAll(".uz-karte"));
+    var teile = Array.prototype.slice.call(box.querySelectorAll(".uz-teil"));
+    var rk = box.querySelector(".rueck");
+    var gewaehlt = null, fehler = 0;
+    var NAMEN = {};
+    karten.forEach(function (k) { NAMEN[k.dataset.teil] = k.textContent; });
+    teile.forEach(function (t) {
+      t.setAttribute("role", "button");
+      t.setAttribute("tabindex", "0");
+      t.setAttribute("aria-label", "Adressteil " + t.textContent);
+    });
+    function waehlen(k) {
+      gewaehlt = (gewaehlt === k) ? null : k;
+      karten.forEach(function (x) { x.setAttribute("aria-pressed", String(x === gewaehlt)); });
+    }
+    function ablegen(teil, art) {
+      if (!art || teil.classList.contains("fertig")) return;
+      if (art === teil.dataset.teil) {
+        teil.classList.add("fertig", "k-" + art);
+        teil.dataset.name = NAMEN[art];
+        teil.setAttribute("aria-label", "Adressteil " + teil.textContent + ": " + NAMEN[art]);
+        teil.removeAttribute("tabindex");
+        var offen = teile.filter(function (t) { return !t.classList.contains("fertig"); }).length;
+        if (!offen) {
+          rk.className = "rueck ok";
+          rk.textContent = "✓ Alle Adressen sind eingefärbt!" + (fehler ? " (" + fehler + (fehler === 1 ? " Fehlversuch)" : " Fehlversuche)") : "");
+          karten.forEach(function (x) { x.disabled = true; x.setAttribute("aria-pressed", "false"); });
+          xpGeloest(box, rk);
+        } else {
+          rk.className = "rueck ok";
+          rk.textContent = "✓ Passt! Noch " + offen + " Teile.";
+        }
+      } else {
+        fehler++;
+        teil.classList.remove("falsch"); void teil.offsetWidth; teil.classList.add("falsch");
+        setTimeout(function () { teil.classList.remove("falsch"); }, 600);
+        rk.className = "rueck falsch";
+        rk.textContent = "„" + teil.textContent + "“ ist kein " + NAMEN[art] + ". Schau in die Erklärung oben.";
+      }
+    }
+    karten.forEach(function (k) {
+      k.addEventListener("click", function () { waehlen(k); });
+      k.addEventListener("dragstart", function (e) { e.dataTransfer.setData("text/plain", k.dataset.teil); waehlen(k); });
+    });
+    teile.forEach(function (t) {
+      t.addEventListener("click", function () { if (gewaehlt) ablegen(t, gewaehlt.dataset.teil); else { rk.className = "rueck"; rk.textContent = "Wähle zuerst oben eine Karte."; } });
+      t.addEventListener("keydown", function (e) { if ((e.key === "Enter" || e.key === " ") && gewaehlt) { e.preventDefault(); ablegen(t, gewaehlt.dataset.teil); } });
+      t.addEventListener("dragover", function (e) { if (!t.classList.contains("fertig")) { e.preventDefault(); t.classList.add("ziel"); } });
+      t.addEventListener("dragleave", function () { t.classList.remove("ziel"); });
+      t.addEventListener("drop", function (e) { e.preventDefault(); t.classList.remove("ziel"); ablegen(t, e.dataTransfer.getData("text/plain")); });
+    });
+  });
+
   /* ---------- Teil 2: Paket-Werkstatt ---------- */
   (function () {
     var feld = document.getElementById("paketText");
@@ -1449,16 +1535,16 @@
 
   /* ---------- Teil 5: Quiz ---------- */
   var fragen = [
-    { f: "Was ist das Internet?", a: ["Ein großer Computer, auf dem alle Webseiten liegen", "Ein weltweiter Verbund aus vielen Netzwerken", "Ein anderes Wort für WLAN", "Ein Programm zum Surfen"], r: 1 },
-    { f: "Wie hängen Internet und WWW zusammen?", a: ["Das ist dasselbe.", "Das WWW ist ein Dienst im Internet, so wie E-Mail.", "Das Internet ist ein Teil des WWW.", "Das WWW gibt es nur auf dem Handy."], r: 1 },
-    { f: "Warum werden Daten in kleine Pakete zerlegt?", a: ["Damit sie weniger Strom verbrauchen", "Damit niemand sie lesen kann", "Kleine Pakete können einzeln und über verschiedene Wege laufen. Fehlt eins, wird nur dieses neu geschickt.", "Weil Router nur Buchstaben weiterleiten können"], r: 2 },
+    { f: "Was ist das Internet?", a: ["Ein großer Computer, auf dem alle Webseiten liegen", "Ein weltweiter Verbund aus vielen Netzwerken", "Ein anderes Wort für das WLAN zu Hause", "Ein Programm, mit dem man im Netz surft"], r: 1 },
+    { f: "Wie hängen Internet und WWW zusammen?", a: ["Das ist dasselbe, nur mit zwei verschiedenen Namen.", "Das WWW ist ein Dienst im Internet, so wie E-Mail.", "Das Internet ist ein Teil des WWW, so wie eine App.", "Das WWW gibt es nur auf dem Handy, das Internet überall."], r: 1 },
+    { f: "Warum werden Daten in kleine Pakete zerlegt?", a: ["Damit sie unterwegs weniger Strom und Speicher brauchen", "Damit unterwegs niemand den Inhalt lesen kann", "Damit sie einzeln laufen und nur verlorene neu geschickt werden", "Weil Router nur einzelne Buchstaben weiterleiten können"], r: 2 },
     { f: "Was steht auf jedem Datenpaket?", a: ["Absender, Empfänger und eine Nummer", "Nur der Inhalt", "Der Name des Routers", "Das Datum"], r: 0 },
-    { f: "Was macht ein Router unterwegs im Netz?", a: ["Er speichert das Paket für immer.", "Er liest den Inhalt und prüft ihn auf Fehler.", "Er gibt das Paket ein Stück weiter in Richtung Ziel.", "Er zerlegt das Paket in Bits."], r: 2 },
+    { f: "Was macht ein Router unterwegs im Netz?", a: ["Er speichert das Paket, bis jemand es abholt.", "Er liest den Inhalt und prüft ihn auf Fehler.", "Er gibt das Paket ein Stück weiter in Richtung Ziel.", "Er zerlegt das Paket in einzelne Bits."], r: 2 },
     { f: "Welche IPv4-Adresse ist gültig?", a: ["<code>192.168.0.12</code>", "<code>192.168.0.300</code>", "<code>192.168.12</code>", "<code>192.168.0.1.5</code>"], r: 0 },
-    { f: "Was macht das DNS?", a: ["Es verschlüsselt die Verbindung.", "Es übersetzt einen Namen wie <code>lehrer-herrmann.de</code> in eine IP-Adresse.", "Es zeigt die Webseite an.", "Es zerlegt Daten in Pakete."], r: 1 },
+    { f: "Was macht das DNS?", a: ["Es verschlüsselt die Verbindung, damit niemand mitlesen kann.", "Es übersetzt einen Namen wie <code>lehrer-herrmann.de</code> in eine IP-Adresse.", "Es zeigt die Webseite an, die der Server geschickt hat.", "Es zerlegt große Dateien in Pakete mit Nummern."], r: 1 },
     { f: "Welcher Teil von <code>https://lehrer-herrmann.de/fach-informatik.html</code> ist die Domain?", a: ["<code>https</code>", "<code>lehrer-herrmann.de</code>", "<code>fach-informatik.html</code>", "<code>.html</code>"], r: 1 },
     { f: "Du öffnest eine Webseite im Browser. Wer ist der Client?", a: ["Der Computer, auf dem die Webseite gespeichert ist", "Der DNS-Server", "Dein Browser", "Der Router"], r: 2 },
-    { f: "Was zeigt <code>https</code> (mit „s“) an?", a: ["Die Seite ist sicher vor Betrug.", "Die Verbindung zwischen Browser und Server ist verschlüsselt.", "Die Seite lädt besonders schnell.", "Die Seite ist eine Schulseite."], r: 1 }
+    { f: "Was zeigt <code>https</code> (mit „s“) an?", a: ["Die Seite wurde geprüft und ist sicher vor Betrug.", "Die Verbindung zwischen Browser und Server ist verschlüsselt.", "Die Seite lädt besonders schnell, weil sie neu ist.", "Die Seite gehört einer Schule oder einer Behörde."], r: 1 }
   ];
   var quiz = document.getElementById("quiz");
   fragen.forEach(function (q, i) {
