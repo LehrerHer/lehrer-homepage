@@ -54,7 +54,6 @@
     .btn-del { background: var(--c1); color: #fff; }
     .btn-admin      { background: #e2e8f0; color: var(--ink); }
     .btn-admin.on   { background: #1e3a5f; color: #fff; }
-    .admin-pill { display: inline-block; padding: 0.2rem 0.6rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700; background: #1e3a5f; color: #fff; }
 
     /* Modal */
     .modal-bg {
@@ -131,16 +130,17 @@
             <th data-sort="nick"><button type="button" class="sort-btn">Spitzname <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
             <th data-sort="real_name"><button type="button" class="sort-btn">Klarname <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
             <th data-sort="class"><button type="button" class="sort-btn">Klasse <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
-            <th data-sort="email"><button type="button" class="sort-btn">E-Mail <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
             <th data-sort="xp"><button type="button" class="sort-btn">XP <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
             <th data-sort="level"><button type="button" class="sort-btn">Level <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
             <th data-sort="badges"><button type="button" class="sort-btn">Abzeichen <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
-            <th data-sort="is_admin"><button type="button" class="sort-btn">Admin <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
+            <th data-sort="last_login"><button type="button" class="sort-btn">Letzter Login <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
             <th class="th-plain">Aktionen</th>
+            <th data-sort="email"><button type="button" class="sort-btn">E-Mail <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
+            <th data-sort="is_admin"><button type="button" class="sort-btn">Admin <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
           </tr>
         </thead>
         <tbody id="students-body">
-          <tr><td colspan="9" class="text-soft">Wird geladen…</td></tr>
+          <tr><td colspan="10" class="text-soft">Wird geladen…</td></tr>
         </tbody>
       </table>
     </div>
@@ -264,8 +264,21 @@
       return esc(JSON.stringify(String(v ?? '')));
     }
 
+    // SQLite liefert UTC als "JJJJ-MM-TT HH:MM:SS"
+    function zeitpunkt(v) {
+      if (!v) return null;
+      const d = new Date(String(v).replace(' ', 'T') + (/[zZ]|[+-]\d\d:?\d\d$/.test(v) ? '' : 'Z'));
+      return isNaN(d) ? null : d;
+    }
+    function datumText(v) {
+      const d = zeitpunkt(v);
+      if (!d) return '';
+      return d.toLocaleString('de-DE', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' });
+    }
+
     function sortWert(s, feld) {
       switch (feld) {
+        case 'last_login': { const d = zeitpunkt(s.last_login); return d ? d.getTime() : null; }
         case 'xp':
         case 'level':    return Number(s.xp) || 0;
         case 'badges':   return (s.badges || []).length;
@@ -283,6 +296,9 @@
         const r = va.localeCompare(vb, 'de', { numeric: true, sensitivity: 'base' });
         if (r) return r * sortRichtung;
       } else if (va !== vb) {
+        // Fehlende Zahlen/Zeitpunkte (null) immer ans Ende
+        if (va === null) return 1;
+        if (vb === null) return -1;
         return (va - vb) * sortRichtung;
       }
       return String(a.nick).localeCompare(String(b.nick), 'de', { sensitivity: 'base' });
@@ -324,7 +340,7 @@
       const treffer = document.getElementById('treffer');
       kopfZustand();
       if (!studentsData.length) {
-        tbody.innerHTML = '<tr><td colspan="9" class="text-soft">Noch keine Schüler angelegt.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" class="text-soft">Noch keine Schüler angelegt.</td></tr>';
         treffer.textContent = '';
         return;
       }
@@ -333,7 +349,7 @@
         ? `${studentsData.length} Einträge`
         : `${liste.length} von ${studentsData.length} Einträgen`;
       if (!liste.length) {
-        tbody.innerHTML = '<tr><td colspan="9" class="text-soft">Keine Treffer.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="10" class="text-soft">Keine Treffer.</td></tr>';
         return;
       }
       const leer = '<span class="text-soft">–</span>';
@@ -342,19 +358,19 @@
           <td><strong>${esc(s.nick)}</strong></td>
           <td>${s.real_name ? esc(s.real_name) : leer}</td>
           <td>${s.class ? esc(s.class) : leer}</td>
-          <td class="text-soft" style="font-size:.8rem">${s.email ? esc(s.email) : '<span style="opacity:.5">–</span>'}</td>
           <td><strong>${esc(s.xp)}</strong></td>
           <td><span class="level-pill">Lvl ${levelIndex(s.xp)} ${esc(levelName(s.xp))}</span></td>
           <td class="badge-count">${(s.badges || []).length} / 8</td>
-          <td>${s.is_admin ? '<span class="admin-pill">⚙️ Admin</span>' : leer}</td>
+          <td title="${s.last_active ? 'Zuletzt aktiv: ' + esc(datumText(s.last_active)) : 'Noch nie aktiv'}">${s.last_login ? esc(datumText(s.last_login)) : leer}</td>
           <td>
             <div class="actions">
               <button class="btn-sm btn-xp"  onclick="openXP(${s.id}, ${jsArg(s.nick)})">XP</button>
               <button class="btn-sm btn-pw"  onclick="openPIN(${s.id}, ${jsArg(s.nick)})">PIN</button>
-              <button class="btn-sm btn-admin${s.is_admin ? ' on' : ''}" onclick="toggleAdmin(${s.id}, ${jsArg(s.nick)}, ${s.is_admin ? 'true' : 'false'})">${s.is_admin ? 'Admin entziehen' : 'Zu Admin machen'}</button>
               <button class="btn-sm btn-del" onclick="deleteStudent(${s.id}, ${jsArg(s.nick)})">Löschen</button>
             </div>
           </td>
+          <td class="text-soft" style="font-size:.8rem">${s.email ? esc(s.email) : '<span style="opacity:.5">–</span>'}</td>
+          <td><button class="btn-sm btn-admin${s.is_admin ? ' on' : ''}" onclick="toggleAdmin(${s.id}, ${jsArg(s.nick)}, ${s.is_admin ? 'true' : 'false'})">${s.is_admin ? '⚙️ Admin entziehen' : 'Zu Admin machen'}</button></td>
         </tr>
       `).join('');
     }
@@ -366,7 +382,7 @@
         else {
           sortFeld = feld;
           // Zahlen zuerst absteigend (höchste XP oben), Texte aufsteigend
-          sortRichtung = ['xp', 'level', 'badges', 'is_admin'].includes(feld) ? -1 : 1;
+          sortRichtung = ['xp', 'level', 'badges', 'is_admin', 'last_login'].includes(feld) ? -1 : 1;
         }
         renderTable();
       });
