@@ -669,7 +669,7 @@ systemctl daemon-reload && systemctl restart reso-api
 Selbstlern-Lernpfad (7 Stationen) für die Informatikwerkstatt Jg. 7/8, verlinkt auf `fach-informatik.html`.
 
 - **Seiten (Root):** `informatikwerkstatt.html` (Start/Lernpfad), `informatikwerkstatt-station-<n>.html`
-  (bisher Station 0–5; Station 0 „Erste Schritte in Scratch“ = Scratch-Einführung und Nachschlagewerk für alle späteren Stationen; 2026-11-05 umnummeriert: neue Station 1 „Wie funktioniert ein Computer?“, alte 1/2 → 2/3, DB-Migration `stationen-plus-1` in `db/database.js`), geplant `informatikwerkstatt-knobelkiste.html`. Eigene Gestaltung (Dunkelblau/Weiß,
+  (Station 0–7 vollständig; Station 0 „Erste Schritte in Scratch“ = Scratch-Einführung und Nachschlagewerk für alle späteren Stationen; 2026-11-05 umnummeriert: neue Station 1 „Wie funktioniert ein Computer?“, alte 1/2 → 2/3, DB-Migration `stationen-plus-1` in `db/database.js`), geplant `informatikwerkstatt-knobelkiste.html`. Eigene Gestaltung (Dunkelblau/Weiß,
   orange Akzente) mit `iw-`-Präfix, Navbar/Footer wie überall.
 - **Login:** `js/informatik-login.js` vor dem Seiten-Script einbinden, Box `<div id="iw-login" hidden>`.
   Kolosseum-Login Pflicht; beim ersten Mal Vorname (eigene Tabelle `informatik_vornamen`, nur im Admin
@@ -699,7 +699,7 @@ Selbstlern-Lernpfad (7 Stationen) für die Informatikwerkstatt Jg. 7/8, verlinkt
 - **Scratch-Blöcke:** Station 0 erklärt die Grundlagen (Bereiche, Kategorien, Ereignisse, Bewegung, sagen, Schleifen, falls, Rand, x/y).
   Jeder Block darüber hinaus wird beim ersten Vorkommen in einem Kasten `.neu-scratch` („📘 Neu in Scratch“) erklärt
   (Station 1: frage/Antwort/verbinde · 2: Malstift, Variablen, falls…sonst, Zeichen von · 3: Zufallszahl, wiederhole bis, Vergleiche ·
-  4: Nachrichten, verstecke/zeige dich, gleite · 5: Länge von, mod). Neue Stationen ebenso.
+  4: Nachrichten, verstecke/zeige dich, gleite · 5: Länge von, mod · 6: Lautstärke, Effekt Helligkeit · 7: enthält, Listen). Neue Stationen ebenso.
 - **XP-Leiste:** Stationsseiten binden `js/arena-bar.js` ein. `informatik-login.js` meldet jede Gutschrift per
   `window.dispatchEvent(new CustomEvent('kolosseum:xp', {detail:{xp}}))`; die Leiste zählt live mit und zeigt kurz „+n XP“.
   Andere Seiten können dasselbe Event nutzen.
