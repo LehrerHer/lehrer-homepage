@@ -669,7 +669,7 @@ systemctl daemon-reload && systemctl restart reso-api
 Selbstlern-Lernpfad (7 Stationen) für die Informatikwerkstatt Jg. 7/8, verlinkt auf `fach-informatik.html`.
 
 - **Seiten (Root):** `informatikwerkstatt.html` (Start/Lernpfad), `informatikwerkstatt-station-<n>.html`
-  (bisher Station 1–3; 2026-11-05 umnummeriert: neue Station 1 „Wie funktioniert ein Computer?“, alte 1/2 → 2/3, DB-Migration `stationen-plus-1` in `db/database.js`), geplant `informatikwerkstatt-knobelkiste.html`. Eigene Gestaltung (Dunkelblau/Weiß,
+  (bisher Station 1–4; 2026-11-05 umnummeriert: neue Station 1 „Wie funktioniert ein Computer?“, alte 1/2 → 2/3, DB-Migration `stationen-plus-1` in `db/database.js`), geplant `informatikwerkstatt-knobelkiste.html`. Eigene Gestaltung (Dunkelblau/Weiß,
   orange Akzente) mit `iw-`-Präfix, Navbar/Footer wie überall.
 - **Login:** `js/informatik-login.js` vor dem Seiten-Script einbinden, Box `<div id="iw-login" hidden>`.
   Kolosseum-Login Pflicht; beim ersten Mal Vorname (eigene Tabelle `informatik_vornamen`, nur im Admin
