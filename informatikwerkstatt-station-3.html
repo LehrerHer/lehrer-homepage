@@ -742,6 +742,13 @@
 <script src="js/informatik-login.js"></script>
 <script>
 (function () {
+  /* ---------- Ersatz, falls js/informatik-login.js fehlt (z. B. Vorschau): alles läuft, nur ohne Speichern ---------- */
+  var InformatikLogin = window.InformatikLogin || (function () {
+    function nein() { return Promise.resolve({ ok: false, grund: "login" }); }
+    return { bereit: Promise.resolve({ eingeloggt: false, xp: [], profi: {}, antworten: {} }),
+      senden: nein, profiMelden: nein, antwortSenden: nein, xpAufgabe: nein, xpTeil: nein };
+  })();
+
   /* ---------- Selbstkontrolle ---------- */
   function normal(s) { return s.trim().toLowerCase().replace(/[\s.]/g, ""); }
   document.querySelectorAll(".aufgabe").forEach(function (a) {
