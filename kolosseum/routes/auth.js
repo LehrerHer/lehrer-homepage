@@ -29,7 +29,7 @@ router.post('/login', loginLimiter, async (req, res) => {
     return res.status(401).json({ error: 'Anmeldename oder Passwort falsch.' });
   }
 
-  db.prepare('UPDATE students SET last_active = CURRENT_TIMESTAMP WHERE id = ?').run(student.id);
+  db.prepare('UPDATE students SET last_active = CURRENT_TIMESTAMP, last_login = CURRENT_TIMESTAMP WHERE id = ?').run(student.id);
 
   req.session.studentId = student.id;
   req.session.nick = student.nick;
@@ -120,7 +120,7 @@ router.post('/register', registerLimiter, async (req, res) => {
 
   const register = db.transaction(() => {
     const { lastInsertRowid: studentId } = db.prepare(
-      'INSERT INTO students (nick, pin_hash, email) VALUES (?, ?, ?)'
+      'INSERT INTO students (nick, pin_hash, email, last_login) VALUES (?, ?, ?, CURRENT_TIMESTAMP)'
     ).run(nickClean, pin_hash, emailLower);
 
     db.prepare(

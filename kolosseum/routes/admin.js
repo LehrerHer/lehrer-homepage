@@ -33,7 +33,7 @@ router.get('/stats', (req, res) => {
 // GET /api/admin/students
 router.get('/students', (req, res) => {
   const students = db.prepare(`
-    SELECT s.id, s.nick, s.xp, s.email, s.created_at, s.last_active, s.is_admin,
+    SELECT s.id, s.nick, s.xp, s.email, s.created_at, s.last_active, s.last_login, s.is_admin,
            sn.real_name, sn.class
     FROM students s
     LEFT JOIN student_names sn ON sn.student_id = s.id

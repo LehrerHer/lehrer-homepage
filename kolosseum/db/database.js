@@ -57,6 +57,10 @@ if (!studentCols.includes('coins')) {
 if (!studentCols.includes('is_admin')) {
   db.exec('ALTER TABLE students ADD COLUMN is_admin INTEGER DEFAULT 0');
 }
+// Migration: letzter Login (getrennt von last_active, das auch bei Quiz/XP gesetzt wird)
+if (!studentCols.includes('last_login')) {
+  db.exec('ALTER TABLE students ADD COLUMN last_login DATETIME');
+}
 
 // Münz-Log und Shop-Inventar (per CREATE IF NOT EXISTS in schema.sql angelegt,
 // aber hier nochmals abgesichert)
