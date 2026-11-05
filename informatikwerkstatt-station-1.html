@@ -144,6 +144,9 @@
   .iw-bild { margin: 14px 0 18px; }
   .iw-bild img { display: block; width: 100%; max-width: 560px; height: auto; border: 1px solid var(--rand); border-radius: 8px; background: var(--weiss); }
   .iw-bild figcaption { font-size: 0.9rem; color: var(--grau); margin-top: 6px; }
+  .neu-scratch { background: var(--blau-zart); border-left: 5px solid var(--blau); border-radius: 6px; padding: 10px 14px; margin: 10px 0 14px; }
+  .neu-scratch ul { margin: 6px 0 0; padding-left: 20px; }
+  .neu-scratch li { margin-bottom: 4px; }
   .denkfrage { margin-top: 22px; border: 2px solid var(--blau); border-radius: 10px; padding: 14px 16px; }
   .denkfrage h3 { margin-top: 0; }
   .denk-label { display: block; font-weight: 600; margin-bottom: 4px; }
@@ -386,7 +389,7 @@
     <details><summary>Tipp 1: Der Start</summary>Unter „Ereignisse“ findest du <code>Wenn Taste [Leertaste] gedrückt wird</code>. Darunter hängst du <code>ändere y um (50)</code>, <code>warte (0.3) Sekunden</code> und <code>ändere y um (-50)</code>.</details>
     <details><summary>Tipp 2: Der Ton</summary>Unter „Klang“ gibt es <code>spiele Klang [Miau] ganz</code>. Häng ihn mit in den Stapel.</details>
     <details><summary>Tipp 3: EVA finden</summary>Was tust <i>du</i>? Was rechnet der Computer aus, wenn sich die Katze bewegt? Was siehst und hörst du am Ende – und über welches Gerät?</details>
-    <p class="hinweis-klein">Wenn du in Scratch nicht weiterweißt, schau ins Scratch-Tutorial der Schule.</p>
+    <p class="hinweis-klein">Wenn du in Scratch nicht weiterweißt: In <a href="informatikwerkstatt-station-0.html">Station 0</a> kannst du die Grundlagen nachschlagen.</p>
   </div>
 </section>
 
@@ -538,6 +541,13 @@
   <div id="quizErgebnis" aria-live="polite"></div>
 
   <h3><span class="badge b-profi">Profi</span>Projekt: EVA in Scratch</h3>
+  <div class="neu-scratch"><b>📘 Neu in Scratch: Fragen stellen und Texte verbinden</b>
+    <ul>
+      <li><code>frage ( ) und warte</code> (Fühlen): Die Figur stellt eine Frage. Unter der Bühne erscheint ein Eingabefeld. Das Programm wartet, bis jemand etwas eintippt und Enter drückt.</li>
+      <li><code>Antwort</code> (Fühlen): Hier steckt danach, was eingetippt wurde. Den runden Block kannst du in andere Blöcke einsetzen, zum Beispiel in <code>sage ( )</code>.</li>
+      <li><code>verbinde ( ) und ( )</code> (Operatoren): hängt zwei Texte aneinander. <code>verbinde (Hallo, ) und (Mia)</code> ergibt „Hallo, Mia“.</li>
+    </ul>
+  </div>
   <p>Baue ein kleines Scratch-Programm mit allen drei Schritten: Die Figur fragt nach deinem Namen (Eingabe), setzt einen Gruß zusammen (Verarbeitung) und sagt ihn (Ausgabe).</p>
   <details><summary>Tipp 1</summary>Für die Eingabe gibt es den Block <code>frage ( ) und warte</code>. Die Antwort steckt danach in <code>Antwort</code>.</details>
   <details><summary>Tipp 2</summary>Mit <code>verbinde ( ) und ( )</code> setzt du „Hallo, “ und die Antwort zusammen.</details>

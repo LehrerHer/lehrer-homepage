@@ -10,6 +10,7 @@
      → Profi-Teil 'geloest' oder 'angesehen' (erste Meldung zählt)
    - InformatikLogin.antwortSenden(station, frage, text) → freie Antwort (erste zählt)
    - InformatikLogin.xpAufgabe(station, id) / xpTeil(station, teil, [ids]) → 5 bzw. 25 XP (einmalig)
+   - InformatikLogin.scratchHochladen(station, datei) → Scratch-Projekt (.sb3) hochladen, erstes Mal 25 XP
 
    Der Vorname liegt in einer eigenen Tabelle und ist nur im Admin-Bereich
    „Informatik" sichtbar (kolosseum/public/admin/informatik.html).
@@ -20,19 +21,19 @@
 
   var K = 'https://kolosseum.lehrer-herrmann.de';
   var API = K + '/api/informatik';
-  var zustand = { eingeloggt: false, vorname: null, stationen: {}, profi: {}, antworten: {}, xp: [], fehler: false };
+  var zustand = { eingeloggt: false, vorname: null, stationen: {}, profi: {}, antworten: {}, xp: [], scratch: {}, fehler: false };
   var aufloesen;
   var bereit = new Promise(function (r) { aufloesen = r; });
 
   async function ladeStatus() {
     try {
       var res = await fetch(API + '/status', { credentials: 'include' });
-      if (res.status === 401) return { eingeloggt: false, vorname: null, stationen: {}, profi: {}, antworten: {}, xp: [] };
+      if (res.status === 401) return { eingeloggt: false, vorname: null, stationen: {}, profi: {}, antworten: {}, xp: [], scratch: {} };
       if (!res.ok) throw new Error('Status ' + res.status);
       var d = await res.json();
-      return { eingeloggt: true, vorname: d.vorname, stationen: d.stationen || {}, profi: d.profi || {}, antworten: d.antworten || {}, xp: d.xp || [] };
+      return { eingeloggt: true, vorname: d.vorname, stationen: d.stationen || {}, profi: d.profi || {}, antworten: d.antworten || {}, xp: d.xp || [], scratch: d.scratch || {} };
     } catch (_) {
-      return { eingeloggt: false, vorname: null, stationen: {}, profi: {}, antworten: {}, xp: [], fehler: true };
+      return { eingeloggt: false, vorname: null, stationen: {}, profi: {}, antworten: {}, xp: [], scratch: {}, fehler: true };
     }
   }
 
@@ -208,13 +209,33 @@
     });
   }
 
+  // Scratch-Projekt hochladen (FormData, kein JSON). Ein neues ersetzt das alte.
+  async function scratchHochladen(station, datei) {
+    var s = await bereit;
+    if (!s.eingeloggt) return { ok: false, grund: 'login' };
+    if (!s.vorname) return { ok: false, grund: 'vorname' };
+    var fd = new FormData();
+    fd.append('station', String(station));
+    fd.append('datei', datei);
+    try {
+      var res = await fetch(API + '/scratch', { method: 'POST', credentials: 'include', body: fd });
+      var d = await res.json().catch(function () { return {}; });
+      if (!res.ok) return { ok: false, grund: 'fehler', meldung: d.error || 'Hochladen fehlgeschlagen.' };
+      s.scratch[station] = { name: d.name, am: new Date().toISOString() };
+      xpMelden(d.xp);
+      return { ok: true, name: d.name, xp: d.xp || 0 };
+    } catch (_) {
+      return { ok: false, grund: 'netz' };
+    }
+  }
+
   async function init() {
     zustand = await ladeStatus();
     zeige();
     aufloesen(zustand);
   }
 
-  window.InformatikLogin = { bereit: bereit, senden: senden, profiMelden: profiMelden, antwortSenden: antwortSenden, xpAufgabe: xpAufgabe, xpTeil: xpTeil };
+  window.InformatikLogin = { bereit: bereit, senden: senden, profiMelden: profiMelden, antwortSenden: antwortSenden, xpAufgabe: xpAufgabe, xpTeil: xpTeil, scratchHochladen: scratchHochladen };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
