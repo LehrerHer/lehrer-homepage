@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 420" width="420" height="420" role="img" aria-labelledby="t d">
+<title id="t">Caesar-Scheibe mit Schlüssel 3</title>
+<desc id="d">Zwei Ringe mit dem Alphabet. Der innere Ring ist um drei Buchstaben verdreht: Aus A wird D, aus B wird E, aus X wird A.</desc>
+<rect width="420" height="420" fill="#ffffff"/>
+<circle cx="210.0" cy="210.0" r="196" fill="#1e3a5f"/>
+<circle cx="210.0" cy="210.0" r="150" fill="#ffffff" stroke="#1e3a5f" stroke-width="3"/>
+<circle cx="210.0" cy="210.0" r="104" fill="#fff1e3" stroke="#f28c28" stroke-width="3"/>
+<text x="210.0" y="37.0" fill="#f28c28" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(0.00 210.0 37.0)">A</text>
+<text x="210.0" y="83.0" fill="#f28c28" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(0.00 210.0 83.0)">D</text>
+<text x="251.4" y="42.0" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(13.85 251.4 42.0)">B</text>
+<text x="240.4" y="86.7" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(13.85 240.4 86.7)">E</text>
+<text x="290.4" y="56.8" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(27.69 290.4 56.8)">C</text>
+<text x="269.0" y="97.5" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(27.69 269.0 97.5)">F</text>
+<text x="324.7" y="80.5" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(41.54 324.7 80.5)">D</text>
+<text x="294.2" y="114.9" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(41.54 294.2 114.9)">G</text>
+<text x="352.4" y="111.7" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(55.38 352.4 111.7)">E</text>
+<text x="314.5" y="137.9" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(55.38 314.5 137.9)">H</text>
+<text x="371.8" y="148.7" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(69.23 371.8 148.7)">F</text>
+<text x="328.7" y="165.0" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(69.23 328.7 165.0)">I</text>
+<text x="381.7" y="189.1" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(83.08 381.7 189.1)">G</text>
+<text x="336.1" y="194.7" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(83.08 336.1 194.7)">J</text>
+<text x="381.7" y="230.9" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(96.92 381.7 230.9)">H</text>
+<text x="336.1" y="225.3" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(96.92 336.1 225.3)">K</text>
+<text x="371.8" y="271.3" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(110.77 371.8 271.3)">I</text>
+<text x="328.7" y="255.0" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(110.77 328.7 255.0)">L</text>
+<text x="352.4" y="308.3" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(124.62 352.4 308.3)">J</text>
+<text x="314.5" y="282.1" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(124.62 314.5 282.1)">M</text>
+<text x="324.7" y="339.5" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(138.46 324.7 339.5)">K</text>
+<text x="294.2" y="305.1" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(138.46 294.2 305.1)">N</text>
+<text x="290.4" y="363.2" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(152.31 290.4 363.2)">L</text>
+<text x="269.0" y="322.5" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(152.31 269.0 322.5)">O</text>
+<text x="251.4" y="378.0" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(166.15 251.4 378.0)">M</text>
+<text x="240.4" y="333.3" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(166.15 240.4 333.3)">P</text>
+<text x="210.0" y="383.0" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(180.00 210.0 383.0)">N</text>
+<text x="210.0" y="337.0" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(180.00 210.0 337.0)">Q</text>
+<text x="168.6" y="378.0" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(193.85 168.6 378.0)">O</text>
+<text x="179.6" y="333.3" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(193.85 179.6 333.3)">R</text>
+<text x="129.6" y="363.2" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(207.69 129.6 363.2)">P</text>
+<text x="151.0" y="322.5" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(207.69 151.0 322.5)">S</text>
+<text x="95.3" y="339.5" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(221.54 95.3 339.5)">Q</text>
+<text x="125.8" y="305.1" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(221.54 125.8 305.1)">T</text>
+<text x="67.6" y="308.3" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(235.38 67.6 308.3)">R</text>
+<text x="105.5" y="282.1" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(235.38 105.5 282.1)">U</text>
+<text x="48.2" y="271.3" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(249.23 48.2 271.3)">S</text>
+<text x="91.3" y="255.0" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(249.23 91.3 255.0)">V</text>
+<text x="38.3" y="230.9" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(263.08 38.3 230.9)">T</text>
+<text x="83.9" y="225.3" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(263.08 83.9 225.3)">W</text>
+<text x="38.3" y="189.1" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(276.92 38.3 189.1)">U</text>
+<text x="83.9" y="194.7" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(276.92 83.9 194.7)">X</text>
+<text x="48.2" y="148.7" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(290.77 48.2 148.7)">V</text>
+<text x="91.3" y="165.0" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(290.77 91.3 165.0)">Y</text>
+<text x="67.6" y="111.7" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(304.62 67.6 111.7)">W</text>
+<text x="105.5" y="137.9" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(304.62 105.5 137.9)">Z</text>
+<text x="95.3" y="80.5" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(318.46 95.3 80.5)">X</text>
+<text x="125.8" y="114.9" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(318.46 125.8 114.9)">A</text>
+<text x="129.6" y="56.8" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(332.31 129.6 56.8)">Y</text>
+<text x="151.0" y="97.5" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(332.31 151.0 97.5)">B</text>
+<text x="168.6" y="42.0" fill="#ffffff" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(346.15 168.6 42.0)">Z</text>
+<text x="179.6" y="86.7" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" text-anchor="middle" dominant-baseline="central" transform="rotate(346.15 179.6 86.7)">C</text>
+<text x="210.0" y="182.0" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="middle">außen: Klartext</text>
+<text x="210.0" y="210.0" fill="#1e3a5f" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" text-anchor="middle">innen: Geheimtext</text>
+<text x="210.0" y="240.0" fill="#f28c28" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" text-anchor="middle">Schlüssel 3</text>
+</svg>
