@@ -2,6 +2,12 @@
   "_hinweis": "Einträge für die 'Was ist neu?'-Liste der Startseite. Neueste oben einfügen. Felder: titel, datum (JJJJ-MM-TT), meta (Bereich), url. Nur schreiben, was Schüler*innen, Eltern oder Kolleg*innen interessiert (neue Materialien, Quizze, Funktionen zum Benutzen). Technik-/Entwickler-Einträge bekommen \"intern\": true (oder meta \"Technik\") und werden nicht angezeigt. Wird von js/was-ist-neu.js geladen.",
   "funktionen": [
     {
+      "titel": "Informatikwerkstatt: neue Station 1 „Wie funktioniert ein Computer?“",
+      "datum": "2026-11-05",
+      "meta": "Informatik",
+      "url": "informatikwerkstatt-station-1.html"
+    },
+    {
       "titel": "Startseite: direkte Links zur KI-Werkstatt und zum Informatik-Lernpfad 7/8",
       "datum": "2026-11-05",
       "meta": "Startseite",
@@ -70,7 +76,7 @@
       "titel": "Informatikwerkstatt: Station 2 „Algorithmen ohne PC“ ist online",
       "datum": "2026-11-04",
       "meta": "Informatik",
-      "url": "informatikwerkstatt-station-2.html"
+      "url": "informatikwerkstatt-station-3.html"
     },
     {
       "titel": "Informatikwerkstatt 7/8: Lernpfad mit gespeicherten Checkpoints",
