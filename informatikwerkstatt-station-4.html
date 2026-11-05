@@ -139,6 +139,9 @@
   .loesung-text { flex: 1 1 100%; background: var(--blau-zart); border-left: 4px solid var(--grau); border-radius: 6px; padding: 8px 12px; font-size: 0.95rem; }
   .aufgabe.angesehen input { background: #f2f2f2; }
   .rueck.angesehen { color: var(--grau); }
+  .neu-scratch { background: var(--blau-zart); border-left: 5px solid var(--blau); border-radius: 6px; padding: 10px 14px; margin: 10px 0 14px; }
+  .neu-scratch ul { margin: 6px 0 0; padding-left: 20px; }
+  .neu-scratch li { margin-bottom: 4px; }
   .denkfrage { margin-top: 22px; border: 2px solid var(--blau); border-radius: 10px; padding: 14px 16px; }
   .denkfrage h3 { margin-top: 0; }
   .denk-label { display: block; font-weight: 600; margin-bottom: 4px; }
@@ -636,11 +639,20 @@
 
   <div class="exkurs">
     <h3>😺 Exkurs in Scratch: Der verfressene Router</h3>
+  <div class="neu-scratch"><b>📘 Neu in Scratch: Nachrichten zwischen Figuren</b>
+    <ul>
+      <li><code>sende [Nachricht] an alle</code> (Ereignisse): schickt eine Nachricht an alle Figuren. Eine neue Nachricht legst du im Auswahlfeld mit „Neue Nachricht“ an.</li>
+      <li><code>Wenn ich [Nachricht] empfange</code> (Ereignisse): startet ein Skript, sobald die Nachricht ankommt. Jede Figur, die reagieren soll, braucht so einen Block.</li>
+      <li><code>verstecke dich</code> und <code>zeige dich</code> (Aussehen): lassen eine Figur verschwinden und wieder auftauchen.</li>
+      <li><code>gleite in (1) Sek. zu x: ( ) y: ( )</code> (Bewegung): Die Figur gleitet langsam an die Stelle, statt hinzuspringen.</li>
+    </ul>
+  </div>
     <p>Die Katze schickt einer anderen Figur eine Nachricht in drei Paketen. Dazwischen sitzt ein Hund als Router – und der hat Hunger. Manchmal frisst er ein Paket. Der Empfänger merkt an den Nummern, welches fehlt, und ruft: „Paket 2 fehlt! Bitte noch mal schicken!“</p>
     <details><summary>Tipp 1: Figuren und Nachrichten</summary>Du brauchst die Katze (Absender), einen Hund (Router), eine Empfänger-Figur und eine Paket-Figur mit drei Kostümen „1“, „2“ und „3“. Die Figuren sprechen sich mit <code>sende [Paket 1] an alle</code> und <code>Wenn ich [Paket 1] empfange</code> ab.</details>
     <details><summary>Tipp 2: Der Hund frisst</summary>Beim Hund: <code>falls &lt;(Zufallszahl von 1 bis 3) = 1&gt; dann</code> → <code>sage [Mampf!]</code> und das Paket <code>verstecke dich</code>. <code>sonst</code> gleitet das Paket weiter zum Empfänger. Mit einem Klang wird es noch lustiger.</details>
     <details><summary>Tipp 3: Der Empfänger merkt die Lücke</summary>Leg drei Variablen an: <code>paket1</code>, <code>paket2</code>, <code>paket3</code>. Am Anfang stehen alle auf 0, beim Ankommen auf 1. Nach <code>warte (3) Sekunden</code> prüft der Empfänger: <code>falls &lt;(paket2) = 0&gt; dann</code> → <code>sage [Paket 2 fehlt!]</code> und <code>sende [nochmal 2] an alle</code>.</details>
-    <p class="hinweis-klein">Genau so arbeitet das Internet: Verlorene Pakete werden neu angefordert. Wenn du in Scratch nicht weiterweißt, schau ins Scratch-Tutorial der Schule.</p>
+    <p class="hinweis-klein">Genau so arbeitet das Internet: Verlorene Pakete werden neu angefordert.</p>
+    <p class="hinweis-klein">Wenn du in Scratch nicht weiterweißt: In <a href="informatikwerkstatt-station-0.html">Station 0</a> kannst du die Grundlagen nachschlagen.</p>
   </div>
 
   <h3><span class="badge b-profi">Profi</span>Router-Simulation</h3>
@@ -853,7 +865,7 @@
   <details><summary>Tipp 1</summary>Für die Absprache zwischen Figuren gibt es unter „Ereignisse“ die Blöcke <code>sende [Nachricht] an alle</code> und <code>Wenn ich [Nachricht] empfange</code>. Leg zwei Nachrichten an: <code>Anfrage</code> und <code>Antwort</code>.</details>
   <details><summary>Tipp 2</summary>Das Paket bewegst du mit <code>gleite in (1) Sek. zu x: … y: …</code> – erst zum Router, dann zum Server. Danach schickt es die Nachricht weiter.</details>
   <details><summary>Tipp 3</summary>Scratch-Nachrichten gehen immer <b>an alle</b> Figuren – wie eine Durchsage. Im echten Netz steht eine Adresse auf dem Paket. Wie könntest du dafür sorgen, dass nur der Server auf „Anfrage“ reagiert?</details>
-  <p class="hinweis-klein">Wenn du in Scratch nicht weiterweißt: Schau ins Scratch-Tutorial der Schule.</p>
+  <p class="hinweis-klein">Wenn du in Scratch nicht weiterweißt: In <a href="informatikwerkstatt-station-0.html">Station 0</a> kannst du die Grundlagen nachschlagen.</p>
 </section>
 
 </main>

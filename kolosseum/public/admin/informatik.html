@@ -62,7 +62,7 @@
 
   <main class="container" style="padding-bottom:3rem">
     <h1 style="margin-top:1.5rem">Informatikwerkstatt 7/8 – Lernpfad</h1>
-    <p class="text-soft">Bestes Checkpoint-Ergebnis je Station. Grün = geschafft (ab 70 %), orange = noch nicht. Darunter die Profi-Teile: <strong>★ selbst gelöst</strong>, <strong>👁 Lösung angesehen</strong> (mit Anzahl vorher selbst gelöster Aufgaben). Fehlversuche = falsche „Prüfen“-Klicks im Profi-Teil. Der Vorname ist nur hier sichtbar.</p>
+    <p class="text-soft">Bestes Checkpoint-Ergebnis je Station. Grün = geschafft (ab 70 %), orange = noch nicht. Darunter die Profi-Teile: <strong>★ selbst gelöst</strong>, <strong>👁 Lösung angesehen</strong> (mit Anzahl vorher selbst gelöster Aufgaben). Fehlversuche = falsche „Prüfen“-Klicks im Profi-Teil. Station 0: hochgeladenes Scratch-Projekt (.sb3) zum Herunterladen – öffnen in Scratch über „Datei → Von deinem Computer hochladen“. Der Vorname ist nur hier sichtbar.</p>
     <div class="card iw-tabelle-wrap" style="margin-top:1rem">
       <table class="iw-tabelle" id="tabelle"><tr><td>Wird geladen …</td></tr></table>
     </div>
@@ -82,16 +82,21 @@
           var res = await fetch('/api/informatik/admin/uebersicht');
           if (!res.ok) throw new Error('Laden fehlgeschlagen (' + res.status + ').');
           var d = await res.json();
-          var kopf = '<tr><th>Lernpartner:in</th><th>Profi gesamt</th>';
+          var kopf = '<tr><th>Lernpartner:in</th><th>Profi gesamt</th><th>Station 0<br><small>Scratch-Projekt</small></th>';
           for (var i = 1; i <= d.stationen; i++) kopf += '<th>Station ' + i + '</th>';
           var html = kopf + '</tr>';
-          if (!d.personen.length) html += '<tr><td colspan="' + (d.stationen + 2) + '">Noch keine Einträge.</td></tr>';
+          if (!d.personen.length) html += '<tr><td colspan="' + (d.stationen + 3) + '">Noch keine Einträge.</td></tr>';
           d.personen.forEach(function (p) {
             html += '<tr><td class="name"><strong>' + esc(p.vorname || '– kein Vorname –') + '</strong>' +
               '<span class="nick">' + esc(p.nick) + ' · <button class="iw-name-btn" data-id="' + p.id + '" data-name="' + esc(p.vorname || '') + '">Vorname ändern</button></span></td>';
             var selbst = p.profi.filter(function (x) { return x.status === 'geloest'; }).length;
             var gesehen = p.profi.length - selbst;
             html += '<td class="iw-sum">★ ' + selbst + ' selbst<br>👁 ' + gesehen + ' angesehen</td>';
+            var sb = (p.scratch || []).filter(function (x) { return x.station === 0; })[0];
+            html += sb
+              ? '<td class="iw-zelle iw-ok">✓ hochgeladen<small>' + datum(sb.am) + ' · ' + Math.max(1, Math.round(sb.groesse / 1024)) + ' KB</small>' +
+                '<small><a href="/api/informatik/admin/scratch/' + p.id + '/0" download>⬇ ' + esc(sb.name) + '</a></small></td>'
+              : '<td>–</td>';
             for (var s = 1; s <= d.stationen; s++) {
               var e = p.stationen[s];
               var profiZeilen = p.profi.filter(function (x) { return x.station === s; }).map(function (x) {

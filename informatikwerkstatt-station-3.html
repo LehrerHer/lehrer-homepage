@@ -144,6 +144,9 @@
   .iw-bild { margin: 14px 0 18px; }
   .iw-bild img { display: block; width: 100%; max-width: 560px; height: auto; border: 1px solid var(--rand); border-radius: 8px; background: var(--weiss); }
   .iw-bild figcaption { font-size: 0.9rem; color: var(--grau); margin-top: 6px; }
+  .neu-scratch { background: var(--blau-zart); border-left: 5px solid var(--blau); border-radius: 6px; padding: 10px 14px; margin: 10px 0 14px; }
+  .neu-scratch ul { margin: 6px 0 0; padding-left: 20px; }
+  .neu-scratch li { margin-bottom: 4px; }
   .denkfrage { margin-top: 22px; border: 2px solid var(--blau); border-radius: 10px; padding: 14px 16px; }
   .denkfrage h3 { margin-top: 0; }
   .denk-label { display: block; font-weight: 600; margin-bottom: 4px; }
@@ -436,7 +439,7 @@
     <p>Lass die Katze mit dem Stift ein Quadrat malen. Dann änderst du einen einzigen Block und schaust, was passiert. Welches Merkmal eines Algorithmus ist dann verletzt?</p>
     <details><summary>Tipp 1: Das Quadrat</summary>Füge die Erweiterung „Malstift“ hinzu. <code>schalte Stift ein</code>, dann <code>wiederhole (4) mal</code> mit <code>gehe (100) er Schritt</code> und <code>drehe dich um (90) Grad</code>.</details>
     <details><summary>Tipp 2: Der Umbau</summary>Tausche <code>wiederhole (4) mal</code> gegen <code>wiederhole fortlaufend</code>. Hört die Katze noch auf? Und was passiert, wenn du statt 90 Grad 91 Grad nimmst?</details>
-    <p class="hinweis-klein">Wenn du in Scratch nicht weiterweißt, schau ins Scratch-Tutorial der Schule.</p>
+    <p class="hinweis-klein">Wenn du in Scratch nicht weiterweißt: In <a href="informatikwerkstatt-station-0.html">Station 0</a> kannst du die Grundlagen nachschlagen.</p>
   </div>
 </section>
 
@@ -648,6 +651,14 @@
   <div id="quizErgebnis" aria-live="polite"></div>
 
   <h3><span class="badge b-profi">Profi</span>Projekt: Zahlenraten in Scratch</h3>
+  <div class="neu-scratch"><b>📘 Neu in Scratch: Zufall und „wiederhole bis“</b>
+    <ul>
+      <li><code>Zufallszahl von (1) bis (10)</code> (Operatoren): liefert jedes Mal eine neue zufällige Zahl aus diesem Bereich.</li>
+      <li><code>wiederhole bis &lt; &gt;</code> (Steuerung): wiederholt die Blöcke darin so lange, bis die Bedingung erfüllt ist. Dann geht es unter der Schleife weiter.</li>
+      <li><code>( ) = ( )</code>, <code>( ) &gt; ( )</code>, <code>( ) &lt; ( )</code> (Operatoren): vergleichen zwei Werte. Du setzt sie in <code>falls</code> oder <code>wiederhole bis</code> ein.</li>
+      <li>Variablen und <code>frage ( ) und warte</code> kennst du aus Station 1 und 2.</li>
+    </ul>
+  </div>
   <p>Programmiere das Zahlenraten selbst: Die Figur denkt sich eine Zufallszahl von 1 bis 100. Sie fragt nach einem Tipp und antwortet „größer“, „kleiner“ oder „richtig“. Am Ende sagt sie, wie viele Versuche du gebraucht hast.</p>
   <details><summary>Tipp 1</summary>Leg zwei Variablen an: <code>geheimzahl</code> und <code>versuche</code>. Für die Zufallszahl gibt es den Block <code>Zufallszahl von 1 bis 100</code>.</details>
   <details><summary>Tipp 2</summary>Nimm eine Schleife <code>wiederhole bis &lt;(Antwort) = (geheimzahl)&gt;</code>. Darin: <code>frage … und warte</code> und <code>ändere versuche um 1</code>.</details>

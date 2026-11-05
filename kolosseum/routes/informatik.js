@@ -3,6 +3,9 @@
 // Lernpartner:innen melden sich mit ihrem Kolosseum-Konto an. Den Vornamen geben sie
 // einmalig an; er liegt in einer eigenen Tabelle und ist nur in /admin/informatik.html sichtbar.
 const express = require('express');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 const { db } = require('../db/database');
 const { requireStudent, requireAdmin } = require('../middleware/auth');
 const { checkAndAwardBadges } = require('../db/badges');
@@ -13,6 +16,20 @@ const STATIONEN = 7;
 const BESTEHEN_AB = 0.7; // 70 % der Punkte
 const XP_AUFGABE = 5, XP_TEIL = 25, XP_FRAGE = 5, XP_BESTANDEN = 25;
 const ID_MUSTER = /^[a-z0-9-]{1,40}$/;
+const XP_SCRATCH = 25; // erstes hochgeladenes Scratch-Projekt je Station
+
+// Scratch-Projekte (.sb3) liegen bewusst NICHT unter /uploads (das ist öffentlich),
+// sondern neben der Datenbank. Abruf nur über den Admin-Endpunkt.
+const SCRATCH_DIR = path.join(__dirname, '..', 'db', 'informatik-scratch');
+fs.mkdirSync(SCRATCH_DIR, { recursive: true });
+const scratchUpload = multer({
+  storage: multer.diskStorage({
+    destination: (_req, _file, cb) => cb(null, SCRATCH_DIR),
+    filename: (_req, _file, cb) => cb(null, Date.now().toString(36) + Math.random().toString(36).slice(2, 8) + '.sb3'),
+  }),
+  limits: { fileSize: 20 * 1024 * 1024, files: 1 },
+  fileFilter: (_req, file, cb) => cb(null, /\.sb3$/i.test(file.originalname || '')),
+});
 
 // XP einmalig je Schlüssel gutschreiben; liefert die tatsächlich vergebenen XP
 const xpEintragen = db.transaction((studentId, eintraege, grund) => {
@@ -64,7 +81,10 @@ router.get('/status', requireStudent, (req, res) => {
   db.prepare('SELECT station, frage, antwort FROM informatik_antworten WHERE student_id = ?').all(id)
     .forEach(r => { antworten[r.station + '-' + r.frage] = r.antwort; });
   const xp = db.prepare('SELECT schluessel FROM informatik_xp WHERE student_id = ?').all(id).map(r => r.schluessel);
-  res.json({ vorname: vn ? vn.vorname : null, stationen, profi, antworten, xp });
+  const scratch = {};
+  db.prepare('SELECT station, original_name, created_at FROM informatik_scratch WHERE student_id = ?').all(id)
+    .forEach(r => { scratch[r.station] = { name: r.original_name, am: r.created_at }; });
+  res.json({ vorname: vn ? vn.vorname : null, stationen, profi, antworten, xp, scratch });
 });
 
 // POST /api/informatik/vorname – Vorname einmalig speichern (später nur noch im Admin änderbar)
@@ -84,7 +104,7 @@ router.post('/checkpoint', requireStudent, (req, res) => {
   const station = parseInt(req.body?.station, 10);
   const punkte = parseInt(req.body?.punkte, 10);
   const max = parseInt(req.body?.max, 10);
-  if (!(station >= 1 && station <= STATIONEN) || !(max >= 1 && max <= 50) || !(punkte >= 0 && punkte <= max)) {
+  if (!(station >= 0 && station <= STATIONEN) || !(max >= 1 && max <= 50) || !(punkte >= 0 && punkte <= max)) {
     return res.status(400).json({ error: 'Ungültiges Ergebnis.' });
   }
   const bestanden = punkte / max >= BESTEHEN_AB ? 1 : 0;
@@ -108,7 +128,7 @@ router.post('/profi', requireStudent, (req, res) => {
   const gesamt = parseInt(req.body?.gesamt, 10);
   const geloest = parseInt(req.body?.geloest, 10);
   const fehlversuche = parseInt(req.body?.fehlversuche, 10) || 0;
-  if (!(station >= 1 && station <= STATIONEN) || !(teil >= 1 && teil <= 9)
+  if (!(station >= 0 && station <= STATIONEN) || !(teil >= 1 && teil <= 9)
       || !['geloest', 'angesehen'].includes(status)
       || !(gesamt >= 1 && gesamt <= 30) || !(geloest >= 0 && geloest <= gesamt)
       || (status === 'geloest' && geloest !== gesamt)
@@ -129,7 +149,7 @@ router.post('/antwort', requireStudent, (req, res) => {
   const station = parseInt(req.body?.station, 10);
   const frage = String(req.body?.frage || '');
   const text = String(req.body?.text || '').trim();
-  if (!(station >= 1 && station <= STATIONEN) || !/^[a-z0-9-]{1,30}$/.test(frage)
+  if (!(station >= 0 && station <= STATIONEN) || !/^[a-z0-9-]{1,30}$/.test(frage)
       || text.length < 10 || text.length > 1000) {
     return res.status(400).json({ error: 'Ungültige Antwort.' });
   }
@@ -144,7 +164,7 @@ router.post('/antwort', requireStudent, (req, res) => {
 router.post('/xp/aufgabe', requireStudent, (req, res) => {
   const station = parseInt(req.body?.station, 10);
   const id = String(req.body?.id || '');
-  if (!(station >= 1 && station <= STATIONEN) || !ID_MUSTER.test(id)) return res.status(400).json({ error: 'Ungültige Aufgabe.' });
+  if (!(station >= 0 && station <= STATIONEN) || !ID_MUSTER.test(id)) return res.status(400).json({ error: 'Ungültige Aufgabe.' });
   const xp = xpVergeben(req.session.studentId, [['a:' + station + ':' + id, XP_AUFGABE]], 'Informatikwerkstatt Station ' + station + ': Aufgabe');
   res.json({ ok: true, xp });
 });
@@ -155,7 +175,7 @@ router.post('/xp/teil', requireStudent, (req, res) => {
   const station = parseInt(req.body?.station, 10);
   const teil = String(req.body?.teil || '');
   const aufgaben = Array.isArray(req.body?.aufgaben) ? req.body.aufgaben.map(String) : [];
-  if (!(station >= 1 && station <= STATIONEN) || !ID_MUSTER.test(teil) || aufgaben.length < 1 || aufgaben.length > 40
+  if (!(station >= 0 && station <= STATIONEN) || !ID_MUSTER.test(teil) || aufgaben.length < 1 || aufgaben.length > 40
       || !aufgaben.every(a => ID_MUSTER.test(a) && a.indexOf(teil + '-') === 0)) {
     return res.status(400).json({ error: 'Ungültiger Teil.' });
   }
@@ -165,6 +185,49 @@ router.post('/xp/teil', requireStudent, (req, res) => {
   }
   const xp = xpVergeben(req.session.studentId, [['t:' + station + ':' + teil, XP_TEIL]], 'Informatikwerkstatt Station ' + station + ': Teil komplett');
   res.json({ ok: true, xp });
+});
+
+// POST /api/informatik/scratch – Scratch-Projekt (.sb3) hochladen. Ein neues ersetzt das alte.
+// Das erste Hochladen je Station bringt 25 XP.
+router.post('/scratch', requireStudent, (req, res) => {
+  scratchUpload.single('datei')(req, res, (err) => {
+    if (err) {
+      const zuGross = err.code === 'LIMIT_FILE_SIZE';
+      return res.status(400).json({ error: zuGross ? 'Die Datei ist zu groß (höchstens 20 MB).' : 'Hochladen fehlgeschlagen.' });
+    }
+    const station = parseInt(req.body?.station, 10);
+    const weg = () => { if (req.file) fs.unlink(req.file.path, () => {}); };
+    if (!req.file) return res.status(400).json({ error: 'Bitte wähle eine Scratch-Datei mit der Endung .sb3.' });
+    if (!(station >= 0 && station <= STATIONEN)) { weg(); return res.status(400).json({ error: 'Ungültige Station.' }); }
+    // .sb3 ist ein ZIP-Archiv: Die Datei muss mit „PK“ beginnen
+    try {
+      const fd = fs.openSync(req.file.path, 'r'); const kopf = Buffer.alloc(2); fs.readSync(fd, kopf, 0, 2, 0); fs.closeSync(fd);
+      if (kopf.toString('latin1') !== 'PK') { weg(); return res.status(400).json({ error: 'Das ist keine gültige Scratch-Datei.' }); }
+    } catch (_) { weg(); return res.status(500).json({ error: 'Datei konnte nicht geprüft werden.' }); }
+    const id = req.session.studentId;
+    const name = String(req.file.originalname).replace(/[^\w .()äöüÄÖÜß-]/g, '_').slice(0, 80);
+    const alt = db.prepare('SELECT datei FROM informatik_scratch WHERE student_id = ? AND station = ?').get(id, station);
+    db.prepare(`
+      INSERT INTO informatik_scratch (student_id, station, datei, original_name, groesse) VALUES (?, ?, ?, ?, ?)
+      ON CONFLICT(student_id, station) DO UPDATE SET datei = excluded.datei, original_name = excluded.original_name,
+        groesse = excluded.groesse, created_at = datetime('now')
+    `).run(id, station, req.file.filename, name, req.file.size);
+    if (alt && alt.datei !== req.file.filename) fs.unlink(path.join(SCRATCH_DIR, path.basename(alt.datei)), () => {});
+    const xp = xpVergeben(id, [['u:' + station, XP_SCRATCH]], 'Informatikwerkstatt Station ' + station + ': Scratch-Projekt hochgeladen');
+    res.json({ ok: true, name, xp });
+  });
+});
+
+// GET /api/informatik/scratch/mein/:station – eigenes hochgeladenes Projekt wieder herunterladen
+router.get('/scratch/mein/:station', requireStudent, (req, res) => {
+  const station = parseInt(req.params.station, 10);
+  const r = db.prepare('SELECT datei, original_name FROM informatik_scratch WHERE student_id = ? AND station = ?')
+    .get(req.session.studentId, station);
+  if (!r) return res.status(404).send('Du hast für diese Station noch kein Projekt hochgeladen.');
+  const datei = path.join(SCRATCH_DIR, path.basename(r.datei));
+  if (!fs.existsSync(datei)) return res.status(404).send('Die Datei fehlt auf dem Server. Bitte lade sie noch einmal hoch.');
+  const name = r.original_name.replace(/[^\w .()-]/g, '_');
+  res.download(datei, /\.sb3$/i.test(name) ? name : name + '.sb3');
 });
 
 // ── Admin ─────────────────────────────────────────────────────────────
@@ -179,6 +242,7 @@ router.get('/admin/uebersicht', requireAdmin, (req, res) => {
        OR s.id IN (SELECT DISTINCT student_id FROM informatik_checkpoints)
        OR s.id IN (SELECT DISTINCT student_id FROM informatik_profi)
        OR s.id IN (SELECT DISTINCT student_id FROM informatik_antworten)
+       OR s.id IN (SELECT DISTINCT student_id FROM informatik_scratch)
     ORDER BY COALESCE(v.vorname, s.nick) COLLATE NOCASE
   `).all();
   const ergebnisse = db.prepare(`
@@ -209,11 +273,18 @@ router.get('/admin/uebersicht', requireAdmin, (req, res) => {
         station: r.station, frage: r.frage, antwort: r.antwort, am: r.created_at,
       });
     });
+  const scratch = {};
+  db.prepare('SELECT student_id, station, original_name, groesse, created_at FROM informatik_scratch ORDER BY station')
+    .all().forEach(r => {
+      (scratch[r.student_id] = scratch[r.student_id] || []).push({
+        station: r.station, name: r.original_name, groesse: r.groesse, am: r.created_at,
+      });
+    });
   res.json({
     stationen: STATIONEN,
     personen: personen.map(p => ({
       id: p.id, nick: p.nick, vorname: p.vorname, stationen: map[p.id] || {}, profi: profi[p.id] || [],
-      antworten: antworten[p.id] || [],
+      antworten: antworten[p.id] || [], scratch: scratch[p.id] || [],
     })),
   });
 });
@@ -228,6 +299,22 @@ router.put('/admin/vorname/:id', requireAdmin, (req, res) => {
     ON CONFLICT(student_id) DO UPDATE SET vorname = excluded.vorname
   `).run(id, vorname);
   res.json({ ok: true });
+});
+
+// GET /api/informatik/admin/scratch/:id/:station – hochgeladenes Scratch-Projekt herunterladen
+router.get('/admin/scratch/:id/:station', requireAdmin, (req, res) => {
+  const id = parseInt(req.params.id, 10), station = parseInt(req.params.station, 10);
+  const r = db.prepare(`
+    SELECT x.datei, x.original_name, COALESCE(v.vorname, s.nick) AS name
+    FROM informatik_scratch x JOIN students s ON s.id = x.student_id
+    LEFT JOIN informatik_vornamen v ON v.student_id = x.student_id
+    WHERE x.student_id = ? AND x.station = ?
+  `).get(id, station);
+  if (!r) return res.status(404).json({ error: 'Nicht gefunden.' });
+  const datei = path.join(SCRATCH_DIR, path.basename(r.datei));
+  if (!fs.existsSync(datei)) return res.status(404).json({ error: 'Datei fehlt auf dem Server.' });
+  const sauber = (r.name + '_Station-' + station + '_' + r.original_name).replace(/[^\w.-]/g, '_');
+  res.download(datei, /\.sb3$/i.test(sauber) ? sauber : sauber + '.sb3');
 });
 
 module.exports = router;

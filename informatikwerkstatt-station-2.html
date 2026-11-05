@@ -144,6 +144,9 @@
   .iw-bild { margin: 14px 0 18px; }
   .iw-bild img { display: block; width: 100%; max-width: 560px; height: auto; border: 1px solid var(--rand); border-radius: 8px; background: var(--weiss); }
   .iw-bild figcaption { font-size: 0.9rem; color: var(--grau); margin-top: 6px; }
+  .neu-scratch { background: var(--blau-zart); border-left: 5px solid var(--blau); border-radius: 6px; padding: 10px 14px; margin: 10px 0 14px; }
+  .neu-scratch ul { margin: 6px 0 0; padding-left: 20px; }
+  .neu-scratch li { margin-bottom: 4px; }
   .denkfrage { margin-top: 22px; border: 2px solid var(--blau); border-radius: 10px; padding: 14px 16px; }
   .denkfrage h3 { margin-top: 0; }
   .denk-label { display: block; font-weight: 600; margin-bottom: 4px; }
@@ -429,11 +432,19 @@
   </div>
   <div class="exkurs">
     <h3>😺 Exkurs in Scratch: Pixel-Zeile mit dem Stift</h3>
+  <div class="neu-scratch"><b>📘 Neu in Scratch: Malstift, Variablen und „falls … sonst“</b>
+    <ul>
+      <li><b>Malstift:</b> Klick unten links auf „Erweiterung hinzufügen“ und wähle „Malstift“. Dann gibt es eine neue grüne Kategorie. Nach <code>schalte Stift ein</code> zieht die Figur beim Bewegen eine Linie, nach <code>schalte Stift aus</code> nicht mehr. <code>lösche alles</code> macht die Bühne wieder leer.</li>
+      <li><b>Variablen:</b> Eine Variable merkt sich einen Wert. In der Kategorie „Variablen“ klickst du auf „Neue Variable“ und gibst einen Namen ein. Mit <code>setze (stelle) auf (1)</code> legst du den Wert fest, mit <code>ändere (stelle) um (1)</code> zählst du hoch.</li>
+      <li><code>falls &lt; &gt; dann … sonst …</code> (Steuerung): Stimmt die Bedingung, läuft der obere Teil, sonst der untere.</li>
+      <li><code>Zeichen (1) von (Apfel)</code> (Operatoren): liefert ein einzelnes Zeichen aus einem Text, hier das „A“.</li>
+    </ul>
+  </div>
     <p>Die Katze malt eine Zeile aus deinem Pixelbild. Sie liest einen Code wie <code>00111100</code> Zeichen für Zeichen. Bei <code>1</code> malt sie ein Kästchen, bei <code>0</code> lässt sie es frei. Das ist dasselbe Werkzeug wie im Geometrie-Zeichner.</p>
     <details><summary>Tipp 1: Vorbereiten</summary>Füge die Erweiterung „Malstift“ hinzu. Leg die Variablen <code>zeile</code> (Wert <code>00111100</code>) und <code>stelle</code> (Wert 1) an.</details>
     <details><summary>Tipp 2: Zeichen lesen</summary>Nimm <code>wiederhole (8) mal</code>. Darin: <code>falls &lt;(Zeichen (stelle) von (zeile)) = 1&gt; dann</code> → <code>schalte Stift ein</code>, sonst <code>schalte Stift aus</code>. Danach <code>gehe (20) er Schritt</code> und <code>ändere stelle um (1)</code>.</details>
     <details><summary>Tipp 3: Dicker malen</summary>Mit <code>setze Stiftdicke auf (20)</code> werden aus Strichen Kästchen. Extra: Mal alle acht Zeilen untereinander.</details>
-    <p class="hinweis-klein">Wenn du in Scratch nicht weiterweißt, schau ins Scratch-Tutorial der Schule.</p>
+    <p class="hinweis-klein">Wenn du in Scratch nicht weiterweißt: In <a href="informatikwerkstatt-station-0.html">Station 0</a> kannst du die Grundlagen nachschlagen.</p>
   </div>
 </section>
 

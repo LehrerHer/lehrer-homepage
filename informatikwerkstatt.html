@@ -202,6 +202,7 @@
       <ul>
         <li><b>5 XP</b> für jede Aufgabe, die du selbst richtig löst</li>
         <li><b>25 XP</b> für jeden Teil, in dem du <b>alle</b> Aufgaben selbst löst – auch die Profi-Aufgaben</li>
+        <li><b>25 XP</b> für dein erstes hochgeladenes Scratch-Projekt (Station 0)</li>
         <li><b>Checkpoint:</b> 5 XP pro richtiger Frage und 25 XP fürs Bestehen. Beim Wiederholen zählt nur, was du besser machst.</li>
         <li>Für Aufgaben, deren Lösung du aufgedeckt hast, gibt es <b>keine</b> XP.</li>
       </ul>
@@ -212,6 +213,13 @@
     <h2>Die Stationen</h2>
     <div class="rahmen">Eine Station gilt als geschafft, wenn du im Checkpoint mindestens 70 % der Punkte erreichst. Das Häkchen erscheint dann automatisch.</div>
     <ol class="pfad" id="pfad">
+      <li class="station" data-id="0">
+        <div class="punkt">0</div>
+        <div class="karte">
+          <div><h3>Erste Schritte in Scratch</h3><p class="info">Dein Werkzeug für den ganzen Kurs: Scratch kennenlernen, ein eigenes Programm bauen und hochladen · ca. 2–3 Stunden</p></div>
+          <div class="aktionen"><a class="iw-btn" href="informatikwerkstatt-station-0.html">Starten</a><span class="stand" aria-live="polite"></span></div>
+        </div>
+      </li>
       <li class="station" data-id="1">
         <div class="punkt">1</div>
         <div class="karte">
@@ -306,8 +314,14 @@
     InformatikLogin.bereit.then(function (z) {
       if (!z.eingeloggt) return;
       document.querySelectorAll('#pfad .station').forEach(function (li) {
-        var st = z.stationen[li.getAttribute('data-id')];
+        var id = li.getAttribute('data-id');
+        var st = z.stationen[id];
         var feld = li.querySelector('.stand');
+        // Station 0: geschafft, sobald das Scratch-Projekt hochgeladen ist
+        if (id === '0') {
+          if (z.scratch && z.scratch[0]) { li.classList.add('erledigt'); feld.className = 'stand ok'; feld.textContent = '✓ Projekt hochgeladen'; }
+          return;
+        }
         if (!st) return;
         if (st.bestanden) {
           li.classList.add('erledigt');

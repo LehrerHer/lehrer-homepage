@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Station 0 – Erste Schritte in Scratch</title>
+<link rel="stylesheet" href="css/style.css?v=20261105c">
+<style>
+  :root {
+    --blau: var(--farbe-primaer, #1e3a5f); --blau-hell: #1f3d6e; --blau-zart: #e9eef6;
+    --orange: #f28c28; --orange-zart: #fff1e3;
+    --weiss: #ffffff; --text: #1b2433; --grau: #5b6577; --rand: #d5dce8;
+    --gruen: #1e7a46; --rot: #b3261e;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--weiss); color: var(--text);
+    font-family: "Open Sans", system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 17px; line-height: 1.55; }
+  h1, h2, h3 { font-family: "Merriweather", Georgia, serif; line-height: 1.25; }
+  .mono, code { font-family: "JetBrains Mono", ui-monospace, Consolas, monospace; }
+  .iw-wrap { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+
+  .iw-kopf { background: var(--blau); color: var(--weiss); padding: 28px 0 24px; border-bottom: 6px solid var(--orange); }
+  .iw-kopf a { color: #d9e2f1; font-size: 0.9rem; text-decoration: none; }
+  .iw-kopf a:hover { text-decoration: underline; }
+  .iw-kopf .label { color: var(--orange); font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 14px; }
+  .iw-kopf h1 { margin: 4px 0 8px; font-size: 1.9rem; }
+  .iw-kopf p { margin: 0; color: #d9e2f1; max-width: 620px; }
+
+  .iw-seite nav.teile { position: sticky; top: 0; background: var(--weiss); border-bottom: 1px solid var(--rand); z-index: 5; }
+  nav.teile .iw-wrap { display: flex; gap: 6px; overflow-x: auto; padding-top: 10px; padding-bottom: 10px; }
+  nav.teile a { flex: 0 0 auto; text-decoration: none; color: var(--blau); background: var(--blau-zart);
+    padding: 6px 12px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; }
+  nav.teile a:hover, nav.teile a:focus { background: var(--orange); }
+
+  main { padding: 24px 0 48px; }
+  .iw-seite section.teil { padding-top: 20px; padding-bottom: 0; margin-bottom: 36px; scroll-margin-top: 60px; }
+  h2 { color: var(--blau); font-size: 1.45rem; margin: 0 0 12px; }
+  h2::after { content: ""; display: block; width: 48px; height: 4px; background: var(--orange); margin-top: 8px; border-radius: 2px; }
+  h3 { color: var(--blau); font-size: 1.1rem; margin: 22px 0 8px; }
+  .ziel { background: var(--blau-zart); border-left: 5px solid var(--blau); padding: 10px 14px; border-radius: 6px; margin-bottom: 16px; }
+  .ziel b { color: var(--blau); }
+
+  .badge { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; vertical-align: middle; margin-right: 6px; font-family: "Open Sans", system-ui, sans-serif; }
+  .b-basis { background: var(--blau); color: var(--weiss); }
+  .b-profi { background: var(--orange); color: var(--blau); }
+
+  .werkzeug { border: 2px solid var(--blau); border-radius: 10px; padding: 16px; margin: 14px 0; }
+  .werkzeug .titel { font-weight: 700; color: var(--blau); margin-bottom: 10px; }
+
+  /* Bits */
+  .bits { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+  .bit { text-align: center; }
+  .bit .wert { font-size: 0.8rem; color: var(--grau); }
+  .bit button { width: 100%; aspect-ratio: 1 / 1; max-width: 64px; border: 3px solid var(--blau); border-radius: 50%;
+    background: var(--weiss); color: var(--blau); font-size: 1.3rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .bit button[aria-pressed="true"] { background: var(--orange); border-color: var(--orange); box-shadow: 0 0 12px var(--orange); }
+  .ergebnis { margin-top: 12px; font-size: 1.15rem; }
+  .ergebnis b { color: var(--blau); font-size: 1.5rem; }
+
+  /* Aufgaben */
+  .aufgabe { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; padding: 10px 0; border-bottom: 1px dashed var(--rand); }
+  .aufgabe .frage { flex: 1 1 260px; }
+  .aufgabe input[type=text] { width: 150px; padding: 7px 10px; border: 2px solid var(--rand); border-radius: 6px; font-size: 1rem; font-family: "JetBrains Mono", ui-monospace, monospace; }
+  .aufgabe input.ok { border-color: var(--gruen); background: #eaf6ee; }
+  .aufgabe input.falsch { border-color: var(--rot); }
+  .rueck { font-size: 0.9rem; min-width: 110px; }
+  .rueck.ok { color: var(--gruen); font-weight: 600; }
+  .rueck.falsch { color: var(--rot); }
+
+  .iw-btn { display: inline-block; background: var(--blau); color: var(--weiss); border: 0; text-decoration: none;
+    padding: 8px 14px; border-radius: 6px; font-weight: 600; font-size: 0.95rem; cursor: pointer; font-family: inherit; }
+  .iw-btn:hover, .iw-btn:focus { background: var(--blau-hell); }
+  .iw-btn.orange { background: var(--orange); color: var(--blau); }
+  .iw-btn.leise { background: var(--blau-zart); color: var(--blau); }
+  button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+
+  details { background: var(--orange-zart); border-radius: 6px; padding: 6px 12px; margin: 8px 0; }
+  details summary { cursor: pointer; font-weight: 600; color: var(--blau); }
+
+  /* ASCII */
+  #asciiEin { width: 100%; max-width: 360px; padding: 8px 10px; border: 2px solid var(--rand); border-radius: 6px; font-size: 1rem; }
+  table.ascii { border-collapse: collapse; margin-top: 10px; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.95rem; }
+  table.ascii th, table.ascii td { border: 1px solid var(--rand); padding: 4px 10px; text-align: center; }
+  table.ascii th { background: var(--blau-zart); color: var(--blau); }
+  .tabelle-scroll { overflow-x: auto; }
+
+  /* Pixel */
+  .vorlage { list-style: none; margin: 10px 0 18px; padding: 0; display: grid; grid-template-columns: repeat(4, max-content); gap: 6px; }
+  .vorlage li { background: var(--blau-zart); border-radius: 6px; padding: 4px 10px; font-size: 0.95rem; white-space: nowrap; }
+  .vorlage .v-nr { font-weight: 700; color: var(--blau); margin-right: 6px; }
+  .vorlage code { letter-spacing: 0.05em; }
+  .zeichenflaeche { display: inline-block; }
+  .zf-kopf, .zf-zeile { display: grid; grid-template-columns: 52px auto 130px; align-items: center; column-gap: 12px; }
+  .zf-kopf { font-size: 0.8rem; color: var(--grau); font-weight: 600; margin-bottom: 4px; }
+  .zf-nr { text-align: right; font-weight: 700; color: var(--blau); font-size: 0.95rem; }
+  .zf-pixel { display: grid; grid-template-columns: repeat(8, 32px); gap: 2px; background: var(--rand); padding: 1px 2px; }
+  .zf-zeile:first-of-type .zf-pixel { padding-top: 2px; border-radius: 4px 4px 0 0; }
+  .zf-zeile:last-of-type .zf-pixel { padding-bottom: 2px; border-radius: 0 0 4px 4px; }
+  .zf-pixel button { width: 32px; height: 32px; border: 0; background: var(--weiss); cursor: pointer; padding: 0; }
+  .zf-pixel button[aria-pressed="true"] { background: var(--blau); }
+  .zf-ist { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.95rem; }
+  .zf-ist.passt { color: var(--gruen); font-weight: 700; }
+
+  /* RGB */
+  .rgb-flex { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
+  .regler label { display: flex; align-items: center; gap: 10px; margin: 6px 0; font-weight: 600; }
+  .regler input[type=range] { width: 180px; }
+  .regler output { font-family: "JetBrains Mono", ui-monospace, monospace; min-width: 36px; }
+  #farbe { width: 120px; height: 120px; border-radius: 10px; border: 2px solid var(--rand); }
+
+  /* Quiz */
+  .quizfrage { border: 2px solid var(--rand); border-radius: 10px; padding: 12px 16px; margin: 12px 0; }
+  .quizfrage p { margin: 0 0 8px; font-weight: 600; }
+  .quizfrage label { display: block; padding: 4px 0; cursor: pointer; }
+  .quizfrage.ok { border-color: var(--gruen); }
+  .quizfrage.falsch { border-color: var(--rot); }
+  #quizErgebnis { margin-top: 16px; }
+  .code-box { background: var(--blau); color: var(--weiss); border-radius: 10px; padding: 18px; text-align: center; }
+  .code-box .speichern { margin-top: 8px; color: var(--orange); font-weight: 600; }
+  .code-box .code { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 1.8rem; color: var(--orange); letter-spacing: 0.1em; margin: 6px 0; }
+
+
+  @media (max-width: 520px) {
+    .vorlage { grid-template-columns: repeat(2, max-content); }
+    .zf-kopf, .zf-zeile { grid-template-columns: 34px auto 96px; column-gap: 6px; }
+    .zf-pixel { grid-template-columns: repeat(8, 26px); }
+    .zf-pixel button { width: 26px; height: 26px; }
+    .zf-ist { font-size: 0.8rem; }
+    .bit button { font-size: 1rem; border-width: 2px; }
+  }
+
+  /* === PROFI: LÖSUNGEN + BONUS === */
+  .iw-seite [hidden] { display: none !important; }
+  .iw-btn:disabled { opacity: 0.5; cursor: default; }
+  .loesung-freigabe { margin: 12px 0 0; }
+  .loesung-frage { background: var(--orange-zart); border: 2px solid var(--orange); border-radius: 8px; padding: 10px 14px; margin-top: 8px; }
+  .loesung-frage p { margin: 0 0 8px; }
+  .loesung-frage .iw-btn { margin: 0 6px 6px 0; }
+  .loesung-text { flex: 1 1 100%; background: var(--blau-zart); border-left: 4px solid var(--grau); border-radius: 6px; padding: 8px 12px; font-size: 0.95rem; }
+  .aufgabe.angesehen input { background: #f2f2f2; }
+  .rueck.angesehen { color: var(--grau); }
+  .exkurs { border: 2px dashed var(--blau); border-radius: 10px; padding: 12px 16px; margin: 18px 0; }
+  .exkurs h3 { margin-top: 0; }
+  .iw-bild { margin: 14px 0 18px; }
+  .iw-bild img { display: block; width: 100%; max-width: 560px; height: auto; border: 1px solid var(--rand); border-radius: 8px; background: var(--weiss); }
+  .iw-bild figcaption { font-size: 0.9rem; color: var(--grau); margin-top: 6px; }
+  .denkfrage { margin-top: 22px; border: 2px solid var(--blau); border-radius: 10px; padding: 14px 16px; }
+  .denkfrage h3 { margin-top: 0; }
+  .denk-label { display: block; font-weight: 600; margin-bottom: 4px; }
+  .denkfrage textarea { width: 100%; padding: 8px 10px; border: 2px solid var(--rand); border-radius: 6px; font: inherit; font-size: 1rem; resize: vertical; }
+  .denkfrage textarea:disabled { background: #f2f2f2; color: var(--text); }
+  .denk-aktion { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 8px; }
+  .denk-meldung { font-size: 0.9rem; }
+  .denk-meldung.ok { color: var(--gruen); font-weight: 600; }
+  .denk-meldung.falsch { color: var(--rot); }
+  .denk-loesung { background: var(--blau-zart); border-left: 4px solid var(--grau); border-radius: 6px; padding: 8px 12px; margin-top: 8px; font-size: 0.95rem; }
+  .belohnung { margin-top: 18px; border: 3px solid var(--orange); border-radius: 12px; padding: 16px; background: var(--orange-zart); }
+  .belohnung h3 { margin-top: 0; }
+  .belohnung:focus { outline: none; }
+  table.einheiten { border-collapse: collapse; width: 100%; background: var(--weiss); font-size: 0.95rem; }
+  table.einheiten th, table.einheiten td { border: 1px solid var(--rand); padding: 6px 10px; text-align: left; }
+  table.einheiten th { background: var(--blau); color: var(--weiss); }
+  .hinweis-klein { font-size: 0.9rem; color: var(--grau); margin-bottom: 0; }
+
+  /* === TASCHENRECHNER === */
+  .rechner { margin: 10px 0 6px; border: 2px solid var(--rand); border-radius: 10px; padding: 10px; width: 100%; max-width: 260px; background: var(--weiss); }
+  .rechner-titel { font-weight: 700; color: var(--blau); font-size: 0.9rem; margin-bottom: 6px; }
+  .rechner-anzeige { width: 100%; padding: 6px 8px; border: 2px solid var(--rand); border-radius: 6px; font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 1rem; text-align: right; }
+  .rechner-ergebnis { min-height: 1.6em; text-align: right; font-family: "JetBrains Mono", ui-monospace, monospace; font-weight: 700; color: var(--blau); margin: 4px 2px; }
+  .rechner-ergebnis.fehler { color: var(--rot); font-weight: 400; font-size: 0.85rem; }
+  .rechner-tasten { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .rechner-tasten button { padding: 9px 0; border: 0; border-radius: 6px; background: var(--blau-zart); color: var(--blau); font-size: 1.05rem; font-weight: 700; cursor: pointer; font-family: inherit; }
+  .rechner-tasten button.op { background: var(--orange-zart); }
+  .rechner-tasten button.leer { background: #eef0f3; color: var(--grau); }
+  .rechner-tasten button.gleich { grid-column: 1 / -1; background: var(--blau); color: var(--weiss); }
+
+  /* === XP === */
+  .xp-plus { display: inline-block; background: var(--orange); color: var(--blau); font-weight: 700; font-size: 0.85rem; border-radius: 12px; padding: 1px 8px; animation: xp-pop 0.5s ease-out; }
+  @keyframes xp-pop { 0% { transform: scale(0.4); opacity: 0; } 70% { transform: scale(1.2); } 100% { transform: scale(1); opacity: 1; } }
+  .xp-banner { background: var(--orange); color: var(--blau); font-weight: 700; border-radius: 10px; padding: 10px 14px; margin: 0 0 14px; animation: xp-pop 0.6s ease-out; }
+  .xp-schon { display: inline-block; font-size: 0.8rem; font-weight: 600; color: var(--gruen); background: #eaf6ee; border-radius: 10px; padding: 1px 8px; margin-bottom: 6px; }
+
+  /* === LOGIN-BOX === */
+  .iw-login { border-radius: 10px; padding: 12px 16px; margin: 24px 0; }
+  .iw-login p { margin: 0 0 8px; }
+  .iw-login p:last-child { margin-bottom: 0; }
+  .iw-login-fehlt { background: var(--orange-zart); border: 2px solid var(--orange); }
+  .iw-login-name { background: var(--blau-zart); border: 2px solid var(--blau); }
+  .iw-login-ok { background: #eaf6ee; border: 2px solid var(--gruen); }
+  .iw-name-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .iw-name-form input { padding: 8px 10px; border: 2px solid var(--rand); border-radius: 6px; font-size: 1rem; width: 200px; }
+  .iw-meldung { color: var(--rot); font-size: 0.9rem; }
+  .iw-seite section { background: transparent; padding-bottom: 0; }
+  .iw-kopf { margin-top: 16px; }
+
+  /* === STATION: COMPUTER === */
+  .sort-zeile { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 8px 0; border-bottom: 1px dashed var(--rand); }
+  .sort-zeile > span { flex: 1 1 220px; }
+  .sort-wahl { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sort-wahl button { border: 2px solid var(--blau); background: var(--weiss); color: var(--blau); border-radius: 20px; padding: 4px 12px; font: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+  .sort-wahl button[aria-pressed="true"] { background: var(--blau); color: var(--weiss); }
+  .sort-zeile select { padding: 6px 8px; border: 2px solid var(--blau); border-radius: 6px; font: inherit; font-size: 0.95rem; max-width: 100%; }
+  .sort-zeile.ok { background: #eaf6ee; }
+  .sort-zeile.falsch { background: #fbeceb; }
+  .werkzeug .titel ~ .titel { margin-top: 14px; }
+  .eva { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0 6px; }
+  .eva > div:not(.pfeil) { flex: 1 1 140px; background: var(--blau); color: var(--weiss); border-radius: 10px; padding: 10px 12px; text-align: center; }
+  .eva b { color: var(--orange); font-size: 1.3rem; }
+  .eva small { color: #d9e2f1; }
+  .eva .pfeil { color: var(--orange); font-size: 1.6rem; font-weight: 700; }
+  .eva-bild { margin: 14px 0 10px; display: grid; gap: 8px 6px; align-items: stretch; text-align: center;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    grid-template-areas: "e p1 v p2 a" ". . p3 . ." "s s s s s" "cap cap cap cap cap"; }
+  .eb-box { border-radius: 10px; padding: 12px 10px; color: var(--weiss); background: var(--blau); }
+  .eb-titel { font-weight: 700; font-size: 1.1rem; padding-bottom: 6px; margin-bottom: 6px; border-bottom: 2px solid var(--orange); }
+  .eb-titel b { color: var(--orange); font-size: 1.4rem; }
+  .eb-bsp { font-size: 0.9rem; line-height: 1.45; color: #e3e9f3; }
+  .eb-v { background: var(--blau-hell); box-shadow: 0 0 0 3px var(--orange) inset; }
+  .eb-s { background: var(--weiss); color: var(--blau); border: 3px solid var(--blau); justify-self: center; min-width: min(100%, 360px); }
+  .eb-s .eb-bsp { color: var(--text); }
+  .eb-e { grid-area: e; } .eb-v { grid-area: v; } .eb-a { grid-area: a; } .eb-s { grid-area: s; }
+  .eb-p1 { grid-area: p1; } .eb-p2 { grid-area: p2; } .eb-p3 { grid-area: p3; }
+  .eb-p1, .eb-p2, .eb-p3 { color: var(--orange); font-size: 1.8rem; font-weight: 700; line-height: 1; align-self: center; justify-self: center; }
+  .eva-bild figcaption { grid-area: cap; font-size: 0.9rem; color: var(--grau); text-align: left; margin-top: 4px; }
+  @media (max-width: 620px) {
+    .eva-bild { grid-template-columns: 1fr; grid-template-areas: "e" "p1" "v" "p3" "s" "p2" "a" "cap"; }
+    .eb-p1, .eb-p2 { transform: rotate(90deg); }
+  }
+  /* === STATION 0: SCRATCH === */
+  .iw-bild { margin: 14px 0 18px; }
+  .iw-bild img { display: block; width: 100%; max-width: 640px; height: auto; border: 1px solid var(--rand); border-radius: 8px; background: var(--weiss); }
+  .iw-bild figcaption { font-size: 0.9rem; color: var(--grau); margin-top: 6px; }
+  .bloecke { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 16px; padding: 0; list-style: none; }
+  .bloecke li { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--rand); border-radius: 20px; padding: 3px 12px 3px 6px; font-size: 0.95rem; }
+  .bloecke i { display: inline-block; width: 14px; height: 14px; border-radius: 50%; }
+  .blk { display: inline-block; border-radius: 5px; padding: 1px 8px; font-family: system-ui, sans-serif; font-size: 0.92rem; font-weight: 600; color: #fff; white-space: nowrap; }
+  .blk-ereignis { background: #ffbf00; color: #1b2433; border-radius: 12px 12px 5px 5px; }
+  .blk-bewegung { background: #4c97ff; }
+  .blk-aussehen { background: #9966ff; }
+  .blk-klang { background: #cf63cf; }
+  .blk-steuerung { background: #ffab19; color: #1b2433; }
+  .blk-fuehlen { background: #5cb1d6; color: #1b2433; }
+  .skript { list-style: none; padding: 0; margin: 8px 0 14px; display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
+  .skript .ein { margin-left: 22px; }
+  .selbsthilfe { background: var(--orange-zart); border-left: 5px solid var(--orange); border-radius: 6px; padding: 10px 14px; margin: 16px 0; }
+  .selbsthilfe ol { margin: 6px 0 0; padding-left: 22px; }
+  .upload { border: 3px solid var(--orange); border-radius: 12px; padding: 4px 16px 14px; margin-top: 18px; }
+  .upload input[type=file] { font: inherit; margin: 6px 0 10px; max-width: 100%; }
+  .upload-status { font-weight: 600; }
+  .upload-status.ok { color: var(--gruen); }
+  .upload-status.falsch { color: var(--rot); }
+  .praxis { margin-top: 24px; border: 3px solid var(--orange); border-radius: 12px; padding: 4px 16px 12px; }
+  .sicher { background: var(--orange-zart); border-radius: 8px; padding: 10px 14px; margin: 10px 0; }
+  .sicher ol { margin: 6px 0 0; padding-left: 22px; }
+  .checkliste { list-style: none; padding: 0; margin: 6px 0; }
+  .checkliste li { padding: 4px 0; }
+  .checkliste input { width: 18px; height: 18px; vertical-align: -3px; margin-right: 6px; }
+  .sort-zeile .ic { flex: 0 0 52px; height: 52px; display: flex; align-items: center; justify-content: center; background: var(--blau-zart); border-radius: 10px; }
+  .tab-ic { display: inline-flex; vertical-align: middle; margin-right: 8px; background: var(--blau-zart); border-radius: 8px; padding: 2px; }
+  .tab-ic svg { width: 36px; height: 36px; }
+  @media (max-width: 520px) { .eva .pfeil { display: none; } .sort-zeile .ic { flex-basis: 44px; height: 44px; } .sort-zeile .ic svg { width: 36px; height: 36px; } }
+</style>
+</head>
+<body class="iw-seite">
+<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+        <a href="index.html" class="navbar-logo" aria-label="Zur Startseite">
+            <img src="img/logo.svg" alt="" class="navbar-logo-img" width="47" height="38">
+            <span class="navbar-logo-text">lehrer-herrmann.de</span>
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Menü öffnen"
+                aria-expanded="false" aria-controls="navbar-links">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="navbar-links" id="navbar-links">
+            <li><a href="index.html#was-ist-neu" class="nav-item" data-tooltip="Was ist neu?">
+                <span class="nav-icon" aria-hidden="true">✨</span>
+                <span class="nav-label">Was ist neu?</span></a></li>
+            <li><a href="https://lehrer-herrmann.de/kontakt.html" class="nav-item" data-tooltip="Kontakt">
+                <span class="nav-icon" aria-hidden="true">✉️</span>
+                <span class="nav-label">Kontakt</span></a></li>
+            <li class="navbar-gb-trenner" aria-hidden="true">
+                <span class="navbar-gb-label">Geschützter Bereich</span>
+            </li>
+            <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="nav-item navbar-gb-link" data-tooltip="Arena – Gladiatorenkämpfe">
+                <span class="nav-icon" aria-hidden="true">⚔️</span>
+                <span class="nav-label">Arena</span></a></li>
+            <li><a href="blog.html" class="nav-item navbar-gb-link" data-tooltip="Schüler*innenblog">
+                <span class="nav-icon" aria-hidden="true">✍️</span>
+                <span class="nav-label">Blog</span></a></li>
+            <li class="navbar-dropdown">
+                <button class="navbar-dropdown-toggle navbar-gb-link nav-item" aria-expanded="false" aria-haspopup="true" data-tooltip="Fächer" aria-label="Fächer">
+                    <span class="nav-icon" aria-hidden="true">📚</span>
+                    <span class="nav-label">Fächer</span>
+                </button>
+                <ul class="navbar-dropdown-menu" role="menu">
+                    <li><a href="faecher.html" role="menuitem">Alle Fächer</a></li>
+                    <li><a href="fach-informatik.html" role="menuitem">Informatik</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+    </div>
+</nav>
+
+
+<header class="iw-kopf">
+  <div class="iw-wrap">
+    <a href="informatikwerkstatt.html">← zurück zum Lernpfad</a>
+    <div class="label mono">Station 0 von 7</div>
+    <h1>Erste Schritte in Scratch</h1>
+    <p>Scratch ist dein Werkzeug für den ganzen Kurs. Hier lernst du, wie es funktioniert, baust dein erstes eigenes Programm und lädst es hoch.</p>
+  </div>
+</header>
+
+<nav class="teile" aria-label="Teile der Station">
+  <div class="iw-wrap">
+    <a href="#teil1">1 · Scratch öffnen</a>
+    <a href="#teil2">2 · Blöcke</a>
+    <a href="#teil3">3 · Schleifen &amp; Bühne</a>
+    <a href="#teil4">4 · Dein Projekt</a>
+    <a href="#teil5">5 · Speichern &amp; hochladen</a>
+  </div>
+</nav>
+
+<main class="iw-wrap">
+
+<div id="iw-login" hidden></div>
+
+<div class="selbsthilfe">
+  <b>Wenn du nicht weiterkommst</b>
+  <ol>
+    <li>Lies den Abschnitt noch einmal und öffne die Tipps – einen nach dem anderen.</li>
+    <li>Probier etwas aus. In Scratch kannst du nichts kaputt machen.</li>
+    <li>Frag eine:n Lernpartner:in.</li>
+    <li>Erst dann: Frag deine Lernbegleitung.</li>
+  </ol>
+</div>
+
+<section class="teil" id="teil1">
+  <h2>Teil 1 · Scratch öffnen</h2>
+  <div class="ziel"><b>Ziel:</b> Du öffnest Scratch und kennst die vier Bereiche des Fensters.</div>
+
+  <p><b>Scratch</b> ist eine Programmiersprache mit Blöcken. Du schreibst keinen Text, sondern steckst bunte Blöcke zusammen wie Puzzleteile. Jeder Block ist ein Befehl für den Computer.</p>
+
+  <div class="praxis">
+    <h3>💻 So geht's los</h3>
+    <ul class="checkliste" id="praxisListe">
+      <li><label><input type="checkbox" data-id="oeffnen"> Öffne im Browser <b>scratch.mit.edu</b>.</label></li>
+      <li><label><input type="checkbox" data-id="entwickeln"> Klick oben links auf <b>„Entwickeln“</b>. Du brauchst kein Konto.</label></li>
+      <li><label><input type="checkbox" data-id="sprache"> Ist alles auf Englisch? Klick oben auf die <b>Weltkugel</b> und wähle <b>Deutsch</b>.</label></li>
+      <li><label><input type="checkbox" data-id="tab"> Lass diese Seite in einem zweiten Tab offen. So kannst du hin- und herwechseln.</label></li>
+    </ul>
+  </div>
+
+  <figure class="iw-bild">
+    <img src="img/informatikwerkstatt/scratch-oberflaeche.svg" width="640" height="380" loading="lazy" alt="Schaubild des Scratch-Fensters mit vier nummerierten Bereichen: 1 links die Blockpalette mit farbigen Kategorien, 2 in der Mitte der Skriptbereich mit zusammengesteckten Blöcken, 3 oben rechts die Bühne mit einer Figur, 4 unten rechts der Figurenbereich.">
+    <figcaption>Die vier Bereiche von Scratch (vereinfacht)</figcaption>
+  </figure>
+
+  <ol>
+    <li><b>Blockpalette:</b> Hier liegen alle Blöcke, nach Farben sortiert.</li>
+    <li><b>Skriptbereich:</b> Hierhin ziehst du die Blöcke und steckst sie zusammen. Das ist dein Programm (Skript).</li>
+    <li><b>Bühne:</b> Hier siehst du, was dein Programm macht. Mit der <b>grünen Flagge</b> startest du, mit dem <b>roten Kreis</b> stoppst du.</li>
+    <li><b>Figurenbereich:</b> Hier wählst du Figuren aus, fügst neue hinzu und siehst ihre Position.</li>
+  </ol>
+
+  <h3><span class="badge b-basis">Basis</span>Wo findest du das?</h3>
+  <div class="werkzeug sortieren" data-xp-id="teil1-1" data-optionen="Blockpalette|Skriptbereich|Bühne|Figurenbereich" data-auswahl="1">
+    <div class="titel">Ordne jede Aussage dem richtigen Bereich zu.</div>
+    <div class="sort-zeile" data-richtig="2"><span>Hier bewegt sich die Figur, wenn das Programm läuft.</span></div>
+    <div class="sort-zeile" data-richtig="0"><span>Hier suche ich den Block, den ich brauche.</span></div>
+    <div class="sort-zeile" data-richtig="1"><span>Hier stecke ich meine Blöcke zusammen.</span></div>
+    <div class="sort-zeile" data-richtig="3"><span>Hier füge ich eine neue Figur hinzu.</span></div>
+    <div class="sort-zeile" data-richtig="2"><span>Hier sind die grüne Flagge und der rote Stopp-Knopf.</span></div>
+    <p><button type="button" class="iw-btn leise" data-pruefen>Prüfen</button> <span class="rueck"></span></p>
+  </div>
+</section>
+
+<section class="teil" id="teil2">
+  <h2>Teil 2 · Blöcke und dein erstes Skript</h2>
+  <div class="ziel"><b>Ziel:</b> Du findest Blöcke über ihre Farbe und baust ein Skript, das mit der grünen Flagge startet.</div>
+
+  <p>Die Blöcke sind nach <b>Kategorien</b> sortiert. Jede Kategorie hat eine eigene Farbe. So findest du schnell, was du suchst:</p>
+  <ul class="bloecke">
+    <li><i style="background:#4c97ff"></i><b>Bewegung</b> – gehen, drehen, gleiten</li>
+    <li><i style="background:#9966ff"></i><b>Aussehen</b> – sagen, Kostüm, Größe</li>
+    <li><i style="background:#cf63cf"></i><b>Klang</b> – Töne abspielen</li>
+    <li><i style="background:#ffbf00"></i><b>Ereignisse</b> – wann ein Skript startet</li>
+    <li><i style="background:#ffab19"></i><b>Steuerung</b> – warten, wiederholen, falls</li>
+    <li><i style="background:#5cb1d6"></i><b>Fühlen</b> – Berührung, Tasten, Fragen</li>
+    <li><i style="background:#59c059"></i><b>Operatoren</b> – rechnen, vergleichen</li>
+    <li><i style="background:#ff8c1a"></i><b>Variablen</b> – sich Werte merken</li>
+  </ul>
+
+  <p>Jedes Skript braucht einen <b>Startblock</b> aus „Ereignisse“. Er hat einen runden Kopf. Darunter hängst du die Befehle. Scratch führt sie <b>von oben nach unten</b> aus.</p>
+  <ul class="skript" aria-label="Beispielskript">
+    <li><span class="blk blk-ereignis">Wenn ⚑ angeklickt wird</span></li>
+    <li><span class="blk blk-bewegung">gehe (50) er Schritt</span></li>
+    <li><span class="blk blk-aussehen">sage (Hallo!) für (2) Sekunden</span></li>
+  </ul>
+
+  <div class="praxis">
+    <h3>🧩 Probier's aus</h3>
+    <ol>
+      <li>Zieh den Block <span class="blk blk-ereignis">Wenn ⚑ angeklickt wird</span> in den Skriptbereich.</li>
+      <li>Häng <span class="blk blk-bewegung">gehe (10) er Schritt</span> darunter, bis er einrastet. Ändere die 10 in 50.</li>
+      <li>Häng <span class="blk blk-aussehen">sage (Hallo!) für (2) Sekunden</span> darunter.</li>
+      <li>Klick auf die grüne Flagge. Was passiert?</li>
+    </ol>
+    <p class="hinweis-klein">Einen Block wieder löschen: Zieh ihn zurück in die Blockpalette.</p>
+  </div>
+
+  <h3><span class="badge b-basis">Basis</span>In welcher Kategorie suchst du?</h3>
+  <div class="werkzeug sortieren" data-xp-id="teil2-1" data-optionen="Bewegung|Aussehen|Klang|Ereignisse|Steuerung|Fühlen" data-auswahl="1">
+    <div class="titel">Wähle für jeden Block die Kategorie.</div>
+    <div class="sort-zeile" data-richtig="0"><span>drehe dich um (15) Grad</span></div>
+    <div class="sort-zeile" data-richtig="3"><span>Wenn Taste (Leertaste) gedrückt wird</span></div>
+    <div class="sort-zeile" data-richtig="1"><span>sage (Hallo!)</span></div>
+    <div class="sort-zeile" data-richtig="4"><span>warte (1) Sekunden</span></div>
+    <div class="sort-zeile" data-richtig="2"><span>spiele Klang (Miau) ganz</span></div>
+    <div class="sort-zeile" data-richtig="5"><span>wird (Rand) berührt?</span></div>
+    <p><button type="button" class="iw-btn leise" data-pruefen>Prüfen</button> <span class="rueck"></span></p>
+  </div>
+  <details><summary>Tipp</summary>Klick in Scratch auf die Farbkreise links. Dann siehst du, welche Blöcke in welcher Kategorie liegen.</details>
+
+  <h3><span class="badge b-basis">Basis</span>Was passiert?</h3>
+  <div class="werkzeug sortieren" data-xp-id="teil2-2" data-optionen="stimmt|stimmt nicht">
+    <div class="titel">Stimmt das?</div>
+    <div class="sort-zeile" data-richtig="1"><span>Ein Skript ohne Startblock läuft los, sobald man die grüne Flagge klickt.</span></div>
+    <div class="sort-zeile" data-richtig="0"><span>Scratch führt die Blöcke eines Skripts von oben nach unten aus.</span></div>
+    <div class="sort-zeile" data-richtig="0"><span>Mit dem roten Kreis über der Bühne hältst du alle Skripte an.</span></div>
+    <div class="sort-zeile" data-richtig="1"><span>Wer einen Block in die Palette zurückzieht, löscht die ganze Figur.</span></div>
+    <p><button type="button" class="iw-btn leise" data-pruefen>Prüfen</button> <span class="rueck"></span></p>
+  </div>
+</section>
+
+<section class="teil" id="teil3">
+  <h2>Teil 3 · Schleifen und die Bühne</h2>
+  <div class="ziel"><b>Ziel:</b> Du lässt Befehle wiederholen und kannst Positionen auf der Bühne angeben.</div>
+
+  <h3>Wiederholen statt kopieren</h3>
+  <p>Soll etwas immer wieder passieren, nimmst du eine <b>Schleife</b> aus „Steuerung“. Die Blöcke darin werden wiederholt.</p>
+  <ul class="skript" aria-label="Beispielskript mit Schleife">
+    <li><span class="blk blk-ereignis">Wenn ⚑ angeklickt wird</span></li>
+    <li><span class="blk blk-steuerung">wiederhole fortlaufend</span></li>
+    <li class="ein"><span class="blk blk-bewegung">gehe (10) er Schritt</span></li>
+    <li class="ein"><span class="blk blk-bewegung">pralle vom Rand ab</span></li>
+  </ul>
+  <ul>
+    <li><span class="blk blk-steuerung">wiederhole (10) mal</span> wiederholt genau so oft, wie du einträgst.</li>
+    <li><span class="blk blk-steuerung">wiederhole fortlaufend</span> hört nie von selbst auf – erst beim roten Kreis.</li>
+  </ul>
+  <p class="hinweis-klein">Probier das Skript aus. Steht die Figur beim Hin- und Herlaufen auf dem Kopf? Der Block <span class="blk blk-bewegung">setze Drehtyp auf (links-rechts)</span> hilft.</p>
+
+  <h3>Wo ist die Figur? x und y</h3>
+  <p>Jeder Punkt auf der Bühne hat zwei Zahlen: <b>x</b> sagt, wie weit links oder rechts. <b>y</b> sagt, wie weit oben oder unten. Die Mitte ist x = 0 und y = 0.</p>
+  <ul>
+    <li>x reicht von <b>−240</b> (ganz links) bis <b>240</b> (ganz rechts).</li>
+    <li>y reicht von <b>−180</b> (ganz unten) bis <b>180</b> (ganz oben).</li>
+  </ul>
+  <p>Die aktuelle Position deiner Figur siehst du im Figurenbereich. Mit <span class="blk blk-bewegung">gehe zu x: (0) y: (0)</span> springt sie an eine bestimmte Stelle.</p>
+
+  <h3><span class="badge b-basis">Basis</span>Rechne mit der Bühne</h3>
+  <div class="aufgabe" data-xp-id="teil3-1" data-loesung="10"><span class="frage">Die Figur steht. Sie soll 10-mal <span class="blk blk-bewegung">gehe (10) er Schritt</span> machen. Wie oft trägst du in <span class="blk blk-steuerung">wiederhole ( ) mal</span> ein?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil3-2" data-loesung="240"><span class="frage">Welchen x-Wert hat der rechte Rand der Bühne?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil3-3" data-loesung="-180|−180" data-hinweis-falsch="Noch nicht. Oben sind die Zahlen positiv. Was gilt dann unten?"><span class="frage">Welchen y-Wert hat der untere Rand?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <div class="aufgabe" data-xp-id="teil3-4" data-loesung="100" data-hinweis-falsch="Noch nicht. Rechne: 10 Wiederholungen mal 10 Schritte."><span class="frage">Die Figur startet bei x = 0. Sie macht 10-mal <span class="blk blk-bewegung">gehe (10) er Schritt</span> nach rechts. Bei welchem x-Wert steht sie dann?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+  <details><summary>Tipp</summary>Ein Schritt in Scratch ist ein Punkt auf der x-Achse. Nach rechts wird x größer, nach links kleiner.</details>
+</section>
+
+<section class="teil" id="teil4">
+  <h2>Teil 4 · Dein Projekt: Die Figur auf Erkundungstour</h2>
+  <div class="ziel"><b>Ziel:</b> Du baust ein eigenes Programm, in dem du eine Figur mit den Pfeiltasten steuerst.</div>
+
+  <p>Bau ein Programm mit diesen <b>Pflicht-Teilen</b>:</p>
+  <ul class="checkliste" id="projektListe">
+    <li><label><input type="checkbox" data-id="start"> Bei der grünen Flagge springt die Figur in die Mitte (x: 0, y: 0).</label></li>
+    <li><label><input type="checkbox" data-id="pfeile"> Mit den vier Pfeiltasten bewegt sie sich nach rechts, links, oben und unten.</label></li>
+    <li><label><input type="checkbox" data-id="rand"> Berührt sie den Rand, sagt sie etwas, z. B. „Hier geht's nicht weiter!“.</label></li>
+    <li><label><input type="checkbox" data-id="hintergrund"> Die Bühne hat einen Hintergrund, der zu deiner Idee passt.</label></li>
+  </ul>
+  <p class="hinweis-klein">Die Häkchen speichert nur dein Gerät. Sie helfen dir beim Überblick.</p>
+
+  <details><summary>Tipp 1: Steuern mit Tasten</summary>Unter „Ereignisse“ gibt es <span class="blk blk-ereignis">Wenn Taste (Leertaste) gedrückt wird</span>. Klick auf „Leertaste“ und wähle „Pfeil nach rechts“. Darunter: <span class="blk blk-bewegung">ändere x um (10)</span>. Für jede Richtung brauchst du ein eigenes kleines Skript.</details>
+  <details><summary>Tipp 2: Nach oben und unten</summary>Für oben und unten änderst du nicht x, sondern y: <span class="blk blk-bewegung">ändere y um (10)</span>. Für unten und links nimmst du eine negative Zahl.</details>
+  <details><summary>Tipp 3: Den Rand bemerken</summary>Die Figur muss <i>ständig</i> prüfen, ob sie den Rand berührt. Du brauchst also eine Schleife, in der eine Frage steckt: <span class="blk blk-steuerung">falls &lt; &gt; dann</span> mit <span class="blk blk-fuehlen">wird (Rand) berührt?</span> darin.</details>
+  <details><summary>Tipp 4: Hintergrund</summary>Klick unten rechts unter der Bühne auf „Bühnenbild wählen“.</details>
+
+  <h3><span class="badge b-profi">Extra</span>Wenn du schneller fertig bist</h3>
+  <ul>
+    <li>Füge eine zweite Figur hinzu, die man einsammeln kann. Berührt man sie, springt sie an eine zufällige Stelle (<span class="blk blk-bewegung">gehe zu (Zufallsposition)</span>).</li>
+    <li>Lass beim Einsammeln einen Klang abspielen.</li>
+    <li>Gib deiner Figur ein zweites Kostüm, damit sie beim Laufen „geht“.</li>
+  </ul>
+</section>
+
+<section class="teil" id="teil5">
+  <h2>Teil 5 · Speichern und hochladen</h2>
+  <div class="ziel"><b>Ziel:</b> Du speicherst dein Projekt als Datei, öffnest es wieder und lädst es hier hoch.</div>
+
+  <p><b>Wichtig:</b> Ohne Scratch-Konto wird nichts automatisch gespeichert. Schließt du den Tab, ist dein Projekt weg. Speichere deshalb am Ende jeder Stunde.</p>
+
+  <div class="praxis">
+    <h3>💾 So speicherst du</h3>
+    <ol>
+      <li>Gib deinem Projekt oben in der Menüleiste einen Namen, z. B. „Erkundungstour Mia“.</li>
+      <li>Klick auf <b>Datei → Auf deinem Computer speichern</b>.</li>
+      <li>Die Datei landet meist im Ordner „Downloads“. Sie endet auf <b>.sb3</b>.</li>
+      <li>Lade die Datei unten hoch. Dann kannst du sie nächste Woche hier wieder herunterladen – auch an einem anderen Computer.</li>
+    </ol>
+    <p><b>Weiterarbeiten:</b> In Scratch auf <b>Datei → Von deinem Computer hochladen</b> klicken und die .sb3-Datei wählen.</p>
+  </div>
+
+  <div class="upload" id="upload">
+    <h3>📤 Projekt abgeben</h3>
+    <p>Wähle deine .sb3-Datei aus und lade sie hoch. Deine Lernbegleitung kann sie dann öffnen. Lädst du später eine neue Version hoch, ersetzt sie die alte.</p>
+    <label for="sb3Datei" class="denk-label">Deine Scratch-Datei (.sb3):</label>
+    <input type="file" id="sb3Datei" accept=".sb3">
+    <div><button type="button" class="iw-btn" id="sb3Senden">Hochladen</button></div>
+    <p class="upload-status" id="sb3Status" aria-live="polite"></p>
+    <p id="sb3Mein" hidden>Gespeichert ist: <b id="sb3Name"></b> · <a id="sb3Laden" href="#">herunterladen</a></p>
+  </div>
+
+  <p>Geschafft? Dann ist Station 0 erledigt. Im Lernpfad erscheint ein Häkchen. Weiter geht's mit <a href="informatikwerkstatt-station-1.html">Station 1</a>. Auf diese Seite kannst du jederzeit zurückkommen, wenn du etwas in Scratch nachschlagen willst.</p>
+</section>
+
+</main>
+
+
+<footer>
+    <div class="container footer-inner">
+        <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+        <nav class="footer-links" aria-label="Rechtliche Links">
+            <a href="impressum.html">Impressum</a>
+            <a href="datenschutz.html">Datenschutz</a>
+        </nav>
+        <a href="https://kolosseum.lehrer-herrmann.de/admin/" id="admin-footer-link" class="admin-footer-link" aria-label="Admin-Bereich">⚙</a>
+    </div>
+</footer>
+<script src="js/main.js?v=20260615c"></script>
+<script src="js/seitenleisten.js"></script>
+<script src="js/kolosseum-login-widget.js"></script>
+<script src="js/arena-bar.js?v=20261105"></script>
+
+
+<script src="js/informatik-login.js?v=20261105"></script>
+<script>
+(function () {
+
+  var STATION = 0;
+  function profiNachPruefen() {}
+
+  /* ---------- Selbstkontrolle (Textaufgaben, mehrere Lösungen mit |) ---------- */
+  function normal(s) { return s.trim().toLowerCase().replace(/[\s.]/g, ""); }
+  document.querySelectorAll(".aufgabe").forEach(function (a) {
+    var inp = a.querySelector("input"), btn = a.querySelector("button"), rk = a.querySelector(".rueck");
+    function pruefen() {
+      var eingabe = normal(inp.value);
+      if (eingabe === "") return;
+      var richtig = a.dataset.loesung.split("|").indexOf(eingabe) >= 0;
+      inp.classList.toggle("ok", richtig);
+      inp.classList.toggle("falsch", !richtig);
+      rk.className = "rueck " + (richtig ? "ok" : "falsch");
+      rk.textContent = richtig ? "✓ Richtig" : (a.dataset.hinweisFalsch || "Noch nicht – lies den Text oben noch einmal.");
+      if (richtig) xpGeloest(a, rk);
+      var block = a.closest(".profi-block");
+      if (block) profiNachPruefen(block, richtig);
+    }
+    btn.addEventListener("click", pruefen);
+    inp.addEventListener("keydown", function (e) { if (e.key === "Enter") pruefen(); });
+  });
+
+  /* ---------- Sortieraufgaben (Knöpfe oder Auswahlliste) ---------- */
+  document.querySelectorAll(".sortieren").forEach(function (box) {
+    var optionen = box.dataset.optionen.split("|");
+    var liste = box.dataset.auswahl === "1";
+    box.querySelectorAll(".sort-zeile").forEach(function (z) {
+      var text = z.querySelector("span").textContent;
+      if (liste) {
+        var sel = document.createElement("select");
+        sel.setAttribute("aria-label", "Bauteil für: " + text);
+        sel.innerHTML = '<option value="">– wählen –</option>' + optionen.map(function (o, i) { return '<option value="' + i + '">' + o + "</option>"; }).join("");
+        sel.addEventListener("change", function () { z.classList.remove("ok", "falsch"); });
+        z.appendChild(sel);
+      } else {
+        var w = document.createElement("div");
+        w.className = "sort-wahl";
+        w.setAttribute("role", "group");
+        w.setAttribute("aria-label", text);
+        optionen.forEach(function (o, i) {
+          var b = document.createElement("button");
+          b.type = "button"; b.textContent = o; b.dataset.wert = i;
+          b.setAttribute("aria-pressed", "false");
+          b.addEventListener("click", function () {
+            w.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+            z.classList.remove("ok", "falsch");
+          });
+          w.appendChild(b);
+        });
+        z.appendChild(w);
+      }
+    });
+    var rk = box.querySelector(".rueck");
+    box.querySelector("[data-pruefen]").addEventListener("click", function () {
+      var zeilen = box.querySelectorAll(".sort-zeile"), offen = 0, fehler = 0;
+      zeilen.forEach(function (z) {
+        var wahl = liste ? z.querySelector("select").value : ((z.querySelector('[aria-pressed="true"]') || {}).dataset || {}).wert;
+        z.classList.remove("ok", "falsch");
+        if (wahl === undefined || wahl === "") { offen++; return; }
+        var ok = wahl === z.dataset.richtig;
+        if (!ok) fehler++;
+        z.classList.add(ok ? "ok" : "falsch");
+      });
+      if (offen) { rk.className = "rueck falsch"; rk.textContent = "Ordne erst alles zu (" + offen + " offen)."; return; }
+      rk.className = "rueck " + (fehler ? "falsch" : "ok");
+      rk.textContent = fehler ? fehler + (fehler === 1 ? " Zuordnung stimmt" : " Zuordnungen stimmen") + " noch nicht. Ändere die rot markierten." : "✓ Alles richtig!";
+      if (!fehler) xpGeloest(box, rk);
+    });
+  });
+
+  /* ---------- Praxis-Checkliste (nur auf diesem Gerät) ---------- */
+  (function () {
+    var KEY = "informatik78-station0-praxis", stand = {};
+    try { stand = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { stand = {}; }
+    document.querySelectorAll("#praxisListe input, #projektListe input").forEach(function (c) {
+      c.checked = !!stand[c.dataset.id];
+      c.addEventListener("change", function () {
+        stand[c.dataset.id] = c.checked;
+        try { localStorage.setItem(KEY, JSON.stringify(stand)); } catch (e) {}
+      });
+    });
+  })();
+
+  /* ---------- XP: 5 je selbst gelöster Aufgabe, 25 je komplett gelöstem Teil ---------- */
+  function xpPlus(ziel, text) {
+    if (!ziel) return;
+    var t = document.createElement("span");
+    t.className = "xp-plus";
+    t.textContent = text;
+    ziel.appendChild(document.createTextNode(" "));
+    ziel.appendChild(t);
+  }
+  function teilPruefen(el) {
+    var sec = el.closest("section.teil");
+    if (!sec || sec.dataset.teilXp) return;
+    var alle = Array.prototype.slice.call(sec.querySelectorAll("[data-xp-id]"));
+    if (!alle.length || !alle.every(function (x) { return x.dataset.geloest === "1"; })) return;
+    sec.dataset.teilXp = "1";
+    InformatikLogin.xpTeil(STATION, sec.id, alle.map(function (x) { return x.dataset.xpId; })).then(function (r) {
+      if (!r.ok) { delete sec.dataset.teilXp; return; }
+      if (r.xp > 0) teilBanner(sec, "🏆 Teil komplett selbst gelöst! +" + r.xp + " XP");
+    });
+  }
+  function teilBanner(sec, text) {
+    if (sec.querySelector(".xp-banner")) return;
+    var b = document.createElement("div");
+    b.className = "xp-banner";
+    b.setAttribute("role", "status");
+    b.textContent = text;
+    var h = sec.querySelector("h2");
+    h.parentNode.insertBefore(b, h.nextSibling);
+  }
+  function xpGeloest(el, rueck) {
+    el.dataset.geloest = "1";
+    if (!el.dataset.xpId || el.dataset.xpGemeldet) { teilPruefen(el); return; }
+    el.dataset.xpGemeldet = "1";
+    InformatikLogin.xpAufgabe(STATION, el.dataset.xpId).then(function (r) {
+      if (!r.ok) { delete el.dataset.xpGemeldet; return; }
+      if (r.xp > 0) xpPlus(rueck, "+" + r.xp + " XP");
+      teilPruefen(el);
+    });
+  }
+  // Gespeicherten XP-Stand laden: schon gelöste Aufgaben und Teile markieren
+  InformatikLogin.bereit.then(function (z) {
+    if (!z.eingeloggt) return;
+    document.querySelectorAll("[data-xp-id]").forEach(function (el) {
+      if (z.xp.indexOf("a:" + STATION + ":" + el.dataset.xpId) < 0) return;
+      el.dataset.geloest = "1";
+      el.dataset.xpGemeldet = "1";
+      var hin = document.createElement("span");
+      hin.className = "xp-schon";
+      hin.textContent = "✓ schon gelöst";
+      var rk = el.classList.contains("aufgabe") ? el.querySelector(".rueck") : null;
+      if (rk && !rk.textContent) { rk.className = "rueck ok"; rk.textContent = "✓ schon gelöst"; }
+      else if (!rk) el.insertBefore(hin, el.firstChild);
+    });
+    document.querySelectorAll("section.teil").forEach(function (sec) {
+      if (z.xp.indexOf("t:" + STATION + ":" + sec.id) >= 0) { sec.dataset.teilXp = "1"; teilBanner(sec, "🏆 Teil komplett selbst gelöst (+25 XP erhalten)"); }
+      else { var e = sec.querySelector("[data-xp-id]"); if (e) teilPruefen(e); }
+    });
+  });
+
+  /* ---------- Teil 5: Scratch-Projekt hochladen ---------- */
+  var API_SCRATCH = "https://kolosseum.lehrer-herrmann.de/api/informatik/scratch/mein/" + STATION;
+  var dateiFeld = document.getElementById("sb3Datei");
+  var sendKnopf = document.getElementById("sb3Senden");
+  var status = document.getElementById("sb3Status");
+  function zeigeMein(name) {
+    if (!name) return;
+    document.getElementById("sb3Name").textContent = name;
+    document.getElementById("sb3Laden").href = API_SCRATCH;
+    document.getElementById("sb3Mein").hidden = false;
+  }
+  InformatikLogin.bereit.then(function (z) {
+    if (z.eingeloggt && z.scratch && z.scratch[STATION]) zeigeMein(z.scratch[STATION].name);
+  });
+  sendKnopf.addEventListener("click", function () {
+    var datei = dateiFeld.files && dateiFeld.files[0];
+    status.className = "upload-status";
+    if (!datei) { status.className = "upload-status falsch"; status.textContent = "Wähle zuerst deine .sb3-Datei aus."; return; }
+    if (!/\.sb3$/i.test(datei.name)) { status.className = "upload-status falsch"; status.textContent = "Das ist keine Scratch-Datei. Sie muss auf .sb3 enden."; return; }
+    if (datei.size > 20 * 1024 * 1024) { status.className = "upload-status falsch"; status.textContent = "Die Datei ist zu groß (höchstens 20 MB). Lösch nicht benötigte Klänge oder Bilder."; return; }
+    sendKnopf.disabled = true;
+    status.textContent = "Wird hochgeladen …";
+    InformatikLogin.scratchHochladen(STATION, datei).then(function (r) {
+      sendKnopf.disabled = false;
+      if (r.ok) {
+        status.className = "upload-status ok";
+        status.textContent = "✓ Hochgeladen. Deine Lernbegleitung kann dein Projekt jetzt öffnen.";
+        if (r.xp > 0) xpPlus(status, "+" + r.xp + " XP");
+        zeigeMein(r.name);
+      } else {
+        status.className = "upload-status falsch";
+        if (r.grund === "login") status.textContent = "Nicht hochgeladen: Du bist nicht angemeldet. Melde dich oben an.";
+        else if (r.grund === "vorname") status.textContent = "Nicht hochgeladen: Trag oben zuerst deinen Vornamen ein.";
+        else if (r.grund === "netz") status.textContent = "Nicht hochgeladen: Keine Verbindung. Versuch es gleich noch einmal.";
+        else status.textContent = "Nicht hochgeladen: " + r.meldung;
+      }
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>

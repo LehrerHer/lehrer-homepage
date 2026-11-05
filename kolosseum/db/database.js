@@ -216,6 +216,21 @@ db.exec(`
   )
 `);
 
+// Informatikwerkstatt: hochgeladene Scratch-Projekte (.sb3), je Person und Station das neueste.
+// Die Dateien liegen in kolosseum/db/informatik-scratch/ (nicht öffentlich).
+db.exec(`
+  CREATE TABLE IF NOT EXISTS informatik_scratch (
+    student_id    INTEGER NOT NULL,
+    station       INTEGER NOT NULL,
+    datei         TEXT    NOT NULL,
+    original_name TEXT    NOT NULL,
+    groesse       INTEGER NOT NULL DEFAULT 0,
+    created_at    TEXT    NOT NULL DEFAULT (datetime('now')),
+    PRIMARY KEY (student_id, station),
+    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+  )
+`);
+
 // Informatikwerkstatt: einmalige Datenumstellungen (Name = Marker, läuft nie doppelt)
 db.exec(`
   CREATE TABLE IF NOT EXISTS informatik_migrationen (
