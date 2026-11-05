@@ -31,7 +31,7 @@
       if (res.status === 401) return { eingeloggt: false, vorname: null, stationen: {}, profi: {}, antworten: {}, xp: [], scratch: {} };
       if (!res.ok) throw new Error('Status ' + res.status);
       var d = await res.json();
-      return { eingeloggt: true, vorname: d.vorname, stationen: d.stationen || {}, profi: d.profi || {}, antworten: d.antworten || {}, xp: d.xp || [], scratch: d.scratch || {} };
+      return { eingeloggt: true, vorname: d.vorname, stationen: d.stationen || {}, profi: d.profi || {}, antworten: d.antworten || {}, xp: d.xp || [], xpSumme: typeof d.xpSumme === 'number' ? d.xpSumme : null, scratch: d.scratch || {} };
     } catch (_) {
       return { eingeloggt: false, vorname: null, stationen: {}, profi: {}, antworten: {}, xp: [], scratch: {}, fehler: true };
     }

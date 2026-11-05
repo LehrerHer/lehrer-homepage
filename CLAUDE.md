@@ -671,6 +671,9 @@ Selbstlern-Lernpfad (7 Stationen) für die Informatikwerkstatt Jg. 7/8, verlinkt
 - **Seiten (Root):** `informatikwerkstatt.html` (Start/Lernpfad), `informatikwerkstatt-station-<n>.html`
   (Station 0–7 vollständig; Station 0 „Erste Schritte in Scratch“ = Scratch-Einführung und Nachschlagewerk für alle späteren Stationen; 2026-11-05 umnummeriert: neue Station 1 „Wie funktioniert ein Computer?“, alte 1/2 → 2/3, DB-Migration `stationen-plus-1` in `db/database.js`), geplant `informatikwerkstatt-knobelkiste.html`. Eigene Gestaltung (Dunkelblau/Weiß,
   orange Akzente) mit `iw-`-Präfix, Navbar/Footer wie überall.
+- **Abschluss (Stand 2026-11-06):** `informatikwerkstatt-abschluss.html` (im Lernpfad als `data-id="8"`, Punkt ★): Teil A Escape-Room im Team,
+  Teil B „Automat fürs Klassenzimmer“ (Steckbrief nur im `localStorage`, Druckansicht), Abgabe als Scratch-Upload mit Station `8`
+  (`ABSCHLUSS` in `routes/informatik.js`, Admin-Spalte „Abschluss“), Informatik-Ausweis aus `/status` (inkl. `xpSumme`) mit Druckansicht.
 - **Login:** `js/informatik-login.js` vor dem Seiten-Script einbinden, Box `<div id="iw-login" hidden>`.
   Kolosseum-Login Pflicht; beim ersten Mal Vorname (eigene Tabelle `informatik_vornamen`, nur im Admin
   „Informatik" sichtbar, bewusst getrennt von `student_names`).

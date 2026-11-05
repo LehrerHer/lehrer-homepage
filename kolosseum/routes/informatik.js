@@ -13,6 +13,7 @@ const { checkAndAwardBadges } = require('../db/badges');
 const router = express.Router();
 
 const STATIONEN = 7;
+const ABSCHLUSS = 8; // Abschlussprojekt (nur Scratch-Abgabe, kein Checkpoint)
 const BESTEHEN_AB = 0.7; // 70 % der Punkte
 const XP_AUFGABE = 5, XP_TEIL = 25, XP_FRAGE = 5, XP_BESTANDEN = 25;
 const ID_MUSTER = /^[a-z0-9-]{1,40}$/;
@@ -81,10 +82,11 @@ router.get('/status', requireStudent, (req, res) => {
   db.prepare('SELECT station, frage, antwort FROM informatik_antworten WHERE student_id = ?').all(id)
     .forEach(r => { antworten[r.station + '-' + r.frage] = r.antwort; });
   const xp = db.prepare('SELECT schluessel FROM informatik_xp WHERE student_id = ?').all(id).map(r => r.schluessel);
+  const xpSumme = db.prepare('SELECT COALESCE(SUM(xp), 0) AS summe FROM informatik_xp WHERE student_id = ?').get(id).summe;
   const scratch = {};
   db.prepare('SELECT station, original_name, created_at FROM informatik_scratch WHERE student_id = ?').all(id)
     .forEach(r => { scratch[r.station] = { name: r.original_name, am: r.created_at }; });
-  res.json({ vorname: vn ? vn.vorname : null, stationen, profi, antworten, xp, scratch });
+  res.json({ vorname: vn ? vn.vorname : null, stationen, profi, antworten, xp, xpSumme, scratch });
 });
 
 // POST /api/informatik/vorname – Vorname einmalig speichern (später nur noch im Admin änderbar)
@@ -198,7 +200,7 @@ router.post('/scratch', requireStudent, (req, res) => {
     const station = parseInt(req.body?.station, 10);
     const weg = () => { if (req.file) fs.unlink(req.file.path, () => {}); };
     if (!req.file) return res.status(400).json({ error: 'Bitte wähle eine Scratch-Datei mit der Endung .sb3.' });
-    if (!(station >= 0 && station <= STATIONEN)) { weg(); return res.status(400).json({ error: 'Ungültige Station.' }); }
+    if (!((station >= 0 && station <= STATIONEN) || station === ABSCHLUSS)) { weg(); return res.status(400).json({ error: 'Ungültige Station.' }); }
     // .sb3 ist ein ZIP-Archiv: Die Datei muss mit „PK“ beginnen
     try {
       const fd = fs.openSync(req.file.path, 'r'); const kopf = Buffer.alloc(2); fs.readSync(fd, kopf, 0, 2, 0); fs.closeSync(fd);
@@ -213,7 +215,7 @@ router.post('/scratch', requireStudent, (req, res) => {
         groesse = excluded.groesse, created_at = datetime('now')
     `).run(id, station, req.file.filename, name, req.file.size);
     if (alt && alt.datei !== req.file.filename) fs.unlink(path.join(SCRATCH_DIR, path.basename(alt.datei)), () => {});
-    const xp = xpVergeben(id, [['u:' + station, XP_SCRATCH]], 'Informatikwerkstatt Station ' + station + ': Scratch-Projekt hochgeladen');
+    const xp = xpVergeben(id, [['u:' + station, XP_SCRATCH]], (station === ABSCHLUSS ? 'Informatikwerkstatt: Abschlussprojekt hochgeladen' : 'Informatikwerkstatt Station ' + station + ': Scratch-Projekt hochgeladen'));
     res.json({ ok: true, name, xp });
   });
 });

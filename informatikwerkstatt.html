@@ -269,6 +269,13 @@
           <div class="aktionen"><a class="iw-btn" href="informatikwerkstatt-station-7.html">Starten</a><span class="stand" aria-live="polite"></span></div>
         </div>
       </li>
+      <li class="station" data-id="8">
+        <div class="punkt">★</div>
+        <div class="karte">
+          <div><h3>Abschluss: Zeig, was du kannst!</h3><p class="info">Escape-Room im Team, eigener Automat fürs Klassenzimmer, Informatik-Ausweis · ca. 5 Termine</p></div>
+          <div class="aktionen"><a class="iw-btn" href="informatikwerkstatt-abschluss.html">Starten</a><span class="stand" aria-live="polite"></span></div>
+        </div>
+      </li>
     </ol>
   </section>
 
@@ -308,7 +315,7 @@
 <script src="js/kolosseum-login-widget.js"></script>
 
 
-<script src="js/informatik-login.js?v=20261105"></script>
+<script src="js/informatik-login.js?v=20261106"></script>
 <script>
   (function () {
     InformatikLogin.bereit.then(function (z) {
@@ -318,8 +325,8 @@
         var st = z.stationen[id];
         var feld = li.querySelector('.stand');
         // Station 0: geschafft, sobald das Scratch-Projekt hochgeladen ist
-        if (id === '0') {
-          if (z.scratch && z.scratch[0]) { li.classList.add('erledigt'); feld.className = 'stand ok'; feld.textContent = '✓ Projekt hochgeladen'; }
+        if (id === '0' || id === '8') {
+          if (z.scratch && z.scratch[id]) { li.classList.add('erledigt'); feld.className = 'stand ok'; feld.textContent = '✓ Projekt hochgeladen'; }
           return;
         }
         if (!st) return;
