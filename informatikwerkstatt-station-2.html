@@ -894,6 +894,11 @@
       else st.textContent = "Nicht gespeichert: Keine Verbindung. Versuch es gleich noch einmal.";
     });
   });
+  /* ---------- Link aus anderen Stationen: #einheiten zeigt die Tabelle der Speichergrößen ---------- */
+  if (location.hash === "#einheiten") {
+    var einh = document.getElementById("einheiten");
+    if (einh) { einh.querySelector("h3").textContent = "📏 Wie groß sind Dateien?"; einh.hidden = false; einh.scrollIntoView(); einh.focus(); }
+  }
 })();
 </script>
 
