@@ -95,7 +95,7 @@
     <meta property="og:image" content="https://lehrer-herrmann.de/img/logo.svg">
     <meta name="twitter:card" content="summary_large_image">
 </head>
-<body class="hat-seitenleisten">
+<body class="hat-seitenleisten startseite">
 
     <!-- ========================================================
          LADEBILDSCHIRM – Zeitleisten-Animation (3000 v.Chr. → 2026)
@@ -206,126 +206,79 @@
     </div>
 
     <!-- ========================================================
-         BEREICHE-ÜBERSICHT – immer öffentlich sichtbar
+         EINSTIEG (Notizbuch) – immer öffentlich sichtbar
+         Begrüßung · drei Hauptbereiche als Karteikarten · Nebensachen als Liste
          ======================================================== -->
-    <section id="startseite" class="bereiche-uebersicht-section" data-inhalt="Bereiche">
+    <section id="startseite" class="nb-start" data-inhalt="Start">
         <div class="container">
 
-            <div class="bereiche-grid bereiche-grid-gross">
+            <header class="nb-blatt">
+                <p class="nb-randnotiz" aria-hidden="true">für Lernpartner:innen, Lernbegleiter,<br>Eltern und alle Interessierten</p>
+                <h1 class="nb-name">Jan Herrmann</h1>
+                <p class="nb-rolle">Lernbegleiter an der Friedensschule Osnabrück</p>
+                <p class="nb-gruss">Seit Sommer 2026 bin ich an der Friedensschule Osnabrück – ich kenne noch nicht alle Feinheiten, bin aber gut angekommen. Im Moment bereite ich die Lernpartner:innen in Deutsch auf die Abschlüsse vor und bin mit den jüngeren Menschen hier dabei, viel über Computer zu lernen. Vor den Herbstferien habe ich erstmals eine Fortbildung im Bereich der Erwachsenenbildung geleitet: Claude.ai für Lehrer:innen. Das hat mir auch gefallen.</p>
+                <p class="nb-weiter"><a href="wer-bin-ich.html">Mehr über mich</a></p>
+            </header>
 
-                <!-- Fächervorstellung – öffentlich -->
-                <div class="bereich-karte bereich-karte-klickbar"
-                     onclick="if(!event.target.closest('a'))location.href='faecher.html'"
-                     role="link"
-                     tabindex="0"
-                     onkeydown="if(event.key==='Enter'&amp;&amp;!event.target.closest('a'))location.href='faecher.html'"
-                     title="Alle Fächer ansehen">
-                    <div class="bereich-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 19.5A2.5 2.5 0 016.5 17H20V3H6.5A2.5 2.5 0 004 5.5z"/><path d="M20 17v4H6.5A2.5 2.5 0 014 18.5"/></svg></div>
-                    <h3>Fächervorstellung</h3>
-                    <p>Alle Unterrichtsfächer auf einen Blick – klick ein Fach an oder öffne die Übersicht.</p>
-                    <div class="bereich-links">
-                        <a href="fach-deutsch.html">Deutsch</a>
-                        <a href="fach-geschichte.html">Geschichte</a>
-                        <a href="fach-informatik.html">Informatik</a>
-                        <a href="fach-mathe.html">Mathe</a>
-                        <a href="fach-englisch.html">Englisch</a>
-                        <a href="fach-sport.html">Sport</a>
-                        <a href="fach-biologie.html">Biologie</a>
-                        <a href="fach-chemie.html">Chemie</a>
-                        <a href="fach-physik.html">Physik</a>
-                        <a href="fach-musik.html">Musik</a>
-                        <a href="fach-erdkunde.html">Erdkunde</a>
-                        <a href="fach-gestaltendes-werken.html">Gest. Werken</a>
-                        <a href="fach-wipo.html">WiPo</a>
-                        <a href="fach-werte-normen.html">W&amp;N</a>
-                        <a href="fach-ag-projekte.html">AGs &amp; Projekte</a>
-                        <a href="fach-faecheruebergreifend.html">Fächerübergreifend</a>
-                    </div>
-                    <div class="bereich-fuss"><span class="bereich-cta">→ Alle Fächer</span></div>
-                </div>
-
-                <!-- Wer bin ich? – öffentlich -->
-                <a href="wer-bin-ich.html" class="bereich-karte">
-                    <div class="bereich-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>
-                    <h3>Jan Herrmann – Wer bin ich?</h3>
-                    <p>Gymnasiallehrer für Deutsch und Geschichte. Herzlich willkommen auf meiner Seite – ob Schülerin, Schüler oder Elternteil!</p>
-                    <div class="bereich-fuss"><span class="bereich-cta">→ Mehr über mich</span></div>
-                </a>
-
+            <div class="nb-karten">
+                <article class="nb-karte nb-karte-faecher" aria-labelledby="nb-faecher-titel">
+                    <h2 id="nb-faecher-titel"><a href="faecher.html">Fächer</a></h2>
+                    <p>Material und Infos zu jedem Fach – einfach ein Fach anklicken.</p>
+                    <ul class="nb-faecher">
+                        <li><a href="fach-deutsch.html">Deutsch</a></li>
+                        <li><a href="fach-geschichte.html">Geschichte</a></li>
+                        <li><a href="fach-informatik.html">Informatik</a></li>
+                        <li><a href="fach-mathe.html">Mathe</a></li>
+                        <li><a href="fach-englisch.html">Englisch</a></li>
+                        <li><a href="fach-sport.html">Sport</a></li>
+                        <li><a href="fach-biologie.html">Biologie</a></li>
+                        <li><a href="fach-chemie.html">Chemie</a></li>
+                        <li><a href="fach-physik.html">Physik</a></li>
+                        <li><a href="fach-musik.html">Musik</a></li>
+                        <li><a href="fach-erdkunde.html">Erdkunde</a></li>
+                        <li><a href="fach-gestaltendes-werken.html">Gestaltendes Werken</a></li>
+                        <li><a href="fach-wipo.html">Wirtschaft/Politik</a></li>
+                        <li><a href="fach-werte-normen.html">Werte &amp; Normen</a></li>
+                        <li><a href="fach-faecheruebergreifend.html">Fächerübergreifend</a></li>
+                    </ul>
+                </article>
+                <article class="nb-karte" aria-labelledby="nb-material-titel">
+                    <h2 id="nb-material-titel"><a href="#digitale-materialien">Arbeitsblätter &amp; Quizze</a></h2>
+                    <p>Interaktiv im Browser, sortiert nach Jahrgang.</p>
+                    <span class="nb-login">mit Login</span>
+                </article>
+                <article class="nb-karte" aria-labelledby="nb-arena-titel">
+                    <h2 id="nb-arena-titel"><a href="https://kolosseum.lehrer-herrmann.de/profil.html">Gladiatorenkämpfe</a></h2>
+                    <p>Quizze meistern, XP sammeln, im Kampf Münzen verdienen.</p>
+                    <span class="nb-login">mit Login</span>
+                </article>
             </div>
 
-            <div class="bereiche-grid bereiche-grid-klein">
-
-                <!-- Gladiatorenkämpfe (Arena) – Login nötig -->
-                <a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="bereich-karte bereich-gesperrt">
-                    <div class="bereich-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 21h18M5 21V10M9 21V10M15 21V10M19 21V10M3 10l9-6 9 6z"/></svg></div>
-                    <h3>Gladiatorenkämpfe</h3>
-                    <p>Quizze meistern, XP sammeln, im Kampf Münzen verdienen und im Shop Titel freischalten.</p>
-                    <div class="bereich-fuss"><span class="bereich-cta">→ Zur Arena</span><span class="bereich-lock" title="Login nötig">🔒 Login nötig</span></div>
-                </a>
-
-                <!-- Schüler*innenblog – Login nötig -->
-                <a href="blog.html" class="bereich-karte bereich-gesperrt">
-                    <div class="bereich-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 20l1-4L16 5l3 3L8 19zM14 7l3 3"/></svg></div>
-                    <h3>Schüler*innenblog</h3>
-                    <p>Texte, Gedichte, Fotos und Projekte aus dem Unterricht.</p>
-                    <div class="bereich-fuss"><span class="bereich-cta">→ Zum Blog</span><span class="bereich-lock" title="Login nötig">🔒 Login nötig</span></div>
-                </a>
-
-                <!-- Leseabenteuer – Login nötig -->
-                <a href="leseabenteuer.html" class="bereich-karte bereich-gesperrt">
-                    <div class="bereich-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 3h12v18l-6-4-6 4z"/></svg></div>
-                    <h3>Leseabenteuer</h3>
-                    <p>Abenteuer erleben, Helden erschaffen, Texte entdecken.</p>
-                    <div class="bereich-fuss"><span class="bereich-cta">→ Zum Leseabenteuer</span><span class="bereich-lock" title="Login nötig">🔒 Login nötig</span></div>
-                </a>
-
-                <!-- RegelRadar – Login nötig -->
-                <a href="regelradar.html" class="bereich-karte bereich-gesperrt">
-                    <div class="bereich-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><path d="M12 12L19 5"/></svg></div>
-                    <h3>RegelRadar</h3>
-                    <p>Rechtschreibung &amp; Zeichensetzung diagnostizieren, trainieren, meistern.</p>
-                    <div class="bereich-fuss"><span class="bereich-cta">→ Zum RegelRadar</span><span class="bereich-lock" title="Login nötig">🔒 Login nötig</span></div>
-                </a>
-
-                <!-- Vokabeltrainer – Login nötig -->
-                <a href="vokabeltrainer.html" class="bereich-karte bereich-gesperrt">
-                    <div class="bereich-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 5h8a3 3 0 013 3v12a2 2 0 00-2-2H3zM21 5h-4a3 3 0 00-3 3"/><path d="M17 12l4 8M21 12l-4 8"/></svg></div>
-                    <h3>Vokabeltrainer</h3>
-                    <p>Vokabeln üben – auch mit Paketen von Schüler*innen und Kolleg*innen.</p>
-                    <div class="bereich-fuss"><span class="bereich-cta">→ Zum Vokabeltrainer</span><span class="bereich-lock" title="Login nötig">🔒 Login nötig</span></div>
-                </a>
-
-                <!-- AGs & Projekte – öffentlich -->
-                <a href="fach-ag-projekte.html" class="bereich-karte">
-                    <div class="bereich-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2 20c0-3.3 2.7-6 6-6s6 2.7 6 6M15 20c0-2.5 1.6-4.5 4-4.5s3 1.2 3 3"/></svg></div>
-                    <h3>AGs &amp; Projekte</h3>
-                    <p>Doppelkopf- und Wizard-Zähler und weitere Projekte – zum Ausprobieren.</p>
-                    <div class="bereich-fuss"><span class="bereich-cta">→ Zu den Projekten</span></div>
-                </a>
-
+            <div class="nb-ausserdem">
+                <h2 class="nb-ueberschrift">Außerdem hier</h2>
+                <ul>
+                    <li><a href="blog.html">Schüler*innenblog</a><span class="nb-beschr">Texte, Gedichte, Fotos und Projekte aus dem Unterricht.</span> <span class="nb-login">mit Login</span></li>
+                    <li><a href="leseabenteuer.html">Leseabenteuer</a><span class="nb-beschr">Abenteuer erleben, Helden erschaffen, Texte entdecken.</span> <span class="nb-login">mit Login</span></li>
+                    <li><a href="regelradar.html">RegelRadar</a><span class="nb-beschr">Rechtschreibung &amp; Zeichensetzung diagnostizieren, trainieren, meistern.</span> <span class="nb-login">mit Login</span></li>
+                    <li><a href="vokabeltrainer.html">Vokabeltrainer</a><span class="nb-beschr">Vokabeln üben – auch mit Paketen von Schüler*innen und Kolleg*innen.</span> <span class="nb-login">mit Login</span></li>
+                    <li><a href="fach-ag-projekte.html">AGs &amp; Projekte</a><span class="nb-beschr">Doppelkopf- und Wizard-Zähler und weitere Projekte zum Ausprobieren.</span></li>
+                </ul>
             </div>
+
         </div>
     </section>
 
 
     <!-- ========================================================
-         WAS IST NEU?
-         Automatisch aktualisierter Überblick über die jüngsten
-         Ergänzungen: neue Materialien, Blogbeiträge, Quiz-Einträge.
+         WAS IST NEU? – kurze, datierte Liste (js/was-ist-neu.js)
+         Technik-Einträge aus neuigkeiten.json ("intern": true) werden nicht angezeigt.
          ======================================================== -->
-    <section id="was-ist-neu">
+    <section id="was-ist-neu" class="nb-neu" data-inhalt="Was ist neu?">
         <div class="container">
-
-            <h2 class="section-titel">Was ist neu?</h2>
-            <p class="section-untertitel">Die fünf jüngsten Veränderungen je Kategorie – neue Materialien, Quizze, Blogbeiträge und mehr.</p>
-
-            <div class="win-tabellen-wrapper">
-                <div id="win-tabelle" class="win-laden" aria-live="polite" aria-label="Neuigkeiten werden geladen">
-                    ⏳ Lade Neuigkeiten …
-                </div>
+            <h2 class="nb-ueberschrift">Was ist neu?</h2>
+            <div id="win-tabelle" aria-live="polite">
+                <p class="win-laden">Lade Neuigkeiten …</p>
             </div>
-
         </div>
     </section>
 
@@ -337,11 +290,11 @@
     <section id="regelradar-teaser" aria-labelledby="regelradar-teaser-titel">
         <div class="container" style="padding-top:3rem;padding-bottom:3rem;">
             <div style="
-                background:#fff;
-                border:1px solid #d6e4f0;
-                border-radius:16px;
+                background:var(--farbe-papier);
+                border:1px solid var(--farbe-rahmen);
+                border-radius:4px;
                 padding:2rem 2.5rem;
-                box-shadow:0 2px 12px rgba(30,58,95,.07);
+                box-shadow:var(--schatten-papier);
                 display:flex;
                 align-items:center;
                 gap:2rem;
@@ -352,7 +305,7 @@
                 <div style="flex:1;min-width:220px;">
                     <div style="font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--farbe-akzent);margin-bottom:.4rem;">RegelRadar</div>
                     <h2 id="regelradar-teaser-titel" style="font-size:1.25rem;font-weight:700;color:var(--farbe-primaer);margin:0 0 .5rem;">Rechtschreibung &amp; Zeichensetzung</h2>
-                    <p style="color:#555;font-size:.93rem;line-height:1.6;margin:0;">
+                    <p style="color:var(--farbe-text-hell);font-size:1rem;line-height:1.6;margin:0;">
                         Diagnostizieren, trainieren, meistern: Selbsttest, Feedback und gezielte Übungen
                         in 7 Rechtschreibbereichen – vom Doppelkonsonanten bis zur Groß- und Kleinschreibung.
                     </p>
@@ -381,7 +334,7 @@
         <div class="container">
             <div class="kolosseum-teaser">
                 <div class="kolosseum-teaser-left">
-                    <div class="kolosseum-eyebrow">🏛️ Herrmanns Lernwelt</div>
+                    <div class="kolosseum-eyebrow">Herrmanns Lernwelt</div>
                     <h2 class="section-titel" style="margin-bottom:.5rem">Gladiatorenkämpfe</h2>
                     <p style="color:var(--farbe-text-soft,#555);max-width:480px;line-height:1.6">
                         Meistere Quizze und Arbeitsblätter für XP, steige in der Rangliste auf
@@ -391,10 +344,10 @@
                     </p>
                     <div style="display:flex;gap:.75rem;margin-top:1.1rem;flex-wrap:wrap">
                         <a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="btn btn-primary" style="font-size:.95rem;padding:.8rem 1.6rem">
-                            🏛️ Zur Arena →
+                            Zur Arena →
                         </a>
                         <a href="stilmittel-quiz.html" class="btn btn-secondary" style="font-size:.95rem;padding:.8rem 1.6rem">
-                            ⚔️ Sofort spielen
+                            Sofort spielen
                         </a>
                     </div>
                 </div>
@@ -451,9 +404,8 @@
                 <a href="narratologische-analyse.html" class="dm-karte" data-jahrgang="oberstufe">
                     <div class="dm-karte-badges">
                         <span class="dm-typ dm-typ-ab">Arbeitsblatt</span>
-                        <span class="dm-fach">📖 Deutsch</span>
+                        <span class="dm-fach">Deutsch</span>
                     </div>
-                    <div class="dm-icon">🔬</div>
                     <div class="dm-titel">Narratologische Analyse</div>
                     <div class="dm-beschr">Erzählerstandort, Fokalisierung, Zeitstruktur und Figurenrede an drei Beispieltexten analysieren.</div>
                     <div class="dm-pfeil">→ Zum Arbeitsblatt</div>
@@ -463,9 +415,8 @@
                 <a href="deutsch-dialektische-eroerterung.html" class="dm-karte" data-jahrgang="oberstufe">
                     <div class="dm-karte-badges">
                         <span class="dm-typ dm-typ-ab">Arbeitsblatt</span>
-                        <span class="dm-fach">📖 Deutsch</span>
+                        <span class="dm-fach">Deutsch</span>
                     </div>
-                    <div class="dm-icon">⚖️</div>
                     <div class="dm-titel">Dialektische Erörterung</div>
                     <div class="dm-beschr">Schritt-für-Schritt-Anleitung zum Aufbau und Schreiben einer dialektischen Erörterung.</div>
                     <div class="dm-pfeil">→ Zum Arbeitsblatt</div>
@@ -475,9 +426,8 @@
                 <a href="fuenfschrittlesemethode.html" class="dm-karte" data-jahrgang="5-6">
                     <div class="dm-karte-badges">
                         <span class="dm-typ dm-typ-ab">Arbeitsblatt</span>
-                        <span class="dm-fach">📖 Deutsch</span>
+                        <span class="dm-fach">Deutsch</span>
                     </div>
-                    <div class="dm-icon">📑</div>
                     <div class="dm-titel">Texte lesen &amp; zusammenfassen</div>
                     <div class="dm-beschr">Die Fünf-Schritt-Lesemethode: Überschriften, Abschnitte, Exzerpieren und Tabellen nutzen.</div>
                     <div class="dm-pfeil">→ Zum Arbeitsblatt</div>
@@ -487,9 +437,8 @@
                 <a href="materialien/deutsch_satzglieder-zeitformen_kl4_2026-06.html" class="dm-karte" data-jahrgang="5-6">
                     <div class="dm-karte-badges">
                         <span class="dm-typ dm-typ-ab">Arbeitsblatt</span>
-                        <span class="dm-fach">📖 Deutsch</span>
+                        <span class="dm-fach">Deutsch</span>
                     </div>
-                    <div class="dm-icon">🏷️</div>
                     <div class="dm-titel">Satzglieder &amp; Zeitformen</div>
                     <div class="dm-beschr">Satzglieder einfärben und bestimmen, Zeitformen zuordnen, Sätze ordnen – 4 interaktive Übungen mit sofortigem Feedback. Klasse 4.</div>
                     <div class="dm-pfeil">→ Zum Arbeitsblatt</div>
@@ -499,9 +448,8 @@
                 <a href="ab-herrschaft-mittelalter.html" class="dm-karte" data-jahrgang="5-6">
                     <div class="dm-karte-badges">
                         <span class="dm-typ dm-typ-ab">Arbeitsblatt</span>
-                        <span class="dm-fach">🏛️ Geschichte</span>
+                        <span class="dm-fach">Geschichte</span>
                     </div>
-                    <div class="dm-icon">⚔️</div>
                     <div class="dm-titel">Herrschaft im Mittelalter</div>
                     <div class="dm-beschr">Quelle &amp; Darstellung zur Grundherrschaft analysieren – mit KI-Feedback. Jahrgang 6.</div>
                     <div class="dm-pfeil">→ Zum Arbeitsblatt</div>
@@ -511,9 +459,8 @@
                 <a href="materialien/geschichte_burg-bentheim_museumsführung_7r_2026-05.html" class="dm-karte" data-jahrgang="7-9">
                     <div class="dm-karte-badges">
                         <span class="dm-typ dm-typ-ab">Arbeitsblatt</span>
-                        <span class="dm-fach">🏛️ Geschichte</span>
+                        <span class="dm-fach">Geschichte</span>
                     </div>
-                    <div class="dm-icon">🏰</div>
                     <div class="dm-titel">Burg Bentheim – Museumsführung</div>
                     <div class="dm-beschr">Rollenspiel-Skript schreiben: Museumswärter erklärt Bauteile und Funktionen der Burg. Mit Musterlösung. Jahrgang 7.</div>
                     <div class="dm-pfeil">→ Zum Arbeitsblatt</div>
@@ -523,9 +470,8 @@
                 <a href="materialien/mathe_uebungsaufgaben_klasse4_2026-05.html" class="dm-karte" data-jahrgang="5-6">
                     <div class="dm-karte-badges">
                         <span class="dm-typ dm-typ-ab">Arbeitsblatt</span>
-                        <span class="dm-fach">📐 Mathematik</span>
+                        <span class="dm-fach">Mathematik</span>
                     </div>
-                    <div class="dm-icon">🔢</div>
                     <div class="dm-titel">Mathe – Übungsaufgaben zur Arbeit</div>
                     <div class="dm-beschr">Addition, Division, Einmaleins, Wahrscheinlichkeit, Umfang &amp; Fläche – 11 interaktive Aufgaben mit sofortigem Feedback. Klasse 4.</div>
                     <div class="dm-pfeil">→ Zum Arbeitsblatt</div>
@@ -534,10 +480,9 @@
                 <!-- Stilmittel-Quiz -->
                 <a href="stilmittel-quiz.html" class="dm-karte" data-jahrgang="7-9">
                     <div class="dm-karte-badges">
-                        <span class="dm-typ dm-typ-quiz">⚔️ Quiz</span>
-                        <span class="dm-fach">📖 Deutsch</span>
+                        <span class="dm-typ dm-typ-quiz">Quiz</span>
+                        <span class="dm-fach">Deutsch</span>
                     </div>
-                    <div class="dm-icon">🎯</div>
                     <div class="dm-titel">Stilmittel-Quiz</div>
                     <div class="dm-beschr">Rhetorische Figuren erkennen und benennen – Metapher, Ironie, Anapher und viele mehr.</div>
                     <div class="dm-pfeil">→ Quiz starten</div>
@@ -546,10 +491,9 @@
                 <!-- Literaturwissenschaft-Quiz -->
                 <a href="literaturwissenschaft_quiz_v2.html" class="dm-karte" data-jahrgang="oberstufe">
                     <div class="dm-karte-badges">
-                        <span class="dm-typ dm-typ-quiz">⚔️ Quiz</span>
-                        <span class="dm-fach">📖 Deutsch</span>
+                        <span class="dm-typ dm-typ-quiz">Quiz</span>
+                        <span class="dm-fach">Deutsch</span>
                     </div>
-                    <div class="dm-icon">📚</div>
                     <div class="dm-titel">Literaturwissenschaft-Quiz</div>
                     <div class="dm-beschr">Gattungen, Epochen, Fachbegriffe – Grundwissen der Literaturwissenschaft testen.</div>
                     <div class="dm-pfeil">→ Quiz starten</div>
@@ -558,10 +502,9 @@
                 <!-- Rechtschreib-Quiz -->
                 <a href="rechtschreibquiz.html" class="dm-karte" data-jahrgang="7-9">
                     <div class="dm-karte-badges">
-                        <span class="dm-typ dm-typ-quiz">⚔️ Quiz</span>
-                        <span class="dm-fach">📖 Deutsch</span>
+                        <span class="dm-typ dm-typ-quiz">Quiz</span>
+                        <span class="dm-fach">Deutsch</span>
                     </div>
-                    <div class="dm-icon">✏️</div>
                     <div class="dm-titel">Rechtschreib-Quiz</div>
                     <div class="dm-beschr">Groß- und Kleinschreibung, Kommasetzung, häufige Fehlerquellen – schnell und spielerisch üben.</div>
                     <div class="dm-pfeil">→ Quiz starten</div>
@@ -570,10 +513,9 @@
                 <!-- Stumme Karte Niedersachsen – Erdkunde -->
                 <a href="materialien/erdkunde_niedersachsen-landkreise_jg5-10_2026-05.html" class="dm-karte" data-jahrgang="5-6">
                     <div class="dm-karte-badges">
-                        <span class="dm-typ dm-typ-quiz">⚔️ Quiz</span>
-                        <span class="dm-fach">🗺️ Erdkunde</span>
+                        <span class="dm-typ dm-typ-quiz">Quiz</span>
+                        <span class="dm-fach">Erdkunde</span>
                     </div>
-                    <div class="dm-icon">🗺️</div>
                     <div class="dm-titel">Stumme Karte – Niedersachsen</div>
                     <div class="dm-beschr">Alle Landkreise und kreisfreien Städte Niedersachsens auf der stummen Karte zuordnen – in drei Schwierigkeitsstufen (Easy, Medium, Hard).</div>
                     <div class="dm-pfeil">→ Quiz starten</div>
@@ -582,10 +524,9 @@
                 <!-- Stumme Karte Bundesländer – Erdkunde -->
                 <a href="materialien/erdkunde_bundeslaender_jg5-10_2026-05.html" class="dm-karte" data-jahrgang="5-6">
                     <div class="dm-karte-badges">
-                        <span class="dm-typ dm-typ-quiz">⚔️ Quiz</span>
-                        <span class="dm-fach">🗺️ Erdkunde</span>
+                        <span class="dm-typ dm-typ-quiz">Quiz</span>
+                        <span class="dm-fach">Erdkunde</span>
                     </div>
-                    <div class="dm-icon">🇩🇪</div>
                     <div class="dm-titel">Stumme Karte – Bundesländer</div>
                     <div class="dm-beschr">Die 16 Bundesländer Deutschlands auf der stummen Karte zuordnen – in drei Schwierigkeitsstufen (Easy, Medium, Hard).</div>
                     <div class="dm-pfeil">→ Quiz starten</div>
@@ -594,10 +535,9 @@
                 <!-- Stumme Karte Bundesländer & Hauptstädte – Erdkunde -->
                 <a href="materialien/erdkunde_bundeslaender-hauptstaedte_jg5-10_2026-05.html" class="dm-karte" data-jahrgang="5-6">
                     <div class="dm-karte-badges">
-                        <span class="dm-typ dm-typ-quiz">⚔️ Quiz</span>
-                        <span class="dm-fach">🗺️ Erdkunde</span>
+                        <span class="dm-typ dm-typ-quiz">Quiz</span>
+                        <span class="dm-fach">Erdkunde</span>
                     </div>
-                    <div class="dm-icon">🏛️</div>
                     <div class="dm-titel">Stumme Karte – Bundesländer &amp; Hauptstädte</div>
                     <div class="dm-beschr">Bundesländer <strong>und</strong> ihre Landeshauptstädte gleichzeitig auf einer Karte zuordnen – in drei Schwierigkeitsstufen (Easy, Medium, Hard).</div>
                     <div class="dm-pfeil">→ Quiz starten</div>
@@ -621,7 +561,6 @@
             <p class="section-untertitel">Schülerinnen und Schüler veröffentlichen hier eigene Texte, Bilder und Projekte aus dem Unterricht.</p>
 
             <div class="blog-teaser-box">
-                <div class="blog-teaser-icon">✍️</div>
                 <div class="blog-teaser-text">
                     <h3>Kreative Beiträge aus dem Unterricht</h3>
                     <p>
@@ -650,13 +589,11 @@
             <div class="kontakt-grid">
 
                 <div class="kontakt-karte">
-                    <div class="kontakt-icon">🏫</div>
                     <h3>Schule</h3>
                     <p>Friedensschule Osnabrück</p>
                 </div>
 
                 <div class="kontakt-karte">
-                    <div class="kontakt-icon">✉️</div>
                     <h3>E-Mail</h3>
                     <p>
                         <a id="kontakt-mail" href="kontakt.html" style="color:var(--farbe-akzent);font-weight:600">
@@ -666,7 +603,6 @@
                 </div>
 
                 <div class="kontakt-karte">
-                    <div class="kontakt-icon">🔒</div>
                     <h3>Materialien nur für Schülerinnen und Schüler</h3>
                     <p>
                         Arbeitsblätter und Quizze sind nach dem Login verfügbar.

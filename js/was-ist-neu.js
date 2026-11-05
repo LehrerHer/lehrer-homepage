@@ -1,16 +1,13 @@
 /* ============================================================
-   WAS IST NEU? – Kompakte Neuigkeiten-Übersicht (je 5 pro Kategorie)
+   WAS IST NEU? – eine kurze, datierte Liste (Stand 2026-11)
    Jan Herrmann
 
-   Acht Fenster:
-     1. Neue Funktion        (neuigkeiten.json)
-     2. Quiz-Bestleistung    (Kolosseum API)
-     3. Avatar-Aufstieg      (Kolosseum API)
-     4. Neuer Gladiator      (Kolosseum API)
-     5. Blog                 (Kolosseum API)
-     6. Neue Arbeitsblätter  (inhalte.json + Kolosseum-Uploads)
-     7. Neue Quizze          (inhalte.json + Kolosseum-Uploads, inkl. Rätsel)
-     8. Neue Materialien     (inhalte.json + Kolosseum-Uploads, inkl. Präsentationen)
+   Quellen (zusammengeführt, neueste zuerst, max. MAX_EINTRAEGE,
+   je Kategorie max. MAX_JE_KATEGORIE):
+     - Neue Funktion        (neuigkeiten.json – ohne "intern": true / meta "Technik")
+     - Neue Arbeitsblätter, Quizze, Materialien (inhalte.json + Kolosseum-Uploads)
+     - Blog, Quiz-Bestleistung, Avatar-Aufstieg, Neuer Gladiator (Kolosseum API)
+   Gibt es nichts, wird der Abschnitt ausgeblendet.
    ============================================================ */
 
 (function () {
@@ -36,6 +33,9 @@
         mixed:               'Gemischt',
         gesamt:              'Gesamt'
     };
+
+    var MAX_EINTRAEGE    = 8;
+    var MAX_JE_KATEGORIE = 3;
 
     function esc(s) {
         return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
@@ -73,7 +73,7 @@
         var k = MAT_KATEGORIE[typ] || MAT_KATEGORIE['Material'];
         return {
             icon: k.icon, kat: k.kat,
-            titel: esc(titel), meta: beschr || '',
+            titel: esc(titel), meta: typ + (beschr && beschr.length < 40 ? ' · ' + beschr : ''),
             datum: datum, url: url, nurDatum: true,
             schluessel: String(url).replace(/^https?:\/\/[^/]+/, '').toLowerCase()
         };
@@ -124,8 +124,8 @@
                 return d.slice(0, 5).map(function (b) {
                     return {
                         icon: '✍️', kat: 'Blog',
-                        titel: b.titel,
-                        meta: (b.autor || '') + (String(b.klasse || '').replace(/[^0-9]/g, '') ? ' \xB7 Jg. ' + String(b.klasse).replace(/[^0-9]/g, '') : ''),
+                        titel: esc(b.titel),
+                        meta: 'Blog' + (b.autor ? ' · ' + b.autor : '') + (String(b.klasse || '').replace(/[^0-9]/g, '') ? ' \xB7 Jg. ' + String(b.klasse).replace(/[^0-9]/g, '') : ''),
                         datum: b.datum, url: 'blog.html'
                     };
                 });
@@ -156,8 +156,8 @@
                 return d.slice(0, 5).map(function (g) {
                     return {
                         icon: g.level_icon || '⚔️', kat: 'Avatar-Aufstieg',
-                        titel: esc(g.nickname) + ' → ' + esc(g.level_name),
-                        meta:  g.xp + ' XP',
+                        titel: esc(g.nickname) + ' steigt auf: ' + esc(g.level_name),
+                        meta:  'Gladiatorenkämpfe · ' + g.xp + ' XP',
                         datum: g.last_active,
                         url:   'kolosseum/public/rangliste.html'
                     };
@@ -174,8 +174,8 @@
                 return d.slice(0, 5).map(function (g) {
                     return {
                         icon: '🪖', kat: 'Neuer Gladiator',
-                        titel: esc(g.nick),
-                        meta: 'Neu registriert',
+                        titel: esc(g.nick) + ' ist neu in der Arena',
+                        meta: 'Gladiatorenkämpfe',
                         datum: g.created_at,
                         url: 'kolosseum/public/rangliste.html'
                     };
@@ -189,14 +189,13 @@
         return fetch('neuigkeiten.json?t=' + Date.now())
             .then(function (r) { return r.ok ? r.json() : { funktionen: [] }; })
             .then(function (d) {
-                return (d.funktionen || []).slice()
-                    .sort(function (a, b) { return (b.datum || '').localeCompare(a.datum || ''); })
-                    .slice(0, 5)
+                return (d.funktionen || [])
+                    .filter(function (e) { return !e.intern && e.meta !== 'Technik'; })   // Entwickler-Protokoll ausblenden
                     .map(function (e) {
                         var datum = e.datum && e.datum.length <= 10 ? e.datum + 'T00:00:00' : e.datum;
                         return {
                             icon: '🛠️', kat: 'Neue Funktion',
-                            titel: e.titel, meta: e.meta || 'Update',
+                            titel: esc(e.titel), meta: e.meta || '',
                             datum: datum, url: e.url || 'index.html#was-ist-neu',
                             nurDatum: true
                         };
@@ -205,57 +204,40 @@
             .catch(function () { return []; });
     }
 
-    /* ---- Kompaktes Spalten-Rendering ---- */
+    /* ---- Rendering: eine datierte Liste ---- */
 
-    function render(gruppen) {
-        var container = document.getElementById('win-tabelle');
-        if (!container) return;
-
-        var hatInhalte = Object.values(gruppen).some(function (arr) { return arr.length > 0; });
-        if (!hatInhalte) {
-            container.innerHTML = '<p class="win-leer">Noch keine Neuigkeiten vorhanden.</p>';
-            return;
-        }
-
-        var reihenfolge = ['Neue Funktion', 'Quiz-Bestleistung', 'Avatar-Aufstieg', 'Neuer Gladiator', 'Blog',
-                           'Neue Arbeitsblätter', 'Neue Quizze', 'Neue Materialien'];
-        var ICONS = { 'Neue Funktion': '🛠️', 'Quiz-Bestleistung': '🏆', 'Avatar-Aufstieg': '⚔️', 'Neuer Gladiator': '🪖',
-                      'Blog': '✍️', 'Neue Arbeitsblätter': '📝', 'Neue Quizze': '⚔️', 'Neue Materialien': '📥' };
-
-        var cols = reihenfolge.map(function (kat) {
-            var items = (gruppen[kat] || []).slice()
-                .sort(function (a, b) { return (b.datum || '').localeCompare(a.datum || ''); })
-                .slice(0, 5);
-
-            var itemsHtml = !items.length ? '<span class="win-item win-item-leer">Noch nichts Neues</span>' : items.map(function (item) {
-                return '<a href="' + esc(item.url) + '" class="win-item">'
-                    + '<span class="win-item-titel">' + item.titel + '</span>'
-                    + (item.meta ? '<span class="win-item-meta">' + esc(item.meta) + '</span>' : '')
-                    + '<span class="win-item-datum">' + formatDatum(item.datum, item.nurDatum) + '</span>'
-                    + '</a>';
-            }).join('');
-
-            return '<div class="win-col">'
-                + '<div class="win-col-header">'
-                + '<span class="win-col-icon" aria-hidden="true">' + esc(ICONS[kat] || '') + '</span>'
-                + '<span class="win-col-label">' + esc(kat) + '</span>'
-                + '</div>'
-                + itemsHtml
-                + '</div>';
-        }).join('');
-
-        container.innerHTML = '<div class="win-grid">' + cols + '</div>';
+    function isoTag(datum) {
+        try { return new Date(datum).toISOString().slice(0, 10); } catch (e) { return ''; }
     }
 
-    /* ---- Gruppieren nach Kategorie ---- */
+    function render(alle) {
+        var container = document.getElementById('win-tabelle');
+        var abschnitt = document.getElementById('was-ist-neu');
+        if (!container) return;
 
-    function gruppieren(alle) {
-        var gruppen = {};
-        alle.forEach(function (item) {
-            if (!gruppen[item.kat]) gruppen[item.kat] = [];
-            gruppen[item.kat].push(item);
-        });
-        return gruppen;
+        var proKategorie = {};
+        var eintraege = alle
+            .filter(function (i) { return i && i.titel && i.datum; })
+            .sort(function (a, b) { return String(b.datum).localeCompare(String(a.datum)); })
+            .filter(function (i) {
+                proKategorie[i.kat] = (proKategorie[i.kat] || 0) + 1;
+                return proKategorie[i.kat] <= MAX_JE_KATEGORIE;
+            })
+            .slice(0, MAX_EINTRAEGE);
+
+        if (!eintraege.length) {                    // nichts Neues → Abschnitt ausblenden
+            if (abschnitt) abschnitt.hidden = true;
+            return;
+        }
+        if (abschnitt) abschnitt.hidden = false;
+
+        container.innerHTML = '<ol class="nb-neu-liste">' + eintraege.map(function (item) {
+            return '<li>'
+                + '<time datetime="' + esc(isoTag(item.datum)) + '">' + formatDatum(item.datum, true) + '</time>'
+                + '<span><a href="' + esc(item.url) + '">' + item.titel + '</a>'
+                + (item.meta ? '<small>' + esc(item.meta) + '</small>' : '')
+                + '</span></li>';
+        }).join('') + '</ol>';
     }
 
     /* ---- Start ---- */
@@ -270,7 +252,7 @@
             ladeBlogbeitraege()
         ]).then(function (ergebnisse) {
             var alle = [].concat.apply([], ergebnisse);
-            render(gruppieren(alle));
+            render(alle);
         });
     }
 

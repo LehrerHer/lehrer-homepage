@@ -68,6 +68,15 @@
 
 
 /* ---- CSS-Variablen: Farben, Abstände, Effekte ---- */
+/* Handschrift-Akzent (Caveat, OFL) – nur sparsam für kleine Notizen */
+@font-face {
+    font-family: 'Caveat';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('../assets/fonts/caveat-latin-500-normal.woff2') format('woff2');
+}
+
 :root {
     --seitenbreite: min(1200px, 100%);   /* Inhaltsbreite; Ränder nutzen die Seitenleisten (≥ 1720 px) */
     color-scheme: light;                 /* verhindert abweichende Farben durch Dark-Mode/Geräteprofil */
@@ -90,11 +99,22 @@
     --schrift-text:           'Open Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
     --schrift-ueberschrift:   'Merriweather', Georgia, 'Times New Roman', serif;
     --schrift-akzent:         'JetBrains Mono', ui-monospace, 'SFMono-Regular', Consolas, monospace;
+    --schrift-hand:           'Caveat', 'Segoe Print', 'Bradley Hand', cursive;   /* nur kurze Notizen */
+
+    /* Notizbuch (2026-11): Papierkante statt harter Schatten */
+    --farbe-papier:           #fffdf7;
+    --farbe-papier-grund:     #f6f0e2;
+    --farbe-heftrand:         #e3a0a0;
+    --farbe-tinte-blau:       #2b4a8a;
+    --farbe-tinte-rot:        #8a3b12;
+    --schatten-papier:        0 1px 1px rgba(20, 40, 75, 0.05), 0 8px 18px -14px rgba(20, 40, 75, 0.45);
+    --schatten-papier-hoch:   0 1px 1px rgba(20, 40, 75, 0.06), 0 14px 24px -14px rgba(20, 40, 75, 0.5);
 }
 
 /* Seiten in Leichter Sprache: keine Akzentschrift, nur Merriweather + Open Sans */
 .leichte-sprache {
     --schrift-akzent: var(--schrift-text);
+    --schrift-hand:   var(--schrift-text);   /* keine Handschrift in Leichter Sprache */
 }
 
 
@@ -3328,13 +3348,9 @@ h1, h2, h3, .section-titel {
     line-height: 1.15;
 }
 
-/* Gelber Marker unter Abschnittstiteln */
+/* Abschnittstitel ohne Textmarker (seit 2026-11: Marker nur einmal je Seite, am Seitentitel) */
 .section-titel {
     display: inline-block;
-    background-image: linear-gradient(var(--farbe-highlight), var(--farbe-highlight));
-    background-repeat: no-repeat;
-    background-size: 100% 0.32em;
-    background-position: 0 90%;
 }
 
 :focus-visible {
@@ -3347,8 +3363,8 @@ h1, h2, h3, .section-titel {
 .footer-inner {
     background: var(--farbe-primaer);
     border: 2px solid var(--farbe-primaer);
-    border-radius: 16px;
-    box-shadow: 4px 4px 0 var(--farbe-highlight);
+    border-radius: 14px;
+    box-shadow: var(--schatten-papier-hoch);
 }
 
 .navbar-links .nav-item:hover,
@@ -3388,10 +3404,10 @@ h1, h2, h3, .section-titel {
 .dm-karte,
 .portal-karte,
 .formular-box {
-    background: var(--farbe-weiss);
-    border: 2px solid var(--farbe-primaer);
-    border-radius: 16px;
-    box-shadow: var(--schatten-hart);
+    background: var(--farbe-papier);
+    border: 1px solid var(--farbe-rahmen);
+    border-radius: 4px;
+    box-shadow: var(--schatten-papier);
     transition: transform var(--transition), box-shadow var(--transition);
 }
 
@@ -3401,9 +3417,9 @@ h1, h2, h3, .section-titel {
 .mat-card:hover,
 .dm-karte:hover,
 .portal-karte:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--farbe-primaer);
-    border-color: var(--farbe-primaer);
+    transform: translateY(-2px);
+    box-shadow: var(--schatten-papier-hoch);
+    border-color: #c9bfa8;
 }
 
 /* --- Buttons --- */
@@ -3466,7 +3482,7 @@ h1, h2, h3, .section-titel {
     .navbar-links {
         background: var(--farbe-primaer);
         border: 2px solid var(--farbe-primaer);
-        box-shadow: 4px 4px 0 var(--farbe-highlight);
+        box-shadow: var(--schatten-papier-hoch);
     }
 }
 
@@ -3975,3 +3991,428 @@ body.regelradar-seite > header .cat-scroll { justify-content: safe center; max-w
 .zuletzt-leer { font-size: 0.82rem; color: var(--farbe-text-hell); margin: 0; }
 .zuletzt-liste a { display: flex; flex-direction: column; gap: 1px; }
 .zuletzt-liste small { font-family: var(--schrift-akzent); font-size: 0.7rem; color: var(--farbe-text-hell); }
+
+
+/* ================================================================
+   STARTSEITE – NOTIZBUCH (Stand 2026-11)
+   Warmes Papier mit leisem Karoraster, liniertes Blatt mit Heftrand
+   als Einstieg, Karteikarten für die drei Hauptbereiche, Nebensachen
+   als schlichte Liste, „Was ist neu?“ als datierte Liste.
+   Textmarker nur einmal (Name), Handschrift nur für kurze Notizen.
+   ================================================================ */
+
+body.startseite {
+    background-color: var(--farbe-papier-grund);
+    background-image:
+        linear-gradient(rgba(20, 40, 75, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(20, 40, 75, 0.045) 1px, transparent 1px);
+    background-size: 22px 22px;
+}
+
+/* Keine weißen Wechselbänder auf dem Papier (dunkler Arena-Teaser bleibt) */
+body.startseite #startseite,
+body.startseite #was-ist-neu,
+body.startseite section:nth-child(even):not(.lernkolosseum-section) {
+    background-color: transparent;
+}
+
+/* --- Einstieg: liniertes Blatt mit Heftrand --- */
+.nb-start {
+    padding: 56px 0 32px;
+}
+
+.nb-blatt {
+    position: relative;
+    max-width: 820px;
+    padding: 36px 48px 28px 88px;
+    background-color: var(--farbe-papier);
+    background-image:
+        linear-gradient(90deg, transparent 64px, var(--farbe-heftrand) 64px, var(--farbe-heftrand) 65px, transparent 65px),
+        repeating-linear-gradient(var(--farbe-papier) 0 31px, #dfe6f0 31px 32px);
+    border: 1px solid #e4dccb;
+    border-radius: 3px;
+    box-shadow: var(--schatten-papier);
+}
+
+.nb-name {
+    display: inline;
+    font-family: var(--schrift-ueberschrift);
+    font-size: 2.4rem;
+    color: var(--farbe-primaer);
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+    /* der eine bewusste Textmarker der Seite */
+    background-image: linear-gradient(transparent 62%, #ffd86b 62%, #ffd86b 90%, transparent 90%);
+}
+
+.nb-blatt p {
+    max-width: 60ch;
+    line-height: 32px;              /* passt auf die Heftlinien */
+    margin: 0;
+}
+
+.nb-rolle {
+    margin-top: .3rem !important;
+    color: var(--farbe-text-hell);
+}
+
+.nb-gruss {
+    margin: 1rem 0 !important;
+}
+
+/* sichtbarer Platzhalter, bis der Begrüßungstext feststeht */
+.nb-platzhalter {
+    background: #fff3c4;
+    outline: 1px dashed #9a7400;
+    color: #4d3b00;
+}
+
+.nb-weiter a {
+    font-weight: 600;
+    color: var(--farbe-primaer-hell);
+}
+
+.nb-randnotiz {
+    position: absolute;
+    right: -18px;
+    top: -22px;
+    transform: rotate(3deg);
+    padding: .45rem .8rem;
+    font-family: var(--schrift-hand);
+    font-size: 1.45rem;
+    line-height: 1.1 !important;
+    color: var(--farbe-tinte-blau);
+    background: #fff8d6;
+    border: 1px solid #eadb9e;
+    box-shadow: var(--schatten-papier);
+}
+
+/* --- Karteikarten (Hauptbereiche) --- */
+.nb-karten {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 28px;
+    margin-top: 44px;
+}
+
+.nb-karte {
+    position: relative;
+    padding: 18px 24px 2.6rem;
+    background-color: var(--farbe-papier);
+    /* rote Kopflinie wie auf einer Karteikarte */
+    background-image: linear-gradient(transparent 62px, var(--farbe-heftrand) 62px, var(--farbe-heftrand) 63px, transparent 63px);
+    border: 1px solid #dcd3bf;
+    border-radius: 2px;
+    box-shadow: var(--schatten-papier);
+    transform: rotate(-.3deg);
+}
+.nb-karte-faecher { grid-row: span 2; transform: rotate(-.4deg); }
+.nb-karte:nth-child(2) { transform: rotate(.5deg); }
+
+.nb-karte h2 {
+    margin: 0 0 1.3rem;
+    font-family: var(--schrift-ueberschrift);
+    font-size: 1.4rem;
+    line-height: 1.3;
+}
+.nb-karte h2 a {
+    color: var(--farbe-primaer);
+    text-decoration: none;
+}
+.nb-karte h2 a:hover,
+.nb-karte h2 a:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+.nb-karte p {
+    max-width: 52ch;
+    margin: 0 0 .6rem;
+}
+
+.nb-faecher {
+    list-style: none;
+    margin: .4rem 0 0;
+    padding: 0;
+    columns: 3;
+    column-gap: 24px;
+}
+.nb-faecher li {
+    break-inside: avoid;
+    padding: .3rem 0;
+    border-bottom: 1px dotted #cfc6b2;
+}
+.nb-faecher a {
+    color: var(--farbe-primaer-hell);
+    font-weight: 600;
+    text-decoration: none;
+}
+.nb-faecher a:hover,
+.nb-faecher a:focus-visible {
+    text-decoration: underline;
+}
+
+/* kleine handschriftliche Notiz statt Schloss-Emoji */
+.nb-login {
+    font-family: var(--schrift-hand);
+    font-size: 1.3rem;
+    line-height: 1;
+    color: var(--farbe-tinte-rot);
+    white-space: nowrap;
+}
+.nb-karte .nb-login {
+    position: absolute;
+    right: 16px;
+    bottom: 10px;
+    transform: rotate(-4deg);
+}
+
+/* --- Nebensachen als Textliste --- */
+.nb-ausserdem {
+    max-width: 860px;
+    margin-top: 48px;
+}
+
+.nb-ueberschrift {
+    display: inline-block;
+    margin-bottom: .8rem;
+    padding-bottom: .25rem;
+    font-family: var(--schrift-ueberschrift);
+    font-size: 1.35rem;
+    color: var(--farbe-primaer);
+    border-bottom: 2px solid var(--farbe-primaer);
+}
+
+.nb-ausserdem ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.nb-ausserdem li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: .2rem .7rem;
+    padding: .5rem 0;
+    border-bottom: 1px solid #e4dccb;
+}
+.nb-ausserdem li > a {
+    font-weight: 700;
+    color: var(--farbe-primaer);
+}
+.nb-beschr {
+    flex: 1;
+    min-width: 14rem;
+    color: var(--farbe-text-hell);
+}
+
+/* --- Was ist neu? als datierte Liste --- */
+.nb-neu {
+    padding: 32px 0 64px;
+    border-bottom: none;
+}
+.nb-neu[hidden] { display: none; }
+
+.nb-neu-liste {
+    max-width: 860px;
+    margin: .3rem 0 0;
+    padding: 0;
+    list-style: none;
+    border-left: 2px solid var(--farbe-heftrand);
+}
+.nb-neu-liste li {
+    display: grid;
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 16px;
+    padding: .55rem 0 .55rem 16px;
+    border-bottom: 1px solid #e4dccb;
+}
+.nb-neu-liste time {
+    font-family: var(--schrift-hand);
+    font-size: 1.35rem;
+    line-height: 1.3;
+    color: var(--farbe-tinte-blau);
+}
+.nb-neu-liste a {
+    color: var(--farbe-primaer);
+    font-weight: 600;
+    text-decoration: none;
+}
+.nb-neu-liste a:hover,
+.nb-neu-liste a:focus-visible {
+    text-decoration: underline;
+}
+.nb-neu-liste small {
+    display: block;
+    font-size: 1rem;
+    color: var(--farbe-text-hell);
+}
+#was-ist-neu .win-laden {
+    color: var(--farbe-text-hell);
+    padding: .5rem 0;
+}
+
+/* --- Materialkarten, Teaser und Kontakt auf der Startseite ruhiger --- */
+body.startseite .dm-typ-ab,
+body.startseite .dm-typ-quiz {
+    border: none;
+}
+body.startseite .dm-pfeil {
+    font-weight: 600;
+}
+body.startseite .kontakt-karte,
+body.startseite .blog-teaser-box {
+    background: var(--farbe-papier);
+    border: 1px solid var(--farbe-rahmen);
+    border-radius: 4px;
+    box-shadow: var(--schatten-papier);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .nb-karte, .nb-randnotiz { transform: none !important; }
+}
+
+@media (max-width: 768px) {
+    .nb-start { padding-top: 32px; }
+    .nb-blatt {
+        padding: 24px 18px 20px 38px;
+        background-image:
+            linear-gradient(90deg, transparent 24px, var(--farbe-heftrand) 24px, var(--farbe-heftrand) 25px, transparent 25px),
+            repeating-linear-gradient(var(--farbe-papier) 0 31px, #dfe6f0 31px 32px);
+    }
+    .nb-name { font-size: 1.9rem; }
+    .nb-randnotiz {
+        position: static;
+        display: table;
+        margin: 0 0 .8rem !important;
+        transform: rotate(-2deg);
+    }
+    .nb-karten { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+    .nb-karte-faecher { grid-row: auto; }
+    .nb-karte, .nb-karte-faecher, .nb-karte:nth-child(2) { transform: none; }
+    .nb-faecher { columns: 2; column-gap: 16px; hyphens: auto; }
+    .nb-neu-liste li { grid-template-columns: minmax(0, 1fr); gap: 0; }
+}
+body.startseite #was-ist-neu { border-bottom: none; }
+/* Alle Startseiten-Abschnitte auf dem Papier (IDs schlagen sonst die Wechselbänder) */
+body.startseite section[id]:not(#lernkolosseum) { background-color: transparent; }
+/* Emoji-Symbole der dynamischen „Neue Materialien“ nur auf der Startseite ausblenden */
+body.startseite .material-icon { display: none; }
+@media (max-width: 768px) {
+    .nb-ausserdem li { display: block; }
+    .nb-ausserdem li > a { display: inline-block; margin-right: .5rem; }
+    .nb-beschr { display: block; min-width: 0; }
+}
+
+
+/* ================================================================
+   FACHSEITEN – NOTIZBUCH (Stand 2026-11)
+   fach-*.html und faecher.html tragen <body class="fachseite">.
+   Papier mit Karoraster, Seitentitel auf dem Papier statt Marine-Band
+   (Textmarker nur dort), Name als kleine Handschrift-Signatur.
+   Karten erben die Papierkante aus der gemeinsamen Kartenregel.
+   ================================================================ */
+
+body.fachseite {
+    background-color: var(--farbe-papier-grund);
+    background-image:
+        linear-gradient(rgba(20, 40, 75, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(20, 40, 75, 0.045) 1px, transparent 1px);
+    background-size: 22px 22px;
+}
+body.fachseite section:nth-child(even) {
+    background-color: transparent;
+}
+
+body.fachseite .abgabe-header {
+    background: transparent;
+    color: var(--farbe-primaer);
+    text-align: left;
+    padding: 48px 0 0;
+}
+body.fachseite .abgabe-header h1 {
+    display: inline;
+    font-family: var(--schrift-ueberschrift);
+    font-size: 2.3rem;
+    line-height: 1.25;
+    color: var(--farbe-primaer);
+    /* der eine bewusste Textmarker der Seite */
+    background-image: linear-gradient(transparent 62%, #ffd86b 62%, #ffd86b 90%, transparent 90%);
+}
+body.fachseite .abgabe-header p {
+    margin-top: .2rem;
+    font-family: var(--schrift-hand);
+    font-size: 1.45rem;
+    color: var(--farbe-tinte-blau);
+}
+body.fachseite .abgabe-bereich {
+    padding-top: 28px;
+}
+
+/* Beschreibungstext wie ein Blatt mit Heftrand */
+body.fachseite .fach-beschreibung {
+    background-color: var(--farbe-papier);
+    background-image: linear-gradient(90deg, transparent 40px, var(--farbe-heftrand) 40px, var(--farbe-heftrand) 41px, transparent 41px);
+    border: 1px solid #e4dccb;
+    border-left: 1px solid #e4dccb;
+    border-radius: 3px;
+    padding: 24px 28px 20px 64px;
+    box-shadow: var(--schatten-papier);
+}
+
+/* Hinweisboxen als Notizzettel */
+body.fachseite .hinweis-box {
+    background: #fff8d6;
+    border: 1px solid #eadb9e;
+    border-radius: 2px;
+    box-shadow: var(--schatten-papier);
+}
+
+/* Badges als kleine Etiketten (nicht über die ganze Kartenbreite), lesbarer Kontrast */
+body.fachseite .mat-badge {
+    align-self: flex-start;
+    border-radius: 2px;
+    font-size: .8rem;
+}
+body.fachseite .mat-badge.quiz { color: #7a4600; }
+
+/* Beschreibung bündig mit dem Seitentitel, Absätze mit Luft */
+body.fachseite .fach-beschreibung {
+    margin-left: 0;
+    margin-right: 0;
+}
+body.fachseite .fach-beschreibung p + p {
+    margin-top: .6em;
+}
+
+/* Kategorie-Überschriften wie im Heft statt Versal-Labels */
+body.fachseite .mat-kategorie {
+    font-family: var(--schrift-ueberschrift);
+    font-size: 1.2rem;
+    color: var(--farbe-primaer);
+    text-transform: none;
+    letter-spacing: 0;
+    border-bottom: 1px solid var(--farbe-rahmen);
+}
+
+/* Hervorgehobene Angebote: Papierkarte statt dickem Farbbalken */
+body.fachseite .fach-highlight {
+    background: var(--farbe-papier);
+    border: 1px solid var(--farbe-rahmen);
+    border-radius: 4px;
+    box-shadow: var(--schatten-papier);
+}
+body.fachseite .fach-highlight:hover {
+    box-shadow: var(--schatten-papier-hoch);
+}
+
+/* Emoji-Symbole aus dynamisch geladenen Karten ausblenden */
+body.fachseite .material-icon { display: none; }
+
+@media (max-width: 768px) {
+    body.fachseite .abgabe-header { padding-top: 32px; }
+    body.fachseite .abgabe-header h1 { font-size: 1.9rem; }
+    body.fachseite .fach-beschreibung {
+        padding: 18px 16px 16px 36px;
+        background-image: linear-gradient(90deg, transparent 20px, var(--farbe-heftrand) 20px, var(--farbe-heftrand) 21px, transparent 21px);
+    }
+}
