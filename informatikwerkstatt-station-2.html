@@ -139,6 +139,11 @@
   .loesung-text { flex: 1 1 100%; background: var(--blau-zart); border-left: 4px solid var(--grau); border-radius: 6px; padding: 8px 12px; font-size: 0.95rem; }
   .aufgabe.angesehen input { background: #f2f2f2; }
   .rueck.angesehen { color: var(--grau); }
+  .exkurs { border: 2px dashed var(--blau); border-radius: 10px; padding: 12px 16px; margin: 18px 0; }
+  .exkurs h3 { margin-top: 0; }
+  .iw-bild { margin: 14px 0 18px; }
+  .iw-bild img { display: block; width: 100%; max-width: 560px; height: auto; border: 1px solid var(--rand); border-radius: 8px; background: var(--weiss); }
+  .iw-bild figcaption { font-size: 0.9rem; color: var(--grau); margin-top: 6px; }
   .denkfrage { margin-top: 22px; border: 2px solid var(--blau); border-radius: 10px; padding: 14px 16px; }
   .denkfrage h3 { margin-top: 0; }
   .denk-label { display: block; font-weight: 600; margin-bottom: 4px; }
@@ -316,6 +321,10 @@
   <div class="ziel"><b>Ziel:</b> Du weißt, wie ein Computer Buchstaben als Zahlen speichert.</div>
 
   <p>Jeder Buchstabe bekommt eine feste Nummer. Diese Liste heißt <b>ASCII-Code</b>. Zum Beispiel ist <code>A</code> die 65, <code>B</code> die 66. Der Computer speichert die Nummer als Binärzahl.</p>
+  <figure class="iw-bild">
+    <img src="img/informatikwerkstatt/buchstabe-als-zahl.svg" width="560" height="170" loading="lazy" alt="Die Taste A wird zur ASCII-Nummer 65 und dann zum Byte 01000001. Die Bits mit den Werten 64 und 1 sind an: 64 plus 1 ergibt 65.">
+    <figcaption>Vom Tastendruck zum Byte: aus „A“ wird 65, aus 65 wird 01000001.</figcaption>
+  </figure>
 
   <div class="werkzeug">
     <div class="titel">Text-Umwandler: Tipp etwas ein.</div>
@@ -418,6 +427,14 @@
       </div>
     </div>
   </div>
+  <div class="exkurs">
+    <h3>😺 Exkurs in Scratch: Pixel-Zeile mit dem Stift</h3>
+    <p>Die Katze malt eine Zeile aus deinem Pixelbild. Sie liest einen Code wie <code>00111100</code> Zeichen für Zeichen. Bei <code>1</code> malt sie ein Kästchen, bei <code>0</code> lässt sie es frei. Das ist dasselbe Werkzeug wie im Geometrie-Zeichner.</p>
+    <details><summary>Tipp 1: Vorbereiten</summary>Füge die Erweiterung „Malstift“ hinzu. Leg die Variablen <code>zeile</code> (Wert <code>00111100</code>) und <code>stelle</code> (Wert 1) an.</details>
+    <details><summary>Tipp 2: Zeichen lesen</summary>Nimm <code>wiederhole (8) mal</code>. Darin: <code>falls &lt;(Zeichen (stelle) von (zeile)) = 1&gt; dann</code> → <code>schalte Stift ein</code>, sonst <code>schalte Stift aus</code>. Danach <code>gehe (20) er Schritt</code> und <code>ändere stelle um (1)</code>.</details>
+    <details><summary>Tipp 3: Dicker malen</summary>Mit <code>setze Stiftdicke auf (20)</code> werden aus Strichen Kästchen. Extra: Mal alle acht Zeilen untereinander.</details>
+    <p class="hinweis-klein">Wenn du in Scratch nicht weiterweißt, schau ins Scratch-Tutorial der Schule.</p>
+  </div>
 </section>
 
 <!-- ========== TEIL 4 ========== -->
@@ -451,9 +468,10 @@
 <script src="js/main.js?v=20260615c"></script>
 <script src="js/seitenleisten.js"></script>
 <script src="js/kolosseum-login-widget.js"></script>
+<script src="js/arena-bar.js?v=20261105"></script>
 
 
-<script src="js/informatik-login.js"></script>
+<script src="js/informatik-login.js?v=20261105"></script>
 <script>
 (function () {
   /* ---------- Teil 1: Bits ---------- */
