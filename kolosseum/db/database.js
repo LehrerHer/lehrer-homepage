@@ -216,6 +216,43 @@ db.exec(`
   )
 `);
 
+// Informatikwerkstatt: einmalige Datenumstellungen (Name = Marker, läuft nie doppelt)
+db.exec(`
+  CREATE TABLE IF NOT EXISTS informatik_migrationen (
+    name TEXT PRIMARY KEY,
+    am   TEXT NOT NULL DEFAULT (datetime('now'))
+  )
+`);
+
+// 2026-11-05: Neue Station 1 „Wie funktioniert ein Computer?“ eingefügt.
+// Alle bisherigen Stationen rücken um 1 auf (Daten codieren 1 → 2, Algorithmen 2 → 3).
+// Betrifft Checkpoints, Antworten, Profi-Teile und XP-Schlüssel (a:/t:/q:/c:<station>…).
+// Bei Profi/Antworten erst negativ setzen, damit der Primärschlüssel unterwegs nicht kollidiert.
+const informatikStationenPlusEins = db.transaction(() => {
+  if (db.prepare("SELECT 1 FROM informatik_migrationen WHERE name = 'stationen-plus-1'").get()) return false;
+  db.exec(`
+    UPDATE informatik_checkpoints SET station = station + 1;
+    UPDATE informatik_antworten SET station = -(station + 1);
+    UPDATE informatik_antworten SET station = -station;
+    UPDATE informatik_profi SET station = -(station + 1);
+    UPDATE informatik_profi SET station = -station;
+  `);
+  const xpZeilen = db.prepare('SELECT student_id, schluessel, xp, created_at FROM informatik_xp').all();
+  db.prepare('DELETE FROM informatik_xp').run();
+  const ins = db.prepare('INSERT INTO informatik_xp (student_id, schluessel, xp, created_at) VALUES (?, ?, ?, ?)');
+  xpZeilen.forEach(r => {
+    const neu = r.schluessel.replace(/^([atqc]):(\d+)/, (m, typ, nr) => typ + ':' + (parseInt(nr, 10) + 1));
+    ins.run(r.student_id, neu, r.xp, r.created_at);
+  });
+  db.prepare("INSERT INTO informatik_migrationen (name) VALUES ('stationen-plus-1')").run();
+  return true;
+});
+try {
+  if (informatikStationenPlusEins()) console.log('Informatik: Stationen um 1 verschoben (neue Station 1).');
+} catch (e) {
+  console.error('Informatik-Migration stationen-plus-1 fehlgeschlagen:', e.message);
+}
+
 // Feedback-Notizen: Lernbegleiter diktiert Text über eine Lernzeit, Claude teilt ihn
 // nach Lernpartner:in auf und ordnet jedem Abschnitt eine Kategorie zu (siehe CLAUDE.md-Briefing)
 db.exec(`

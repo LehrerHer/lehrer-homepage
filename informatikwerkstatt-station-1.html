@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Station 1 – Daten codieren</title>
+<title>Station 1 – Wie funktioniert ein Computer?</title>
 <link rel="stylesheet" href="css/style.css?v=20261105c">
 <style>
   :root {
@@ -187,6 +187,50 @@
   .iw-meldung { color: var(--rot); font-size: 0.9rem; }
   .iw-seite section { background: transparent; padding-bottom: 0; }
   .iw-kopf { margin-top: 16px; }
+
+  /* === STATION: COMPUTER === */
+  .sort-zeile { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 8px 0; border-bottom: 1px dashed var(--rand); }
+  .sort-zeile > span { flex: 1 1 220px; }
+  .sort-wahl { display: flex; flex-wrap: wrap; gap: 6px; }
+  .sort-wahl button { border: 2px solid var(--blau); background: var(--weiss); color: var(--blau); border-radius: 20px; padding: 4px 12px; font: inherit; font-size: 0.9rem; font-weight: 600; cursor: pointer; }
+  .sort-wahl button[aria-pressed="true"] { background: var(--blau); color: var(--weiss); }
+  .sort-zeile select { padding: 6px 8px; border: 2px solid var(--blau); border-radius: 6px; font: inherit; font-size: 0.95rem; max-width: 100%; }
+  .sort-zeile.ok { background: #eaf6ee; }
+  .sort-zeile.falsch { background: #fbeceb; }
+  .werkzeug .titel ~ .titel { margin-top: 14px; }
+  .eva { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 10px 0 6px; }
+  .eva > div:not(.pfeil) { flex: 1 1 140px; background: var(--blau); color: var(--weiss); border-radius: 10px; padding: 10px 12px; text-align: center; }
+  .eva b { color: var(--orange); font-size: 1.3rem; }
+  .eva small { color: #d9e2f1; }
+  .eva .pfeil { color: var(--orange); font-size: 1.6rem; font-weight: 700; }
+  .eva-bild { margin: 14px 0 10px; display: grid; gap: 8px 6px; align-items: stretch; text-align: center;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    grid-template-areas: "e p1 v p2 a" ". . p3 . ." "s s s s s" "cap cap cap cap cap"; }
+  .eb-box { border-radius: 10px; padding: 12px 10px; color: var(--weiss); background: var(--blau); }
+  .eb-titel { font-weight: 700; font-size: 1.1rem; padding-bottom: 6px; margin-bottom: 6px; border-bottom: 2px solid var(--orange); }
+  .eb-titel b { color: var(--orange); font-size: 1.4rem; }
+  .eb-bsp { font-size: 0.9rem; line-height: 1.45; color: #e3e9f3; }
+  .eb-v { background: var(--blau-hell); box-shadow: 0 0 0 3px var(--orange) inset; }
+  .eb-s { background: var(--weiss); color: var(--blau); border: 3px solid var(--blau); justify-self: center; min-width: min(100%, 360px); }
+  .eb-s .eb-bsp { color: var(--text); }
+  .eb-e { grid-area: e; } .eb-v { grid-area: v; } .eb-a { grid-area: a; } .eb-s { grid-area: s; }
+  .eb-p1 { grid-area: p1; } .eb-p2 { grid-area: p2; } .eb-p3 { grid-area: p3; }
+  .eb-p1, .eb-p2, .eb-p3 { color: var(--orange); font-size: 1.8rem; font-weight: 700; line-height: 1; align-self: center; justify-self: center; }
+  .eva-bild figcaption { grid-area: cap; font-size: 0.9rem; color: var(--grau); text-align: left; margin-top: 4px; }
+  @media (max-width: 620px) {
+    .eva-bild { grid-template-columns: 1fr; grid-template-areas: "e" "p1" "v" "p3" "s" "p2" "a" "cap"; }
+    .eb-p1, .eb-p2 { transform: rotate(90deg); }
+  }
+  .praxis { margin-top: 24px; border: 3px solid var(--orange); border-radius: 12px; padding: 4px 16px 12px; }
+  .sicher { background: var(--orange-zart); border-radius: 8px; padding: 10px 14px; margin: 10px 0; }
+  .sicher ol { margin: 6px 0 0; padding-left: 22px; }
+  .checkliste { list-style: none; padding: 0; margin: 6px 0; }
+  .checkliste li { padding: 4px 0; }
+  .checkliste input { width: 18px; height: 18px; vertical-align: -3px; margin-right: 6px; }
+  .sort-zeile .ic { flex: 0 0 52px; height: 52px; display: flex; align-items: center; justify-content: center; background: var(--blau-zart); border-radius: 10px; }
+  .tab-ic { display: inline-flex; vertical-align: middle; margin-right: 8px; background: var(--blau-zart); border-radius: 8px; padding: 2px; }
+  .tab-ic svg { width: 36px; height: 36px; }
+  @media (max-width: 520px) { .eva .pfeil { display: none; } .sort-zeile .ic { flex-basis: 44px; height: 44px; } .sort-zeile .ic svg { width: 36px; height: 36px; } }
 </style>
 </head>
 <body class="iw-seite">
@@ -235,17 +279,17 @@
 <header class="iw-kopf">
   <div class="iw-wrap">
     <a href="informatikwerkstatt.html">← zurück zum Lernpfad</a>
-    <div class="label mono">Station 1 von 6</div>
-    <h1>Daten codieren</h1>
-    <p>Ein Computer kennt nur zwei Zustände: Strom an oder Strom aus. Trotzdem speichert er Zahlen, Texte und Bilder. Wie geht das?</p>
+    <div class="label mono">Station 1 von 7</div>
+    <h1>Wie funktioniert ein Computer?</h1>
+    <p>Computer stecken in Handys, Konsolen und sogar Waschmaschinen. Was haben sie gemeinsam, und woraus bestehen sie?</p>
   </div>
 </header>
 
 <nav class="teile" aria-label="Teile der Station">
   <div class="iw-wrap">
-    <a href="#teil1">1 · Binärzahlen</a>
-    <a href="#teil2">2 · Texte</a>
-    <a href="#teil3">3 · Bilder</a>
+    <a href="#teil1">1 · EVA-Prinzip</a>
+    <a href="#teil2">2 · Hardware</a>
+    <a href="#teil3">3 · Software</a>
     <a href="#teil4">4 · Checkpoint</a>
   </div>
 </nav>
@@ -256,83 +300,59 @@
 
 <!-- ========== TEIL 1 ========== -->
 <section class="teil" id="teil1">
-  <h2>Teil 1 · Zählen mit 0 und 1</h2>
-  <div class="ziel"><b>Ziel:</b> Du kannst Binärzahlen in normale Zahlen umrechnen – und umgekehrt.</div>
+  <h2>Teil 1 · Computer und EVA-Prinzip</h2>
+  <div class="ziel"><b>Ziel:</b> Du erkennst, wo Computer drinstecken, und kannst Eingabe, Verarbeitung und Ausgabe unterscheiden.</div>
 
-  <p>Ein <b>Bit</b> ist die kleinste Einheit im Computer. Es ist entweder <code>0</code> (aus) oder <code>1</code> (an). Acht Bits zusammen heißen <b>Byte</b>.</p>
-  <p>Jede Stelle hat einen Wert. Von rechts nach links verdoppelt er sich: 1, 2, 4, 8, 16 … Ist ein Bit an, zählt sein Wert mit.</p>
+  <p>Ein <b>Computer</b> ist ein Gerät, das Daten nach einem Programm verarbeitet. Viele Computer sehen gar nicht wie ein Computer aus. Sie stecken zum Beispiel in Uhren, Autos oder Haushaltsgeräten.</p>
 
-  <div class="werkzeug">
-    <div class="titel">Probier's aus: Klick die Lampen an.</div>
-    <div class="bits" id="bits"></div>
-    <div class="ergebnis">Binär: <span class="mono" id="binText">00000000</span> &nbsp;=&nbsp; <b id="dezText">0</b></div>
+  <h3><span class="badge b-basis">Basis</span>Computer drin oder nicht?</h3>
+  <div class="werkzeug sortieren" data-xp-id="teil1-1" data-optionen="Computer drin|Kein Computer">
+    <div class="titel">Ordne jedes Gerät zu.</div>
+    <div class="sort-zeile" data-richtig="0" data-icon="smartphone"><span>Smartphone</span></div>
+    <div class="sort-zeile" data-richtig="1" data-icon="fahrrad"><span>Fahrrad</span></div>
+    <div class="sort-zeile" data-richtig="0" data-icon="konsole"><span>Spielkonsole</span></div>
+    <div class="sort-zeile" data-richtig="1" data-icon="buch"><span>Buch</span></div>
+    <div class="sort-zeile" data-richtig="0" data-icon="uhr"><span>Smartwatch</span></div>
+    <div class="sort-zeile" data-richtig="0" data-icon="waschmaschine"><span>Waschmaschine mit Programmwahl</span></div>
+    <div class="sort-zeile" data-richtig="1" data-icon="hammer"><span>Hammer</span></div>
+    <div class="sort-zeile" data-richtig="0" data-icon="rechner"><span>Taschenrechner</span></div>
+    <p><button type="button" class="iw-btn leise" data-pruefen>Prüfen</button> <span class="rueck"></span></p>
+  </div>
+  <details><summary>Tipp</summary>Frag dich: Hat das Gerät Tasten, einen Bildschirm oder Programme, zwischen denen man wählen kann? Dann steckt meist ein kleiner Computer darin.</details>
+
+  <p>Jeder Computer arbeitet nach dem gleichen Prinzip, dem <b>EVA-Prinzip</b>:</p>
+  <figure class="eva-bild" aria-label="Schaubild EVA-Prinzip mit Speicher">
+    <div class="eb-e eb-box"><div class="eb-titel"><b>E</b>ingabe</div><div class="eb-bsp">Tastatur, Maus<br>Touchpad, Joystick<br>Scanner<br>Barcode-Leser</div></div>
+    <div class="eb-p1" aria-hidden="true">→</div>
+    <div class="eb-v eb-box"><div class="eb-titel"><b>V</b>erarbeitung</div><div class="eb-bsp">Hauptprozessor (CPU)<br>Chipsatz<br>Controller</div></div>
+    <div class="eb-p2" aria-hidden="true">→</div>
+    <div class="eb-a eb-box"><div class="eb-titel"><b>A</b>usgabe</div><div class="eb-bsp">Monitor/Display<br>Lautsprecher<br>Beamer<br>Drucker</div></div>
+    <div class="eb-p3" aria-hidden="true">↓</div>
+    <div class="eb-s eb-box"><div class="eb-titel"><b>S</b>peicher</div><div class="eb-bsp">Festplatte, SSD, USB-Stick, SD-Karte<br>Arbeitsspeicher (RAM), CD/DVD</div></div>
+    <figcaption>Das EVA-Prinzip mit Speicher: Daten kommen über Eingabegeräte hinein, werden verarbeitet und über Ausgabegeräte ausgegeben. Was der Computer sich merken muss, kommt in den Speicher.</figcaption>
+  </figure>
+
+  <h3><span class="badge b-basis">Basis</span>E, V oder A?</h3>
+  <div class="werkzeug sortieren" data-xp-id="teil1-2" data-optionen="E|V|A">
+    <div class="titel">Taschenrechner</div>
+    <div class="sort-zeile" data-richtig="0"><span>Du tippst <code>3 + 4</code>.</span></div>
+    <div class="sort-zeile" data-richtig="1"><span>Der Rechner rechnet.</span></div>
+    <div class="sort-zeile" data-richtig="2"><span>Auf der Anzeige steht <code>7</code>.</span></div>
+    <div class="titel">Spielkonsole</div>
+    <div class="sort-zeile" data-richtig="2"><span>Die Figur hüpft auf dem Fernseher.</span></div>
+    <div class="sort-zeile" data-richtig="0"><span>Du drückst den Knopf am Controller.</span></div>
+    <div class="sort-zeile" data-richtig="1"><span>Die Konsole berechnet, wie hoch die Figur springt.</span></div>
+    <p><button type="button" class="iw-btn leise" data-pruefen>Prüfen</button> <span class="rueck"></span></p>
   </div>
 
-  <h3><span class="badge b-basis">Basis</span>Rechne um</h3>
-  <div class="aufgabe" data-xp-id="teil1-1" data-loesung="5"><span class="frage"><code>00000101</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-xp-id="teil1-2" data-loesung="10"><span class="frage"><code>00001010</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-xp-id="teil1-3" data-loesung="17"><span class="frage"><code>00010001</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-xp-id="teil1-4" data-loesung="6" data-typ="bin"><span class="frage">Schreibe <b>6</b> als Binärzahl.</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-xp-id="teil1-5" data-loesung="12" data-typ="bin"><span class="frage">Schreibe <b>12</b> als Binärzahl.</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <details><summary>Tipp</summary>Welche Werte (8, 4, 2, 1 …) ergeben zusammen deine Zahl? Diese Bits sind an. Prüfe mit den Lampen oben.</details>
-
-  <h3><span class="badge b-profi">Profi</span>Weiterdenken</h3>
+  <h3><span class="badge b-profi">Profi</span>EVA in deinem Scratch-Spiel</h3>
+  <p>Viele Computer haben noch einen vierten Schritt: den <b>Speicher</b>. Er merkt sich Daten. Aus EVA wird dann <b>EVAS</b>.</p>
+  <p>Denk an dein Scratch-Spiel. Schreib den passenden Buchstaben: <code>E</code>, <code>V</code>, <code>A</code> oder <code>S</code>.</p>
   <div class="profi-block" data-block="t1">
-  <div class="aufgabe" data-xp-id="teil1-6" data-loesung="255" data-anzeige="255" data-erklaerung="Alle acht Bits sind an: 128 + 64 + 32 + 16 + 8 + 4 + 2 + 1 = 255. Das ist die größte Zahl, die in ein Byte passt."><span class="frage"><code>11111111</code> = ?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-xp-id="teil1-7" data-loesung="100" data-anzeige="1100100 (mit 8 Stellen: 01100100)" data-erklaerung="Such die größten Werte, die in 100 passen: 64 bleibt Rest 36, 32 bleibt Rest 4, dann 4. Also sind die Bits 64, 32 und 4 an." data-typ="bin"><span class="frage">Schreibe <b>100</b> als Binärzahl.</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-xp-id="teil1-8" data-loesung="256" data-anzeige="256" data-erklaerung="Ein Byte reicht von 0 bis 255. Mit der 0 sind das 256 Zahlen. Jedes weitere Bit verdoppelt die Möglichkeiten: 2 · 2 · 2 · 2 · 2 · 2 · 2 · 2 = 256."><span class="frage">Wie viele verschiedene Zahlen kann ein Byte darstellen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-xp-id="teil1-9" data-loesung="31" data-anzeige="31" data-erklaerung="Eine Hand hat 5 Finger, also 5 Bits mit den Werten 16, 8, 4, 2 und 1. Sind alle oben, ergibt das 16 + 8 + 4 + 2 + 1 = 31."><span class="frage">Jeder Finger ist ein Bit. Bis zu welcher Zahl kannst du mit einer Hand zählen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <details><summary>Tipp</summary>Bei der Anzahl zählt die 0 mit. Bei der Hand: Wie viele Bits hast du? Was ergibt sich, wenn alle an sind?</details>
-    <div class="loesung-freigabe">
-      <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
-      <div class="loesung-frage" hidden>
-        <p>Wenn du die Lösungen ansiehst, zählt dieser Profi-Teil nicht als selbst gelöst. Deine Lernbegleitung sieht das. Trotzdem anzeigen?</p>
-        <button type="button" class="iw-btn" data-loesung-ja>Ja, Lösungen anzeigen</button>
-        <button type="button" class="iw-btn leise" data-loesung-nein>Nein, ich versuche es weiter</button>
-      </div>
-    </div>
-    <div class="belohnung" id="einheiten" hidden tabindex="-1">
-      <h3>🏆 Alle Profi-Aufgaben geschafft! Bonus: Wie groß sind Dateien?</h3>
-      <p>Bits und Bytes werden schnell sehr viele. Deshalb gibt es größere Einheiten – wie bei Gramm und Kilogramm.</p>
-      <div class="tabelle-scroll">
-        <table class="einheiten">
-          <tr><th>Einheit</th><th>Kürzel</th><th>Größe</th><th>Zum Vergleich (ungefähr)</th></tr>
-          <tr><td>Bit</td><td>bit</td><td>0 oder 1</td><td>eine Lampe: an oder aus</td></tr>
-          <tr><td>Byte</td><td>B</td><td>8 Bit</td><td>ein Buchstabe im ASCII-Code</td></tr>
-          <tr><td>Kilobyte</td><td>KB</td><td>1000 Byte</td><td>eine kurze Textnachricht ohne Bild</td></tr>
-          <tr><td>Megabyte</td><td>MB</td><td>1000 KB</td><td>ein Handyfoto hat meist einige MB</td></tr>
-          <tr><td>Gigabyte</td><td>GB</td><td>1000 MB</td><td>ein Spielfilm hat meist einige GB</td></tr>
-          <tr><td>Terabyte</td><td>TB</td><td>1000 GB</td><td>eine große Festplatte</td></tr>
-        </table>
-      </div>
-      <p class="hinweis-klein">Gut zu wissen: Manchmal wird mit 1024 statt 1000 gerechnet (2 · 2 · 2 · 2 · 2 · 2 · 2 · 2 · 2 · 2 = 1024). Deshalb zeigt dein Computer bei Speichergrößen manchmal etwas andere Zahlen an.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ========== TEIL 2 ========== -->
-<section class="teil" id="teil2">
-  <h2>Teil 2 · Texte als Zahlen</h2>
-  <div class="ziel"><b>Ziel:</b> Du weißt, wie ein Computer Buchstaben als Zahlen speichert.</div>
-
-  <p>Jeder Buchstabe bekommt eine feste Nummer. Diese Liste heißt <b>ASCII-Code</b>. Zum Beispiel ist <code>A</code> die 65, <code>B</code> die 66. Der Computer speichert die Nummer als Binärzahl.</p>
-
-  <div class="werkzeug">
-    <div class="titel">Text-Umwandler: Tipp etwas ein.</div>
-    <input type="text" id="asciiEin" value="Hallo" maxlength="20" aria-label="Text zum Umwandeln">
-    <div class="tabelle-scroll"><table class="ascii" id="asciiTab"></table></div>
-  </div>
-
-  <h3><span class="badge b-basis">Basis</span>Entschlüsseln</h3>
-  <div class="aufgabe" data-xp-id="teil2-1" data-loesung="hallo"><span class="frage">Welches Wort ist das? <code>72 65 76 76 79</code></span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-xp-id="teil2-2" data-loesung="67"><span class="frage">Welche Nummer hat <code>C</code>?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-xp-id="teil2-3" data-loesung="32"><span class="frage">Welche Nummer hat ein Leerzeichen?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <details><summary>Tipp</summary>Nutze den Umwandler. Großbuchstaben und Kleinbuchstaben haben verschiedene Nummern.</details>
-
-  <h3><span class="badge b-profi">Profi</span>Weiterdenken</h3>
-  <div class="profi-block" data-block="t2">
-  <div class="aufgabe" data-xp-id="teil2-4" data-loesung="32" data-anzeige="32" data-erklaerung="A hat die Nummer 65, a hat die Nummer 97. 97 − 65 = 32. Das gilt für alle Buchstaben: Kleinbuchstabe = Großbuchstabe + 32."><span class="frage">Wie groß ist der Abstand zwischen <code>A</code> und <code>a</code>?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-xp-id="teil2-5" data-loesung="ok" data-anzeige="OK" data-erklaerung="01001111 = 64 + 8 + 4 + 2 + 1 = 79 = O. 01001011 = 64 + 8 + 2 + 1 = 75 = K. Zusammen: OK."><span class="frage">Welches Wort ist das? <code>01001111 01001011</code></span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+    <div class="aufgabe" data-xp-id="teil1-3" data-loesung="e" data-anzeige="E" data-erklaerung="Mit der Taste gibst du dem Spiel etwas ein."><span class="frage">Du drückst die Pfeiltaste.</span><input type="text" maxlength="1" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+    <div class="aufgabe" data-xp-id="teil1-4" data-loesung="v" data-anzeige="V" data-erklaerung="Der Block „wird … berührt?“ prüft etwas. Prüfen und Rechnen gehören zur Verarbeitung."><span class="frage">Das Spiel prüft, ob die Figur den Rand berührt.</span><input type="text" maxlength="1" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+    <div class="aufgabe" data-xp-id="teil1-5" data-loesung="s" data-anzeige="S" data-erklaerung="Eine Variable merkt sich einen Wert. Sie ist ein kleiner Speicher."><span class="frage">Die Variable „Punkte“ merkt sich deinen Punktestand.</span><input type="text" maxlength="1" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+    <div class="aufgabe" data-xp-id="teil1-6" data-loesung="a" data-anzeige="A" data-erklaerung="Der Punktestand erscheint auf der Bühne. Du siehst das Ergebnis."><span class="frage">Der Punktestand wird auf der Bühne angezeigt.</span><input type="text" maxlength="1" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
     <div class="loesung-freigabe">
       <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
       <div class="loesung-frage" hidden>
@@ -343,72 +363,66 @@
     </div>
   </div>
 
-  <div class="denkfrage" id="denkfrage" data-frage="t2-denk">
+  <div class="denkfrage" id="denkfrage" data-frage="t1-denk">
     <h3>💭 Denkfrage</h3>
-    <p>Tipp „ä“ in den Umwandler. Der ASCII-Code hat nur 128 Zeichen. Was meinst du: Wie speichert ein Handy dann Umlaute oder Emojis?</p>
-    <label for="denkText" class="denk-label">Deine Vermutung:</label>
+    <p>Arbeitet ein Mensch auch nach dem EVA-Prinzip? Was wäre bei dir Eingabe, Verarbeitung und Ausgabe?</p>
+    <label for="denkText" class="denk-label">Deine Idee:</label>
     <textarea id="denkText" rows="4" maxlength="1000" placeholder="Schreib deine Idee in ganzen Sätzen."></textarea>
     <div class="denk-aktion">
       <button type="button" class="iw-btn" id="denkSenden">An Lernbegleitung senden</button>
       <span class="denk-meldung" id="denkMeldung" aria-live="polite"></span>
     </div>
     <p class="hinweis-klein">Nach dem Senden siehst du eine Musterlösung. Deine Antwort kannst du danach nicht mehr ändern.</p>
-    <div class="denk-loesung" hidden><b>Musterlösung:</b> Heute nutzen Computer und Handys statt ASCII meist <b>Unicode</b>. Darin hat fast jedes Zeichen der Welt eine Nummer. In der üblichen Speicherform UTF-8 bleibt ein Buchstabe wie „A“ bei 1 Byte, „ä“ braucht 2 Bytes und die meisten Emojis 4 Bytes.</div>
+    <div class="denk-loesung" hidden><b>Musterlösung:</b> Ja, ungefähr. Augen und Ohren nehmen etwas auf (Eingabe). Das Gehirn denkt darüber nach (Verarbeitung). Du sprichst oder bewegst dich (Ausgabe). Dein Gedächtnis ist dein Speicher. Anders als ein Computer folgt ein Mensch aber keinem festen Programm.</div>
   </div>
 </section>
 
-<!-- ========== TEIL 3 ========== -->
-<section class="teil" id="teil3">
-  <h2>Teil 3 · Bilder aus Pixeln</h2>
-  <div class="ziel"><b>Ziel:</b> Du weißt, wie ein Bild aus Pixeln und Zahlen entsteht.</div>
+<!-- ========== TEIL 2 ========== -->
+<section class="teil" id="teil2">
+  <h2>Teil 2 · Hardware</h2>
+  <div class="ziel"><b>Ziel:</b> Du kennst die wichtigsten Bauteile eines Computers und weißt, was sie tun.</div>
 
-  <p>Ein Bild besteht aus vielen kleinen Quadraten: den <b>Pixeln</b>. Bei einem Schwarz-Weiß-Bild reicht ein Bit pro Pixel. Hier gilt: <code>1</code> = blau, <code>0</code> = weiß.</p>
+  <p><b>Hardware</b> ist alles an einem Computer, was du anfassen kannst. Dazu gehören Geräte für die Eingabe und Ausgabe und die Bauteile im Inneren.</p>
 
-  <h3><span class="badge b-basis">Basis</span>Zeichne nach Code</h3>
-  <p>Oben steht, welcher Code in welche Zeile gehört. Klick die Pixel so an, dass jede Zeile zu ihrem Code passt. Rechts neben dem Bild siehst du, was du gerade gezeichnet hast.</p>
-  <ol class="vorlage" id="vorlage" aria-label="Vorgabe: Code je Zeile"></ol>
-  <div class="zeichenflaeche" id="raster" data-xp-id="teil3-1" role="group" aria-label="Pixelbild 8 mal 8 zum Anklicken">
-    <div class="zf-kopf"><span>Zeile</span><span>Dein Bild</span><span>Dein Code</span></div>
+  <h3><span class="badge b-basis">Basis</span>Eingabe- oder Ausgabegerät?</h3>
+  <div class="werkzeug sortieren" data-xp-id="teil2-1" data-optionen="Eingabe|Ausgabe">
+    <div class="sort-zeile" data-richtig="0" data-icon="tastatur"><span>Tastatur</span></div>
+    <div class="sort-zeile" data-richtig="1" data-icon="bildschirm"><span>Bildschirm</span></div>
+    <div class="sort-zeile" data-richtig="0" data-icon="maus"><span>Maus</span></div>
+    <div class="sort-zeile" data-richtig="1" data-icon="drucker"><span>Drucker</span></div>
+    <div class="sort-zeile" data-richtig="0" data-icon="mikrofon"><span>Mikrofon</span></div>
+    <div class="sort-zeile" data-richtig="1" data-icon="lautsprecher"><span>Lautsprecher</span></div>
+    <div class="sort-zeile" data-richtig="0" data-icon="webcam"><span>Webcam</span></div>
+    <p><button type="button" class="iw-btn leise" data-pruefen>Prüfen</button> <span class="rueck"></span></p>
   </div>
-  <p>
-    <button class="iw-btn" id="pixelPruefen">Bild prüfen</button>
-    <button class="iw-btn leise" id="pixelLeeren">Leeren</button>
-    <span class="rueck" id="pixelRueck"></span>
-  </p>
-  <div class="aufgabe" data-xp-id="teil3-2" data-loesung="64" data-hinweis-falsch="Noch nicht. Zähl auch die weißen Pixel mit: Ein leeres Pixel ist trotzdem ein Pixel – es hat nur keine oder eine andere Farbe. Wie viele Zeilen hat das Bild, und wie viele Pixel sind in jeder Zeile?"><span class="frage">Aus wie vielen Pixeln besteht das Bild?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
 
-  <h3>Farben mischen</h3>
-  <p>Farbige Pixel mischen drei Grundfarben: <b>R</b>ot, <b>G</b>rün und <b>B</b>lau. Jede Grundfarbe hat einen Wert von 0 bis 255.</p>
-  <div class="werkzeug">
-    <div class="rgb-flex">
-      <div class="regler">
-        <label>R <input type="range" min="0" max="255" value="242" id="rR"><output id="oR">242</output></label>
-        <label>G <input type="range" min="0" max="255" value="140" id="rG"><output id="oG">140</output></label>
-        <label>B <input type="range" min="0" max="255" value="40" id="rB"><output id="oB">40</output></label>
-      </div>
-      <div id="farbe" role="img" aria-label="Farbvorschau"></div>
-    </div>
+  <h3>Die Bauteile im Inneren</h3>
+  <div class="tabelle-scroll">
+    <table class="einheiten">
+      <tr><th>Bauteil</th><th>Woran du es erkennst</th><th>Was es tut</th></tr>
+      <tr><td><span class="tab-ic" data-icon="platine"></span>Hauptplatine (Mainboard)</td><td>große Platte, auf der fast alles steckt</td><td>verbindet alle Bauteile</td></tr>
+      <tr><td><span class="tab-ic" data-icon="prozessor"></span>Prozessor (CPU)</td><td>sitzt meist unter einem Kühler mit Lüfter</td><td>rechnet und steuert alles</td></tr>
+      <tr><td><span class="tab-ic" data-icon="ram"></span>Arbeitsspeicher (RAM)</td><td>lange, schmale Riegel</td><td>merkt sich, was gerade läuft – vergisst alles beim Ausschalten</td></tr>
+      <tr><td><span class="tab-ic" data-icon="festplatte"></span>Festplatte oder SSD</td><td>flaches Kästchen oder kleiner Streifen</td><td>speichert dauerhaft, auch ausgeschaltet</td></tr>
+      <tr><td><span class="tab-ic" data-icon="netzteil"></span>Netzteil</td><td>Kasten, an dem das Stromkabel steckt</td><td>versorgt alles mit Strom</td></tr>
+    </table>
   </div>
-  <div class="aufgabe" data-xp-id="teil3-3" data-loesung="schwarz"><span class="frage">Welche Farbe ergibt <code>(0, 0, 0)</code>?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-xp-id="teil3-4" data-loesung="gelb"><span class="frage">Welche Farbe ergibt <code>(255, 255, 0)</code>?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+
+  <h3><span class="badge b-basis">Basis</span>Welches Bauteil ist das?</h3>
+  <div class="werkzeug sortieren" data-xp-id="teil2-2" data-optionen="Prozessor|Arbeitsspeicher|Festplatte/SSD|Hauptplatine|Netzteil" data-auswahl="1">
+    <div class="sort-zeile" data-richtig="1"><span>Ich merke mir, was gerade läuft. Beim Ausschalten vergesse ich alles.</span></div>
+    <div class="sort-zeile" data-richtig="4"><span>Ich versorge alle Bauteile mit Strom.</span></div>
+    <div class="sort-zeile" data-richtig="0"><span>Ich rechne und steuere alles.</span></div>
+    <div class="sort-zeile" data-richtig="3"><span>Auf mir stecken alle anderen Bauteile.</span></div>
+    <div class="sort-zeile" data-richtig="2"><span>Bei mir bleiben deine Fotos, auch wenn der Computer aus ist.</span></div>
+    <p><button type="button" class="iw-btn leise" data-pruefen>Prüfen</button> <span class="rueck"></span></p>
+  </div>
 
   <h3><span class="badge b-profi">Profi</span>Weiterdenken</h3>
-  <div class="profi-block" data-block="t3">
-  <div class="aufgabe" data-xp-id="teil3-5" data-loesung="24" data-anzeige="24" data-erklaerung="Ein Pixel mischt drei Grundfarben (Rot, Grün, Blau). Jede Grundfarbe braucht 1 Byte = 8 Bits. 3 · 8 = 24 Bits."><span class="frage">Jede Grundfarbe (Rot, Grün, Blau) braucht ein Byte. Wie viele Bits braucht ein farbiges Pixel?</span><input type="text" inputmode="numeric" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="aufgabe" data-xp-id="teil3-6" data-loesung="16777216" data-typ="rechnung" data-anzeige="16.777.216 (rund 16,7 Millionen)" data-erklaerung="Jede Grundfarbe hat 256 Stufen. Alle Kombinationen: 256 · 256 · 256 = 16.777.216."><span class="frage">Wie viele verschiedene Farben gibt es damit? <small class="hinweis-klein">Du darfst auch die Rechnung eintippen, z. B. mit x oder *.</small></span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
-  <div class="rechner" role="group" aria-label="Taschenrechner">
-    <div class="rechner-titel">🧮 Taschenrechner</div>
-    <input type="text" class="rechner-anzeige" aria-label="Rechnung" placeholder="z. B. 256 x 256" autocomplete="off">
-    <div class="rechner-ergebnis" aria-live="polite"></div>
-    <div class="rechner-tasten">
-      <button type="button" data-t="7">7</button><button type="button" data-t="8">8</button><button type="button" data-t="9">9</button><button type="button" data-t="÷" class="op" aria-label="geteilt">÷</button>
-      <button type="button" data-t="4">4</button><button type="button" data-t="5">5</button><button type="button" data-t="6">6</button><button type="button" data-t="x" class="op" aria-label="mal">×</button>
-      <button type="button" data-t="1">1</button><button type="button" data-t="2">2</button><button type="button" data-t="3">3</button><button type="button" data-t="-" class="op" aria-label="minus">−</button>
-      <button type="button" data-t="C" class="leer" aria-label="alles löschen">C</button><button type="button" data-t="0">0</button><button type="button" data-t="⌫" class="leer" aria-label="letztes Zeichen löschen">⌫</button><button type="button" data-t="+" class="op" aria-label="plus">+</button>
-      <button type="button" data-t="=" class="gleich">=</button>
-    </div>
-  </div>
-  <details><summary>Tipp</summary>Jede Grundfarbe hat 256 Stufen. Für jede Rot-Stufe gibt es alle Grün-Stufen, und für jede davon alle Blau-Stufen.</details>
+  <div class="profi-block" data-block="t2">
+    <div class="aufgabe" data-xp-id="teil2-3" data-loesung="arbeitsspeicher|ram" data-anzeige="im Arbeitsspeicher (RAM)" data-erklaerung="Was du gerade bearbeitest, liegt im Arbeitsspeicher. Ohne Strom ist es weg. Erst beim Speichern kommt es auf die Festplatte oder SSD."><span class="frage">Du schreibst einen Text und hast nicht gespeichert. Plötzlich fällt der Strom aus. In welchem Bauteil war der Text?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+    <div class="aufgabe" data-xp-id="teil2-4" data-loesung="touchscreen|touchdisplay|touch-screen|touch" data-anzeige="Touchscreen" data-erklaerung="Ein Touchscreen zeigt das Bild (Ausgabe) und erkennt deine Finger (Eingabe)."><span class="frage">Welches Gerät ist Eingabe- und Ausgabegerät zugleich? Du siehst darauf das Bild und tippst darauf.</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+    <div class="aufgabe" data-xp-id="teil2-5" data-loesung="ssd" data-anzeige="SSD" data-erklaerung="Eine SSD speichert ohne bewegliche Teile. Sie ist schneller und robuster als eine klassische Festplatte mit drehender Scheibe."><span class="frage">Welcher Dauerspeicher hat keine beweglichen Teile? (3 Buchstaben)</span><input type="text" maxlength="5" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
     <div class="loesung-freigabe">
       <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
       <div class="loesung-frage" hidden>
@@ -418,6 +432,83 @@
       </div>
     </div>
   </div>
+
+  <div class="praxis">
+    <h3>🔧 Praxis: Der alte PC im PC-Raum</h3>
+    <p>Im PC-Raum steht ein alter Computer, den du öffnen darfst. Höchstens zwei Lernpartner:innen arbeiten gleichzeitig daran.</p>
+    <p><b>Ist der PC gerade besetzt?</b> Mach mit Teil 3 weiter und komm später zurück.</p>
+    <div class="sicher">
+      <b>Sicherheit zuerst</b>
+      <ol>
+        <li>Frag deine Lernbegleitung, bevor du anfängst.</li>
+        <li>Zieh den Netzstecker.</li>
+        <li>Fass kurz das Metallgehäuse an, bevor du ins Innere greifst. So entlädst du dich.</li>
+        <li>Das Netzteil öffnest du nie.</li>
+      </ol>
+    </div>
+    <p>Finde diese Bauteile und hak sie ab:</p>
+    <ul class="checkliste" id="praxisListe">
+      <li><label><input type="checkbox" data-id="hauptplatine"> Hauptplatine</label></li>
+      <li><label><input type="checkbox" data-id="prozessor"> Prozessor (unter dem Kühler)</label></li>
+      <li><label><input type="checkbox" data-id="ram"> Arbeitsspeicher – wie viele Riegel sind es?</label></li>
+      <li><label><input type="checkbox" data-id="festplatte"> Festplatte oder SSD</label></li>
+      <li><label><input type="checkbox" data-id="netzteil"> Netzteil</label></li>
+    </ul>
+    <p class="hinweis-klein">Die Haken merkt sich nur dieses Gerät. Zum Schluss: Gehäuse schließen und Bescheid sagen.</p>
+  </div>
+</section>
+
+<!-- ========== TEIL 3 ========== -->
+<section class="teil" id="teil3">
+  <h2>Teil 3 · Software</h2>
+  <div class="ziel"><b>Ziel:</b> Du kannst Hardware und Software unterscheiden und weißt, was ein Betriebssystem tut.</div>
+
+  <p><b>Software</b> sind Programme. Ein Programm ist eine Folge von Anweisungen für den Computer. Ohne Software kann die Hardware nichts tun.</p>
+  <p>Es gibt zwei Arten:</p>
+  <ul>
+    <li>Das <b>Betriebssystem</b> startet als Erstes. Es verwaltet die Hardware und startet andere Programme. Beispiele: Windows, macOS, iPadOS, Android, Linux.</li>
+    <li><b>Anwendungen</b> (Apps) nutzt du für bestimmte Aufgaben. Beispiele: Browser, Scratch, Spiele.</li>
+  </ul>
+
+  <h3><span class="badge b-basis">Basis</span>Hardware oder Software?</h3>
+  <div class="werkzeug sortieren" data-xp-id="teil3-1" data-optionen="Hardware|Software">
+    <div class="sort-zeile" data-richtig="0" data-icon="tastatur"><span>Tastatur</span></div>
+    <div class="sort-zeile" data-richtig="1" data-icon="bloecke"><span>Scratch</span></div>
+    <div class="sort-zeile" data-richtig="0" data-icon="prozessor"><span>Prozessor</span></div>
+    <div class="sort-zeile" data-richtig="1" data-icon="browser"><span>Browser</span></div>
+    <div class="sort-zeile" data-richtig="0" data-icon="usb"><span>USB-Stick</span></div>
+    <div class="sort-zeile" data-richtig="1" data-icon="app"><span>Spiele-App</span></div>
+    <div class="sort-zeile" data-richtig="1" data-icon="os"><span>Windows</span></div>
+    <p><button type="button" class="iw-btn leise" data-pruefen>Prüfen</button> <span class="rueck"></span></p>
+  </div>
+
+  <h3><span class="badge b-basis">Basis</span>Betriebssystem oder Anwendung?</h3>
+  <div class="werkzeug sortieren" data-xp-id="teil3-2" data-optionen="Betriebssystem|Anwendung">
+    <div class="sort-zeile" data-richtig="0"><span>Android</span></div>
+    <div class="sort-zeile" data-richtig="1"><span>Scratch</span></div>
+    <div class="sort-zeile" data-richtig="0"><span>iPadOS</span></div>
+    <div class="sort-zeile" data-richtig="1"><span>Browser</span></div>
+    <div class="sort-zeile" data-richtig="1"><span>Taschenrechner-App</span></div>
+    <div class="sort-zeile" data-richtig="0"><span>Windows</span></div>
+    <p><button type="button" class="iw-btn leise" data-pruefen>Prüfen</button> <span class="rueck"></span></p>
+  </div>
+
+  <h3><span class="badge b-profi">Profi</span>Weiterdenken</h3>
+  <div class="profi-block" data-block="t3">
+    <div class="aufgabe" data-xp-id="teil3-3" data-loesung="betriebssystem" data-anzeige="das Betriebssystem" data-erklaerung="Das Betriebssystem startet zuerst. Erst danach kannst du Apps öffnen."><span class="frage">Welche Software startet als Erstes, wenn du ein Gerät einschaltest?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+    <div class="aufgabe" data-xp-id="teil3-4" data-loesung="blöcke|bloecke|blocks|block" data-anzeige="Blöcke" data-erklaerung="In Scratch steckst du Blöcke zusammen. Jeder Block ist eine Anweisung. Zusammen ergeben sie ein Programm."><span class="frage">Woraus baust du in Scratch deine Programme?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+    <div class="aufgabe" data-xp-id="teil3-5" data-loesung="software" data-anzeige="Software" data-erklaerung="Ein Spiel ist ein Programm, also Software. Die Datei auf dem USB-Stick kannst du nicht anfassen – nur den Stick selbst."><span class="frage">Auf einem USB-Stick ist ein Spiel gespeichert. Ist das Spiel Hardware oder Software?</span><input type="text" aria-label="Antwort"><button class="iw-btn leise">Prüfen</button><span class="rueck"></span></div>
+    <div class="loesung-freigabe">
+      <button type="button" class="iw-btn leise" data-loesung-start>Ich komme nicht weiter – Lösungen anzeigen</button>
+      <div class="loesung-frage" hidden>
+        <p>Wenn du die Lösungen ansiehst, zählt dieser Profi-Teil nicht als selbst gelöst. Deine Lernbegleitung sieht das. Trotzdem anzeigen?</p>
+        <button type="button" class="iw-btn" data-loesung-ja>Ja, Lösungen anzeigen</button>
+        <button type="button" class="iw-btn leise" data-loesung-nein>Nein, ich versuche es weiter</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="hinweis-klein">Lust auf mehr? In der <a href="informatikwerkstatt-knobelkiste.html">Knobelkiste</a> findest du die Geschichte der Computer – vom Rechenbrett bis zum Smartphone.</p>
 </section>
 
 <!-- ========== TEIL 4 ========== -->
@@ -429,14 +520,15 @@
   <p><button class="iw-btn orange" id="quizAuswerten" type="button">Auswerten</button></p>
   <div id="quizErgebnis" aria-live="polite"></div>
 
-  <h3><span class="badge b-profi">Profi</span>Projekt: Binär-Umrechner in Scratch</h3>
-  <p>Baue ein Scratch-Programm: Die Figur fragt nach einer Zahl von 0 bis 255 und sagt dann die Binärzahl.</p>
-  <details><summary>Tipp 1</summary>Teile die Zahl durch 2. Der Rest (0 oder 1) ist die letzte Stelle der Binärzahl. Den Rest liefert der Block <code>( ) mod ( )</code>.</details>
-  <details><summary>Tipp 2</summary>Rechne mit dem halbierten Ergebnis (abgerundet) weiter. Wiederhole das 8-mal. Setze jeden neuen Rest <i>vorne</i> an das bisherige Ergebnis.</details>
-  <details><summary>Tipp 3</summary>Für das Zusammensetzen hilft der Block <code>verbinde ( ) und ( )</code>.</details>
+  <h3><span class="badge b-profi">Profi</span>Projekt: EVA in Scratch</h3>
+  <p>Baue ein kleines Scratch-Programm mit allen drei Schritten: Die Figur fragt nach deinem Namen (Eingabe), setzt einen Gruß zusammen (Verarbeitung) und sagt ihn (Ausgabe).</p>
+  <details><summary>Tipp 1</summary>Für die Eingabe gibt es den Block <code>frage ( ) und warte</code>. Die Antwort steckt danach in <code>Antwort</code>.</details>
+  <details><summary>Tipp 2</summary>Mit <code>verbinde ( ) und ( )</code> setzt du „Hallo, “ und die Antwort zusammen.</details>
+  <details><summary>Tipp 3</summary>Willst du noch Speicher dazu? Lege eine Variable an und merke dir darin, wie oft schon jemand gegrüßt wurde.</details>
 </section>
 
 </main>
+
 
 <footer>
     <div class="container footer-inner">
@@ -456,53 +548,63 @@
 <script src="js/informatik-login.js"></script>
 <script>
 (function () {
-  /* ---------- Teil 1: Bits ---------- */
-  var bitBox = document.getElementById("bits");
-  var werte = [128, 64, 32, 16, 8, 4, 2, 1];
-  werte.forEach(function (w) {
-    var d = document.createElement("div");
-    d.className = "bit";
-    d.innerHTML = '<div class="wert">' + w + '</div><button type="button" aria-pressed="false" aria-label="Bit mit Wert ' + w + '">0</button>';
-    bitBox.appendChild(d);
-  });
-  function bitsAktualisieren() {
-    var sum = 0, bin = "";
-    bitBox.querySelectorAll("button").forEach(function (b, i) {
-      var an = b.getAttribute("aria-pressed") === "true";
-      if (an) sum += werte[i];
-      bin += an ? "1" : "0";
-    });
-    document.getElementById("binText").textContent = bin;
-    document.getElementById("dezText").textContent = sum;
+
+  /* ---------- Icons (eigene SVGs, Strich in Dunkelblau, Akzente in Orange) ---------- */
+  var O = 'fill="var(--orange)" stroke="none"';
+  var ICONS = {
+    smartphone: '<rect x="14" y="4" width="20" height="40" rx="4"/><rect x="17.5" y="9" width="13" height="25" rx="1" ' + O + ' opacity=".35"/><path d="M21 39h6"/>',
+    fahrrad: '<circle cx="12" cy="32" r="8"/><circle cx="36" cy="32" r="8"/><path d="M12 32l8-14h10l6 14M20 18l6 14 4-14M17 14h6M30 18l-2-6h5"/>',
+    konsole: '<path d="M14 15h20a9 9 0 0 1 9 9v6a6 6 0 0 1-11 3l-2-3H18l-2 3a6 6 0 0 1-11-3v-6a9 9 0 0 1 9-9z"/><path d="M15 21v7M11.5 24.5h7"/><circle cx="32" cy="22" r="2" ' + O + '/><circle cx="36" cy="27" r="2" ' + O + '/>',
+    buch: '<path d="M24 12c-4-3-12-4-18-3v28c6-1 14 0 18 3 4-3 12-4 18-3V9c-6-1-14 0-18 3zM24 12v28"/>',
+    uhr: '<path d="M18 12l2-8h8l2 8M18 36l2 8h8l2-8"/><rect x="14" y="12" width="20" height="24" rx="5"/><path d="M24 18v6l4 3" stroke="var(--orange)"/>',
+    waschmaschine: '<rect x="9" y="5" width="30" height="38" rx="3"/><path d="M9 13h30"/><circle cx="24" cy="28" r="9"/><circle cx="24" cy="28" r="5" ' + O + ' opacity=".5"/><circle cx="15" cy="9" r="1.2"/><circle cx="20" cy="9" r="1.2"/>',
+    hammer: '<rect x="9" y="7" width="22" height="10" rx="2"/><path d="M31 10h5l3 4"/><rect x="17" y="17" width="6" height="26" rx="2" ' + O + ' opacity=".35"/><rect x="17" y="17" width="6" height="26" rx="2"/>',
+    rechner: '<rect x="12" y="4" width="24" height="40" rx="3"/><rect x="16" y="8" width="16" height="8" rx="1" ' + O + ' opacity=".45"/><g fill="var(--blau)" stroke="none"><circle cx="18" cy="23" r="1.8"/><circle cx="24" cy="23" r="1.8"/><circle cx="30" cy="23" r="1.8"/><circle cx="18" cy="30" r="1.8"/><circle cx="24" cy="30" r="1.8"/><circle cx="30" cy="30" r="1.8"/><circle cx="18" cy="37" r="1.8"/><circle cx="24" cy="37" r="1.8"/><circle cx="30" cy="37" r="1.8"/></g>',
+    tastatur: '<rect x="3" y="14" width="42" height="21" rx="3"/><g fill="var(--blau)" stroke="none"><rect x="8" y="18" width="4" height="3"/><rect x="14" y="18" width="4" height="3"/><rect x="20" y="18" width="4" height="3"/><rect x="26" y="18" width="4" height="3"/><rect x="32" y="18" width="4" height="3"/><rect x="38" y="18" width="3" height="3"/><rect x="10" y="23" width="4" height="3"/><rect x="16" y="23" width="4" height="3"/><rect x="22" y="23" width="4" height="3"/><rect x="28" y="23" width="4" height="3"/><rect x="34" y="23" width="4" height="3"/></g><path d="M15 30h18" stroke="var(--orange)"/>',
+    bildschirm: '<rect x="5" y="7" width="38" height="26" rx="2"/><rect x="9" y="11" width="30" height="18" ' + O + ' opacity=".3"/><path d="M24 33v6M15 41h18"/>',
+    maus: '<rect x="15" y="7" width="18" height="34" rx="9"/><path d="M15 20h18M24 7v13"/><path d="M24 11v5" stroke="var(--orange)"/>',
+    drucker: '<rect x="13" y="5" width="22" height="11"/><rect x="5" y="16" width="38" height="17" rx="2"/><rect x="13" y="27" width="22" height="16" fill="var(--weiss)"/><path d="M17 32h14M17 37h10"/><circle cx="37" cy="21" r="2" ' + O + '/>',
+    mikrofon: '<rect x="18" y="4" width="12" height="22" rx="6" ' + O + ' opacity=".35"/><rect x="18" y="4" width="12" height="22" rx="6"/><path d="M12 20a12 12 0 0 0 24 0M24 32v8M16 42h16"/>',
+    lautsprecher: '<path d="M7 18h8l11-9v30l-11-9H7z"/><path d="M32 18a8 8 0 0 1 0 12M36 12a15 15 0 0 1 0 24" stroke="var(--orange)"/>',
+    webcam: '<circle cx="24" cy="20" r="13"/><circle cx="24" cy="20" r="5" ' + O + '/><path d="M24 33v4M14 41h20"/>',
+    platine: '<rect x="5" y="5" width="38" height="38" rx="2"/><rect x="12" y="12" width="12" height="12" ' + O + ' opacity=".45"/><rect x="12" y="12" width="12" height="12"/><path d="M31 10v18M36 10v18M11 33h16M11 38h16M24 18h4"/>',
+    prozessor: '<rect x="13" y="13" width="22" height="22" rx="2"/><rect x="19" y="19" width="10" height="10" ' + O + '/><path d="M19 13V7M24 13V7M29 13V7M19 41v-6M24 41v-6M29 41v-6M13 19H7M13 24H7M13 29H7M41 19h-6M41 24h-6M41 29h-6"/>',
+    ram: '<rect x="3" y="15" width="42" height="15" rx="1"/><g ' + O + ' opacity=".6"><rect x="7" y="18" width="6" height="8"/><rect x="16" y="18" width="6" height="8"/><rect x="26" y="18" width="6" height="8"/><rect x="35" y="18" width="6" height="8"/></g><path d="M7 30v4M11 30v4M15 30v4M19 30v4M25 30v4M29 30v4M33 30v4M37 30v4M41 30v4"/>',
+    festplatte: '<rect x="9" y="5" width="30" height="38" rx="3"/><circle cx="24" cy="21" r="10"/><circle cx="24" cy="21" r="2" ' + O + '/><path d="M33 37l-6-10" stroke="var(--orange)"/>',
+    netzteil: '<rect x="5" y="11" width="38" height="27" rx="2"/><circle cx="30" cy="24.5" r="8"/><path d="M30 16.5v16M22 24.5h16"/><path d="M15 17l-4 8h5l-3 7" stroke="var(--orange)"/>',
+    bloecke: '<path d="M6 10h8l3 3h6l3-3h16v10H26l-3 3h-6l-3-3H6z" ' + O + ' opacity=".45"/><path d="M6 10h8l3 3h6l3-3h16v10H26l-3 3h-6l-3-3H6z"/><path d="M6 25h8l3 3h6l3-3h10v10H26l-3 3h-6l-3-3H6z"/>',
+    browser: '<rect x="4" y="7" width="40" height="34" rx="3"/><path d="M4 15h40"/><circle cx="9" cy="11" r="1.2"/><circle cx="13" cy="11" r="1.2"/><circle cx="24" cy="28" r="8" stroke="var(--orange)"/><path d="M16 28h16M24 20c-4 5-4 11 0 16M24 20c4 5 4 11 0 16" stroke="var(--orange)"/>',
+    usb: '<rect x="15" y="17" width="18" height="27" rx="3"/><rect x="18" y="5" width="12" height="12"/><path d="M21.5 9v3M26.5 9v3"/><circle cx="24" cy="31" r="3" ' + O + '/>',
+    app: '<rect x="8" y="8" width="32" height="32" rx="8"/><path d="M20 17l12 7-12 7z" ' + O + '/>',
+    os: '<rect x="5" y="7" width="38" height="28" rx="2"/><rect x="10" y="11" width="17" height="12" ' + O + ' opacity=".4"/><rect x="10" y="11" width="17" height="12"/><path d="M5 30h38M24 35v4M16 41h16"/>'
+  };
+  function iconSvg(name) {
+    return '<svg viewBox="0 0 48 48" width="44" height="44" fill="none" stroke="var(--blau)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">' + ICONS[name] + "</svg>";
   }
-  bitBox.addEventListener("click", function (e) {
-    var b = e.target.closest("button");
-    if (!b) return;
-    var an = b.getAttribute("aria-pressed") !== "true";
-    b.setAttribute("aria-pressed", an);
-    b.textContent = an ? "1" : "0";
-    bitsAktualisieren();
+  document.querySelectorAll("[data-icon]").forEach(function (el) {
+    if (!ICONS[el.dataset.icon]) return;
+    if (el.classList.contains("tab-ic")) { el.innerHTML = iconSvg(el.dataset.icon); return; }
+    var d = document.createElement("div");
+    d.className = "ic";
+    d.innerHTML = iconSvg(el.dataset.icon);
+    el.insertBefore(d, el.firstChild);
   });
 
-  /* ---------- Selbstkontrolle ---------- */
+
+  var STATION = 1;
+
+  /* ---------- Selbstkontrolle (Textaufgaben, mehrere Lösungen mit |) ---------- */
   function normal(s) { return s.trim().toLowerCase().replace(/[\s.]/g, ""); }
   document.querySelectorAll(".aufgabe").forEach(function (a) {
     var inp = a.querySelector("input"), btn = a.querySelector("button"), rk = a.querySelector(".rueck");
     function pruefen() {
-      var eingabe = normal(inp.value), richtig;
+      var eingabe = normal(inp.value);
       if (eingabe === "") return;
-      if (a.dataset.typ === "rechnung") {
-        var r = eingabe.replace(/[x×·*]/g, "*");
-        richtig = /^\d+(\*\d+)*$/.test(r) && r.split("*").reduce(function (p, n) { return p * parseInt(n, 10); }, 1) === parseInt(a.dataset.loesung, 10);
-      } else if (a.dataset.typ === "bin") {
-        richtig = /^[01]+$/.test(eingabe) && parseInt(eingabe, 2) === parseInt(a.dataset.loesung, 10);
-      } else {
-        richtig = eingabe === a.dataset.loesung;
-      }
+      var richtig = a.dataset.loesung.split("|").indexOf(eingabe) >= 0;
       inp.classList.toggle("ok", richtig);
       inp.classList.toggle("falsch", !richtig);
       rk.className = "rueck " + (richtig ? "ok" : "falsch");
-      rk.textContent = richtig ? "✓ Richtig" : (a.dataset.hinweisFalsch || "Noch nicht – schau dir den Tipp an.");
+      rk.textContent = richtig ? "✓ Richtig" : (a.dataset.hinweisFalsch || "Noch nicht – lies den Text oben noch einmal.");
       if (richtig) xpGeloest(a, rk);
       var block = a.closest(".profi-block");
       if (block) profiNachPruefen(block, richtig);
@@ -511,7 +613,66 @@
     inp.addEventListener("keydown", function (e) { if (e.key === "Enter") pruefen(); });
   });
 
+  /* ---------- Sortieraufgaben (Knöpfe oder Auswahlliste) ---------- */
+  document.querySelectorAll(".sortieren").forEach(function (box) {
+    var optionen = box.dataset.optionen.split("|");
+    var liste = box.dataset.auswahl === "1";
+    box.querySelectorAll(".sort-zeile").forEach(function (z) {
+      var text = z.querySelector("span").textContent;
+      if (liste) {
+        var sel = document.createElement("select");
+        sel.setAttribute("aria-label", "Bauteil für: " + text);
+        sel.innerHTML = '<option value="">– wählen –</option>' + optionen.map(function (o, i) { return '<option value="' + i + '">' + o + "</option>"; }).join("");
+        sel.addEventListener("change", function () { z.classList.remove("ok", "falsch"); });
+        z.appendChild(sel);
+      } else {
+        var w = document.createElement("div");
+        w.className = "sort-wahl";
+        w.setAttribute("role", "group");
+        w.setAttribute("aria-label", text);
+        optionen.forEach(function (o, i) {
+          var b = document.createElement("button");
+          b.type = "button"; b.textContent = o; b.dataset.wert = i;
+          b.setAttribute("aria-pressed", "false");
+          b.addEventListener("click", function () {
+            w.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
+            z.classList.remove("ok", "falsch");
+          });
+          w.appendChild(b);
+        });
+        z.appendChild(w);
+      }
+    });
+    var rk = box.querySelector(".rueck");
+    box.querySelector("[data-pruefen]").addEventListener("click", function () {
+      var zeilen = box.querySelectorAll(".sort-zeile"), offen = 0, fehler = 0;
+      zeilen.forEach(function (z) {
+        var wahl = liste ? z.querySelector("select").value : ((z.querySelector('[aria-pressed="true"]') || {}).dataset || {}).wert;
+        z.classList.remove("ok", "falsch");
+        if (wahl === undefined || wahl === "") { offen++; return; }
+        var ok = wahl === z.dataset.richtig;
+        if (!ok) fehler++;
+        z.classList.add(ok ? "ok" : "falsch");
+      });
+      if (offen) { rk.className = "rueck falsch"; rk.textContent = "Ordne erst alles zu (" + offen + " offen)."; return; }
+      rk.className = "rueck " + (fehler ? "falsch" : "ok");
+      rk.textContent = fehler ? fehler + (fehler === 1 ? " Zuordnung stimmt" : " Zuordnungen stimmen") + " noch nicht. Ändere die rot markierten." : "✓ Alles richtig!";
+      if (!fehler) xpGeloest(box, rk);
+    });
+  });
 
+  /* ---------- Praxis-Checkliste (nur auf diesem Gerät) ---------- */
+  (function () {
+    var KEY = "informatik78-station1-praxis", stand = {};
+    try { stand = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { stand = {}; }
+    document.querySelectorAll("#praxisListe input").forEach(function (c) {
+      c.checked = !!stand[c.dataset.id];
+      c.addEventListener("change", function () {
+        stand[c.dataset.id] = c.checked;
+        try { localStorage.setItem(KEY, JSON.stringify(stand)); } catch (e) {}
+      });
+    });
+  })();
 
   /* ---------- XP: 5 je selbst gelöster Aufgabe, 25 je komplett gelöstem Teil ---------- */
   function xpPlus(ziel, text) {
@@ -573,7 +734,6 @@
   });
 
   /* ---------- Profi: Bonus, Lösungen, Meldung an Lernbegleitung ---------- */
-  var STATION = 1;
   function teilVon(block) { return parseInt(block.dataset.block.replace("t", ""), 10); }
   function anzahlGeloest(block) { return block.querySelectorAll('.aufgabe[data-geloest="1"]').length; }
 
@@ -692,162 +852,18 @@
   })();
 
 
-  /* ---------- Taschenrechner (ohne eval: + − × ÷, Punkt vor Strich) ---------- */
-  function rechne(text) {
-    var t = text.replace(/\s/g, "").replace(/[x×·*]/gi, "*").replace(/[÷:\/]/g, "/").replace(/[−–]/g, "-").replace(/\./g, "").replace(/,/g, ".");
-    if (!/^-?\d+(\.\d+)?([+\-*\/]-?\d+(\.\d+)?)*$/.test(t)) return null;
-    // Vorzeichen am Anfang bzw. nach Operator gehört zur Zahl; sonst ist "-" ein Operator
-    var tokens = [], i, rest = t;
-    while (rest.length) {
-      var m = (tokens.length === 0 || /^[+\-*\/]$/.test(tokens[tokens.length - 1])) ? rest.match(/^-?\d+(\.\d+)?/) : rest.match(/^[+\-*\/]/);
-      if (!m) return null;
-      tokens.push(m[0]); rest = rest.slice(m[0].length);
-    }
-    var stapel = [parseFloat(tokens[0])];
-    for (i = 1; i < tokens.length; i += 2) {
-      var op = tokens[i], z = parseFloat(tokens[i + 1]);
-      if (op === "*") stapel.push(stapel.pop() * z);
-      else if (op === "/") { if (z === 0) return NaN; stapel.push(stapel.pop() / z); }
-      else if (op === "+") stapel.push(z);
-      else stapel.push(-z);
-    }
-    return stapel.reduce(function (a, b) { return a + b; }, 0);
-  }
-  document.querySelectorAll(".rechner").forEach(function (r) {
-    var feld = r.querySelector(".rechner-anzeige"), erg = r.querySelector(".rechner-ergebnis");
-    function ausrechnen() {
-      if (!feld.value.trim()) { erg.textContent = ""; return; }
-      var w = rechne(feld.value);
-      if (w === null || isNaN(w)) { erg.className = "rechner-ergebnis fehler"; erg.textContent = isNaN(w) && w !== null ? "Durch 0 teilen geht nicht." : "Das kann ich nicht rechnen."; return; }
-      erg.className = "rechner-ergebnis";
-      erg.textContent = "= " + w.toLocaleString("de-DE", { maximumFractionDigits: 6 });
-    }
-    r.querySelector(".rechner-tasten").addEventListener("click", function (e) {
-      var b = e.target.closest("button");
-      if (!b) return;
-      var t = b.dataset.t;
-      if (t === "C") { feld.value = ""; erg.textContent = ""; }
-      else if (t === "⌫") feld.value = feld.value.slice(0, -1);
-      else if (t === "=") ausrechnen();
-      else if (/[0-9]/.test(t)) feld.value += t;
-      else feld.value = feld.value.replace(/\s+$/, "") + " " + t + " ";
-    });
-    feld.addEventListener("keydown", function (e) { if (e.key === "Enter") ausrechnen(); });
-  });
-
-  /* ---------- Teil 2: ASCII ---------- */
-  var ein = document.getElementById("asciiEin"), tab = document.getElementById("asciiTab");
-  function asciiAktualisieren() {
-    var zeichen = Array.from(ein.value);
-    var html = "<tr><th>Zeichen</th><th>Nummer</th><th>Binär</th></tr>";
-    zeichen.forEach(function (z) {
-      var n = z.codePointAt(0);
-      var anzeige = z === " " ? "(Leer)" : z.replace(/[<>&]/g, function (c) { return {"<":"&lt;",">":"&gt;","&":"&amp;"}[c]; });
-      if (n < 128) {
-        html += "<tr><td>" + anzeige + "</td><td>" + n + "</td><td>" + n.toString(2).padStart(8, "0") + "</td></tr>";
-      } else {
-        html += "<tr><td>" + anzeige + '</td><td colspan="2">nicht im ASCII-Code</td></tr>';
-      }
-    });
-    tab.innerHTML = html;
-  }
-  ein.addEventListener("input", asciiAktualisieren);
-  asciiAktualisieren();
-
-  /* ---------- Teil 3: Pixel ---------- */
-  var ziel = ["00111100","01000010","10100101","10000001","10100101","10011001","01000010","00111100"];
-  // Vorgabe-Tabelle: Zeile 1–8 mit Soll-Code
-  var vorlage = document.getElementById("vorlage");
-  vorlage.innerHTML = ziel.map(function (c, i) {
-    return '<li><span class="v-nr">Zeile ' + (i + 1) + ':</span><code>' + c + '</code></li>';
-  }).join("");
-  // Zeichenfläche: je Zeile Nummer · 8 Pixel · eigener Code
-  var raster = document.getElementById("raster");
-  var istFelder = [];
-  for (var z = 0; z < 8; z++) {
-    var zeile = document.createElement("div");
-    zeile.className = "zf-zeile";
-    var nr = document.createElement("span");
-    nr.className = "zf-nr";
-    nr.textContent = z + 1;
-    var px = document.createElement("div");
-    px.className = "zf-pixel";
-    for (var sp = 0; sp < 8; sp++) {
-      var p = document.createElement("button");
-      p.type = "button";
-      p.setAttribute("aria-pressed", "false");
-      p.setAttribute("aria-label", "Zeile " + (z + 1) + ", Spalte " + (sp + 1));
-      px.appendChild(p);
-    }
-    var ist = document.createElement("span");
-    ist.className = "zf-ist";
-    zeile.appendChild(nr); zeile.appendChild(px); zeile.appendChild(ist);
-    raster.appendChild(zeile);
-    istFelder.push(ist);
-  }
-  function rasterCode() {
-    var px = raster.querySelectorAll(".zf-pixel button"), zeilen = [];
-    for (var z = 0; z < 8; z++) {
-      var s = "";
-      for (var s2 = 0; s2 < 8; s2++) s += px[z * 8 + s2].getAttribute("aria-pressed") === "true" ? "1" : "0";
-      zeilen.push(s);
-    }
-    return zeilen;
-  }
-  function codesAktualisieren() {
-    rasterCode().forEach(function (c, z) {
-      var passt = c === ziel[z];
-      istFelder[z].textContent = c + (passt ? " ✓" : "");
-      istFelder[z].classList.toggle("passt", passt);
-    });
-  }
-  raster.addEventListener("click", function (e) {
-    var b = e.target.closest("button");
-    if (!b) return;
-    b.setAttribute("aria-pressed", b.getAttribute("aria-pressed") !== "true");
-    codesAktualisieren();
-    document.getElementById("pixelRueck").textContent = "";
-  });
-  document.getElementById("pixelPruefen").addEventListener("click", function () {
-    var ist = rasterCode(), fehler = 0;
-    for (var z = 0; z < 8; z++) if (ist[z] !== ziel[z]) fehler++;
-    var rk = document.getElementById("pixelRueck");
-    rk.className = "rueck " + (fehler === 0 ? "ok" : "falsch");
-    rk.textContent = fehler === 0 ? "✓ Richtig gezeichnet!" : fehler + (fehler === 1 ? " Zeile stimmt" : " Zeilen stimmen") + " noch nicht. Vergleiche Zeile für Zeile.";
-    if (fehler === 0) xpGeloest(raster, rk);
-  });
-  document.getElementById("pixelLeeren").addEventListener("click", function () {
-    raster.querySelectorAll(".zf-pixel button").forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
-    codesAktualisieren();
-    document.getElementById("pixelRueck").textContent = "";
-  });
-  codesAktualisieren();
-
-  /* RGB */
-  ["R", "G", "B"].forEach(function (k) {
-    document.getElementById("r" + k).addEventListener("input", rgbAktualisieren);
-  });
-  function rgbAktualisieren() {
-    var r = document.getElementById("rR").value, g = document.getElementById("rG").value, b = document.getElementById("rB").value;
-    document.getElementById("oR").textContent = r;
-    document.getElementById("oG").textContent = g;
-    document.getElementById("oB").textContent = b;
-    document.getElementById("farbe").style.background = "rgb(" + r + "," + g + "," + b + ")";
-  }
-  rgbAktualisieren();
-
   /* ---------- Teil 4: Quiz ---------- */
   var fragen = [
-    { f: "Wie viele Zustände kann ein Bit haben?", a: ["1", "2", "8", "10"], r: 1 },
-    { f: "Welche Zahl ist <code>00001001</code>?", a: ["9", "11", "1001", "18"], r: 0 },
-    { f: "Wie viele Bits hat ein Byte?", a: ["2", "4", "8", "16"], r: 2 },
-    { f: "Was ist die größte Zahl, die ein Byte darstellen kann?", a: ["99", "128", "255", "256"], r: 2 },
-    { f: "Welche Zahl ist <code>10000000</code>?", a: ["1", "8", "100", "128"], r: 3 },
-    { f: "Im ASCII-Code steht 65 für …", a: ["a", "A", "Z", "das Leerzeichen"], r: 1 },
-    { f: "Warum findest du „ä“ nicht im ASCII-Code?", a: ["Der Code hat nur 128 Zeichen.", "Umlaute sind keine Buchstaben.", "Computer können keine Umlaute.", "„ä“ ist zu lang."], r: 0 },
-    { f: "Wie viele Bits braucht ein Pixel in einem Schwarz-Weiß-Bild?", a: ["1", "2", "8", "24"], r: 0 },
-    { f: "Welche Farbe ergibt <code>(0, 255, 255)</code>?", a: ["Blau", "Türkis", "Lila", "Grün"], r: 1 },
-    { f: "Wie viele Bits braucht ein farbiges RGB-Pixel?", a: ["3", "8", "16", "24"], r: 3 }
+    { f: "Wofür steht EVA?", a: ["Eingabe – Verarbeitung – Ausgabe", "Erst – Vorher – Abschalten", "Elektrik – Verkabelung – Akku", "Eingabe – Verbindung – Anzeige"], r: 0 },
+    { f: "Eine Tastatur ist ein …", a: ["Ausgabegerät", "Eingabegerät", "Speicher", "Betriebssystem"], r: 1 },
+    { f: "Ein Lautsprecher ist ein …", a: ["Eingabegerät", "Prozessor", "Ausgabegerät", "Programm"], r: 2 },
+    { f: "Welches Bauteil rechnet und steuert alles?", a: ["Netzteil", "Prozessor", "Festplatte", "Bildschirm"], r: 1 },
+    { f: "Was passiert mit den Daten im Arbeitsspeicher, wenn der Strom ausfällt?", a: ["Sie bleiben erhalten.", "Sie landen automatisch auf der Festplatte.", "Sie gehen verloren.", "Sie werden ausgedruckt."], r: 2 },
+    { f: "Wo bleiben deine Fotos gespeichert, wenn das Gerät aus ist?", a: ["im Arbeitsspeicher", "im Prozessor", "im Netzteil", "auf der Festplatte oder SSD"], r: 3 },
+    { f: "Was ist Software?", a: ["alle Teile, die man anfassen kann", "Programme mit Anweisungen für den Computer", "nur Spiele", "das Gehäuse"], r: 1 },
+    { f: "Welches davon ist ein Betriebssystem?", a: ["Scratch", "Browser", "Android", "Tastatur"], r: 2 },
+    { f: "Beim Taschenrechner erscheint das Ergebnis auf der Anzeige. Das ist …", a: ["Eingabe", "Verarbeitung", "Ausgabe", "Speicher"], r: 2 },
+    { f: "In welchem Gerät steckt ein Computer?", a: ["Smartwatch", "Hammer", "Buch", "Fahrrad"], r: 0 }
   ];
   var quiz = document.getElementById("quiz");
   fragen.forEach(function (q, i) {

@@ -9,7 +9,7 @@ const { checkAndAwardBadges } = require('../db/badges');
 
 const router = express.Router();
 
-const STATIONEN = 6;
+const STATIONEN = 7;
 const BESTEHEN_AB = 0.7; // 70 % der Punkte
 const XP_AUFGABE = 5, XP_TEIL = 25, XP_FRAGE = 5, XP_BESTANDEN = 25;
 const ID_MUSTER = /^[a-z0-9-]{1,40}$/;
