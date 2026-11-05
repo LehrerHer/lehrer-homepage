@@ -4023,8 +4023,9 @@ body.startseite section:nth-child(even):not(.lernkolosseum-section) {
 
 .nb-blatt {
     position: relative;
-    /* so breit wie die Karteikarten darunter, ohne Heftrand-Strich */
-    padding: 36px 48px 28px;
+    /* so breit wie die Karteikarten darunter, ohne Heftrand-Strich;
+       Abstände im 32-px-Raster, damit die Linien unter statt durch den Text laufen */
+    padding: 32px 48px 32px;
     background-color: var(--farbe-papier);
     background-image: repeating-linear-gradient(var(--farbe-papier) 0 31px, #dfe6f0 31px 32px);
     border: 1px solid #e4dccb;
@@ -4033,12 +4034,17 @@ body.startseite section:nth-child(even):not(.lernkolosseum-section) {
 }
 
 .nb-name {
-    display: inline;
+    display: block;
+    margin: 0 -48px;                /* Abdeckung über die volle Blattbreite */
+    padding: 0 48px;
     font-family: var(--schrift-ueberschrift);
     font-size: 2.4rem;
     color: var(--farbe-primaer);
-    line-height: 1.25;
+    line-height: 64px;              /* zwei Heftlinien hoch, hält das 32-px-Raster */
     letter-spacing: -0.01em;
+    background-color: var(--farbe-papier);   /* deckt die Heftlinien hinter dem Namen ab */
+}
+.nb-name-text {
     /* der eine bewusste Textmarker der Seite */
     background-image: linear-gradient(transparent 62%, #ffd86b 62%, #ffd86b 90%, transparent 90%);
 }
@@ -4050,12 +4056,12 @@ body.startseite section:nth-child(even):not(.lernkolosseum-section) {
 }
 
 .nb-rolle {
-    margin-top: .3rem !important;
+    margin-top: 0 !important;
     color: var(--farbe-text-hell);
 }
 
 .nb-gruss {
-    margin: 1rem 0 !important;
+    margin: 32px 0 !important;      /* eine Leerzeile im 32-px-Linienraster */
 }
 
 /* sichtbarer Platzhalter, bis der Begrüßungstext feststeht */
@@ -4276,13 +4282,15 @@ body.startseite .blog-teaser-box {
 @media (max-width: 768px) {
     .nb-start { padding-top: 32px; }
     .nb-blatt {
-        padding: 24px 18px 20px;
+        padding: 32px 18px 32px;
     }
-    .nb-name { font-size: 1.9rem; }
+    .nb-name { font-size: 1.9rem; line-height: 64px; margin: 0 -18px; padding: 0 18px; }
     .nb-randnotiz {
         position: static;
         display: table;
-        margin: 0 0 .8rem !important;
+        margin: 0 0 32px !important;
+        padding: 0 .8rem;
+        line-height: 32px !important;   /* Notiz bleibt im Linienraster */
         transform: rotate(-2deg);
     }
     .nb-karten { grid-template-columns: minmax(0, 1fr); gap: 20px; }
