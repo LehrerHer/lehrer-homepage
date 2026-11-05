@@ -12,17 +12,42 @@
 
     /* Tabelle */
     .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
-    th { background: var(--ink); color: #fff; padding: 0.75rem 1rem; text-align: left; font-family: 'Fredoka One', sans-serif; white-space: nowrap; }
-    td { padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
-    tr:hover td { background: var(--bg); }
+    .table-wrap { padding: 0; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; line-height: 1.3; }
+    th { background: var(--ink); color: #fff; padding: 0; text-align: left; font-family: 'Fredoka One', sans-serif; white-space: nowrap; }
+    th.th-plain { padding: 0.45rem 0.6rem; }
+    td { padding: 0.3rem 0.6rem; border-bottom: 1px solid #e2e8f0; vertical-align: middle; white-space: nowrap; }
+    tbody tr:nth-child(even) td { background: #f8fafc; }
+    tbody tr:hover td { background: var(--bg); }
     .level-pill {
-      display: inline-block; padding: 0.2rem 0.65rem; border-radius: 50px;
-      font-size: 0.78rem; font-weight: 700; background: var(--c4); color: #fff;
+      display: inline-block; padding: 0.05rem 0.5rem; border-radius: 50px;
+      font-size: 0.74rem; font-weight: 700; background: var(--c4); color: #fff;
     }
-    .badge-count { color: var(--ink-soft); font-size: 0.85rem; }
-    .actions { display: flex; gap: 0.5rem; }
+    .badge-count { color: var(--ink-soft); font-size: 0.8rem; }
+    .actions { display: flex; gap: 0.3rem; }
     .btn-sm { padding: 0.35rem 0.75rem; font-size: 0.82rem; border-radius: 50px; border: none; cursor: pointer; font-family: 'Nunito', sans-serif; font-weight: 700; transition: opacity 0.2s; }
+    td .btn-sm { padding: 0.15rem 0.55rem; font-size: 0.76rem; }
+
+    /* Sortierbare Spaltenköpfe */
+    .sort-btn {
+      all: unset; box-sizing: border-box; display: flex; align-items: center; gap: 0.3rem;
+      width: 100%; padding: 0.45rem 0.6rem; cursor: pointer; font: inherit; color: inherit;
+    }
+    .sort-btn:hover { background: rgba(255,255,255,0.12); }
+    .sort-btn:focus-visible { outline: 2px solid #FFE66D; outline-offset: -2px; }
+    .sort-pfeil { font-size: 0.7rem; opacity: 0.45; }
+    th[aria-sort="ascending"] .sort-pfeil,
+    th[aria-sort="descending"] .sort-pfeil { opacity: 1; }
+
+    /* Suche */
+    .suche-leiste { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.75rem; }
+    .suche-leiste input[type="search"] {
+      flex: 1; width: auto; margin: 0; min-width: 220px; max-width: 420px; padding: 0.45rem 0.75rem;
+      border: 2px solid #e2e8f0; border-radius: 50px; font: inherit; font-size: 0.9rem;
+    }
+    .suche-leiste input[type="search"]:focus { outline: none; border-color: var(--c4); }
+    .suche-leiste select { width: auto; flex: 0 0 auto; margin: 0; padding: 0.4rem 0.6rem; border: 2px solid #e2e8f0; border-radius: 50px; font: inherit; font-size: 0.9rem; }
+    .treffer { color: var(--ink-soft); font-size: 0.85rem; }
     .btn-sm:hover { opacity: 0.8; }
     .btn-xp  { background: var(--c3); color: #fff; }
     .btn-pw  { background: var(--c4); color: #fff; }
@@ -91,19 +116,27 @@
       <button class="btn btn-primary" id="new-btn">+ Neu anlegen</button>
     </div>
 
+    <div class="suche-leiste" role="search">
+      <label for="suche" class="sr-only">Schüler durchsuchen</label>
+      <input type="search" id="suche" placeholder="Suchen: Spitzname, Klarname, Klasse, E-Mail …" autocomplete="off">
+      <label for="klassen-filter" class="sr-only">Nach Klasse filtern</label>
+      <select id="klassen-filter"><option value="">Alle Klassen</option></select>
+      <span class="treffer" id="treffer" aria-live="polite"></span>
+    </div>
+
     <div class="card table-wrap">
       <table id="students-table">
         <thead>
           <tr>
-            <th>Spitzname</th>
-            <th>Klarname</th>
-            <th>Klasse</th>
-            <th>E-Mail</th>
-            <th>XP</th>
-            <th>Level</th>
-            <th>Abzeichen</th>
-            <th>Admin</th>
-            <th>Aktionen</th>
+            <th data-sort="nick"><button type="button" class="sort-btn">Spitzname <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
+            <th data-sort="real_name"><button type="button" class="sort-btn">Klarname <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
+            <th data-sort="class"><button type="button" class="sort-btn">Klasse <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
+            <th data-sort="email"><button type="button" class="sort-btn">E-Mail <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
+            <th data-sort="xp"><button type="button" class="sort-btn">XP <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
+            <th data-sort="level"><button type="button" class="sort-btn">Level <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
+            <th data-sort="badges"><button type="button" class="sort-btn">Abzeichen <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
+            <th data-sort="is_admin"><button type="button" class="sort-btn">Admin <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
+            <th class="th-plain">Aktionen</th>
           </tr>
         </thead>
         <tbody id="students-body">
@@ -219,39 +252,133 @@
 
     let studentsData = [];
 
-    // ── Tabelle rendern ──────────────────────────────────────────────────────
-    function renderTable(students) {
+    // ── Tabelle rendern (mit Suche, Klassenfilter, Sortierung) ───────────────
+    let sortFeld = 'nick';
+    let sortRichtung = 1; // 1 = aufsteigend, -1 = absteigend
+
+    function esc(v) {
+      return String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+    // Für Strings in onclick="…('…')"
+    function jsArg(v) {
+      return esc(JSON.stringify(String(v ?? '')));
+    }
+
+    function sortWert(s, feld) {
+      switch (feld) {
+        case 'xp':
+        case 'level':    return Number(s.xp) || 0;
+        case 'badges':   return (s.badges || []).length;
+        case 'is_admin': return s.is_admin ? 1 : 0;
+        default:         return String(s[feld] ?? '').trim();
+      }
+    }
+
+    function vergleiche(a, b) {
+      const va = sortWert(a, sortFeld), vb = sortWert(b, sortFeld);
+      if (typeof va === 'string') {
+        // Leere Werte immer ans Ende
+        if (!va && vb) return 1;
+        if (va && !vb) return -1;
+        const r = va.localeCompare(vb, 'de', { numeric: true, sensitivity: 'base' });
+        if (r) return r * sortRichtung;
+      } else if (va !== vb) {
+        return (va - vb) * sortRichtung;
+      }
+      return String(a.nick).localeCompare(String(b.nick), 'de', { sensitivity: 'base' });
+    }
+
+    function gefilterteSchueler() {
+      const q = document.getElementById('suche').value.trim().toLocaleLowerCase('de');
+      const klasse = document.getElementById('klassen-filter').value;
+      return studentsData.filter(s => {
+        if (klasse && String(s.class || '') !== klasse) return false;
+        if (!q) return true;
+        const text = [s.nick, s.real_name, s.class, s.email, levelName(s.xp)]
+          .map(v => String(v ?? '')).join(' ').toLocaleLowerCase('de');
+        return q.split(/\s+/).every(teil => text.includes(teil));
+      }).sort(vergleiche);
+    }
+
+    function kopfZustand() {
+      document.querySelectorAll('#students-table th[data-sort]').forEach(th => {
+        const aktiv = th.dataset.sort === sortFeld;
+        if (aktiv) th.setAttribute('aria-sort', sortRichtung === 1 ? 'ascending' : 'descending');
+        else th.removeAttribute('aria-sort');
+        th.querySelector('.sort-pfeil').textContent = aktiv ? (sortRichtung === 1 ? '▲' : '▼') : '↕';
+      });
+    }
+
+    function klassenFilterFuellen() {
+      const sel = document.getElementById('klassen-filter');
+      const alt = sel.value;
+      const klassen = [...new Set(studentsData.map(s => String(s.class || '').trim()).filter(Boolean))]
+        .sort((a, b) => a.localeCompare(b, 'de', { numeric: true, sensitivity: 'base' }));
+      sel.innerHTML = '<option value="">Alle Klassen</option>' +
+        klassen.map(k => `<option value="${esc(k)}">${esc(k)}</option>`).join('');
+      sel.value = klassen.includes(alt) ? alt : '';
+    }
+
+    function renderTable() {
       const tbody = document.getElementById('students-body');
-      if (!students.length) {
+      const treffer = document.getElementById('treffer');
+      kopfZustand();
+      if (!studentsData.length) {
         tbody.innerHTML = '<tr><td colspan="9" class="text-soft">Noch keine Schüler angelegt.</td></tr>';
+        treffer.textContent = '';
         return;
       }
-      tbody.innerHTML = students.map(s => `
+      const liste = gefilterteSchueler();
+      treffer.textContent = liste.length === studentsData.length
+        ? `${studentsData.length} Einträge`
+        : `${liste.length} von ${studentsData.length} Einträgen`;
+      if (!liste.length) {
+        tbody.innerHTML = '<tr><td colspan="9" class="text-soft">Keine Treffer.</td></tr>';
+        return;
+      }
+      const leer = '<span class="text-soft">–</span>';
+      tbody.innerHTML = liste.map(s => `
         <tr>
-          <td><strong>${s.nick}</strong></td>
-          <td>${s.real_name || '<span class="text-soft">–</span>'}</td>
-          <td>${s.class    || '<span class="text-soft">–</span>'}</td>
-          <td class="text-soft" style="font-size:.82rem">${s.email || '<span style="opacity:.5">–</span>'}</td>
-          <td><strong>${s.xp}</strong></td>
-          <td><span class="level-pill">Lvl ${levelIndex(s.xp)} ${levelName(s.xp)}</span></td>
-          <td class="badge-count">${s.badges.length} / 8</td>
-          <td>${s.is_admin ? '<span class="admin-pill">⚙️ Admin</span>' : '<span class="text-soft">–</span>'}</td>
+          <td><strong>${esc(s.nick)}</strong></td>
+          <td>${s.real_name ? esc(s.real_name) : leer}</td>
+          <td>${s.class ? esc(s.class) : leer}</td>
+          <td class="text-soft" style="font-size:.8rem">${s.email ? esc(s.email) : '<span style="opacity:.5">–</span>'}</td>
+          <td><strong>${esc(s.xp)}</strong></td>
+          <td><span class="level-pill">Lvl ${levelIndex(s.xp)} ${esc(levelName(s.xp))}</span></td>
+          <td class="badge-count">${(s.badges || []).length} / 8</td>
+          <td>${s.is_admin ? '<span class="admin-pill">⚙️ Admin</span>' : leer}</td>
           <td>
             <div class="actions">
-              <button class="btn-sm btn-xp"  onclick="openXP(${s.id}, '${s.nick}')">XP</button>
-              <button class="btn-sm btn-pw"  onclick="openPIN(${s.id}, '${s.nick}')">PIN</button>
-              <button class="btn-sm btn-admin${s.is_admin ? ' on' : ''}" onclick="toggleAdmin(${s.id}, '${s.nick}', ${s.is_admin ? 'true' : 'false'})">${s.is_admin ? 'Admin entziehen' : 'Zu Admin machen'}</button>
-              <button class="btn-sm btn-del" onclick="deleteStudent(${s.id}, '${s.nick}')">Löschen</button>
+              <button class="btn-sm btn-xp"  onclick="openXP(${s.id}, ${jsArg(s.nick)})">XP</button>
+              <button class="btn-sm btn-pw"  onclick="openPIN(${s.id}, ${jsArg(s.nick)})">PIN</button>
+              <button class="btn-sm btn-admin${s.is_admin ? ' on' : ''}" onclick="toggleAdmin(${s.id}, ${jsArg(s.nick)}, ${s.is_admin ? 'true' : 'false'})">${s.is_admin ? 'Admin entziehen' : 'Zu Admin machen'}</button>
+              <button class="btn-sm btn-del" onclick="deleteStudent(${s.id}, ${jsArg(s.nick)})">Löschen</button>
             </div>
           </td>
         </tr>
       `).join('');
     }
 
+    document.querySelectorAll('#students-table th[data-sort] .sort-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const feld = btn.closest('th').dataset.sort;
+        if (feld === sortFeld) sortRichtung *= -1;
+        else {
+          sortFeld = feld;
+          // Zahlen zuerst absteigend (höchste XP oben), Texte aufsteigend
+          sortRichtung = ['xp', 'level', 'badges', 'is_admin'].includes(feld) ? -1 : 1;
+        }
+        renderTable();
+      });
+    });
+    document.getElementById('suche').addEventListener('input', renderTable);
+    document.getElementById('klassen-filter').addEventListener('change', renderTable);
+
     async function loadStudents() {
       const res  = await fetch('/api/admin/students');
       studentsData = await res.json();
-      renderTable(studentsData);
+      klassenFilterFuellen();
+      renderTable();
     }
 
     // ── Modals ───────────────────────────────────────────────────────────────
