@@ -255,7 +255,7 @@ einfach unter gleichem Pfad ersetzt werden.
 Startseite (index.html, <body class="hat-seitenleisten startseite">)
 ├── #ladebildschirm  → Kurze History-Timeline-Ladeanimation (blendet sich aus)
 ├── #startseite      → Einstieg „Notizbuch" (Stand 2026-11, immer öffentlich):
-│                      1. Liniertes Blatt (.nb-blatt): Name (einziger Textmarker), Rolle,
+│                      1. Liniertes Blatt (.nb-blatt, volle Inhaltsbreite, ohne Heftrand-Strich): Name (einziger Textmarker), Rolle,
 │                         Begrüßung (Ich-Form, Wortlaut von Jan), „Mehr über mich"
 │                      2. Drei Karteikarten (.nb-karte): Fächer (groß, alle Fächer als Textliste),
 │                         Arbeitsblätter & Quizze, Gladiatorenkämpfe (Notiz „mit Login")
