@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 230" width="560" height="230" role="img" aria-labelledby="t d">
+<title id="t">So lernt eine KI</title>
+<desc id="d">Links viele beschriftete Beispielbilder als Trainingsdaten, in der Mitte das Lernen, daraus entsteht ein Modell. Rechts bekommt das Modell ein neues Bild und sagt: wahrscheinlich Katze.</desc>
+<defs><marker id="sp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1e3a5f"/></marker></defs>
+<rect width="560" height="230" fill="#ffffff"/>
+<rect x="8" y="30" width="170" height="170" rx="10" fill="#e9eef6" stroke="#1e3a5f" stroke-width="2"/>
+<text x="93" y="22" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#1e3a5f" text-anchor="middle">Trainingsdaten</text>
+<rect x="20" y="42" width="44" height="44" rx="5" fill="#ffffff" stroke="#1e3a5f" stroke-width="2"/><circle cx="42" cy="67" r="11" fill="none" stroke="#1e3a5f" stroke-width="2"/><path d="M32 62l2-11 6 7M52 62l-2-11-6 7" fill="none" stroke="#1e3a5f" stroke-width="2" stroke-linejoin="round"/><text x="42" y="102" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" fill="#f28c28" text-anchor="middle">Katze</text>
+<rect x="70" y="42" width="44" height="44" rx="5" fill="#ffffff" stroke="#1e3a5f" stroke-width="2"/><circle cx="92" cy="67" r="11" fill="none" stroke="#1e3a5f" stroke-width="2"/><path d="M83 60c-7 0-8 12-3 14M101 60c7 0 8 12 3 14" fill="none" stroke="#1e3a5f" stroke-width="2"/><text x="92" y="102" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" fill="#f28c28" text-anchor="middle">Hund</text>
+<rect x="120" y="42" width="44" height="44" rx="5" fill="#ffffff" stroke="#1e3a5f" stroke-width="2"/><circle cx="142" cy="67" r="11" fill="none" stroke="#1e3a5f" stroke-width="2"/><path d="M132 62l2-11 6 7M152 62l-2-11-6 7" fill="none" stroke="#1e3a5f" stroke-width="2" stroke-linejoin="round"/><text x="142" y="102" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" fill="#f28c28" text-anchor="middle">Katze</text>
+<rect x="20" y="122" width="44" height="44" rx="5" fill="#ffffff" stroke="#1e3a5f" stroke-width="2"/><circle cx="42" cy="147" r="11" fill="none" stroke="#1e3a5f" stroke-width="2"/><path d="M33 140c-7 0-8 12-3 14M51 140c7 0 8 12 3 14" fill="none" stroke="#1e3a5f" stroke-width="2"/><text x="42" y="182" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" fill="#f28c28" text-anchor="middle">Hund</text>
+<rect x="70" y="122" width="44" height="44" rx="5" fill="#ffffff" stroke="#1e3a5f" stroke-width="2"/><circle cx="92" cy="147" r="11" fill="none" stroke="#1e3a5f" stroke-width="2"/><path d="M82 142l2-11 6 7M102 142l-2-11-6 7" fill="none" stroke="#1e3a5f" stroke-width="2" stroke-linejoin="round"/><text x="92" y="182" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" fill="#f28c28" text-anchor="middle">Katze</text>
+<rect x="120" y="122" width="44" height="44" rx="5" fill="#ffffff" stroke="#1e3a5f" stroke-width="2"/><circle cx="142" cy="147" r="11" fill="none" stroke="#1e3a5f" stroke-width="2"/><path d="M133 140c-7 0-8 12-3 14M151 140c7 0 8 12 3 14" fill="none" stroke="#1e3a5f" stroke-width="2"/><text x="142" y="182" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" fill="#f28c28" text-anchor="middle">Hund</text>
+<path d="M184 115H226" stroke="#1e3a5f" stroke-width="3" marker-end="url(#sp)"/>
+<text x="205" y="105" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" fill="#1e3a5f" text-anchor="middle">lernen</text>
+<rect x="232" y="75" width="110" height="80" rx="10" fill="#1e3a5f"/>
+<text x="287" y="110" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#ffffff" text-anchor="middle">Modell</text>
+<text x="287" y="132" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="400" fill="#ffffff" text-anchor="middle">(Muster)</text>
+<path d="M348 115H392" stroke="#1e3a5f" stroke-width="3" marker-end="url(#sp)"/>
+<text x="370" y="105" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="700" fill="#1e3a5f" text-anchor="middle">neu</text>
+<rect x="398" y="85" width="44" height="44" rx="5" fill="#ffffff" stroke="#f28c28" stroke-width="3"/><circle cx="420" cy="110" r="11" fill="none" stroke="#1e3a5f" stroke-width="2"/><path d="M410 105l2-11 6 7M430 105l-2-11-6 7" fill="none" stroke="#1e3a5f" stroke-width="2" stroke-linejoin="round"/><text x="420" y="145" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" fill="#f28c28" text-anchor="middle"></text>
+<path d="M448 115H470" stroke="#1e3a5f" stroke-width="3" marker-end="url(#sp)"/>
+<rect x="474" y="80" width="80" height="70" rx="10" fill="#fff1e3" stroke="#f28c28" stroke-width="2"/>
+<text x="514" y="108" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="400" fill="#1e3a5f" text-anchor="middle">wahrschein-</text>
+<text x="514" y="123" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="400" fill="#1e3a5f" text-anchor="middle">lich</text>
+<text x="514" y="141" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#f28c28" text-anchor="middle">Katze</text>
+</svg>

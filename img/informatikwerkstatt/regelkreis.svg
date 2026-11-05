@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 270" width="470" height="270" role="img" aria-labelledby="t d">
+<title id="t">Regelkreis einer Heizung</title>
+<desc id="d">Sollwert 20 Grad geht in die Steuerung. Die Steuerung schaltet die Heizung. Die Heizung wärmt den Raum. Der Temperatursensor misst den Raum und meldet den Istwert zurück an die Steuerung.</desc>
+<defs><marker id="spb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#1e3a5f"/></marker><marker id="spo" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#f28c28"/></marker></defs>
+<rect width="470" height="270" fill="#ffffff"/>
+<rect x="10" y="40" width="110" height="60" rx="10" fill="#fff1e3" stroke="#f28c28" stroke-width="3"/><text x="65.0" y="62.0" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#f28c28" text-anchor="middle" dominant-baseline="central">Sollwert</text><text x="65.0" y="84.0" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#f28c28" text-anchor="middle" dominant-baseline="central">20 °C</text>
+<rect x="170" y="40" width="120" height="60" rx="10" fill="#e9eef6" stroke="#1e3a5f" stroke-width="3"/><text x="230.0" y="62.0" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#1e3a5f" text-anchor="middle" dominant-baseline="central">Steuerung</text><text x="230.0" y="84.0" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#1e3a5f" text-anchor="middle" dominant-baseline="central">vergleicht</text>
+<rect x="340" y="40" width="110" height="60" rx="10" fill="#e9eef6" stroke="#1e3a5f" stroke-width="3"/><text x="395.0" y="62.0" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#1e3a5f" text-anchor="middle" dominant-baseline="central">Heizung</text><text x="395.0" y="84.0" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#1e3a5f" text-anchor="middle" dominant-baseline="central">Aktor</text>
+<rect x="340" y="190" width="110" height="60" rx="10" fill="#e9eef6" stroke="#1e3a5f" stroke-width="3"/><text x="395.0" y="212.0" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#1e3a5f" text-anchor="middle" dominant-baseline="central">Raum</text><text x="395.0" y="234.0" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#1e3a5f" text-anchor="middle" dominant-baseline="central">wird warm</text>
+<rect x="170" y="190" width="120" height="60" rx="10" fill="#e9eef6" stroke="#1e3a5f" stroke-width="3"/><text x="230.0" y="212.0" font-family="Arial, Helvetica, sans-serif" font-size="17" font-weight="700" fill="#1e3a5f" text-anchor="middle" dominant-baseline="central">Sensor</text><text x="230.0" y="234.0" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#1e3a5f" text-anchor="middle" dominant-baseline="central">misst Istwert</text>
+<path d="M120 70H166" fill="none" stroke="#f28c28" stroke-width="3" marker-end="url(#spo)"/>
+<path d="M290 70H336" fill="none" stroke="#1e3a5f" stroke-width="3" marker-end="url(#spb)"/>
+<path d="M395 100V186" fill="none" stroke="#1e3a5f" stroke-width="3" marker-end="url(#spb)"/>
+<path d="M340 220H294" fill="none" stroke="#1e3a5f" stroke-width="3" marker-end="url(#spb)"/>
+<path d="M230 190V104" fill="none" stroke="#f28c28" stroke-width="3" marker-end="url(#spo)"/>
+<text x="240" y="150" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#f28c28">Istwert: 18 °C</text>
+<text x="297" y="55" font-family="Arial, Helvetica, sans-serif" font-size="12" fill="#1e3a5f">an/aus</text>
+</svg>
