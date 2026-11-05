@@ -402,6 +402,8 @@ Wichtige CSS-Klassen (ab 2026-05):
 - `#kolo-widget .kolo-user-chip` — Farb-Override für eingeloggten Gladiatorennamen
 - `.bereich-karte-klickbar` — `cursor: pointer` für Kacheln, die per `onclick` navigieren (ohne `<a>`-Wrapper)
 
+**Cache-Version (Pflicht bei CSS-Änderungen):** Alle Seiten binden das Stylesheet als `css/style.css?v=JJJJMMTT` ein (Kolosseum: `/css/style.css?v=…`). Nach jeder Änderung an `css/style.css` oder `kolosseum/public/css/style.css` die Versionsnummer in **allen** HTML-Dateien auf das aktuelle Datum setzen – sonst zeigen Browser aus dem Cache die alte CSS zum neuen HTML (kaputtes Layout). Gleiches gilt für geänderte JS-Dateien mit `?v=`.
+
 **Hinweis Kolosseum-CSS** (`kolosseum/public/css/style.css`): Der Kolosseum-Server lädt seine eigene CSS-Datei, nicht die Haupt-`style.css`. Navbar-Stile sind daher dort separat mit hardcodierten Farbwerten dupliziert. Bei Navbar-CSS-Änderungen in `css/style.css` immer auch `kolosseum/public/css/style.css` am Ende (Abschnitt „SITE NAVBAR") aktualisieren.
 
 ---
