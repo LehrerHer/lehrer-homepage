@@ -133,7 +133,7 @@
             <th data-sort="xp"><button type="button" class="sort-btn">XP <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
             <th data-sort="level"><button type="button" class="sort-btn">Level <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
             <th data-sort="badges"><button type="button" class="sort-btn">Abzeichen <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
-            <th data-sort="last_login"><button type="button" class="sort-btn">Letzter Login <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
+            <th data-sort="last_active"><button type="button" class="sort-btn">Zuletzt aktiv <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
             <th class="th-plain">Aktionen</th>
             <th data-sort="email"><button type="button" class="sort-btn">E-Mail <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
             <th data-sort="is_admin"><button type="button" class="sort-btn">Admin <span class="sort-pfeil" aria-hidden="true">↕</span></button></th>
@@ -278,7 +278,7 @@
 
     function sortWert(s, feld) {
       switch (feld) {
-        case 'last_login': { const d = zeitpunkt(s.last_login); return d ? d.getTime() : null; }
+        case 'last_active': { const d = zeitpunkt(s.last_active); return d ? d.getTime() : null; }
         case 'xp':
         case 'level':    return Number(s.xp) || 0;
         case 'badges':   return (s.badges || []).length;
@@ -361,7 +361,7 @@
           <td><strong>${esc(s.xp)}</strong></td>
           <td><span class="level-pill">Lvl ${levelIndex(s.xp)} ${esc(levelName(s.xp))}</span></td>
           <td class="badge-count">${(s.badges || []).length} / 8</td>
-          <td title="${s.last_active ? 'Zuletzt aktiv: ' + esc(datumText(s.last_active)) : 'Noch nie aktiv'}">${s.last_login ? esc(datumText(s.last_login)) : leer}</td>
+          <td>${s.last_active ? esc(datumText(s.last_active)) : leer}</td>
           <td>
             <div class="actions">
               <button class="btn-sm btn-xp"  onclick="openXP(${s.id}, ${jsArg(s.nick)})">XP</button>
@@ -382,7 +382,7 @@
         else {
           sortFeld = feld;
           // Zahlen zuerst absteigend (höchste XP oben), Texte aufsteigend
-          sortRichtung = ['xp', 'level', 'badges', 'is_admin', 'last_login'].includes(feld) ? -1 : 1;
+          sortRichtung = ['xp', 'level', 'badges', 'is_admin', 'last_active'].includes(feld) ? -1 : 1;
         }
         renderTable();
       });
