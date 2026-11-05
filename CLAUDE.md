@@ -39,12 +39,12 @@ lehrer-homepage/
 │   ├── auth-guard.js             # Body verstecken bis Auth-Check (geschützte Einzelseiten)
 │   ├── dynamic-content.js        # Lädt dynamische Inhalte (inhalte.json)
 │   ├── materialien-dynamisch.js  # Lädt je Fach hochgeladene Materialien (Kolosseum-API, data-fach)
-│   ├── was-ist-neu.js            # „Was ist neu?": 8 Fenster (neuigkeiten.json + inhalte.json + Kolosseum-API)
+│   ├── was-ist-neu.js            # „Was ist neu?": eine datierte Liste (neuigkeiten.json ohne intern + inhalte.json + Kolosseum-API)
 │   ├── blog.js · blog-daten.js · blog-einreichen.js  # Blog-Rendering/-Fallback/-Upload
 │   ├── api-config.js · leaderboard.js  # Globale Quiz-Bestenlisten
 │   ├── quiz-engine.js   # Gemeinsame Quiz-Engine (MC · Bilderraten · stumme Karte · Lückentext), Daten aus JSON
 │   ├── seitenleisten.js # Startseite ≥ 1720 px: Inhaltsverzeichnis (links), Arena-Spalte + „Zuletzt benutzt“ (rechts)
-├── neuigkeiten.json     # Pflegbare Einträge für „Was ist neu?" (Funktionen)
+├── neuigkeiten.json     # Pflegbare Einträge für „Was ist neu?" (Funktionen; Technik-Einträge mit "intern": true)
 ├── inhalte.json         # Pflegbare Einträge für neue Materialien (dynamic-content.js)
 ├── materialien/         # Generierte interaktive Arbeitsblätter/Quizze (HTML)
 │   ├── quiz/            # JSON-Datendateien für quiz-engine.js (<slug>.json)
@@ -129,7 +129,7 @@ Die Navbar erscheint **auf jeder einzelnen Seite** – sowohl auf der Hauptdomai
 #### Design (Stand 2026-06): Schwebend + Icon-Navigation
 
 Kopf- und Fußbereich sind **nicht durchgezogen**, sondern **schwebende „Karten"**
-(abgerundet, Schatten, seitlicher Abstand, dunkler Blau-Verlauf). Die Navigation
+(abgerundet, weicher Papier-Schatten `--schatten-papier-hoch` – seit 2026-11 kein gelber Versatz mehr, seitlicher Abstand, Marine). Die Navigation
 zeigt **nur zentrierte Linien-Icons (SVG, per `main.js` aus den Emojis ersetzt)** (alle gleich hoch); der Linktext steckt in einer
 Screenreader-only-`.nav-label` und erscheint beim Hover/Fokus als **Tooltip**
 (`data-tooltip`). Oben links **und** unten links steht die **Bildmarke**
@@ -252,25 +252,22 @@ einfach unter gleichem Pfad ersetzt werden.
 ## Seitenstruktur (vollständig)
 
 ```
-Startseite (index.html)
+Startseite (index.html, <body class="hat-seitenleisten startseite">)
 ├── #ladebildschirm  → Kurze History-Timeline-Ladeanimation (blendet sich aus)
-├── Aufbau-Banner    → (.aufbau-banner) Hinweis zwischen Navbar und Bereiche-Kacheln
-├── #startseite      → Bereiche-Übersicht: 6 Kacheln in dieser Reihenfolge:
-│                      1. Fächervorstellung (öffentlich, klickbar → faecher.html;
-│                         Pill-Chips verlinken direkt auf die jeweilige fach-*.html)
-│                      2. Gladiatorenkämpfe – Arena (🔒)
-│                      3. Jan Herrmann – Wer bin ich? (öffentlich)
-│                      4. Schüler*innenblog (🔒)
-│                      5. Leseabenteuer (🔒)
-│                      6. Materialien & Quizze (🔒)
-├── #was-ist-neu     → Aktuelle Funktionen, Quiz-Leistungen, neue Materialien (js/was-ist-neu.js)
-├── #gladiatoren-teaser → Kolosseum-Teaser mit Statistiken
+├── #startseite      → Einstieg „Notizbuch" (Stand 2026-11, immer öffentlich):
+│                      1. Liniertes Blatt (.nb-blatt): Name (einziger Textmarker), Rolle,
+│                         Begrüßung (Ich-Form, PLATZHALTER bis Jan den Wortlaut liefert), „Mehr über mich"
+│                      2. Drei Karteikarten (.nb-karte): Fächer (groß, alle Fächer als Textliste),
+│                         Arbeitsblätter & Quizze, Gladiatorenkämpfe (Notiz „mit Login")
+│                      3. „Außerdem hier" (.nb-ausserdem): Blog, Leseabenteuer, RegelRadar,
+│                         Vokabeltrainer, AGs & Projekte als schlichte Textliste
+├── #was-ist-neu     → kurze datierte Liste (js/was-ist-neu.js), leer → Abschnitt ausgeblendet
 ├── #regelradar-teaser  → RegelRadar (Rechtschreibung & Zeichensetzung) → regelradar.html
 ├── Login-Gate       → sichtbar wenn NICHT eingeloggt (#homepage-login-gate)
 ├── #lernkolosseum   → Lernkolosseum-Teaser, sichtbar wenn eingeloggt
 ├── #digitale-materialien → Materialien-Grid mit Jahrgang-Filterleiste, sichtbar wenn eingeloggt
 ├── #blog-teaser     → Blog-Teaser, sichtbar wenn eingeloggt
-├── #kontakt         → jan.herrmann AT obsspelle.de (E-Mail verschleiert)
+├── #kontakt         → herrmann AT friedensschule-os.de (E-Mail verschleiert)
 └── Footer           → © Impressum · Datenschutz + versteckter Admin-Link
 
 ÖFFENTLICH – Fächer (Grundprinzip: EINE Seite pro Fach = Vorstellung + Material)
@@ -310,7 +307,7 @@ GESCHLOSSEN (Login via Kolosseum-Account erforderlich)
 - Prüft Kolosseum-Session via `GET /api/auth/me`
 - **Eingeloggt:** Lernkolosseum-Teaser, Materialien-Sektion und Blog-Teaser werden eingeblendet; Login-Gate ausgeblendet
 - **Nicht eingeloggt:** Login-Gate sichtbar; geschützte Sektionen ausgeblendet
-- `#bereiche-uebersicht` ist **immer öffentlich** sichtbar, zeigt geschlossene Bereiche mit **„🔒 Login nötig"**
+- `#startseite` (Einstieg) ist **immer öffentlich** sichtbar, geschlossene Bereiche tragen die Handschrift-Notiz **„mit Login"** (`.nb-login`)
 
 ### Link-Ziel für Lernkolosseum
 
@@ -350,16 +347,11 @@ XP werden nur bei **Verbesserungen** gutgeschrieben (Differenz zum bisherigen Be
 ## Key Files and Their Roles
 
 ### `index.html`
-- **Sektionsreihenfolge:** `#ladebildschirm` (Lade-Animation) → Navbar → Aufbau-Banner (`.aufbau-banner`) → Bereiche-Übersicht (`#startseite`, `.bereiche-uebersicht-section`) → `#was-ist-neu` → `#gladiatoren-teaser` → `#regelradar-teaser` → Login-Gate (`#homepage-login-gate`) → `#lernkolosseum` → `#digitale-materialien` → `#blog-teaser` → `#kontakt` → Footer
-- **Bereiche-Grid:** 6 Kacheln in fester Reihenfolge:
-  1. **Fächervorstellung** (öffentlich) — alle 15 Fächer als Pill-Chips; Klick auf Chip → Fachseite; Klick auf Karte → `faecher.html`; umgesetzt via `.bereich-karte-klickbar` + `onclick="if(!event.target.closest('a'))location.href='faecher.html'"`
-  2. **Gladiatorenkämpfe** (Arena, 🔒 Login)
-  3. **Jan Herrmann – Wer bin ich?** (öffentlich)
-  4. **Schüler\*innenblog** (🔒 Login)
-  5. **Leseabenteuer** (🔒 Login)
-  6. **Materialien & Quizze** (🔒 Login)
+- **Sektionsreihenfolge:** `#ladebildschirm` → Navbar → `#startseite` (Notizbuch-Einstieg) → `#was-ist-neu` → `#regelradar-teaser` → Login-Gate (`#homepage-login-gate`) → `#lernkolosseum` → `#digitale-materialien` → `#blog-teaser` → `#kontakt` → Footer
+- **Einstieg (Stand 2026-11):** siehe Seitenstruktur oben und Abschnitt „Design: Notizbuch". Keine gleichförmigen Kachelraster mehr: wichtige Bereiche als Karteikarten, Nebensachen als Textliste. Die alten `.bereich-karte`-Klassen werden auf der Startseite nicht mehr benutzt (CSS bleibt vorerst).
+- **Begrüßungstext:** `.nb-gruss.nb-platzhalter` ist ein sichtbarer Platzhalter – Text **nie erfinden**, Wortlaut von Jan abwarten; danach Klasse `nb-platzhalter` entfernen.
 - Digitalematerialien-Sektion: Jahrgang-Filterleiste (`.dm-filter-leiste`) über dem Grid; Karten tragen `data-jahrgang="5-6|7-8|9-10"` Attribute
-- `id="startseite"` sitzt auf der `<section class="bereiche-uebersicht-section">` (kein Hero mehr)
+- `id="startseite"` sitzt auf der `<section class="nb-start">`; die einzige `<h1>` ist der Name im Blatt
 - Copyright year dynamisch via `id="footer-jahr"`
 - Scripts: `main.js`, `dynamic-content.js`, `api-config.js`, `was-ist-neu.js`, `arena-bar.js`, `kolosseum-login-widget.js`, `homepage-gate.js` (+ Analytics/GoatCounter am Ende)
 
@@ -427,10 +419,21 @@ Wichtige CSS-Klassen (ab 2026-05):
 - **Fließtext:** Open Sans (400/600/700), Basis 18 px, Zeilenabstand 1,5–1,6, linksbündig, kein Blocksatz, Zeilenlänge max. ca. 60 Zeichen (`ch`)
 - **Überschriften:** Merriweather (700/900)
 - **Akzent:** JetBrains Mono (400/700) – nur kurze Labels/Tags/Hinweise und Code, nie ganze Sätze
-- **Leichte Sprache:** Seiten bekommen `class="leichte-sprache"` am `<body>` → keine Akzentschrift, nur Merriweather + Open Sans
-- CSS-Variablen: `--schrift-text`, `--schrift-ueberschrift`, `--schrift-akzent`
+- **Handschrift:** Caveat (500, OFL, `assets/fonts/caveat-latin-500-normal.woff2`) – **nur** für kurze Notizen (Randnotiz, „mit Login", Datumsangaben in „Was ist neu?"), nie für Fließtext oder Überschriften
+- **Leichte Sprache:** Seiten bekommen `class="leichte-sprache"` am `<body>` → keine Akzent- und keine Handschrift (beide Variablen fallen auf Open Sans zurück), nur Merriweather + Open Sans
+- CSS-Variablen: `--schrift-text`, `--schrift-ueberschrift`, `--schrift-akzent`, `--schrift-hand`
 - Schriftdateien (WOFF2, Latin-Subset) liegen in `assets/fonts/`, Lizenzen (OFL) in `assets/fonts/lizenzen/`. **Nie** per Google-CDN laden. Neue Gewichte: Datei aus dem npm-Paket `@fontsource/<name>` holen und per `@font-face` in `css/style.css` ergänzen.
 - Hinweis: Kolosseum-CSS (`kolosseum/public/css/style.css`) hostet seine Schriften selbst in `kolosseum/public/fonts/` (Subdomain → eigene Kopien, kein CDN). Ältere Einzelseiten in `materialien/` laden teils noch Google Fonts (offen).
+
+### Design: Notizbuch (Stand 2026-11)
+Ziel: menschlich und ruhig statt „generiert" – Schreibtisch/Notizbuch eines Lehrers, nicht verspielt.
+- **Papier:** warmes Papier (`--farbe-papier` #fffdf7, Grund `--farbe-papier-grund` #f6f0e2); auf der Startseite (`body.startseite`) leises Karoraster im Hintergrund, keine weißen Wechselbänder.
+- **Karten:** dünne Linie (`--farbe-rahmen`) + Papierkante `--schatten-papier` (Hover `--schatten-papier-hoch`), Radius 2–4 px. **Keine** harten versetzten Schatten und keine dicken Tintenkonturen mehr – das gilt auch für die gemeinsame Kartenregel (`.material-karte`, `.fach-karte`, `.mat-card`, `.dm-karte`, `.portal-karte`, `.formular-box`), also auch auf Fachseiten.
+- **Gewichte statt Raster:** ein klarer Einstieg oben, Wichtiges größer (Karteikarte über zwei Zeilen), Nebensachen als Textliste. Leichte Drehung (±0,5°) nur bei Karteikarten/Notizzettel, auf Handy und bei `prefers-reduced-motion` aus.
+- **Emojis:** nicht in Überschriften, Kategorien, Badges oder Buttons der Startseite. Login-Hinweis als Handschrift-Notiz statt 🔒.
+- **Textmarker:** nur einmal pro Seite als bewusster Akzent (Startseite: der Name). `body.startseite .section-titel` hat keinen Marker; auf anderen Seiten besteht er vorerst weiter.
+- **Heftrand-Rot** `--farbe-heftrand`, Tinte `--farbe-tinte-blau` / `--farbe-tinte-rot` (nur für Handschrift-Notizen, Kontrast ≥ 7:1 geprüft).
+- CSS-Block „STARTSEITE – NOTIZBUCH" am Ende von `css/style.css` (Präfix `nb-`). Arena-Welt (`body.arena-welt`) bleibt im Fantasy-Look.
 
 ### CSS
 - **Kein Präprozessor** — reines CSS
@@ -698,12 +701,14 @@ Selbstlern-Lernpfad (6 Stationen) für die Informatikwerkstatt Jg. 7/8, verlinkt
 
 Dieser Assistent unterstützt Jan Herrmann und sein Kollegium dabei, hochgeladene Arbeitsblätter (PDF, Bild oder Text) in interaktive, eigenständige HTML-Dateien umzuwandeln.
 
-### „Was ist neu?" – so kommen Einträge hinein (Stand 2026-10)
+### „Was ist neu?" – so kommen Einträge hinein (Stand 2026-11)
 
-Acht Fenster: Neue Funktion · Quiz-Bestleistung · Avatar-Aufstieg · Neuer Gladiator · Blog (alle automatisch per Kolosseum-API)
-sowie Neue Arbeitsblätter · Neue Quizze · Neue Materialien.
+**Eine** kurze, datierte Liste (neueste zuerst, max. 8 Einträge, je Kategorie max. 3), Quellen: Neue Funktion (`neuigkeiten.json`),
+Arbeitsblätter/Quizze/Materialien (`inhalte.json` + Uploads), Blog, Quiz-Bestleistung, Avatar-Aufstieg, Neuer Gladiator (Kolosseum-API).
+Gibt es nichts, wird der Abschnitt ausgeblendet (kein „Noch nichts Neues").
 
-- **Neue Seitenfunktion:** Claude trägt sie bei jeder Änderung **selbst** oben in `neuigkeiten.json` ein (`titel`, `datum`, `meta`, `url`).
+- **Neue Seitenfunktion:** Claude trägt sie bei jeder Änderung **selbst** oben in `neuigkeiten.json` ein (`titel`, `datum`, `meta`, `url`) – **nur, was Schüler*innen, Eltern oder Kolleg*innen interessiert**, in verständlichen Worten (kein „migriert", keine px-Angaben).
+- **Technik-/Entwickler-Einträge** (Umbau, Engine, Layout-Details) bekommen `"intern": true` (oder `meta: "Technik"`) – sie bleiben als Protokoll in der Datei, werden aber nicht angezeigt.
 - **Neues Material/Quiz/Arbeitsblatt, das Claude ins Repo legt:** Claude trägt es **selbst** in `inhalte.json` ein (Typ wird aus Titel/Beschreibung erkannt: „Quiz/Rätsel/Rebus" → Quizze, „Arbeitsblatt/Lückentext" → Arbeitsblätter, sonst Materialien).
 - **Material, das Jan im Admin-Bereich hochlädt („Material hochladen"):** erscheint automatisch (Typ Arbeitsblatt/Quiz/Material); keine weitere Eingabe nötig.
 

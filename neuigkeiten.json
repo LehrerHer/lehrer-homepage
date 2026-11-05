@@ -1,35 +1,46 @@
 {
-  "_hinweis": "Neue Funktionen für die 'Was ist neu?'-Sektion. Neueste oben einfügen. Felder: titel, datum (JJJJ-MM-TT), meta (Bereich), url. Wird von js/was-ist-neu.js geladen; es werden automatisch die 5 jüngsten angezeigt.",
+  "_hinweis": "Einträge für die 'Was ist neu?'-Liste der Startseite. Neueste oben einfügen. Felder: titel, datum (JJJJ-MM-TT), meta (Bereich), url. Nur schreiben, was Schüler*innen, Eltern oder Kolleg*innen interessiert (neue Materialien, Quizze, Funktionen zum Benutzen). Technik-/Entwickler-Einträge bekommen \"intern\": true (oder meta \"Technik\") und werden nicht angezeigt. Wird von js/was-ist-neu.js geladen.",
   "funktionen": [
+    {
+      "titel": "Startseite neu gestaltet: ruhiger und übersichtlicher",
+      "datum": "2026-11-05",
+      "meta": "Startseite",
+      "url": "index.html"
+    },
     {
       "titel": "Auf großen Bildschirmen zeigt jetzt jede Unterseite links ein mitlaufendes Inhaltsverzeichnis ihrer Abschnitte",
       "datum": "2026-11-04",
       "meta": "Alle Seiten",
-      "url": "fach-deutsch.html"
+      "url": "fach-deutsch.html",
+      "intern": true
     },
     {
       "titel": "Quiz-Engine: alle Quizze migriert – Stilmittel, Literaturwissenschaft, Rechtschreibung, Lernquiz 5, Deutsch Sek I, Das Parfum, Satzglieder, Lehrer*innenrätsel und Monatsnamen-Rebus laufen jetzt auf js/quiz-engine.js",
       "datum": "2026-11-04",
       "meta": "Technik",
-      "url": "stilmittel-quiz.html"
+      "url": "stilmittel-quiz.html",
+      "intern": true
     },
     {
       "titel": "Startseite: Inhalt wieder 1200 px breit; auf großen Bildschirmen Inhaltsverzeichnis, Arena-Spalte und „Zuletzt benutzt“ am Rand",
       "datum": "2026-11-04",
       "meta": "Startseite",
-      "url": "index.html"
+      "url": "index.html",
+      "intern": true
     },
     {
       "titel": "Quiz-Engine: Masken-, Wintersport-, Fußball-Rebus- und die drei Stumme-Karten-Quizze migriert",
       "datum": "2026-11-04",
       "meta": "Technik",
-      "url": "fach-erdkunde.html"
+      "url": "fach-erdkunde.html",
+      "intern": true
     },
     {
       "titel": "Neue Quiz-Engine: Quizze bestehen nur noch aus einer JSON-Datei (MC, Bilderraten, stumme Karte, Lückentext)",
       "datum": "2026-11-04",
       "meta": "Technik",
-      "url": "materialien/deutsch_was-ist-prosa_9-10_2026-09.html"
+      "url": "materialien/deutsch_was-ist-prosa_9-10_2026-09.html",
+      "intern": true
     },
     {
       "titel": "Informatikwerkstatt: XP für Aufgaben, Teile und Checkpoints",
@@ -125,7 +136,8 @@
       "titel": "Materialien-Upload + dynamische Fachseiten",
       "datum": "2026-05-23",
       "meta": "Lernkolosseum",
-      "url": "kolosseum/public/admin/material-hochladen.html"
+      "url": "kolosseum/public/admin/material-hochladen.html",
+      "intern": true
     },
     {
       "titel": "Parfum-Lektürequiz (Jg. 10)",
@@ -137,7 +149,8 @@
       "titel": "Neue Navbar mit „Geschütztem Bereich“ auf allen Seiten",
       "datum": "2026-05-22",
       "meta": "Startseite",
-      "url": "index.html"
+      "url": "index.html",
+      "intern": true
     }
   ]
 }
