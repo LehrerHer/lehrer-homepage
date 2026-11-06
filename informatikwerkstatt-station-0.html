@@ -257,6 +257,27 @@
   .checkliste li { padding: 4px 0; }
   .checkliste input { width: 18px; height: 18px; vertical-align: -3px; margin-right: 6px; }
   .sort-zeile .ic { flex: 0 0 52px; height: 52px; display: flex; align-items: center; justify-content: center; background: var(--blau-zart); border-radius: 10px; }
+  /* === DRAG & DROP: Kategorien zuordnen === */
+  .dnd-ablage { display: flex; flex-wrap: wrap; gap: 8px; min-height: 52px; padding: 10px; margin: 8px 0 12px;
+    background: var(--blau-zart); border-radius: 10px; }
+  .dnd-chip { display: inline-flex; align-items: center; gap: 7px; border: 2px solid var(--blau); background: var(--weiss);
+    color: var(--blau); border-radius: 22px; padding: 6px 14px; font: inherit; font-size: 0.95rem; font-weight: 700;
+    cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none; }
+  .dnd-chip .kreis { width: 16px; height: 16px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.15); }
+  .dnd-chip.gewaehlt { background: var(--orange); border-color: var(--orange); }
+  .dnd-chip.zieht { position: fixed; z-index: 200; pointer-events: none; cursor: grabbing; box-shadow: 0 6px 16px rgba(30,58,95,0.3); }
+  .dnd-zeile { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 8px 6px; border-bottom: 1px dashed var(--rand); }
+  .dnd-block { flex: 1 1 230px; display: inline-block; background: #e6e9ef; color: var(--text); border: 1px solid #c4cad6;
+    border-radius: 6px; padding: 5px 12px; font-family: system-ui, sans-serif; font-weight: 600; }
+  .dnd-hut { border-radius: 16px 16px 6px 6px; }
+  .dnd-slot { flex: 0 0 190px; min-height: 42px; display: flex; align-items: center; justify-content: center; padding: 3px;
+    border: 2px dashed #9aa7bb; border-radius: 24px; background: var(--weiss); cursor: pointer; }
+  .dnd-slot:empty::before { content: "hier ablegen"; color: var(--grau); font-size: 0.85rem; }
+  .dnd-slot.ueber { border-color: var(--orange); background: var(--orange-zart); }
+  .dnd-slot .dnd-chip { margin: 0; }
+  .dnd-zeile.ok { background: #eaf6ee; } .dnd-zeile.ok .dnd-slot { border-style: solid; border-color: var(--gruen); }
+  .dnd-zeile.falsch { background: #fbeceb; } .dnd-zeile.falsch .dnd-slot { border-style: solid; border-color: var(--rot); }
+  @media (max-width: 520px) { .dnd-slot { flex-basis: 100%; } }
   .tab-ic { display: inline-flex; vertical-align: middle; margin-right: 8px; background: var(--blau-zart); border-radius: 8px; padding: 2px; }
   .tab-ic svg { width: 36px; height: 36px; }
   @media (max-width: 520px) { .eva .pfeil { display: none; } .sort-zeile .ic { flex-basis: 44px; height: 44px; } .sort-zeile .ic svg { width: 36px; height: 36px; } }
@@ -413,14 +434,16 @@
   </div>
 
   <h3><span class="badge b-basis">Basis</span>In welcher Kategorie liegt der Block?</h3>
-  <div class="werkzeug sortieren" data-xp-id="teil2-1" data-optionen="Bewegung|Aussehen|Klang|Ereignisse|Steuerung|Fühlen" data-farben="#4c97ff|#9966ff|#cf63cf|#ffbf00|#ffab19|#5cb1d6">
-    <div class="titel">Wähle für jeden Block die Kategorie, in der du ihn in Scratch findest. Es geht um den einzelnen Block, nicht um ein ganzes Skript.</div>
-    <div class="sort-zeile" data-richtig="0"><span>drehe dich um (15) Grad</span></div>
-    <div class="sort-zeile" data-richtig="3"><span>Wenn Taste (Leertaste) gedrückt wird</span></div>
-    <div class="sort-zeile" data-richtig="1"><span>sage (Hallo!)</span></div>
-    <div class="sort-zeile" data-richtig="4"><span>warte (1) Sekunden</span></div>
-    <div class="sort-zeile" data-richtig="2"><span>spiele Klang (Miau) ganz</span></div>
-    <div class="sort-zeile" data-richtig="5"><span>wird (Rand) berührt?</span></div>
+  <div class="werkzeug dnd" data-xp-id="teil2-1" data-optionen="Bewegung|Aussehen|Klang|Ereignisse|Steuerung|Fühlen" data-farben="#4c97ff|#9966ff|#cf63cf|#ffbf00|#ffab19|#5cb1d6">
+    <div class="titel">Zieh jede Kategorie zu dem Block, der in Scratch in dieser Kategorie liegt. Es geht um den einzelnen Block, nicht um ein ganzes Skript.</div>
+    <p class="hinweis-klein">Ohne Ziehen geht es auch: erst die Kategorie antippen, dann das Feld neben dem Block.</p>
+    <div class="dnd-ablage" aria-label="Kategorien zum Zuordnen"></div>
+    <div class="dnd-zeile" data-richtig="0"><span class="dnd-block">drehe dich um (15) Grad</span><span class="dnd-slot"></span></div>
+    <div class="dnd-zeile" data-richtig="3"><span class="dnd-block dnd-hut">Wenn Taste (Leertaste) gedrückt wird</span><span class="dnd-slot"></span></div>
+    <div class="dnd-zeile" data-richtig="1"><span class="dnd-block">sage (Hallo!)</span><span class="dnd-slot"></span></div>
+    <div class="dnd-zeile" data-richtig="4"><span class="dnd-block">warte (1) Sekunden</span><span class="dnd-slot"></span></div>
+    <div class="dnd-zeile" data-richtig="2"><span class="dnd-block">spiele Klang (Miau) ganz</span><span class="dnd-slot"></span></div>
+    <div class="dnd-zeile" data-richtig="5"><span class="dnd-block">wird (Rand) berührt?</span><span class="dnd-slot"></span></div>
     <p><button type="button" class="iw-btn leise" data-pruefen>Prüfen</button> <span class="rueck"></span></p>
   </div>
   <details><summary>Tipp</summary>Klick in Scratch auf die Farbkreise links. Dann siehst du, welche Blöcke in welcher Kategorie liegen.</details>
@@ -629,6 +652,105 @@
       if (offen) { rk.className = "rueck falsch"; rk.textContent = "Ordne erst alles zu (" + offen + " offen)."; return; }
       rk.className = "rueck " + (fehler ? "falsch" : "ok");
       rk.textContent = fehler ? fehler + (fehler === 1 ? " Zuordnung stimmt" : " Zuordnungen stimmen") + " noch nicht. Ändere die rot markierten." : "✓ Alles richtig!";
+      if (!fehler) xpGeloest(box, rk);
+    });
+  });
+
+  /* ---------- Drag & Drop: Kategorie zum Block ziehen (Maus, Finger oder Antippen) ---------- */
+  document.querySelectorAll(".werkzeug.dnd").forEach(function (box) {
+    var namen = box.dataset.optionen.split("|"), farben = box.dataset.farben.split("|");
+    var ablage = box.querySelector(".dnd-ablage"), rk = box.querySelector(".rueck");
+    var gewaehlt = null;
+    function zuruecksetzen() { box.querySelectorAll(".dnd-zeile").forEach(function (z) { z.classList.remove("ok", "falsch"); }); rk.textContent = ""; rk.className = "rueck"; }
+    function waehlen(chip) {
+      if (gewaehlt) gewaehlt.classList.remove("gewaehlt");
+      gewaehlt = (gewaehlt === chip) ? null : chip;
+      if (gewaehlt) gewaehlt.classList.add("gewaehlt");
+    }
+    function ablegen(chip, ziel) {
+      if (ziel.classList.contains("dnd-slot")) {
+        var alt = ziel.querySelector(".dnd-chip");
+        if (alt && alt !== chip) ablage.appendChild(alt);
+        ziel.appendChild(chip);
+        ziel.setAttribute("aria-label", "Gewählt: " + chip.dataset.name + ". Antippen zum Ändern.");
+      } else {
+        ablage.appendChild(chip);
+      }
+      box.querySelectorAll(".dnd-slot").forEach(function (sl) { if (!sl.querySelector(".dnd-chip")) sl.setAttribute("aria-label", "Leeres Feld. Antippen, um die gewählte Kategorie abzulegen."); });
+      if (gewaehlt) { gewaehlt.classList.remove("gewaehlt"); gewaehlt = null; }
+      zuruecksetzen();
+    }
+    namen.forEach(function (n, i) {
+      var c = document.createElement("button");
+      c.type = "button"; c.className = "dnd-chip"; c.dataset.wert = i; c.dataset.name = n;
+      c.innerHTML = '<i class="kreis" aria-hidden="true" style="background:' + farben[i] + '"></i>' + n;
+      ablage.appendChild(c);
+      var start = null, zieht = false, versatz = null;
+      c.addEventListener("pointerdown", function (e) {
+        if (e.button > 0) return;
+        start = { x: e.clientX, y: e.clientY }; zieht = false;
+        c.setPointerCapture(e.pointerId);
+      });
+      c.addEventListener("pointermove", function (e) {
+        if (!start) return;
+        if (!zieht && Math.abs(e.clientX - start.x) + Math.abs(e.clientY - start.y) < 8) return;
+        if (!zieht) {
+          zieht = true;
+          var r = c.getBoundingClientRect();
+          versatz = { x: start.x - r.left, y: start.y - r.top };
+          c.style.width = r.width + "px";
+          c.classList.add("zieht");
+        }
+        c.style.left = (e.clientX - versatz.x) + "px";
+        c.style.top = (e.clientY - versatz.y) + "px";
+        box.querySelectorAll(".dnd-slot").forEach(function (sl) { sl.classList.remove("ueber"); });
+        var unter = document.elementFromPoint(e.clientX, e.clientY);
+        var sl = unter && unter.closest(".dnd-slot");
+        if (sl && box.contains(sl)) sl.classList.add("ueber");
+      });
+      c.addEventListener("pointerup", function (e) {
+        if (!start) return;
+        start = null;
+        if (!zieht) return; // war ein Antippen → click-Ereignis übernimmt
+        c.classList.remove("zieht"); c.style.left = c.style.top = c.style.width = "";
+        box.querySelectorAll(".dnd-slot").forEach(function (sl) { sl.classList.remove("ueber"); });
+        var unter = document.elementFromPoint(e.clientX, e.clientY);
+        var ziel = unter && (unter.closest(".dnd-slot") || unter.closest(".dnd-ablage"));
+        if (ziel && box.contains(ziel)) ablegen(c, ziel);
+        c.dataset.geradeGezogen = "1";
+        setTimeout(function () { delete c.dataset.geradeGezogen; }, 0);
+      });
+      c.addEventListener("pointercancel", function () {
+        start = null; zieht = false;
+        c.classList.remove("zieht"); c.style.left = c.style.top = c.style.width = "";
+      });
+      c.addEventListener("click", function (e) {
+        e.stopPropagation();
+        if (c.dataset.geradeGezogen) return;
+        if (c.parentNode.classList.contains("dnd-slot")) { ablegen(c, ablage); return; } // im Feld antippen = zurück
+        waehlen(c);
+      });
+    });
+    box.querySelectorAll(".dnd-slot").forEach(function (sl) {
+      sl.setAttribute("role", "button"); sl.tabIndex = 0;
+      sl.setAttribute("aria-label", "Leeres Feld. Antippen, um die gewählte Kategorie abzulegen.");
+      function nehmen() { if (gewaehlt) ablegen(gewaehlt, sl); }
+      sl.addEventListener("click", nehmen);
+      sl.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); nehmen(); } });
+    });
+    box.querySelector("[data-pruefen]").addEventListener("click", function () {
+      var zeilen = box.querySelectorAll(".dnd-zeile"), offen = 0, fehler = 0;
+      zeilen.forEach(function (z) {
+        var chip = z.querySelector(".dnd-chip");
+        z.classList.remove("ok", "falsch");
+        if (!chip) { offen++; return; }
+        var ok = chip.dataset.wert === z.dataset.richtig;
+        if (!ok) fehler++;
+        z.classList.add(ok ? "ok" : "falsch");
+      });
+      if (offen) { rk.className = "rueck falsch"; rk.textContent = "Ordne erst alles zu (" + offen + " offen)."; return; }
+      rk.className = "rueck " + (fehler ? "falsch" : "ok");
+      rk.textContent = fehler ? fehler + (fehler === 1 ? " Zuordnung stimmt" : " Zuordnungen stimmen") + " noch nicht. Zieh die rot markierten um." : "✓ Alles richtig!";
       if (!fehler) xpGeloest(box, rk);
     });
   });
