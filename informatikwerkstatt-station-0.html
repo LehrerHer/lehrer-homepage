@@ -258,9 +258,9 @@
   .checkliste input { width: 18px; height: 18px; vertical-align: -3px; margin-right: 6px; }
   .sort-zeile .ic { flex: 0 0 52px; height: 52px; display: flex; align-items: center; justify-content: center; background: var(--blau-zart); border-radius: 10px; }
   .sort-wahl button .nummer { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px;
-    border-radius: 50%; background: var(--orange); color: var(--blau); font-style: normal; font-size: 0.85rem; font-weight: 700;
+    border-radius: 50%; background: var(--orange); color: #fff; font-style: normal; font-size: 0.85rem; font-weight: 700;
     margin: 0 7px 0 -6px; vertical-align: middle; }
-  .sort-wahl button[aria-pressed="true"] .nummer { background: var(--weiss); }
+  .sort-wahl button[aria-pressed="true"] .nummer { box-shadow: 0 0 0 2px var(--weiss); }
   /* === DRAG & DROP: Kategorien zuordnen === */
   .dnd-ablage { display: flex; flex-wrap: wrap; gap: 8px; min-height: 52px; padding: 10px; margin: 8px 0 12px;
     background: var(--blau-zart); border-radius: 10px; }
@@ -372,15 +372,16 @@
   <div class="praxis">
     <h3>💻 So geht's los</h3>
     <ul class="checkliste" id="praxisListe">
-      <li><label><input type="checkbox" data-id="oeffnen"> Öffne im <a class="gl" href="informatikwerkstatt-glossar.html#browser" data-gl="browser">Browser</a> <b>scratch.mit.edu</b>.</label></li>
+      <li><label><input type="checkbox" data-id="oeffnen"> Öffne im <a class="gl" href="informatikwerkstatt-glossar.html#browser" data-gl="browser">Browser</a> <a href="https://scratch.mit.edu/" target="_blank" rel="noopener"><b>scratch.mit.edu</b></a>. Der Link öffnet sich in einem neuen Tab.</label></li>
       <li><label><input type="checkbox" data-id="entwickeln"> Klick oben links auf <b>„Entwickeln“</b>. Du brauchst kein Konto.</label></li>
-      <li><label><input type="checkbox" data-id="sprache"> Ist alles auf Englisch? Klick oben auf die <b>Weltkugel</b> und wähle <b>Deutsch</b>.</label></li>
+      <li><label><input type="checkbox" data-id="sprache"> Ist alles auf Englisch? Klick oben auf das Zahnrad ⚙ <b>Settings</b>, dann auf 🌐 <b>Language</b> und wähle <b>Deutsch</b>.</label></li>
       <li><label><input type="checkbox" data-id="tab"> Lass diese Seite in einem zweiten <a class="gl" href="informatikwerkstatt-glossar.html#tab" data-gl="tab">Tab</a> offen. So kannst du hin- und herwechseln.</label></li>
     </ul>
   </div>
 
+  <p class="hinweis-klein">Probiere ruhig einfach ein paar Minuten Scratch aus, bevor du weitermachst.</p>
   <figure class="iw-bild">
-    <img src="img/informatikwerkstatt/scratch-oberflaeche.svg" width="640" height="380" loading="lazy" alt="Schaubild des Scratch-Fensters mit vier nummerierten Bereichen: 1 links die Blockpalette mit farbigen Kategorien, 2 in der Mitte der Skriptbereich mit zusammengesteckten Blöcken, 3 oben rechts die Bühne mit einer Figur, 4 unten rechts der Figurenbereich.">
+    <img src="img/informatikwerkstatt/scratch-oberflaeche.svg?v=20261106" width="640" height="380" loading="lazy" alt="Schaubild des Scratch-Fensters mit vier nummerierten Bereichen: 1 links die Blockpalette mit farbigen Kategorien, 2 in der Mitte der Skriptbereich mit zusammengesteckten Blöcken, 3 oben rechts die Bühne mit einer Figur, 4 unten rechts der Figurenbereich.">
     <figcaption>Die vier Bereiche von Scratch (vereinfacht)</figcaption>
   </figure>
 
@@ -392,7 +393,7 @@
   </ol>
 
   <h3><span class="badge b-basis">Basis</span>Wo findest du das?</h3>
-  <div class="werkzeug sortieren" data-xp-id="teil1-1" data-optionen="Blockpalette|Skriptbereich|Bühne|Figurenbereich" data-nummern="1">
+  <div class="werkzeug sortieren" data-xp-id="teil1-1" data-optionen="Blockpalette|Skriptbereich|Bühne|Figurenbereich" data-nummern="#0e8a8a|#c0392b|#2e8b3e|#5b6577">
     <div class="titel">Ordne jede Aussage dem richtigen Bereich zu. Die Nummern passen zum Bild oben.</div>
     <div class="sort-zeile" data-richtig="2"><span>Hier bewegt sich die Figur, wenn das Programm läuft.</span></div>
     <div class="sort-zeile" data-richtig="0"><span>Hier suche ich den Block, den ich brauche.</span></div>
@@ -630,6 +631,8 @@
           if (box.dataset.nummern) {
             var nr = document.createElement("i");
             nr.className = "nummer"; nr.textContent = i + 1; nr.setAttribute("aria-hidden", "true");
+            var nf = box.dataset.nummern.split("|")[i];
+            if (nf && nf.charAt(0) === "#") nr.style.background = nf;
             b.insertBefore(nr, b.firstChild);
             b.setAttribute("aria-label", (i + 1) + " " + o);
           }
