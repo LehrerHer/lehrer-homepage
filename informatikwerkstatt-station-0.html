@@ -257,6 +257,10 @@
   .checkliste li { padding: 4px 0; }
   .checkliste input { width: 18px; height: 18px; vertical-align: -3px; margin-right: 6px; }
   .sort-zeile .ic { flex: 0 0 52px; height: 52px; display: flex; align-items: center; justify-content: center; background: var(--blau-zart); border-radius: 10px; }
+  .sort-wahl button .nummer { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px;
+    border-radius: 50%; background: var(--orange); color: var(--blau); font-style: normal; font-size: 0.85rem; font-weight: 700;
+    margin: 0 7px 0 -6px; vertical-align: middle; }
+  .sort-wahl button[aria-pressed="true"] .nummer { background: var(--weiss); }
   /* === DRAG & DROP: Kategorien zuordnen === */
   .dnd-ablage { display: flex; flex-wrap: wrap; gap: 8px; min-height: 52px; padding: 10px; margin: 8px 0 12px;
     background: var(--blau-zart); border-radius: 10px; }
@@ -388,7 +392,7 @@
   </ol>
 
   <h3><span class="badge b-basis">Basis</span>Wo findest du das?</h3>
-  <div class="werkzeug sortieren" data-xp-id="teil1-1" data-optionen="1 · Blockpalette|2 · Skriptbereich|3 · Bühne|4 · Figurenbereich" data-auswahl="1">
+  <div class="werkzeug sortieren" data-xp-id="teil1-1" data-optionen="Blockpalette|Skriptbereich|Bühne|Figurenbereich" data-nummern="1">
     <div class="titel">Ordne jede Aussage dem richtigen Bereich zu. Die Nummern passen zum Bild oben.</div>
     <div class="sort-zeile" data-richtig="2"><span>Hier bewegt sich die Figur, wenn das Programm läuft.</span></div>
     <div class="sort-zeile" data-richtig="0"><span>Hier suche ich den Block, den ich brauche.</span></div>
@@ -623,6 +627,12 @@
         optionen.forEach(function (o, i) {
           var b = document.createElement("button");
           b.type = "button"; b.textContent = o; b.dataset.wert = i;
+          if (box.dataset.nummern) {
+            var nr = document.createElement("i");
+            nr.className = "nummer"; nr.textContent = i + 1; nr.setAttribute("aria-hidden", "true");
+            b.insertBefore(nr, b.firstChild);
+            b.setAttribute("aria-label", (i + 1) + " " + o);
+          }
           if (farben && farben[i]) {
             var k = document.createElement("i");
             k.className = "kreis"; k.style.background = farben[i]; k.setAttribute("aria-hidden", "true");
