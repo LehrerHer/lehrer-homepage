@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Station 0 – Erste Schritte in Scratch</title>
 <link rel="stylesheet" href="css/style.css?v=20261105c">
+<link rel="stylesheet" href="css/informatikwerkstatt.css?v=20261106">
 <style>
   :root {
     --blau: var(--farbe-primaer, #1e3a5f); --blau-hell: #1f3d6e; --blau-zart: #e9eef6;
@@ -307,9 +308,9 @@
 <header class="iw-kopf">
   <div class="iw-wrap">
     <a href="informatikwerkstatt.html">← zurück zum Lernpfad</a>
-    <div class="label mono">Station 0 von 7</div>
+    <div class="label mono">Station 0 · optional</div>
     <h1>Erste Schritte in Scratch</h1>
-    <p>Scratch ist dein Werkzeug für den ganzen Kurs. Hier lernst du, wie es funktioniert, baust dein erstes eigenes Programm und lädst es hoch.</p>
+    <p>Wenn du dich noch nicht mit Scratch auskennst, bekommst du hier eine kleine Einführung. Du lernst, wie Scratch funktioniert, baust dein erstes eigenes Programm und lädst es hoch. Kennst du Scratch schon, kannst du direkt mit Station 1 beginnen – und hier jederzeit etwas nachschlagen.</p>
   </div>
 </header>
 
@@ -346,10 +347,10 @@
   <div class="praxis">
     <h3>💻 So geht's los</h3>
     <ul class="checkliste" id="praxisListe">
-      <li><label><input type="checkbox" data-id="oeffnen"> Öffne im Browser <b>scratch.mit.edu</b>.</label></li>
+      <li><label><input type="checkbox" data-id="oeffnen"> Öffne im <a class="gl" href="informatikwerkstatt-glossar.html#browser" data-gl="browser">Browser</a> <b>scratch.mit.edu</b>.</label></li>
       <li><label><input type="checkbox" data-id="entwickeln"> Klick oben links auf <b>„Entwickeln“</b>. Du brauchst kein Konto.</label></li>
       <li><label><input type="checkbox" data-id="sprache"> Ist alles auf Englisch? Klick oben auf die <b>Weltkugel</b> und wähle <b>Deutsch</b>.</label></li>
-      <li><label><input type="checkbox" data-id="tab"> Lass diese Seite in einem zweiten Tab offen. So kannst du hin- und herwechseln.</label></li>
+      <li><label><input type="checkbox" data-id="tab"> Lass diese Seite in einem zweiten <a class="gl" href="informatikwerkstatt-glossar.html#tab" data-gl="tab">Tab</a> offen. So kannst du hin- und herwechseln.</label></li>
     </ul>
   </div>
 
@@ -360,14 +361,14 @@
 
   <ol>
     <li><b>Blockpalette:</b> Hier liegen alle Blöcke, nach Farben sortiert.</li>
-    <li><b>Skriptbereich:</b> Hierhin ziehst du die Blöcke und steckst sie zusammen. Das ist dein Programm (Skript).</li>
+    <li><b>Skriptbereich:</b> Hierhin ziehst du die Blöcke und steckst sie zusammen. So entstehen deine <a class="gl" href="informatikwerkstatt-glossar.html#skript" data-gl="skript">Skripte</a>. Zusammen ergeben sie dein <a class="gl" href="informatikwerkstatt-glossar.html#programm" data-gl="programm">Programm</a>.</li>
     <li><b>Bühne:</b> Hier siehst du, was dein Programm macht. Mit der <b>grünen Flagge</b> startest du, mit dem <b>roten Kreis</b> stoppst du.</li>
     <li><b>Figurenbereich:</b> Hier wählst du Figuren aus, fügst neue hinzu und siehst ihre Position.</li>
   </ol>
 
   <h3><span class="badge b-basis">Basis</span>Wo findest du das?</h3>
-  <div class="werkzeug sortieren" data-xp-id="teil1-1" data-optionen="Blockpalette|Skriptbereich|Bühne|Figurenbereich" data-auswahl="1">
-    <div class="titel">Ordne jede Aussage dem richtigen Bereich zu.</div>
+  <div class="werkzeug sortieren" data-xp-id="teil1-1" data-optionen="1 · Blockpalette|2 · Skriptbereich|3 · Bühne|4 · Figurenbereich" data-auswahl="1">
+    <div class="titel">Ordne jede Aussage dem richtigen Bereich zu. Die Nummern passen zum Bild oben.</div>
     <div class="sort-zeile" data-richtig="2"><span>Hier bewegt sich die Figur, wenn das Programm läuft.</span></div>
     <div class="sort-zeile" data-richtig="0"><span>Hier suche ich den Block, den ich brauche.</span></div>
     <div class="sort-zeile" data-richtig="1"><span>Hier stecke ich meine Blöcke zusammen.</span></div>
@@ -386,7 +387,7 @@
     <li><i style="background:#4c97ff"></i><b>Bewegung</b> – gehen, drehen, gleiten</li>
     <li><i style="background:#9966ff"></i><b>Aussehen</b> – sagen, Kostüm, Größe</li>
     <li><i style="background:#cf63cf"></i><b>Klang</b> – Töne abspielen</li>
-    <li><i style="background:#ffbf00"></i><b>Ereignisse</b> – wann ein Skript startet</li>
+    <li><i style="background:#ffbf00"></i><b>Ereignisse</b> – was ein Skript startet (z. B. Flagge, Taste)</li>
     <li><i style="background:#ffab19"></i><b>Steuerung</b> – warten, wiederholen, falls</li>
     <li><i style="background:#5cb1d6"></i><b>Fühlen</b> – Berührung, Tasten, Fragen</li>
     <li><i style="background:#59c059"></i><b>Operatoren</b> – rechnen, vergleichen</li>
@@ -411,9 +412,9 @@
     <p class="hinweis-klein">Einen Block wieder löschen: Zieh ihn zurück in die Blockpalette.</p>
   </div>
 
-  <h3><span class="badge b-basis">Basis</span>In welcher Kategorie suchst du?</h3>
-  <div class="werkzeug sortieren" data-xp-id="teil2-1" data-optionen="Bewegung|Aussehen|Klang|Ereignisse|Steuerung|Fühlen" data-auswahl="1">
-    <div class="titel">Wähle für jeden Block die Kategorie.</div>
+  <h3><span class="badge b-basis">Basis</span>In welcher Kategorie liegt der Block?</h3>
+  <div class="werkzeug sortieren" data-xp-id="teil2-1" data-optionen="Bewegung|Aussehen|Klang|Ereignisse|Steuerung|Fühlen" data-farben="#4c97ff|#9966ff|#cf63cf|#ffbf00|#ffab19|#5cb1d6">
+    <div class="titel">Wähle für jeden Block die Kategorie, in der du ihn in Scratch findest. Es geht um den einzelnen Block, nicht um ein ganzes Skript.</div>
     <div class="sort-zeile" data-richtig="0"><span>drehe dich um (15) Grad</span></div>
     <div class="sort-zeile" data-richtig="3"><span>Wenn Taste (Leertaste) gedrückt wird</span></div>
     <div class="sort-zeile" data-richtig="1"><span>sage (Hallo!)</span></div>
@@ -426,7 +427,7 @@
 
   <h3><span class="badge b-basis">Basis</span>Was passiert?</h3>
   <div class="werkzeug sortieren" data-xp-id="teil2-2" data-optionen="stimmt|stimmt nicht">
-    <div class="titel">Stimmt das?</div>
+    <div class="titel">Stimmt das? Wenn du unsicher bist: Probier es in Scratch aus und entscheide dann.</div>
     <div class="sort-zeile" data-richtig="1"><span>Ein Skript ohne Startblock läuft los, sobald man die grüne Flagge klickt.</span></div>
     <div class="sort-zeile" data-richtig="0"><span>Scratch führt die Blöcke eines Skripts von oben nach unten aus.</span></div>
     <div class="sort-zeile" data-richtig="0"><span>Mit dem roten Kreis über der Bühne hältst du alle Skripte an.</span></div>
@@ -454,11 +455,12 @@
   <p class="hinweis-klein">Probier das Skript aus. Steht die Figur beim Hin- und Herlaufen auf dem Kopf? Der Block <span class="blk blk-bewegung">setze Drehtyp auf (links-rechts)</span> hilft.</p>
 
   <h3>Wo ist die Figur? x und y</h3>
-  <p>Jeder Punkt auf der Bühne hat zwei Zahlen: <b>x</b> sagt, wie weit links oder rechts. <b>y</b> sagt, wie weit oben oder unten. Die Mitte ist x = 0 und y = 0.</p>
+  <p>Die Bühne ist ein <a class="gl" href="informatikwerkstatt-glossar.html#koordinatensystem" data-gl="koordinatensystem">Koordinatensystem</a>. Jeder Punkt auf der Bühne hat zwei Zahlen: <b>x</b> sagt, wie weit links oder rechts. <b>y</b> sagt, wie weit oben oder unten. Die Mitte ist x = 0 und y = 0.</p>
   <ul>
     <li>x reicht von <b>−240</b> (ganz links) bis <b>240</b> (ganz rechts).</li>
     <li>y reicht von <b>−180</b> (ganz unten) bis <b>180</b> (ganz oben).</li>
   </ul>
+  <p class="hinweis-klein">Du weißt noch nicht, was ein Koordinatensystem ist? <a href="informatikwerkstatt-koordinatensystem.html">Hier wird es Schritt für Schritt erklärt</a> – mit einer Bühne zum Ausprobieren. In Mathe begegnet es dir später wieder.</p>
   <p>Die aktuelle Position deiner Figur siehst du im Figurenbereich. Mit <span class="blk blk-bewegung">gehe zu x: (0) y: (0)</span> springt sie an eine bestimmte Stelle.</p>
 
   <h3><span class="badge b-basis">Basis</span>Rechne mit der Bühne</h3>
@@ -487,7 +489,8 @@
   <details><summary>Tipp 3: Den Rand bemerken</summary>Die Figur muss <i>ständig</i> prüfen, ob sie den Rand berührt. Du brauchst also eine Schleife, in der eine Frage steckt: <span class="blk blk-steuerung">falls &lt; &gt; dann</span> mit <span class="blk blk-fuehlen">wird (Rand) berührt?</span> darin.</details>
   <details><summary>Tipp 4: Hintergrund</summary>Klick unten rechts unter der Bühne auf „Bühnenbild wählen“.</details>
 
-  <h3><span class="badge b-profi">Extra</span>Wenn du schneller fertig bist</h3>
+  <h3><span class="badge b-profi">Extra</span>Wenn du magst</h3>
+  <p>Du willst dich herausfordern oder fühlst dich schon wie ein:e Expert:in? Dann probier eine dieser Ideen aus – jetzt oder später, wann immer du Lust hast.</p>
   <ul>
     <li>Füge eine zweite Figur hinzu, die man einsammeln kann. Berührt man sie, springt sie an eine zufällige Stelle (<span class="blk blk-bewegung">gehe zu (Zufallsposition)</span>).</li>
     <li>Lass beim Einsammeln einen Klang abspielen.</li>
@@ -506,7 +509,7 @@
     <ol>
       <li>Gib deinem Projekt oben in der Menüleiste einen Namen, z. B. „Erkundungstour Mia“.</li>
       <li>Klick auf <b>Datei → Auf deinem Computer speichern</b>.</li>
-      <li>Die Datei landet meist im Ordner „Downloads“. Sie endet auf <b>.sb3</b>.</li>
+      <li>Die Datei landet meist im Ordner „Downloads“. Ihre <a class="gl" href="informatikwerkstatt-glossar.html#dateiendung" data-gl="dateiendung">Dateiendung</a> ist <span class="dateiendung">.sb3</span>.</li>
       <li>Lade die Datei unten hoch. Dann kannst du sie nächste Woche hier wieder herunterladen – auch an einem anderen Computer.</li>
     </ol>
     <p><b>Weiterarbeiten:</b> In Scratch auf <b>Datei → Von deinem Computer hochladen</b> klicken und die .sb3-Datei wählen.</p>
@@ -514,15 +517,15 @@
 
   <div class="upload" id="upload">
     <h3>📤 Projekt abgeben</h3>
-    <p>Wähle deine .sb3-Datei aus und lade sie hoch. Deine Lernbegleitung kann sie dann öffnen. Lädst du später eine neue Version hoch, ersetzt sie die alte.</p>
-    <label for="sb3Datei" class="denk-label">Deine Scratch-Datei (.sb3):</label>
+    <p>Wähle deine Datei mit der Endung <span class="dateiendung">.sb3</span> aus und lade sie hoch. Deine Lernbegleitung kann sie dann öffnen. Lädst du später eine neue Version hoch, ersetzt sie die alte.</p>
+    <label for="sb3Datei" class="denk-label">Deine Scratch-Datei – sie endet auf <span class="dateiendung">.sb3</span> (<a class="gl" href="informatikwerkstatt-glossar.html#sb3" data-gl="sb3">Was heißt das?</a>):</label>
     <input type="file" id="sb3Datei" accept=".sb3">
     <div><button type="button" class="iw-btn" id="sb3Senden">Hochladen</button></div>
     <p class="upload-status" id="sb3Status" aria-live="polite"></p>
     <p id="sb3Mein" hidden>Gespeichert ist: <b id="sb3Name"></b> · <a id="sb3Laden" href="#">herunterladen</a></p>
   </div>
 
-  <p>Geschafft? Dann ist Station 0 erledigt. Im Lernpfad erscheint ein Häkchen. Weiter geht's mit <a href="informatikwerkstatt-station-1.html">Station 1</a>. Auf diese Seite kannst du jederzeit zurückkommen, wenn du etwas in Scratch nachschlagen willst.</p>
+  <p>Geschafft? Dann ist Station 0 erledigt und du bekommst 25 Bonus-XP. Im Lernpfad erscheint ein Häkchen. Weiter geht's mit <a href="informatikwerkstatt-station-1.html">Station 1</a>. Auf diese Seite kannst du jederzeit zurückkommen, wenn du etwas in Scratch nachschlagen willst.</p>
 </section>
 
 </main>
@@ -545,11 +548,16 @@
 
 
 <script src="js/informatik-login.js?v=20261106"></script>
+<script src="js/iw-glossar.js?v=20261106"></script>
+<script src="js/iw-puzzle.js?v=20261106"></script>
 <script>
 (function () {
 
   var STATION = 0;
   function profiNachPruefen() {}
+
+  /* ---------- Puzzle: ein Teil je gelöster Aufgabe, das letzte fürs Hochladen ---------- */
+  IwPuzzle.start(Array.prototype.map.call(document.querySelectorAll("[data-xp-id]"), function (el) { return el.dataset.xpId; }).concat(["upload"]));
 
   /* ---------- Selbstkontrolle (Textaufgaben, mehrere Lösungen mit |) ---------- */
   function normal(s) { return s.trim().toLowerCase().replace(/[\s.]/g, ""); }
@@ -574,6 +582,7 @@
   /* ---------- Sortieraufgaben (Knöpfe oder Auswahlliste) ---------- */
   document.querySelectorAll(".sortieren").forEach(function (box) {
     var optionen = box.dataset.optionen.split("|");
+    var farben = box.dataset.farben ? box.dataset.farben.split("|") : null;
     var liste = box.dataset.auswahl === "1";
     box.querySelectorAll(".sort-zeile").forEach(function (z) {
       var text = z.querySelector("span").textContent;
@@ -591,6 +600,11 @@
         optionen.forEach(function (o, i) {
           var b = document.createElement("button");
           b.type = "button"; b.textContent = o; b.dataset.wert = i;
+          if (farben && farben[i]) {
+            var k = document.createElement("i");
+            k.className = "kreis"; k.style.background = farben[i]; k.setAttribute("aria-hidden", "true");
+            b.insertBefore(k, b.firstChild);
+          }
           b.setAttribute("aria-pressed", "false");
           b.addEventListener("click", function () {
             w.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", x === b); });
@@ -663,6 +677,7 @@
   }
   function xpGeloest(el, rueck) {
     el.dataset.geloest = "1";
+    if (el.dataset.xpId) IwPuzzle.teil(el.dataset.xpId);
     if (!el.dataset.xpId || el.dataset.xpGemeldet) { teilPruefen(el); return; }
     el.dataset.xpGemeldet = "1";
     InformatikLogin.xpAufgabe(STATION, el.dataset.xpId).then(function (r) {
@@ -678,6 +693,7 @@
       if (z.xp.indexOf("a:" + STATION + ":" + el.dataset.xpId) < 0) return;
       el.dataset.geloest = "1";
       el.dataset.xpGemeldet = "1";
+      IwPuzzle.teil(el.dataset.xpId, true);
       var hin = document.createElement("span");
       hin.className = "xp-schon";
       hin.textContent = "✓ schon gelöst";
@@ -703,7 +719,7 @@
     document.getElementById("sb3Mein").hidden = false;
   }
   InformatikLogin.bereit.then(function (z) {
-    if (z.eingeloggt && z.scratch && z.scratch[STATION]) zeigeMein(z.scratch[STATION].name);
+    if (z.eingeloggt && z.scratch && z.scratch[STATION]) { zeigeMein(z.scratch[STATION].name); IwPuzzle.teil("upload", true); }
   });
   sendKnopf.addEventListener("click", function () {
     var datei = dateiFeld.files && dateiFeld.files[0];
@@ -720,6 +736,7 @@
         status.textContent = "✓ Hochgeladen. Deine Lernbegleitung kann dein Projekt jetzt öffnen.";
         if (r.xp > 0) xpPlus(status, "+" + r.xp + " XP");
         zeigeMein(r.name);
+        IwPuzzle.teil("upload");
       } else {
         status.className = "upload-status falsch";
         if (r.grund === "login") status.textContent = "Nicht hochgeladen: Du bist nicht angemeldet. Melde dich oben an.";

@@ -63,6 +63,10 @@
   <main class="container" style="padding-bottom:3rem">
     <h1 style="margin-top:1.5rem">Informatikwerkstatt 7/8 – Lernpfad</h1>
     <p class="text-soft">Bestes Checkpoint-Ergebnis je Station. Grün = geschafft (ab 70 %), orange = noch nicht. Darunter die Profi-Teile: <strong>★ selbst gelöst</strong>, <strong>👁 Lösung angesehen</strong> (mit Anzahl vorher selbst gelöster Aufgaben). Fehlversuche = falsche „Prüfen“-Klicks im Profi-Teil. Station 0 und Abschluss: hochgeladenes Scratch-Projekt (.sb3) zum Herunterladen – öffnen in Scratch über „Datei → Von deinem Computer hochladen“. Der Vorname ist nur hier sichtbar.</p>
+    <h2 style="margin-top:1.5rem">Abgaben (Scratch-Projekte)</h2>
+    <p class="text-soft">Alle hochgeladenen .sb3-Dateien, die neueste zuerst. Öffnen in Scratch über „Datei → Von deinem Computer hochladen“. Hinweis: Hochladen geht nur mit einem Lernpartner:innen-Konto, nicht mit dem Admin-Login.</p>
+    <div class="card" id="abgaben">Wird geladen …</div>
+    <h2 style="margin-top:2rem">Übersicht je Lernpartner:in</h2>
     <div class="card iw-tabelle-wrap" style="margin-top:1rem">
       <table class="iw-tabelle" id="tabelle"><tr><td>Wird geladen …</td></tr></table>
     </div>
@@ -119,6 +123,18 @@
             html += '</tr>';
           });
           tab.innerHTML = html;
+          var abg = [];
+          d.personen.forEach(function (p) {
+            (p.scratch || []).forEach(function (x) { abg.push({ p: p, x: x }); });
+          });
+          abg.sort(function (a, b) { return String(b.x.am).localeCompare(String(a.x.am)); });
+          document.getElementById('abgaben').innerHTML = abg.length
+            ? '<table class="iw-tabelle"><tr><th>Lernpartner:in</th><th>Station</th><th>Datum</th><th>Datei</th></tr>' + abg.map(function (a) {
+                return '<tr><td><strong>' + esc(a.p.vorname || a.p.nick) + '</strong></td><td>' + (a.x.station === 8 ? 'Abschluss' : 'Station ' + a.x.station) +
+                  '</td><td>' + datum(a.x.am) + '</td><td><a href="/api/informatik/admin/scratch/' + a.p.id + '/' + a.x.station + '" download>⬇ ' + esc(a.x.name) + '</a> <small>(' +
+                  Math.max(1, Math.round(a.x.groesse / 1024)) + ' KB)</small></td></tr>';
+              }).join('') + '</table>'
+            : 'Noch keine Abgaben.';
           var FRAGEN = { '1-t1-denk': 'Station 1 · Denkfrage Mensch als EVA-System', '2-t2-denk': 'Station 2 · Denkfrage Umlaute/Emojis', '3-t3-denk': 'Station 3 · Denkfrage Halbieren nur bei sortierten Daten', '4-t3-denk': 'Station 4 · Denkfrage Namen statt IP-Adressen / DNS-Ausfall', '5-t1-denk': 'Station 5 · Denkfrage Womit bezahlst du kostenlose Apps?', '6-t3-denk': 'Station 6 · Denkfrage Toaster steuern oder regeln', '7-t3-denk': 'Station 7 · Denkfrage Hund auf der Wiese, Katze auf dem Sofa' };
           var liste = [];
           d.personen.forEach(function (p) {
