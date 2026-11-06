@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Das Koordinatensystem – Informatikwerkstatt 7/8</title>
+<link rel="stylesheet" href="css/style.css?v=20261105c">
+<link rel="stylesheet" href="css/informatikwerkstatt.css?v=20261106">
+<style>
+  :root { --blau: var(--farbe-primaer, #1e3a5f); --blau-zart: #e9eef6; --orange: #f28c28; --orange-zart: #fff1e3;
+    --weiss: #fff; --text: #1b2433; --grau: #5b6577; --rand: #d5dce8; --gruen: #1e7a46; --rot: #b3261e; }
+  body { margin: 0; background: var(--weiss); color: var(--text); font-family: "Open Sans", system-ui, sans-serif; font-size: 17px; line-height: 1.55; }
+  h1, h2, h3 { font-family: "Merriweather", Georgia, serif; line-height: 1.25; }
+  .iw-wrap { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+  .iw-kopf { background: var(--blau); color: var(--weiss); padding: 28px 0 24px; border-bottom: 6px solid var(--orange); margin-top: 16px; }
+  .iw-kopf a { color: #d9e2f1; font-size: 0.9rem; text-decoration: none; }
+  .iw-kopf a:hover { text-decoration: underline; }
+  .iw-kopf .label { color: var(--orange); font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 14px; font-family: "JetBrains Mono", monospace; }
+  .iw-kopf h1 { margin: 4px 0 8px; font-size: 1.9rem; color: var(--weiss); }
+  .iw-kopf p { margin: 0; color: #d9e2f1; max-width: 620px; }
+  main { padding: 24px 0 48px; }
+  .iw-seite section { background: transparent; padding: 0; margin-bottom: 32px; }
+  h2 { color: var(--blau); font-size: 1.4rem; margin: 0 0 12px; }
+  h2::after { content: ""; display: block; width: 48px; height: 4px; background: var(--orange); margin-top: 8px; border-radius: 2px; }
+  p { margin: 0 0 12px; }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+  .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+  .ks-bild { margin: 14px 0 18px; }
+  .ks-bild svg { width: 100%; max-width: 340px; display: block; background: var(--weiss); border: 1px solid var(--rand); border-radius: 8px; }
+  .ks-bild figcaption { font-size: 0.9rem; color: var(--grau); margin-top: 6px; }
+  .ks-gitter line { stroke: var(--rand); stroke-width: 0.04; }
+  .ks-achse { stroke: var(--blau); stroke-width: 0.08; }
+  .ks-pfeil { fill: var(--blau); }
+  .ks-weg { fill: none; stroke: var(--orange); stroke-width: 0.12; stroke-dasharray: 0.3 0.2; }
+  .ks-punkt { fill: var(--orange); stroke: var(--blau); stroke-width: 0.08; }
+  .ks-t { font-size: 0.75px; font-weight: 700; fill: var(--blau); font-family: "Open Sans", sans-serif; }
+  .ks-k { font-size: 0.5px; fill: var(--grau); font-family: "Open Sans", sans-serif; }
+  .ks-zahl { font-size: 0.42px; fill: var(--grau); font-family: "Open Sans", sans-serif; }
+  .ks-mathe { background: var(--orange-zart); border-left: 5px solid var(--orange); border-radius: 0; padding: 10px 14px; }
+  .buehne-wrap svg { width: 100%; max-width: 560px; display: block; border: 2px solid var(--blau); border-radius: 8px; cursor: crosshair; touch-action: manipulation; }
+  .b-flaeche { fill: var(--weiss); }
+  .b-gitter line { stroke: var(--blau-zart); stroke-width: 1; }
+  .b-achse { stroke: var(--blau); stroke-width: 2; }
+  .b-t { font-size: 13px; fill: var(--grau); font-family: "Open Sans", sans-serif; }
+  .b-tipp { fill: var(--orange); stroke: var(--blau); stroke-width: 2; }
+  .b-ziel { fill: none; stroke: #1e7a46; stroke-width: 3; }
+  .b-anzeige { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 1.05rem; margin-top: 8px; }
+  .b-auftrag { font-size: 1.1rem; font-weight: 700; color: var(--blau); }
+  .b-auftrag .ok { color: var(--gruen); } .b-auftrag .falsch { color: var(--rot); font-weight: 400; }
+  .iw-btn { display: inline-block; border: 0; padding: 8px 14px; border-radius: 6px; font: inherit; font-weight: 600; cursor: pointer; background: var(--blau-zart); color: var(--blau); }
+</style>
+</head>
+<body class="iw-seite">
+<body class="iw-seite">
+<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+        <a href="index.html" class="navbar-logo" aria-label="Zur Startseite">
+            <img src="img/logo.svg" alt="" class="navbar-logo-img" width="47" height="38">
+            <span class="navbar-logo-text">lehrer-herrmann.de</span>
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Menü öffnen"
+                aria-expanded="false" aria-controls="navbar-links">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="navbar-links" id="navbar-links">
+            <li><a href="index.html#was-ist-neu" class="nav-item" data-tooltip="Was ist neu?">
+                <span class="nav-icon" aria-hidden="true">✨</span>
+                <span class="nav-label">Was ist neu?</span></a></li>
+            <li><a href="https://lehrer-herrmann.de/kontakt.html" class="nav-item" data-tooltip="Kontakt">
+                <span class="nav-icon" aria-hidden="true">✉️</span>
+                <span class="nav-label">Kontakt</span></a></li>
+            <li class="navbar-gb-trenner" aria-hidden="true">
+                <span class="navbar-gb-label">Geschützter Bereich</span>
+            </li>
+            <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="nav-item navbar-gb-link" data-tooltip="Arena – Gladiatorenkämpfe">
+                <span class="nav-icon" aria-hidden="true">⚔️</span>
+                <span class="nav-label">Arena</span></a></li>
+            <li><a href="blog.html" class="nav-item navbar-gb-link" data-tooltip="Schüler*innenblog">
+                <span class="nav-icon" aria-hidden="true">✍️</span>
+                <span class="nav-label">Blog</span></a></li>
+            <li class="navbar-dropdown">
+                <button class="navbar-dropdown-toggle navbar-gb-link nav-item" aria-expanded="false" aria-haspopup="true" data-tooltip="Fächer" aria-label="Fächer">
+                    <span class="nav-icon" aria-hidden="true">📚</span>
+                    <span class="nav-label">Fächer</span>
+                </button>
+                <ul class="navbar-dropdown-menu" role="menu">
+                    <li><a href="faecher.html" role="menuitem">Alle Fächer</a></li>
+                    <li><a href="fach-informatik.html" role="menuitem">Informatik</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+    </div>
+</nav>
+
+<header class="iw-kopf">
+  <div class="iw-wrap">
+    <a href="informatikwerkstatt-station-0.html#teil3">← zurück zu Station 0</a>
+    <div class="label">Informatikwerkstatt · Nachschlagen</div>
+    <h1>Das Koordinatensystem</h1>
+    <p>So beschreibst du mit zwei Zahlen genau, wo etwas ist – auf der Scratch-Bühne und später auch in Mathe.</p>
+  </div>
+</header>
+
+<main class="iw-wrap">
+
+<section>
+  <h2>Zwei Zahlenstrahlen</h2>
+  <p>Ein Koordinatensystem besteht aus zwei Zahlenstrahlen, die sich kreuzen:</p>
+  <ul>
+    <li>Die <b>x-Achse</b> liegt waagerecht. Nach rechts werden die Zahlen größer.</li>
+    <li>Die <b>y-Achse</b> steht senkrecht. Nach oben werden die Zahlen größer.</li>
+    <li>Wo sie sich kreuzen, ist der <b>Nullpunkt</b>. Dort sind x = 0 und y = 0.</li>
+  </ul>
+  <p>Links vom Nullpunkt und unterhalb davon geht es mit <b>negativen Zahlen</b> weiter: −1, −2, −3 …</p>
+
+  <figure class="ks-bild">
+    <svg viewBox="-6.5 -6.5 13 13" role="img" aria-labelledby="ks1-titel">
+      <title id="ks1-titel">Koordinatensystem von −5 bis 5. Der Punkt A liegt bei x = 3 und y = 2: drei Kästchen nach rechts, zwei nach oben.</title>
+      <g class="ks-gitter"></g>
+      <line x1="-6" y1="0" x2="6" y2="0" class="ks-achse"/><line x1="0" y1="6" x2="0" y2="-6" class="ks-achse"/>
+      <path d="M6 0 l-0.5 -0.3 v0.6 z M0 -6 l-0.3 0.5 h0.6 z" class="ks-pfeil"/>
+      <text x="6.1" y="0.9" class="ks-t">x</text><text x="0.35" y="-5.9" class="ks-t">y</text>
+      <path d="M0 0 H3 V-2" class="ks-weg"/>
+      <circle cx="3" cy="-2" r="0.28" class="ks-punkt"/><text x="3.35" y="-2.3" class="ks-t">A</text>
+      <text x="1.5" y="1.25" class="ks-k" text-anchor="middle">3 nach rechts</text>
+      <text x="3.25" y="-0.9" class="ks-k">2 hoch</text>
+    </svg>
+    <figcaption>Punkt A: Vom Nullpunkt 3 nach rechts (x = 3), dann 2 nach oben (y = 2).</figcaption>
+  </figure>
+
+  <p>Einen Punkt beschreibst du immer mit <b>zwei Zahlen</b>: zuerst x, dann y. Also: erst nach rechts oder links gehen, dann nach oben oder unten.</p>
+  <p class="ks-mathe"><b>In Mathe</b> schreibt man Punkt A oft so: <span class="mono">A(3|2)</span>. Gemeint ist dasselbe: x = 3, y = 2.</p>
+</section>
+
+<section>
+  <h2>Die Scratch-Bühne ist ein Koordinatensystem</h2>
+  <ul>
+    <li>Der Nullpunkt (x = 0, y = 0) liegt genau in der <b>Mitte</b> der Bühne.</li>
+    <li>x reicht von <b>−240</b> (ganz links) bis <b>240</b> (ganz rechts).</li>
+    <li>y reicht von <b>−180</b> (ganz unten) bis <b>180</b> (ganz oben).</li>
+  </ul>
+  <p>Tippe auf die Bühne. Du siehst, welche Koordinaten die Stelle hat.</p>
+
+  <div class="buehne-wrap">
+    <svg id="buehne" viewBox="-240 -180 480 360" role="application" aria-label="Scratch-Bühne zum Antippen. Zeigt die Koordinaten der angetippten Stelle.">
+      <rect x="-240" y="-180" width="480" height="360" class="b-flaeche"/>
+      <g class="b-gitter"></g>
+      <line x1="-240" y1="0" x2="240" y2="0" class="b-achse"/><line x1="0" y1="-180" x2="0" y2="180" class="b-achse"/>
+      <text x="232" y="-6" text-anchor="end" class="b-t">x</text><text x="6" y="-166" class="b-t">y</text>
+      <text x="-236" y="16" class="b-t">−240</text><text x="236" y="16" text-anchor="end" class="b-t">240</text>
+      <text x="6" y="174" class="b-t">−180</text><text x="6" y="-152" class="b-t">180</text>
+      <circle id="ziel" r="9" class="b-ziel" style="display:none"/>
+      <circle id="tipp" r="7" class="b-tipp" style="display:none"/>
+    </svg>
+    <p class="b-anzeige" id="anzeige" aria-live="polite">Tippe irgendwo auf die Bühne.</p>
+  </div>
+</section>
+
+<section>
+  <h2>Probier's aus</h2>
+  <p>Tippe auf die Bühne an die Stelle, die gesucht ist. Ein bisschen daneben ist in Ordnung.</p>
+  <p class="b-auftrag" id="auftrag"></p>
+  <p><button type="button" class="iw-btn leise" id="neu">Neue Aufgabe</button></p>
+</section>
+
+<p><a href="informatikwerkstatt-station-0.html#teil3">← zurück zu Station 0</a> · <a href="informatikwerkstatt-glossar.html">Glossar</a></p>
+
+</main>
+
+<footer>
+    <div class="container footer-inner">
+        <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+        <nav class="footer-links" aria-label="Rechtliche Links">
+            <a href="impressum.html">Impressum</a>
+            <a href="datenschutz.html">Datenschutz</a>
+        </nav>
+        <a href="https://kolosseum.lehrer-herrmann.de/admin/" id="admin-footer-link" class="admin-footer-link" aria-label="Admin-Bereich">⚙</a>
+    </div>
+</footer>
+<script src="js/main.js?v=20260615c"></script>
+<script src="js/seitenleisten.js"></script>
+<script src="js/kolosseum-login-widget.js"></script>
+<script src="js/iw-glossar.js?v=20261106"></script>
+<script>
+(function () {
+  'use strict';
+  var NS = 'http://www.w3.org/2000/svg';
+  function linie(g, x1, y1, x2, y2) { var l = document.createElementNS(NS, 'line'); l.setAttribute('x1', x1); l.setAttribute('y1', y1); l.setAttribute('x2', x2); l.setAttribute('y2', y2); g.appendChild(l); }
+
+  // Erklärbild: Gitter und Zahlen −5 … 5
+  var g1 = document.querySelector('.ks-gitter');
+  for (var i = -5; i <= 5; i++) {
+    linie(g1, i, -5.5, i, 5.5); linie(g1, -5.5, i, 5.5, i);
+    if (i !== 0) {
+      var tx = document.createElementNS(NS, 'text'); tx.setAttribute('class', 'ks-zahl'); tx.setAttribute('x', i); tx.setAttribute('y', 0.55); tx.setAttribute('text-anchor', 'middle'); tx.textContent = i; g1.appendChild(tx);
+      var ty = document.createElementNS(NS, 'text'); ty.setAttribute('class', 'ks-zahl'); ty.setAttribute('x', -0.25); ty.setAttribute('y', -i + 0.15); ty.setAttribute('text-anchor', 'end'); ty.textContent = i; g1.appendChild(ty);
+    }
+  }
+
+  // Bühne: Gitter alle 60 Schritte
+  var svg = document.getElementById('buehne'), g2 = svg.querySelector('.b-gitter');
+  for (var x = -180; x <= 180; x += 60) linie(g2, x, -180, x, 180);
+  for (var y = -120; y <= 120; y += 60) linie(g2, -240, y, 240, y);
+
+  var tipp = document.getElementById('tipp'), ziel = document.getElementById('ziel');
+  var anzeige = document.getElementById('anzeige'), auftrag = document.getElementById('auftrag');
+  var gesucht = null;
+
+  function z(n) { return String(n).replace('-', '−'); }
+  function neueAufgabe() {
+    gesucht = { x: Math.round((Math.random() * 400 - 200) / 10) * 10, y: Math.round((Math.random() * 300 - 150) / 10) * 10 };
+    auftrag.innerHTML = 'Tippe auf x = ' + z(gesucht.x) + ' und y = ' + z(gesucht.y) + '.';
+    ziel.style.display = "none";
+  }
+
+  svg.addEventListener('click', function (e) {
+    var pt = svg.createSVGPoint(); pt.x = e.clientX; pt.y = e.clientY;
+    var p = pt.matrixTransform(svg.getScreenCTM().inverse());
+    var bx = Math.max(-240, Math.min(240, Math.round(p.x))), by = Math.max(-180, Math.min(180, Math.round(-p.y)));
+    tipp.setAttribute('cx', bx); tipp.setAttribute('cy', -by); tipp.style.display = "";
+    anzeige.textContent = 'x = ' + z(bx) + '   y = ' + z(by);
+    if (!gesucht) return;
+    var abstand = Math.sqrt(Math.pow(bx - gesucht.x, 2) + Math.pow(by - gesucht.y, 2));
+    var text = 'Tippe auf x = ' + z(gesucht.x) + ' und y = ' + z(gesucht.y) + '. ';
+    if (abstand <= 20) {
+      auftrag.innerHTML = text + '<span class="ok">✓ Getroffen!</span>';
+      ziel.setAttribute('cx', gesucht.x); ziel.setAttribute('cy', -gesucht.y); ziel.style.display = "";
+      gesucht = null;
+    } else {
+      var hilfe = Math.abs(bx - gesucht.x) > 20 ? (bx < gesucht.x ? 'Weiter nach rechts.' : 'Weiter nach links.') : (by < gesucht.y ? 'Weiter nach oben.' : 'Weiter nach unten.');
+      auftrag.innerHTML = text + '<span class="falsch">Noch nicht. ' + hilfe + '</span>';
+    }
+  });
+  document.getElementById('neu').addEventListener('click', neueAufgabe);
+  neueAufgabe();
+})();
+</script>
+
+</body>
+</html>

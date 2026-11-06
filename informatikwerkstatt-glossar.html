@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glossar – Informatikwerkstatt 7/8</title>
+<link rel="stylesheet" href="css/style.css?v=20261105c">
+<link rel="stylesheet" href="css/informatikwerkstatt.css?v=20261106">
+<style>
+  :root { --blau: var(--farbe-primaer, #1e3a5f); --blau-zart: #e9eef6; --orange: #f28c28; --orange-zart: #fff1e3;
+    --weiss: #fff; --text: #1b2433; --grau: #5b6577; --rand: #d5dce8; --gruen: #1e7a46; --rot: #b3261e; }
+  body { margin: 0; background: var(--weiss); color: var(--text); font-family: "Open Sans", system-ui, sans-serif; font-size: 17px; line-height: 1.55; }
+  h1, h2, h3 { font-family: "Merriweather", Georgia, serif; line-height: 1.25; }
+  .iw-wrap { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+  .iw-kopf { background: var(--blau); color: var(--weiss); padding: 28px 0 24px; border-bottom: 6px solid var(--orange); margin-top: 16px; }
+  .iw-kopf a { color: #d9e2f1; font-size: 0.9rem; text-decoration: none; }
+  .iw-kopf a:hover { text-decoration: underline; }
+  .iw-kopf .label { color: var(--orange); font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; margin-top: 14px; font-family: "JetBrains Mono", monospace; }
+  .iw-kopf h1 { margin: 4px 0 8px; font-size: 1.9rem; color: var(--weiss); }
+  .iw-kopf p { margin: 0; color: #d9e2f1; max-width: 620px; }
+  main { padding: 24px 0 48px; }
+  .iw-seite section { background: transparent; padding: 0; margin-bottom: 32px; }
+  h2 { color: var(--blau); font-size: 1.4rem; margin: 0 0 12px; }
+  h2::after { content: ""; display: block; width: 48px; height: 4px; background: var(--orange); margin-top: 8px; border-radius: 2px; }
+  p { margin: 0 0 12px; }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+  .gl-liste { margin: 0; }
+  .gl-eintrag { border-bottom: 1px solid var(--rand); padding: 12px 0; scroll-margin-top: 110px; }
+  .gl-eintrag dt { font-family: "Merriweather", Georgia, serif; font-weight: 700; color: var(--blau); font-size: 1.1rem; }
+  .gl-eintrag dd { margin: 4px 0 0; }
+  .gl-eintrag dd p { margin: 0 0 6px; }
+  .gl-markiert { background: var(--orange-zart); border-left: 5px solid var(--orange); padding-left: 12px; }
+</style>
+</head>
+<body class="iw-seite">
+<body class="iw-seite">
+<nav class="navbar" role="navigation" aria-label="Hauptnavigation">
+    <div class="container navbar-inner">
+        <a href="index.html" class="navbar-logo" aria-label="Zur Startseite">
+            <img src="img/logo.svg" alt="" class="navbar-logo-img" width="47" height="38">
+            <span class="navbar-logo-text">lehrer-herrmann.de</span>
+        </a>
+        <button class="hamburger" id="hamburger" aria-label="Menü öffnen"
+                aria-expanded="false" aria-controls="navbar-links">
+            <span></span><span></span><span></span>
+        </button>
+        <ul class="navbar-links" id="navbar-links">
+            <li><a href="index.html#was-ist-neu" class="nav-item" data-tooltip="Was ist neu?">
+                <span class="nav-icon" aria-hidden="true">✨</span>
+                <span class="nav-label">Was ist neu?</span></a></li>
+            <li><a href="https://lehrer-herrmann.de/kontakt.html" class="nav-item" data-tooltip="Kontakt">
+                <span class="nav-icon" aria-hidden="true">✉️</span>
+                <span class="nav-label">Kontakt</span></a></li>
+            <li class="navbar-gb-trenner" aria-hidden="true">
+                <span class="navbar-gb-label">Geschützter Bereich</span>
+            </li>
+            <li><a href="https://kolosseum.lehrer-herrmann.de/profil.html" class="nav-item navbar-gb-link" data-tooltip="Arena – Gladiatorenkämpfe">
+                <span class="nav-icon" aria-hidden="true">⚔️</span>
+                <span class="nav-label">Arena</span></a></li>
+            <li><a href="blog.html" class="nav-item navbar-gb-link" data-tooltip="Schüler*innenblog">
+                <span class="nav-icon" aria-hidden="true">✍️</span>
+                <span class="nav-label">Blog</span></a></li>
+            <li class="navbar-dropdown">
+                <button class="navbar-dropdown-toggle navbar-gb-link nav-item" aria-expanded="false" aria-haspopup="true" data-tooltip="Fächer" aria-label="Fächer">
+                    <span class="nav-icon" aria-hidden="true">📚</span>
+                    <span class="nav-label">Fächer</span>
+                </button>
+                <ul class="navbar-dropdown-menu" role="menu">
+                    <li><a href="faecher.html" role="menuitem">Alle Fächer</a></li>
+                    <li><a href="fach-informatik.html" role="menuitem">Informatik</a></li>
+                </ul>
+            </li>
+        </ul>
+        <div id="kolosseum-widget" aria-label="Kolosseum-Anmeldung" style="display:none"></div>
+    </div>
+</nav>
+
+<header class="iw-kopf">
+  <div class="iw-wrap">
+    <a href="informatikwerkstatt.html">← zurück zum Lernpfad</a>
+    <div class="label">Informatikwerkstatt · Nachschlagen</div>
+    <h1>Glossar</h1>
+    <p>Hier stehen schwierige Wörter aus den Stationen – kurz erklärt. In den Stationen erkennst du sie am Sternchen*. Tippst du darauf, erscheint die Erklärung direkt dort.</p>
+  </div>
+</header>
+
+<main class="iw-wrap">
+  <dl class="gl-liste" id="glossar-liste"><dt>Wird geladen …</dt></dl>
+  <noscript><p>Das Glossar braucht JavaScript.</p></noscript>
+  <p><a href="informatikwerkstatt.html">← zurück zum Lernpfad</a></p>
+</main>
+
+<footer>
+    <div class="container footer-inner">
+        <p>© <span id="footer-jahr">2026</span> Jan Herrmann</p>
+        <nav class="footer-links" aria-label="Rechtliche Links">
+            <a href="impressum.html">Impressum</a>
+            <a href="datenschutz.html">Datenschutz</a>
+        </nav>
+        <a href="https://kolosseum.lehrer-herrmann.de/admin/" id="admin-footer-link" class="admin-footer-link" aria-label="Admin-Bereich">⚙</a>
+    </div>
+</footer>
+<script src="js/main.js?v=20260615c"></script>
+<script src="js/seitenleisten.js"></script>
+<script src="js/kolosseum-login-widget.js"></script>
+<script src="js/iw-glossar.js?v=20261106"></script>
+</body>
+</html>

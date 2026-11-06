@@ -703,6 +703,16 @@ Selbstlern-Lernpfad (7 Stationen) für die Informatikwerkstatt Jg. 7/8, verlinkt
   Jeder Block darüber hinaus wird beim ersten Vorkommen in einem Kasten `.neu-scratch` („📘 Neu in Scratch“) erklärt
   (Station 1: frage/Antwort/verbinde · 2: Malstift, Variablen, falls…sonst, Zeichen von · 3: Zufallszahl, wiederhole bis, Vergleiche ·
   4: Nachrichten, verstecke/zeige dich, gleite · 5: Länge von, mod · 6: Lautstärke, Effekt Helligkeit · 7: enthält, Listen). Neue Stationen ebenso.
+- **Gemeinsame Stile (seit 2026-11-06):** `css/informatikwerkstatt.css` auf allen `informatikwerkstatt*.html` nach `style.css` einbinden
+  (Listen-Einzug – der globale Reset ließ Nummern über den Kastenrand hängen –, Teile-Leiste unter der Navbar, Glossar, Puzzle, `.dateiendung`).
+- **Glossar:** `js/iw-glossar.js` enthält die EINE Begriffsliste (`BEGRIFFE`). Begriff im Text: `<a class="gl" href="informatikwerkstatt-glossar.html#tab" data-gl="tab">Tab</a>`
+  → Sternchen, Antippen öffnet ein Erklärfenster an Ort und Stelle; `informatikwerkstatt-glossar.html` listet alle A–Z (verlinkt unten auf dem Lernpfad).
+  Neue schwierige Wörter in Stationen so markieren und in `BEGRIFFE` ergänzen.
+- **Puzzle:** `js/iw-puzzle.js` – `IwPuzzle.start([...Schlüssel])`, `IwPuzzle.teil(schluessel)`; sitzt links in der Teile-Leiste, je gelöster Aufgabe ein Teil (bisher Station 0).
+- **Unterseite:** `informatikwerkstatt-koordinatensystem.html` (x/y, Scratch-Bühne zum Antippen, Mathe-Schreibweise A(3|2)).
+- **Station 0 ist optional** (Lernpfad: gestrichelt, Badge „optional“, 25 Bonus-XP fürs Hochladen). Wording: keine Tempo-Formulierungen
+  („schneller fertig“), stattdessen „Wenn du magst / dich herausfordern willst / dich schon wie ein:e Expert:in fühlst“.
+- **Sortieraufgaben mit Farbkreisen:** `data-farben="#hex|…"` (parallel zu `data-optionen`, nur Knopf-Modus ohne `data-auswahl`).
 - **XP-Leiste:** Stationsseiten binden `js/arena-bar.js` ein. `informatik-login.js` meldet jede Gutschrift per
   `window.dispatchEvent(new CustomEvent('kolosseum:xp', {detail:{xp}}))`; die Leiste zählt live mit und zeigt kurz „+n XP“.
   Andere Seiten können dasselbe Event nutzen.
