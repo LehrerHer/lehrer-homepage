@@ -301,6 +301,8 @@ GESCHLOSSEN (Login via Kolosseum-Account erforderlich)
     ├── Rangliste (kolosseum/public/rangliste.html)
     ├── Charakter · Quiz · Quiz-Spiel · Kampf · Shop (kolosseum/public/)
     └── Admin-Ebene (kolosseum/public/admin/) ← Zugang nur via verstecktem Footer-Link
+        │   EINE Admin-Leiste für alle Admin-Seiten: kolosseum/public/js/admin-nav.js (direkt nach der alten
+        │   <nav class="admin-nav"> einbinden; ersetzt sie, klebt unter der Navbar). Neue Admin-Seite → nur EINTRAEGE ergänzen.
         ├── index · dashboard · quiz · schueler · leseabenteuer
         ├── Einladungslink erstellen · Material hochladen · Manuelle XP-Vergabe
 ```
