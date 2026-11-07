@@ -75,6 +75,7 @@ lehrer-homepage/
 ├── js/
 │   ├── quiz-engine.js        # gemeinsame Quiz-Engine (rendert alles aus der JSON)
 │   ├── main.js               # Navbar/Footer-Umbau
+│   ├── seitenleisten.js      # Inhaltsverzeichnis/Arena-Spalte auf großen Bildschirmen
 │   ├── kolosseum-login-widget.js
 │   ├── api-config.js · leaderboard.js   # Bestenliste
 │   ├── kolosseum-prompt.js   # XP-Meldung an das Kolosseum
@@ -150,7 +151,7 @@ Datei: `materialien/<fach>_<thema>_<klasse>_<JJJJ-MM>.html` – z. B. `geschicht
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><Kurztitel> – Quiz – lehrer-herrmann.de</title>
-<link rel="stylesheet" href="/css/style.css?v=<aktuelle Version, setzt Claude Code>">
+<link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
 <main>
@@ -158,6 +159,7 @@ Datei: `materialien/<fach>_<thema>_<klasse>_<JJJJ-MM>.html` – z. B. `geschicht
 </main>
 <script src="/js/quiz-engine.js"></script>
 <script src="/js/main.js?v=20260615c"></script>
+<script src="/js/seitenleisten.js"></script>
 <script src="/js/kolosseum-login-widget.js"></script>
 <script src="/js/api-config.js"></script>
 <script src="/js/leaderboard.js"></script>
@@ -166,7 +168,9 @@ Datei: `materialien/<fach>_<thema>_<klasse>_<JJJJ-MM>.html` – z. B. `geschicht
 </html>
 ```
 
-Wichtig: `quiz-engine.js` steht **vor** `main.js`.
+Wichtig:
+- `quiz-engine.js` steht **vor** `main.js`, `seitenleisten.js` direkt **nach** `main.js` (immer mit aufnehmen).
+- Den CSS-Link **ohne** `?v=…` ausgeben – die aktuelle Cache-Version ergänzt Claude Code beim Einbauen.
 
 ### 3.2 Geschütztes Quiz (Login, optional Geheimlink)
 
@@ -482,6 +486,7 @@ Bestenliste oft schon registriert.
 - [ ] jede Frage hat eine `erklaerung`
 - [ ] `fragen`-Höchstzahl richtig berechnet (4.7)
 - [ ] `zurueck.url` zeigt auf die passende Fachseite
+- [ ] Hülle: CSS-Link ohne `?v=…`, `seitenleisten.js` nach `main.js` enthalten
 
 ---
 
