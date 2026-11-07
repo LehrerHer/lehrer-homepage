@@ -44,6 +44,7 @@ const FRAGEN_QUIZZE = {
   'wintersport-legenden':              { fragen: 12, label: 'Wintersport-Legenden' },           // Quiz-Engine (bilder)
   'monatsnamen-rebus':                 { fragen: 15, label: 'Monatsnamen-Rebus' },              // Quiz-Engine (bilder, 12 + Abschlussfrage ×3)
   'deutsch-das-parfum':                { fragen: 25, label: 'Das Parfum – Lektürequiz' },       // Quiz-Engine (fragen)
+  'informatik-grundlagen':             { fragen: 20, label: 'Informatik – Grundlagen' },        // Quiz-Engine (fragen)
   'deutsch-satzglieder-kl4':           { fragen: 26, label: 'Satzglieder & Zeitformen (Kl. 4)' }, // 12 + 4 + 8 + 2 Einzelaufgaben
   'lehrer-rebus':                      { fragen: 48, label: 'Lehrer-Rebus' },
   'erdkunde-bundeslaender':            { fragen: 16, label: 'Stumme Karte: Bundesländer' },

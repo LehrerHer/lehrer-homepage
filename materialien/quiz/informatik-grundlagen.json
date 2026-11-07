@@ -1,0 +1,164 @@
+{
+  "slug": "informatik-grundlagen",
+  "typ": "fragen",
+  "titel": "Informatik – Grundlagen 💻",
+  "untertitel": "Fach: Informatik · Klasse 5–8 · 20 Fragen",
+  "fach": "informatik",
+  "zurueck": { "url": "/fach-informatik.html", "text": "Zurück zu Informatik" },
+  "intro": [
+    "Teste dein Wissen quer durch die Informatik: <strong>Scratch, EVA-Prinzip, Bits und Bytes, Algorithmen, Internet, Sicherheit, Steuern &amp; Regeln und KI</strong>.",
+    "Nach jeder Antwort bekommst du eine kurze Erklärung. Viel Erfolg!"
+  ],
+  "bewertung": [
+    { "ab": 100, "text": "🏆 Perfekt! Du bist ein echtes Informatik-Ass." },
+    { "ab": 80, "text": "🚀 Sehr stark! Nur noch ein paar Kleinigkeiten." },
+    { "ab": 60, "text": "👍 Gut gemacht! Lies dir die Erklärungen zu den Fehlern noch einmal durch." },
+    { "ab": 40, "text": "🔧 Ein guter Anfang. Wiederhole die Themen und versuch es noch einmal." },
+    { "ab": 0, "text": "💡 Nicht aufgeben! Schau dir die Erklärungen an – beim nächsten Mal klappt es besser." }
+  ],
+  "design": { "thema": "hell" },
+  "mischen": false,
+  "optionenMischen": true,
+  "fragen": [
+    {
+      "badge": "Scratch",
+      "frage": "Die Scratch-Katze soll „Hallo!“ sagen. In welcher Kategorie liegt der Block dafür?",
+      "optionen": ["Bewegung", "Aussehen", "Klang", "Ereignisse"],
+      "richtig": 1,
+      "erklaerung": "Sprechblasen-Blöcke wie „sage Hallo!“ liegen in der Kategorie „Aussehen“. „Klang“ spielt Töne ab, gibt aber keine Sprechblase aus."
+    },
+    {
+      "badge": "Scratch",
+      "frage": "Hoppla, ein Block zu viel im Skript! Wie wirst du ihn wieder los?",
+      "optionen": ["Dreimal auf die grüne Flagge klicken", "Auf den roten Stopp-Knopf drücken", "Den Block zurück in die Blockpalette ziehen", "Scratch schließen und neu öffnen"],
+      "richtig": 2,
+      "erklaerung": "Ziehst du einen Block zurück in die Blockpalette, wird er gelöscht. Flagge und Stopp-Knopf starten oder beenden nur das Programm – sie verändern das Skript nicht."
+    },
+    {
+      "badge": "Computer",
+      "frage": "In welchem Gerät steckt <strong>kein</strong> kleiner Computer?",
+      "optionen": ["Smartwatch", "Waschmaschine mit Programmwahl", "Taschenrechner", "Fahrrad"],
+      "richtig": 3,
+      "erklaerung": "Ein normales Fahrrad funktioniert ganz ohne Elektronik. Smartwatch, Waschmaschine mit Programmwahl und Taschenrechner haben einen kleinen Computer (Mikrocontroller) eingebaut."
+    },
+    {
+      "badge": "EVA-Prinzip",
+      "frage": "Auch du arbeitest ungefähr nach dem EVA-Prinzip. Was ist bei dir die <strong>Verarbeitung</strong>?",
+      "optionen": ["Deine Augen", "Dein Gehirn", "Dein Mund", "Deine Hände"],
+      "richtig": 1,
+      "erklaerung": "EVA = Eingabe, Verarbeitung, Ausgabe. Die Augen nehmen etwas auf (Eingabe), das Gehirn verarbeitet es, Mund und Hände geben etwas aus (Ausgabe)."
+    },
+    {
+      "badge": "Bits & Bytes",
+      "frage": "Jeder Finger ist ein Bit. Bis zu welcher Zahl kannst du mit einer Hand zählen?",
+      "optionen": ["5", "10", "31", "100"],
+      "richtig": 2,
+      "erklaerung": "Die fünf Finger stehen für die Werte 1, 2, 4, 8 und 16. Alle Finger oben ergeben 1 + 2 + 4 + 8 + 16 = 31. Mit allen Fingern unten (0) gibt es 32 Möglichkeiten: 0 bis 31."
+    },
+    {
+      "badge": "Bits & Bytes",
+      "frage": "Geheimbotschaft im ASCII-Code: <strong>72 65 76 76 79</strong>. Was steht da?",
+      "optionen": ["HELLO", "HALLO", "HILFE", "LOLLI"],
+      "richtig": 1,
+      "erklaerung": "72 = H, 65 = A, 76 = L, 76 = L, 79 = O → HALLO. Für HELLO müsste an zweiter Stelle 69 (E) stehen."
+    },
+    {
+      "badge": "Bits & Bytes",
+      "frage": "Wie groß ist ein Handyfoto meistens?",
+      "optionen": ["Ein paar Bit", "Ein paar Kilobyte", "Ein paar Megabyte", "Ein paar Terabyte"],
+      "richtig": 2,
+      "erklaerung": "Ein Handyfoto hat meist einige Megabyte. Ein paar Bit oder Kilobyte reichen für so viele Bildpunkte nicht, ein Terabyte ist so viel wie eine ganze große Festplatte."
+    },
+    {
+      "badge": "Algorithmen",
+      "frage": "In einem Nudelrezept steht: „Warten, bis sie fertig sind.“ Welche Eigenschaft eines Algorithmus fehlt hier?",
+      "optionen": ["eindeutig", "endlich", "lecker", "ausführbar"],
+      "richtig": 0,
+      "erklaerung": "„Fertig“ ist nicht eindeutig – wann genau ist das? Eine eindeutige Anweisung wäre zum Beispiel: „8 Minuten kochen lassen.“"
+    },
+    {
+      "badge": "Algorithmen",
+      "frage": "Zahlenraten von 1 bis 100, und du halbierst jedes Mal geschickt. Spätestens beim wievielten Versuch triffst du?",
+      "optionen": ["beim 7.", "beim 10.", "beim 50.", "beim 100."],
+      "richtig": 0,
+      "erklaerung": "Jeder Versuch halbiert die Möglichkeiten ungefähr. 6 Halbierungen reichen für 64 Zahlen, 7 Halbierungen für 128 Zahlen – bei 100 Zahlen genügen also spätestens 7 Versuche."
+    },
+    {
+      "badge": "Algorithmen",
+      "frage": "Warum heißt Bubblesort „Bubble“-Sort?",
+      "optionen": ["Weil es in einer Sprudelfabrik erfunden wurde", "Weil die größte Zahl wie eine Blase nach oben steigt", "Weil die Zahlen am Ende platzen", "Weil man dabei Kaugummi kauen soll"],
+      "richtig": 1,
+      "erklaerung": "Bubblesort vergleicht immer zwei Nachbarn und tauscht sie, wenn sie falsch herum stehen. So wandert die größte Zahl bei jedem Durchgang wie eine Luftblase im Wasser nach oben ans Ende."
+    },
+    {
+      "badge": "Internet",
+      "frage": "Jemand sagt: „Das Internet ist ein riesiger Computer irgendwo in Amerika.“ Was stimmt wirklich?",
+      "optionen": ["Stimmt, er steht in einem Keller", "Das Internet ist das WLAN vom Router", "Das Internet ist ein weltweiter Verbund aus vielen Netzwerken", "Das Internet ist nur ein anderes Wort für das WWW"],
+      "richtig": 2,
+      "erklaerung": "Das Internet verbindet weltweit sehr viele Netzwerke miteinander. Das WLAN ist nur deine Verbindung zum Router, und das WWW (die Webseiten) ist nur ein Dienst, der das Internet nutzt."
+    },
+    {
+      "badge": "Internet",
+      "frage": "Womit lässt sich das DNS am besten vergleichen?",
+      "optionen": ["Mit einem Postboten auf dem Fahrrad", "Mit der Kontaktliste im Handy", "Mit einem Virenscanner", "Mit einem Ladekabel"],
+      "richtig": 1,
+      "erklaerung": "Das DNS übersetzt Namen wie lehrer-herrmann.de in IP-Adressen (Zahlen). Genauso findet die Kontaktliste zu einem Namen die passende Telefonnummer."
+    },
+    {
+      "badge": "Internet",
+      "frage": "Im Restaurant-Vergleich bestellst du, und die Küche liefert. Was ist die Küche?",
+      "optionen": ["Der Client", "Der Router", "Der Server", "Das Datenpaket"],
+      "richtig": 2,
+      "erklaerung": "Du bestellst – du bist der Client. Die Küche bearbeitet die Bestellung und liefert – das ist der Server."
+    },
+    {
+      "badge": "Sicherheit",
+      "frage": "Lena freut sich auf zwei Wochen Italien. Wann postet sie ihre Urlaubsfotos am besten?",
+      "optionen": ["Vorher, damit alle Bescheid wissen", "Währenddessen, live vom Strand", "Nachher, wenn sie wieder zu Hause ist", "Am besten jeden Tag ein neues"],
+      "richtig": 2,
+      "erklaerung": "Wer vor oder während des Urlaubs postet, verrät, dass die Wohnung gerade leer steht. Nach der Rückkehr zu posten ist sicherer."
+    },
+    {
+      "badge": "Sicherheit",
+      "frage": "Eine Nachricht: „Sofort handeln, sonst wird dein Konto gelöscht!“ Welches Phishing-Warnzeichen ist das?",
+      "optionen": ["Druck", "Zu gut, um wahr zu sein", "Frage nach dem Passwort", "Gar keins, das ist ganz normal"],
+      "richtig": 0,
+      "erklaerung": "„Sofort“ und eine Drohung erzeugen Druck. Betrüger wollen, dass du schnell handelst, ohne nachzudenken."
+    },
+    {
+      "badge": "Sicherheit",
+      "frage": "Caesar-Verschlüsselung mit Schlüssel 3: Was wird aus „HUND“?",
+      "optionen": ["GTMC", "KXQG", "IVOE", "HUND3"],
+      "richtig": 1,
+      "erklaerung": "Jeder Buchstabe rückt im Alphabet 3 Stellen weiter: H → K, U → X, N → Q, D → G. Also KXQG."
+    },
+    {
+      "badge": "Steuern & Regeln",
+      "frage": "Die Schiebetür im Supermarkt geht auf. Was ist dabei der Motor?",
+      "optionen": ["Der Sensor", "Die Steuerung", "Der Aktor", "Der Regelkreis"],
+      "richtig": 2,
+      "erklaerung": "Der Sensor erkennt dich, die Steuerung entscheidet, und der Aktor – hier der Motor – bewegt die Tür."
+    },
+    {
+      "badge": "Steuern & Regeln",
+      "frage": "Ein Toaster toastet immer 2 Minuten, auch wenn das Brot schon schwarz ist. Was macht er?",
+      "optionen": ["Er regelt", "Er steuert", "Er lernt dazu", "Er denkt mit"],
+      "richtig": 1,
+      "erklaerung": "Er steuert: Er folgt einem festen Ablauf, ohne das Ergebnis zu prüfen. Regeln würde er, wenn er die Bräune messen und rechtzeitig abschalten würde."
+    },
+    {
+      "badge": "KI",
+      "frage": "Im Training waren alle Hunde auf einer Wiese und alle Katzen auf dem Sofa. Was hat die KI vielleicht in Wahrheit gelernt?",
+      "optionen": ["Wie Schnauzen aussehen", "„Viel Grün = Hund“", "Dass Katzen lieber drinnen sind", "Gar nichts, KI lernt immer richtig"],
+      "richtig": 1,
+      "erklaerung": "Eine KI lernt Muster aus ihren Trainingsbildern. Waren Hunde immer auf grüner Wiese, kann sie statt des Tieres den Hintergrund gelernt haben. Ein Hund auf dem Sofa wäre für sie dann vielleicht eine Katze."
+    },
+    {
+      "badge": "KI",
+      "frage": "Ein Chatbot nennt dir eine Jahreszahl für dein Referat. Was machst du?",
+      "optionen": ["Sofort übernehmen, KI weiß alles", "In einer zweiten Quelle prüfen", "Die Zahl einfach ein bisschen ändern", "Den Chatbot fragen, ob er sicher ist"],
+      "richtig": 1,
+      "erklaerung": "Chatbots können falsche Angaben machen, die trotzdem überzeugend klingen. Prüfe sie deshalb in einer zweiten, verlässlichen Quelle – nur beim Chatbot nachzufragen reicht nicht."
+    }
+  ]
+}
